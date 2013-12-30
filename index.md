@@ -10,8 +10,7 @@ chapter: '0'
 pages: '0'
 ---
 
-Michael Abrash's Graphics Programming Black Book Special Edition
-----------------------------------------------------------------
+# Michael Abrash's Graphics Programming Black Book Special Edition
 
 1.  [Introduction](intro.html)
 2.  [Foreword](about.html)

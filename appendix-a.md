@@ -8,8 +8,7 @@ category: 'Web and Software Development: Game Development,Web and Software Devel
   Graphics and Multimedia Development'
 ---
 
-Afterword {#Heading1}
----------
+# Afterword {#Heading1}
 
 If you've followed me this far, you might agree that we've come through
 some rough country. Still, I'm of the opinion that hard-won knowledge is

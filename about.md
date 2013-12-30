@@ -8,8 +8,7 @@ category: 'Web and Software Development: Game Development,Web and Software Devel
   Graphics and Multimedia Development'
 ---
 
-Foreword {#Heading1}
---------
+# Foreword {#Heading1}
 
 I got my start programming on Apple II computers at school, and almost
 all of my early work was on the Apple platform. After graduating, it

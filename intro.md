@@ -8,8 +8,7 @@ category: 'Web and Software Development: Game Development,Web and Software Devel
   Graphics and Multimedia Development'
 ---
 
-Introduction {#Heading1}
-------------
+# Introduction {#Heading1}
 
 What was it like working with John Carmack on Quake? Like being strapped
 onto a rocket during takeoff—in the middle of a hurricane. It seemed
