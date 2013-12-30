@@ -12,18 +12,18 @@ Michael Abrash's Graphics Programming Black Book Special Edition
         -   [The Human Element of Code
             Optimization](01-01.html#Heading2)
         -   [Understanding High Performance](01-01.html#Heading3)
-            -   [When Fast Isn’t Fast](01-01.html#Heading4)
+            -   [When Fast Isn't Fast](01-01.html#Heading4)
         -   [Rules for Building High-Performance
             Code](01-02.html#Heading5)
-            -   [Know Where You’re Going](01-02.html#Heading6)
+            -   [Know Where You're Going](01-02.html#Heading6)
             -   [Make a Big Map](01-02.html#Heading7)
             -   [Make Lots of Little Maps](01-02.html#Heading8)
             -   [Know the Territory](01-03.html#Heading9)
             -   [Know When It Matters](01-04.html#Heading10)
             -   [Always Consider the Alternatives](01-04.html#Heading11)
             -   [Know How to Turn On the Juice](01-05.html#Heading12)
-        -   [Where We’ve Been, What We’ve Seen](01-06.html#Heading13)
-            -   [Where We’re Going](01-06.html#Heading14)
+        -   [Where We've Been, What We've Seen](01-06.html#Heading13)
+            -   [Where We're Going](01-06.html#Heading14)
 
     2.  [Chapter 2—A World Apart](02-01.html#Heading1)
         -   [The Unique Nature of Assembly Language
@@ -65,7 +65,7 @@ Michael Abrash's Graphics Programming Black Book Special Edition
             Performance](04-01.html#Heading2)
         -   [Cycle-Eaters](04-01.html#Heading3)
         -   [The Nature of Cycle-Eaters](04-01.html#Heading4)
-            -   [The 8088’s Ancestral Cycle-Eaters](04-01.html#Heading5)
+            -   [The 8088's Ancestral Cycle-Eaters](04-01.html#Heading5)
         -   [The 8-Bit Bus Cycle-Eater](04-01.html#Heading6)
             -   [The Impact of the 8-Bit Bus
                 Cycle-Eater](04-02.html#Heading7)
@@ -133,10 +133,10 @@ Michael Abrash's Graphics Programming Black Book Special Edition
 
     8.  [Chapter 8—Speeding Up C with Assembly
         Language](08-01.html#Heading1)
-        -   [Jumping Languages When You Know It’ll
+        -   [Jumping Languages When You Know It'll
             Help](08-01.html#Heading2)
-            -   [Billy, Don’t Be a Compiler](08-01.html#Heading3)
-        -   [Don’t Call Your Functions on Me, Baby](08-01.html#Heading4)
+            -   [Billy, Don't Be a Compiler](08-01.html#Heading3)
+        -   [Don't Call Your Functions on Me, Baby](08-01.html#Heading4)
         -   [Stack Frames Slow So Much](08-02.html#Heading5)
         -   [Torn Between Two Segments](08-02.html#Heading6)
             -   [Why Speeding Up Is Hard to Do](08-02.html#Heading7)
@@ -195,7 +195,7 @@ Michael Abrash's Graphics Programming Black Book Special Edition
             -   [POPF and the 286](11-07.html#Heading17)
 
     12. [Chapter 12—Pushing the 486](12-01.html#Heading1)
-        -   [It’s Not Just a Bigger 386](12-01.html#Heading2)
+        -   [It's Not Just a Bigger 386](12-01.html#Heading2)
             -   [Enter the 486](12-01.html#Heading3)
         -   [Rules to Optimize By](12-01.html#Heading4)
             -   [The Hazards of Indexed Addressing](12-01.html#Heading5)
@@ -237,7 +237,7 @@ Michael Abrash's Graphics Programming Black Book Special Edition
         -   [Circular Lists](15-03.html#Heading5)
         -   [Hi/Lo in 24 Bytes](15-04.html#Heading6)
 
-    16. [Chapter 16—There Ain’t No Such Thing as the Fastest
+    16. [Chapter 16—There Ain't No Such Thing as the Fastest
         Code](16-01.html#Heading1)
         -   [Lessons Learned in the Pursuit of the Ultimate Word
             Counter](16-01.html#Heading2)
@@ -259,7 +259,7 @@ Michael Abrash's Graphics Programming Black Book Special Edition
     17. [Chapter 17—The Game of Life](17-01.html#Heading1)
         -   [The Triumph of Algorithmic Optimization in a Cellular
             Automata Game](17-01.html#Heading2)
-        -   [Conway’s Game](17-01.html#Heading3)
+        -   [Conway's Game](17-01.html#Heading3)
             -   [The Rules of the Game](17-01.html#Heading4)
         -   [Where Does the Time Go?](17-03.html#Heading5)
         -   [The Hazards and Advantages of
@@ -270,13 +270,13 @@ Michael Abrash's Graphics Programming Black Book Special Edition
             -   [Acting on What We Know](17-06.html#Heading10)
             -   [The Challenge That Ate My Life](17-08.html#Heading11)
 
-    18. [Chapter 18—It’s a plain Wonderful Life](18-01.html#Heading1)
+    18. [Chapter 18—It's a plain Wonderful Life](18-01.html#Heading1)
         -   [Optimization beyond the Pale](18-01.html#Heading2)
         -   [Breaking the Rules](18-01.html#Heading3)
         -   [Table-Driven Magic](18-02.html#Heading4)
         -   [Keeping Track of Change with a Change
             List](18-04.html#Heading5)
-            -   [A Layperson’s Overview of QLIFE](18-05.html#Heading6)
+            -   [A Layperson's Overview of QLIFE](18-05.html#Heading6)
 
     19. [Chapter 19—Pentium: Not the Same Old Song](19-01.html#Heading1)
         -   [Learning a Whole Different Set of Optimization
@@ -292,7 +292,7 @@ Michael Abrash's Graphics Programming Black Book Special Edition
             -   [Going Superscalar](19-04.html#Heading11)
 
     20. [Chapter 20—Pentium Rules](20-01.html#Heading1)
-        -   [How Your Carbon-Based Optimizer Can Put the “Super” in
+        -   [How Your Carbon-Based Optimizer Can Put the "Super" in
             Superscalar](20-01.html#Heading2)
         -   [An Instruction in Every Pipe](20-01.html#Heading3)
         -   [V-Pipe-Capable Instructions](20-02.html#Heading4)
@@ -300,19 +300,19 @@ Michael Abrash's Graphics Programming Black Book Special Edition
         -   [Superscalar Notes](20-04.html#Heading6)
             -   [Register Starvation](20-04.html#Heading7)
 
-    21. [Chapter 21—Unleashing the Pentium’s
+    21. [Chapter 21—Unleashing the Pentium's
         V-Pipe](21-01.html#Heading1)
         -   [Focusing on Keeping Both Pentium Pipes
             Full](21-01.html#Heading2)
         -   [Address Generation Interlocks](21-01.html#Heading3)
         -   [Register Contention](21-02.html#Heading4)
             -   [Exceptions to Register Contention](21-02.html#Heading5)
-        -   [Who’s in First?](21-02.html#Heading6)
+        -   [Who's in First?](21-02.html#Heading6)
         -   [Pentium Optimization in Action](21-03.html#Heading7)
             -   [A Quick Note on the 386 and 486](21-05.html#Heading8)
 
     22. [Chapter 22—Zenning and the Flexible Mind](22-01.html#Heading1)
-        -   [Taking a Spin through What You’ve
+        -   [Taking a Spin through What You've
             Learned](22-01.html#Heading2)
         -   [Zenning](22-01.html#Heading3)
 
@@ -343,7 +343,7 @@ Michael Abrash's Graphics Programming Black Book Special Edition
             Mechanisms](25-01.html#Heading2)
         -   [VGA Data Rotation](25-01.html#Heading3)
         -   [The Bit Mask](25-01.html#Heading4)
-        -   [The VGA’s Set/Reset Circuitry](25-03.html#Heading5)
+        -   [The VGA's Set/Reset Circuitry](25-03.html#Heading5)
             -   [Setting All Planes to a Single
                 Color](25-04.html#Heading6)
             -   [Manipulating Planes Individually](25-05.html#Heading7)
@@ -359,7 +359,7 @@ Michael Abrash's Graphics Programming Black Book Special Edition
         -   [Write Mode 2, Chunky Bitmaps,and Text-Graphics
             Coexistence](27-01.html#Heading2)
         -   [Write Mode 2 and Set/Reset](27-01.html#Heading3)
-            -   [A Byte’s Progress in Write Mode 2](27-01.html#Heading4)
+            -   [A Byte's Progress in Write Mode 2](27-01.html#Heading4)
             -   [Copying Chunky Bitmaps to VGA Memory Using Write Mode
                 2](27-02.html#Heading5)
             -   [Drawing Color-Patterned Lines Using Write Mode
@@ -371,11 +371,11 @@ Michael Abrash's Graphics Programming Black Book Special Edition
             Back](27-04.html#Heading9)
 
     28. [Chapter 28—Reading VGA Memory](28-01.html#Heading1)
-        -   [Read Modes 0 and 1, and the Color Don’t Care
+        -   [Read Modes 0 and 1, and the Color Don't Care
             Register](28-01.html#Heading2)
         -   [Read Mode 0](28-01.html#Heading3)
         -   [Read Mode 1](28-03.html#Heading4)
-        -   [When all Planes “Don’t Care”](28-04.html#Heading5)
+        -   [When all Planes "Don't Care"](28-04.html#Heading5)
 
     29. [Chapter 29—Saving Screens and Other VGA
         Mysteries](29-01.html#Heading1)
@@ -392,7 +392,7 @@ Michael Abrash's Graphics Programming Black Book Special Edition
             EGA and VGA](30-01.html#Heading2)
         -   [How the Split Screen Works](30-01.html#Heading3)
             -   [The Split Screen in Action](30-01.html#Heading4)
-            -   [VGA and EGA Split-Screen Operation Don’t
+            -   [VGA and EGA Split-Screen Operation Don't
                 Mix](30-03.html#Heading5)
         -   [Setting the Split-Screen-Related
             Registers](30-03.html#Heading6)
@@ -419,7 +419,7 @@ Michael Abrash's Graphics Programming Black Book Special Edition
     32. [Chapter 32—Be It Resolved: 360x480](32-01.html#Heading1)
         -   [Taking 256-Color Modes About as Far as the Standard VGA Can
             Take Them](32-01.html#Heading2)
-        -   [Extended 256-Color Modes: What’s Not to
+        -   [Extended 256-Color Modes: What's Not to
             Like?](32-01.html#Heading3)
         -   [360x480 256-Color Mode](32-01.html#Heading4)
         -   [How 360x480 256-Color Mode Works](32-04.html#Heading5)
@@ -441,7 +441,7 @@ Michael Abrash's Graphics Programming Black Book Special Edition
             -   [256-Color Mode](33-02.html#Heading7)
             -   [Setting the Palette RAM](33-02.html#Heading8)
             -   [Setting the DAC](33-03.html#Heading9)
-        -   [If You Can’t Call the BIOS, Who Ya Gonna
+        -   [If You Can't Call the BIOS, Who Ya Gonna
             Call?](33-03.html#Heading10)
         -   [An Example of Setting the DAC](33-03.html#Heading11)
 
@@ -462,17 +462,17 @@ Michael Abrash's Graphics Programming Black Book Special Edition
 
     35. [Chapter 35—Bresenham Is Fast, and Fast Is
         Good](35-01.html#Heading1)
-        -   [Implementing and Optimizing Bresenham’s Line-Drawing
+        -   [Implementing and Optimizing Bresenham's Line-Drawing
             Algorithm](35-01.html#Heading2)
         -   [The Task at Hand](35-01.html#Heading3)
-        -   [Bresenham’s Line-Drawing Algorithm](35-01.html#Heading4)
+        -   [Bresenham's Line-Drawing Algorithm](35-01.html#Heading4)
             -   [Strengths and Weaknesses](35-02.html#Heading5)
         -   [An Implementation in C](35-03.html#Heading6)
             -   [Looking at EVGALine](35-04.html#Heading7)
             -   [Drawing Each Line](35-05.html#Heading8)
             -   [Drawing Each Pixel](35-05.html#Heading9)
         -   [Comments on the C Implementation](35-06.html#Heading10)
-        -   [Bresenham’s Algorithm in Assembly](35-06.html#Heading11)
+        -   [Bresenham's Algorithm in Assembly](35-06.html#Heading11)
 
     36. [Chapter 36—The Good, the Bad, and the
         Run-Sliced](36-01.html#Heading1)
@@ -528,9 +528,9 @@ Michael Abrash's Graphics Programming Black Book Special Edition
             Structure](41-01.html#Heading2)
         -   [Nomenclature in Action](41-01.html#Heading3)
 
-    42. [Chapter 42—Wu’ed in Haste; Fried, Stewed at
+    42. [Chapter 42—Wu'ed in Haste; Fried, Stewed at
         Leisure](42-01.html#Heading1)
-        -   [Fast Antialiased Lines Using Wu’s
+        -   [Fast Antialiased Lines Using Wu's
             Algorithm](42-01.html#Heading2)
         -   [Wu Antialiasing](42-01.html#Heading3)
         -   [Tracing and Intensity in One](42-02.html#Heading4)
@@ -582,7 +582,7 @@ Michael Abrash's Graphics Programming Black Book Special Edition
             -   [Drawing Order and Visual Quality](46-03.html#Heading7)
 
     47. [Chapter 47—Mode X: 256-Color VGA Magic](47-01.html#Heading1)
-        -   [Introducing the VGA’s Undocumented “Animation-Optimal”
+        -   [Introducing the VGA's Undocumented "Animation-Optimal"
             Mode](47-01.html#Heading2)
         -   [What Makes Mode X Special?](47-01.html#Heading3)
         -   [Selecting 320x240 256-Color Mode](47-02.html#Heading4)
@@ -591,7 +591,7 @@ Michael Abrash's Graphics Programming Black Book Special Edition
             Quarter](47-06.html#Heading6)
 
     48. [Chapter 48—Mode X Marks the Latch](48-01.html#Heading1)
-        -   [The Internals of Animation’s Best Video Display
+        -   [The Internals of Animation's Best Video Display
             Mode](48-01.html#Heading2)
         -   [Allocating Memory in Mode X](48-03.html#Heading3)
         -   [Copying Pixel Blocks within Display
@@ -634,7 +634,7 @@ Michael Abrash's Graphics Programming Black Book Special Edition
         X-Sharp](52-01.html#Heading1)
         -   [The First Iteration of a Generalized 3-D Animation
             Package](52-01.html#Heading2)
-        -   [This Chapter’s Demo Program](52-01.html#Heading3)
+        -   [This Chapter's Demo Program](52-01.html#Heading3)
         -   [A New Animation Framework: X-Sharp](52-07.html#Heading4)
         -   [Three Keys to Realtime Animation
             Performance](52-07.html#Heading5)
@@ -660,7 +660,7 @@ Michael Abrash's Graphics Programming Black Book Special Edition
 
     55. [Chapter 55—Color Modeling in 256-Color
         Mode](55-01.html#Heading1)
-        -   [Pondering X-Sharp’s Color Model in an RGB State of
+        -   [Pondering X-Sharp's Color Model in an RGB State of
             Mind](55-01.html#Heading2)
             -   [A Color Model](55-01.html#Heading3)
             -   [A Bonus from the BitMan](55-03.html#Heading4)
@@ -687,16 +687,16 @@ Michael Abrash's Graphics Programming Black Book Special Edition
                 Polygons](57-02.html#Heading6)
                 -   [Fast Texture Mapping](57-02.html#Heading7)
 
-    58. [Chapter 58—Heinlein’s Crystal Ball, Spock’s Brain, and the
+    58. [Chapter 58—Heinlein's Crystal Ball, Spock's Brain, and the
         9-Cycle Dare](58-01.html#Heading1)
         -   [Using the Whole-Brain Approach to Accelerate Texture
             Mapping](58-01.html#Heading2)
         -   [Texture Mapping Redux](58-01.html#Heading3)
             -   [Left-Brain Optimization](58-01.html#Heading4)
             -   [A 90-Degree Shift in Perspective](58-02.html#Heading5)
-        -   [That’s Nice—But it Sure as Heck Ain’t 9
+        -   [That's Nice—But it Sure as Heck Ain't 9
             Cycles](58-03.html#Heading6)
-            -   [Don’t Stop Thinking about Those
+            -   [Don't Stop Thinking about Those
                 Cycles](58-04.html#Heading7)
         -   [Texture Mapping Notes](58-05.html#Heading8)
 
@@ -756,7 +756,7 @@ Michael Abrash's Graphics Programming Black Book Special Edition
         3-D](63-01.html#Heading1)
         -   [Knowing When to Hurl Conventional Math Wisdom Out the
             Window](63-01.html#Heading2)
-        -   [Not Your Father’s Floating-Point](63-01.html#Heading3)
+        -   [Not Your Father's Floating-Point](63-01.html#Heading3)
         -   [Pentium Floating-Point Optimization](63-01.html#Heading4)
             -   [Pipelining, Latency, and
                 Throughput](63-02.html#Heading5)
@@ -768,7 +768,7 @@ Michael Abrash's Graphics Programming Black Book Special Edition
         -   [Rounding Control](63-04.html#Heading11)
         -   [A Farewell to 3-D Fixed-Point](63-04.html#Heading12)
 
-    64. [Chapter 64—Quake’s Visible-Surface
+    64. [Chapter 64—Quake's Visible-Surface
         Determination](64-01.html#Heading1)
         -   [The Challenge of Separating All Things Seen from All Things
             Unseen](64-01.html#Heading2)
@@ -795,7 +795,7 @@ Michael Abrash's Graphics Programming Black Book Special Edition
 
     65. [Chapter 65—3-D Clipping and Other
         Thoughts](65-01.html#Heading1)
-        -   [Determining What’s Inside Your Field of
+        -   [Determining What's Inside Your Field of
             View](65-01.html#Heading2)
         -   [3-D Clipping Basics](65-01.html#Heading3)
             -   [Intersecting a Line Segment with a
@@ -806,7 +806,7 @@ Michael Abrash's Graphics Programming Black Book Special Edition
         -   [Advantages of Viewspace Clipping](65-04.html#Heading8)
         -   [Further Reading](65-04.html#Heading9)
 
-    66. [Chapter 66—Quake’s Hidden-Surface Removal](66-01.html#Heading1)
+    66. [Chapter 66—Quake's Hidden-Surface Removal](66-01.html#Heading1)
         -   [Struggling with Z-Order Solutions to the Hidden Surface
             Problem](66-01.html#Heading2)
         -   [Creative Flux and Hidden Surfaces](66-01.html#Heading3)
@@ -833,7 +833,7 @@ Michael Abrash's Graphics Programming Black Book Special Edition
         -   [1/z Span Sorting in Action](67-03.html#Heading8)
             -   [Implementation Notes](67-05.html#Heading9)
 
-    68. [Chapter 68—Quake’s Lighting Model](68-01.html#Heading1)
+    68. [Chapter 68—Quake's Lighting Model](68-01.html#Heading1)
         -   [A Radically Different Approach to Lighting
             Polygons](68-01.html#Heading2)
         -   [The Lighting Conundrum](68-01.html#Heading3)
@@ -849,7 +849,7 @@ Michael Abrash's Graphics Programming Black Book Special Edition
             -   [Two Final Notes on Surface
                 Caching](68-04.html#Heading12)
 
-    69. [Chapter 69—Surface Caching and Quake’s Triangle
+    69. [Chapter 69—Surface Caching and Quake's Triangle
         Models](69-01.html#Heading1)
         -   [Probing Hardware-Assisted Surfaces and Fast Model Animation
             Without Sprites](69-01.html#Heading2)
@@ -862,7 +862,7 @@ Michael Abrash's Graphics Programming Black Book Special Edition
             -   [Drawing Triangle Models Fast](69-02.html#Heading7)
             -   [Trading Subpixel Precision for
                 Speed](69-03.html#Heading8)
-            -   [An Idea that Didn’t Work](69-03.html#Heading9)
+            -   [An Idea that Didn't Work](69-03.html#Heading9)
             -   [An Idea that Did Work](69-03.html#Heading10)
             -   [More Ideas that Might Work](69-04.html#Heading11)
 
@@ -870,7 +870,7 @@ Michael Abrash's Graphics Programming Black Book Special Edition
         Future](70-01.html#Heading1)
         -   [Preprocessing the World](70-01.html#Heading2)
         -   [The Potentially Visible Set (PVS)](70-02.html#Heading3)
-        -   [Passages: The Last-Minute Change that Didn’t
+        -   [Passages: The Last-Minute Change that Didn't
             Happen](70-03.html#Heading4)
         -   [Drawing the World](70-03.html#Heading5)
         -   [Rasterization](70-04.html#Heading6)

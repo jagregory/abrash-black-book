@@ -143,7 +143,7 @@ viewing variance, 1249
 
 moving models in 3-D drawings, 1212-1222
 
-painter’s algorithm, 1099, 1104-1105
+painter's algorithm, 1099, 1104-1105
 
 perspective correctness problem, 1248-1250
 
@@ -840,7 +840,7 @@ internal animation, 872
 
 masked images, 871-872
 
-Antialiasing, Wu’s algorithm, 776-779, **780-791,** 791-792
+Antialiasing, Wu's algorithm, 776-779, **780-791,** 791-792
 
 Apparent motion, in animation, 1064
 
@@ -880,7 +880,7 @@ objectives, 28
 
 optimizing instructions, 23-24
 
-programmer’s responsibilities, 27-29
+programmer's responsibilities, 27-29
 
 rearranging instructions, 418-419
 
@@ -1004,7 +1004,7 @@ principles, 796-798
 
 shearing, 813
 
-“Black box” approach, and future of programming, 725-726
+"Black box" approach, and future of programming, 725-726
 
 Blocks. *See* Restartable blocks.
 
@@ -1054,7 +1054,7 @@ pairing in U-pipe, 405
 
 x86 family CPUs, performance, 140
 
-Bresenham’s line-drawing algorithm
+Bresenham's line-drawing algorithm
 
 basic algorithm
 
@@ -1080,7 +1080,7 @@ integer-based implementation, 685-687
 
 potential optimizations, 705
 
-Bresenham’s run-length slice algorithm. *See* Run-length slice
+Bresenham's run-length slice algorithm. *See* Run-length slice
 algorithm.
 
 Bridges, John
@@ -1189,7 +1189,7 @@ culling to frustum, 1181-1184
 
 overdraw problem, 1184-1185
 
-painter’s algorithm, 1099-1106
+painter's algorithm, 1099-1106
 
 polygon culling, 1181-1184
 
@@ -1545,7 +1545,7 @@ Code recursion
 
 vs. data recursion, 1108-1110
 
-Euclid’s algorithm, 198-199
+Euclid's algorithm, 198-199
 
 Collision detection demo program, **531-534**
 
@@ -1577,9 +1577,9 @@ using subset of DAC, 649
 
 Color cycling demo program, 643, **644-648,** 648-649
 
-Color Don’t Care register, 534
+Color Don't Care register, 534
 
-Color Don’t Care register demo program, **535-537,** 535
+Color Don't Care register demo program, **535-537,** 535
 
 Color mapping demo program, EGA, **551-555**
 
@@ -1850,7 +1850,7 @@ Data recursion
 
 vs. code recursion, 1108
 
-Euclid’s algorithm, 200
+Euclid's algorithm, 200
 
 inorder tree traversal, 1108, **1109-1110,** 1110
 
@@ -2039,7 +2039,7 @@ Division, 32-bit, 181-184, 1008
 
 DMA (direct memory access), and DRAM refresh, 95
 
-“Don’t care” planes, 535
+"Don't care" planes, 535
 
 DOS function calls
 
@@ -2142,7 +2142,7 @@ pixel drawing
 
 optimization, 1074, 1086
 
-painter’s algorithm and overdraw problem, 1184
+painter's algorithm and overdraw problem, 1184
 
 single-color drawing with write mode 3, 831-832
 
@@ -2406,7 +2406,7 @@ prefetch queue cycle-eater, 86
 
 wait states, 101
 
-Euclid’s algorithm
+Euclid's algorithm
 
 algorithm, 197
 
@@ -2420,7 +2420,7 @@ recursive implementations, **198, 200**
 
 **EVGALine** function
 
-Bresenham’s algorithm
+Bresenham's algorithm
 
 assembly implementation, 671, **675-677**
 
@@ -2773,7 +2773,7 @@ Set/Reset register, 666
 
 brute-force approach, 195
 
-Euclid’s algorithm
+Euclid's algorithm
 
 code recursive approach, 198
 
@@ -2785,7 +2785,7 @@ GCD (Greatest Common Denominator) problem
 
 brute-force approach, 193-196
 
-Euclid’s algorithm, 197-200
+Euclid's algorithm, 197-200
 
 subtraction approach, 196-197
 
@@ -3154,7 +3154,7 @@ Latches
 
 and bit mask, 470
 
-and Color Don’t Care register, **535-537,** 535
+and Color Don't Care register, **535-537,** 535
 
 and CPU reads, 530
 
@@ -3264,7 +3264,7 @@ Line-drawing algorithms
 
 accumulated pixels approach (Jim Mackraz), 678
 
-Bresenham’s algorithms
+Bresenham's algorithms
 
 basic line-drawing algorithm, 655-661, **661-665,** 665-671, **671-677**
 
@@ -3394,9 +3394,9 @@ vs. rotating or shifting, 145-146
 
 word count program
 
-author’s implementation, 303, 304
+author's implementation, 303, 304
 
-David Stafford’s implementation, **309-311,** 317-319
+David Stafford's implementation, **309-311,** 317-319
 
 WC50 (Terje Mathisen), 307
 
@@ -3688,7 +3688,7 @@ Multi-word arithmetic, 147-148
 
 **NEG** EAX instruction, 222
 
-Negation, two’s complement, 171
+Negation, two's complement, 171
 
 **Next1** function, **353**
 
@@ -3724,13 +3724,13 @@ Object-oriented programming, 725-726
 
 360x480 256-color mode line drawing demo program, **615**
 
-Bresenham’s line-drawing algorithm, **662,** 668-669
+Bresenham's line-drawing algorithm, **662,** 668-669
 
 **Octant1** function
 
 360x480 256-color mode line drawing demo program, **616**
 
-Bresenham’s line-drawing algorithm, **663,** 668-669
+Bresenham's line-drawing algorithm, **663,** 668-669
 
 Octants, and line orientations, 666-667
 
@@ -3994,7 +3994,7 @@ Overdraw problem, VSD
 
 and beam trees, 1185-1186
 
-painter’s algorithm, 1184-1185
+painter's algorithm, 1184-1185
 
 sorted spans, 1215
 
@@ -4056,7 +4056,7 @@ split screen and page flipping, **820-825,** **825-830,** 836-837
 
 320x400 256-color mode, **600-605**
 
-Painter’s algorithm
+Painter's algorithm
 
 *See also* 3-D animation; 3-D drawing.
 
@@ -4346,9 +4346,9 @@ Pixel drawing
 
 optimization, 1074, 1086
 
-painter’s algorithm and overdraw problem, 1184
+painter's algorithm and overdraw problem, 1184
 
-Pixel intensity calculations, Wu’s antialiasing algorithm, 778-779
+Pixel intensity calculations, Wu's antialiasing algorithm, 778-779
 
 Pixel values, mapping to colors, 548-551, **551-555**
 
@@ -4388,7 +4388,7 @@ and bit mask, 465
 
 capturing and restoring screens, 541-542, **543-547,** 547-548
 
-and Color Don’t Care register, 534-535, **535-537**
+and Color Don't Care register, 534-535, **535-537**
 
 fonts, in text modes, 516
 
@@ -4688,7 +4688,7 @@ Profiling, and 80x87 emulator, Borland C++, 999
 
 Program size vs. clock cycles, 28
 
-*Programmer’s Guide to PC Video Systems* (book), 651
+*Programmer's Guide to PC Video Systems* (book), 651
 
 Projection
 
@@ -4832,7 +4832,7 @@ Read mode, 0, 521
 
 Read mode 1
 
-Color Don’t Care register, 534
+Color Don't Care register, 534
 
 overview, 525-526
 
@@ -4878,7 +4878,7 @@ code recursion
 
 vs. data recursion, 1108-1110
 
-Euclid’s algorithm, 198-199
+Euclid's algorithm, 198-199
 
 compiler-based optimization, 1112-1113
 
@@ -4888,7 +4888,7 @@ vs. code recursion, 1108-1110
 
 compiler-based optimization, 1112-1113
 
-Euclid’s algorithm, 200
+Euclid's algorithm, 200
 
 inorder tree traversal, 1108-1110
 
@@ -4904,7 +4904,7 @@ Reference materials
 
 bitmapped text, drawing, 471
 
-Bresenham’s line-drawing algorithm, 660
+Bresenham's line-drawing algorithm, 660
 
 BSP trees, 1114, 1157
 
@@ -5162,7 +5162,7 @@ vertical, in texture mapping, 1084-1086
 
 **ScanBuffer** assembly routine
 
-author’s implementation, **301-302**, **303-304**
+author's implementation, **301-302**, **303-304**
 
 hand-optimized implementation(Willem Clements), **313-315**
 
@@ -5816,7 +5816,7 @@ viewing variance, 1249
 
 moving models in 3-D drawings, 1212-1222
 
-painter’s algorithm, 1099, 1104-1105
+painter's algorithm, 1099, 1104-1105
 
 perspective correctness problem, 1248-1250
 
@@ -6192,7 +6192,7 @@ resolution, 360x480 256-color mode, 619-620
 
 Two-pass lighting, 1262
 
-Two’s complement negation, 171
+Two's complement negation, 171
 
 **U**
 
@@ -6236,7 +6236,7 @@ unit vectors, dot product, 1136-1137
 
 **VectorsUp** function
 
-Bresenham’s line-drawing algorithm, **664-665**
+Bresenham's line-drawing algorithm, **664-665**
 
 360x480 256-color mode line drawing program, **617-618**
 
@@ -6298,7 +6298,7 @@ VGA compatibility, 446-447, 610-611
 
 VGA memory
 
-Color Don’t Care register, **535-537**, 535
+Color Don't Care register, **535-537**, 535
 
 CPU reads, 520, 526
 
@@ -6350,7 +6350,7 @@ and page flipping, 444-445
 
 read mode 1
 
-Color Don’t Care register, 534
+Color Don't Care register, 534
 
 overview, 525-526, 531
 
@@ -6418,7 +6418,7 @@ vs. write mode 3, 832, 844
 
 Color Compare register, in read mode 1, 531
 
-Color Don’t Care register, in read mode 1, 534
+Color Don't Care register, in read mode 1, 534
 
 Color Select register, color paging, 628-629
 
@@ -6701,11 +6701,11 @@ lookup table, **303**, 304, 317-319
 
 **ScanBuffer** assembly routine
 
-author’s implementation, **301-302**
+author's implementation, **301-302**
 
-Stafford, David’s, **309-311**, 317-319
+Stafford, David's, **309-311**, 317-319
 
-Willem Clements’ implementation, **313-315**
+Willem Clements' implementation, **313-315**
 
 as state machine, 315
 
