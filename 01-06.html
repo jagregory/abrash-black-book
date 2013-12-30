@@ -93,7 +93,7 @@ _ChecksumChunkendp
 <P>Note that in Table 1.1, optimization makes little difference except in the case of Listing 1.5, where the design has been refined considerably. Execution time in the other cases is dominated by time spent in DOS and/or the C library, so optimization of the code you write is pretty much irrelevant. What&#146;s more, while the approximately two-times improvement we got by optimizing is not to be sneezed at, it pales against the up-to-50-times improvement we got by redesigning.
 </P>
 <P>By the way, the execution times even of Listings 1.6 and 1.7 are dominated by DOS disk access times. If a disk cache is enabled and the file to be checksummed is already in the cache, the assembly version is three times as fast as the C version. In other words, the inherent nature of this application limits the performance improvement that can be obtained via assembly. In applications that are more CPU-intensive and less disk-bound, particularly those applications in which string instructions and/or unrolled loops can be used effectively, assembly tends to be considerably faster relative to C than it is in this very specific case.</P>
-<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/01-06i.jpg"><TD WIDTH="95%"><SMALL><I>Don&#146;t get hung up on optimizing compilers or assembly language&#151;the best optimizer is between your ears.</I></SMALL>
+<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="95%"><SMALL><I>Don&#146;t get hung up on optimizing compilers or assembly language&#151;the best optimizer is between your ears.</I></SMALL>
 </TABLE>
 <P>All this is basically a way of saying: Know where you&#146;re going, know the territory, and know when it matters.
 </P>

@@ -123,7 +123,7 @@ ROL/ROR/RCL/RCR  reg,1           (1 cycle)
 </PRE>
 <!-- END CODE //-->
 <P><B>Table 20.2 Instructions that, when executed in the U-pipe, allow V-pipe-executable instructions to execute simultaneously (pair) in the V-pipe.</B><HR></P>
-<TABLE WIDTH="100%"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/20-02i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><SMALL><I>A fundamental rule of Pentium optimization is that it pays to break complex instructions into equivalent simple instructions, then shuffle the simple instructions for maximum use of the V-pipe. This is true partly because most of the pairable instructions are simple instructions, and partly because breaking instructions into pieces allows more freedom to rearrange code to avoid the AGIs and register contention I&#146;ll discuss in the next chapter.</I></SMALL>
+<TABLE WIDTH="100%"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><SMALL><I>A fundamental rule of Pentium optimization is that it pays to break complex instructions into equivalent simple instructions, then shuffle the simple instructions for maximum use of the V-pipe. This is true partly because most of the pairable instructions are simple instructions, and partly because breaking instructions into pieces allows more freedom to rearrange code to avoid the AGIs and register contention I&#146;ll discuss in the next chapter.</I></SMALL>
 </TABLE>
 <P><A NAME="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/20-02.jpg',405,144 )"> --><IMG SRC="images/20-02.jpg"><BR><!-- </A>
 <BR><A HREF="javascript:displayWindow('images/20-02.jpg',405,144)"> --><FONT COLOR="#000077"><B>Figure 20.2</B></FONT></A>&nbsp;&nbsp;<I>Instruction flow through the two pipes.</I>
@@ -163,7 +163,7 @@ mov  [MemVar],edx
 </PRE>
 <!-- END CODE SNIP //-->
 <P>The single complex instruction takes 3 cycles and is 6 bytes long; with proper sequencing, interleaving the simple instructions with other instructions that don&#146;t use EDX or <B>Mem Var</B>, the three-instruction sequence can be reduced to 1.5 cycles, but it is <I>14</I> bytes long.</P>
-<TABLE WIDTH="100%"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/20-03i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><SMALL><I>It&#146;s not unusual for Pentium optimization to approximately double both performance and code size at the same time. In an important loop, go for performance and ignore the size, but on a program-wide basis, the size bears watching.</I></SMALL>
+<TABLE WIDTH="100%"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><SMALL><I>It&#146;s not unusual for Pentium optimization to approximately double both performance and code size at the same time. In an important loop, go for performance and ignore the size, but on a program-wide basis, the size bears watching.</I></SMALL>
 </TABLE>
 <P><BR></P>
 <CENTER>

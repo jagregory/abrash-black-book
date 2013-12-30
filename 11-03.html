@@ -60,7 +60,7 @@
 </P>
 <P>Figure 11.1 illustrates this phenomenon. The conversion of word-sized accesses to odd addresses into double byte-sized accesses is transparent to memory-accessing instructions; all any instruction knows is that the requested word has been accessed, no matter whether 1 word-sized access or 2 byte-sized accesses were required to accomplish it.</P>
 <P>The penalty for performing a word-sized access starting at an odd address is easy to calculate: Two accesses take twice as long as one access.</P>
-<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP" ALIGN="LEFT"><IMG SRC="images/11-02i.jpg"><TD WIDTH="95%" ALIGN="LEFT" VALIGN="TOP"><SMALL><I>In other words, the effective capacity of the 286&#146;s external data bus is </I><I>halved</I> <I>when a word-sized access to an odd address is performed.</I></SMALL>
+<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP" ALIGN="LEFT"><IMG SRC="images/i.jpg"><TD WIDTH="95%" ALIGN="LEFT" VALIGN="TOP"><SMALL><I>In other words, the effective capacity of the 286&#146;s external data bus is </I><I>halved</I> <I>when a word-sized access to an odd address is performed.</I></SMALL>
 </TABLE>
 <P>That, in a nutshell, is the data alignment cycle-eater, the one new cycle-eater of the 286 and 386. (The data alignment cycle-eater is a close relative of the 8088&#146;s 8-bit bus cycle-eater, but since it behaves differently&#151;occurring only at odd addresses&#151;and is avoided with a different workaround, we&#146;ll consider it to be a new cycle-eater.)
 </P>

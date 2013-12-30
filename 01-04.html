@@ -37,7 +37,7 @@
 </CENTER>
 <P><BR></P>
 <TABLE WIDTH="100%">
-<TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/01-03i.jpg"><TD WIDTH="95%"><SMALL><I>Make sure you understand what really goes on when you insert a seemingly-innocuous function call into the time-critical portions of your code.</I></SMALL>
+<TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="95%"><SMALL><I>Make sure you understand what really goes on when you insert a seemingly-innocuous function call into the time-critical portions of your code.</I></SMALL>
 </TABLE>
 <P>In this case that means knowing how DOS and the C/C<SMALL>&#43;&#43;</SMALL> file-access libraries do their work. In other words, <I>know the territory</I>!</P>
 <P><B>LISTING 1.4 L1-4.C</B></P>
@@ -81,7 +81,7 @@ main(int argc, char *argv[]) {
 <H4 ALIGN="LEFT"><A NAME="Heading10"></A><FONT COLOR="#000077">Know When It Matters</FONT></H4>
 <P>The last section contained a particularly interesting phrase: <I>the time-critical portions of your code</I>. Time-critical portions of your code are those portions in which the speed of the code makes a significant difference in the overall performance of your program&#151;and by &#147;significant,&#148; I don&#146;t mean that it makes the code 100 percent faster, or 200 percent, or any particular amount at all, but rather that it makes the program more responsive and/or usable <I>from the user&#146;s perspective</I>.</P>
 <P>Don&#146;t waste time optimizing non-time-critical code: set-up code, initialization code, and the like. Spend your time improving the performance of the code inside heavily-used loops and in the portions of your programs that directly affect response time. Notice, for example, that I haven&#146;t bothered to implement a version of the checksum program entirely in assembly; Listings 1.2 and 1.6 call assembly subroutines that handle the time-critical operations, but C is still used for checking command-line parameters, operning files, printing, and the like.</P>
-<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/01-04i.jpg"><TD WIDTH="95%"><SMALL><I>If you were to implement any of the listings in this chapter entirely in hand-optimized assembly, I suppose you might get a performance improvement of a few percent&#151;but I rather doubt you&#146;d get even that much, and you&#146;d sure as heck spend an awful lot of time for whatever meager improvement does result. Let C do what it does well, and use assembly only when it makes a perceptible difference.</I></SMALL>
+<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="95%"><SMALL><I>If you were to implement any of the listings in this chapter entirely in hand-optimized assembly, I suppose you might get a performance improvement of a few percent&#151;but I rather doubt you&#146;d get even that much, and you&#146;d sure as heck spend an awful lot of time for whatever meager improvement does result. Let C do what it does well, and use assembly only when it makes a perceptible difference.</I></SMALL>
 </TABLE>
 <P>Besides, we don&#146;t want to optimize until the design is refined to our satisfaction, and that won&#146;t be the case until we&#146;ve thought about other approaches.
 </P>

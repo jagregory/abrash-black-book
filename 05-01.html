@@ -46,7 +46,7 @@
 <P>In Chapter 1, I briefly discussed using <I>restartable blocks</I>. This, you might remember, is the process of handling in chunks data sets too large to fit in memory so that they can be processed just about as fast as if they did fit in memory. The restartable block approach is very fast but is relatively difficult to program.</P>
 <P>At the opposite end of the spectrum lies byte-by-byte processing, whereby DOS (or, in less extreme cases, a group of library functions) is allowed to do all the hard work, so that you only have to deal with one byte at a time. Byte-by-byte processing is easy to program but can be extremely slow, due to the vast overhead that results from invoking DOS each time a byte must be processed.</P>
 <P>Sound familiar? It should. I moved via the byte-by-byte approach, and the overhead of driving back and forth made for miserable performance. Renting a truck (the restartable block approach) would have required more effort and forethought, but would have paid off handsomely.</P>
-<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/05-01i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>The easy, familiar approach often has nothing in its favor except that it requires less thinking; not a great virtue when writing high-performance code&#151;or when moving.</I></SMALL>
+<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>The easy, familiar approach often has nothing in its favor except that it requires less thinking; not a great virtue when writing high-performance code&#151;or when moving.</I></SMALL>
 </TABLE>
 <P>And with that, let&#146;s look at a fairly complex application of restartable blocks.
 </P>

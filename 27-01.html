@@ -55,7 +55,7 @@
 <BR><A HREF="javascript:displayWindow('images/27-01.jpg',409,401)"> --><FONT COLOR="#000077"><B>Figure 27.1</B></FONT></A>&nbsp;&nbsp;<I>VGA data flow in write mode 2.</I>
 </P>
 <TABLE WIDTH="100%">
-<TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/27-01i.jpg"><TD WIDTH="95%"><SMALL><I>It&#146;s worth noting two differences between write mode 2 and write mode 0, the standard write mode of the VGA. First, rotation of the CPU data byte does not take place in write mode 2. Second, the Set/Reset and Enable Set/Reset registers have no effect in write mode 2.</I></SMALL>
+<TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="95%"><SMALL><I>It&#146;s worth noting two differences between write mode 2 and write mode 0, the standard write mode of the VGA. First, rotation of the CPU data byte does not take place in write mode 2. Second, the Set/Reset and Enable Set/Reset registers have no effect in write mode 2.</I></SMALL>
 </TABLE>
 <P>Now that we understand the mechanics of write mode 2, we can step back and get a feel for what it might be useful for. View bits 3-0 of the CPU byte as a single pixel in one of 16 colors. Next imagine that nibble turned sideways and written across the four planes, one bit to a plane. Finally, expand each of the bits to a byte, as shown in Figure 27.2, so that 8 pixels are drawn in the color selected by bits 3-0 of the CPU byte. Within the constraints of the VGA&#146;s data paths, that&#146;s exactly what write mode 2 does.
 </P>

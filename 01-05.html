@@ -37,7 +37,7 @@
 </CENTER>
 <P><BR></P>
 <P>The third reason is often fallacious. C library functions are not always written in assembly, nor are they always particularly well-optimized. (In fact, they&#146;re often written for <I>portability</I>, which has nothing to do with optimization.) What&#146;s more, they&#146;re general-purpose functions, and often can be outperformed by well-but-not- brilliantly-written code that is well-matched to a specific task. As an example, consider Listing 1.5, which uses internal buffering to handle blocks of bytes at a time. Table 1.1 shows that Listing 1.5 is 2.5 to 4 times faster than Listing 1.4 (and as much as 49 times faster than Listing 1.1!), even though it uses no assembly at all.</P>
-<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/01-05i.jpg"><TD WIDTH="95%"><SMALL><I>Clearly, you can do well by using special-purpose C code in place of a C library function&#151;if you have a thorough understanding of how the C library function operates and exactly what your application needs done. Otherwise, you&#146;ll end up rewriting C library functions in C, which makes no sense at all.</I></SMALL>
+<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="95%"><SMALL><I>Clearly, you can do well by using special-purpose C code in place of a C library function&#151;if you have a thorough understanding of how the C library function operates and exactly what your application needs done. Otherwise, you&#146;ll end up rewriting C library functions in C, which makes no sense at all.</I></SMALL>
 </TABLE>
 <P><B>LISTING 1.5 L1-5.C</B></P>
 <!-- CODE //-->

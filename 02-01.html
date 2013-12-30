@@ -59,7 +59,7 @@ LoopTop:
 <!-- END CODE SNIP //-->
 <P>Now, it&#146;s hard to write code that&#146;s much faster than seven instructions, only one of which accesses memory, and most programmers would have called it a day at this point. Still, something bothered me, so I spent a bit of time going over the code again. Suddenly, the answer struck me&#151;the code was rotating each bit into place separately, so that a multibit rotation was being performed every time through the loop, for a total of four separate time-consuming multibit rotations!
 </P>
-<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/02-01i.jpg"><TD WIDTH="95%"><SMALL><I>While the instructions themselves were individually optimized, the overall approach did not make the best possible use of the instructions.</I></SMALL>
+<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="95%"><SMALL><I>While the instructions themselves were individually optimized, the overall approach did not make the best possible use of the instructions.</I></SMALL>
 </TABLE>
 <P>I changed the code to the following:
 </P>

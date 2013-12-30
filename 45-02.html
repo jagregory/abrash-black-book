@@ -85,7 +85,7 @@
 <P>
 </P>
 <TABLE WIDTH="100%"><TR>
-<TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/45-01i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><SMALL><I><B>OUT</B>s, in general, are lousy on the 486 (and to think they only took three cycles on the 286!). <B>OUT</B>s to VGAs are particularly lousy. Display memory performance is pretty poor, especially for reads. The conclusions are obvious, I would hope. Structure your graphics code, and, in general, all 486 code, to avoid <B>OUT</B>s.</I></SMALL>
+<TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><SMALL><I><B>OUT</B>s, in general, are lousy on the 486 (and to think they only took three cycles on the 286!). <B>OUT</B>s to VGAs are particularly lousy. Display memory performance is pretty poor, especially for reads. The conclusions are obvious, I would hope. Structure your graphics code, and, in general, all 486 code, to avoid <B>OUT</B>s.</I></SMALL>
 </TABLE>
 <P>For graphics, this especially means using write mode 3 rather than the bit-mask register. When you must use the bit mask, arrange drawing so that you can set the bit mask once, then do a lot of drawing with that mask. For example, draw a whole edge at once, then the middle, then the other edge, rather than setting the bit mask several times on each scan line to draw the edge and middle bytes together. Don&#146;t read from display memory if you don&#146;t have to. Write each pixel once and only once.
 </P>

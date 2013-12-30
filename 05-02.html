@@ -37,7 +37,7 @@
 </CENTER>
 <P><BR></P>
 <P>We could put a zero byte at the end of our buffer to allow <B>strstr()</B> to work, but why bother? The <B>strstr()</B> function must spend time either checking for the end of the string being searched or determining the length of that string&#151;wasted effort given that we already know exactly how long our search buffer is. Even if a given <B>strstr()</B> implementation is well-written, its performance will suffer, at least for our application, from unnecessary overhead.</P>
-<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/05-02i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>This illustrates why you shouldn&#146;t think of C/C<SMALL>&#43;&#43;</SMALL> library functions as black boxes; understand what they do and try to figure out how they do it, and relate that to their performance in the context you&#146;re interested in.</I></SMALL>
+<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>This illustrates why you shouldn&#146;t think of C/C<SMALL>&#43;&#43;</SMALL> library functions as black boxes; understand what they do and try to figure out how they do it, and relate that to their performance in the context you&#146;re interested in.</I></SMALL>
 </TABLE>
 <H3><A NAME="Heading5"></A><FONT COLOR="#000077">Brute-Force Techniques</FONT></H3>
 <P>Given that no C/C<SMALL>&#43;&#43;</SMALL> library function meets our needs precisely, an obvious alternative approach is the brute-force technique that uses <B>memcmp()</B> to compare <I>every</I> potential matching location in the buffer to the string we&#146;re searching for, as illustrated in Figure 5.1.</P>
