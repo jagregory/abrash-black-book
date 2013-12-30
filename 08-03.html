@@ -1,44 +1,44 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Speeding Up C with Assembly Language</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=08//-->
+  <!--PAGES=156-160//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="08-02.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="08-04.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Speeding Up C with Assembly Language</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
-
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=08//-->
-<!--PAGES=156-160//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
-
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="08-02.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="08-04.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P><B>LISTING 8.1  L8-1.C</B></P>
-<!-- CODE //-->
-<PRE>
+  <p><b>LISTING 8.1 L8-1.C</b></p><!-- CODE //-->
+  <pre>
 /* Program to search an array spanning a linked list of variable-
    sized blocks, for all entries with a specified ID number,
    and return the average of the values of all such entries. Each of
@@ -158,16 +158,18 @@ unsigned int FindIDAverage(unsigned int SearchedForID,
    else
       return(IDMatchSum / IDMatchCount);
 }
-</PRE>
-<!-- END CODE //-->
-<P>The main body of Listing 8.1 constructs a linked list of memory blocks of various sizes and stores an array of structures across those blocks, as shown in Figure 8.2. The function <B>FindIDAverage</B> in Listing 8.1 searches through that array for all matches to a specified ID number and returns the average value of all such matches. <B>FindIDAverage</B> contains two nested loops, the outer one repeating once for each linked block and the inner one repeating once for each array element in each block. The inner loop&mdash;the critical one&mdash;is compact, containing only four statements, and should lend itself rather well to compiler optimization.</P>
-<P><A NAME="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/08-02.jpg',413,265 )"> --><IMG SRC="images/08-02.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/08-02.jpg',413,265)"> --><B>Figure 8.2</B></A>&nbsp;&nbsp;<I>Linked array storage format (version 1).</I>
-</P>
-<P>As it happens, Microsoft C/C<SMALL>++</SMALL> does optimize the inner loop of <B>FindIDAverage</B> nicely. Listing 8.2 shows the code Microsoft C/C<SMALL>++</SMALL> generates for the inner loop, consisting of a mere seven assembly language instructions inside the loop. The compiler is smart enough to convert the loop index variable, which counts up but is used for nothing but counting loops, into a count-down variable so that the <B>LOOP</B> instruction can be used.</P>
-<P><B>LISTING 8.2  L8-2.COD</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p>The main body of Listing 8.1 constructs a linked list of memory blocks of various sizes and stores an array of structures across those blocks, as shown in Figure 8.2. The function <b>FindIDAverage</b> in Listing 8.1 searches through that array for all matches to a specified ID number and returns the average value of all such matches. <b>FindIDAverage</b> contains two nested loops, the outer one repeating once for each linked block and the inner one repeating once for each array element in each block. The inner loop&mdash;the critical one&mdash;is compact, containing only four statements, and should lend itself rather well to compiler optimization.</p>
+
+  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/08-02.jpg',413,265 )"> --><img src="images/08-02.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/08-02.jpg',413,265)"> --><b>Figure 8.2</b></a>&nbsp;&nbsp;<i>Linked array storage format (version 1).</i></p>
+
+  <p>As it happens, Microsoft C/C<small>++</small> does optimize the inner loop of <b>FindIDAverage</b> nicely. Listing 8.2 shows the code Microsoft C/C<small>++</small> generates for the inner loop, consisting of a mere seven assembly language instructions inside the loop. The compiler is smart enough to convert the loop index variable, which counts up but is used for nothing but counting loops, into a count-down variable so that the <b>LOOP</b> instruction can be used.</p>
+
+  <p><b>LISTING 8.2 L8-2.COD</b></p><!-- CODE //-->
+  <pre>
 ; Code generated by Microsoft C for inner loop of FindIDAverage.
 ;|*** for (WorkingBlockCount=0;
 ;|***       WorkingBlockCount&lt;BlockPointer-&gt;BlockCount;
@@ -197,31 +199,29 @@ $I265:
           mov     WORD PTR [bp-2],di        ;IDMatchSum
           mov     WORD PTR [bp-4],dx        ;IDMatchCount
 $FB264:
-</PRE>
-<!-- END CODE //-->
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="08-02.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="08-04.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p><br /></p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="08-02.html">Previous</a></td>
 
-<!-- END FOOTER -->
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="08-04.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
 
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

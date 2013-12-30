@@ -1,66 +1,75 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Hints My Readers Gave Me</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=09//-->
+  <!--PAGES=185-188//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="09-06.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="10-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Hints My Readers Gave Me</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <h4 align="left"><a id="Heading10"></a>Hard-Core Cycle Counting</h4>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=09//-->
-<!--PAGES=185-188//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p>Next, we come to an item that cycle counters will love, especially since it involves apparently incorrect documentation on Intel&rsquo;s part. According to Intel&rsquo;s documents, all <b>RCR</b> and <b>RCL</b> instructions, which perform rotations through the Carry flag, as shown in Figure 9.4, take 9 cycles on the 386 when working with a register operand. My measurements indicate that the 9-cycle execution time almost holds true for <i>multibit</i> rotate-through-carries, which I&rsquo;ve timed at 8 cycles apiece; for example, <b>RCR AX,CL</b> takes 8 cycles on <i>my</i> 386, as does <b>RCL DX,2</b>. Contrast that with <b>ROR</b> and <b>ROL</b>, which can rotate the contents of a register any number of bits in just 3 cycles.</p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="09-06.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="10-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<H4 ALIGN="LEFT"><A NAME="Heading10"></A>Hard-Core Cycle Counting</H4>
-<P>Next, we come to an item that cycle counters will love, especially since it involves apparently incorrect documentation on Intel&rsquo;s part. According to Intel&rsquo;s documents, all <B>RCR</B> and <B>RCL</B> instructions, which perform rotations through the Carry flag, as shown in Figure 9.4, take 9 cycles on the 386 when working with a register operand. My measurements indicate that the 9-cycle execution time almost holds true for <I>multibit</I> rotate-through-carries, which I&rsquo;ve timed at 8 cycles apiece; for example, <B>RCR AX,CL</B> takes 8 cycles on <I>my</I> 386, as does <B>RCL DX,2</B>. Contrast that with <B>ROR</B> and <B>ROL</B>, which can rotate the contents of a register any number of bits in just 3 cycles.</P>
-<P>However, rotating by one bit through the Carry flag does <I>not</I> take 9 cycles, contrary to Intel&rsquo;s <I>80386 Programmer&rsquo;s Reference Manual</I>, or even 8 cycles. In fact, <B>RCR</B> <I>reg</I>,1 and <B>RCL</B> <I>reg</I>,1 take 3 cycles, just like <B>ROR, ROL, SHR,</B> and <B>SHL</B>. At least, that&rsquo;s how fast they run on my 386, and I very much doubt that you&rsquo;ll find different execution times on other 386s. (Please let me know if you do, though!)</P>
-<P><A NAME="Fig4"><!-- </A><A HREF="javascript:displayWindow('images/09-04.jpg',413,249 )"> --><IMG SRC="images/09-04.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/09-04.jpg',413,249)"> --><B>Figure 9.4</B></A>&nbsp;&nbsp;<I>Performing rotate instructions using the Carry flag.</I>
-</P>
-<P>Interestingly, according to Intel&rsquo;s <I>i486 Microprocessor Programmer&rsquo;s Reference Manual</I>, the 486 can <B>RCR</B> or <B>RCL</B> a register by one bit in 3 cycles, but takes between 8 and 30 cycles to perform a multibit register <B>RCR</B> or <B>RCL</B>!</P>
-<P>No great lesson here, just a caution to be leery of multibit <B>RCR</B> and <B>RCL</B> when performance matters&mdash;and to take cycle-time documentation with a grain of salt.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading11"></A>Hardwired Far Jumps</H4>
-<P>Did you ever wonder how to code a far jump to an absolute address in assembly language? Probably not, but if you ever do, you&rsquo;re going to be glad for this next item, because the obvious solution doesn&rsquo;t work. You might think all it would take to jump to, say, 1000:5 would be <B>JMP FAR PTR 1000:5</B>, but you&rsquo;d be wrong. That won&rsquo;t even assemble. You might then think to construct in memory a far pointer containing 1000:5, as in the following:</P>
-<!-- CODE SNIP //-->
-<PRE>
+  <p>However, rotating by one bit through the Carry flag does <i>not</i> take 9 cycles, contrary to Intel&rsquo;s <i>80386 Programmer&rsquo;s Reference Manual</i>, or even 8 cycles. In fact, <b>RCR</b> <i>reg</i>,1 and <b>RCL</b> <i>reg</i>,1 take 3 cycles, just like <b>ROR, ROL, SHR,</b> and <b>SHL</b>. At least, that&rsquo;s how fast they run on my 386, and I very much doubt that you&rsquo;ll find different execution times on other 386s. (Please let me know if you do, though!)</p>
+
+  <p><a id="Fig4"><!-- </A><A HREF="javascript:displayWindow('images/09-04.jpg',413,249 )"> --><img src="images/09-04.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/09-04.jpg',413,249)"> --><b>Figure 9.4</b></a>&nbsp;&nbsp;<i>Performing rotate instructions using the Carry flag.</i></p>
+
+  <p>Interestingly, according to Intel&rsquo;s <i>i486 Microprocessor Programmer&rsquo;s Reference Manual</i>, the 486 can <b>RCR</b> or <b>RCL</b> a register by one bit in 3 cycles, but takes between 8 and 30 cycles to perform a multibit register <b>RCR</b> or <b>RCL</b>!</p>
+
+  <p>No great lesson here, just a caution to be leery of multibit <b>RCR</b> and <b>RCL</b> when performance matters&mdash;and to take cycle-time documentation with a grain of salt.</p>
+
+  <h4 align="left"><a id="Heading11"></a>Hardwired Far Jumps</h4>
+
+  <p>Did you ever wonder how to code a far jump to an absolute address in assembly language? Probably not, but if you ever do, you&rsquo;re going to be glad for this next item, because the obvious solution doesn&rsquo;t work. You might think all it would take to jump to, say, 1000:5 would be <b>JMP FAR PTR 1000:5</b>, but you&rsquo;d be wrong. That won&rsquo;t even assemble. You might then think to construct in memory a far pointer containing 1000:5, as in the following:</p><!-- CODE SNIP //-->
+  <pre>
 Ptr  dd   ?
      :
      mov  word ptr [Ptr],5
      mov  word ptr [Ptr+2],1000h
      jmp  [Ptr]
-</PRE>
-<!-- END CODE SNIP //-->
-<P>That will work, but at a price in performance. On an 8088, <B>JMP DWORD PTR [<I>mem</I>]</B> (an indirect far jump) takes at least 37 cycles; <B>JMP DWORD PTR <I>label</I></B> (a direct far jump) takes only 15 cycles (plus, almost certainly, some cycles for instruction fetching). On a 386, an indirect far jump is documented to take at least 43 cycles in real mode (31 in protected mode); a direct far jump is documented to take at least 12 cycles, about three times faster. In truth, the difference between those two is nowhere near that big; the fastest I&rsquo;ve measured for a direct far jump is 21 cycles, and I&rsquo;ve measured indirect far jumps as fast as 30 cycles, so direct is still faster, but not by so much. (Oh, those cycle-time documentation blues!) Also, a direct far jump is documented to take at least 27 cycles in protected mode; why the big difference in protected mode, I have no idea.</P>
-<P>At any rate, to return to our original problem of jumping to 1000:5: Although an indirect far jump will work, a direct far jump is still preferable.</P>
-<P>Listing 9.7 shows a short program that performs a direct far call to 1000:5. (Don&rsquo;t run it, unless you want to crash your system!) It does this by creating a dummy segment at 1000H, so that the label <B>FarLabel</B> can be created with the desired far attribute at the proper location. (Segments created with &ldquo;AT&rdquo; don&rsquo;t cause the generation of any actual bytes or the allocation of any memory; they&rsquo;re just templates.) It&rsquo;s a little kludgey, but at least it does work. There may be a better solution; if you have one, pass it along.</P>
-<P><B>LISTING 9.7 L9-7.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE SNIP //-->
+
+  <p>That will work, but at a price in performance. On an 8088, <b>JMP DWORD PTR [<i>mem</i>]</b> (an indirect far jump) takes at least 37 cycles; <b>JMP DWORD PTR <i>label</i></b> (a direct far jump) takes only 15 cycles (plus, almost certainly, some cycles for instruction fetching). On a 386, an indirect far jump is documented to take at least 43 cycles in real mode (31 in protected mode); a direct far jump is documented to take at least 12 cycles, about three times faster. In truth, the difference between those two is nowhere near that big; the fastest I&rsquo;ve measured for a direct far jump is 21 cycles, and I&rsquo;ve measured indirect far jumps as fast as 30 cycles, so direct is still faster, but not by so much. (Oh, those cycle-time documentation blues!) Also, a direct far jump is documented to take at least 27 cycles in protected mode; why the big difference in protected mode, I have no idea.</p>
+
+  <p>At any rate, to return to our original problem of jumping to 1000:5: Although an indirect far jump will work, a direct far jump is still preferable.</p>
+
+  <p>Listing 9.7 shows a short program that performs a direct far call to 1000:5. (Don&rsquo;t run it, unless you want to crash your system!) It does this by creating a dummy segment at 1000H, so that the label <b>FarLabel</b> can be created with the desired far attribute at the proper location. (Segments created with &ldquo;AT&rdquo; don&rsquo;t cause the generation of any actual bytes or the allocation of any memory; they&rsquo;re just templates.) It&rsquo;s a little kludgey, but at least it does work. There may be a better solution; if you have one, pass it along.</p>
+
+  <p><b>LISTING 9.7 L9-7.ASM</b></p><!-- CODE //-->
+  <pre>
 ; Program to perform a direct far jump to address 1000:5.
 ; *** Do not run this program! It&rsquo;s just an example of how ***
 ; *** to build a direct far jump to an absolute address    ***
@@ -77,64 +86,60 @@ FarSeg      ends
 start:
       jmp     FarLabel
       end     start
-</PRE>
-<!-- END CODE //-->
-<P>By the way, if you&rsquo;re wondering how I figured this out, I merely applied my good friend Dan Illowsky&rsquo;s long-standing rule for dealing with MASM:
-</P>
-<P>If the obvious doesn&rsquo;t work (and it usually doesn&rsquo;t), just try everything you can think of, no matter how ridiculous, until you find something that does&mdash;a rule with plenty of history on its side.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading12"></A>Setting 32-Bit Registers: Time versus Space</H4>
-<P>To finish up this chapter, consider these two items. First, in 32-bit protected mode,
-</P>
-<!-- CODE SNIP //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p>By the way, if you&rsquo;re wondering how I figured this out, I merely applied my good friend Dan Illowsky&rsquo;s long-standing rule for dealing with MASM:</p>
+
+  <p>If the obvious doesn&rsquo;t work (and it usually doesn&rsquo;t), just try everything you can think of, no matter how ridiculous, until you find something that does&mdash;a rule with plenty of history on its side.</p>
+
+  <h4 align="left"><a id="Heading12"></a>Setting 32-Bit Registers: Time versus Space</h4>
+
+  <p>To finish up this chapter, consider these two items. First, in 32-bit protected mode,</p><!-- CODE SNIP //-->
+  <pre>
 sub  eax,eax
 inc  eax
-</PRE>
-<!-- END CODE SNIP //-->
-<P>takes 4 cycles to execute, but is only 3 bytes long, while
-</P>
-<!-- CODE SNIP //-->
-<PRE>
+</pre><!-- END CODE SNIP //-->
+
+  <p>takes 4 cycles to execute, but is only 3 bytes long, while</p><!-- CODE SNIP //-->
+  <pre>
 mov  eax,1
-</PRE>
-<!-- END CODE SNIP //-->
-<P>takes only 2 cycles to execute, but is 5 bytes long (because native mode constants are dwords and the <B>MOV</B> instruction doesn&rsquo;t sign-extend). Both code fragments are ways to set <B>EAX</B> to 1 (although the first affects the flags and the second doesn&rsquo;t); this is a classic trade-off of speed for space. Second,</P>
-<!-- CODE SNIP //-->
-<PRE>
+</pre><!-- END CODE SNIP //-->
+
+  <p>takes only 2 cycles to execute, but is 5 bytes long (because native mode constants are dwords and the <b>MOV</b> instruction doesn&rsquo;t sign-extend). Both code fragments are ways to set <b>EAX</b> to 1 (although the first affects the flags and the second doesn&rsquo;t); this is a classic trade-off of speed for space. Second,</p><!-- CODE SNIP //-->
+  <pre>
 or    ebx,-1
-</PRE>
-<!-- END CODE SNIP //-->
-<P>takes 2 cycles to execute and is 3 bytes long, while
-</P>
-<!-- CODE SNIP //-->
-<PRE>
+</pre><!-- END CODE SNIP //-->
+
+  <p>takes 2 cycles to execute and is 3 bytes long, while</p><!-- CODE SNIP //-->
+  <pre>
 move  bx,-1
-</PRE>
-<!-- END CODE SNIP //-->
-<P>takes 2 cycles to execute and is 5 bytes long. Both instructions set <B>EBX</B> to -1; this is a classic trade-off of&mdash;gee, it&rsquo;s not a trade-off at all, is it? <B>OR</B> is a better way to set a 32-bit register to all 1-bits, just as <B>SUB</B> or <B>XOR</B> is a better way to set a register to all 0-bits. Who woulda thunk it? Just goes to show how the 32-bit displacements and constants of 386 native mode change the familiar landscape of 80x86 optimization.</P>
-<P>Be warned, though, that I&rsquo;ve found <B>OR, AND, ADD</B>, and the like to be a cycle slower than <B>MOV</B> when working with immediate operands on the 386 under some circumstances, for reasons that thus far escape me. This just reinforces the first rule of optimization: Measure your code in action, and place not your trust in documented cycle times.</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="09-06.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="10-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE SNIP //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>takes 2 cycles to execute and is 5 bytes long. Both instructions set <b>EBX</b> to -1; this is a classic trade-off of&mdash;gee, it&rsquo;s not a trade-off at all, is it? <b>OR</b> is a better way to set a 32-bit register to all 1-bits, just as <b>SUB</b> or <b>XOR</b> is a better way to set a register to all 0-bits. Who woulda thunk it? Just goes to show how the 32-bit displacements and constants of 386 native mode change the familiar landscape of 80x86 optimization.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>Be warned, though, that I&rsquo;ve found <b>OR, AND, ADD</b>, and the like to be a cycle slower than <b>MOV</b> when working with immediate operands on the 386 under some circumstances, for reasons that thus far escape me. This just reinforces the first rule of optimization: Measure your code in action, and place not your trust in documented cycle times.</p>
 
-<!-- END FOOTER -->
+  <p><br /></p>
 
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="09-06.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="10-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

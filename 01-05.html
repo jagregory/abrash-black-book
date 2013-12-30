@@ -1,47 +1,54 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: The Best Optimizer Is between Your Ears</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=01//-->
+  <!--PAGES=015-017//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="01-04.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="01-06.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: The Best Optimizer Is between Your Ears</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>The third reason is often fallacious. C library functions are not always written in assembly, nor are they always particularly well-optimized. (In fact, they&rsquo;re often written for <i>portability</i>, which has nothing to do with optimization.) What&rsquo;s more, they&rsquo;re general-purpose functions, and often can be outperformed by well-but-not- brilliantly-written code that is well-matched to a specific task. As an example, consider Listing 1.5, which uses internal buffering to handle blocks of bytes at a time. Table 1.1 shows that Listing 1.5 is 2.5 to 4 times faster than Listing 1.4 (and as much as 49 times faster than Listing 1.1!), even though it uses no assembly at all.</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=01//-->
-<!--PAGES=015-017//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <table width="100%">
+    <tr>
+      <td width="5%" valign="top"><img src="images/i.jpg" /></td>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="01-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="01-06.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>The third reason is often fallacious. C library functions are not always written in assembly, nor are they always particularly well-optimized. (In fact, they&rsquo;re often written for <I>portability</I>, which has nothing to do with optimization.) What&rsquo;s more, they&rsquo;re general-purpose functions, and often can be outperformed by well-but-not- brilliantly-written code that is well-matched to a specific task. As an example, consider Listing 1.5, which uses internal buffering to handle blocks of bytes at a time. Table 1.1 shows that Listing 1.5 is 2.5 to 4 times faster than Listing 1.4 (and as much as 49 times faster than Listing 1.1!), even though it uses no assembly at all.</P>
-<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="95%"><SMALL><I>Clearly, you can do well by using special-purpose C code in place of a C library function&mdash;if you have a thorough understanding of how the C library function operates and exactly what your application needs done. Otherwise, you&rsquo;ll end up rewriting C library functions in C, which makes no sense at all.</I></SMALL>
-</TABLE>
-<P><B>LISTING 1.5 L1-5.C</B></P>
-<!-- CODE //-->
-<PRE>
+      <td width="95%"><small><i>Clearly, you can do well by using special-purpose C code in place of a C library function&mdash;if you have a thorough understanding of how the C library function operates and exactly what your application needs done. Otherwise, you&rsquo;ll end up rewriting C library functions in C, which makes no sense at all.</i></small></td>
+    </tr>
+  </table>
+
+  <p><b>LISTING 1.5 L1-5.C</b></p><!-- CODE //-->
+  <pre>
 /*
 * Program to calculate the 16-bit checksum of the stream of bytes
 * from the specified file. Buffers the bytes internally, rather
@@ -98,17 +105,20 @@ main(int argc, char *argv[]) {
       printf(&ldquo;The checksum is: %u\n&rdquo;, Checksum);
       exit(0);
 }
-</PRE>
-<!-- END CODE //-->
-<P>That brings us to the fourth reason: avoiding an internal-buffered implementation like Listing 1.5 because of the difficulty of coding such an approach. True, it is easier to let a C library function do the work, but it&rsquo;s not all that hard to do the buffering internally. The key is the concept of handling data in <I>restartable blocks;</I> that is, reading a chunk of data, operating on the data until it runs out, suspending the operation while more data is read in, and then continuing as though nothing had happened.</P>
-<P>In Listing 1.5 the restartable block implementation is pretty simple because checksumming works with one byte at a time, forgetting about each byte immediately after adding it into the total. Listing 1.5 reads in a block of bytes from the file, checksums the bytes in the block, and gets another block, repeating the process until the entire file has been processed. In Chapter 5, we&rsquo;ll see a more complex restartable block implementation, involving searching for text strings.</P>
-<P>At any rate, Listing 1.5 isn&rsquo;t much more complicated than Listing 1.4&mdash;and it&rsquo;s a <I>lot</I> faster. Always consider the alternatives; a bit of clever thinking and program redesign can go a long way.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading12"></A>Know How to Turn On the Juice</H4>
-<P>I have said time and again that optimization is pointless until the design is settled. When that time comes, however, optimization can indeed make a significant difference. Table 1.1 indicates that the optimized version of Listing 1.5 produced by Microsoft C outperforms an unoptimized version of the same code by more than 60 percent. What&rsquo;s more, a mostly-assembly version of Listing 1.5, shown in Listings 1.6 and 1.7, outperforms even the best-optimized C version of List1.5 by 26 percent. These are considerable improvements, well worth pursuing&mdash;once the design has been maxed out.
-</P>
-<P><B>LISTING 1.6 L1-6.C</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p>That brings us to the fourth reason: avoiding an internal-buffered implementation like Listing 1.5 because of the difficulty of coding such an approach. True, it is easier to let a C library function do the work, but it&rsquo;s not all that hard to do the buffering internally. The key is the concept of handling data in <i>restartable blocks;</i> that is, reading a chunk of data, operating on the data until it runs out, suspending the operation while more data is read in, and then continuing as though nothing had happened.</p>
+
+  <p>In Listing 1.5 the restartable block implementation is pretty simple because checksumming works with one byte at a time, forgetting about each byte immediately after adding it into the total. Listing 1.5 reads in a block of bytes from the file, checksums the bytes in the block, and gets another block, repeating the process until the entire file has been processed. In Chapter 5, we&rsquo;ll see a more complex restartable block implementation, involving searching for text strings.</p>
+
+  <p>At any rate, Listing 1.5 isn&rsquo;t much more complicated than Listing 1.4&mdash;and it&rsquo;s a <i>lot</i> faster. Always consider the alternatives; a bit of clever thinking and program redesign can go a long way.</p>
+
+  <h4 align="left"><a id="Heading12"></a>Know How to Turn On the Juice</h4>
+
+  <p>I have said time and again that optimization is pointless until the design is settled. When that time comes, however, optimization can indeed make a significant difference. Table 1.1 indicates that the optimized version of Listing 1.5 produced by Microsoft C outperforms an unoptimized version of the same code by more than 60 percent. What&rsquo;s more, a mostly-assembly version of Listing 1.5, shown in Listings 1.6 and 1.7, outperforms even the best-optimized C version of List1.5 by 26 percent. These are considerable improvements, well worth pursuing&mdash;once the design has been maxed out.</p>
+
+  <p><b>LISTING 1.6 L1-6.C</b></p><!-- CODE //-->
+  <pre>
 /*
 * Program to calculate the 16-bit checksum of the stream of bytes
 * from the specified file. Buffers the bytes internally, rather
@@ -155,38 +165,36 @@ main(int argc, char *argv[]) {
             }
             /* Checksum this chunk if there&rsquo;s anything in it */
             if ( WorkingLength )
-                  ChecksumChunk(WorkingBuffer, WorkingLength, &Checksum);
+                  ChecksumChunk(WorkingBuffer, WorkingLength, &amp;Checksum);
             } while ( WorkingLength );
 
             /* Report the result */
             printf(&ldquo;The checksum is: %u\n&rdquo;, Checksum);
             exit(0);
 }
-</PRE>
-<!-- END CODE //-->
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="01-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="01-06.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p><br /></p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="01-04.html">Previous</a></td>
 
-<!-- END FOOTER -->
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="01-06.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
 
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

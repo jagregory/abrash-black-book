@@ -1,45 +1,46 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: The Good, the Bad, and the Run-Sliced</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=36//-->
+  <!--PAGES=692-693//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="36-03.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="37-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: The Good, the Bad, and the Run-Sliced</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>Notwithstanding that it&rsquo;s not optimized, Listing 36.1 is reasonably fast. If you run Listing 36.2 (a sample line-drawing program that you can use to test-drive Listing 36.1), you may be as surprised as I was at how quickly the screen fills with vectors, considering that Listing 36.1 is entirely in C and has some redundant divides. Or perhaps you won&rsquo;t be surprised&mdash;in which case I suggest you <i>not</i> miss the next chapter.</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=36//-->
-<!--PAGES=692-693//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
-
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="36-03.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="37-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>Notwithstanding that it&rsquo;s not optimized, Listing 36.1 is reasonably fast. If you run Listing 36.2 (a sample line-drawing program that you can use to test-drive Listing 36.1), you may be as surprised as I was at how quickly the screen fills with vectors, considering that Listing 36.1 is entirely in C and has some redundant divides. Or perhaps you won&rsquo;t be surprised&mdash;in which case I suggest you <I>not</I> miss the next chapter.</P>
-<P><B>LISTING 36.2 L36-2.C</B></P>
-<!-- CODE //-->
-<PRE>
+  <p><b>LISTING 36.2 L36-2.C</b></p><!-- CODE //-->
+  <pre>
 /* Sample line-drawing program. Uses the optimized
 line-drawing functions coded in LListing L36.1.C.
 Tested with Borland C++ in the small model. */
@@ -114,31 +115,29 @@ int main()
    regs.x.ax = TEXT_MODE;
    int86(BIOS_VIDEO_INT, &amp;regs, &amp;regs);
 }
-</PRE>
-<!-- END CODE //-->
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="36-03.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="37-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p><br /></p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="36-03.html">Previous</a></td>
 
-<!-- END FOOTER -->
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="37-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
 
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

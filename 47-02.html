@@ -1,56 +1,64 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X: 256-color VGA Magic</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=47//-->
+  <!--PAGES=879-882//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="47-01.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="47-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X: 256-color VGA Magic</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>Given the tremendous advantages of Mode X over the documented mode 13H, I&rsquo;d very much like to get it into the hands of as many developers as possible, so I&rsquo;m going to spend the next few chapters exploring this odd but worthy mode. I&rsquo;ll provide mode set code, delineate the bitmap organization, and show how the basic write pixel and read pixel operations work. Then, I&rsquo;ll move on to the magic stuff: rectangle fills, screen clears, scrolls, image copies, pixel inversion, and, yes, polygon fills (just a different driver for the polygon code), all blurry fast; hardware raster ops; and page flipping. In the end, I&rsquo;ll build a working animation program that shows many of the features of Mode X in action.</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=47//-->
-<!--PAGES=879-882//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p>The mode set code is the logical place to begin.</p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="47-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="47-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>Given the tremendous advantages of Mode X over the documented mode 13H, I&rsquo;d very much like to get it into the hands of as many developers as possible, so I&rsquo;m going to spend the next few chapters exploring this odd but worthy mode. I&rsquo;ll provide mode set code, delineate the bitmap organization, and show how the basic write pixel and read pixel operations work. Then, I&rsquo;ll move on to the magic stuff: rectangle fills, screen clears, scrolls, image copies, pixel inversion, and, yes, polygon fills (just a different driver for the polygon code), all blurry fast; hardware raster ops; and page flipping. In the end, I&rsquo;ll build a working animation program that shows many of the features of Mode X in action.
-</P>
-<P>The mode set code is the logical place to begin.</P>
-<H3><A NAME="Heading4"></A>Selecting 320x240 256-Color Mode</H3>
-<P>We could, if we wished, write our own mode set code for Mode X from scratch&mdash;but why bother? Instead, we&rsquo;ll let the BIOS do most of the work by having it set up mode 13H, which we&rsquo;ll then turn into Mode X by changing a few registers. Listing 47.1 does exactly that.
-</P>
-<P>The code in Listing 47.1 has been around for some time, and the very first version had a bug that serves up an interesting lesson. The original <I>DDJ</I> version made images roll on IBM&rsquo;s fixed-frequency VGA monitors, a problem that didn&rsquo;t come to my attention until the code was in print and shipped to 100,000 readers.</P>
-<P>The bug came about this way: The code I modified to make the Mode X mode set code used the VGA&rsquo;s 28-MHz clock. Mode X should have used the 25-MHz clock, a simple matter of setting bit 2 of the Miscellaneous Output register (3C2H) to 0 instead of 1.</P>
-<P>Alas, I neglected to change that single bit, so frames were drawn at a faster rate than they should have been; however, both of my monitors are multifrequency types, and they automatically compensated for the faster frame rate. Consequently, my clock-selection bug was invisible and innocuous&mdash;until it was distributed broadly and everybody started banging on it.</P>
-<P>IBM makes only fixed-frequency VGA monitors, which require very specific frame rates; if they don&rsquo;t get what you&rsquo;ve told them to expect, the image rolls. The corrected version is the one shown here as Listing 47.1; it does select the 25-MHz clock, and works just fine on fixed-frequency monitors.</P>
-<P>Why didn&rsquo;t I catch this bug? Neither I nor a single one of my testers had a fixed-frequency monitor! This nicely illustrates how difficult it is these days to test code in all the PC-compatible environments in which it might run. The problem is particularly severe for small developers, who can&rsquo;t afford to buy every model of every hardware component from every manufacturer; just imagine trying to test network-aware software in all possible configurations!</P>
-<P>When people ask why software isn&rsquo;t bulletproof; why it crashes or doesn&rsquo;t coexist with certain programs; why PC clones aren&rsquo;t always compatible; why, in short, the myriad irritations of using a PC exist&mdash;this is a big part of the reason. I guess that&rsquo;s just the price we pay for the unfettered creativity and vast choice of the PC market.</P>
-<P><B>LISTING 47.1 L47-1.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+  <h3><a id="Heading4"></a>Selecting 320x240 256-Color Mode</h3>
+
+  <p>We could, if we wished, write our own mode set code for Mode X from scratch&mdash;but why bother? Instead, we&rsquo;ll let the BIOS do most of the work by having it set up mode 13H, which we&rsquo;ll then turn into Mode X by changing a few registers. Listing 47.1 does exactly that.</p>
+
+  <p>The code in Listing 47.1 has been around for some time, and the very first version had a bug that serves up an interesting lesson. The original <i>DDJ</i> version made images roll on IBM&rsquo;s fixed-frequency VGA monitors, a problem that didn&rsquo;t come to my attention until the code was in print and shipped to 100,000 readers.</p>
+
+  <p>The bug came about this way: The code I modified to make the Mode X mode set code used the VGA&rsquo;s 28-MHz clock. Mode X should have used the 25-MHz clock, a simple matter of setting bit 2 of the Miscellaneous Output register (3C2H) to 0 instead of 1.</p>
+
+  <p>Alas, I neglected to change that single bit, so frames were drawn at a faster rate than they should have been; however, both of my monitors are multifrequency types, and they automatically compensated for the faster frame rate. Consequently, my clock-selection bug was invisible and innocuous&mdash;until it was distributed broadly and everybody started banging on it.</p>
+
+  <p>IBM makes only fixed-frequency VGA monitors, which require very specific frame rates; if they don&rsquo;t get what you&rsquo;ve told them to expect, the image rolls. The corrected version is the one shown here as Listing 47.1; it does select the 25-MHz clock, and works just fine on fixed-frequency monitors.</p>
+
+  <p>Why didn&rsquo;t I catch this bug? Neither I nor a single one of my testers had a fixed-frequency monitor! This nicely illustrates how difficult it is these days to test code in all the PC-compatible environments in which it might run. The problem is particularly severe for small developers, who can&rsquo;t afford to buy every model of every hardware component from every manufacturer; just imagine trying to test network-aware software in all possible configurations!</p>
+
+  <p>When people ask why software isn&rsquo;t bulletproof; why it crashes or doesn&rsquo;t coexist with certain programs; why PC clones aren&rsquo;t always compatible; why, in short, the myriad irritations of using a PC exist&mdash;this is a big part of the reason. I guess that&rsquo;s just the price we pay for the unfettered creativity and vast choice of the PC market.</p>
+
+  <p><b>LISTING 47.1 L47-1.ASM</b></p><!-- CODE //-->
+  <pre>
 ; Mode X (320x240, 256 colors) mode set routine. Works on all VGAs.
 ; ****************************************************************
 ; * Revised 6/19/91 to select correct clock; fixes vertical roll *
@@ -101,7 +109,7 @@ _Set320x240Mode proc    near
                         ; for safety, even though clock unchanged
         mov     dx,MISC_OUTPUT
         mov     al,0e3h
-        out     dx,al   ;select 25 MHz dot clock & 60 Hz scanning rate
+        out     dx,al   ;select 25 MHz dot clock &amp; 60 Hz scanning rate
 
         mov     dx,SC_INDEX
         mov     ax,0300h
@@ -139,31 +147,29 @@ SetCRTParmsLoop:
         ret
 _Set320x240Mode endp
         end
-</PRE>
-<!-- END CODE //-->
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="47-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="47-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p><br /></p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="47-01.html">Previous</a></td>
 
-<!-- END FOOTER -->
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="47-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
 
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

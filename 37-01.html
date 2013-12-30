@@ -1,56 +1,65 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Dead Cats and Lightning Lines</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=37//-->
+  <!--PAGES=695-704//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="36-04.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="37-02.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Dead Cats and Lightning Lines</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <h2><a id="Heading1"></a>Chapter 37<br />
+  Dead Cats and Lightning Lines</h2>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=37//-->
-<!--PAGES=695-704//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <h3><a id="Heading2"></a>Optimizing Run-Length Slice Line Drawing in a Major Way</h3>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="36-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="37-02.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<H2><A NAME="Heading1"></A>Chapter 37<BR>Dead Cats and Lightning Lines</H2>
-<H3><A NAME="Heading2"></A>Optimizing Run-Length Slice Line Drawing in a Major Way</H3>
-<P>As I write this, the wife, the kid, and I are in the throes of yet another lightning-quick transcontinental move, this time to Redmond, Washington, to work for You Know Who. Moving is never fun, but what makes it worse for us is the pets. Getting them into kennels and to the airport is hard; there&rsquo;s always the possibility that they might not be allowed to fly because of the weather; and, worst of all, they might not make it. Animals don&rsquo;t usually end up injured or dead, but it does happen.
-</P>
-<P>In a (not notably successful) effort to cheer me up about the prospect of shipping my animals, a friend told me the following story, which he swears actually happened to a friend of his. I don&rsquo;t know&mdash;to me, it has the ring of an urban legend, which is to say it makes a good story, but you can never track down the person it really happened to; it&rsquo;s always a friend of a friend. But maybe it is true, and anyway, it&rsquo;s a good story.</P>
-<P>This friend of a friend (henceforth referred to as FOF), worked in an air-freight terminal. Consequently, he handled a lot of animals, which was fine by him, because he liked animals; in fact, he had quite a few cats at home. You can imagine his dismay when, one day, he took a kennel off the plane to find that the cat it carried was quite thoroughly dead. (No, it wasn&rsquo;t resting, nor pining for the fjords; this cat was bloody <I>deceased</I>.)</P>
-<P>FOF knew how upset the owner would be, and came up with a plan to make everything better. At home, he had a cat of the same size, shape, and markings. He would substitute that cat, and since all cats treat all humans with equal disdain, the owner would never know the difference, and would never suffer the trauma of the loss of her cat. So FOF drove home, got his cat, put it in the kennel, and waited for the owner to show up&mdash;at which point, she took one look at the kennel and said, &ldquo;This isn&rsquo;t my cat. My cat is dead.&rdquo;</P>
-<P>As it turned out, she had shipped her recently deceased feline home to be buried. History does not record how our FOF dug himself out of this one.</P>
-<P>Okay, but what&rsquo;s the point? The point is, if it isn&rsquo;t broken, don&rsquo;t fix it. And if it is broken, maybe that&rsquo;s all right, too. Which brings us, neat as a pin, to the topic of drawing lines in a serious hurry.</P>
-<H3><A NAME="Heading3"></A>Fast Run-Length Slice Line Drawing</H3>
-<P>In the last chapter, we examined the principles of run-length slice line drawing, which draws lines a run at a time rather than a pixel at a time, a run being a series of pixels along the major (longer) axis. It&rsquo;s time to turn theory into useful practice by developing a fast assembly version. Listing 37.1 is the assembly version, in a form that&rsquo;s plug-compatible with the C code from the previous chapter.
-</P>
-<P><B>LISTING 37.1 L37-1.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+  <p>As I write this, the wife, the kid, and I are in the throes of yet another lightning-quick transcontinental move, this time to Redmond, Washington, to work for You Know Who. Moving is never fun, but what makes it worse for us is the pets. Getting them into kennels and to the airport is hard; there&rsquo;s always the possibility that they might not be allowed to fly because of the weather; and, worst of all, they might not make it. Animals don&rsquo;t usually end up injured or dead, but it does happen.</p>
+
+  <p>In a (not notably successful) effort to cheer me up about the prospect of shipping my animals, a friend told me the following story, which he swears actually happened to a friend of his. I don&rsquo;t know&mdash;to me, it has the ring of an urban legend, which is to say it makes a good story, but you can never track down the person it really happened to; it&rsquo;s always a friend of a friend. But maybe it is true, and anyway, it&rsquo;s a good story.</p>
+
+  <p>This friend of a friend (henceforth referred to as FOF), worked in an air-freight terminal. Consequently, he handled a lot of animals, which was fine by him, because he liked animals; in fact, he had quite a few cats at home. You can imagine his dismay when, one day, he took a kennel off the plane to find that the cat it carried was quite thoroughly dead. (No, it wasn&rsquo;t resting, nor pining for the fjords; this cat was bloody <i>deceased</i>.)</p>
+
+  <p>FOF knew how upset the owner would be, and came up with a plan to make everything better. At home, he had a cat of the same size, shape, and markings. He would substitute that cat, and since all cats treat all humans with equal disdain, the owner would never know the difference, and would never suffer the trauma of the loss of her cat. So FOF drove home, got his cat, put it in the kennel, and waited for the owner to show up&mdash;at which point, she took one look at the kennel and said, &ldquo;This isn&rsquo;t my cat. My cat is dead.&rdquo;</p>
+
+  <p>As it turned out, she had shipped her recently deceased feline home to be buried. History does not record how our FOF dug himself out of this one.</p>
+
+  <p>Okay, but what&rsquo;s the point? The point is, if it isn&rsquo;t broken, don&rsquo;t fix it. And if it is broken, maybe that&rsquo;s all right, too. Which brings us, neat as a pin, to the topic of drawing lines in a serious hurry.</p>
+
+  <h3><a id="Heading3"></a>Fast Run-Length Slice Line Drawing</h3>
+
+  <p>In the last chapter, we examined the principles of run-length slice line drawing, which draws lines a run at a time rather than a pixel at a time, a run being a series of pixels along the major (longer) axis. It&rsquo;s time to turn theory into useful practice by developing a fast assembly version. Listing 37.1 is the assembly version, in a form that&rsquo;s plug-compatible with the C code from the previous chapter.</p>
+
+  <p><b>LISTING 37.1 L37-1.ASM</b></p><!-- CODE //-->
+  <pre>
 ; Fast run-length slice line drawing implementation for mode 0x13, the VGA&rsquo;s
 ; 320x200 256-color mode.
 ; Draws a line between the specified endpoints in color Color.
@@ -399,31 +408,29 @@ Done:
       ret
 _LineDraw   endp
       end
-</PRE>
-<!-- END CODE //-->
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="36-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="37-02.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p><br /></p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="36-04.html">Previous</a></td>
 
-<!-- END FOOTER -->
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="37-02.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
 
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

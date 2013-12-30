@@ -1,44 +1,44 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: VGA Data Machinery</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=25//-->
+  <!--PAGES=474-478//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="25-04.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="25-06.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: VGA Data Machinery</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
-
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=25//-->
-<!--PAGES=474-478//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
-
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="25-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="25-06.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P><B>LISTING 25.3 L25-3.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+  <p><b>LISTING 25.3 L25-3.ASM</b></p><!-- CODE //-->
+  <pre>
 ; Program to illustrate operation of set/reset circuitry to force
 ;  setting of memory that already contains data.
 ; By Michael Abrash.
@@ -147,15 +147,16 @@ HorzBarLoop:
 start   endp
 cseg    ends
         end     start
-</PRE>
-<!-- END CODE //-->
-<H4 ALIGN="LEFT"><A NAME="Heading7"></A>Manipulating Planes Individually</H4>
-<P>Listing 25.4 illustrates the use of set/reset to control only some, rather than all, planes. Here, the set/reset circuitry forces plane 2 to 1 and planes 0 and 3 to 0. Because bit 1 of the Enable Set/Reset register is 0, however, set/reset does not affect plane 1; the CPU data goes unchanged to the plane 1 ALU. Consequently, the CPU data can be used to control the value written to plane 1. Given the settings of the other three planes, this means that each bit of CPU data that is 1 generates a brown pixel, and each bit that is 0 generates a red pixel. Writing alternating bytes of 07H and 0E0H, then, creates a vertically striped pattern of brown and red.
-</P>
-<P>In Listing 25.4, note that the vertical bars are 10 and 6 bytes wide, and do not start on byte boundaries. Although set/reset replaces an entire byte of CPU data for a plane, the combination of set/reset for some planes and CPU data for other planes, as in the example above, can be used to control individual pixels.</P>
-<P><B>LISTING 25.4 L25-4.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <h4 align="left"><a id="Heading7"></a>Manipulating Planes Individually</h4>
+
+  <p>Listing 25.4 illustrates the use of set/reset to control only some, rather than all, planes. Here, the set/reset circuitry forces plane 2 to 1 and planes 0 and 3 to 0. Because bit 1 of the Enable Set/Reset register is 0, however, set/reset does not affect plane 1; the CPU data goes unchanged to the plane 1 ALU. Consequently, the CPU data can be used to control the value written to plane 1. Given the settings of the other three planes, this means that each bit of CPU data that is 1 generates a brown pixel, and each bit that is 0 generates a red pixel. Writing alternating bytes of 07H and 0E0H, then, creates a vertically striped pattern of brown and red.</p>
+
+  <p>In Listing 25.4, note that the vertical bars are 10 and 6 bytes wide, and do not start on byte boundaries. Although set/reset replaces an entire byte of CPU data for a plane, the combination of set/reset for some planes and CPU data for other planes, as in the example above, can be used to control individual pixels.</p>
+
+  <p><b>LISTING 25.4 L25-4.ASM</b></p><!-- CODE //-->
+  <pre>
 ; Program to illustrate operation of set/reset circuitry in conjunction
 ;  with CPU data to modify setting of memory that already contains data.
 ; By Michael Abrash.
@@ -225,14 +226,14 @@ HorzBarLoop:
         jnz     HorzBarLoop
 ;
 ; Fill screen with alternating bars of red and brown, using CPU data
-; to set plane 1 and set/reset to set planes 0, 2 & 3.
+; to set plane 1 and set/reset to set planes 0, 2 &amp; 3.
 ;
         SETSC   SC_MAP_MASK,0fh         ;must set map mask to enable all
                                         ; planes, so set/reset values can
-                                        ; be written to planes 0, 2 & 3
+                                        ; be written to planes 0, 2 &amp; 3
                                         ; and CPU data can be written to
                                         ; plane 1 (the green plane)
-        SETGC   GC_ENABLE_SET_RESET,0dh    ;CPU data to planes 0, 2 & 3 will be
+        SETGC   GC_ENABLE_SET_RESET,0dh    ;CPU data to planes 0, 2 &amp; 3 will be
                                            ; replaced by set/reset value
         SETGC   GC_SET_RESET,04h        ;set/reset value is 0ffh for plane 2
                                         ; (the red plane) and 0 for other
@@ -264,31 +265,29 @@ HorzBarLoop:
 start   endp
 cseg    ends
         end     start
-</PRE>
-<!-- END CODE //-->
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="25-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="25-06.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p><br /></p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="25-04.html">Previous</a></td>
 
-<!-- END FOOTER -->
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="25-06.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
 
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

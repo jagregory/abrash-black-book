@@ -1,71 +1,86 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: The Best Optimizer Is between Your Ears</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=01//-->
+  <!--PAGES=007-009//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="01-01.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="01-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: The Best Optimizer Is between Your Ears</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <h3><a id="Heading5"></a>Rules for Building High-Performance Code</h3>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=01//-->
-<!--PAGES=007-009//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p>We&rsquo;ve got the following rules for creating high-performance software:</p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="01-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="01-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<H3><A NAME="Heading5"></A>Rules for Building High-Performance Code</H3>
-<P>We&rsquo;ve got the following rules for creating high-performance software:
-</P>
-<ul>
-     <li>Know where you&rsquo;re going (understand the objective of the software).</li>
-     <li>Make a big map (have an overall program design firmly in mind, so the various parts of the program and the data structures work well together).</li>
-     <li>Make lots of little maps (design an algorithm for each separate part of the overall design).</li>
-     <li>Know the territory (understand exactly how the computer carries out each task).</li>
-     <li>Know when it matters (identify the portions of your programs where performance matters, and don&rsquo;t waste your time optimizing the rest).</li>
-     <li>Always consider the alternatives (don&rsquo;t get stuck on a single approach; odds are there&rsquo;s a better way, if you&rsquo;re clever and inventive enough).</li>
-     <li>Know how to turn on the juice (optimize the code as best you know how when it <I>does</I> matter).</li>
-</ul>
-<P>Making rules is easy; the hard part is figuring out how to apply them in the real world. For my money, examining some actual working code is always a good way to get a handle on programming concepts, so let&rsquo;s look at some of the performance rules in action.
-</P>
-<H4 ALIGN="LEFT"><A NAME="Heading6"></A>Know Where You&rsquo;re Going</H4>
-<P>If we&rsquo;re going to create high-performance code, first we have to know what that code is going to do. As an example, let&rsquo;s write a program that generates a 16-bit checksum of the bytes in a file. In other words, the program will add each byte in a specified file in turn into a 16-bit value. This checksum value might be used to make sure that a file hasn&rsquo;t been corrupted, as might occur during transmission over a modem or if a Trojan horse virus rears its ugly head. We&rsquo;re not going to do anything with the checksum value other than print it out, however; right now we&rsquo;re only interested in generating that checksum value as rapidly as possible.
-</P>
-<H4 ALIGN="LEFT"><A NAME="Heading7"></A>Make a Big Map</H4>
-<P>How are we going to generate a checksum value for a specified file? The logical approach is to get the file name, open the file, read the bytes out of the file, add them together, and print the result. Most of those actions are straightforward; the only tricky part lies in reading the bytes and adding them together.
-</P>
-<H4 ALIGN="LEFT"><A NAME="Heading8"></A>Make Lots of Little Maps</H4>
-<P>Actually, we&rsquo;re only going to make one little map, because we only have one program section that requires much thought&mdash;the section that reads the bytes and adds them up. What&rsquo;s the best way to do this?
-</P>
-<P>It would be convenient to load the entire file into memory and then sum the bytes in one loop. Unfortunately, there&rsquo;s no guarantee that any particular file will fit in the available memory; in fact, it&rsquo;s a sure thing that many files <I>won&rsquo;t</I> fit into memory, so that approach is out.</P>
-<P>Well, if the whole file won&rsquo;t fit into memory, one byte surely will. If we read the file one byte at a time, adding each byte to the checksum value before reading the next byte, we&rsquo;ll minimize memory requirements and be able to handle any size file at all.</P>
-<P>Sounds good, eh? Listing 1.1 shows an implementation of this approach. Listing 1.1 uses C&rsquo;s <B>read()</B> function to read a single byte, adds the byte into the checksum value, and loops back to handle the next byte until the end of the file is reached. The code is compact, easy to write, and functions perfectly&mdash;with one slight hitch:</P>
-<P>It&rsquo;s <I>slow</I>.</P>
-<P><B>LISTING 1.1 L1-1.C</B></P>
-<!-- CODE //-->
-<PRE>
+  <ul>
+    <li>Know where you&rsquo;re going (understand the objective of the software).</li>
+
+    <li>Make a big map (have an overall program design firmly in mind, so the various parts of the program and the data structures work well together).</li>
+
+    <li>Make lots of little maps (design an algorithm for each separate part of the overall design).</li>
+
+    <li>Know the territory (understand exactly how the computer carries out each task).</li>
+
+    <li>Know when it matters (identify the portions of your programs where performance matters, and don&rsquo;t waste your time optimizing the rest).</li>
+
+    <li>Always consider the alternatives (don&rsquo;t get stuck on a single approach; odds are there&rsquo;s a better way, if you&rsquo;re clever and inventive enough).</li>
+
+    <li>Know how to turn on the juice (optimize the code as best you know how when it <i>does</i> matter).</li>
+  </ul>
+
+  <p>Making rules is easy; the hard part is figuring out how to apply them in the real world. For my money, examining some actual working code is always a good way to get a handle on programming concepts, so let&rsquo;s look at some of the performance rules in action.</p>
+
+  <h4 align="left"><a id="Heading6"></a>Know Where You&rsquo;re Going</h4>
+
+  <p>If we&rsquo;re going to create high-performance code, first we have to know what that code is going to do. As an example, let&rsquo;s write a program that generates a 16-bit checksum of the bytes in a file. In other words, the program will add each byte in a specified file in turn into a 16-bit value. This checksum value might be used to make sure that a file hasn&rsquo;t been corrupted, as might occur during transmission over a modem or if a Trojan horse virus rears its ugly head. We&rsquo;re not going to do anything with the checksum value other than print it out, however; right now we&rsquo;re only interested in generating that checksum value as rapidly as possible.</p>
+
+  <h4 align="left"><a id="Heading7"></a>Make a Big Map</h4>
+
+  <p>How are we going to generate a checksum value for a specified file? The logical approach is to get the file name, open the file, read the bytes out of the file, add them together, and print the result. Most of those actions are straightforward; the only tricky part lies in reading the bytes and adding them together.</p>
+
+  <h4 align="left"><a id="Heading8"></a>Make Lots of Little Maps</h4>
+
+  <p>Actually, we&rsquo;re only going to make one little map, because we only have one program section that requires much thought&mdash;the section that reads the bytes and adds them up. What&rsquo;s the best way to do this?</p>
+
+  <p>It would be convenient to load the entire file into memory and then sum the bytes in one loop. Unfortunately, there&rsquo;s no guarantee that any particular file will fit in the available memory; in fact, it&rsquo;s a sure thing that many files <i>won&rsquo;t</i> fit into memory, so that approach is out.</p>
+
+  <p>Well, if the whole file won&rsquo;t fit into memory, one byte surely will. If we read the file one byte at a time, adding each byte to the checksum value before reading the next byte, we&rsquo;ll minimize memory requirements and be able to handle any size file at all.</p>
+
+  <p>Sounds good, eh? Listing 1.1 shows an implementation of this approach. Listing 1.1 uses C&rsquo;s <b>read()</b> function to read a single byte, adds the byte into the checksum value, and loops back to handle the next byte until the end of the file is reached. The code is compact, easy to write, and functions perfectly&mdash;with one slight hitch:</p>
+
+  <p>It&rsquo;s <i>slow</i>.</p>
+
+  <p><b>LISTING 1.1 L1-1.C</b></p><!-- CODE //-->
+  <pre>
 /*
 * Program to calculate the 16-bit checksum of all bytes in the
 * specified file. Obtains the bytes one at a time via read(),
@@ -93,7 +108,7 @@ main(int argc, char *argv[]) {
      Checksum = 0;
 
      /* Add each byte in turn into the checksum accumulator */
-     while ( (ReadLength = read(Handle, &Byte, sizeof(Byte))) &gt; 0 ) {
+     while ( (ReadLength = read(Handle, &amp;Byte, sizeof(Byte))) &gt; 0 ) {
           Checksum += (unsigned int) Byte;
      }
      if ( ReadLength == -1 ) {
@@ -106,35 +121,41 @@ main(int argc, char *argv[]) {
      printf(&ldquo;The checksum is: %u\n&rdquo;, Checksum);
      exit(0);
 }
-</PRE>
-<!-- END CODE //-->
-<P>Table 1.1 shows the time taken for Listing 1.1 to generate a checksum of the WordPerfect version 4.2 thesaurus file, TH.WP (362,293 bytes in size), on a 10 MHz AT machine of no special parentage. Execution times are given for Listing 1.1 compiled with Borland and Microsoft compilers, with optimization both on and off; all four times are pretty much the same, however, and all are much too slow to be acceptable. Listing 1.1 requires over two and one-half minutes to checksum <I>one</I> file!</P>
-<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="95%"><SMALL><I>Listings 1.2 and 1.3 form the C/assembly equivalent to Listing 1.1, and Listings 1.6 and 1.7 form the C/assembly equivalent to Listing 1.5.</I></SMALL>
-</TABLE>
-<P>These results make it clear that it&rsquo;s folly to rely on your compiler&rsquo;s optimization to make your programs fast. Listing 1.1 is simply poorly designed, and no amount of compiler optimization will compensate for that failing. To drive home the point, conListings 1.2 and 1.3, which together are equivalent to Listing 1.1 except that the entire checksum loop is written in tight assembly code. The assembly language implementation is indeed faster than any of the C versions, as shown in Table 1.1, but it&rsquo;s less than 10 percent faster, and it&rsquo;s still unacceptably slow.
-</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="01-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="01-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>Table 1.1 shows the time taken for Listing 1.1 to generate a checksum of the WordPerfect version 4.2 thesaurus file, TH.WP (362,293 bytes in size), on a 10 MHz AT machine of no special parentage. Execution times are given for Listing 1.1 compiled with Borland and Microsoft compilers, with optimization both on and off; all four times are pretty much the same, however, and all are much too slow to be acceptable. Listing 1.1 requires over two and one-half minutes to checksum <i>one</i> file!</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <table width="100%">
+    <tr>
+      <td width="5%" valign="top"><img src="images/i.jpg" /></td>
 
-<!-- END FOOTER -->
+      <td width="95%"><small><i>Listings 1.2 and 1.3 form the C/assembly equivalent to Listing 1.1, and Listings 1.6 and 1.7 form the C/assembly equivalent to Listing 1.5.</i></small></td>
+    </tr>
+  </table>
 
+  <p>These results make it clear that it&rsquo;s folly to rely on your compiler&rsquo;s optimization to make your programs fast. Listing 1.1 is simply poorly designed, and no amount of compiler optimization will compensate for that failing. To drive home the point, conListings 1.2 and 1.3, which together are equivalent to Listing 1.1 except that the entire checksum loop is written in tight assembly code. The assembly language implementation is indeed faster than any of the C versions, as shown in Table 1.1, but it&rsquo;s less than 10 percent faster, and it&rsquo;s still unacceptably slow.</p>
 
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="01-01.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="01-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

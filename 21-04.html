@@ -1,46 +1,48 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Unleashing the Pentium's</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=21//-->
+  <!--PAGES=407-409//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="21-03.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="21-05.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Unleashing the Pentium's</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>The first, obvious thing we can do to Listing 21.1 is change <b>ADC AX,0</b> to <b>ADC EAX,0</b>, eliminating a prefix byte and saving a full cycle. Now we&rsquo;re down from five to four cycles. What next?</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=21//-->
-<!--PAGES=407-409//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p>Listing 21.2 shows one interesting alternative that doesn&rsquo;t really buy us anything. Here, we&rsquo;ve eliminated all size prefixes by doing byte-sized <b>MOVs</b> and <b>ADDs</b>, but because the size prefix on <b>ADD AX,[ESI]</b>, for whatever reason, didn&rsquo;t cost anything in Listing 21.1, our efforts are to no avail&mdash;Listing 21.2 still takes 4 cycles per checksummed word. What&rsquo;s worth noting about Listing 21.2 is the extent to which the code is broken into simple instructions and reordered so as to avoid size prefixes, register contention, AGIs, and data bank conflicts (the latter because both <b>[ESI]</b> and <b>[ESI+1]</b> are in the same cache data bank, as discussed in the last chapter).</p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="21-03.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="21-05.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>The first, obvious thing we can do to Listing 21.1 is change <B>ADC AX,0</B> to <B>ADC EAX,0</B>, eliminating a prefix byte and saving a full cycle. Now we&rsquo;re down from five to four cycles. What next?</P>
-<P>Listing 21.2 shows one interesting alternative that doesn&rsquo;t really buy us anything. Here, we&rsquo;ve eliminated all size prefixes by doing byte-sized <B>MOVs</B> and <B>ADDs</B>, but because the size prefix on <B>ADD AX,[ESI]</B>, for whatever reason, didn&rsquo;t cost anything in Listing 21.1, our efforts are to no avail&mdash;Listing 21.2 still takes 4 cycles per checksummed word. What&rsquo;s worth noting about Listing 21.2 is the extent to which the code is broken into simple instructions and reordered so as to avoid size prefixes, register contention, AGIs, and data bank conflicts (the latter because both <B>[ESI]</B> and <B>[ESI+1]</B> are in the same cache data bank, as discussed in the last chapter).</P>
-<P><B>LISTING 21.2 L21-2.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+  <p><b>LISTING 21.2 L21-2.ASM</b></p><!-- CODE //-->
+  <pre>
 ; Calculates TCP/IP (16-bit carry-wrapping) checksum for buffer
 ;  starting at ESI, of length ECX words.
 ; Returns checksum in AX.
@@ -67,12 +69,12 @@ ckloop:
 ckloopend:
         add     ax,dx           ;checksum the last word
         adc     eax,0
-</PRE>
-<!-- END CODE //-->
-<P>Listing 21.3 is a more sophisticated attempt to speed up the checksum calculation. Here we see a hallmark of Pentium optimization: two operations (the checksumming of the current and next pair of words) interleaved together to allow both pipes to run at near maximum capacity. Another hallmark that&rsquo;s apparent in Listing 21.3 is that Pentium-optimized code tends to use more registers and require more instructions than 486-optimized code. Again, note the careful mixing of byte-sized reads to avoid AGIs, register contention, and cache bank collisions, in particular the way in which the byte reads of memory are interspersed with the additions to avoid register contention, and the placement of <B>ADD ESI,4</B> to avoid an AGI.</P>
-<P><B>LISTING 21.3 L21-3.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p>Listing 21.3 is a more sophisticated attempt to speed up the checksum calculation. Here we see a hallmark of Pentium optimization: two operations (the checksumming of the current and next pair of words) interleaved together to allow both pipes to run at near maximum capacity. Another hallmark that&rsquo;s apparent in Listing 21.3 is that Pentium-optimized code tends to use more registers and require more instructions than 486-optimized code. Again, note the careful mixing of byte-sized reads to avoid AGIs, register contention, and cache bank collisions, in particular the way in which the byte reads of memory are interspersed with the additions to avoid register contention, and the placement of <b>ADD ESI,4</b> to avoid an AGI.</p>
+
+  <p><b>LISTING 21.3 L21-3.ASM</b></p><!-- CODE //-->
+  <pre>
 ; Calculates TCP/IP (16-bit carry-wrapping) checksum for buffer
 ;  starting at ESI, of length ECX words.
 ; Returns checksum in AX.
@@ -119,33 +121,33 @@ ckloopend:
         add         ax,dx
         adc         eax,0
 ckloopdone:
-</PRE>
-<!-- END CODE //-->
-<P>The checksum loop in Listing 21.3 takes longer than the loop in Listing 21.2, at 6 cycles versus 4 cycles for Listing 21.2&mdash;but Listing 21.3 does two checksum operations in those 6 cycles, so we&rsquo;ve cut the time per checksum addition from 4 to 3 cycles. You might think that this small an improvement doesn&rsquo;t justify the additional complexity of Listing 21.3, but it is a one-third speedup, well worth it if this is a critical loop&mdash;and, in general, if it isn&rsquo;t critical, there&rsquo;s no point in hand-tuning it. That&rsquo;s why I haven&rsquo;t bothered to try to optimize the non-inner-loop code in Listing 21.3; it&rsquo;s only executed once per checksum, so it&rsquo;s unlikely that a cycle or two saved there would make any real-world difference.
-</P>
-<P>Listing 21.3 could be made a bit faster yet with some loop unrolling, but that would make the code quite a bit more complex for relatively little return. Instead, why not make the code more complex and get a <I>big</I> return? Listing 21.4 does exactly that by loading one dword at a time to eliminate both the word prefix of Listing 21.1 and the multiple byte-sized accesses of Listing 21.3. An obvious drawback to this is the considerable complexity needed to ensure that the dword accesses are dword-aligned (remember that unaligned dword accesses cost three cycles each), and to handle buffer lengths that aren&rsquo;t dword multiples. I&rsquo;ve handled these problems by requiring that the buffer be dword-aligned and a dword multiple in length, which is of course not always the case in the real world. However, the point of these listings is to illustrate Pentium optimization&mdash;dword issues, being non-inner-loop stuff, are solvable details that aren&rsquo;t germane to the main focus. In any case, the complexity and assumptions are well justified by the performance of this code: three cycles per loop, or 1.5 cycles per checksummed word, more than three times the speed of the original code. Again, note that the actual order in which the instructions are arranged is dictated by the various optimization hazards of the Pentium.</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="21-03.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="21-05.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>The checksum loop in Listing 21.3 takes longer than the loop in Listing 21.2, at 6 cycles versus 4 cycles for Listing 21.2&mdash;but Listing 21.3 does two checksum operations in those 6 cycles, so we&rsquo;ve cut the time per checksum addition from 4 to 3 cycles. You might think that this small an improvement doesn&rsquo;t justify the additional complexity of Listing 21.3, but it is a one-third speedup, well worth it if this is a critical loop&mdash;and, in general, if it isn&rsquo;t critical, there&rsquo;s no point in hand-tuning it. That&rsquo;s why I haven&rsquo;t bothered to try to optimize the non-inner-loop code in Listing 21.3; it&rsquo;s only executed once per checksum, so it&rsquo;s unlikely that a cycle or two saved there would make any real-world difference.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>Listing 21.3 could be made a bit faster yet with some loop unrolling, but that would make the code quite a bit more complex for relatively little return. Instead, why not make the code more complex and get a <i>big</i> return? Listing 21.4 does exactly that by loading one dword at a time to eliminate both the word prefix of Listing 21.1 and the multiple byte-sized accesses of Listing 21.3. An obvious drawback to this is the considerable complexity needed to ensure that the dword accesses are dword-aligned (remember that unaligned dword accesses cost three cycles each), and to handle buffer lengths that aren&rsquo;t dword multiples. I&rsquo;ve handled these problems by requiring that the buffer be dword-aligned and a dword multiple in length, which is of course not always the case in the real world. However, the point of these listings is to illustrate Pentium optimization&mdash;dword issues, being non-inner-loop stuff, are solvable details that aren&rsquo;t germane to the main focus. In any case, the complexity and assumptions are well justified by the performance of this code: three cycles per loop, or 1.5 cycles per checksummed word, more than three times the speed of the original code. Again, note that the actual order in which the instructions are arranged is dictated by the various optimization hazards of the Pentium.</p>
 
-<!-- END FOOTER -->
+  <p><br /></p>
 
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="21-03.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="21-05.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

@@ -1,48 +1,50 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X 256-Color Animation</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=49//-->
+  <!--PAGES=929-930//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="49-04.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="50-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X 256-Color Animation</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>Here&rsquo;s something worth noting: The animation is extremely smooth on a 20 MHz 386. It is somewhat more jerky on an 8 MHz 286, because only 30 frames a second can be processed. If animation looks jerky on your PC, try reducing the number of kites.</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=49//-->
-<!--PAGES=929-930//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p>The kites draw perfectly into the background, with no interference or fringe, thanks to masked copying. In fact, the kites also cross with no interference (the last-drawn kite is always in front), although that&rsquo;s not readily apparent because they all look the same anyway and are moving fast. Listing 49.5 isn&rsquo;t inherently limited to kites; create your own images and initialize the object list to display a mix of those images and see the full power of Mode X animation.</p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="49-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="50-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>Here&rsquo;s something worth noting: The animation is extremely smooth on a 20 MHz 386. It is somewhat more jerky on an 8 MHz 286, because only 30 frames a second can be processed. If animation looks jerky on your PC, try reducing the number of kites.
-</P>
-<P>The kites draw perfectly into the background, with no interference or fringe, thanks to masked copying. In fact, the kites also cross with no interference (the last-drawn kite is always in front), although that&rsquo;s not readily apparent because they all look the same anyway and are moving fast. Listing 49.5 isn&rsquo;t inherently limited to kites; create your own images and initialize the object list to display a mix of those images and see the full power of Mode X animation.</P>
-<P>The external functions called by Listing 49.5 can be found in Listings 49.1, 49.2, 49.3, and 49.6, and in the listings for the previous two chapters.</P>
-<P><B>LISTING 49.6 L49-6.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+  <p>The external functions called by Listing 49.5 can be found in Listings 49.1, 49.2, 49.3, and 49.6, and in the listings for the previous two chapters.</p>
+
+  <p><b>LISTING 49.6 L49-6.ASM</b></p><!-- CODE //-->
+  <pre>
 ; Shows the page at the specified offset in the bitmap. Page is displayed when
 ; this routine returns.
 ; C near-callable as: void ShowPage(unsigned int StartOffset);
@@ -89,33 +91,35 @@ WaitVS:
         ret
 _ShowPage       endp
         end
-</PRE>
-<!-- END CODE //-->
-<H3><A NAME="Heading8"></A>Works Fast, Looks Great</H3>
-<P>We now end our exploration of Mode X, although we&rsquo;ll use it again shortly for 3-D animation. Mode X admittedly has its complexities; that&rsquo;s why I&rsquo;ve provided a broad and flexible primitive set. Still, so what if it <I>is</I> complex? Take a look at Listing 49.5 in action. That sort of colorful, high-performance animation is worth jumping through a few hoops for; drawing 20, or even 10, fair-sized objects at a rate of 60 Hz, with no flicker, interference, or fringe, is no mean accomplishment, even on a 386.</P>
-<P>There&rsquo;s much more we could do with animation in general and with Mode X in particular, but it&rsquo;s time to move on to new challenges. In closing, I&rsquo;d like to point out that all of the VGA&rsquo;s hardware features, including the built-in AND, OR, and XOR functions, are available in Mode X, just as they are in the standard VGA modes. If you understand the VGA&rsquo;s hardware in mode 12H, try applying that knowledge to Mode X; you might be surprised at what you find you can do.</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="49-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="50-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <h3><a id="Heading8"></a>Works Fast, Looks Great</h3>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>We now end our exploration of Mode X, although we&rsquo;ll use it again shortly for 3-D animation. Mode X admittedly has its complexities; that&rsquo;s why I&rsquo;ve provided a broad and flexible primitive set. Still, so what if it <i>is</i> complex? Take a look at Listing 49.5 in action. That sort of colorful, high-performance animation is worth jumping through a few hoops for; drawing 20, or even 10, fair-sized objects at a rate of 60 Hz, with no flicker, interference, or fringe, is no mean accomplishment, even on a 386.</p>
 
-<!-- END FOOTER -->
+  <p>There&rsquo;s much more we could do with animation in general and with Mode X in particular, but it&rsquo;s time to move on to new challenges. In closing, I&rsquo;d like to point out that all of the VGA&rsquo;s hardware features, including the built-in AND, OR, and XOR functions, are available in Mode X, just as they are in the standard VGA modes. If you understand the VGA&rsquo;s hardware in mode 12H, try applying that knowledge to Mode X; you might be surprised at what you find you can do.</p>
 
+  <p><br /></p>
 
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="49-04.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="50-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

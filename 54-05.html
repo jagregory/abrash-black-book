@@ -1,75 +1,79 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: 3-D Shading</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=54//-->
+  <!--PAGES=1027-1029//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="54-04.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="55-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: 3-D Shading</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <h4 align="left"><a id="Heading7"></a>Shading: Implementation Details</h4>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=54//-->
-<!--PAGES=1027-1029//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p>In order to calculate the cosine of the angle between an incoming light source and a polygon&rsquo;s unit normal, we must first have the polygon&rsquo;s unit normal. This could be calculated by generating a cross-product on two polygon edges to generate a normal, then calculating the normal&rsquo;s length and scaling to produce a unit normal. Unfortunately, that would require taking a square root, so it&rsquo;s not a desirable course of action. Instead, I&rsquo;ve made a change to X-Sharp&rsquo;s polygon format. Now, the first vertex in a shaded polygon&rsquo;s vertex list is the end-point of a unit normal that starts at the second point in the polygon&rsquo;s vertex list, as shown in Figure 54.3. The first point isn&rsquo;t one of the polygon&rsquo;s vertices, but is used only to generate a unit normal. The second point, however, is a polygon vertex. Calculating the difference vector between the first and second points yields the polygon&rsquo;s unit normal. Adding a unit-normal endpoint to each polygon isn&rsquo;t free; each of those end-points has to be transformed, along with the rest of the vertices, and that takes time. Still, it&rsquo;s faster than calculating a unit normal for each polygon from scratch.</p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="54-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="55-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<H4 ALIGN="LEFT"><A NAME="Heading7"></A>Shading: Implementation Details</H4>
-<P>In order to calculate the cosine of the angle between an incoming light source and a polygon&rsquo;s unit normal, we must first have the polygon&rsquo;s unit normal. This could be calculated by generating a cross-product on two polygon edges to generate a normal, then calculating the normal&rsquo;s length and scaling to produce a unit normal. Unfortunately, that would require taking a square root, so it&rsquo;s not a desirable course of action. Instead, I&rsquo;ve made a change to X-Sharp&rsquo;s polygon format. Now, the first vertex in a shaded polygon&rsquo;s vertex list is the end-point of a unit normal that starts at the second point in the polygon&rsquo;s vertex list, as shown in Figure 54.3. The first point isn&rsquo;t one of the polygon&rsquo;s vertices, but is used only to generate a unit normal. The second point, however, is a polygon vertex. Calculating the difference vector between the first and second points yields the polygon&rsquo;s unit normal. Adding a unit-normal endpoint to each polygon isn&rsquo;t free; each of those end-points has to be transformed, along with the rest of the vertices, and that takes time. Still, it&rsquo;s faster than calculating a unit normal for each polygon from scratch.
-</P>
-<P><A NAME="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/54-03.jpg',409,134 )"> --><IMG SRC="images/54-03.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/54-03.jpg',409,134)"> --><B>Figure 54.3</B></A>&nbsp;&nbsp;<I>The unit normal in the polygon data structure.</I>
-</P>
-<P><A NAME="Fig4"><!-- </A><A HREF="javascript:displayWindow('images/54-04.jpg',408,142 )"> --><IMG SRC="images/54-04.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/54-04.jpg',408,142)"> --><B>Figure 54.4</B></A>&nbsp;&nbsp;<I>The reversed light source vector.</I>
-</P>
-<P>We also need a unit vector for each directed light source. The directed light sources I&rsquo;ve implemented in X-Sharp are spotlights; that is, they&rsquo;re considered to be point light sources that are infinitely far away. This allows the simplifying assumption that all light rays from a spotlight are parallel and of equal intensity throughout the displayed universe, so each spotlight can be represented with a single unit vector and a single intensity. The only trick is that in order to calculate the desired cos(theta) between the polygon unit normal and a spotlight&rsquo;s unit vector, the direction of the spotlight&rsquo;s unit vector must be reversed, as shown in Figure 54.4. This is necessary because the dot product implicitly places vectors with their start points at the same location when it&rsquo;s used to calculate the cosine of the angle between two vectors. The light vector is incoming to the polygon surface, and the unit normal is outbound, so only by reversing one vector or the other will we get the cosine of the desired angle.
-</P>
-<P>Given the two unit vectors, it&rsquo;s a piece of cake to calculate intensities, as shown in Listing 54.2. The sample program DEMO1, in the X-Sharp archive on the listings disk (built by running K1.BAT), puts the shading code to work displaying a rotating ball with ambient lighting and three spot lighting sources that the user can turn on and off. What you&rsquo;ll see when you run DEMO1 is that the shading is very good&mdash;face colors change very smoothly indeed&mdash;so long as only green lighting sources are on. However, if you combine spotlight two, which is blue, with any other light source, polygon colors will start to shift abruptly and unevenly. As configured in the demo, the palette supports a wide range of shading intensities for a pure version of any one of the three primary colors, but a very limited number of intensity steps (four, in this case) for each color component when two or more primary colors are mixed. While this situation can be improved, it is fundamentally a result of the restricted capabilities of the 256-color palette, and there is only so much that can be done without a larger color set. In the next chapter, I&rsquo;ll talk about some ways to improve the quality of 256-color shading.</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="54-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="55-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+  <p><a id="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/54-03.jpg',409,134 )"> --><img src="images/54-03.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/54-03.jpg',409,134)"> --><b>Figure 54.3</b></a>&nbsp;&nbsp;<i>The unit normal in the polygon data structure.</i></p>
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p><a id="Fig4"><!-- </A><A HREF="javascript:displayWindow('images/54-04.jpg',408,142 )"> --><img src="images/54-04.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/54-04.jpg',408,142)"> --><b>Figure 54.4</b></a>&nbsp;&nbsp;<i>The reversed light source vector.</i></p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>We also need a unit vector for each directed light source. The directed light sources I&rsquo;ve implemented in X-Sharp are spotlights; that is, they&rsquo;re considered to be point light sources that are infinitely far away. This allows the simplifying assumption that all light rays from a spotlight are parallel and of equal intensity throughout the displayed universe, so each spotlight can be represented with a single unit vector and a single intensity. The only trick is that in order to calculate the desired cos(theta) between the polygon unit normal and a spotlight&rsquo;s unit vector, the direction of the spotlight&rsquo;s unit vector must be reversed, as shown in Figure 54.4. This is necessary because the dot product implicitly places vectors with their start points at the same location when it&rsquo;s used to calculate the cosine of the angle between two vectors. The light vector is incoming to the polygon surface, and the unit normal is outbound, so only by reversing one vector or the other will we get the cosine of the desired angle.</p>
 
-<!-- END FOOTER -->
+  <p>Given the two unit vectors, it&rsquo;s a piece of cake to calculate intensities, as shown in Listing 54.2. The sample program DEMO1, in the X-Sharp archive on the listings disk (built by running K1.BAT), puts the shading code to work displaying a rotating ball with ambient lighting and three spot lighting sources that the user can turn on and off. What you&rsquo;ll see when you run DEMO1 is that the shading is very good&mdash;face colors change very smoothly indeed&mdash;so long as only green lighting sources are on. However, if you combine spotlight two, which is blue, with any other light source, polygon colors will start to shift abruptly and unevenly. As configured in the demo, the palette supports a wide range of shading intensities for a pure version of any one of the three primary colors, but a very limited number of intensity steps (four, in this case) for each color component when two or more primary colors are mixed. While this situation can be improved, it is fundamentally a result of the restricted capabilities of the 256-color palette, and there is only so much that can be done without a larger color set. In the next chapter, I&rsquo;ll talk about some ways to improve the quality of 256-color shading.</p>
 
+  <p><br /></p>
 
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="54-04.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="55-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

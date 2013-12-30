@@ -1,44 +1,44 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Patient Coding, Faster Code</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=10//-->
+  <!--PAGES=200-203//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="10-03.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="11-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Patient Coding, Faster Code</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
-
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=10//-->
-<!--PAGES=200-203//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
-
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="10-03.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="11-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P><B>LISTING 10.5 L10-5.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+  <p><b>LISTING 10.5 L10-5.ASM</b></p><!-- CODE //-->
+  <pre>
 ; Finds and returns the greatest common divisor of two integers.
 ; Uses Euclid&rsquo;s algorithm: divides the larger integer by the
 ; smaller; if the remainder is 0, the smaller integer is the GCD,
@@ -126,37 +126,47 @@ Done:
       ret
 _gcd  endp
       end
-</PRE>
-<!-- END CODE //-->
-<P>Assembly language optimization is pattern matching on a local scale. Frankly, it&rsquo;s also the sort of boring, brute-force work that people are lousy at; compilers could out-optimize you at this level with one pass tied behind their back <I>if</I> they knew as much about the code you&rsquo;re writing as you do, which they don&rsquo;t.</P>
-<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="95%"><SMALL><I>Design optimization&mdash;conceptual breakthroughs in understanding the relationships between the needs of an application, the nature of the data the application works with, and what the computer can do&mdash;is global pattern matching.</I></SMALL>
-</TABLE>
-<P>Computers are <I>much</I> worse at that sort of pattern matching than humans; computers have no way to integrate vast amounts of disparate information, much of it only vaguely defined or subject to change. People, oddly enough, are <I>better</I> at global optimization than at local optimization. For one thing, it&rsquo;s more interesting. For another, it&rsquo;s complex and imprecise enough to allow intuition and inspiration, two vastly underrated programming tools, to come to the fore. And, as I pointed out earlier, people tend to perform instantaneous solutions to even the most complex problems, while computers bog down in geometrically or exponentially increasing execution times. Oh, it may take days or weeks for a person to absorb enough information to be able to reach a solution, and the solution may only be near-optimal&mdash;but the solution itself (or, at least, each of the pieces of the solution) arrives in a flash.</P>
-<P>Those flashes are your programming pattern matcher doing its job. <I>Your</I> job is to give your pattern matcher the opportunity to get to know each problem and run through it two or three times, from different angles, to see what unexpected solutions it can come up with.</P>
-<P>Pull back the reins a little. Don&rsquo;t measure progress by lines of code written today; measure it instead by overall progress and by quality. Relax and listen to that quiet inner voice that provides the real breakthroughs. Stop, look, listen&mdash;and think. Not only will you find that it&rsquo;s a more productive and creative way to program&mdash;but you&rsquo;ll also find that it&rsquo;s more fun.</P>
-<P>And think what you could do with all those extra computer years!</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="10-03.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="11-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>Assembly language optimization is pattern matching on a local scale. Frankly, it&rsquo;s also the sort of boring, brute-force work that people are lousy at; compilers could out-optimize you at this level with one pass tied behind their back <i>if</i> they knew as much about the code you&rsquo;re writing as you do, which they don&rsquo;t.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <table width="100%">
+    <tr>
+      <td width="5%" valign="top"><img src="images/i.jpg" /></td>
 
-<!-- END FOOTER -->
+      <td width="95%"><small><i>Design optimization&mdash;conceptual breakthroughs in understanding the relationships between the needs of an application, the nature of the data the application works with, and what the computer can do&mdash;is global pattern matching.</i></small></td>
+    </tr>
+  </table>
 
+  <p>Computers are <i>much</i> worse at that sort of pattern matching than humans; computers have no way to integrate vast amounts of disparate information, much of it only vaguely defined or subject to change. People, oddly enough, are <i>better</i> at global optimization than at local optimization. For one thing, it&rsquo;s more interesting. For another, it&rsquo;s complex and imprecise enough to allow intuition and inspiration, two vastly underrated programming tools, to come to the fore. And, as I pointed out earlier, people tend to perform instantaneous solutions to even the most complex problems, while computers bog down in geometrically or exponentially increasing execution times. Oh, it may take days or weeks for a person to absorb enough information to be able to reach a solution, and the solution may only be near-optimal&mdash;but the solution itself (or, at least, each of the pieces of the solution) arrives in a flash.</p>
 
+  <p>Those flashes are your programming pattern matcher doing its job. <i>Your</i> job is to give your pattern matcher the opportunity to get to know each problem and run through it two or three times, from different angles, to see what unexpected solutions it can come up with.</p>
+
+  <p>Pull back the reins a little. Don&rsquo;t measure progress by lines of code written today; measure it instead by overall progress and by quality. Relax and listen to that quiet inner voice that provides the real breakthroughs. Stop, look, listen&mdash;and think. Not only will you find that it&rsquo;s a more productive and creative way to program&mdash;but you&rsquo;ll also find that it&rsquo;s more fun.</p>
+
+  <p>And think what you could do with all those extra computer years!</p>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="10-03.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="11-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

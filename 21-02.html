@@ -1,150 +1,141 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Unleashing the Pentium's</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=21//-->
+  <!--PAGES=402-405//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="21-01.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="21-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Unleashing the Pentium's</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
-
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=21//-->
-<!--PAGES=402-405//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
-
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="21-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="21-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-</P>
-<P>As on the 486, you should keep a careful eye out for AGIs involving the stack pointer. Implicit modifiers of ESP, such as <B>PUSH</B> and <B>POP</B>, are special-cased so you don&rsquo;t have to worry about AGIs. However, if you explicitly modify ESP with this instruction</P>
-<!-- CODE SNIP //-->
-<PRE>
+  <p>As on the 486, you should keep a careful eye out for AGIs involving the stack pointer. Implicit modifiers of ESP, such as <b>PUSH</b> and <b>POP</b>, are special-cased so you don&rsquo;t have to worry about AGIs. However, if you explicitly modify ESP with this instruction</p><!-- CODE SNIP //-->
+  <pre>
 sub esp,100h
-</PRE>
-<!-- END CODE SNIP //-->
-<P>for example, or with the popular
-</P>
-<!-- CODE SNIP //-->
-<PRE>
+</pre><!-- END CODE SNIP //-->
+
+  <p>for example, or with the popular</p><!-- CODE SNIP //-->
+  <pre>
 mov esp,ebp
-</PRE>
-<!-- END CODE SNIP //-->
-<P>you can then get AGIs if you attempt to use ESP to address memory, either explicitly with instructions like this one
-</P>
-<!-- CODE SNIP //-->
-<PRE>
+</pre><!-- END CODE SNIP //-->
+
+  <p>you can then get AGIs if you attempt to use ESP to address memory, either explicitly with instructions like this one</p><!-- CODE SNIP //-->
+  <pre>
 moveax,[esp+20h]
-</PRE>
-<!-- END CODE SNIP //-->
-<P>or via <B>PUSH</B>, <B>POP</B>, or other instructions that implicitly use ESP as an addressing register.</P>
-<P>On the 486, any instruction that had both a constant value and an addressing displacement, such as</P>
-<!-- CODE SNIP //-->
-<PRE>
+</pre><!-- END CODE SNIP //-->
+
+  <p>or via <b>PUSH</b>, <b>POP</b>, or other instructions that implicitly use ESP as an addressing register.</p>
+
+  <p>On the 486, any instruction that had both a constant value and an addressing displacement, such as</p><!-- CODE SNIP //-->
+  <pre>
 mov dword ptr [ebp+16],1
-</PRE>
-<!-- END CODE SNIP //-->
-<P>suffered a 1-cycle penalty, taking a total of 2 cycles. Such instructions take only one cycle on the Pentium, but they cannot pair, so they&rsquo;re still the most expensive sort of <B>MOV</B>. Knowing this can speed up something as simple as zeroing two memory variables, as in</P>
-<!-- CODE SNIP //-->
-<PRE>
+</pre><!-- END CODE SNIP //-->
+
+  <p>suffered a 1-cycle penalty, taking a total of 2 cycles. Such instructions take only one cycle on the Pentium, but they cannot pair, so they&rsquo;re still the most expensive sort of <b>MOV</b>. Knowing this can speed up something as simple as zeroing two memory variables, as in</p><!-- CODE SNIP //-->
+  <pre>
 sub eax,eax        ;U-pipe 1
                    ;any V-pipe pairable
                    ; instruction can go here,
                    ; or SUB could be in V-pipe
 mov [MemVar1],eax  ;U-pipe 2
 mov [MemVar2],eax  ;V-pipe 2
-</PRE>
-<!-- END CODE SNIP //-->
-<P>which should never be slower and should potentially be 0.5 cycles faster, and six bytes smaller than this sequence:
-</P>
-<!-- CODE SNIP //-->
-<PRE>
+</pre><!-- END CODE SNIP //-->
+
+  <p>which should never be slower and should potentially be 0.5 cycles faster, and six bytes smaller than this sequence:</p><!-- CODE SNIP //-->
+  <pre>
 mov [MemVar1],0 ;U-pipe 1
 mov [MemVar2],0 ;U-pipe 2
-</PRE>
-<!-- END CODE SNIP //-->
-<P>Note, however, that my experiments thus far indicate that the two writes in the first case don&rsquo;t actually pair (possibly because the memory variables have never been read into the internal cache), so you might want to insert an instruction between the two <B>MOV</B>s&mdash;and, of course, this is yet another reason why you should always measure your code&rsquo;s actual performance.</P>
-<H3><A NAME="Heading4"></A>Register Contention</H3>
-<P>Finally, we come to the last major component of superscalar optimization: register contention. The basic premise here is simple: You can&rsquo;t use the same register in two inherently sequential ways in a single cycle. For example, you can&rsquo;t execute
-</P>
-<!-- CODE SNIP //-->
-<PRE>
+</pre><!-- END CODE SNIP //-->
+
+  <p>Note, however, that my experiments thus far indicate that the two writes in the first case don&rsquo;t actually pair (possibly because the memory variables have never been read into the internal cache), so you might want to insert an instruction between the two <b>MOV</b>s&mdash;and, of course, this is yet another reason why you should always measure your code&rsquo;s actual performance.</p>
+
+  <h3><a id="Heading4"></a>Register Contention</h3>
+
+  <p>Finally, we come to the last major component of superscalar optimization: register contention. The basic premise here is simple: You can&rsquo;t use the same register in two inherently sequential ways in a single cycle. For example, you can&rsquo;t execute</p><!-- CODE SNIP //-->
+  <pre>
 inc eax     ;U-pipe cycle 1
             ;V-pipe idle cycle 1
             ; due to dependency
 and ebx,eax ;U-pipe cycle 2
-</PRE>
-<!-- END CODE SNIP //-->
-<P>in a single cycle; <B>AND EBX,EAX</B> can&rsquo;t execute until the value in EAX is known, and that can&rsquo;t happen until <B>INC EAX</B> is done. Consequently, the V-pipe idles while <B>INC EAX</B> executes in the U-pipe. We saw this in the last chapter when we discussed splitting instructions into simple instructions, and it is by far the most common sort of register contention, known as read-after-write register contention. Read-after-write register contention is the primary reason we have to interleave independent operations in order to get maximum V-pipe usage.</P>
-<P>The other sort of register contention is known as write-after-write. Write-after-write register contention happens when two instructions try to write to the same register on the same cycle. While that may not seem like a particularly useful operation in general, it can happen when subregisters are being set, as in the following</P>
-<!-- CODE SNIP //-->
-<PRE>
+</pre><!-- END CODE SNIP //-->
+
+  <p>in a single cycle; <b>AND EBX,EAX</b> can&rsquo;t execute until the value in EAX is known, and that can&rsquo;t happen until <b>INC EAX</b> is done. Consequently, the V-pipe idles while <b>INC EAX</b> executes in the U-pipe. We saw this in the last chapter when we discussed splitting instructions into simple instructions, and it is by far the most common sort of register contention, known as read-after-write register contention. Read-after-write register contention is the primary reason we have to interleave independent operations in order to get maximum V-pipe usage.</p>
+
+  <p>The other sort of register contention is known as write-after-write. Write-after-write register contention happens when two instructions try to write to the same register on the same cycle. While that may not seem like a particularly useful operation in general, it can happen when subregisters are being set, as in the following</p><!-- CODE SNIP //-->
+  <pre>
 sub eax,eax   ;U-pipe cycle 1
               ;V-pipe idle cycle 1
               ; due to register contention
 mov al,[Var]  ;U-pipe cycle 2
-</PRE>
-<!-- END CODE SNIP //-->
-<P>where an attempt is made to set both EAX and its AL subregister on the same cycle. Write-after-write contention implies that the two instructions comprising the above substitute for <B>MOVZX</B> should have at least one unrelated instruction between them when <B>SUB EAX,EAX</B> executes in the V-pipe.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading5"></A>Exceptions to Register Contention</H4>
-<P>Intel has special-cased some very useful exceptions to register contention. Happily, write-after-read operations do <I>not</I> cause contention. Such operations, as in</P>
-<!-- CODE SNIP //-->
-<PRE>
+</pre><!-- END CODE SNIP //-->
+
+  <p>where an attempt is made to set both EAX and its AL subregister on the same cycle. Write-after-write contention implies that the two instructions comprising the above substitute for <b>MOVZX</b> should have at least one unrelated instruction between them when <b>SUB EAX,EAX</b> executes in the V-pipe.</p>
+
+  <h4 align="left"><a id="Heading5"></a>Exceptions to Register Contention</h4>
+
+  <p>Intel has special-cased some very useful exceptions to register contention. Happily, write-after-read operations do <i>not</i> cause contention. Such operations, as in</p><!-- CODE SNIP //-->
+  <pre>
 mov eax,edx ;U-pipe cycle 1
 sub edx,edxX ;V-pipe cycle 1
-</PRE>
-<!-- END CODE SNIP //-->
-<P>are free of charge.
-</P>
-<P>Also, stack-related instructions that modify ESP only implicitly (without ESP as part of any explicit operand) do not cause AGIs, and neither do they cause register contention with other instructions that use ESP only implicitly; such instructions include <B>PUSH <I>reg/immed</I>, POP <I>reg</I></B>, and <B>CALL</B>. (However, these instructions do cause register contention on ESP&mdash;but not AGIs&mdash;with instructions that use ESP explicitly, such as <B>MOV EAX,[ESP+4]</B>.) Without this special case, the following sequence would hardly use the V-pipe at all:</P>
-<!-- CODE SNIP //-->
-<PRE>
+</pre><!-- END CODE SNIP //-->
+
+  <p>are free of charge.</p>
+
+  <p>Also, stack-related instructions that modify ESP only implicitly (without ESP as part of any explicit operand) do not cause AGIs, and neither do they cause register contention with other instructions that use ESP only implicitly; such instructions include <b>PUSH <i>reg/immed</i>, POP <i>reg</i></b>, and <b>CALL</b>. (However, these instructions do cause register contention on ESP&mdash;but not AGIs&mdash;with instructions that use ESP explicitly, such as <b>MOV EAX,[ESP+4]</b>.) Without this special case, the following sequence would hardly use the V-pipe at all:</p><!-- CODE SNIP //-->
+  <pre>
 mov  eax,[MemVar] ;U-pipe cycle 1
 push esi          ;V-pipe cycle 1
 push eax          ;U-pipe cycle 2
 push edi          ;V-pipe cycle 2
 push ebx          ;U-pipe cycle 3
 call FooTilde     ;V-pipe cycle 3
-</PRE>
-<!-- END CODE SNIP //-->
-<P>But in fact, all the instructions pair, even though ESP is modified five times in the space of six instructions.
-</P>
-<P>The final register-contention special case is both remarkable and remarkably important. There is exactly one sort of instruction that can pair only in the V-pipe: branches. Any near call or conditional or unconditional near jump can execute in the V-pipe paired with any pairable U-pipe instruction, as illustrated by this sequence:</P>
-<!-- CODE SNIP //-->
-<PRE>
+</pre><!-- END CODE SNIP //-->
+
+  <p>But in fact, all the instructions pair, even though ESP is modified five times in the space of six instructions.</p>
+
+  <p>The final register-contention special case is both remarkable and remarkably important. There is exactly one sort of instruction that can pair only in the V-pipe: branches. Any near call or conditional or unconditional near jump can execute in the V-pipe paired with any pairable U-pipe instruction, as illustrated by this sequence:</p><!-- CODE SNIP //-->
+  <pre>
 LoopTop:
    mov [esi],eax ;U-pipe cycle 1
    add esi,4     ;V-pipe cycle 1
    dec ecx       ;U-pipe cycle 2
    jnz LoopTop   ;V-pipe cycle 2
-</PRE>
-<!-- END CODE SNIP //-->
-<P>Branches can&rsquo;t pair in the U-pipe; a branch that executes in the U-pipe runs alone, with the V-pipe idle. If a call or jump is correctly predicted by the Pentium&rsquo;s branch prediction circuitry (as discussed in the last chapter), it executes in a single cycle, pairing if it runs in the V-pipe; if mispredicted, conditional jumps take 4 cycles in the U-pipe and 5 cycles in the V-pipe, and mispredicted calls and unconditional jumps take 3 cycles in either pipe. Note that <B>RET</B> can&rsquo;t pair.</P>
-<H3><A NAME="Heading6"></A>Who&rsquo;s in First?</H3>
-<P>One of the trickiest things about superscalar optimization is that a given instruction stream can execute at a different speed depending on the pipe where it starts execution, because which instruction goes through the U-pipe first determines which of the following instructions will be able to pair. If we take the last example and add one more instruction, the other instructions will go through different pipes than previously, and cause the loop as a whole to take 50 percent longer, even though we only added 25 percent more cycles:
-</P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE SNIP //-->
+
+  <p>Branches can&rsquo;t pair in the U-pipe; a branch that executes in the U-pipe runs alone, with the V-pipe idle. If a call or jump is correctly predicted by the Pentium&rsquo;s branch prediction circuitry (as discussed in the last chapter), it executes in a single cycle, pairing if it runs in the V-pipe; if mispredicted, conditional jumps take 4 cycles in the U-pipe and 5 cycles in the V-pipe, and mispredicted calls and unconditional jumps take 3 cycles in either pipe. Note that <b>RET</b> can&rsquo;t pair.</p>
+
+  <h3><a id="Heading6"></a>Who&rsquo;s in First?</h3>
+
+  <p>One of the trickiest things about superscalar optimization is that a given instruction stream can execute at a different speed depending on the pipe where it starts execution, because which instruction goes through the U-pipe first determines which of the following instructions will be able to pair. If we take the last example and add one more instruction, the other instructions will go through different pipes than previously, and cause the loop as a whole to take 50 percent longer, even though we only added 25 percent more cycles:</p><!-- CODE //-->
+  <pre>
 LoopTop:
    inc edx           ;U-pipe cycle 1
    mov [esi],eax     ;V-pipe cycle 1
@@ -154,31 +145,29 @@ LoopTop:
                      ;V-pipe idle cycle 3
                      ; because JNZ can&rsquo;t
                      ; pair in the U-pipe
-</PRE>
-<!-- END CODE //-->
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="21-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="21-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p><br /></p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="21-01.html">Previous</a></td>
 
-<!-- END FOOTER -->
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="21-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
 
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

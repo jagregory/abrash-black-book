@@ -1,72 +1,81 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bresenham Is Fast, and Fast Is Good</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=35//-->
+  <!--PAGES=670-671//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="35-05.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="35-07.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Bresenham Is Fast, and Fast Is Good</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>The result of all this is simply a single pixel drawn in the color set up in <b>EVGALine</b>. <b>EVGADot</b> may seem excessively complex for a function that does nothing more that draw one pixel, but programming the VGA isn&rsquo;t trivial (as we&rsquo;ve seen in the early chapters of this part). Besides, while the explanation of <b>EVGADot</b> is lengthy, the code itself is only five lines long.</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=35//-->
-<!--PAGES=670-671//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p>Line drawing would be somewhat faster if the code of <b>EVGADot</b> were made an inline part of <b>Octant0</b> and <b>Octant1</b>, thereby saving the overhead of preparing parameters and calling the function. Feel free to do this if you wish; I maintained <b>EVGADot</b> as a separate function for clarity and for ease of inserting a pixel-drawing function for a different graphics adapter, should that be desired. If you do install a pixel-drawing function for a different adapter, or a fundamentally different mode such as a 256-color SuperVGA mode, remember to remove the hardware-dependent <b>outportb</b> lines in <b>EVGALine</b> itself.</p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="35-05.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="35-07.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>The result of all this is simply a single pixel drawn in the color set up in <B>EVGALine</B>. <B>EVGADot</B> may seem excessively complex for a function that does nothing more that draw one pixel, but programming the VGA isn&rsquo;t trivial (as we&rsquo;ve seen in the early chapters of this part). Besides, while the explanation of <B>EVGADot</B> is lengthy, the code itself is only five lines long.</P>
-<P>Line drawing would be somewhat faster if the code of <B>EVGADot</B> were made an inline part of <B>Octant0</B> and <B>Octant1</B>, thereby saving the overhead of preparing parameters and calling the function. Feel free to do this if you wish; I maintained <B>EVGADot</B> as a separate function for clarity and for ease of inserting a pixel-drawing function for a different graphics adapter, should that be desired. If you do install a pixel-drawing function for a different adapter, or a fundamentally different mode such as a 256-color SuperVGA mode, remember to remove the hardware-dependent <B>outportb</B> lines in <B>EVGALine</B> itself.</P>
-<H3><A NAME="Heading10"></A>Comments on the C Implementation</H3>
-<P><B>EVGALine</B> does no error checking whatsoever. My assumption in writing <B>EVGALine</B> was that it would be ultimately used as the lowest-level primitive of a graphics software package, with operations such as error checking and clipping performed at a higher level. Similarly, <B>EVGALine</B> is tied to the VGA&rsquo;s screen coordinate system of (0,0) to (639,199) (in mode 0EH), (0,0) to (639,349) (in modes 0FH and 10H), or (0,0) to (639,479) (in mode 12H), with the upper left corner considered to be (0,0). Again, transformation from any coordinate system to the coordinate system used by <B>EVGALine</B> can be performed at a higher level. <B>EVGALine</B> is specifically designed to do one thing: draw lines into the display memory of the VGA. Additional functionality can be supplied by the code that calls <B>EVGALine</B>.</P>
-<P>The version of <B>EVGALine</B> shown in Listing 35.1 is reasonably fast, but it is not as fast as it might be. Inclusion of <B>EVGADot</B> directly into <B>Octant0</B> and <B>Octant1</B>, and, indeed, inclusion of <B>Octant0</B> and <B>Octant1</B> directly into <B>EVGALine</B> would speed execution by saving the overhead of calling and parameter passing. Handpicked register variables might speed performance as well, as would the use of word <B>OUT</B>s rather than byte <B>OUT</B>s. A more significant performance increase would come from eliminating separate calculation of the address and mask for each pixel. Since the location of each pixel relative to the previous pixel is known, the address and mask could simply be adjusted from one pixel to the next, rather than recalculated from scratch.</P>
-<P>These enhancements are not incorporated into the code in Listing 35.1 for a couple of reasons. One reason is that it&rsquo;s important that the workings of the algorithm be clearly visible in the code, for learning purposes. Once the implementation is understood, rewriting it for improved performance would certainly be a worthwhile exercise. Another reason is that when flat-out speed is needed, assembly language is the best way to go. Why produce hard-to-understand C code to boost speed a bit when assembly-language code can perform the same task at two or more times the speed?</P>
-<P>Given which, a high-speed assembly language version of <B>EVGALine</B> would seem to be a logical next step.</P>
-<H3><A NAME="Heading11"></A>Bresenham&rsquo;s Algorithm in Assembly</H3>
-<P>Listing 35.3 is a high-performance implementation of Bresenham&rsquo;s algorithm, written entirely in assembly language. The code is callable from C just as is Listing 35.1, with the same name, <B>EVGALine</B>, and with the same parameters. Either of the two can be linked to any program that calls <B>EVGALine</B>, since they appear to be identical to the calling program. The only difference between the two versions is that the sample program in Listing 35.2 runs over three times as fast on a 486 with an ISA-bus VGA when calling the assembly-language version of <B>EVGALine</B> as when calling the C version, and the difference would be considerably greater yet on a local bus, or with the use of write mode 3. Link each version with Listing 35.2 and compare performance&mdash;the difference is startling.</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="35-05.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="35-07.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+  <h3><a id="Heading10"></a>Comments on the C Implementation</h3>
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p><b>EVGALine</b> does no error checking whatsoever. My assumption in writing <b>EVGALine</b> was that it would be ultimately used as the lowest-level primitive of a graphics software package, with operations such as error checking and clipping performed at a higher level. Similarly, <b>EVGALine</b> is tied to the VGA&rsquo;s screen coordinate system of (0,0) to (639,199) (in mode 0EH), (0,0) to (639,349) (in modes 0FH and 10H), or (0,0) to (639,479) (in mode 12H), with the upper left corner considered to be (0,0). Again, transformation from any coordinate system to the coordinate system used by <b>EVGALine</b> can be performed at a higher level. <b>EVGALine</b> is specifically designed to do one thing: draw lines into the display memory of the VGA. Additional functionality can be supplied by the code that calls <b>EVGALine</b>.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>The version of <b>EVGALine</b> shown in Listing 35.1 is reasonably fast, but it is not as fast as it might be. Inclusion of <b>EVGADot</b> directly into <b>Octant0</b> and <b>Octant1</b>, and, indeed, inclusion of <b>Octant0</b> and <b>Octant1</b> directly into <b>EVGALine</b> would speed execution by saving the overhead of calling and parameter passing. Handpicked register variables might speed performance as well, as would the use of word <b>OUT</b>s rather than byte <b>OUT</b>s. A more significant performance increase would come from eliminating separate calculation of the address and mask for each pixel. Since the location of each pixel relative to the previous pixel is known, the address and mask could simply be adjusted from one pixel to the next, rather than recalculated from scratch.</p>
 
-<!-- END FOOTER -->
+  <p>These enhancements are not incorporated into the code in Listing 35.1 for a couple of reasons. One reason is that it&rsquo;s important that the workings of the algorithm be clearly visible in the code, for learning purposes. Once the implementation is understood, rewriting it for improved performance would certainly be a worthwhile exercise. Another reason is that when flat-out speed is needed, assembly language is the best way to go. Why produce hard-to-understand C code to boost speed a bit when assembly-language code can perform the same task at two or more times the speed?</p>
 
+  <p>Given which, a high-speed assembly language version of <b>EVGALine</b> would seem to be a logical next step.</p>
 
+  <h3><a id="Heading11"></a>Bresenham&rsquo;s Algorithm in Assembly</h3>
+
+  <p>Listing 35.3 is a high-performance implementation of Bresenham&rsquo;s algorithm, written entirely in assembly language. The code is callable from C just as is Listing 35.1, with the same name, <b>EVGALine</b>, and with the same parameters. Either of the two can be linked to any program that calls <b>EVGALine</b>, since they appear to be identical to the calling program. The only difference between the two versions is that the sample program in Listing 35.2 runs over three times as fast on a 486 with an ISA-bus VGA when calling the assembly-language version of <b>EVGALine</b> as when calling the C version, and the difference would be considerably greater yet on a local bus, or with the use of write mode 3. Link each version with Listing 35.2 and compare performance&mdash;the difference is startling.</p>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="35-05.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="35-07.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

@@ -1,82 +1,101 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Dead Cats and Lightning Lines</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=37//-->
+  <!--PAGES=704-706//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="37-01.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="38-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Dead Cats and Lightning Lines</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <h4 align="left"><a id="Heading4"></a>How Fast Is Fast?</h4>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=37//-->
-<!--PAGES=704-706//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p>Your first question is likely to be the following: Just how fast is Listing 37.1? Is it optimized to the hilt or just pretty fast? The quick answer is: It&rsquo;s <i>fast</i>. Listing 37.1 draws lines at a rate of nearly 1 million pixels per second on my 486/33, and is capable of still faster drawing, as I&rsquo;ll discuss shortly. (The heavily optimized AutoCAD line-drawing code that I mentioned in the last chapter drew 150,000 pixels per second on an EGA in a 386/16, and I thought I had died and gone to Heaven. Such is progress.) The full answer is a more complicated one, and ties in to the principle that if it is broken, maybe that&rsquo;s okay&mdash;and to the principle of looking before you leap, also known as profiling before you optimize.</p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="37-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="38-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<H4 ALIGN="LEFT"><A NAME="Heading4"></A>How Fast Is Fast?</H4>
-<P>Your first question is likely to be the following: Just how fast is Listing 37.1? Is it optimized to the hilt or just pretty fast? The quick answer is: It&rsquo;s <I>fast</I>. Listing 37.1 draws lines at a rate of nearly 1 million pixels per second on my 486/33, and is capable of still faster drawing, as I&rsquo;ll discuss shortly. (The heavily optimized AutoCAD line-drawing code that I mentioned in the last chapter drew 150,000 pixels per second on an EGA in a 386/16, and I thought I had died and gone to Heaven. Such is progress.) The full answer is a more complicated one, and ties in to the principle that if it is broken, maybe that&rsquo;s okay&mdash;and to the principle of looking before you leap, also known as profiling before you optimize.</P>
-<P>When I went to speed up run-length slice lines, I initially manually converted the last chapter&rsquo;s C code into assembly. Then I streamlined the register usage and used <B>REP STOS</B> wherever possible. Listing 37.1 is that code. At that point, line drawing was surely faster, although I didn&rsquo;t know exactly how much faster. Equally surely, there were significant optimizations yet to be made, and I was itching to get on to them, for they were bound to be a lot more interesting than a basic C-to-assembly port.</P>
-<P>Ego intervened at this point, however. I wanted to know how much of a speed-up I had already gotten, so I timed the performance of the C code and compared it to the assembly code. To my horror, I found that I had not gotten even a two-times improvement! I couldn&rsquo;t understand how that could be&mdash;the C code was decidedly unoptimized&mdash;until I hit on the idea of measuring the maximum memory speed of the VGA to which I was drawing.</P>
-<P>Bingo. The Paradise VGA in my 486/33 is fast for a single display-memory write, because it buffers the data, lets the CPU go on its merry way, and finishes the write when display memory is ready. However, the maximum rate at which data can be written to the adapter turns out to be no more than one byte every microsecond. Put another way, you can only write one byte to this adapter every 33 clock cycles on a 486/33. Therefore, no matter how fast I made the line-drawing code, it could never draw more than 1,000,000 pixels per second in 256-color mode in my system. The C code was already drawing at about half that rate, so the potential speed-up for the assembly code was limited to a maximum of two times, which is pretty close to what Listing 37.1 did, in fact, achieve. When I compared the C and assembly implementations drawing to normal system (nondisplay) memory, I found that the assembly code was actually four times as fast as the C code.</P>
-<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>In fact, Listing 37.1 draws VGA lines at about 92 percent of the maximum possible rate in my system&mdash;that is, it draws very nearly as fast as the VGA hardware will allow. All the optimization in the world would get me less than 10 percent faster line drawing&mdash;and only if I eliminated all overhead, an unlikely proposition at best. The code isn&rsquo;t fully optimized, but so what?</I></SMALL>
-</TABLE>
-<P>Now it&rsquo;s true that faster line-drawing code would likely be more beneficial on faster VGAs, especially local-bus VGAs, and in slower systems. For that reason, I&rsquo;ll list a variety of potential optimizations to Listing 37.1. On the other hand, it&rsquo;s also true that Listing 37.1 is capable of drawing lines at a rate of 2.2 million pixels per second on a 486/ 33, given fast enough VGA memory, so it should be able to drive almost any non-local-bus VGA at nearly full speed. In short, Listing 37.1 is very fast, and, in many systems, further optimization is basically a waste of time.
-</P>
-<P>Profile before you optimize.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading5"></A>Further Optimizations</H4>
-<P>Following is a quick tour of some of the many possible further optimizations to Listing 37.1.
-</P>
-<P>The run-handling loops could be unrolled more than the current two times. However, bear in mind that a two-times unrolling gets more than half the maximum unrolling benefit with less overhead than a more heavily unrolled loop.</P>
-<P>BX could be freed up in the Y-major code by breaking out separate loops for X advances of 1 and -1. DX could be freed up by using AH as the counter for the run loops, although this would limit the maximum line length that could be handled. The freed registers could be used to keep more of the whole-step and error variables in registers. Alternatively, the freed registers could be used to implement more esoteric approaches like unrolling the Y-major inner loop; such unrolling could take advantage of the knowledge that only two run lengths are possible for any given line. Strangely enough, on the 486 it might also be worth unrolling the X-major inner loop, which consists of <B>REP STOSB</B>, because of the slow start-up time of <B>REP</B> relative to the speed of branching on that processor.</P>
-<P>Special code could be implemented for lines with integral slopes, because all runs are exactly the same length in such lines. Also, the X-major code could try to write an aligned word at a time to display memory whenever possible; this would improve the maximum possible performance on some 16-bit VGAs.</P>
-<P>One weakness of Listing 37.1 is that for lines with slopes between 0.5 and 2, the average run length is less than two, rendering run-length slicing ineffective. This can be remedied by viewing lines in that range as being composed of diagonal, rather than horizontal or vertical runs. I haven&rsquo;t space to take this idea any further in this book, but it&rsquo;s not very complicated, and it guarantees a minimum run length of 2, which renders run drawing considerably more efficient, and makes techniques such as unrolling the inner run-drawing loops more attractive.</P>
-<P>Finally, be aware that run-length slice drawing is best for long lines, because it has more and slower setup than a standard Bresenham&rsquo;s line draw, including a divide. Run-length slice is great for 100-pixel lines, but not necessarily for 20-pixel lines, and it&rsquo;s a sure thing that it&rsquo;s not terrific for 3-pixel lines. Both approaches will work, but if line-drawing performance is critical, whether you&rsquo;ll want to use run-length slice or standard Bresenham&rsquo;s depends on the typical lengths of the lines you&rsquo;ll be drawing. For lines of widely varying lengths, you might want to implement both approaches, and choose the best one for each line, depending on the line length&mdash;assuming, of course, that your display memory is fast enough and your application demanding enough to make that level of optimization worthwhile.</P>
-<P>If your code looks broken from a performance perspective, think before you fix it; that particular cat may be dead for a perfectly good reason. I&rsquo;ll say it again: <I>Profile before you optimize</I>.</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="37-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="38-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+  <p>When I went to speed up run-length slice lines, I initially manually converted the last chapter&rsquo;s C code into assembly. Then I streamlined the register usage and used <b>REP STOS</b> wherever possible. Listing 37.1 is that code. At that point, line drawing was surely faster, although I didn&rsquo;t know exactly how much faster. Equally surely, there were significant optimizations yet to be made, and I was itching to get on to them, for they were bound to be a lot more interesting than a basic C-to-assembly port.</p>
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>Ego intervened at this point, however. I wanted to know how much of a speed-up I had already gotten, so I timed the performance of the C code and compared it to the assembly code. To my horror, I found that I had not gotten even a two-times improvement! I couldn&rsquo;t understand how that could be&mdash;the C code was decidedly unoptimized&mdash;until I hit on the idea of measuring the maximum memory speed of the VGA to which I was drawing.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>Bingo. The Paradise VGA in my 486/33 is fast for a single display-memory write, because it buffers the data, lets the CPU go on its merry way, and finishes the write when display memory is ready. However, the maximum rate at which data can be written to the adapter turns out to be no more than one byte every microsecond. Put another way, you can only write one byte to this adapter every 33 clock cycles on a 486/33. Therefore, no matter how fast I made the line-drawing code, it could never draw more than 1,000,000 pixels per second in 256-color mode in my system. The C code was already drawing at about half that rate, so the potential speed-up for the assembly code was limited to a maximum of two times, which is pretty close to what Listing 37.1 did, in fact, achieve. When I compared the C and assembly implementations drawing to normal system (nondisplay) memory, I found that the assembly code was actually four times as fast as the C code.</p>
 
-<!-- END FOOTER -->
+  <table width="100%">
+    <tr>
+      <td align="left" valign="top" width="5%"><img src="images/i.jpg" /></td>
 
+      <td align="left" valign="top" width="95%"><small><i>In fact, Listing 37.1 draws VGA lines at about 92 percent of the maximum possible rate in my system&mdash;that is, it draws very nearly as fast as the VGA hardware will allow. All the optimization in the world would get me less than 10 percent faster line drawing&mdash;and only if I eliminated all overhead, an unlikely proposition at best. The code isn&rsquo;t fully optimized, but so what?</i></small></td>
+    </tr>
+  </table>
 
+  <p>Now it&rsquo;s true that faster line-drawing code would likely be more beneficial on faster VGAs, especially local-bus VGAs, and in slower systems. For that reason, I&rsquo;ll list a variety of potential optimizations to Listing 37.1. On the other hand, it&rsquo;s also true that Listing 37.1 is capable of drawing lines at a rate of 2.2 million pixels per second on a 486/ 33, given fast enough VGA memory, so it should be able to drive almost any non-local-bus VGA at nearly full speed. In short, Listing 37.1 is very fast, and, in many systems, further optimization is basically a waste of time.</p>
+
+  <p>Profile before you optimize.</p>
+
+  <h4 align="left"><a id="Heading5"></a>Further Optimizations</h4>
+
+  <p>Following is a quick tour of some of the many possible further optimizations to Listing 37.1.</p>
+
+  <p>The run-handling loops could be unrolled more than the current two times. However, bear in mind that a two-times unrolling gets more than half the maximum unrolling benefit with less overhead than a more heavily unrolled loop.</p>
+
+  <p>BX could be freed up in the Y-major code by breaking out separate loops for X advances of 1 and -1. DX could be freed up by using AH as the counter for the run loops, although this would limit the maximum line length that could be handled. The freed registers could be used to keep more of the whole-step and error variables in registers. Alternatively, the freed registers could be used to implement more esoteric approaches like unrolling the Y-major inner loop; such unrolling could take advantage of the knowledge that only two run lengths are possible for any given line. Strangely enough, on the 486 it might also be worth unrolling the X-major inner loop, which consists of <b>REP STOSB</b>, because of the slow start-up time of <b>REP</b> relative to the speed of branching on that processor.</p>
+
+  <p>Special code could be implemented for lines with integral slopes, because all runs are exactly the same length in such lines. Also, the X-major code could try to write an aligned word at a time to display memory whenever possible; this would improve the maximum possible performance on some 16-bit VGAs.</p>
+
+  <p>One weakness of Listing 37.1 is that for lines with slopes between 0.5 and 2, the average run length is less than two, rendering run-length slicing ineffective. This can be remedied by viewing lines in that range as being composed of diagonal, rather than horizontal or vertical runs. I haven&rsquo;t space to take this idea any further in this book, but it&rsquo;s not very complicated, and it guarantees a minimum run length of 2, which renders run drawing considerably more efficient, and makes techniques such as unrolling the inner run-drawing loops more attractive.</p>
+
+  <p>Finally, be aware that run-length slice drawing is best for long lines, because it has more and slower setup than a standard Bresenham&rsquo;s line draw, including a divide. Run-length slice is great for 100-pixel lines, but not necessarily for 20-pixel lines, and it&rsquo;s a sure thing that it&rsquo;s not terrific for 3-pixel lines. Both approaches will work, but if line-drawing performance is critical, whether you&rsquo;ll want to use run-length slice or standard Bresenham&rsquo;s depends on the typical lengths of the lines you&rsquo;ll be drawing. For lines of widely varying lengths, you might want to implement both approaches, and choose the best one for each line, depending on the line length&mdash;assuming, of course, that your display memory is fast enough and your application demanding enough to make that level of optimization worthwhile.</p>
+
+  <p>If your code looks broken from a performance perspective, think before you fix it; that particular cat may be dead for a perfectly good reason. I&rsquo;ll say it again: <i>Profile before you optimize</i>.</p>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="37-01.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="38-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

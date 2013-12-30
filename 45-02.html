@@ -1,129 +1,211 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Dog Hair and Dirty Rectangles</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=45//-->
+  <!--PAGES=843-846//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="45-01.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="45-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Dog Hair and Dirty Rectangles</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>Of course, VGA display memory has its own performance problems. The fastest ISA bus VGA can, at best, support sustained write times of about 10 cycles per word-sized write on a 486/33; 15 or 20 cycles is more common, even for relatively fast SuperVGAs; the worst case I&rsquo;ve seen is 65 cycles per byte. However, intermittent writes, mixed with a lot of register and cache-only code, can effectively execute in one cycle, thanks to the caching design of many VGAs and the 486&rsquo;s 4-deep write buffer, which stores pending writes while the CPU continues executing instructions. Display memory reads tend to take longer, because coprocessing isn&rsquo;t possible&mdash;one microsecond is a reasonable rule of thumb for VGA reads, although there&rsquo;s considerable variation. So VGA memory tends not to be as bad as VGA I/O, but lord knows it isn&rsquo;t <i>good</i>.</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=45//-->
-<!--PAGES=843-846//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <table width="100%">
+    <tr>
+      <td colspan="4">
+        <hr />
+      </td>
+    </tr>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="45-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="45-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>Of course, VGA display memory has its own performance problems. The fastest ISA bus VGA can, at best, support sustained write times of about 10 cycles per word-sized write on a 486/33; 15 or 20 cycles is more common, even for relatively fast SuperVGAs; the worst case I&rsquo;ve seen is 65 cycles per byte. However, intermittent writes, mixed with a lot of register and cache-only code, can effectively execute in one cycle, thanks to the caching design of many VGAs and the 486&rsquo;s 4-deep write buffer, which stores pending writes while the CPU continues executing instructions. Display memory reads tend to take longer, because coprocessing isn&rsquo;t possible&mdash;one microsecond is a reasonable rule of thumb for VGA reads, although there&rsquo;s considerable variation. So VGA memory tends not to be as bad as VGA I/O, but lord knows it isn&rsquo;t <I>good</I>.</P>
-<TABLE WIDTH="100%"><TR>
-<TD COLSPAN="4"><HR>
-<TR>
-<TD WIDTH "40%" VALIGN="TOP" ALIGN="LEFT">
-<TH ALIGN="CENTER" COLSPAN="3">OUT Time in Microseconds and Cycles
-<TR>
-<TH WIDTH="40%" ALIGN="LEFT" VALIGN="BOTTOM">OUT Instruction
-<TH WIDTH="20%" ALIGN="LEFT" VALIGN="BOTTOM">Official Time
-<TH WIDTH="20%" ALIGN="LEFT" VALIGN="BOTTOM">486 #1/16-bit VGA #1
-<TH WIDTH="20%" ALIGN="LEFT" VALIGN="BOTTOM">486 #2/16-bit VGA #2
-<TR>
-<TD COLSPAN="4"><HR>
-<TR>
-<TD WIDTH="40%" VALIGN="TOP" ALIGN="LEFT">OUT DX,AL
-<TR>
-<TD WIDTH="40%" VALIGN="TOP" ALIGN="LEFT">repeated 1,000 times nonstop<BR>(maximum byte access)
-<TD WIDTH="20%" VALIGN="TOP" ALIGN="LEFT">0.300 s<BR>10 cycles
-<TD WIDTH="20%" VALIGN="TOP" ALIGN="LEFT">2.546 s<BR>84 cycles
-<TD WIDTH="20%" VALIGN="TOP" ALIGN="LEFT">0.813 s<BR>27 cycles
-<TR>
-<TD WIDTH="40%" VALIGN="TOP" ALIGN="LEFT">OUT DX,AX
-<TR>
-<TD WIDTH="4%" VALIGN="TOP" ALIGN="LEFT">repeated 1,000 times nonstop<BR>(maximum word access)
-<TD WIDTH="20%" VALIGN="TOP" ALIGN="LEFT">0.300 s<BR>10 cycles
-<TD WIDTH="20%" VALIGN="TOP" ALIGN="LEFT">3.820 s<BR>126 cycles
-<TD WIDTH="20%" VALIGN="TOP" ALIGN="LEFT">1.066 s<BR>35 cycles
-<TR>
-<TD WIDTH="40%" VALIGN="TOP" ALIGN="LEFT">OUT DX,AL
-<TR>
-<TD WIDTH="40%" VALIGN="TOP" ALIGN="LEFT">repeated 1,000 times,<BR>but interspersed with MULs<BR>(random byte access)
-<TD WIDTH="20%" VALIGN="TOP" ALIGN="LEFT">0.300 s<BR>10 cycles
-<TD WIDTH="20%" VALIGN="TOP" ALIGN="LEFT">1.610 s<BR>53 cycles
-<TD WIDTH="20%" VALIGN="TOP" ALIGN="LEFT">0.780 s<BR>26 cycles
-<TR>
-<TD WIDTH="40%" VALIGN="TOP" ALIGN="LEFT">OUT DX,AX
-<TR>
-<TD WIDTH="40%" VALIGN="TOP" ALIGN="LEFT">repeated 1,000 times,<BR>but interspersed with MULs<BR>(random word access)
-<TD WIDTH="20%" VALIGN="TOP" ALIGN="LEFT">0.300 s<BR>10 cycles
-<TD WIDTH="20%" VALIGN="TOP" ALIGN="LEFT">2.830 s<BR>93 cycles
-<TD WIDTH="20%" VALIGN="TOP" ALIGN="LEFT">1.010 s<BR>33 cycles
-<TR>
-<TD COLSPAN="4"><B>Table 45.1 Results of I/O performance tests run under the Phar Lap386|DOS-Extender.
-<TR>
-<TD COLSPAN="4"><HR>
-</TABLE>
-<P>
-</P>
-<TABLE WIDTH="100%"><TR>
-<TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><SMALL><I><B>OUT</B>s, in general, are lousy on the 486 (and to think they only took three cycles on the 286!). <B>OUT</B>s to VGAs are particularly lousy. Display memory performance is pretty poor, especially for reads. The conclusions are obvious, I would hope. Structure your graphics code, and, in general, all 486 code, to avoid <B>OUT</B>s.</I></SMALL>
-</TABLE>
-<P>For graphics, this especially means using write mode 3 rather than the bit-mask register. When you must use the bit mask, arrange drawing so that you can set the bit mask once, then do a lot of drawing with that mask. For example, draw a whole edge at once, then the middle, then the other edge, rather than setting the bit mask several times on each scan line to draw the edge and middle bytes together. Don&rsquo;t read from display memory if you don&rsquo;t have to. Write each pixel once and only once.
-</P>
-<P>It is indeed a strange concept: The key to fast graphics is staying away from the graphics adapter as much as possible.</P>
-<H3><A NAME="Heading5"></A>Dirty-Rectangle Animation</H3>
-<P>The relative slowness of VGA hardware is part of the appeal of the technique that I call &ldquo;dirty-rectangle&rdquo; animation, in which a complete copy of the contents of display memory is maintained in offscreen system (nondisplay) memory. All drawing is done to this system buffer. As offscreen drawing is done, a list is maintained of the bounding rectangles for the drawn-to areas; these are the <I>dirty rectangles</I>, &ldquo;dirty&rdquo; in the sense that that have been altered and no longer match the contents of the screen. After all drawing for a frame is completed, all the dirty rectangles for that frame are copied to the screen in a burst, and then the cycle of off-screen drawing begins again.</P>
-<P>Why, exactly, would we want to go through all this complication, rather than simply drawing to the screen in the first place? The reason is visual quality. If we were to do all our drawing directly to the screen, there&rsquo;d be a lot of flicker as objects were erased and then redrawn. Similarly, overlapped drawing done with the painter&rsquo;s algorithm (in which farther objects are drawn first, so that nearer objects obscure them) would flicker as farther objects were visible for short periods. With dirty-rectangle animation, only the finished pixels for any given frame ever appear on the screen; intermediate results are never visible. Figure 45.1 illustrates the visual problems associated with drawing directly to the screen; Figure 45.2 shows how dirty-rectangle animation solves these problems.</P>
-<P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/45-01.jpg',409,160 )"> --><IMG SRC="images/45-01.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/45-01.jpg',409,160)"> --><B>Figure 45.1</B></A>&nbsp;&nbsp;<I>Drawing directly to the screen.</I>
-</P>
-<P><A NAME="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/45-02.jpg',411,301 )"> --><IMG SRC="images/45-02.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/45-02.jpg',411,301)"> --><B>Figure 45.2</B></A>&nbsp;&nbsp;<I>Dirty rectangle animation.</I>
-</P>
-<H4 ALIGN="LEFT"><A NAME="Heading6"></A>So Why Not Use Page Flipping?</H4>
-<P>Well, then, if we want good visual quality, why not use page flipping? For one thing, not all adapters and all modes support page flipping. The CGA and MCGA don&rsquo;t, and neither do the VGA&rsquo;s 640x480 16-color or 320x200 256-color modes, or many SuperVGA modes. In contrast, <I>all</I> adapters support dirty-rectangle animation. Another advantage of dirty-rectangle animation is that it&rsquo;s generally faster. While it may seem strange that it would be faster to draw off-screen and then copy the result to the screen, that is often the case, because dirty-rectangle animation usually reduces the number of times the VGA&rsquo;s hardware needs to be touched, especially in 256-color modes.</P>
-<P>This reduction comes about because when dirty rectangles are erased, it&rsquo;s done in system memory, not in display memory, and since most objects move a good deal less than their full width (that is, the new and old positions overlap), display memory is written to fewer times than with page flipping. (In 16-color modes, this is not necessarily the case, because of the parallelism obtained from the VGA&rsquo;s planar hardware.) Also, read/modify/write operations are performed in fast system memory rather than slow display memory, so display memory rarely needs to be read. This is particularly good because display memory is generally even slower for reads than for writes.</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="45-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="45-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+    <tr>
+      <td width="40%&quot;" valign="top" align="left"></td>
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+      <th align="center" colspan="3">OUT Time in Microseconds and Cycles</th>
+    </tr>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+    <tr>
+      <th width="40%" align="left" valign="bottom">OUT Instruction</th>
 
-<!-- END FOOTER -->
+      <th width="20%" align="left" valign="bottom">Official Time</th>
 
+      <th width="20%" align="left" valign="bottom">486 #1/16-bit VGA #1</th>
 
+      <th width="20%" align="left" valign="bottom">486 #2/16-bit VGA #2</th>
+    </tr>
+
+    <tr>
+      <td colspan="4">
+        <hr />
+      </td>
+    </tr>
+
+    <tr>
+      <td width="40%" valign="top" align="left">OUT DX,AL</td>
+    </tr>
+
+    <tr>
+      <td width="40%" valign="top" align="left">repeated 1,000 times nonstop<br />
+      (maximum byte access)</td>
+
+      <td width="20%" valign="top" align="left">0.300 s<br />
+      10 cycles</td>
+
+      <td width="20%" valign="top" align="left">2.546 s<br />
+      84 cycles</td>
+
+      <td width="20%" valign="top" align="left">0.813 s<br />
+      27 cycles</td>
+    </tr>
+
+    <tr>
+      <td width="40%" valign="top" align="left">OUT DX,AX</td>
+    </tr>
+
+    <tr>
+      <td width="4%" valign="top" align="left">repeated 1,000 times nonstop<br />
+      (maximum word access)</td>
+
+      <td width="20%" valign="top" align="left">0.300 s<br />
+      10 cycles</td>
+
+      <td width="20%" valign="top" align="left">3.820 s<br />
+      126 cycles</td>
+
+      <td width="20%" valign="top" align="left">1.066 s<br />
+      35 cycles</td>
+    </tr>
+
+    <tr>
+      <td width="40%" valign="top" align="left">OUT DX,AL</td>
+    </tr>
+
+    <tr>
+      <td width="40%" valign="top" align="left">repeated 1,000 times,<br />
+      but interspersed with MULs<br />
+      (random byte access)</td>
+
+      <td width="20%" valign="top" align="left">0.300 s<br />
+      10 cycles</td>
+
+      <td width="20%" valign="top" align="left">1.610 s<br />
+      53 cycles</td>
+
+      <td width="20%" valign="top" align="left">0.780 s<br />
+      26 cycles</td>
+    </tr>
+
+    <tr>
+      <td width="40%" valign="top" align="left">OUT DX,AX</td>
+    </tr>
+
+    <tr>
+      <td width="40%" valign="top" align="left">repeated 1,000 times,<br />
+      but interspersed with MULs<br />
+      (random word access)</td>
+
+      <td width="20%" valign="top" align="left">0.300 s<br />
+      10 cycles</td>
+
+      <td width="20%" valign="top" align="left">2.830 s<br />
+      93 cycles</td>
+
+      <td width="20%" valign="top" align="left">1.010 s<br />
+      33 cycles</td>
+    </tr>
+
+    <tr>
+      <td colspan="4"><b>Table 45.1 Results of I/O performance tests run under the Phar Lap386|DOS-Extender.</b></td>
+    </tr>
+
+    <tr>
+      <td colspan="4">
+        <hr />
+      </td>
+    </tr>
+  </table>
+
+  <table width="100%">
+    <tr>
+      <td valign="top" align="left" width="5%"><img src="images/i.jpg" /></td>
+
+      <td valign="top" align="left" width="95%"><small><i><b>OUT</b>s, in general, are lousy on the 486 (and to think they only took three cycles on the 286!). <b>OUT</b>s to VGAs are particularly lousy. Display memory performance is pretty poor, especially for reads. The conclusions are obvious, I would hope. Structure your graphics code, and, in general, all 486 code, to avoid <b>OUT</b>s.</i></small></td>
+    </tr>
+  </table>
+
+  <p>For graphics, this especially means using write mode 3 rather than the bit-mask register. When you must use the bit mask, arrange drawing so that you can set the bit mask once, then do a lot of drawing with that mask. For example, draw a whole edge at once, then the middle, then the other edge, rather than setting the bit mask several times on each scan line to draw the edge and middle bytes together. Don&rsquo;t read from display memory if you don&rsquo;t have to. Write each pixel once and only once.</p>
+
+  <p>It is indeed a strange concept: The key to fast graphics is staying away from the graphics adapter as much as possible.</p>
+
+  <h3><a id="Heading5"></a>Dirty-Rectangle Animation</h3>
+
+  <p>The relative slowness of VGA hardware is part of the appeal of the technique that I call &ldquo;dirty-rectangle&rdquo; animation, in which a complete copy of the contents of display memory is maintained in offscreen system (nondisplay) memory. All drawing is done to this system buffer. As offscreen drawing is done, a list is maintained of the bounding rectangles for the drawn-to areas; these are the <i>dirty rectangles</i>, &ldquo;dirty&rdquo; in the sense that that have been altered and no longer match the contents of the screen. After all drawing for a frame is completed, all the dirty rectangles for that frame are copied to the screen in a burst, and then the cycle of off-screen drawing begins again.</p>
+
+  <p>Why, exactly, would we want to go through all this complication, rather than simply drawing to the screen in the first place? The reason is visual quality. If we were to do all our drawing directly to the screen, there&rsquo;d be a lot of flicker as objects were erased and then redrawn. Similarly, overlapped drawing done with the painter&rsquo;s algorithm (in which farther objects are drawn first, so that nearer objects obscure them) would flicker as farther objects were visible for short periods. With dirty-rectangle animation, only the finished pixels for any given frame ever appear on the screen; intermediate results are never visible. Figure 45.1 illustrates the visual problems associated with drawing directly to the screen; Figure 45.2 shows how dirty-rectangle animation solves these problems.</p>
+
+  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/45-01.jpg',409,160 )"> --><img src="images/45-01.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/45-01.jpg',409,160)"> --><b>Figure 45.1</b></a>&nbsp;&nbsp;<i>Drawing directly to the screen.</i></p>
+
+  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/45-02.jpg',411,301 )"> --><img src="images/45-02.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/45-02.jpg',411,301)"> --><b>Figure 45.2</b></a>&nbsp;&nbsp;<i>Dirty rectangle animation.</i></p>
+
+  <h4 align="left"><a id="Heading6"></a>So Why Not Use Page Flipping?</h4>
+
+  <p>Well, then, if we want good visual quality, why not use page flipping? For one thing, not all adapters and all modes support page flipping. The CGA and MCGA don&rsquo;t, and neither do the VGA&rsquo;s 640x480 16-color or 320x200 256-color modes, or many SuperVGA modes. In contrast, <i>all</i> adapters support dirty-rectangle animation. Another advantage of dirty-rectangle animation is that it&rsquo;s generally faster. While it may seem strange that it would be faster to draw off-screen and then copy the result to the screen, that is often the case, because dirty-rectangle animation usually reduces the number of times the VGA&rsquo;s hardware needs to be touched, especially in 256-color modes.</p>
+
+  <p>This reduction comes about because when dirty rectangles are erased, it&rsquo;s done in system memory, not in display memory, and since most objects move a good deal less than their full width (that is, the new and old positions overlap), display memory is written to fewer times than with page flipping. (In 16-color modes, this is not necessarily the case, because of the parallelism obtained from the VGA&rsquo;s planar hardware.) Also, read/modify/write operations are performed in fast system memory rather than slow display memory, so display memory rarely needs to be read. This is particularly good because display memory is generally even slower for reads than for writes.</p>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="45-01.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="45-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

@@ -1,86 +1,107 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pushing the 286 and 386</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=11//-->
+  <!--PAGES=220-222//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="11-04.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="11-06.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Pushing the 286 and 386</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>Under ideal conditions, a 286 can access memory much, much faster than an 8088. A 10 MHz 286 is capable of accessing a word of system memory every 0.20 ms with <b>REP MOVSW</b>, dwarfing the 1 byte every 1.31 &micro;s that the 8088 in a PC can manage. However, access to display memory is anything but ideal for a 286. For one thing, most display adapters are 8-bit devices, although newer adapters are 16-bit in nature. One consequence of that is that only 1 byte can be read or written per access to display memory; word-sized accesses to 8-bit devices are automatically split into 2 separate byte-sized accesses by the AT&rsquo;s bus. Another consequence is that accesses are simply slower; the AT&rsquo;s bus inserts additional wait states on accesses to 8-bit devices since it must assume that such devices were designed for PCs and may not run reliably at AT speeds.</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=11//-->
-<!--PAGES=220-222//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p>However, the 8-bit size of most display adapters is but one of the two factors that reduce the speed with which the 286 can access display memory. Far more cycles are eaten by the inherent memory-access limitations of display adapters&mdash;that is, the limited number of display memory accesses that display adapters make available to the 286. Look at it this way: If <b>REP MOVSW</b> on a PC can use more than half of all available accesses to display memory, then how much faster can code running on a 286 or 386 possibly run when accessing display memory?</p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="11-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="11-06.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>Under ideal conditions, a 286 can access memory much, much faster than an 8088. A 10 MHz 286 is capable of accessing a word of system memory every 0.20 ms with <B>REP MOVSW</B>, dwarfing the 1 byte every 1.31 &micro;s that the 8088 in a PC can manage. However, access to display memory is anything but ideal for a 286. For one thing, most display adapters are 8-bit devices, although newer adapters are 16-bit in nature. One consequence of that is that only 1 byte can be read or written per access to display memory; word-sized accesses to 8-bit devices are automatically split into 2 separate byte-sized accesses by the AT&rsquo;s bus. Another consequence is that accesses are simply slower; the AT&rsquo;s bus inserts additional wait states on accesses to 8-bit devices since it must assume that such devices were designed for PCs and may not run reliably at AT speeds.</P>
-<P>However, the 8-bit size of most display adapters is but one of the two factors that reduce the speed with which the 286 can access display memory. Far more cycles are eaten by the inherent memory-access limitations of display adapters&mdash;that is, the limited number of display memory accesses that display adapters make available to the 286. Look at it this way: If <B>REP MOVSW</B> on a PC can use more than half of all available accesses to display memory, then how much faster can code running on a 286 or 386 possibly run when accessing display memory?</P>
-<P>That&rsquo;s right&mdash;less than twice as fast.</P>
-<P>In other words, instructions that access display memory won&rsquo;t run a whole lot faster on ATs and faster computers than they do on PCs. That explains one of the two viewpoints expressed at the beginning of this section: The display adapter cycle-eater is just about the same on high-end computers as it is on the PC, in the sense that it allows instructions that access display memory to run at just about the same speed on all computers.</P>
-<P>Of course, the picture is quite a bit different when you compare the performance of instructions that access display memory to the <I>maximum</I> performance of those instructions. Instructions that access display memory receive many more wait states when running on a 286 than they do on an 8088. Why? While the 286 is capable of accessing memory much more often than the 8088, we&rsquo;ve seen that the frequency of access to display memory is determined not by processor speed but by the display adapter itself. As a result, both processors are actually allowed just about the same maximum number of accesses to display memory in any given time. By definition, then, the 286 must spend many more cycles waiting than does the 8088.</P>
-<P>And that explains the second viewpoint expressed above regarding the display adapter cycle-eater vis-a-vis the 286 and 386. The display adapter cycle-eater, as measured in cycles lost to wait states, is indeed much worse on AT-class computers than it is on the PC, and it&rsquo;s worse still on more powerful computers.</P>
-<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP" ALIGN="LEFT"><IMG SRC="images/i.jpg"><TD WIDTH="95%" VALIGN="TOP" ALIGN="LEFT"><SMALL><I>How bad is the display adapter cycle-eater on an AT? It&rsquo;s this bad: Based on my (not inconsiderable) experience in timing display adapter access, I&rsquo;ve found that the display adapter cycle-eater can slow an AT&mdash;or even a 386 computer&mdash;to near-PC speeds when display memory is accessed.</I></SMALL>
-</TABLE>
-<P>I know that&rsquo;s hard to believe, but the display adapter cycle-eater gives out just so many display memory accesses in a given time, and no more, no matter how fast the processor is. In fact, the faster the processor, the more the display adapter cycle-eater hurts the performance of instructions that access display memory. The display adapter cycle-eater is not only still present in 286/386 computers, it&rsquo;s worse than ever.
-</P>
-<P>What can we do about this new, more virulent form of the display adapter cycle-eater? The workaround is the same as it was on the PC: Access display memory as little as you possibly can.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading13"></A>New Instructions and Features: The 286</H4>
-<P>The 286 and 386 offer a number of new instructions. The 286 has a relatively small number of instructions that the 8088 lacks, while the 386 has those instructions and quite a few more, along with new addressing modes and data sizes. We&rsquo;ll discuss the 286 and the 386 separately in this regard.
-</P>
-<P>The 286 has a number of instructions designed for protected-mode operations. As I&rsquo;ve said, we&rsquo;re not going to discuss protected mode in this book; in any case, protected-mode instructions are generally used only by operating systems. (I should mention that the 286&rsquo;s protected mode brings with it the ability to address 16 MB of memory, a considerable improvement over the 8088&rsquo;s 1 MB. In real mode, however, programs are still limited to 1 MB of addressable memory on the 286. In either mode, each segment is still limited to 64K.)</P>
-<P>There are also a handful of 286-specific real-mode instructions, and they can be quite useful. <B>BOUND</B> checks array bounds. <B>ENTER</B> and <B>LEAVE</B> support compact and speedy stack frame construction and removal, ideal for interfacing to high-level languages such as C and Pascal (although these instructions are actually relatively slow on the 386 and its successors, and should be used with caution when performance matters). <B>INS</B> and <B>OUTS</B> are new string instructions that support efficient data transfer between memory and I/O ports. Finally, <B>PUSHA</B> and <B>POPA</B> push and pop all eight general-purpose registers.</P>
-<P>A couple of old instructions gain new features on the 286. For one, the 286 version of <B>PUSH</B> is capable of pushing a constant on the stack. For another, the 286 allows all shifts and rotates to be performed for not just 1 bit or the number of bits specified by CL, but for <I>any</I> constant number of bits.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading14"></A>New Instructions and Features: The 386</H4>
-<P>The 386 is somewhat more complex than the 286 regarding new features. Once again, we won&rsquo;t discuss protected mode, which on the 386 comes with the ability to address up to 4 gigabytes per segment and 64 terabytes in all. In real mode (and in virtual-86 mode, which allows the 386 to multitask MS-DOS applications, and which is identical to real mode so far as MS-DOS programs are concerned), programs running on the 386 are still limited to 1 MB of addressable memory and 64K per segment.
-</P>
-<P>The 386 has many new instructions, as well as new registers, addressing modes and data sizes that have trickled down from protected mode. Let&rsquo;s take a quick look at these new real-mode features.</P>
-<P>Even in real mode, it&rsquo;s possible to access many of the 386&rsquo;s new and extended registers. Most of these registers are simply 32-bit extensions of the 16-bit registers of the 8088. For example, EAX is a 32-bit register containing AX as its lower 16 bits, EBX is a 32-bit register containing BX as its lower 16 bits, and so on. There are also two new segment registers: FS and GS.</P>
-<P>The 386 also comes with a slew of new real-mode instructions beyond those supported by the 8088 and 286. These instructions can scan data on a bit-by-bit basis, set the Carry flag to the value of a specified bit, sign-extend or zero-extend data as it&rsquo;s moved, set a register or memory variable to 1 or 0 on the basis of any of the conditions that can be tested with conditional jumps, and more. (Again, beware: Many of these complex 386-specific instructions are slower than equivalent sequences of simple instructions on the 486 and especially on the Pentium.) What&rsquo;s more, both old and new instructions support 32-bit operations on the 386. For example, it&rsquo;s relatively simple to copy data in chunks of 4 bytes on a 386, even in real mode, by using the <B>MOVSD</B> (&ldquo;move string double&rdquo;) instruction, or to negate a 32-bit value with <B>NEG eax</B>.</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="11-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="11-06.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+  <p>That&rsquo;s right&mdash;less than twice as fast.</p>
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>In other words, instructions that access display memory won&rsquo;t run a whole lot faster on ATs and faster computers than they do on PCs. That explains one of the two viewpoints expressed at the beginning of this section: The display adapter cycle-eater is just about the same on high-end computers as it is on the PC, in the sense that it allows instructions that access display memory to run at just about the same speed on all computers.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>Of course, the picture is quite a bit different when you compare the performance of instructions that access display memory to the <i>maximum</i> performance of those instructions. Instructions that access display memory receive many more wait states when running on a 286 than they do on an 8088. Why? While the 286 is capable of accessing memory much more often than the 8088, we&rsquo;ve seen that the frequency of access to display memory is determined not by processor speed but by the display adapter itself. As a result, both processors are actually allowed just about the same maximum number of accesses to display memory in any given time. By definition, then, the 286 must spend many more cycles waiting than does the 8088.</p>
 
-<!-- END FOOTER -->
+  <p>And that explains the second viewpoint expressed above regarding the display adapter cycle-eater vis-a-vis the 286 and 386. The display adapter cycle-eater, as measured in cycles lost to wait states, is indeed much worse on AT-class computers than it is on the PC, and it&rsquo;s worse still on more powerful computers.</p>
 
+  <table width="100%">
+    <tr>
+      <td width="5%" valign="top" align="left"><img src="images/i.jpg" /></td>
 
+      <td width="95%" valign="top" align="left"><small><i>How bad is the display adapter cycle-eater on an AT? It&rsquo;s this bad: Based on my (not inconsiderable) experience in timing display adapter access, I&rsquo;ve found that the display adapter cycle-eater can slow an AT&mdash;or even a 386 computer&mdash;to near-PC speeds when display memory is accessed.</i></small></td>
+    </tr>
+  </table>
+
+  <p>I know that&rsquo;s hard to believe, but the display adapter cycle-eater gives out just so many display memory accesses in a given time, and no more, no matter how fast the processor is. In fact, the faster the processor, the more the display adapter cycle-eater hurts the performance of instructions that access display memory. The display adapter cycle-eater is not only still present in 286/386 computers, it&rsquo;s worse than ever.</p>
+
+  <p>What can we do about this new, more virulent form of the display adapter cycle-eater? The workaround is the same as it was on the PC: Access display memory as little as you possibly can.</p>
+
+  <h4 align="left"><a id="Heading13"></a>New Instructions and Features: The 286</h4>
+
+  <p>The 286 and 386 offer a number of new instructions. The 286 has a relatively small number of instructions that the 8088 lacks, while the 386 has those instructions and quite a few more, along with new addressing modes and data sizes. We&rsquo;ll discuss the 286 and the 386 separately in this regard.</p>
+
+  <p>The 286 has a number of instructions designed for protected-mode operations. As I&rsquo;ve said, we&rsquo;re not going to discuss protected mode in this book; in any case, protected-mode instructions are generally used only by operating systems. (I should mention that the 286&rsquo;s protected mode brings with it the ability to address 16 MB of memory, a considerable improvement over the 8088&rsquo;s 1 MB. In real mode, however, programs are still limited to 1 MB of addressable memory on the 286. In either mode, each segment is still limited to 64K.)</p>
+
+  <p>There are also a handful of 286-specific real-mode instructions, and they can be quite useful. <b>BOUND</b> checks array bounds. <b>ENTER</b> and <b>LEAVE</b> support compact and speedy stack frame construction and removal, ideal for interfacing to high-level languages such as C and Pascal (although these instructions are actually relatively slow on the 386 and its successors, and should be used with caution when performance matters). <b>INS</b> and <b>OUTS</b> are new string instructions that support efficient data transfer between memory and I/O ports. Finally, <b>PUSHA</b> and <b>POPA</b> push and pop all eight general-purpose registers.</p>
+
+  <p>A couple of old instructions gain new features on the 286. For one, the 286 version of <b>PUSH</b> is capable of pushing a constant on the stack. For another, the 286 allows all shifts and rotates to be performed for not just 1 bit or the number of bits specified by CL, but for <i>any</i> constant number of bits.</p>
+
+  <h4 align="left"><a id="Heading14"></a>New Instructions and Features: The 386</h4>
+
+  <p>The 386 is somewhat more complex than the 286 regarding new features. Once again, we won&rsquo;t discuss protected mode, which on the 386 comes with the ability to address up to 4 gigabytes per segment and 64 terabytes in all. In real mode (and in virtual-86 mode, which allows the 386 to multitask MS-DOS applications, and which is identical to real mode so far as MS-DOS programs are concerned), programs running on the 386 are still limited to 1 MB of addressable memory and 64K per segment.</p>
+
+  <p>The 386 has many new instructions, as well as new registers, addressing modes and data sizes that have trickled down from protected mode. Let&rsquo;s take a quick look at these new real-mode features.</p>
+
+  <p>Even in real mode, it&rsquo;s possible to access many of the 386&rsquo;s new and extended registers. Most of these registers are simply 32-bit extensions of the 16-bit registers of the 8088. For example, EAX is a 32-bit register containing AX as its lower 16 bits, EBX is a 32-bit register containing BX as its lower 16 bits, and so on. There are also two new segment registers: FS and GS.</p>
+
+  <p>The 386 also comes with a slew of new real-mode instructions beyond those supported by the 8088 and 286. These instructions can scan data on a bit-by-bit basis, set the Carry flag to the value of a specified bit, sign-extend or zero-extend data as it&rsquo;s moved, set a register or memory variable to 1 or 0 on the basis of any of the conditions that can be tested with conditional jumps, and more. (Again, beware: Many of these complex 386-specific instructions are slower than equivalent sequences of simple instructions on the 486 and especially on the Pentium.) What&rsquo;s more, both old and new instructions support 32-bit operations on the 386. For example, it&rsquo;s relatively simple to copy data in chunks of 4 bytes on a 386, even in real mode, by using the <b>MOVSD</b> (&ldquo;move string double&rdquo;) instruction, or to negate a 32-bit value with <b>NEG eax</b>.</p>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="11-04.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="11-06.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

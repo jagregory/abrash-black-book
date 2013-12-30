@@ -1,61 +1,72 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Of Songs, Taxes, and the Simplicity of Complex Polygons</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=40//-->
+  <!--PAGES=744-750//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="40-01.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="40-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Of Songs, Taxes, and the Simplicity of Complex Polygons</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>Advancing the X coordinates is easy. For each edge, we&rsquo;ll store the current X coordinate and all required error term information, and we&rsquo;ll use that to advance the edge one scan line at a time; then, we&rsquo;ll resort the AET by X coordinate as needed. Removing edges as they end is also easy; we&rsquo;ll just count down the length of each active edge on each scan line and remove an edge when its count reaches zero. Adding edges as their tops are encountered is a tad more complex. While there are a number of ways to do this, one particularly efficient approach is to start out by putting all the edges of the polygon, sorted by increasing Y coordinate, into a single list, called the <i>global edge table</i> (GET). Then, as each scan line is encountered, all edges at the start of the GET that begin on the current scan line are moved to the AET; because the GET is Y-sorted, there&rsquo;s no need to search the entire GET. For still greater efficiency, edges in the GET that share common Y coordinates can be sorted by increasing X coordinate; this ensures that no more than one pass through the AET per scan line is ever needed when adding new edges from the GET in such a way as to keep the AET sorted in ascending X order.</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=40//-->
-<!--PAGES=744-750//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p>What form should the GET and AET take? Linked lists of edge structures, as shown in Figure 40.3. With linked lists, all that&rsquo;s required to move edges from the GET to the AET as they become active, sort the AET, and remove edges that have been fully drawn is the exchanging of a few pointers.</p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="40-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="40-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>Advancing the X coordinates is easy. For each edge, we&rsquo;ll store the current X coordinate and all required error term information, and we&rsquo;ll use that to advance the edge one scan line at a time; then, we&rsquo;ll resort the AET by X coordinate as needed. Removing edges as they end is also easy; we&rsquo;ll just count down the length of each active edge on each scan line and remove an edge when its count reaches zero. Adding edges as their tops are encountered is a tad more complex. While there are a number of ways to do this, one particularly efficient approach is to start out by putting all the edges of the polygon, sorted by increasing Y coordinate, into a single list, called the <I>global edge table</I> (GET). Then, as each scan line is encountered, all edges at the start of the GET that begin on the current scan line are moved to the AET; because the GET is Y-sorted, there&rsquo;s no need to search the entire GET. For still greater efficiency, edges in the GET that share common Y coordinates can be sorted by increasing X coordinate; this ensures that no more than one pass through the AET per scan line is ever needed when adding new edges from the GET in such a way as to keep the AET sorted in ascending X order.</P>
-<P>What form should the GET and AET take? Linked lists of edge structures, as shown in Figure 40.3. With linked lists, all that&rsquo;s required to move edges from the GET to the AET as they become active, sort the AET, and remove edges that have been fully drawn is the exchanging of a few pointers.</P>
-<P>In summary, we&rsquo;ll initially store all the polygon edges in Y-primary/X-secondary sort order in the GET, complete with initial X and Y coordinates, error terms and error term adjustments, lengths, and directions of X movement for each edge. Once the GET is built, we&rsquo;ll do the following:</P>
-<DL>
-<DD><B>1.</B>&nbsp;&nbsp;Set the current Y coordinate to the Y coordinate of the first edge in the GET.
-<DD><B>2.</B>&nbsp;&nbsp;Move all edges with the current Y coordinate from the GET to the AET, removing them from the GET and maintaining the X-sorted order of the AET.
-<DD><B>3.</B>&nbsp;&nbsp;Draw all odd-to-even spans in the AET at the current Y coordinate.
-<DD><B>4.</B>&nbsp;&nbsp;Count down the lengths of all edges in the AET, removing any edges that are done, and advancing the X coordinates of all remaining edges in the AET by one scan line.
-<DD><B>5.</B>&nbsp;&nbsp;Sort the AET in order of ascending X coordinate.
-<DD><B>6.</B>&nbsp;&nbsp;Advance the current Y coordinate by one scan line.
-<DD><B>7.</B>&nbsp;&nbsp;If either the AET or GET isn&rsquo;t empty, go to step 2.
-</DL>
-<P><A NAME="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/40-03.jpg',407,199 )"> --><IMG SRC="images/40-03.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/40-03.jpg',407,199)"> --><B>Figure 40.3</B></A>&nbsp;&nbsp;<I>The global and active edge tables as linked lists.</I>
-</P>
-<P>That&rsquo;s really all there is to it. Compare Listing 40.1 to the fast convex polygon filling code from Chapter 39, and you&rsquo;ll see that, contrary to expectation, complex polygon filling is indeed one of the more sane and sensible corners of the universe.
-</P>
-<P><B>LISTING 40.1 L40-1.C</B></P>
-<!-- CODE //-->
-<PRE>
+  <p>In summary, we&rsquo;ll initially store all the polygon edges in Y-primary/X-secondary sort order in the GET, complete with initial X and Y coordinates, error terms and error term adjustments, lengths, and directions of X movement for each edge. Once the GET is built, we&rsquo;ll do the following:</p>
+
+  <dl>
+    <dd><b>1.</b>&nbsp;&nbsp;Set the current Y coordinate to the Y coordinate of the first edge in the GET.</dd>
+
+    <dd><b>2.</b>&nbsp;&nbsp;Move all edges with the current Y coordinate from the GET to the AET, removing them from the GET and maintaining the X-sorted order of the AET.</dd>
+
+    <dd><b>3.</b>&nbsp;&nbsp;Draw all odd-to-even spans in the AET at the current Y coordinate.</dd>
+
+    <dd><b>4.</b>&nbsp;&nbsp;Count down the lengths of all edges in the AET, removing any edges that are done, and advancing the X coordinates of all remaining edges in the AET by one scan line.</dd>
+
+    <dd><b>5.</b>&nbsp;&nbsp;Sort the AET in order of ascending X coordinate.</dd>
+
+    <dd><b>6.</b>&nbsp;&nbsp;Advance the current Y coordinate by one scan line.</dd>
+
+    <dd><b>7.</b>&nbsp;&nbsp;If either the AET or GET isn&rsquo;t empty, go to step 2.</dd>
+  </dl>
+
+  <p><a id="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/40-03.jpg',407,199 )"> --><img src="images/40-03.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/40-03.jpg',407,199)"> --><b>Figure 40.3</b></a>&nbsp;&nbsp;<i>The global and active edge tables as linked lists.</i></p>
+
+  <p>That&rsquo;s really all there is to it. Compare Listing 40.1 to the fast convex polygon filling code from Chapter 39, and you&rsquo;ll see that, contrary to expectation, complex polygon filling is indeed one of the more sane and sensible corners of the universe.</p>
+
+  <p><b>LISTING 40.1 L40-1.C</b></p><!-- CODE //-->
+  <pre>
  /* Color-fills an arbitrarily-shaped polygon described by VertexList.
     If the first and last points in VertexList are not the same, the path
     around the polygon is automatically closed. All vertices are offset
@@ -210,18 +221,18 @@
           /* Link the new edge into the GET so that the edge list is
              still sorted by Y coordinate, and by X coordinate for all
              edges with the same Y coordinate */
-          FollowingEdgeLink = &GETPtr;
+          FollowingEdgeLink = &amp;GETPtr;
           for (;;) {
              FollowingEdge = *FollowingEdgeLink;
              if ((FollowingEdge == NULL) ||
                    (FollowingEdge-&gt;StartY &gt; StartY) ||
-                   ((FollowingEdge-&gt;StartY == StartY) &&
+                   ((FollowingEdge-&gt;StartY == StartY) &amp;&amp;
                    (FollowingEdge-&gt;X &gt;= StartX))) {
                 NewEdgePtr-&gt;NextEdge = FollowingEdge;
                 *FollowingEdgeLink = NewEdgePtr;
                 break;
              }
-             FollowingEdgeLink = &FollowingEdge-&gt;NextEdge;
+             FollowingEdgeLink = &amp;FollowingEdge-&gt;NextEdge;
           }
        }
     }
@@ -239,7 +250,7 @@
     if (AETPtr != NULL) {
        do {
           SwapOccurred = 0;
-          CurrentEdgePtr = &AETPtr;
+          CurrentEdgePtr = &amp;AETPtr;
           while ((CurrentEdge = *CurrentEdgePtr)-&gt;NextEdge != NULL) {
              if (CurrentEdge-&gt;X &gt; CurrentEdge-&gt;NextEdge-&gt;X) {
                 /* The second edge has a lower X than the first;
@@ -250,7 +261,7 @@
                 CurrentEdge-&gt;NextEdge = TempEdge;
                 SwapOccurred = 1;
              }
-             CurrentEdgePtr = &(*CurrentEdgePtr)-&gt;NextEdge;
+             CurrentEdgePtr = &amp;(*CurrentEdgePtr)-&gt;NextEdge;
           }
        } while (SwapOccurred != 0);
     }
@@ -262,7 +273,7 @@
     struct EdgeState *CurrentEdge, **CurrentEdgePtr;
 
     /* Count down and remove or advance each edge in the AET */
-    CurrentEdgePtr = &AETPtr;
+    CurrentEdgePtr = &amp;AETPtr;
     while ((CurrentEdge = *CurrentEdgePtr) != NULL) {
        /* Count off one scan line for this edge */
        if ((--(CurrentEdge-&gt;Count)) == 0) {
@@ -277,7 +288,7 @@
              CurrentEdge-&gt;X += CurrentEdge-&gt;XDirection;
              CurrentEdge-&gt;ErrorTerm -= CurrentEdge-&gt;ErrorTermAdjDown;
           }
-          CurrentEdgePtr = &CurrentEdge-&gt;NextEdge;
+          CurrentEdgePtr = &amp;CurrentEdge-&gt;NextEdge;
        }
     }
  }
@@ -294,8 +305,8 @@
        at the desired Y coordinate. Also, the GET is X sorted within
        each Y coordinate, so each successive edge we add to the AET is
        guaranteed to belong later in the AET than the one just added. */
-    AETEdgePtr = &AETPtr;
-    while ((GETPtr != NULL) && (GETPtr-&gt;StartY == YToMove)) {
+    AETEdgePtr = &amp;AETPtr;
+    while ((GETPtr != NULL) &amp;&amp; (GETPtr-&gt;StartY == YToMove)) {
        CurrentX = GETPtr-&gt;X;
        /* Link the new edge into the AET so that the AET is still
           sorted by X coordinate */
@@ -305,11 +316,11 @@
              TempEdge = GETPtr-&gt;NextEdge;
              *AETEdgePtr = GETPtr;  /* link the edge into the AET */
              GETPtr-&gt;NextEdge = AETEdge;
-             AETEdgePtr = &GETPtr-&gt;NextEdge;
+             AETEdgePtr = &amp;GETPtr-&gt;NextEdge;
              GETPtr = TempEdge;   /* unlink the edge from the GET */
              break;
           } else {
-             AETEdgePtr = &AETEdge-&gt;NextEdge;
+             AETEdgePtr = &amp;AETEdge-&gt;NextEdge;
           }
        }
     }
@@ -333,31 +344,29 @@
        CurrentEdge = CurrentEdge-&gt;NextEdge;
     }
  }
-</PRE>
-<!-- END CODE //-->
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="40-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="40-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p><br /></p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="40-01.html">Previous</a></td>
 
-<!-- END FOOTER -->
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="40-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
 
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

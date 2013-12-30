@@ -1,44 +1,44 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: There Ain't No Such Thing as the Fastest Code</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=16//-->
+  <!--PAGES=303-305//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="16-02.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="16-04.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: There Ain't No Such Thing as the Fastest Code</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
-
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=16//-->
-<!--PAGES=303-305//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
-
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="16-02.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="16-04.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P><B>LISTING 16.4 L16-4.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+  <p><b>LISTING 16.4 L16-4.ASM</b></p><!-- CODE //-->
+  <pre>
  ; Assembly subroutine for Listing 16.2. Scans through Buffer, of
  ; length BufferLength, counting words and updating WordCount as
  ; appropriate, using a lookup table-based approach. BufferLength
@@ -130,39 +130,51 @@
  _ScanBuffer     endp
          end
  
-</PRE>
-<!-- END CODE //-->
-<P>Listing 16.4 features several interesting tricks. First, it uses <B>LODSB</B> and <B>XLAT</B> in succession, a very neat way to get a pointed-to byte, advance the pointer, and look up the value indexed by the byte in a table, all with just two instruction bytes. (Interestingly, Listing 16.4 would probably run quite a bit better still on an 8088, where <B>LODSB</B> and <B>XLAT</B> have a greater advantage over conventional instructions. On the 486 and Pentium, however, <B>LODSB</B> and <B>XLAT</B> lose much of their appeal, and should be replaced with <B>MOV</B> instructions.) Better yet, <B>LODSB</B> and <B>XLAT</B> don&rsquo;t alter the flags, so the Zero flag status set before <B>LODSB</B> is still around to be tested after <B>XLAT</B> .</P>
-<P>Finally, if you look closely, you will see that Listing 16.4 jumps out of the loop to increment the word count in the case where a word is actually found, with a duplicate of the loop-bottom code placed after the code that increments the word count, to avoid an extra branch back into the loop; this replaces the more intuitive approach of jumping around the incrementing code to the loop bottom when a word isn&rsquo;t found. Although this incurs a branch every time a word is found, a word is typically found only once every 5 or 6 bytes; on average, then, a branch is saved about two-thirds of the time. This is an excellent example of how understanding the nature of the data you&rsquo;re processing allows you to optimize in ways the compiler can&rsquo;t. <I>Know your data!</I></P>
-<P>So, gosh, Listing 16.4 is the best word-counting code in the universe, right? Not hardly. If there&rsquo;s one thing my years of toil in this vale of silicon have taught me, it&rsquo;s that there&rsquo;s never a lack of potential for further optimization. <I>Never!</I> Off the top of my head, I can think of at least three ways to speed up Listing 16.4; and, since Turbo Profiler reports that even in Listing 16.4, 88 percent of the time is spent scanning the buffer (as opposed to reading the file), there&rsquo;s potential for those further optimizations to improve performance significantly. (However, it is true that when access is performed to a hard rather than RAM disk, disk access jumps to about half of overall execution time.) One possible optimization is unrolling the loop, although that is truly a last resort because it tends to make further changes extremely difficult.</P>
-<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>Exhaust all other optimizations before unrolling loops.</I></SMALL>
-</TABLE>
-<H3><A NAME="Heading5"></A>Challenges and Hazards</H3>
-<P>The challenge I put to the readers of <I>PC TECHNIQUES</I> was to write a faster module to replace Listing 16.4. The author of the code that counted the words in my secret test file fastest on my 20 MHz cached 386 would be the winner and receive Numerous Valuable Prizes.</P>
-<P>No listings were to be longer than 200 lines. No complete programs were to be accepted; submissions had to be plug-compatible with Listing 16.4. (This was to encourage people not to waste time optimizing outside the inner loop.) Finally, the code had to produce the same results as Listing 16.4; I didn&rsquo;t want to see functions that approximated the word count by dividing the number of characters by six instead of counting actual words!</P>
-<P>So how did the entrants in this particular challenge stack up? More than one claimed a speed-up over my assembly word-counting code of more than three times. On top of the three-times speedup over the original C code that I had already realized, we&rsquo;re almost up to an order of magnitude faster. You are, of course, entitled to your own opinion, but <I>I</I> consider an order of magnitude to be significant.</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="16-02.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="16-04.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>Listing 16.4 features several interesting tricks. First, it uses <b>LODSB</b> and <b>XLAT</b> in succession, a very neat way to get a pointed-to byte, advance the pointer, and look up the value indexed by the byte in a table, all with just two instruction bytes. (Interestingly, Listing 16.4 would probably run quite a bit better still on an 8088, where <b>LODSB</b> and <b>XLAT</b> have a greater advantage over conventional instructions. On the 486 and Pentium, however, <b>LODSB</b> and <b>XLAT</b> lose much of their appeal, and should be replaced with <b>MOV</b> instructions.) Better yet, <b>LODSB</b> and <b>XLAT</b> don&rsquo;t alter the flags, so the Zero flag status set before <b>LODSB</b> is still around to be tested after <b>XLAT</b> .</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>Finally, if you look closely, you will see that Listing 16.4 jumps out of the loop to increment the word count in the case where a word is actually found, with a duplicate of the loop-bottom code placed after the code that increments the word count, to avoid an extra branch back into the loop; this replaces the more intuitive approach of jumping around the incrementing code to the loop bottom when a word isn&rsquo;t found. Although this incurs a branch every time a word is found, a word is typically found only once every 5 or 6 bytes; on average, then, a branch is saved about two-thirds of the time. This is an excellent example of how understanding the nature of the data you&rsquo;re processing allows you to optimize in ways the compiler can&rsquo;t. <i>Know your data!</i></p>
 
-<!-- END FOOTER -->
+  <p>So, gosh, Listing 16.4 is the best word-counting code in the universe, right? Not hardly. If there&rsquo;s one thing my years of toil in this vale of silicon have taught me, it&rsquo;s that there&rsquo;s never a lack of potential for further optimization. <i>Never!</i> Off the top of my head, I can think of at least three ways to speed up Listing 16.4; and, since Turbo Profiler reports that even in Listing 16.4, 88 percent of the time is spent scanning the buffer (as opposed to reading the file), there&rsquo;s potential for those further optimizations to improve performance significantly. (However, it is true that when access is performed to a hard rather than RAM disk, disk access jumps to about half of overall execution time.) One possible optimization is unrolling the loop, although that is truly a last resort because it tends to make further changes extremely difficult.</p>
 
+  <table width="100%">
+    <tr>
+      <td align="left" valign="top" width="5%"><img src="images/i.jpg" /></td>
 
+      <td align="left" valign="top" width="95%"><small><i>Exhaust all other optimizations before unrolling loops.</i></small></td>
+    </tr>
+  </table>
+
+  <h3><a id="Heading5"></a>Challenges and Hazards</h3>
+
+  <p>The challenge I put to the readers of <i>PC TECHNIQUES</i> was to write a faster module to replace Listing 16.4. The author of the code that counted the words in my secret test file fastest on my 20 MHz cached 386 would be the winner and receive Numerous Valuable Prizes.</p>
+
+  <p>No listings were to be longer than 200 lines. No complete programs were to be accepted; submissions had to be plug-compatible with Listing 16.4. (This was to encourage people not to waste time optimizing outside the inner loop.) Finally, the code had to produce the same results as Listing 16.4; I didn&rsquo;t want to see functions that approximated the word count by dividing the number of characters by six instead of counting actual words!</p>
+
+  <p>So how did the entrants in this particular challenge stack up? More than one claimed a speed-up over my assembly word-counting code of more than three times. On top of the three-times speedup over the original C code that I had already realized, we&rsquo;re almost up to an order of magnitude faster. You are, of course, entitled to your own opinion, but <i>I</i> consider an order of magnitude to be significant.</p>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="16-02.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="16-04.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

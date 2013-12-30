@@ -1,48 +1,54 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: The Best Optimizer Is between Your Ears</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=01//-->
+  <!--PAGES=013-015//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="01-03.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="01-05.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: The Best Optimizer Is between Your Ears</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <table width="100%">
+    <tr>
+      <td width="5%" valign="top"><img src="images/i.jpg" /></td>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=01//-->
-<!--PAGES=013-015//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+      <td width="95%"><small><i>Make sure you understand what really goes on when you insert a seemingly-innocuous function call into the time-critical portions of your code.</i></small></td>
+    </tr>
+  </table>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="01-03.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="01-05.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<TABLE WIDTH="100%">
-<TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="95%"><SMALL><I>Make sure you understand what really goes on when you insert a seemingly-innocuous function call into the time-critical portions of your code.</I></SMALL>
-</TABLE>
-<P>In this case that means knowing how DOS and the C/C<SMALL>++</SMALL> file-access libraries do their work. In other words, <I>know the territory</I>!</P>
-<P><B>LISTING 1.4 L1-4.C</B></P>
-<!-- CODE //-->
-<PRE>
+  <p>In this case that means knowing how DOS and the C/C<small>++</small> file-access libraries do their work. In other words, <i>know the territory</i>!</p>
+
+  <p><b>LISTING 1.4 L1-4.C</b></p><!-- CODE //-->
+  <pre>
 /*
 * Program to calculate the 16-bit checksum of the stream of bytes
 * from the specified file. Obtains the bytes one at a time via
@@ -76,49 +82,67 @@ main(int argc, char *argv[]) {
       printf(&ldquo;The checksum is: %u\n&rdquo;, Checksum);
       exit(0);
 }
-</PRE>
-<!-- END CODE //-->
-<H4 ALIGN="LEFT"><A NAME="Heading10"></A>Know When It Matters</H4>
-<P>The last section contained a particularly interesting phrase: <I>the time-critical portions of your code</I>. Time-critical portions of your code are those portions in which the speed of the code makes a significant difference in the overall performance of your program&mdash;and by &ldquo;significant,&rdquo; I don&rsquo;t mean that it makes the code 100 percent faster, or 200 percent, or any particular amount at all, but rather that it makes the program more responsive and/or usable <I>from the user&rsquo;s perspective</I>.</P>
-<P>Don&rsquo;t waste time optimizing non-time-critical code: set-up code, initialization code, and the like. Spend your time improving the performance of the code inside heavily-used loops and in the portions of your programs that directly affect response time. Notice, for example, that I haven&rsquo;t bothered to implement a version of the checksum program entirely in assembly; Listings 1.2 and 1.6 call assembly subroutines that handle the time-critical operations, but C is still used for checking command-line parameters, operning files, printing, and the like.</P>
-<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="95%"><SMALL><I>If you were to implement any of the listings in this chapter entirely in hand-optimized assembly, I suppose you might get a performance improvement of a few percent&mdash;but I rather doubt you&rsquo;d get even that much, and you&rsquo;d sure as heck spend an awful lot of time for whatever meager improvement does result. Let C do what it does well, and use assembly only when it makes a perceptible difference.</I></SMALL>
-</TABLE>
-<P>Besides, we don&rsquo;t want to optimize until the design is refined to our satisfaction, and that won&rsquo;t be the case until we&rsquo;ve thought about other approaches.
-</P>
-<H4 ALIGN="LEFT"><A NAME="Heading11"></A>Always Consider the Alternatives</H4>
-<P>Listing 1.4 is good, but let&rsquo;s see if there are other&mdash;perhaps less obvious&mdash;ways to get the same results faster. Let&rsquo;s start by considering why Listing 1.4 is so much better than Listing 1.1. Like <B>read()</B>, <B>getc()</B> calls DOS to read from the file; the speed improvement of Listing 1.4 over Listing 1.1 occurs because <B>getc()</B> eads many bytes at once via DOS, then manages those bytes for us. That&rsquo;s faster than reading them one at a time using <B>read()</B>&mdash;but there&rsquo;s no reason to think that it&rsquo;s faster than having our program read and manage blocks itself. Easier, yes, but not faster.</P>
-<P>Consider this: Every invocation of <B>getc()</B> involves pushing a parameter, executing a call to the C library function, getting the parameter (in the C library code), looking up information about the desired stream, unbuffering the next byte from the stream, and returning to the calling code. That takes a considerable amount of time, especially by contrast with simply maintaining a pointer to a buffer and whizzing through the data in the buffer inside a single loop.</P>
-<P>There are four reasons that many programmers would give for not trying to improve on Listing 1.4:</P>
-<DL>
-<DD><B>1.</B>&nbsp;&nbsp;The code is already fast enough.
-<DD><B>2.</B>&nbsp;&nbsp;The code works, and some people are content with code that works, even when it&rsquo;s slow enough to be annoying.
-<DD><B>3.</B>&nbsp;&nbsp;The C library is written in optimized assembly, and it&rsquo;s likely to be faster than any code that the average programmer could write to perform essentially the same function.
-<DD><B>4.</B>&nbsp;&nbsp;The C library conveniently handles the buffering of file data, and it would be a nuisance to have to implement that capability.
-</DL>
-<P>I&rsquo;ll ignore the first reason, both because performance is no longer an issue if the code is fast enough and because the current application does <I>not</I> run fast enough&mdash;13 seconds is a long time. (Stop and wait for 13 seconds while you&rsquo;re doing something intense, and you&rsquo;ll see just how long it is.)</P>
-<P>The second reason is the hallmark of the mediocre programmer. Know when optimization matters&mdash;and then optimize when it does!</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="01-03.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="01-05.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <h4 align="left"><a id="Heading10"></a>Know When It Matters</h4>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>The last section contained a particularly interesting phrase: <i>the time-critical portions of your code</i>. Time-critical portions of your code are those portions in which the speed of the code makes a significant difference in the overall performance of your program&mdash;and by &ldquo;significant,&rdquo; I don&rsquo;t mean that it makes the code 100 percent faster, or 200 percent, or any particular amount at all, but rather that it makes the program more responsive and/or usable <i>from the user&rsquo;s perspective</i>.</p>
 
-<!-- END FOOTER -->
+  <p>Don&rsquo;t waste time optimizing non-time-critical code: set-up code, initialization code, and the like. Spend your time improving the performance of the code inside heavily-used loops and in the portions of your programs that directly affect response time. Notice, for example, that I haven&rsquo;t bothered to implement a version of the checksum program entirely in assembly; Listings 1.2 and 1.6 call assembly subroutines that handle the time-critical operations, but C is still used for checking command-line parameters, operning files, printing, and the like.</p>
 
+  <table width="100%">
+    <tr>
+      <td width="5%" valign="top"><img src="images/i.jpg" /></td>
 
+      <td width="95%"><small><i>If you were to implement any of the listings in this chapter entirely in hand-optimized assembly, I suppose you might get a performance improvement of a few percent&mdash;but I rather doubt you&rsquo;d get even that much, and you&rsquo;d sure as heck spend an awful lot of time for whatever meager improvement does result. Let C do what it does well, and use assembly only when it makes a perceptible difference.</i></small></td>
+    </tr>
+  </table>
+
+  <p>Besides, we don&rsquo;t want to optimize until the design is refined to our satisfaction, and that won&rsquo;t be the case until we&rsquo;ve thought about other approaches.</p>
+
+  <h4 align="left"><a id="Heading11"></a>Always Consider the Alternatives</h4>
+
+  <p>Listing 1.4 is good, but let&rsquo;s see if there are other&mdash;perhaps less obvious&mdash;ways to get the same results faster. Let&rsquo;s start by considering why Listing 1.4 is so much better than Listing 1.1. Like <b>read()</b>, <b>getc()</b> calls DOS to read from the file; the speed improvement of Listing 1.4 over Listing 1.1 occurs because <b>getc()</b> eads many bytes at once via DOS, then manages those bytes for us. That&rsquo;s faster than reading them one at a time using <b>read()</b>&mdash;but there&rsquo;s no reason to think that it&rsquo;s faster than having our program read and manage blocks itself. Easier, yes, but not faster.</p>
+
+  <p>Consider this: Every invocation of <b>getc()</b> involves pushing a parameter, executing a call to the C library function, getting the parameter (in the C library code), looking up information about the desired stream, unbuffering the next byte from the stream, and returning to the calling code. That takes a considerable amount of time, especially by contrast with simply maintaining a pointer to a buffer and whizzing through the data in the buffer inside a single loop.</p>
+
+  <p>There are four reasons that many programmers would give for not trying to improve on Listing 1.4:</p>
+
+  <dl>
+    <dd><b>1.</b>&nbsp;&nbsp;The code is already fast enough.</dd>
+
+    <dd><b>2.</b>&nbsp;&nbsp;The code works, and some people are content with code that works, even when it&rsquo;s slow enough to be annoying.</dd>
+
+    <dd><b>3.</b>&nbsp;&nbsp;The C library is written in optimized assembly, and it&rsquo;s likely to be faster than any code that the average programmer could write to perform essentially the same function.</dd>
+
+    <dd><b>4.</b>&nbsp;&nbsp;The C library conveniently handles the buffering of file data, and it would be a nuisance to have to implement that capability.</dd>
+  </dl>
+
+  <p>I&rsquo;ll ignore the first reason, both because performance is no longer an issue if the code is fast enough and because the current application does <i>not</i> run fast enough&mdash;13 seconds is a long time. (Stop and wait for 13 seconds while you&rsquo;re doing something intense, and you&rsquo;ll see just how long it is.)</p>
+
+  <p>The second reason is the hallmark of the mediocre programmer. Know when optimization matters&mdash;and then optimize when it does!</p>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="01-03.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="01-05.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

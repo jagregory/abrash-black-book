@@ -1,44 +1,44 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Wu'ed in Haste; Fried, Stewed at Leisure</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=42//-->
+  <!--PAGES=784-787//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="42-03.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="42-05.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Wu'ed in Haste; Fried, Stewed at Leisure</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
-
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=42//-->
-<!--PAGES=784-787//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
-
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="42-03.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="42-05.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P><B>LISTING 42.4 L42-4.C</B></P>
-<!-- CODE //-->
-<PRE>
+  <p><b>LISTING 42.4 L42-4.C</b></p><!-- CODE //-->
+  <pre>
 /* Function to draw a non-antialiased line from (X0,Y0) to (X1,Y1), using a
  * simple fixed-point error accumulation approach.
  * Tested with Borland C++ in C compilation mode and the small model.
@@ -105,12 +105,12 @@ void DrawLine(int X0, int Y0, int X1, int Y1, int Color)
       DrawPixel(X0, Y0, Color);
    } while (--DeltaX);
 }
-</PRE>
-<!-- END CODE //-->
-<P>Listing 42.1 isn&rsquo;t particularly fast, because it calls <B>DrawPixel()</B> for each pixel. On the other hand, <B>DrawPixel()</B> makes it easy to try out Wu antialiasing in a variety of modes; just adapt the code in Listing 42.3 for the 256-color mode you want to support. For example, Listing 42.5 shows code to draw Wu-antialiased lines in 640x480 256-color mode on SuperVGAs built around the Tseng Labs ET4000 chip with at least 512K of display memory installed. It&rsquo;s well worth checking out Wu antialiasing at 640x480. Although antialiased lines look much smoother than normal lines at 320x200 resolution, they&rsquo;re far from perfect, because the pixels are so big that the eye can&rsquo;t blend them properly. At 640x480, however, Wu-antialiased lines look fabulous; from a couple of feet away, they look as straight and smooth as if they were drawn with a ruler.</P>
-<P><B>LISTING 42.5 L42-5.C</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p>Listing 42.1 isn&rsquo;t particularly fast, because it calls <b>DrawPixel()</b> for each pixel. On the other hand, <b>DrawPixel()</b> makes it easy to try out Wu antialiasing in a variety of modes; just adapt the code in Listing 42.3 for the 256-color mode you want to support. For example, Listing 42.5 shows code to draw Wu-antialiased lines in 640x480 256-color mode on SuperVGAs built around the Tseng Labs ET4000 chip with at least 512K of display memory installed. It&rsquo;s well worth checking out Wu antialiasing at 640x480. Although antialiased lines look much smoother than normal lines at 320x200 resolution, they&rsquo;re far from perfect, because the pixels are so big that the eye can&rsquo;t blend them properly. At 640x480, however, Wu-antialiased lines look fabulous; from a couple of feet away, they look as straight and smooth as if they were drawn with a ruler.</p>
+
+  <p><b>LISTING 42.5 L42-5.C</b></p><!-- CODE //-->
+  <pre>
 /* Mode set and pixel-drawing functions for the 640x480 256-color mode of
  * Tseng Labs ET4000-based SuperVGAs.
  * Tested with Borland C++ in C compilation mode and the small model.
@@ -151,32 +151,33 @@ void SetMode()
    regset.x.ax = 0x002E;
    int86(0x10, &amp;regset, &amp;regset);
 }
-</PRE>
-<!-- END CODE //-->
-<P>Listing 42.1 requires that the DAC palette be set up so that a <B>NumLevel</B>-long block of palette entries contains linearly decreasing intensities of the drawing color. The size of the block is programmable, but must be a power of two. The more intensity levels, the better. Wu says that 32 intensities are enough; on my system, eight and even four levels looked pretty good. I found that gamma correction, which gives linearly spaced intensity steps, improved antialiasing quality significantly. Fortunately, we can program the palette with gamma-corrected values, so our drawing code doesn&rsquo;t have to do any extra work.</P>
-<P>Listing 42.1 isn&rsquo;t very fast, so I implemented Wu antialiasing in assembly, hard-coded for mode 13H. The implementation is shown in full in Listing 42.6. High-speed graphics code and fast VGAs go together like peanut butter and jelly, which is to say very well indeed; the assembly implementation ran more than twice as fast as the C code on my 486. Enough said!</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="42-03.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="42-05.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>Listing 42.1 requires that the DAC palette be set up so that a <b>NumLevel</b>-long block of palette entries contains linearly decreasing intensities of the drawing color. The size of the block is programmable, but must be a power of two. The more intensity levels, the better. Wu says that 32 intensities are enough; on my system, eight and even four levels looked pretty good. I found that gamma correction, which gives linearly spaced intensity steps, improved antialiasing quality significantly. Fortunately, we can program the palette with gamma-corrected values, so our drawing code doesn&rsquo;t have to do any extra work.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>Listing 42.1 isn&rsquo;t very fast, so I implemented Wu antialiasing in assembly, hard-coded for mode 13H. The implementation is shown in full in Listing 42.6. High-speed graphics code and fast VGAs go together like peanut butter and jelly, which is to say very well indeed; the assembly implementation ran more than twice as fast as the C code on my 486. Enough said!</p>
 
-<!-- END FOOTER -->
+  <p><br /></p>
 
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="42-03.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="42-05.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

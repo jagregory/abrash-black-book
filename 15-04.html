@@ -1,44 +1,44 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Linked Lists and Unintended Challenges</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=15//-->
+  <!--PAGES=290-293//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="15-03.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="16-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Linked Lists and Unintended Challenges</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
-
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=15//-->
-<!--PAGES=290-293//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
-
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="15-03.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="16-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P><B>LISTING 15.7 L15-7.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+  <p><b>LISTING 15.7 L15-7.ASM</b></p><!-- CODE //-->
+  <pre>
 ; C near-callable assembly function for inserting a new node in a
 ; linked list sorted by ascending order of the Value field. The list
 ; is circular; that is, it has a dummy node as both the head and the
@@ -98,11 +98,10 @@ SearchLoop:
         ret
 _InsertNodeSorted endp
         end
-</PRE>
-<!-- END CODE //-->
-<P><B>LISTING 15.8 L15-8.C</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p><b>LISTING 15.8 L15-8.C</b></p><!-- CODE //-->
+  <pre>
 /* Sample linked list program. Tested with Borland C++. */
 #include &lt;stdlib.h&gt;
 #include &lt;stdio.h&gt;
@@ -184,16 +183,20 @@ void main()
       }
    }
 }
-</PRE>
-<!-- END CODE //-->
-<H3><A NAME="Heading6"></A>Hi/Lo in 24 Bytes</H3>
-<P>In one of my <I>PC TECHNIQUES</I> &ldquo;Pushing the Envelope&rdquo; columns, I passed along one of David Stafford&rsquo;s fiendish programming puzzles: Write a C-callable function to find the greatest or smallest unsigned <B>int</B>. Not a big deal&mdash;except that David had <I>already</I> done it in 24 bytes, so the challenge was to do it in 24 bytes or less.</P>
-<P>Such routines soon began coming at me from all angles. However (and I hate to say this because some of my correspondents were <I>very</I> pleased with the thought that they had bested David), no one has yet met the challenge&mdash;because most of you folks missed a key point. When David said, &ldquo;Write a function to find the greatest or smallest unsigned <B>int</B> in 24 bytes or less,&rdquo; he meant, &ldquo;Write the <B>hi</B> and the <B>lo</B> functions in 24 bytes or less&mdash;<I>combined</I>.&rdquo;</P>
-<P>Oh.</P>
-<P>Yes, a 24-byte hi/lo function is possible, anatomically improbable as it might seem. Which I guess goes to show that when one of David&rsquo;s puzzles seems less than impossible, odds are you&rsquo;re missing something. Listing 15.9 is David&rsquo;s 24-byte solution, from which a lot may be learned if one reads closely enough.</P>
-<P><B>LISTING 15.9 L15-9.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <h3><a id="Heading6"></a>Hi/Lo in 24 Bytes</h3>
+
+  <p>In one of my <i>PC TECHNIQUES</i> &ldquo;Pushing the Envelope&rdquo; columns, I passed along one of David Stafford&rsquo;s fiendish programming puzzles: Write a C-callable function to find the greatest or smallest unsigned <b>int</b>. Not a big deal&mdash;except that David had <i>already</i> done it in 24 bytes, so the challenge was to do it in 24 bytes or less.</p>
+
+  <p>Such routines soon began coming at me from all angles. However (and I hate to say this because some of my correspondents were <i>very</i> pleased with the thought that they had bested David), no one has yet met the challenge&mdash;because most of you folks missed a key point. When David said, &ldquo;Write a function to find the greatest or smallest unsigned <b>int</b> in 24 bytes or less,&rdquo; he meant, &ldquo;Write the <b>hi</b> and the <b>lo</b> functions in 24 bytes or less&mdash;<i>combined</i>.&rdquo;</p>
+
+  <p>Oh.</p>
+
+  <p>Yes, a 24-byte hi/lo function is possible, anatomically improbable as it might seem. Which I guess goes to show that when one of David&rsquo;s puzzles seems less than impossible, odds are you&rsquo;re missing something. Listing 15.9 is David&rsquo;s 24-byte solution, from which a lot may be learned if one reads closely enough.</p>
+
+  <p><b>LISTING 15.9 L15-9.ASM</b></p><!-- CODE //-->
+  <pre>
 ; Find the greatest or smallest unsigned int.
 ; C callable (small model); 24 bytes.
 ; By David Stafford.
@@ -221,32 +224,31 @@ around:         ja      save
                 jnz     top
 
                 ret
-</PRE>
-<!-- END CODE //-->
-<P>Before I end this chapter, let me say that I get a lot of feedback from my readers, and it&rsquo;s much appreciated. Keep those cards, letters, and email messages coming. And if any of you know Jeannie Schweigert, have her drop me a line and let me know how she&rsquo;s doing these days....
-</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="15-03.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="16-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>Before I end this chapter, let me say that I get a lot of feedback from my readers, and it&rsquo;s much appreciated. Keep those cards, letters, and email messages coming. And if any of you know Jeannie Schweigert, have her drop me a line and let me know how she&rsquo;s doing these days....</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p><br /></p>
 
-<!-- END FOOTER -->
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="15-03.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="16-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

@@ -1,44 +1,44 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Assume Nothing</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=03//-->
+  <!--PAGES=067-070//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="03-08.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="03-10.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Assume Nothing</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
-
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=03//-->
-<!--PAGES=067-070//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
-
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="03-08.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="03-10.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P><B>LISTING 3.7 LZTIME.BAT</B></P>
-<!-- CODE //-->
-<PRE>
+  <p><b>LISTING 3.7 LZTIME.BAT</b></p><!-- CODE //-->
+  <pre>
 echo off
 rem
 rem *** Listing 3.7 ***
@@ -100,13 +100,12 @@ echo ***************************************************************
 echo * An error occurred while building the long-period Zen timer. *
 echo ***************************************************************
 :end
-</PRE>
-<!-- END CODE //-->
-<P>Listing 3.8 shows sample code that can be timed with the test-bed program of Listing 3.6. Listing 3.8 measures the time required to execute 20,000 loads of AL from memory, a length of time too long for the precision Zen timer to handle on the 8088.
-</P>
-<P><B>LISTING 3.8 LST3-8.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p>Listing 3.8 shows sample code that can be timed with the test-bed program of Listing 3.6. Listing 3.8 measures the time required to execute 20,000 loads of AL from memory, a length of time too long for the precision Zen timer to handle on the 8088.</p>
+
+  <p><b>LISTING 3.8 LST3-8.ASM</b></p><!-- CODE //-->
+  <pre>
 ;
 ; Measures the performance of 20,000 loads of AL from
 ; memory. (Use by renaming to TESTCODE, which is
@@ -134,48 +133,47 @@ endm
 ; Stop timing.
 ;
 callZTimerOff
-</PRE>
-<!-- END CODE //-->
-<P>When LZTIME.BAT is run on a PC with the following command line (assuming the code in Listing 3.8 is the file LST3-8.ASM)
-</P>
-<!-- CODE SNIP //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p>When LZTIME.BAT is run on a PC with the following command line (assuming the code in Listing 3.8 is the file LST3-8.ASM)</p><!-- CODE SNIP //-->
+  <pre>
 lztime lst3-8.asm
-</PRE>
-<!-- END CODE SNIP //-->
-<P>the result is 72,544 &micro;s, or about 3.63 &micro;s per load of AL from memory. This is just slightly longer than the time per load of AL measured by the precision Zen timer, as we would expect given that interrupts are left enabled by the long-period Zen timer. The extra fraction of a microsecond measured per <B>MOV</B> reflects the time required to execute the BIOS code that handles the 18.2 timer interrupts that occur each second.</P>
-<P>Note that the command can take as much as 10 minutes to finish on a slow PC if you are using MASM, with most of that time spent assembling Listing 3.8. Why? Because MASM is notoriously slow at assembling <B>REPT</B> blocks, and the block in Listing 3.8 is repeated 20,000 times.</P>
-<H3><A NAME="Heading15"></A>Using the Zen Timer from C</H3>
-<P>The Zen timer can be used to measure code performance when programming in C&mdash;but not right out of the box. As presented earlier, the timer is designed to be called from assembly language; some relatively minor modifications are required before the <B>ZTimerOn</B> (start timer), <B>ZTimerOff</B> (stop timer), and <B>ZTimerReport</B> (display timing results) routines can be called from C. There are two separate cases to be dealt with here: small code model and large; I&rsquo;ll tackle the simpler one, the small code model, first.</P>
-<P>Altering the Zen timer for linking to a small code model C program involves the following steps: <B> C</B> hange <B>ZTimerOn</B> to <B>_ZTimerOn</B>, change <B>ZTimerOff</B> to <B>_ZTimerOff</B>, change <B>ZTimerReport</B> to <B>_ZTimerReport</B>, and change <B>Code</B> to <B>_TEXT</B> . Figure 3.2 shows the line numbers and new states of all lines from Listing 3.1 that must be changed. These changes convert the code to use C-style external label names and the small model C code segment. (In C<SMALL>++</SMALL>, use the &ldquo;C&rdquo; specifier, as in</P>
-<!-- CODE SNIP //-->
-<PRE>
+</pre><!-- END CODE SNIP //-->
+
+  <p>the result is 72,544 &micro;s, or about 3.63 &micro;s per load of AL from memory. This is just slightly longer than the time per load of AL measured by the precision Zen timer, as we would expect given that interrupts are left enabled by the long-period Zen timer. The extra fraction of a microsecond measured per <b>MOV</b> reflects the time required to execute the BIOS code that handles the 18.2 timer interrupts that occur each second.</p>
+
+  <p>Note that the command can take as much as 10 minutes to finish on a slow PC if you are using MASM, with most of that time spent assembling Listing 3.8. Why? Because MASM is notoriously slow at assembling <b>REPT</b> blocks, and the block in Listing 3.8 is repeated 20,000 times.</p>
+
+  <h3><a id="Heading15"></a>Using the Zen Timer from C</h3>
+
+  <p>The Zen timer can be used to measure code performance when programming in C&mdash;but not right out of the box. As presented earlier, the timer is designed to be called from assembly language; some relatively minor modifications are required before the <b>ZTimerOn</b> (start timer), <b>ZTimerOff</b> (stop timer), and <b>ZTimerReport</b> (display timing results) routines can be called from C. There are two separate cases to be dealt with here: small code model and large; I&rsquo;ll tackle the simpler one, the small code model, first.</p>
+
+  <p>Altering the Zen timer for linking to a small code model C program involves the following steps: <b>C</b> hange <b>ZTimerOn</b> to <b>_ZTimerOn</b>, change <b>ZTimerOff</b> to <b>_ZTimerOff</b>, change <b>ZTimerReport</b> to <b>_ZTimerReport</b>, and change <b>Code</b> to <b>_TEXT</b> . Figure 3.2 shows the line numbers and new states of all lines from Listing 3.1 that must be changed. These changes convert the code to use C-style external label names and the small model C code segment. (In C<small>++</small>, use the &ldquo;C&rdquo; specifier, as in</p><!-- CODE SNIP //-->
+  <pre>
 extern &ldquo;C&rdquo; ZTimerOn(void);
-</PRE>
-<!-- END CODE SNIP //-->
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="03-08.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="03-10.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE SNIP //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p><br /></p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="03-08.html">Previous</a></td>
 
-<!-- END FOOTER -->
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="03-10.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
 
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

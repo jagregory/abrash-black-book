@@ -1,78 +1,88 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Split Screens Save the Page Flipped Day</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=44//-->
+  <!--PAGES=817-820//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="43-06.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="44-02.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Split Screens Save the Page Flipped Day</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <h2><a id="Heading1"></a>Chapter 44<br />
+  Split Screens Save the Page Flipped Day</h2>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=44//-->
-<!--PAGES=817-820//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <h3><a id="Heading2"></a>640x480 Page Flipped Animation in 64K...Almost</h3>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="43-06.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="44-02.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<H2><A NAME="Heading1"></A>Chapter 44<BR>Split Screens Save the Page Flipped Day</H2>
-<H3><A NAME="Heading2"></A>640x480 Page Flipped Animation in 64K...Almost</H3>
-<P>Almost doesn&rsquo;t count, they say&mdash;at least in horseshoes and maybe a few other things. This is especially true in digital circles, where if you need 12 MB of hard disk to install something and you only have 10 MB left (a situation that seems to be some sort of eternal law) you&rsquo;re stuck.
-</P>
-<P>And that&rsquo;s only infuriating until you dredge up the gumption to go in there and free up some space. How would you feel if you were up against an &ldquo;almost-but-not-quite&rdquo; kind of a wall that couldn&rsquo;t be breached by freeing up something elsewhere? Suppose you were within a few KB of implementing a wonderful VGA animation scheme that provided lots of screen space, square pixels, smooth motion and more than adequate speed&mdash;but all the memory you have is all there is? What would you do?</P>
-<P>Scream a little. Or throw something that won&rsquo;t break easily. Then you sit down and let your right brain do what it was designed to do. Sure enough, there&rsquo;s a way, and in this chapter I&rsquo;ll explain how a little VGA secret called <I>page splitting</I> can save the day for page flipped animation in 640x480 mode. But to do that, I have to lay a little groundwork first. Or maybe a lot of groundwork.</P>
-<P>No horseshoes here.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading3"></A>A Plethora of Challenges</H4>
-<P>In its simplest terms, computer animation consists of rapidly redrawing similar images at slightly differing locations, so that the eye interprets the successive images as a single object in motion over time. The fact that the world is an analog realm and the images displayed on a computer screen consist of discrete pixels updated at a maximum rate of about 70 Hz is irrelevant; your eye can interpret both real-world images and pixel patterns on the screen as objects in motion, and that&rsquo;s that.
-</P>
-<P>One of the key problems of computer animation is that it takes time to redraw a screen, time during which the bitmap controlling the screen is in an intermediate state, with, quite possibly, many objects erased and others half-drawn. Even when only briefly displayed, a partially-updated screen can cause flicker at best, and at worst can destroy the illusion of motion entirely.</P>
-<P>Another problem of animation is that the screen must update often enough so that motion appears continuous. A moving object that moves just once every second, shifting by hundreds of pixels each time it does move, will appear to jump, not to move smoothly. Therefore, there are two overriding requirements for smooth animation: 1) the bitmap must be updated quickly (once per frame&mdash;60 to 70 Hz&mdash;is ideal, although 30 Hz will do fine), and, 2) the process of redrawing the screen must be invisible to the user; only the end result should ever be seen. Both of these requirements are met by the program presented in Listings 44.1 and 44.2.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading4"></A>A Page Flipping Animation Demonstration</H4>
-<P>The listings taken together form a sample animation program, in which a single object bounces endlessly off other objects, with instructions and a count of bounces displayed at the bottom of the screen. I&rsquo;ll discuss various aspects of Listings 44.1 and 44.2 during the balance of this article. The listings are too complex and involve too much VGA and animation knowledge for for me to discuss it all in exhaustive detail (and I&rsquo;ve covered a lot of this stuff earlier in the book); instead, I&rsquo;ll cover the major elements, leaving it to you to explore the finer points&mdash;and, hope, to experiment with and expand on the code I&rsquo;ll provide.
-</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="43-06.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="44-02.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+  <p>Almost doesn&rsquo;t count, they say&mdash;at least in horseshoes and maybe a few other things. This is especially true in digital circles, where if you need 12 MB of hard disk to install something and you only have 10 MB left (a situation that seems to be some sort of eternal law) you&rsquo;re stuck.</p>
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>And that&rsquo;s only infuriating until you dredge up the gumption to go in there and free up some space. How would you feel if you were up against an &ldquo;almost-but-not-quite&rdquo; kind of a wall that couldn&rsquo;t be breached by freeing up something elsewhere? Suppose you were within a few KB of implementing a wonderful VGA animation scheme that provided lots of screen space, square pixels, smooth motion and more than adequate speed&mdash;but all the memory you have is all there is? What would you do?</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>Scream a little. Or throw something that won&rsquo;t break easily. Then you sit down and let your right brain do what it was designed to do. Sure enough, there&rsquo;s a way, and in this chapter I&rsquo;ll explain how a little VGA secret called <i>page splitting</i> can save the day for page flipped animation in 640x480 mode. But to do that, I have to lay a little groundwork first. Or maybe a lot of groundwork.</p>
 
-<!-- END FOOTER -->
+  <p>No horseshoes here.</p>
 
+  <h4 align="left"><a id="Heading3"></a>A Plethora of Challenges</h4>
 
+  <p>In its simplest terms, computer animation consists of rapidly redrawing similar images at slightly differing locations, so that the eye interprets the successive images as a single object in motion over time. The fact that the world is an analog realm and the images displayed on a computer screen consist of discrete pixels updated at a maximum rate of about 70 Hz is irrelevant; your eye can interpret both real-world images and pixel patterns on the screen as objects in motion, and that&rsquo;s that.</p>
+
+  <p>One of the key problems of computer animation is that it takes time to redraw a screen, time during which the bitmap controlling the screen is in an intermediate state, with, quite possibly, many objects erased and others half-drawn. Even when only briefly displayed, a partially-updated screen can cause flicker at best, and at worst can destroy the illusion of motion entirely.</p>
+
+  <p>Another problem of animation is that the screen must update often enough so that motion appears continuous. A moving object that moves just once every second, shifting by hundreds of pixels each time it does move, will appear to jump, not to move smoothly. Therefore, there are two overriding requirements for smooth animation: 1) the bitmap must be updated quickly (once per frame&mdash;60 to 70 Hz&mdash;is ideal, although 30 Hz will do fine), and, 2) the process of redrawing the screen must be invisible to the user; only the end result should ever be seen. Both of these requirements are met by the program presented in Listings 44.1 and 44.2.</p>
+
+  <h4 align="left"><a id="Heading4"></a>A Page Flipping Animation Demonstration</h4>
+
+  <p>The listings taken together form a sample animation program, in which a single object bounces endlessly off other objects, with instructions and a count of bounces displayed at the bottom of the screen. I&rsquo;ll discuss various aspects of Listings 44.1 and 44.2 during the balance of this article. The listings are too complex and involve too much VGA and animation knowledge for for me to discuss it all in exhaustive detail (and I&rsquo;ve covered a lot of this stuff earlier in the book); instead, I&rsquo;ll cover the major elements, leaving it to you to explore the finer points&mdash;and, hope, to experiment with and expand on the code I&rsquo;ll provide.</p>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="43-06.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="44-02.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

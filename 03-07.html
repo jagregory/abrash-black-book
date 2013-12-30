@@ -1,54 +1,60 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Assume Nothing</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=03//-->
+  <!--PAGES=053-065//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="03-06.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="03-08.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Assume Nothing</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>While permitting the timer interrupt to occur allows long intervals to be timed, that same interrupt makes the long-period Zen timer less accurate than the precision Zen timer, since the time the BIOS spends handling timer interrupts during the timing interval is included in the time measured by the long-period timer. Likewise, any other interrupts that occur during the timing interval, most notably keyboard and mouse interrupts, will increase the measured time.</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=03//-->
-<!--PAGES=053-065//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p>The long-period Zen timer has some of the same effects on the system time as does the precision Zen timer, so it&rsquo;s a good idea to reboot the system after a session with the long-period Zen timer. The long-period Zen timer does not, however, have the same potential for introducing major inaccuracy into the system clock time during a single timing run since it leaves interrupts enabled and therefore allows the system clock to update normally.</p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="03-06.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="03-08.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>While permitting the timer interrupt to occur allows long intervals to be timed, that same interrupt makes the long-period Zen timer less accurate than the precision Zen timer, since the time the BIOS spends handling timer interrupts during the timing interval is included in the time measured by the long-period timer. Likewise, any other interrupts that occur during the timing interval, most notably keyboard and mouse interrupts, will increase the measured time.
-</P>
-<P>The long-period Zen timer has some of the same effects on the system time as does the precision Zen timer, so it&rsquo;s a good idea to reboot the system after a session with the long-period Zen timer. The long-period Zen timer does not, however, have the same potential for introducing major inaccuracy into the system clock time during a single timing run since it leaves interrupts enabled and therefore allows the system clock to update normally.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading13"></A>Stopping the Clock</H4>
-<P>There&rsquo;s a potential problem with the long-period Zen timer. The problem is this: In order to measure times longer than 54  ms, we must maintain not one but two timing components, the timer 0 count and the BIOS time-of-day count. The time-of-day count measures the passage of 54.9  ms intervals, while the timer 0 count measures time within those 54.9  ms intervals. We need to read the two time components simultaneously in order to get a clean reading. Otherwise, we may read the timer count just before it turns over and generates an interrupt, then read the BIOS time-of-day count just after the interrupt has occurred and caused the time-of-day count to turn over, with a resulting 54  ms measurement inaccuracy. (The opposite sequence&mdash;reading the time-of-day count and then the timer count&mdash;can result in a 54  ms inaccuracy in the other direction.)
-</P>
-<P>The only way to avoid this problem is to stop timer 0, read both the timer and time-of-day counts while the timer is stopped, and then restart the timer. Alas, the gate input to timer 0 isn&rsquo;t program-controllable in the PC, so there&rsquo;s no documented way to stop the timer. (The latched read feature we used in Listing 3.1 doesn&rsquo;t stop the timer; it latches a count, but the timer keeps running.) What should we do?</P>
-<P>As it turns out, an undocumented feature of the 8253 makes it possible to stop the timer dead in its tracks. Setting the timer to a new mode and waiting for an initial count to be loaded causes the timer to stop until the count is loaded. Surprisingly, the timer count remains readable and correct while the timer is waiting for the initial load.</P>
-<P>In my experience, this approach works beautifully with fully 8253-compatible chips. However, there&rsquo;s no guarantee that it will always work, since it programs the 8253 in an undocumented way. What&rsquo;s more, IBM chose not to implement compatibility with this particular 8253 feature in the custom chips used in PS/2 computers. On PS/2 computers, we have no choice but to latch the timer 0 count and then stop the BIOS count (by disabling interrupts) as quickly as possible. We&rsquo;ll just have to accept the fact that on PS/2 computers we may occasionally get a reading that&rsquo;s off by 54  ms, and leave it at that.</P>
-<P>I&rsquo;ve set up Listing 3.5 so that it can assemble to either use or not use the undocumented timer-stopping feature, as you please. The <B>PS2</B> equate selects between the two modes of operation. If <B>PS2</B> is 1 (as it is in Listing 3.5), then the latch-and-read method is used; if <B>PS2</B> is 0, then the undocumented timer-stop approach is used. The latch-and-read method will work on all PC-compatible computers, but may occasionally produce results that are incorrect by 54  ms. The timer-stop approach avoids synchronization problems, but doesn&rsquo;t work on all computers.</P>
-<P><B>LISTING 3.5 LZTIMER.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+  <h4 align="left"><a id="Heading13"></a>Stopping the Clock</h4>
+
+  <p>There&rsquo;s a potential problem with the long-period Zen timer. The problem is this: In order to measure times longer than 54 ms, we must maintain not one but two timing components, the timer 0 count and the BIOS time-of-day count. The time-of-day count measures the passage of 54.9 ms intervals, while the timer 0 count measures time within those 54.9 ms intervals. We need to read the two time components simultaneously in order to get a clean reading. Otherwise, we may read the timer count just before it turns over and generates an interrupt, then read the BIOS time-of-day count just after the interrupt has occurred and caused the time-of-day count to turn over, with a resulting 54 ms measurement inaccuracy. (The opposite sequence&mdash;reading the time-of-day count and then the timer count&mdash;can result in a 54 ms inaccuracy in the other direction.)</p>
+
+  <p>The only way to avoid this problem is to stop timer 0, read both the timer and time-of-day counts while the timer is stopped, and then restart the timer. Alas, the gate input to timer 0 isn&rsquo;t program-controllable in the PC, so there&rsquo;s no documented way to stop the timer. (The latched read feature we used in Listing 3.1 doesn&rsquo;t stop the timer; it latches a count, but the timer keeps running.) What should we do?</p>
+
+  <p>As it turns out, an undocumented feature of the 8253 makes it possible to stop the timer dead in its tracks. Setting the timer to a new mode and waiting for an initial count to be loaded causes the timer to stop until the count is loaded. Surprisingly, the timer count remains readable and correct while the timer is waiting for the initial load.</p>
+
+  <p>In my experience, this approach works beautifully with fully 8253-compatible chips. However, there&rsquo;s no guarantee that it will always work, since it programs the 8253 in an undocumented way. What&rsquo;s more, IBM chose not to implement compatibility with this particular 8253 feature in the custom chips used in PS/2 computers. On PS/2 computers, we have no choice but to latch the timer 0 count and then stop the BIOS count (by disabling interrupts) as quickly as possible. We&rsquo;ll just have to accept the fact that on PS/2 computers we may occasionally get a reading that&rsquo;s off by 54 ms, and leave it at that.</p>
+
+  <p>I&rsquo;ve set up Listing 3.5 so that it can assemble to either use or not use the undocumented timer-stopping feature, as you please. The <b>PS2</b> equate selects between the two modes of operation. If <b>PS2</b> is 1 (as it is in Listing 3.5), then the latch-and-read method is used; if <b>PS2</b> is 0, then the undocumented timer-stop approach is used. The latch-and-read method will work on all PC-compatible computers, but may occasionally produce results that are incorrect by 54 ms. The timer-stop approach avoids synchronization problems, but doesn&rsquo;t work on all computers.</p>
+
+  <p><b>LISTING 3.5 LZTIMER.ASM</b></p><!-- CODE //-->
+  <pre>
 ;
 ; The long-period Zen timer. (LZTIMER.ASM)
 ; Uses the 8253 timer and the BIOS time-of-day count to time the
@@ -683,31 +689,29 @@ ZTimerReport    endp
 
 Code   ends
        end
-</PRE>
-<!-- END CODE //-->
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="03-06.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="03-08.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p><br /></p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="03-06.html">Previous</a></td>
 
-<!-- END FOOTER -->
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="03-08.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
 
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

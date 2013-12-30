@@ -1,50 +1,54 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X Marks the Latch</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=48//-->
+  <!--PAGES=908-911//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="48-04.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="49-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X Marks the Latch</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>Listing 48.3 has an important limitation: It does not guarantee proper handling when the source and destination overlap, as in the case of a downward scroll, for example. Listing 48.3 performs top-to-bottom, left-to-right copying. Downward scrolls require bottom-to-top copying; likewise, rightward horizontal scrolls require right-to-left copying. As it happens, my intended use for Listing 48.3 is to copy images between off-screen memory and on-screen memory, and to save areas under pop-up menus and the like, so I don&rsquo;t really need overlap handling&mdash;and I do really need to keep the complexity of this discussion down. However, you will surely want to add overlap handling if you plan to perform arbitrary scrolling and copying in display memory.</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=48//-->
-<!--PAGES=908-911//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p>Now that we have a fast way to copy images around in display memory, we can draw icons and other images as much as four times faster than in mode 13H, depending on the speed of the VGA&rsquo;s display memory. (In case you&rsquo;re worried about the nibble-alignment limitation on fast copies, don&rsquo;t be; I&rsquo;ll address that fully in due time, but the secret is to store all four possible rotations in off-screen memory, then select the correct one for each copy.) However, before our fast display memory-to-display memory copy routine can do us any good, we must have a way to get pixel patterns from system memory into display memory, so that they can then be copied with the fast copy routine.</p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="48-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="49-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>Listing 48.3 has an important limitation: It does not guarantee proper handling when the source and destination overlap, as in the case of a downward scroll, for example. Listing 48.3 performs top-to-bottom, left-to-right copying. Downward scrolls require bottom-to-top copying; likewise, rightward horizontal scrolls require right-to-left copying. As it happens, my intended use for Listing 48.3 is to copy images between off-screen memory and on-screen memory, and to save areas under pop-up menus and the like, so I don&rsquo;t really need overlap handling&mdash;and I do really need to keep the complexity of this discussion down. However, you will surely want to add overlap handling if you plan to perform arbitrary scrolling and copying in display memory.
-</P>
-<P>Now that we have a fast way to copy images around in display memory, we can draw icons and other images as much as four times faster than in mode 13H, depending on the speed of the VGA&rsquo;s display memory. (In case you&rsquo;re worried about the nibble-alignment limitation on fast copies, don&rsquo;t be; I&rsquo;ll address that fully in due time, but the secret is to store all four possible rotations in off-screen memory, then select the correct one for each copy.) However, before our fast display memory-to-display memory copy routine can do us any good, we must have a way to get pixel patterns from system memory into display memory, so that they can then be copied with the fast copy routine.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading5"></A>Copying to Display Memory</H4>
-<P>The final piece of the puzzle is the system memory to display-memory-copy-routine shown in Listing 48.4. This routine assumes that pixels are stored in system memory in exactly the order in which they will ultimately appear on the screen; that is, in the same linear order that mode 13H uses. It would be more efficient to store all the pixels for one plane first, then all the pixels for the next plane, and so on for all four planes, because many <B>OUT</B>s could be avoided, but that would make images rather hard to create. And, while it is true that the speed of drawing images is, in general, often a critical performance factor, the speed of copying images from system memory to display memory is not particularly critical in Mode X. Important images can be stored in off-screen memory and copied to the screen via the latches much faster than even the speediest system memory-to-display memory copy routine could manage.</P>
-<P>I&rsquo;m not going to present a routine to perform Mode X copies from display memory to system memory, but such a routine would be a straightforward inverse of Listing 48.4.</P>
-<P><B>LISTING 48.4 L48-4.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+  <h4 align="left"><a id="Heading5"></a>Copying to Display Memory</h4>
+
+  <p>The final piece of the puzzle is the system memory to display-memory-copy-routine shown in Listing 48.4. This routine assumes that pixels are stored in system memory in exactly the order in which they will ultimately appear on the screen; that is, in the same linear order that mode 13H uses. It would be more efficient to store all the pixels for one plane first, then all the pixels for the next plane, and so on for all four planes, because many <b>OUT</b>s could be avoided, but that would make images rather hard to create. And, while it is true that the speed of drawing images is, in general, often a critical performance factor, the speed of copying images from system memory to display memory is not particularly critical in Mode X. Important images can be stored in off-screen memory and copied to the screen via the latches much faster than even the speediest system memory-to-display memory copy routine could manage.</p>
+
+  <p>I&rsquo;m not going to present a routine to perform Mode X copies from display memory to system memory, but such a routine would be a straightforward inverse of Listing 48.4.</p>
+
+  <p><b>LISTING 48.4 L48-4.ASM</b></p><!-- CODE //-->
+  <pre>
 ; Mode X (320x240, 256 colors) system memory to display memory copy
 ; routine. Uses approach of changing the plane for each pixel copied;
 ; this is slower than copying all pixels in one plane, then all pixels
@@ -163,34 +167,37 @@ CopyDone:
         ret
 _CopySystemToScreenX endp
         end
-</PRE>
-<!-- END CODE //-->
-<H3><A NAME="Heading6"></A>Who Was that Masked Image Copier?</H3>
-<P>At this point, it&rsquo;s getting to be time for us to take all the Mode X tools we&rsquo;ve developed, together with one more tool&mdash;masked image copying&mdash;and the remaining unexplored feature of Mode X, page flipping, and build an animation application. I hope that when we&rsquo;re done, you&rsquo;ll agree with me that Mode X is <I>the</I> way to animate on the PC.</P>
-<P>In truth, though, it matters less whether or not <I>you</I> think that Mode X is the best way to animate than whether or not your users think it&rsquo;s the best way based on results; end users care only about results, not how you produced them. For my writing, you folks are the end users&mdash;and notice how remarkably little you care about how this book gets written and produced. You care that it turned up in the bookstore, and you care about the contents, but you sure as heck don&rsquo;t care about how it got that far from a bin of tree pulp. When you&rsquo;re a creator, the process matters. When you&rsquo;re a buyer, results are everything. All important. <I>Sine qua non.</I> The whole enchilada.</P>
-<P>If you catch my drift.</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="48-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="49-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <h3><a id="Heading6"></a>Who Was that Masked Image Copier?</h3>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>At this point, it&rsquo;s getting to be time for us to take all the Mode X tools we&rsquo;ve developed, together with one more tool&mdash;masked image copying&mdash;and the remaining unexplored feature of Mode X, page flipping, and build an animation application. I hope that when we&rsquo;re done, you&rsquo;ll agree with me that Mode X is <i>the</i> way to animate on the PC.</p>
 
-<!-- END FOOTER -->
+  <p>In truth, though, it matters less whether or not <i>you</i> think that Mode X is the best way to animate than whether or not your users think it&rsquo;s the best way based on results; end users care only about results, not how you produced them. For my writing, you folks are the end users&mdash;and notice how remarkably little you care about how this book gets written and produced. You care that it turned up in the bookstore, and you care about the contents, but you sure as heck don&rsquo;t care about how it got that far from a bin of tree pulp. When you&rsquo;re a creator, the process matters. When you&rsquo;re a buyer, results are everything. All important. <i>Sine qua non.</i> The whole enchilada.</p>
 
+  <p>If you catch my drift.</p>
 
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="48-04.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="49-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

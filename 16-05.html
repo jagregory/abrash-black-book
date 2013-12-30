@@ -1,104 +1,172 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: There Ain't No Such Thing as the Fastest Code</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=16//-->
+  <!--PAGES=308-311//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="16-04.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="16-06.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: There Ain't No Such Thing as the Fastest Code</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>Table 16.2 has two times for each entry listed: the first value is the overall counting time, including time spent in the main program, disk I/O, and everything else; the second value is the time actually spent counting words, the time spent in <b>ScanBuffer</b> . The first value is the time perceived by the user, but the second value best reflects the quality of the optimization in each entry, since the rest of the overall execution time is fixed.</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=16//-->
-<!--PAGES=308-311//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <table width="85%">
+    <tr>
+      <td colspan="3">
+        <hr />
+      </td>
+    </tr>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="16-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="16-06.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>Table 16.2 has two times for each entry listed: the first value is the overall counting time, including time spent in the main program, disk I/O, and everything else; the second value is the time actually spent counting words, the time spent in <B>ScanBuffer</B> . The first value is the time perceived by the user, but the second value best reflects the quality of the optimization in each entry, since the rest of the overall execution time is fixed.</P>
-<TABLE WIDTH="85%"><TR>
-<TD COLSPAN="3"><HR>
-<TR>
-<TD VALIGN="TOP" ALIGN="LFFT">
-<TH ALIGN="CENTER" COLSPAN="2">Word-Counting Time
-<TR>
-<TH WIDTH="35%" ALIGN="LEFT" VALIGN="TOP">Name
-<TH WIDTH="25%" ALIGN="LEFT" VALIGN="TOP">Overall time
-<TH WIDTH="25%" ALIGN="LEFT" VALIGN="TOP">(ScanBuffer only)
-<TR>
-<TD COLSPAN="3"><HR>
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP">David Stafford Listing 16.5       <TD ALIGN="LEFT" VALIGN="TOP">0.61 seconds
-<TD ALIGN="LEFT" VALIGN="TOP">0.33 seconds
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP">Dave Methvin
-<TD ALIGN="LEFT" VALIGN="TOP">0.66
-<TD ALIGN="LEFT" VALIGN="TOP">0.39
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP">Mick Brown
-<TD ALIGN="LEFT" VALIGN="TOP">0.70
-<TD ALIGN="LEFT" VALIGN="TOP">0.41
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP">Wendell Neubert
-<TD ALIGN="LEFT" VALIGN="TOP">0.92
-<TD ALIGN="LEFT" VALIGN="TOP">0.65
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP"><B>For Comparison:</B> 
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP">Michael Abrash
-<TD ALIGN="LEFT" VALIGN="TOP">1.73
-<TD ALIGN="LEFT" VALIGN="TOP">1.44
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP">assembly code
-<TD ALIGN="LEFT" VALIGN="TOP">
-<TD ALIGN="LEFT" VALIGN="TOP">
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP">Listing 16.1
-<TD ALIGN="LEFT" VALIGN="TOP">
-<TD ALIGN="LEFT" VALIGN="TOP">
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP">Michael Abrash
-<TD ALIGN="LEFT" VALIGN="TOP">4.70
-<TD ALIGN="LEFT" VALIGN="TOP">4.43
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP">C code
-<TD ALIGN="LEFT" VALIGN="TOP">
-<TD ALIGN="LEFT" VALIGN="TOP">
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP">Listing 16.4
-<TD ALIGN="LEFT" VALIGN="TOP">
-<TD ALIGN="LEFT" VALIGN="TOP">
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP" COLSPAN="3"><SMALL><B>Note:</B> All times measured on a 20 MHz cached 386 DX.</SMALL>
-<TR>
-<TH ALIGN="LEFT" VALIGN="TOP" COLSPAN="3">Table 16.2  The top four word-counting entries.
-<TR>
-<TD COLSPAN="3"><HR>
-</TABLE>
-<P><B>LISTING 16.5  QSCAN3.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+    <tr>
+      <td valign="top" align="lfft"></td>
+
+      <th align="center" colspan="2">Word-Counting Time</th>
+    </tr>
+
+    <tr>
+      <th width="35%" align="left" valign="top">Name</th>
+
+      <th width="25%" align="left" valign="top">Overall time</th>
+
+      <th width="25%" align="left" valign="top">(ScanBuffer only)</th>
+    </tr>
+
+    <tr>
+      <td colspan="3">
+        <hr />
+      </td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top">David Stafford Listing 16.5</td>
+
+      <td align="left" valign="top">0.61 seconds</td>
+
+      <td align="left" valign="top">0.33 seconds</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top">Dave Methvin</td>
+
+      <td align="left" valign="top">0.66</td>
+
+      <td align="left" valign="top">0.39</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top">Mick Brown</td>
+
+      <td align="left" valign="top">0.70</td>
+
+      <td align="left" valign="top">0.41</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top">Wendell Neubert</td>
+
+      <td align="left" valign="top">0.92</td>
+
+      <td align="left" valign="top">0.65</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>For Comparison:</b></td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top">Michael Abrash</td>
+
+      <td align="left" valign="top">1.73</td>
+
+      <td align="left" valign="top">1.44</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top">assembly code</td>
+
+      <td align="left" valign="top"></td>
+
+      <td align="left" valign="top"></td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top">Listing 16.1</td>
+
+      <td align="left" valign="top"></td>
+
+      <td align="left" valign="top"></td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top">Michael Abrash</td>
+
+      <td align="left" valign="top">4.70</td>
+
+      <td align="left" valign="top">4.43</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top">C code</td>
+
+      <td align="left" valign="top"></td>
+
+      <td align="left" valign="top"></td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top">Listing 16.4</td>
+
+      <td align="left" valign="top"></td>
+
+      <td align="left" valign="top"></td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top" colspan="3"><small><b>Note:</b> All times measured on a 20 MHz cached 386 DX.</small></td>
+    </tr>
+
+    <tr>
+      <th align="left" valign="top" colspan="3">Table 16.2 The top four word-counting entries.</th>
+    </tr>
+
+    <tr>
+      <td colspan="3">
+        <hr />
+      </td>
+    </tr>
+  </table>
+
+  <p><b>LISTING 16.5 QSCAN3.ASM</b></p><!-- CODE //-->
+  <pre>
  ;  QSCAN3.ASM
  ;  David Stafford
  
@@ -277,31 +345,29 @@ jumping.
                  .fardata WordTable
  include         qscan3.inc                ;built by MAKETAB
                  end
-</PRE>
-<!-- END CODE //-->
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="16-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="16-06.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p><br /></p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="16-04.html">Previous</a></td>
 
-<!-- END FOOTER -->
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="16-06.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
 
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

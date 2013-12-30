@@ -1,53 +1,60 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Assume Nothing</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=03//-->
+  <!--PAGES=065-067//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="03-07.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="03-09.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Assume Nothing</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>Moreover, because it uses an undocumented feature, the timer-stop approach could conceivably cause erratic 8253 operation, which could in turn seriously affect your computer&rsquo;s operation until the next reboot. In non-8253-compatible systems, I&rsquo;ve observed not only wildly incorrect timing results, but also failure of a diskette drive to operate properly after the long-period Zen timer with <b>PS2</b> set to 0 has run, so be alert for signs of trouble if you do set <b>PS2</b> to 0.</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=03//-->
-<!--PAGES=065-067//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p>Rebooting should clear up any timer-related problems of the sort described above. (This gives us another reason to reboot at the end of each code-timing session.) You should <i>immediately</i> reboot and set the <b>PS2</b> equate to 1 if you get erratic or obviously incorrect results with the long-period Zen timer when <b>PS2</b> is set to 0. If you want to set <b>PS2</b> to 0, it would be a good idea to time a few of the listings in this book with <b>PS2</b> set first to 1 and then to 0, to make sure that the results match. If they&rsquo;re consistently different, you should set <b>PS2</b> to 1.</p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="03-07.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="03-09.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>Moreover, because it uses an undocumented feature, the timer-stop approach could conceivably cause erratic 8253 operation, which could in turn seriously affect your computer&rsquo;s operation until the next reboot. In non-8253-compatible systems, I&rsquo;ve observed not only wildly incorrect timing results, but also failure of a diskette drive to operate properly after the long-period Zen timer with <B>PS2</B> set to 0 has run, so be alert for signs of trouble if you do set <B>PS2</B> to 0.</P>
-<P>Rebooting should clear up any timer-related problems of the sort described above. (This gives us another reason to reboot at the end of each code-timing session.) You should <I>immediately</I> reboot and set the <B>PS2</B> equate to 1 if you get erratic or obviously incorrect results with the long-period Zen timer when <B>PS2</B> is set to 0. If you want to set <B>PS2</B> to 0, it would be a good idea to time a few of the listings in this book with <B>PS2</B> set first to 1 and then to 0, to make sure that the results match. If they&rsquo;re consistently different, you should set <B>PS2</B> to 1.</P>
-<P>While the the non-PS/2 version is more dangerous than the PS/2 version, it also produces more accurate results when it does work. If you have a non-PS/2 PC-compatible computer, the choice between the two timing approaches is yours.</P>
-<P>If you do leave the <B>PS2</B> equate at 1 in Listing 3.5, you should repeat each code-timing run several times before relying on the results to be accurate to more than 54  ms, since variations may result from the possible lack of synchronization between the timer 0 count and the BIOS time-of-day count. In fact, it&rsquo;s a good idea to time code more than once no matter which version of the long-period Zen timer you&rsquo;re using, since interrupts, which must be enabled in order for the long-period timer to work properly, may occur at any time and can alter execution time substantially.</P>
-<P>Finally, please note that the <I>precision</I> Zen timer works perfectly well on both PS/2 and non-PS/2 computers. The PS/2 and 8253 considerations we&rsquo;ve just discussed apply <I>only</I> to the longZen timer.</P>
-<H3><A NAME="Heading14"></A>Example Use of the Long-Period Zen Timer</H3>
-<P>The long-period Zen timer has exactly the same calling interface as the precision Zen timer, and can be used in place of the precision Zen timer simply by linking it to the code to be timed in place of linking the precision timer code. Whenever the precision Zen timer informs you that the code being timed takes too long for the precision timer to handle, all you have to do is link in the long-period timer instead.
-</P>
-<P>Listing 3.6 shows a test-bed program for the long-period Zen timer. While this program is similar to Listing 3.2, it&rsquo;s worth noting that Listing 3.6 waits for a few seconds before calling <B>ZTimerOn</B>, thereby allowing any pending keyboard interrupts to be processed. Since interrupts must be left on in order to time periods longer than 54  ms, the interrupts generated by keystrokes (including the upstroke of the Enter key press that starts the program)&mdash;or any other interrupts, for that matter&mdash;could incorrectly inflate the time recorded by the long-period Zen timer. In light of this, resist the temptation to type ahead, move the mouse, or the like while the long-period Zen timer is timing.</P>
-<P><B>LISTING 3.6 LZTEST.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+  <p>While the the non-PS/2 version is more dangerous than the PS/2 version, it also produces more accurate results when it does work. If you have a non-PS/2 PC-compatible computer, the choice between the two timing approaches is yours.</p>
+
+  <p>If you do leave the <b>PS2</b> equate at 1 in Listing 3.5, you should repeat each code-timing run several times before relying on the results to be accurate to more than 54 ms, since variations may result from the possible lack of synchronization between the timer 0 count and the BIOS time-of-day count. In fact, it&rsquo;s a good idea to time code more than once no matter which version of the long-period Zen timer you&rsquo;re using, since interrupts, which must be enabled in order for the long-period timer to work properly, may occur at any time and can alter execution time substantially.</p>
+
+  <p>Finally, please note that the <i>precision</i> Zen timer works perfectly well on both PS/2 and non-PS/2 computers. The PS/2 and 8253 considerations we&rsquo;ve just discussed apply <i>only</i> to the longZen timer.</p>
+
+  <h3><a id="Heading14"></a>Example Use of the Long-Period Zen Timer</h3>
+
+  <p>The long-period Zen timer has exactly the same calling interface as the precision Zen timer, and can be used in place of the precision Zen timer simply by linking it to the code to be timed in place of linking the precision timer code. Whenever the precision Zen timer informs you that the code being timed takes too long for the precision timer to handle, all you have to do is link in the long-period timer instead.</p>
+
+  <p>Listing 3.6 shows a test-bed program for the long-period Zen timer. While this program is similar to Listing 3.2, it&rsquo;s worth noting that Listing 3.6 waits for a few seconds before calling <b>ZTimerOn</b>, thereby allowing any pending keyboard interrupts to be processed. Since interrupts must be left on in order to time periods longer than 54 ms, the interrupts generated by keystrokes (including the upstroke of the Enter key press that starts the program)&mdash;or any other interrupts, for that matter&mdash;could incorrectly inflate the time recorded by the long-period Zen timer. In light of this, resist the temptation to type ahead, move the mouse, or the like while the long-period Zen timer is timing.</p>
+
+  <p><b>LISTING 3.6 LZTEST.ASM</b></p><!-- CODE //-->
+  <pre>
 ; Program to measure performance of code that takes longer than
 ; 54 ms to execute. (LZTEST.ASM)
 ;
@@ -106,32 +113,31 @@ CheckDelayTime:
 Start endp
 Code  ends
       end     Start
-</PRE>
-<!-- END CODE //-->
-<P>As with the precision Zen timer, the program in Listing 3.6 is used by naming the file containing the code to be timed TESTCODE, then assembling both Listing 3.6 and Listing 3.5 with MASM or TASM and linking the two files together by way of the Microsoft or Borland linker. Listing 3.7 shows a batch file, named LZTIME.BAT, which does all of the above, generating and running the executable file LZTEST.EXE. LZTIME.BAT assumes that the file LZTIMER.ASM contains Listing 3.5 and the file LZTEST.ASM contains Listing 3.6.
-</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="03-07.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="03-09.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>As with the precision Zen timer, the program in Listing 3.6 is used by naming the file containing the code to be timed TESTCODE, then assembling both Listing 3.6 and Listing 3.5 with MASM or TASM and linking the two files together by way of the Microsoft or Borland linker. Listing 3.7 shows a batch file, named LZTIME.BAT, which does all of the above, generating and running the executable file LZTEST.EXE. LZTIME.BAT assumes that the file LZTIMER.ASM contains Listing 3.5 and the file LZTEST.ASM contains Listing 3.6.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p><br /></p>
 
-<!-- END FOOTER -->
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="03-07.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="03-09.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

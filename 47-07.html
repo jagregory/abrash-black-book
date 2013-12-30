@@ -1,44 +1,44 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X: 256-color VGA Magic</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=47//-->
+  <!--PAGES=891-893//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="47-06.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="48-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X: 256-color VGA Magic</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
-
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=47//-->
-<!--PAGES=891-893//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
-
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="47-06.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="48-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P><B>LISTING 47.6  L47-6.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+  <p><b>LISTING 47.6 L47-6.ASM</b></p><!-- CODE //-->
+  <pre>
 ; Mode X (320x240, 256 colors) rectangle fill routine. Works on all
 ; VGAs. Uses fast approach that fans data out to up to four planes at
 ; once to draw up to four pixels at once. Fills up to but not
@@ -96,10 +96,10 @@ _FillRectangleX proc    near
         inc     dx                      ;point DX to the SC Data register
         mov     si,[bp+StartX]
         and     si,0003h                ;look up left edge plane mask
-        mov     bh,LeftClipPlaneMask[si]; to clip & put in BH
+        mov     bh,LeftClipPlaneMask[si]; to clip &amp; put in BH
         mov     si,[bp+EndX]
         and     si,0003h                ;look up right edge plane
-        mov     bl,RightClipPlaneMask[si]; mask to clip & put in BL
+        mov     bl,RightClipPlaneMask[si]; mask to clip &amp; put in BL
 
         mov     cx,[bp+EndX]            ;calculate # of addresses across rect
         mov     si,[bp+StartX]
@@ -152,14 +152,14 @@ FillDone:
         ret
 _FillRectangleX endp
         end
-</PRE>
-<!-- END CODE //-->
-<P>Just so you can see Mode X in action, Listing 47.7 is a sample program that selects Mode X and draws a number of rectangles. Listing 47.7 links to any of the rectangle fill routines I&rsquo;ve presented.
-</P>
-<P>And now, I hope, you&rsquo;re beginning to see why I&rsquo;m so fond of Mode X. In the next chapter, we&rsquo;ll continue with Mode X by exploring the wonders that the latches and parallel plane hardware can work on scrolls, copies, blits, and pattern fills.</P>
-<P><B>LISTING 47.7  L47-7.C</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p>Just so you can see Mode X in action, Listing 47.7 is a sample program that selects Mode X and draws a number of rectangles. Listing 47.7 links to any of the rectangle fill routines I&rsquo;ve presented.</p>
+
+  <p>And now, I hope, you&rsquo;re beginning to see why I&rsquo;m so fond of Mode X. In the next chapter, we&rsquo;ll continue with Mode X by exploring the wonders that the latches and parallel plane hardware can work on scrolls, copies, blits, and pattern fills.</p>
+
+  <p><b>LISTING 47.7 L47-7.C</b></p><!-- CODE //-->
+  <pre>
 /* Program to demonstrate mode X (320x240, 256-colors) rectangle
    fill by drawing adjacent 20x20 rectangles in successive colors from
    0 on up across and down the screen */
@@ -177,38 +177,36 @@ void main() {
    FillRectangleX(0,0,320,240,0,0); /* clear the screen to black */
    for (j = 1; j &lt; 220; j += 21) {
       for (i = 1; i &lt; 300; i += 21) {
-         FillRectangleX(i, j, i+20, j+20, 0, ((j/21*15)+i/21) & 0xFF);
+         FillRectangleX(i, j, i+20, j+20, 0, ((j/21*15)+i/21) &amp; 0xFF);
       }
    }
    getch();
    regset.x.ax = 0x0003;   /* switch back to text mode and done */
    int86(0x10, &amp;regset, &amp;regset);
 }
-</PRE>
-<!-- END CODE //-->
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="47-06.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="48-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p><br /></p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="47-06.html">Previous</a></td>
 
-<!-- END FOOTER -->
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="48-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
 
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

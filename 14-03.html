@@ -1,142 +1,230 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Boyer-Moore String Searching</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=14//-->
+  <!--PAGES=267-268//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="14-02.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="14-04.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Boyer-Moore String Searching</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>How fast <i>is</i> Boyer-Moore? Listing 14.1 is a C implementation of Boyer-Moore searching; Listing 14.2 is a test-bed program that searches up to the first 32K of a file for a pattern. Table 14.1 (all times measured with Turbo Profiler on a 20 MHz cached 386, searching a modified version of the text of this chapter) shows that this implementation is generally much slower than <b>REPNZ SCASB,</b> although it does come close when searching for long patterns. Listing 14.1 is designed primarily to make later assembly implemenmore comprehensible, rather than faster; Sedge&rsquo;s implementation uses arrays rather than pointers, is a great deal more compact and very clever, and may be somewhat faster. Regardless, the far superior performance of <b>REPNZ SCASB</b> clearly indicates that assembly language is in order at this point.</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=14//-->
-<!--PAGES=267-268//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <table width="100%">
+    <tr>
+      <td colspan="7">
+        <hr />
+      </td>
+    </tr>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="14-02.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="14-04.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>How fast <I>is</I> Boyer-Moore? Listing 14.1 is a C implementation of Boyer-Moore searching; Listing 14.2 is a test-bed program that searches up to the first 32K of a file for a pattern. Table 14.1 (all times measured with Turbo Profiler on a 20 MHz cached 386, searching a modified version of the text of this chapter) shows that this implementation is generally much slower than <B>REPNZ SCASB,</B> although it does come close when searching for long patterns. Listing 14.1 is designed primarily to make later assembly implemenmore comprehensible, rather than faster; Sedge&rsquo;s implementation uses arrays rather than pointers, is a great deal more compact and very clever, and may be somewhat faster. Regardless, the far superior performance of <B>REPNZ SCASB</B> clearly indicates that assembly language is in order at this point.</P>
-<TABLE WIDTH="100%"><TR>
-<TD COLSPAN="7"><HR>
-<TR>
-<TH VALIGN="BOTTOM" ALIGN="LEFT" WIDTH="30%">
-<TH VALIGN="BOTTOM" ALIGN="LEFT" WIDTH="10%">&ldquo;g;&rdquo;
-<TH VALIGN="BOTTOM" ALIGN="LEFT" WIDTH="10%">&ldquo;Yogi&rdquo;
-<TH VALIGN="BOTTOM" ALIGN="LEFT" WIDTH="10%">&ldquo;igoY&rdquo;
-<TH VALIGN="BOTTOM" ALIGN="LEFT" WIDTH="10%">&ldquo;Adrian&rdquo;
-<TH VALIGN="BOTTOM" ALIGN="LEFT" WIDTH="10%">&ldquo;Conclusion&rdquo;
-<TH VALIGN="BOTTOM" ALIGN="LEFT" WIDTH="20%">&ldquo;You don&rsquo;t know what you know&rdquo;
-<TR>
-<TD COLSPAN="7"><HR>
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">Searching approach
-<TD VALIGN="TOP" ALIGN="LEFT">(16K)
-<TD VALIGN="TOP" ALIGN="LEFT">(16K)
-<TD VALIGN="TOP" ALIGN="LEFT">(16K)
-<TD VALIGN="TOP" ALIGN="LEFT">(&lt;1K)
-<TD VALIGN="TOP" ALIGN="LEFT">(16K)
-<TD VALIGN="TOP" ALIGN="LEFT">(16K)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">REPNZ SCASB on first char a(Listing 9.1)
-<TD VALIGN="TOP" ALIGN="LEFT">8.2
-<TD VALIGN="TOP" ALIGN="LEFT">7.5
-<TD VALIGN="TOP" ALIGN="LEFT">9.7
-<TD VALIGN="TOP" ALIGN="LEFT">0.4
-<TD VALIGN="TOP" ALIGN="LEFT">7.4
-<TD VALIGN="TOP" ALIGN="LEFT">8.1
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">REPNZ SCASB on least common char (Listing 9.2)
-<TD VALIGN="TOP" ALIGN="LEFT">7.6
-<TD VALIGN="TOP" ALIGN="LEFT">7.5
-<TD VALIGN="TOP" ALIGN="LEFT">7.5
-<TD VALIGN="TOP" ALIGN="LEFT">0.5
-<TD VALIGN="TOP" ALIGN="LEFT">7.5
-<TD VALIGN="TOP" ALIGN="LEFT">7.5
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">Boyer-Moore in C (Listing 14.1)
-<TD VALIGN="TOP" ALIGN="LEFT">71.0
-<TD VALIGN="TOP" ALIGN="LEFT">38.4
-<TD VALIGN="TOP" ALIGN="LEFT">37.7
-<TD VALIGN="TOP" ALIGN="LEFT">1.8
-<TD VALIGN="TOP" ALIGN="LEFT">18.2
-<TD VALIGN="TOP" ALIGN="LEFT">9.2
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">Standard Boyer-Moore in ASM(code not shown)
-<TD VALIGN="TOP" ALIGN="LEFT">38.5
-<TD VALIGN="TOP" ALIGN="LEFT">21.0
-<TD VALIGN="TOP" ALIGN="LEFT">20.5
-<TD VALIGN="TOP" ALIGN="LEFT">0.8
-<TD VALIGN="TOP" ALIGN="LEFT">9.4
-<TD VALIGN="TOP" ALIGN="LEFT">4.8
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">Quick handling of first mismatch Boyer-Moore in ASM(Listing 14.3)
-<TD VALIGN="TOP" ALIGN="LEFT">14.1
-<TD VALIGN="TOP" ALIGN="LEFT">8.9
-<TD VALIGN="TOP" ALIGN="LEFT">7.7
-<TD VALIGN="TOP" ALIGN="LEFT">0.4
-<TD VALIGN="TOP" ALIGN="LEFT">4.0
-<TD VALIGN="TOP" ALIGN="LEFT">2.0
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">&lt;=255 pattern length + sentinelBoyer-Moore in ASM(Listing 14.4)
-<TD VALIGN="TOP" ALIGN="LEFT">8.1
-<TD VALIGN="TOP" ALIGN="LEFT">5.2
-<TD VALIGN="TOP" ALIGN="LEFT">4.6
-<TD VALIGN="TOP" ALIGN="LEFT">0.3
-<TD VALIGN="TOP" ALIGN="LEFT">2.6
-<TD VALIGN="TOP" ALIGN="LEFT">1.2
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT" COLSPAN="7"><SMALL>Search pattern (approximate distance searched before match is shown in parentheses).</SMALL><BR><SMALL>Times are in milliseconds; shorter is better.</SMALL>
-<TR>
-<TD COLSPAN="7"><HR>
-<TR>
-<TH COLSPAN="7" CAPTION ALIGN="LEFT">Table 14.1 Comparison of searching techniques.
-<TR>
-<TD COLSPAN="7"><HR>
-</TABLE>
-<P>The entry &ldquo;Standard Boyer-Moore in ASM&rdquo; in Table 14.1 refers to straight-forward hand optimization of Listing 14.1, code that is not included in this chapter for the perfectly good reason that it is slower in most cases than <B>REPNZ SCASB.</B> I say this casually now, but not so yesterday, when I had all but concluded that Boyer-Moore was simply inferior on the x86, due to two architectural quirks: the string instructions and slow branch. I had even coined a neat phrase for it: Architecture is destiny. Has a nice ring, doesn&rsquo;t it?</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="14-02.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="14-04.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+    <tr>
+      <th valign="bottom" align="left" width="30%"></th>
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+      <th valign="bottom" align="left" width="10%">&ldquo;g;&rdquo;</th>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+      <th valign="bottom" align="left" width="10%">&ldquo;Yogi&rdquo;</th>
 
-<!-- END FOOTER -->
+      <th valign="bottom" align="left" width="10%">&ldquo;igoY&rdquo;</th>
 
+      <th valign="bottom" align="left" width="10%">&ldquo;Adrian&rdquo;</th>
 
+      <th valign="bottom" align="left" width="10%">&ldquo;Conclusion&rdquo;</th>
+
+      <th valign="bottom" align="left" width="20%">&ldquo;You don&rsquo;t know what you know&rdquo;</th>
+    </tr>
+
+    <tr>
+      <td colspan="7">
+        <hr />
+      </td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">Searching approach</td>
+
+      <td valign="top" align="left">(16K)</td>
+
+      <td valign="top" align="left">(16K)</td>
+
+      <td valign="top" align="left">(16K)</td>
+
+      <td valign="top" align="left">(&lt;1K)</td>
+
+      <td valign="top" align="left">(16K)</td>
+
+      <td valign="top" align="left">(16K)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">REPNZ SCASB on first char a(Listing 9.1)</td>
+
+      <td valign="top" align="left">8.2</td>
+
+      <td valign="top" align="left">7.5</td>
+
+      <td valign="top" align="left">9.7</td>
+
+      <td valign="top" align="left">0.4</td>
+
+      <td valign="top" align="left">7.4</td>
+
+      <td valign="top" align="left">8.1</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">REPNZ SCASB on least common char (Listing 9.2)</td>
+
+      <td valign="top" align="left">7.6</td>
+
+      <td valign="top" align="left">7.5</td>
+
+      <td valign="top" align="left">7.5</td>
+
+      <td valign="top" align="left">0.5</td>
+
+      <td valign="top" align="left">7.5</td>
+
+      <td valign="top" align="left">7.5</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">Boyer-Moore in C (Listing 14.1)</td>
+
+      <td valign="top" align="left">71.0</td>
+
+      <td valign="top" align="left">38.4</td>
+
+      <td valign="top" align="left">37.7</td>
+
+      <td valign="top" align="left">1.8</td>
+
+      <td valign="top" align="left">18.2</td>
+
+      <td valign="top" align="left">9.2</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">Standard Boyer-Moore in ASM(code not shown)</td>
+
+      <td valign="top" align="left">38.5</td>
+
+      <td valign="top" align="left">21.0</td>
+
+      <td valign="top" align="left">20.5</td>
+
+      <td valign="top" align="left">0.8</td>
+
+      <td valign="top" align="left">9.4</td>
+
+      <td valign="top" align="left">4.8</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">Quick handling of first mismatch Boyer-Moore in ASM(Listing 14.3)</td>
+
+      <td valign="top" align="left">14.1</td>
+
+      <td valign="top" align="left">8.9</td>
+
+      <td valign="top" align="left">7.7</td>
+
+      <td valign="top" align="left">0.4</td>
+
+      <td valign="top" align="left">4.0</td>
+
+      <td valign="top" align="left">2.0</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">&lt;=255 pattern length + sentinelBoyer-Moore in ASM(Listing 14.4)</td>
+
+      <td valign="top" align="left">8.1</td>
+
+      <td valign="top" align="left">5.2</td>
+
+      <td valign="top" align="left">4.6</td>
+
+      <td valign="top" align="left">0.3</td>
+
+      <td valign="top" align="left">2.6</td>
+
+      <td valign="top" align="left">1.2</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left" colspan="7"><small>Search pattern (approximate distance searched before match is shown in parentheses).</small><br />
+      <small>Times are in milliseconds; shorter is better.</small></td>
+    </tr>
+
+    <tr>
+      <td colspan="7">
+        <hr />
+      </td>
+    </tr>
+
+    <tr>
+      <th colspan="7" caption="" align="left">Table 14.1 Comparison of searching techniques.</th>
+    </tr>
+
+    <tr>
+      <td colspan="7">
+        <hr />
+      </td>
+    </tr>
+  </table>
+
+  <p>The entry &ldquo;Standard Boyer-Moore in ASM&rdquo; in Table 14.1 refers to straight-forward hand optimization of Listing 14.1, code that is not included in this chapter for the perfectly good reason that it is slower in most cases than <b>REPNZ SCASB.</b> I say this casually now, but not so yesterday, when I had all but concluded that Boyer-Moore was simply inferior on the x86, due to two architectural quirks: the string instructions and slow branch. I had even coined a neat phrase for it: Architecture is destiny. Has a nice ring, doesn&rsquo;t it?</p>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="14-02.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="14-04.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

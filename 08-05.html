@@ -1,45 +1,46 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Speeding Up C with Assembly Language</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=08//-->
+  <!--PAGES=163-166//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="08-04.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="09-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Speeding Up C with Assembly Language</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>Listings 8.5 and 8.6 together go the final step and change the rules in favor of assembly language. Listing 8.5 creates the same list of linked blocks as Listing 8.1. However, instead of storing an array of structures within each block, it stores <i>two</i> arrays in each block, one consisting of ID numbers and the other consisting of the corresponding values, as shown in Figure 8.3. No information is lost; the data is merely rearranged.</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=08//-->
-<!--PAGES=163-166//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
-
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="08-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="09-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>Listings 8.5 and 8.6 together go the final step and change the rules in favor of assembly language. Listing 8.5 creates the same list of linked blocks as Listing 8.1. However, instead of storing an array of structures within each block, it stores <I>two</I> arrays in each block, one consisting of ID numbers and the other consisting of the corresponding values, as shown in Figure 8.3. No information is lost; the data is merely rearranged.</P>
-<P><B>LISTING 8.5  L8-5.C</B></P>
-<!-- CODE //-->
-<PRE>
+  <p><b>LISTING 8.5 L8-5.C</b></p><!-- CODE //-->
+  <pre>
 /* Program to search an array spanning a linked list of variable-
    sized blocks, for all entries with a specified ID number,
    and return the average of the values of all such entries. Each of
@@ -58,13 +59,12 @@ void main(void);
 void exit(int);
 extern unsigned int FindIDAverage2(unsigned int,
                                    struct BlockHeader *);
-</PRE>
-<!-- END CODE //-->
-<P><A NAME="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/08-03.jpg',413,261 )"> --><IMG SRC="images/08-03.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/08-03.jpg',413,261)"> --><B>Figure 8.3</B></A>&nbsp;&nbsp;<I>Linked array storage format (version 2).</I>
-</P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p><a id="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/08-03.jpg',413,261 )"> --><img src="images/08-03.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/08-03.jpg',413,261)"> --><b>Figure 8.3</b></a>&nbsp;&nbsp;<i>Linked array storage format (version 2).</i></p><!-- CODE //-->
+  <pre>
 /* Structure that starts each variable-sized block */
 struct BlockHeader {
    struct BlockHeader *NextBlock; /* Pointer to next block, or NULL
@@ -117,11 +117,10 @@ void main(void) {
          IDToFind, FindIDAverage2(IDToFind, BaseArrayBlockPointer));
    exit(0);
 }
-</PRE>
-<!-- END CODE //-->
-<P><B>LISTING 8.6  L8-6.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p><b>LISTING 8.6 L8-6.ASM</b></p><!-- CODE //-->
+  <pre>
 ; Alternative optimized assembly language version of FindIDAverage
 ; requires data organized as two arrays within each block rather
 ; than as an array of two-value element structures. This allows the
@@ -189,32 +188,33 @@ Done:   pop     si              ;Restore C register variables
         ret
 _FindIDAverage2 ENDP
         end
-</PRE>
-<!-- END CODE //-->
-<P>The whole point of this rearrangement is to allow us to use <B>REP SCASW</B> to search through each block, and that&rsquo;s exactly what <B>FindIDAverage2</B> in Listing 8.6 does. The result: Listing 8.6 calculates the average about <I>three times</I> as fast as the original C implementation and more than twice as fast as Listing 8.4, heavily optimized as the latter code is.</P>
-<P>I trust you get the picture. The sort of instruction-by-instruction optimization that so many of us love to do as a kind of puzzle is fun, but compilers can do it nearly as well as you can, and in the future will surely do it better. What a compiler <I>can&rsquo;t</I> do is tie together the needs of the program specification on the high end and the processor on the low end, resulting in critical code that runs just about as fast as the hardware permits. The only software that can do that is located north of your sternum and slightly aft of your nose. Dust it off and put it to work&mdash;and your code will never again be confused with anything by Hamilton, Joe, Frank, eynolds or Bo Donaldson and the Heywoods.</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="08-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="09-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>The whole point of this rearrangement is to allow us to use <b>REP SCASW</b> to search through each block, and that&rsquo;s exactly what <b>FindIDAverage2</b> in Listing 8.6 does. The result: Listing 8.6 calculates the average about <i>three times</i> as fast as the original C implementation and more than twice as fast as Listing 8.4, heavily optimized as the latter code is.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>I trust you get the picture. The sort of instruction-by-instruction optimization that so many of us love to do as a kind of puzzle is fun, but compilers can do it nearly as well as you can, and in the future will surely do it better. What a compiler <i>can&rsquo;t</i> do is tie together the needs of the program specification on the high end and the processor on the low end, resulting in critical code that runs just about as fast as the hardware permits. The only software that can do that is located north of your sternum and slightly aft of your nose. Dust it off and put it to work&mdash;and your code will never again be confused with anything by Hamilton, Joe, Frank, eynolds or Bo Donaldson and the Heywoods.</p>
 
-<!-- END FOOTER -->
+  <p><br /></p>
 
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="08-04.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="09-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

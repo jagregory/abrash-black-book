@@ -1,86 +1,106 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: On Story, Two Rules, and a BSP Renderer</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=62//-->
+  <!--PAGES=1145-1149//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="61-04.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="62-02.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: On Story, Two Rules, and a BSP Renderer</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <h2><a id="Heading1"></a>Chapter 62<br />
+  One Story, Two Rules, and a BSP Renderer</h2>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=62//-->
-<!--PAGES=1145-1149//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <h3><a id="Heading2"></a>Taking a Compiled BSP Tree from Logical to Visual Reality</h3>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="61-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="62-02.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<H2><A NAME="Heading1"></A>Chapter 62<BR>One Story, Two Rules, and a BSP Renderer</H2>
-<H3><A NAME="Heading2"></A>Taking a Compiled BSP Tree from Logical to Visual Reality</H3>
-<P>As I&rsquo;ve noted before, I&rsquo;m working on Quake, id Software&rsquo;s follow-up to DOOM. A month or so back, we added page flipping to Quake, and made the startling discovery that the program ran nearly twice as fast with page flipping as it did with the alternative method of drawing the whole frame to system memory, then copying it to the screen. We were delighted by this, but baffled. I did a few tests and came up with several possible explanations, including slow writes through the external cache, poor main memory performance, and cache misses when copying the frame from system memory to video memory. Although each of these can indeed affect performance, none seemed to account for the magnitude of the speedup, so I assumed there was some hidden hardware interaction at work. Anyway, &ldquo;why&rdquo; was secondary; what really mattered was that we had a way to double performance, which meant I had a lot of work to do to support page flipping as widely as possible.
-</P>
-<P>A few days ago, I was using the Pentium&rsquo;s built-in performance counters to seek out areas for improvement in Quake and, for no particular reason, checked the number of writes performed while copying the frame to the screen in non-page-flipped mode. The answer was 64,000. That seemed odd, since there were 64,000 byte-sized pixels to copy, and I was calling <B>memcpy()</B>, which of course performs copies a dword at a time whenever possible. I thought maybe the Pentium counters report the number of bytes written rather than the number of writes performed, but fortunately, this time I tested my assumptions by writing an ASM routine to copy the frame a dword at a time, without the help of <B>memcpy()</B>. This time the Pentium counters reported 16,000 writes.</P>
-<P>Whoops.</P>
-<P>As it turns out, the <B>memcpy()</B> routine in the DOS version of our compiler (gcc) inexplicably copies memory a byte at a time. With my new routine, the non-page-flipped approach suddenly became slightly <I>faster</I> than page flipping.</P>
-<P>The first relevant rule is pretty obvious: <I>Assume nothing</I>. Measure early and often. Know what&rsquo;s really going on when your program runs, if you catch my drift. To do otherwise is to risk looking mighty foolish.</P>
-<P>The second rule: When you do look foolish (and trust me, it <I>will</I> happen if you do challenging work) have a good laugh at yourself, and use it as a reminder of Rule #1. I hadn&rsquo;t done any extra page-flipping work yet, so I didn&rsquo;t waste any time due to my faulty assumption that <B>memcpy()</B> performed a maximum-speed copy, but that was just luck. I should have done experiments until I was sure I knew what was going on before drawing any conclusions and acting on them.</P>
-<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP" ALIGN="LEFT"><IMG SRC="images/i.jpg"><TD WIDTH="95%" VALIGN="TOP" ALIGN="LEFT"><SMALL><I>In general, make it a point not to fall into a tightly focused rut; stay loose and think of alternative possibilities and new approaches, and always, always, always keep asking questions. It&rsquo;ll pay off big in the long run. If I hadn&rsquo;t indulged my curiosity by running the Pentium counter test on the copy to the screen, even though there was no specific reason to do so, I would never have discovered the <B>memcpy()</B> problem&mdash;and by so doing I doubled the performance of the entire program in five minutes, a rare accomplishment indeed.</I></SMALL>
-</TABLE>
-<P>By the way, I have found the Pentium&rsquo;s performance counters to be very useful in of information on the performance counters and other aspects of the Pentium is Mike Schmit&rsquo;s book, <I>Pentium Processor Optimization Tools</I>, AP Professional, ISBN 0-12-627230-1.</P>
-<P>Onward to rendering from a BSP tree.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading3"></A>BSP-based Rendering</H4>
-<P>For the last several chapters I&rsquo;ve been discussing the nature of BSP (Binary Space Partitioning) trees, and in Chapter 60 I presented a compiler for 2-D BSP trees. Now we&rsquo;re ready to use those compiled BSP trees to do realtime rendering.
-</P>
-<P>As you&rsquo;ll recall, the BSP compiler took a list of vertical walls and built a 2-D BSP tree from the walls, as viewed from above. The result is shown in Figure 62.1. The world is split into two pieces by the line of the root wall, and each half of the world is then split again by the root&rsquo;s children, and so on, until the world is carved into subspaces along the lines of all the walls.</P>
-<P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/62-01.jpg',400,153 )"> --><IMG SRC="images/62-01.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/62-01.jpg',400,153)"> --><B>Figure 62.1</B></A>&nbsp;&nbsp;<I>Vertical walls and a BSP tree to represent them.</I>
-</P>
-<P>Our objective is to draw the world so that whenever walls overlap we see the nearer wall at each overlapped pixel. The simplest way to do that is with the painter&rsquo;s algorithm; that is, drawing the walls in back-to-front order, assuming no polygons interpenetrate or form cycles. BSP trees guarantee that no polygons interpenetrate (such polygons are automatically split), and make it easy to walk the polygons in back-to-front (or front-to-back) order.
-</P>
-<P>Given a BSP tree, in order to render a view of that tree, all we have to do is descend the tree, deciding at each node whether we&rsquo;re seeing the front or back of the wall at that node from the current viewpoint. We use that knowledge to first recursively descend and draw the farther subtree of that node, then draw that node, and finally draw the nearer subtree of that node. Applied recursively from the root of our BSP trees, this approach guarantees that overlapping polygons will always be drawn in back-to-front order. Listing 62.1 draws a BSP-based world in this fashion. (Because of the constraints of the printed page, Listing 62.1 is only the core of the BSP renderer, without the program framework, some math routines, and the polygon rasterizer; but, the entire program is on the CD-ROM as DDJBSP2.ZIP. Listing 62.1 is in a compressed format, with relatively little whitespace; the full version on the CD-ROM is formatted normally.)</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="61-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="62-02.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+  <p>As I&rsquo;ve noted before, I&rsquo;m working on Quake, id Software&rsquo;s follow-up to DOOM. A month or so back, we added page flipping to Quake, and made the startling discovery that the program ran nearly twice as fast with page flipping as it did with the alternative method of drawing the whole frame to system memory, then copying it to the screen. We were delighted by this, but baffled. I did a few tests and came up with several possible explanations, including slow writes through the external cache, poor main memory performance, and cache misses when copying the frame from system memory to video memory. Although each of these can indeed affect performance, none seemed to account for the magnitude of the speedup, so I assumed there was some hidden hardware interaction at work. Anyway, &ldquo;why&rdquo; was secondary; what really mattered was that we had a way to double performance, which meant I had a lot of work to do to support page flipping as widely as possible.</p>
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>A few days ago, I was using the Pentium&rsquo;s built-in performance counters to seek out areas for improvement in Quake and, for no particular reason, checked the number of writes performed while copying the frame to the screen in non-page-flipped mode. The answer was 64,000. That seemed odd, since there were 64,000 byte-sized pixels to copy, and I was calling <b>memcpy()</b>, which of course performs copies a dword at a time whenever possible. I thought maybe the Pentium counters report the number of bytes written rather than the number of writes performed, but fortunately, this time I tested my assumptions by writing an ASM routine to copy the frame a dword at a time, without the help of <b>memcpy()</b>. This time the Pentium counters reported 16,000 writes.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>Whoops.</p>
 
-<!-- END FOOTER -->
+  <p>As it turns out, the <b>memcpy()</b> routine in the DOS version of our compiler (gcc) inexplicably copies memory a byte at a time. With my new routine, the non-page-flipped approach suddenly became slightly <i>faster</i> than page flipping.</p>
 
+  <p>The first relevant rule is pretty obvious: <i>Assume nothing</i>. Measure early and often. Know what&rsquo;s really going on when your program runs, if you catch my drift. To do otherwise is to risk looking mighty foolish.</p>
 
+  <p>The second rule: When you do look foolish (and trust me, it <i>will</i> happen if you do challenging work) have a good laugh at yourself, and use it as a reminder of Rule #1. I hadn&rsquo;t done any extra page-flipping work yet, so I didn&rsquo;t waste any time due to my faulty assumption that <b>memcpy()</b> performed a maximum-speed copy, but that was just luck. I should have done experiments until I was sure I knew what was going on before drawing any conclusions and acting on them.</p>
+
+  <table width="100%">
+    <tr>
+      <td width="5%" valign="top" align="left"><img src="images/i.jpg" /></td>
+
+      <td width="95%" valign="top" align="left"><small><i>In general, make it a point not to fall into a tightly focused rut; stay loose and think of alternative possibilities and new approaches, and always, always, always keep asking questions. It&rsquo;ll pay off big in the long run. If I hadn&rsquo;t indulged my curiosity by running the Pentium counter test on the copy to the screen, even though there was no specific reason to do so, I would never have discovered the <b>memcpy()</b> problem&mdash;and by so doing I doubled the performance of the entire program in five minutes, a rare accomplishment indeed.</i></small></td>
+    </tr>
+  </table>
+
+  <p>By the way, I have found the Pentium&rsquo;s performance counters to be very useful in of information on the performance counters and other aspects of the Pentium is Mike Schmit&rsquo;s book, <i>Pentium Processor Optimization Tools</i>, AP Professional, ISBN 0-12-627230-1.</p>
+
+  <p>Onward to rendering from a BSP tree.</p>
+
+  <h4 align="left"><a id="Heading3"></a>BSP-based Rendering</h4>
+
+  <p>For the last several chapters I&rsquo;ve been discussing the nature of BSP (Binary Space Partitioning) trees, and in Chapter 60 I presented a compiler for 2-D BSP trees. Now we&rsquo;re ready to use those compiled BSP trees to do realtime rendering.</p>
+
+  <p>As you&rsquo;ll recall, the BSP compiler took a list of vertical walls and built a 2-D BSP tree from the walls, as viewed from above. The result is shown in Figure 62.1. The world is split into two pieces by the line of the root wall, and each half of the world is then split again by the root&rsquo;s children, and so on, until the world is carved into subspaces along the lines of all the walls.</p>
+
+  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/62-01.jpg',400,153 )"> --><img src="images/62-01.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/62-01.jpg',400,153)"> --><b>Figure 62.1</b></a>&nbsp;&nbsp;<i>Vertical walls and a BSP tree to represent them.</i></p>
+
+  <p>Our objective is to draw the world so that whenever walls overlap we see the nearer wall at each overlapped pixel. The simplest way to do that is with the painter&rsquo;s algorithm; that is, drawing the walls in back-to-front order, assuming no polygons interpenetrate or form cycles. BSP trees guarantee that no polygons interpenetrate (such polygons are automatically split), and make it easy to walk the polygons in back-to-front (or front-to-back) order.</p>
+
+  <p>Given a BSP tree, in order to render a view of that tree, all we have to do is descend the tree, deciding at each node whether we&rsquo;re seeing the front or back of the wall at that node from the current viewpoint. We use that knowledge to first recursively descend and draw the farther subtree of that node, then draw that node, and finally draw the nearer subtree of that node. Applied recursively from the root of our BSP trees, this approach guarantees that overlapping polygons will always be drawn in back-to-front order. Listing 62.1 draws a BSP-based world in this fashion. (Because of the constraints of the printed page, Listing 62.1 is only the core of the BSP renderer, without the program framework, some math routines, and the polygon rasterizer; but, the entire program is on the CD-ROM as DDJBSP2.ZIP. Listing 62.1 is in a compressed format, with relatively little whitespace; the full version on the CD-ROM is formatted normally.)</p>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="61-04.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="62-02.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

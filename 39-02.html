@@ -1,111 +1,208 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Fast Convex Polygons</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=39//-->
+  <!--PAGES=727-730//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="39-01.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="39-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Fast Convex Polygons</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>At any rate, Listing 39.1 for this chapter shows a version of <b>DrawHorizontalLineList</b> that uses memset to draw each scan line of the polygon in a single call. When linked to Chapter 38&rsquo;s test program, Listing 39.1 increases pure drawing speed (disregarding edge tracing and other nondrawing time) by more than an order of magnitude over Chapter 38&rsquo;s draw-pixel-based code, despite the fact that Listing 39.1 requires a large (in this case, the Compact) data model. Listing 39.1 works fine with Borland C<small>++</small>, but may not work with other compilers, for it relies on the aforementioned interaction between memset and the selected memory model.</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=39//-->
-<!--PAGES=727-730//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <table width="100%">
+    <tr>
+      <th colspan="5">
+        <hr />
+      </th>
+    </tr>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="39-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="39-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>At any rate, Listing 39.1 for this chapter shows a version of <B>DrawHorizontalLineList</B> that uses memset to draw each scan line of the polygon in a single call. When linked to Chapter 38&rsquo;s test program, Listing 39.1 increases pure drawing speed (disregarding edge tracing and other nondrawing time) by more than an order of magnitude over Chapter 38&rsquo;s draw-pixel-based code, despite the fact that Listing 39.1 requires a large (in this case, the Compact) data model. Listing 39.1 works fine with Borland C<SMALL>++</SMALL>, but may not work with other compilers, for it relies on the aforementioned interaction between memset and the selected memory model.</P>
-<TABLE WIDTH="100%"><TR>
-<TH COLSPAN="5"><HR>
-<TR>
-<TH VALIGN="BOTTOM" ALIGN="LEFT" WIDTH="30%">Implementation
-<TH VALIGN="BOTTOM" ALIGN="LEFT" WIDTH="20%">Total Polygon<BR>Filling Time
-<TH VALIGN="BOTTOM" ALIGN="LEFT" WIDTH="15%">DrawHorizontal<BR>LineList
-<TH VALIGN="BOTTOM" ALIGN="LEFT" WIDTH="15%">ScanEdge
-<TH VALIGN="BOTTOM" ALIGN="LEFT" WIDTH="15%">FillConvex<BR>Polygon
-<TR>
-<TH COLSPAN="5"><HR>
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT" COLSPAN="5"><SMALL>Drawing to display memory in mode 13h</SMALL>
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">C floating point scan/DrawPixel drawing code from Chapter 38, (small model)
-<TD VALIGN="TOP" ALIGN="LEFT">11.69
-<TD VALIGN="TOP" ALIGN="LEFT">5.80 seconds<BR>(50% of total)
-<TD VALIGN="TOP" ALIGN="LEFT">5.86<BR>(50%)
-<TD VALIGN="TOP" ALIGN="LEFT">0.03<BR>(&lt;1%)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">C floating point scan/memset drawing (Listing 39.1, compact model)
-<TD VALIGN="TOP" ALIGN="LEFT">6.64
-<TD VALIGN="TOP" ALIGN="LEFT">0.49<BR>(7%)
-<TD VALIGN="TOP" ALIGN="LEFT">6.11<BR>(92%)
-<TD VALIGN="TOP" ALIGN="LEFT">0.04<BR>(&lt;1%)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">C integer scan/memset drawing (Listing 39.1 &amp; Listing 39.2, compact model)
-<TD VALIGN="TOP" ALIGN="LEFT">0.60
-<TD VALIGN="TOP" ALIGN="LEFT">0.49<BR>(82%)
-<TD VALIGN="TOP" ALIGN="LEFT">0.07<BR>(12%)
-<TD VALIGN="TOP" ALIGN="LEFT">0.04<BR>(7%)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">C integer scan/ASM drawing (Listing 39.2 &amp; Listing 39.3, small model)
-<TD VALIGN="TOP" ALIGN="LEFT">0.45
-<TD VALIGN="TOP" ALIGN="LEFT">0.36<BR>(80%)
-<TD VALIGN="TOP" ALIGN="LEFT">0.06<BR>(13%)
-<TD VALIGN="TOP" ALIGN="LEFT">0.03<BR>(7%)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">ASM integer scan/ASM drawing (Listing 40.3 &amp; Listing 40.4,small model)
-<TD VALIGN="TOP" ALIGN="LEFT">0.42
-<TD VALIGN="TOP" ALIGN="LEFT">0.36<BR>(86%)
-<TD VALIGN="TOP" ALIGN="LEFT">0.03<BR>(7%)
-<TD VALIGN="TOP" ALIGN="LEFT">0.03<BR>(7%)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT" COLSPAN="5"><SMALL>Drawing to system memory</SMALL>
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">C integer scan/memset drawing (Listing 39.1 &amp; Listing 39.2,compact model)
-<TD VALIGN="TOP" ALIGN="LEFT">0.31
-<TD VALIGN="TOP" ALIGN="LEFT">0.20<BR>(65%)
-<TD VALIGN="TOP" ALIGN="LEFT">0.07<BR>(23%)
-<TD VALIGN="TOP" ALIGN="LEFT">0.04<BR>(13%)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">ASM integer scan/ASM drawing (Listing 39.3 &amp; Listing 39.4,small model)
-<TD VALIGN="TOP" ALIGN="LEFT">0.13
-<TD VALIGN="TOP" ALIGN="LEFT">0.07<BR>(54%)
-<TD VALIGN="TOP" ALIGN="LEFT">0.03<BR>(23%)
-<TD VALIGN="TOP" ALIGN="LEFT">0.03<BR>(23%)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT" COLSPAN="5"><SMALL>All times are in seconds, as measured with Turbo Profiler on a 20-MHz cached 386 with no math coprocessor installed. Note that time spent in <B>main()</B> is not included. C code was compiled with Borland C<SMALL>++</SMALL> with maximum optimization (-G -O -Z -r -a); assembly language code was assembled with TASM. Percentages of combined times are rounded to the nearest percent, so the sum of the three percentages does not always equal 100.</SMALL>
-<TR>
-<TH COLSPAN="5"><HR>
-<TR>
-<TH CAPTION VALIGN="TOP" ALIGN="LEFT" COLSPAN="6">Table 39.1 Polygon fill performance.
-<TR>
-<TH COLSPAN="6"><HR>
-<TR>
-</TABLE>
-<P><B>LISTING 39.1 L39-1.C</B></P>
-<!-- CODE //-->
-<PRE>
+    <tr>
+      <th valign="bottom" align="left" width="30%">Implementation</th>
+
+      <th valign="bottom" align="left" width="20%">Total Polygon<br />
+      Filling Time</th>
+
+      <th valign="bottom" align="left" width="15%">DrawHorizontal<br />
+      LineList</th>
+
+      <th valign="bottom" align="left" width="15%">ScanEdge</th>
+
+      <th valign="bottom" align="left" width="15%">FillConvex<br />
+      Polygon</th>
+    </tr>
+
+    <tr>
+      <th colspan="5">
+        <hr />
+      </th>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left" colspan="5"><small>Drawing to display memory in mode 13h</small></td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">C floating point scan/DrawPixel drawing code from Chapter 38, (small model)</td>
+
+      <td valign="top" align="left">11.69</td>
+
+      <td valign="top" align="left">5.80 seconds<br />
+      (50% of total)</td>
+
+      <td valign="top" align="left">5.86<br />
+      (50%)</td>
+
+      <td valign="top" align="left">0.03<br />
+      (&lt;1%)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">C floating point scan/memset drawing (Listing 39.1, compact model)</td>
+
+      <td valign="top" align="left">6.64</td>
+
+      <td valign="top" align="left">0.49<br />
+      (7%)</td>
+
+      <td valign="top" align="left">6.11<br />
+      (92%)</td>
+
+      <td valign="top" align="left">0.04<br />
+      (&lt;1%)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">C integer scan/memset drawing (Listing 39.1 &amp; Listing 39.2, compact model)</td>
+
+      <td valign="top" align="left">0.60</td>
+
+      <td valign="top" align="left">0.49<br />
+      (82%)</td>
+
+      <td valign="top" align="left">0.07<br />
+      (12%)</td>
+
+      <td valign="top" align="left">0.04<br />
+      (7%)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">C integer scan/ASM drawing (Listing 39.2 &amp; Listing 39.3, small model)</td>
+
+      <td valign="top" align="left">0.45</td>
+
+      <td valign="top" align="left">0.36<br />
+      (80%)</td>
+
+      <td valign="top" align="left">0.06<br />
+      (13%)</td>
+
+      <td valign="top" align="left">0.03<br />
+      (7%)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">ASM integer scan/ASM drawing (Listing 40.3 &amp; Listing 40.4,small model)</td>
+
+      <td valign="top" align="left">0.42</td>
+
+      <td valign="top" align="left">0.36<br />
+      (86%)</td>
+
+      <td valign="top" align="left">0.03<br />
+      (7%)</td>
+
+      <td valign="top" align="left">0.03<br />
+      (7%)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left" colspan="5"><small>Drawing to system memory</small></td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">C integer scan/memset drawing (Listing 39.1 &amp; Listing 39.2,compact model)</td>
+
+      <td valign="top" align="left">0.31</td>
+
+      <td valign="top" align="left">0.20<br />
+      (65%)</td>
+
+      <td valign="top" align="left">0.07<br />
+      (23%)</td>
+
+      <td valign="top" align="left">0.04<br />
+      (13%)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">ASM integer scan/ASM drawing (Listing 39.3 &amp; Listing 39.4,small model)</td>
+
+      <td valign="top" align="left">0.13</td>
+
+      <td valign="top" align="left">0.07<br />
+      (54%)</td>
+
+      <td valign="top" align="left">0.03<br />
+      (23%)</td>
+
+      <td valign="top" align="left">0.03<br />
+      (23%)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left" colspan="5"><small>All times are in seconds, as measured with Turbo Profiler on a 20-MHz cached 386 with no math coprocessor installed. Note that time spent in <b>main()</b> is not included. C code was compiled with Borland C<small>++</small> with maximum optimization (-G -O -Z -r -a); assembly language code was assembled with TASM. Percentages of combined times are rounded to the nearest percent, so the sum of the three percentages does not always equal 100.</small></td>
+    </tr>
+
+    <tr>
+      <th colspan="5">
+        <hr />
+      </th>
+    </tr>
+
+    <tr>
+      <th caption="" valign="top" align="left" colspan="6">Table 39.1 Polygon fill performance.</th>
+    </tr>
+
+    <tr>
+      <th colspan="6">
+        <hr />
+      </th>
+    </tr>
+  </table>
+
+  <p><b>LISTING 39.1 L39-1.C</b></p><!-- CODE //-->
+  <pre>
 /* Draws all pixels in the list of horizontal lines passed in, in
    mode 13h, the VGA&rsquo;s 320x200 256-color mode. Uses memset to fill
    each line, which is much faster than using DrawPixel but requires
@@ -145,39 +242,47 @@ void DrawHorizontalLineList(struct HLineList * HLineListPtr,
       ScreenPtr += SCREEN_WIDTH; /* point to next scan line start */
    }
 }
-</PRE>
-<!-- END CODE //-->
-<P>At this point, I&rsquo;d like to mention that benchmarks are notoriously unreliable; the results in Table 39.1 are accurate <I>only</I> for the test program, and only when running on a particular system. Results could be vastly different if smaller, larger, or more complex polygons were drawn, or if a faster or slower computer/VGA combination were used. These factors notwithstanding, the test program does fill a variety of polygons of varying complexity sized from large to small and in between, and certainly the order of magnitude difference between Listing 39.1 and the old version of <B>DrawHorizontalLineList</B> is a clear indication of which code is superior.</P>
-<P>Anyway, Listing 39.1 has the desired effect of vastly improving drawing time. There are cycles yet to be had in the drawing code, but as tracing polygon edges now takes 92 percent of the polygon filling time, it&rsquo;s logical to optimize the tracing code next.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading5"></A>Fast Edge Tracing</H4>
-<P>There&rsquo;s no secret as to why last chapter&rsquo;s <B>ScanEdge</B> was so slow: It used floating point calculations. One secret of fast graphics is using integer or fixed-point calculations, instead. (Sure, the floating point code would run faster if a math coprocessor were installed, but it would still be slower than the alternatives; besides, why require a math coprocessor when you don&rsquo;t have to?) Both integer and fixed-point calculations are fast. In many cases, fixed-point is faster, but integer calculations have one tremendous virtue: They&rsquo;re completely accurate. The tiny imprecision inherent in either fixed or floating-point calculations can result in occasional pixels being one position off from their proper location. This is no great tragedy, but after going to so much trouble to ensure that polygons don&rsquo;t overlap at common edges, why not get it exactly right?</P>
-<P>In fact, when I tested out the integer edge tracing code by comparing an integer-based test image to one produced by floating-point calculations, two pixels out of the whole screen differed, leading me to suspect a bug in the integer code. It turned out, however, that&rsquo;s in those two cases, the floating point results were sufficiently imprecise to creep from just under an integer value to just over it, so that the <B>ceil</B> function returned a coordinate that was one too large.</P>
-<TABLE WIDTH="100%"><TR>
-<TD WIDTH="5%" ALIGN="LEFT" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="95%" VALIGN="TOP" ALIGN="LEFT"><SMALL><I>Floating point is very accurate&mdash;but it is not precise. Integer calculations, properly performed, are.</I></SMALL>
-</TABLE>
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="39-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="39-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>At this point, I&rsquo;d like to mention that benchmarks are notoriously unreliable; the results in Table 39.1 are accurate <i>only</i> for the test program, and only when running on a particular system. Results could be vastly different if smaller, larger, or more complex polygons were drawn, or if a faster or slower computer/VGA combination were used. These factors notwithstanding, the test program does fill a variety of polygons of varying complexity sized from large to small and in between, and certainly the order of magnitude difference between Listing 39.1 and the old version of <b>DrawHorizontalLineList</b> is a clear indication of which code is superior.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>Anyway, Listing 39.1 has the desired effect of vastly improving drawing time. There are cycles yet to be had in the drawing code, but as tracing polygon edges now takes 92 percent of the polygon filling time, it&rsquo;s logical to optimize the tracing code next.</p>
 
-<!-- END FOOTER -->
+  <h4 align="left"><a id="Heading5"></a>Fast Edge Tracing</h4>
 
+  <p>There&rsquo;s no secret as to why last chapter&rsquo;s <b>ScanEdge</b> was so slow: It used floating point calculations. One secret of fast graphics is using integer or fixed-point calculations, instead. (Sure, the floating point code would run faster if a math coprocessor were installed, but it would still be slower than the alternatives; besides, why require a math coprocessor when you don&rsquo;t have to?) Both integer and fixed-point calculations are fast. In many cases, fixed-point is faster, but integer calculations have one tremendous virtue: They&rsquo;re completely accurate. The tiny imprecision inherent in either fixed or floating-point calculations can result in occasional pixels being one position off from their proper location. This is no great tragedy, but after going to so much trouble to ensure that polygons don&rsquo;t overlap at common edges, why not get it exactly right?</p>
 
+  <p>In fact, when I tested out the integer edge tracing code by comparing an integer-based test image to one produced by floating-point calculations, two pixels out of the whole screen differed, leading me to suspect a bug in the integer code. It turned out, however, that&rsquo;s in those two cases, the floating point results were sufficiently imprecise to creep from just under an integer value to just over it, so that the <b>ceil</b> function returned a coordinate that was one too large.</p>
+
+  <table width="100%">
+    <tr>
+      <td width="5%" align="left" valign="top"><img src="images/i.jpg" /></td>
+
+      <td width="95%" valign="top" align="left"><small><i>Floating point is very accurate&mdash;but it is not precise. Integer calculations, properly performed, are.</i></small></td>
+    </tr>
+  </table>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="39-01.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="39-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

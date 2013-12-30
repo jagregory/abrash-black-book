@@ -1,138 +1,211 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bit-Plane Animation</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=43//-->
+  <!--PAGES=811-813//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="43-04.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="43-06.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Bit-Plane Animation</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>Another limitation of bit-plane animation is that it&rsquo;s best if images stored in the same plane never cross each other. Why? Because when images do cross, the blank fringe</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=43//-->
-<!--PAGES=811-813//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <table>
+    <tr>
+      <th colspan="2">
+        <hr />
+      </th>
+    </tr>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="43-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="43-06.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>Another limitation of bit-plane animation is that it&rsquo;s best if images stored in the same plane never cross each other. Why? Because when images do cross, the blank fringe
-</P>
-<TABLE><TR>
-<TH COLSPAN="2"><HR>
-<TR>
-<TH VALIGN="TOP" ALIGN="LEFT" WIDTH="40%">Palette Register
-<TH VALIGN="TOP" ALIGN="LEFT" WIDTH="60%">Register Setting
-<TR>
-<TH COLSPAN="2"><HR>
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">0
-<TD VALIGN="TOP" ALIGN="LEFT">00H (black)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">1
-<TD VALIGN="TOP" ALIGN="LEFT">01H (blue)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">2
-<TD VALIGN="TOP" ALIGN="LEFT">02H (green)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">3
-<TD VALIGN="TOP" ALIGN="LEFT">03H (cyan)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">4
-<TD VALIGN="TOP" ALIGN="LEFT">04H (red)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">5
-<TD VALIGN="TOP" ALIGN="LEFT">05H (magenta)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">6
-<TD VALIGN="TOP" ALIGN="LEFT">14H (brown)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">7
-<TD VALIGN="TOP" ALIGN="LEFT">07H (light gray)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">8
-<TD VALIGN="TOP" ALIGN="LEFT">3EH (yellow)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">9
-<TD VALIGN="TOP" ALIGN="LEFT">3EH (yellow)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">10
-<TD VALIGN="TOP" ALIGN="LEFT">3EH (yellow)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">1
-<TD VALIGN="TOP" ALIGN="LEFT">13EH (yellow)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">12
-<TD VALIGN="TOP" ALIGN="LEFT">3EH (yellow)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">13
-<TD VALIGN="TOP" ALIGN="LEFT">3EH (yellow)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">14
-<TD VALIGN="TOP" ALIGN="LEFT">3EH (yellow)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">15
-<TD VALIGN="TOP" ALIGN="LEFT">3EH (yellow)
-<TR>
-<TH COLSPAN="2"><HR>
-<TR>
-<TH CAPTION ALIGN="LEFT" COLSPAN="2">Table 43.2 Palette RAM settings for two-plane animation.
-<TR>
-<TH COLSPAN="2"><HR>
-</TABLE>
-<P>around each image can temporarily erase the overlapped parts of the other image or images, resulting in momentary flicker. While that&rsquo;s not fatal, it certainly detracts from the rock-solid animation effect of bit-plane animation.
-</P>
-<P>Not allowing images in the same plane to overlap is actually less of a limitation than it seems. Run Listing 43.1 again. Unless you were looking for it, you&rsquo;d never notice that images of the same color almost never overlap&mdash;there&rsquo;s plenty of action to distract the eye, and the trajectories of images of the same color are arranged so that they have a full range of motion without running into each other. The only exception is the chain of green images, which occasionally doubles back on itself when it bounces directly into a corner and reverses direction. Here, however, the images are moving so quickly that the brief moment during which one image&rsquo;s fringe blanks a portion of another image is noticeable only upon close inspection, and not particularly unaesthetic even then.</P>
-<P><A NAME="Fig5"><!-- </A><A HREF="javascript:displayWindow('images/43-05.jpg',410,203 )"> --><IMG SRC="images/43-05.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/43-05.jpg',410,203)"> --><B>Figure 43.5</B></A>&nbsp;&nbsp;<I>Pixel precedence for plane 3 only.</I>
-</P>
-<P>When a technique has such tremendous visual and performance advantages as does bit-plane animation, it behooves you to design your animation software so that the limitations of the animation technique don&rsquo;t get in the way. For example, you might design a shooting gallery game with all the images in a given plane marching along in step in a continuous band. The images could never overlap, so bit-plane animation would produce very high image quality.
-</P>
-<H3><A NAME="Heading7"></A>Shearing and Page Flipping</H3>
-<P>As Listing 43.1 runs, you may occasionally see an image shear, with the top and bottom parts of the image briefly offset. This is a consequence of drawing an image directly into memory as that memory is being scanned for video data. Occasionally the CRT controller scans a given area of display memory for pixel data just as the program is changing that same memory. If the CRT controller scans memory faster than the CPU can modify that memory, then the CRT controller can scan out the bytes of display memory that have been already been changed, pass the point in the image that the CPU is currently drawing, and start scanning out bytes that haven&rsquo;t yet been changed. The result: Mismatched upper and lower portions of the image.
-</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="43-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="43-06.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+    <tr>
+      <th valign="top" align="left" width="40%">Palette Register</th>
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+      <th valign="top" align="left" width="60%">Register Setting</th>
+    </tr>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+    <tr>
+      <th colspan="2">
+        <hr />
+      </th>
+    </tr>
 
-<!-- END FOOTER -->
+    <tr>
+      <td valign="top" align="left">0</td>
 
+      <td valign="top" align="left">00H (black)</td>
+    </tr>
 
+    <tr>
+      <td valign="top" align="left">1</td>
+
+      <td valign="top" align="left">01H (blue)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">2</td>
+
+      <td valign="top" align="left">02H (green)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">3</td>
+
+      <td valign="top" align="left">03H (cyan)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">4</td>
+
+      <td valign="top" align="left">04H (red)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">5</td>
+
+      <td valign="top" align="left">05H (magenta)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">6</td>
+
+      <td valign="top" align="left">14H (brown)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">7</td>
+
+      <td valign="top" align="left">07H (light gray)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">8</td>
+
+      <td valign="top" align="left">3EH (yellow)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">9</td>
+
+      <td valign="top" align="left">3EH (yellow)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">10</td>
+
+      <td valign="top" align="left">3EH (yellow)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">1</td>
+
+      <td valign="top" align="left">13EH (yellow)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">12</td>
+
+      <td valign="top" align="left">3EH (yellow)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">13</td>
+
+      <td valign="top" align="left">3EH (yellow)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">14</td>
+
+      <td valign="top" align="left">3EH (yellow)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">15</td>
+
+      <td valign="top" align="left">3EH (yellow)</td>
+    </tr>
+
+    <tr>
+      <th colspan="2">
+        <hr />
+      </th>
+    </tr>
+
+    <tr>
+      <th caption="" align="left" colspan="2">Table 43.2 Palette RAM settings for two-plane animation.</th>
+    </tr>
+
+    <tr>
+      <th colspan="2">
+        <hr />
+      </th>
+    </tr>
+  </table>
+
+  <p>around each image can temporarily erase the overlapped parts of the other image or images, resulting in momentary flicker. While that&rsquo;s not fatal, it certainly detracts from the rock-solid animation effect of bit-plane animation.</p>
+
+  <p>Not allowing images in the same plane to overlap is actually less of a limitation than it seems. Run Listing 43.1 again. Unless you were looking for it, you&rsquo;d never notice that images of the same color almost never overlap&mdash;there&rsquo;s plenty of action to distract the eye, and the trajectories of images of the same color are arranged so that they have a full range of motion without running into each other. The only exception is the chain of green images, which occasionally doubles back on itself when it bounces directly into a corner and reverses direction. Here, however, the images are moving so quickly that the brief moment during which one image&rsquo;s fringe blanks a portion of another image is noticeable only upon close inspection, and not particularly unaesthetic even then.</p>
+
+  <p><a id="Fig5"><!-- </A><A HREF="javascript:displayWindow('images/43-05.jpg',410,203 )"> --><img src="images/43-05.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/43-05.jpg',410,203)"> --><b>Figure 43.5</b></a>&nbsp;&nbsp;<i>Pixel precedence for plane 3 only.</i></p>
+
+  <p>When a technique has such tremendous visual and performance advantages as does bit-plane animation, it behooves you to design your animation software so that the limitations of the animation technique don&rsquo;t get in the way. For example, you might design a shooting gallery game with all the images in a given plane marching along in step in a continuous band. The images could never overlap, so bit-plane animation would produce very high image quality.</p>
+
+  <h3><a id="Heading7"></a>Shearing and Page Flipping</h3>
+
+  <p>As Listing 43.1 runs, you may occasionally see an image shear, with the top and bottom parts of the image briefly offset. This is a consequence of drawing an image directly into memory as that memory is being scanned for video data. Occasionally the CRT controller scans a given area of display memory for pixel data just as the program is changing that same memory. If the CRT controller scans memory faster than the CPU can modify that memory, then the CRT controller can scan out the bytes of display memory that have been already been changed, pass the point in the image that the CPU is currently drawing, and start scanning out bytes that haven&rsquo;t yet been changed. The result: Mismatched upper and lower portions of the image.</p>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="43-04.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="43-06.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

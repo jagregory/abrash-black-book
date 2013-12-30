@@ -1,57 +1,59 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Those Way-Down Polygon Nomenclature Blues</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=41//-->
+  <!--PAGES=761-764//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="41-01.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="41-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Those Way-Down Polygon Nomenclature Blues</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>Listings 41.2 and 41.3 are variants of the fast convex polygon fill code from Chapter 39, modified to be able to handle all monotone-vertical polygons, including nonsimple ones; the edge-scanning code (Listing 39.4 from Chapter 39) remains the same, and so is not shown again here.</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=41//-->
-<!--PAGES=761-764//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/41-01.jpg',408,133 )"> --><img src="images/41-01.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/41-01.jpg',408,133)"> --><b>Figure 41.1</b></a>&nbsp;&nbsp;<i>Monotone-vertical polygons.</i></p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="41-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="41-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>Listings 41.2 and 41.3 are variants of the fast convex polygon fill code from Chapter 39, modified to be able to handle all monotone-vertical polygons, including nonsimple ones; the edge-scanning code (Listing 39.4 from Chapter 39) remains the same, and so is not shown again here.
-</P>
-<P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/41-01.jpg',408,133 )"> --><IMG SRC="images/41-01.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/41-01.jpg',408,133)"> --><B>Figure 41.1</B></A>&nbsp;&nbsp;<I>Monotone-vertical polygons.</I>
-</P>
-<P><A NAME="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/41-02.jpg',409,132 )"> --><IMG SRC="images/41-02.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/41-02.jpg',409,132)"> --><B>Figure 41.2</B></A>&nbsp;&nbsp;<I>Non-monotone-vertical polygons.</I>
-</P>
-<P><B>LISTING 41.2 L41-2.C</B></P>
-<!-- CODE //-->
-<PRE>
+  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/41-02.jpg',409,132 )"> --><img src="images/41-02.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/41-02.jpg',409,132)"> --><b>Figure 41.2</b></a>&nbsp;&nbsp;<i>Non-monotone-vertical polygons.</i></p>
+
+  <p><b>LISTING 41.2 L41-2.C</b></p><!-- CODE //-->
+  <pre>
 /* Color-fills a convex polygon. All vertices are offset by (XOffset, YOffset).
 &ldquo;Convex&rdquo; means &ldquo;monotone with respect to a vertical line&rdquo;; that is, every 
 horizontal line drawn through the polygon at any point would cross exactly two 
 active edges (neither horizontal lines nor zero-length edges count as active 
-edges; both are acceptable anywhere in the polygon). Right & left edges may 
+edges; both are acceptable anywhere in the polygon). Right &amp; left edges may 
 cross (polygons may be nonsimple). Polygons that are not convex according to 
 this definition won&rsquo;t be drawn properly. (Yes, &ldquo;convex&rdquo; is a lousy name for 
 this type of polygon, but it&rsquo;s convenient; use &ldquo;monotone-vertical&rdquo; if it makes 
@@ -138,7 +140,7 @@ int FillMonotoneVerticalPolygon(struct PointListHeader * VertexList,
       ScanEdge(VertexPtr[PreviousIndex].X + XOffset,
             VertexPtr[PreviousIndex].Y,
             VertexPtr[CurrentIndex].X + XOffset,
-            VertexPtr[CurrentIndex].Y, 1, 0, &EdgePointPtr);
+            VertexPtr[CurrentIndex].Y, 1, 0, &amp;EdgePointPtr);
       PreviousIndex = CurrentIndex;
    } while (CurrentIndex != MaxIndex);
 
@@ -151,42 +153,40 @@ int FillMonotoneVerticalPolygon(struct PointListHeader * VertexList,
       ScanEdge(VertexPtr[PreviousIndex].X + XOffset,
             VertexPtr[PreviousIndex].Y,
             VertexPtr[CurrentIndex].X + XOffset,
-            VertexPtr[CurrentIndex].Y, 0, 0, &EdgePointPtr);
+            VertexPtr[CurrentIndex].Y, 0, 0, &amp;EdgePointPtr);
       PreviousIndex = CurrentIndex;
    } while (CurrentIndex != MaxIndex);
 
    /* Draw the line list representing the scan converted polygon */
-   DrawHorizontalLineList(&WorkingHLineList, Color);
+   DrawHorizontalLineList(&amp;WorkingHLineList, Color);
 
    /* Release the line list&rsquo;s memory and we&rsquo;re successfully done */
    free(WorkingHLineList.HLinePtr);
    return(1);
 }
-</PRE>
-<!-- END CODE //-->
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="41-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="41-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p><br /></p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="41-01.html">Previous</a></td>
 
-<!-- END FOOTER -->
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="41-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
 
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

@@ -1,46 +1,48 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Reading VGA Memory</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=28//-->
+  <!--PAGES=535-537//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="28-04.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="29-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Reading VGA Memory</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>Listing 28.3 illustrates an efficient use of write mode 3 in conjunction with read mode 1 and a Color Don&rsquo;t Care register setting of 0. The mask in AL is passed directly to the VGA&rsquo;s bit mask (that&rsquo;s how write mode 3 works&mdash;see Chapter 4 for details). Because the VGA always returns 0FFH, the single <b>AND</b> instruction loads the latches, and writes the value in AL, unmodified, to the VGA, where it is used to generate the bit mask. This is more compact and register-efficient than using separate instructions to read and write, although it is not necessarily faster by cycle count, because on a 486 or a Pentium <b>MOV</b> is a 1-cycle instruction, but <b>AND</b> with memory is a 3-cycle instruction. However, given display memory wait states, it is often the case that the two approaches run at the same speed, and the register that the above approach frees up can frequently be used to save one or more cycles in any case.</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=28//-->
-<!--PAGES=535-537//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p>By the way, Listing 28.3 illustrates how write mode 3 can make for excellent pixel- and line-drawing code.</p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="28-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="29-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>Listing 28.3 illustrates an efficient use of write mode 3 in conjunction with read mode 1 and a Color Don&rsquo;t Care register setting of 0. The mask in AL is passed directly to the VGA&rsquo;s bit mask (that&rsquo;s how write mode 3 works&mdash;see Chapter 4 for details). Because the VGA always returns 0FFH, the single <B>AND</B> instruction loads the latches, and writes the value in AL, unmodified, to the VGA, where it is used to generate the bit mask. This is more compact and register-efficient than using separate instructions to read and write, although it is not necessarily faster by cycle count, because on a 486 or a Pentium <B>MOV</B> is a 1-cycle instruction, but <B>AND</B> with memory is a 3-cycle instruction. However, given display memory wait states, it is often the case that the two approaches run at the same speed, and the register that the above approach frees up can frequently be used to save one or more cycles in any case.</P>
-<P>By the way, Listing 28.3 illustrates how write mode 3 can make for excellent pixel- and line-drawing code.</P>
-<P><B>LISTING 28.3 L28-3.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+  <p><b>LISTING 28.3 L28-3.ASM</b></p><!-- CODE //-->
+  <pre>
 ; Program that draws a diagonal line to illustrate the use of a
 ; Color Don't Care register setting of 0FFH to support fast
 ; read-modify-write operations to VGA memory in write mode 3 by
@@ -144,34 +146,35 @@ WaitKeyLoop:
 Startendp
 code ends
     end  Start
-</PRE>
-<!-- END CODE //-->
-<P>I hope I&rsquo;ve given you a good feel for what color compare mode is and what it might be used for. Color compare mode isn&rsquo;t particularly easy to understand, but it&rsquo;s not that complicated in actual operation, and it&rsquo;s certainly useful at times; take some time to study the sample code and perform a few experiments of your own, and you may well find useful applications for color compare mode in your graphics code.
-</P>
-<P>A final note: The Read Map register has no effect in read mode 1, and the Color Compare and Color Don&rsquo;t Care registers have no effect either in read mode 0 or when writing to VGA memory. And with that, by gosh, we&rsquo;re actually done with the basics of accessing VGA memory!</P>
-<P>Not to worry&mdash;that still leaves us a slew of interesting VGA topics, including smooth panning and scrolling, the split screen, color selection, page flipping, and Mode X. And that&rsquo;s not to mention actual uses to which the VGA&rsquo;s hardware can be put, including lines, circles, polygons, and my personal favorite, animation. We&rsquo;ve covered a lot of challenging and rewarding ground&mdash;and we&rsquo;ve only just begun.</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="28-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="29-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>I hope I&rsquo;ve given you a good feel for what color compare mode is and what it might be used for. Color compare mode isn&rsquo;t particularly easy to understand, but it&rsquo;s not that complicated in actual operation, and it&rsquo;s certainly useful at times; take some time to study the sample code and perform a few experiments of your own, and you may well find useful applications for color compare mode in your graphics code.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>A final note: The Read Map register has no effect in read mode 1, and the Color Compare and Color Don&rsquo;t Care registers have no effect either in read mode 0 or when writing to VGA memory. And with that, by gosh, we&rsquo;re actually done with the basics of accessing VGA memory!</p>
 
-<!-- END FOOTER -->
+  <p>Not to worry&mdash;that still leaves us a slew of interesting VGA topics, including smooth panning and scrolling, the split screen, color selection, page flipping, and Mode X. And that&rsquo;s not to mention actual uses to which the VGA&rsquo;s hardware can be put, including lines, circles, polygons, and my personal favorite, animation. We&rsquo;ve covered a lot of challenging and rewarding ground&mdash;and we&rsquo;ve only just begun.</p>
 
+  <p><br /></p>
 
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="28-04.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="29-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

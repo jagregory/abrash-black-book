@@ -1,76 +1,93 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Changing Colors without Writing Pixels</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=34//-->
+  <!--PAGES=641-643//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="34-01.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="34-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Changing Colors without Writing Pixels</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <h4 align="left"><a id="Heading5"></a>Loading the DAC via the BIOS</h4>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=34//-->
-<!--PAGES=641-643//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p>The DAC can be loaded either directly or through subfunctions 10H (for a single DAC register) or 12H (for a block of DAC registers) of the BIOS video service interrupt 10H, function 10H, described in Chapter 33. For cycling the contents of the entire DAC, the block-load function (invoked by executing <b>INT</b> 10H with AH = 10H and AL = 12H to load a block of CX DAC locations, starting at location BX, from the block of RGB triplets&mdash;3 bytes per triplet&mdash;starting at ES:DX into the DAC) would be the better of the two, due to the considerably greater efficiency of calling the BIOS once rather than 256 times. At any rate, we&rsquo;d like to use one or the other of the BIOS functions for color cycling, because we know that whenever possible, one should use a BIOS function in preference to accessing hardware directly, in the interests of avoiding compatibility problems. In the case of color cycling, however, it is emphatically <i>not</i> possible to use either of the BIOS functions, for they have problems. Serious problems.</p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="34-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="34-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<H4 ALIGN="LEFT"><A NAME="Heading5"></A>Loading the DAC via the BIOS</H4>
-<P>The DAC can be loaded either directly or through subfunctions 10H (for a single DAC register) or 12H (for a block of DAC registers) of the BIOS video service interrupt 10H, function 10H, described in Chapter 33. For cycling the contents of the entire DAC, the block-load function (invoked by executing <B>INT</B> 10H with AH = 10H and AL = 12H to load a block of CX DAC locations, starting at location BX, from the block of RGB triplets&mdash;3 bytes per triplet&mdash;starting at ES:DX into the DAC) would be the better of the two, due to the considerably greater efficiency of calling the BIOS once rather than 256 times. At any rate, we&rsquo;d like to use one or the other of the BIOS functions for color cycling, because we know that whenever possible, one should use a BIOS function in preference to accessing hardware directly, in the interests of avoiding compatibility problems. In the case of color cycling, however, it is emphatically <I>not</I> possible to use either of the BIOS functions, for they have problems. Serious problems.</P>
-<P>The difficulty is this: IBM&rsquo;s BIOS specification describes exactly how the parameters passed to the BIOS control the loading of DAC locations, and all clone BIOSes meet that specification scrupulously, which is to say that if you invoke <B>INT</B> 10H, function 10H, subfunction 12H with a given set of parameters, you can be sure that you will end up with the same values loaded into the same DAC locations on all VGAs from all vendors. IBM&rsquo;s spec does <I>not</I>, however, describe whether vertical retrace should be waited for before loading the DAC, nor does it mention whether video should be left enabled while loading the DAC, leaving cloners to choose whatever approach they desire&mdash;and, alas, every VGA cloner seems to have selected a different approach.</P>
-<P>I tested four clone VGAs from different manufacturers, some in a 20 MHz 386 machine and some in a 10 MHz 286 machine. Two of the four waited for vertical retrace before loading the DAC; two didn&rsquo;t. Two of the four blanked the display while loading the DAC, resulting in flickering bars across the screen. One showed speckled pixels spattered across the top of the screen while the DAC was being loaded. Also, not one was able to load all 256 DAC locations without showing <I>some</I> sort of garbage on the screen for at least one frame, but that&rsquo;s not the BIOS&rsquo;s fault; it&rsquo;s a problem endemic to the VGA.</P>
-<TABLE WIDTH="100%"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><SMALL><I>These findings lead me inexorably to the conclusion that the BIOS should not be used to load the DAC dynamically. That is, if you&rsquo;re loading the DAC just once in preparation for a graphics session&mdash;sort of a DAC mode set&mdash;by all means load by way of the BIOS. No one will care that some garbage is displayed for a single frame; heck, I have boards that bounce and flicker and show garbage every time I do a mode set, and the amount of garbage produced by loading the DAC once is far less noticeable. If, however, you intend to load the DAC repeatedly for color cycling, avoid the BIOS DAC load functions like the plague. They will bring you only heartache.</I></SMALL>
-</TABLE>
-<P>As but one example of the unsuitability of the BIOS DAC-loading functions for color cycling, imagine that you want to cycle all 256 colors 70 times a second, which is once per frame. In order to accomplish that, you would normally wait for the start of the vertical sync signal (marking the end of the frame), then call the BIOS to load the DAC. On some boards&mdash;boards with BIOSes that don&rsquo;t wait for vertical sync before loading the DAC&mdash;that will work pretty well; you will, in fact, load the DAC once a frame. On other boards, however, it will work very poorly indeed; your program will wait for the start of vertical sync, and then the BIOS will wait for the start of the next vertical sync, with the result being that the DAC gets loaded only once every <I>two</I> frames. Sadly, there&rsquo;s no way, short of actually profiling the performance of BIOS DAC loads, for you to know which sort of BIOS is installed in a particular computer, so unless you can always control the brand of VGA your software will run on, you really can&rsquo;t afford to color cycle by calling the BIOS.</P>
-<P>Which is not to say that loading the DAC directly is a picnic either, as we&rsquo;ll see next.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading6"></A>Loading the DAC Directly</H4>
-<P>So we must load the DAC directly in order to perform color cycling. The DAC is loaded directly by sending (with an <B>OUT</B> instruction) the number of the DAC location to be loaded to the DAC Write Index register at 3C8H and then performing three <B>OUT</B>s to write an RGB triplet to the DAC Data register at 3C9H. This approach must be repeated 256 times to load the entire DAC, requiring over a thousand <B>OUT</B>s in all.</P>
-<P>There is another, somewhat faster approach, but one that has its risks. After an RGB triplet is written to the DAC Data register, the DAC Write Index register automatically increments to point to the next DAC location, and this repeats indefinitely as successive RGB triplets are written to the DAC. By taking advantage of this feature, the entire DAC can be loaded with just 769 <B>OUT</B>s: one <B>OUT</B> to the DAC Write Index register and 768 <B>OUT</B>s to the DAC Data register.</P>
-<P>So what&rsquo;s the drawback? Well, imagine that as you&rsquo;re loading the DAC, an interrupt-driven TSR (such as a program switcher or multitasker) activates and writes to the DAC; you could end up with quite a mess on the screen, especially when your program resumes and continues writing to the DAC&mdash;but in all likelihood to the wrong locations. No problem, you say; just disable interrupts for the duration. Good idea&mdash;but it takes much longer to load the DAC than interrupts should be disabled for. If, on the other hand, you set the index for each DAC location separately, you can disable interrupts 256 times, once as each DAC location is loaded, without problems.</P>
-<P>As I commented in the last chapter, I don&rsquo;t have any gruesome tale to relate that mandates taking the slower but safer road and setting the index for each DAC location separately while interrupts are disabled. I&rsquo;m merely hypothesizing as to what ghastly mishaps <I>could</I>. happen. However, it&rsquo;s been my experience that anything that can happen on the PC <I>does</I> happen eventually; there are just too dang many PCs out there for it to be otherwise. However, load the DAC any way you like; just don&rsquo;t blame me if you get a call from someone who&rsquo;s claims that your program sometimes turns their screen into something resembling month-old yogurt. It&rsquo;s not really your fault, of course&mdash;but try explaining that to <I>them!</I></P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="34-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="34-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+  <p>The difficulty is this: IBM&rsquo;s BIOS specification describes exactly how the parameters passed to the BIOS control the loading of DAC locations, and all clone BIOSes meet that specification scrupulously, which is to say that if you invoke <b>INT</b> 10H, function 10H, subfunction 12H with a given set of parameters, you can be sure that you will end up with the same values loaded into the same DAC locations on all VGAs from all vendors. IBM&rsquo;s spec does <i>not</i>, however, describe whether vertical retrace should be waited for before loading the DAC, nor does it mention whether video should be left enabled while loading the DAC, leaving cloners to choose whatever approach they desire&mdash;and, alas, every VGA cloner seems to have selected a different approach.</p>
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>I tested four clone VGAs from different manufacturers, some in a 20 MHz 386 machine and some in a 10 MHz 286 machine. Two of the four waited for vertical retrace before loading the DAC; two didn&rsquo;t. Two of the four blanked the display while loading the DAC, resulting in flickering bars across the screen. One showed speckled pixels spattered across the top of the screen while the DAC was being loaded. Also, not one was able to load all 256 DAC locations without showing <i>some</i> sort of garbage on the screen for at least one frame, but that&rsquo;s not the BIOS&rsquo;s fault; it&rsquo;s a problem endemic to the VGA.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <table width="100%">
+    <tr>
+      <td valign="top" align="left" width="5%"><img src="images/i.jpg" /></td>
 
-<!-- END FOOTER -->
+      <td valign="top" align="left" width="95%"><small><i>These findings lead me inexorably to the conclusion that the BIOS should not be used to load the DAC dynamically. That is, if you&rsquo;re loading the DAC just once in preparation for a graphics session&mdash;sort of a DAC mode set&mdash;by all means load by way of the BIOS. No one will care that some garbage is displayed for a single frame; heck, I have boards that bounce and flicker and show garbage every time I do a mode set, and the amount of garbage produced by loading the DAC once is far less noticeable. If, however, you intend to load the DAC repeatedly for color cycling, avoid the BIOS DAC load functions like the plague. They will bring you only heartache.</i></small></td>
+    </tr>
+  </table>
 
+  <p>As but one example of the unsuitability of the BIOS DAC-loading functions for color cycling, imagine that you want to cycle all 256 colors 70 times a second, which is once per frame. In order to accomplish that, you would normally wait for the start of the vertical sync signal (marking the end of the frame), then call the BIOS to load the DAC. On some boards&mdash;boards with BIOSes that don&rsquo;t wait for vertical sync before loading the DAC&mdash;that will work pretty well; you will, in fact, load the DAC once a frame. On other boards, however, it will work very poorly indeed; your program will wait for the start of vertical sync, and then the BIOS will wait for the start of the next vertical sync, with the result being that the DAC gets loaded only once every <i>two</i> frames. Sadly, there&rsquo;s no way, short of actually profiling the performance of BIOS DAC loads, for you to know which sort of BIOS is installed in a particular computer, so unless you can always control the brand of VGA your software will run on, you really can&rsquo;t afford to color cycle by calling the BIOS.</p>
 
+  <p>Which is not to say that loading the DAC directly is a picnic either, as we&rsquo;ll see next.</p>
+
+  <h4 align="left"><a id="Heading6"></a>Loading the DAC Directly</h4>
+
+  <p>So we must load the DAC directly in order to perform color cycling. The DAC is loaded directly by sending (with an <b>OUT</b> instruction) the number of the DAC location to be loaded to the DAC Write Index register at 3C8H and then performing three <b>OUT</b>s to write an RGB triplet to the DAC Data register at 3C9H. This approach must be repeated 256 times to load the entire DAC, requiring over a thousand <b>OUT</b>s in all.</p>
+
+  <p>There is another, somewhat faster approach, but one that has its risks. After an RGB triplet is written to the DAC Data register, the DAC Write Index register automatically increments to point to the next DAC location, and this repeats indefinitely as successive RGB triplets are written to the DAC. By taking advantage of this feature, the entire DAC can be loaded with just 769 <b>OUT</b>s: one <b>OUT</b> to the DAC Write Index register and 768 <b>OUT</b>s to the DAC Data register.</p>
+
+  <p>So what&rsquo;s the drawback? Well, imagine that as you&rsquo;re loading the DAC, an interrupt-driven TSR (such as a program switcher or multitasker) activates and writes to the DAC; you could end up with quite a mess on the screen, especially when your program resumes and continues writing to the DAC&mdash;but in all likelihood to the wrong locations. No problem, you say; just disable interrupts for the duration. Good idea&mdash;but it takes much longer to load the DAC than interrupts should be disabled for. If, on the other hand, you set the index for each DAC location separately, you can disable interrupts 256 times, once as each DAC location is loaded, without problems.</p>
+
+  <p>As I commented in the last chapter, I don&rsquo;t have any gruesome tale to relate that mandates taking the slower but safer road and setting the index for each DAC location separately while interrupts are disabled. I&rsquo;m merely hypothesizing as to what ghastly mishaps <i>could</i>. happen. However, it&rsquo;s been my experience that anything that can happen on the PC <i>does</i> happen eventually; there are just too dang many PCs out there for it to be otherwise. However, load the DAC any way you like; just don&rsquo;t blame me if you get a call from someone who&rsquo;s claims that your program sometimes turns their screen into something resembling month-old yogurt. It&rsquo;s not really your fault, of course&mdash;but try explaining that to <i>them!</i></p>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="34-01.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="34-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

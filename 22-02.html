@@ -1,44 +1,44 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Zenning and the Flexible Mind</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=22//-->
+  <!--PAGES=417-418//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="22-01.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="22-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Zenning and the Flexible Mind</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
-
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=22//-->
-<!--PAGES=417-418//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
-
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="22-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="22-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P><B>LISTING 22.2 L22-2.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+  <p><b>LISTING 22.2 L22-2.ASM</b></p><!-- CODE //-->
+  <pre>
 ClearS        proc near
       push    bp                        ;save caller&rsquo;s BP
       mov     bp,sp                     ;point to stack frame
@@ -60,14 +60,16 @@ Bye:
      pop       bp                       ;restore caller&rsquo;s BP
      ret       EndMrk-RetAddr-2         ;return, clearing the parms from the stack
 ClearS         endp
-</PRE>
-<!-- END CODE //-->
-<P>(The <B>OnStack</B> structure definition doesn&rsquo;t change in any of our examples, so I&rsquo;m not going clutter up this chapter by reproducing it for each new version of <B>ClearS</B>.)</P>
-<P>Okay, loading ES and DI directly saves another four bytes. We&rsquo;ve squeezed a total of 6 bytes&mdash;about 11 percent&mdash;out of <B>ClearS</B>. What next?</P>
-<P>Well, <B>LES</B> would serve better than two <B>MOV</B> instructions for loading ES and DI as shown in Listing 22.3.</P>
-<P><B>LISTING 22.3 L22-3.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p>(The <b>OnStack</b> structure definition doesn&rsquo;t change in any of our examples, so I&rsquo;m not going clutter up this chapter by reproducing it for each new version of <b>ClearS</b>.)</p>
+
+  <p>Okay, loading ES and DI directly saves another four bytes. We&rsquo;ve squeezed a total of 6 bytes&mdash;about 11 percent&mdash;out of <b>ClearS</b>. What next?</p>
+
+  <p>Well, <b>LES</b> would serve better than two <b>MOV</b> instructions for loading ES and DI as shown in Listing 22.3.</p>
+
+  <p><b>LISTING 22.3 L22-3.ASM</b></p><!-- CODE //-->
+  <pre>
 ClearS         proc near
       push     bp                       ;save caller&rsquo;s BP
       mov      bp,sp                    ;point to stack frame
@@ -89,14 +91,14 @@ Bye:
       pop      bp                       ;restore caller&rsquo;s BP
       ret      EndMrk-RetAddr-2         ;return, clearing the parms from the stack
 ClearS         endp
-</PRE>
-<!-- END CODE //-->
-<P>That&rsquo;s good for another three bytes. We&rsquo;re down to 43 bytes, and counting.
-</P>
-<P>We can save 3 more bytes by clearing the low and high bytes of AX and BX, respectively, by using <B>SUB <I>reg8,reg8</I></B> rather than ANDing 16-bit values as shown in Listing 22.4.</P>
-<P><B>LISTING 22.4 L22-4.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p>That&rsquo;s good for another three bytes. We&rsquo;re down to 43 bytes, and counting.</p>
+
+  <p>We can save 3 more bytes by clearing the low and high bytes of AX and BX, respectively, by using <b>SUB <i>reg8,reg8</i></b> rather than ANDing 16-bit values as shown in Listing 22.4.</p>
+
+  <p><b>LISTING 22.4 L22-4.ASM</b></p><!-- CODE //-->
+  <pre>
 ClearS         proc near
       push     bp                       ;save caller&rsquo;s BP
       mov      bp,sp                    ;point to stack frame
@@ -118,34 +120,35 @@ Bye:
       pop      bp                       ;restore caller&rsquo;s BP
       ret      EndMrk-RetAddr-2         ;return, clearing the parms from the stack
 ClearS         endp
-</PRE>
-<!-- END CODE //-->
-<P>Now we&rsquo;re down to 40 bytes&mdash;more than 20 percent smaller than the original code. That&rsquo;s pretty much it for simple instruction optimizations. Now let&rsquo;s look for instruction optimizations.
-</P>
-<P>It seems strange to load a word value into AX and then throw away AL. Likewise, it seems strange to load a word value into BX and then throw away BH. However, those steps are necessary because the two modified word values are ORed into a single character/attribute word value that is then used to fill the target buffer.</P>
-<P>Let&rsquo;s step back and see what this code really <I>does</I>, though. All it does in the end is load one byte addressed relative to BP into AH and another byte addressed relative to BP into AL. Heck, we can just do that directly! Presto&mdash;we&rsquo;ve saved another 6 bytes, and turned two word-sized memory accesses into byte-sized memory accesses as well. Listing 22.5 shows the new code.</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="22-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="22-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>Now we&rsquo;re down to 40 bytes&mdash;more than 20 percent smaller than the original code. That&rsquo;s pretty much it for simple instruction optimizations. Now let&rsquo;s look for instruction optimizations.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>It seems strange to load a word value into AX and then throw away AL. Likewise, it seems strange to load a word value into BX and then throw away BH. However, those steps are necessary because the two modified word values are ORed into a single character/attribute word value that is then used to fill the target buffer.</p>
 
-<!-- END FOOTER -->
+  <p>Let&rsquo;s step back and see what this code really <i>does</i>, though. All it does in the end is load one byte addressed relative to BP into AH and another byte addressed relative to BP into AL. Heck, we can just do that directly! Presto&mdash;we&rsquo;ve saved another 6 bytes, and turned two word-sized memory accesses into byte-sized memory accesses as well. Listing 22.5 shows the new code.</p>
 
+  <p><br /></p>
 
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="22-01.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="22-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

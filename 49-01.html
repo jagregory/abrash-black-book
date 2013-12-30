@@ -1,53 +1,61 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X 256-Color Animation</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=49//-->
+  <!--PAGES=913-918//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="48-05.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="49-02.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X 256-Color Animation</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <h2><a id="Heading1"></a>Chapter 49<br />
+  Mode X 256-Color Animation</h2>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=49//-->
-<!--PAGES=913-918//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <h3><a id="Heading2"></a>How to Make the VGA Really Get up and Dance</h3>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="48-05.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="49-02.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<H2><A NAME="Heading1"></A>Chapter 49<BR>Mode X 256-Color Animation</H2>
-<H3><A NAME="Heading2"></A>How to Make the VGA Really Get up and Dance</H3>
-<P>Okay&mdash;no amusing stories or informative anecdotes to kick off this chapter; lotta ground to cover, gotta hurry&mdash;you&rsquo;re impatient, I can smell it. I won&rsquo;t talk about the time a friend made the mistake of loudly saying &ldquo;$100 bill&rdquo; during an animated discussion while walking among the bums on Market Street in San Francisco one night, thereby graphically illustrating that context is everything. I can&rsquo;t spare a word about how my daughter thinks my 11-year-old floppy-disk-based CP/M machine is more powerful than my 386 with its 100-MB hard disk because the CP/M machine&rsquo;s word processor loads and runs twice as fast as the 386&rsquo;s Windows-based word processor, demonstrating that progress is not the neat exponential curve we&rsquo;d like to think it is, and that features and performance are often conflicting notions. And, lord knows, I can&rsquo;t take the time to discuss the habits of small white dogs, notwithstanding that such dogs seem to be relevant to just about every aspect of computing, as Jeff Duntemann&rsquo;s writings make manifest. No lighthearted fluff for us; we have real work to do, for today we animate with 256 colors in Mode X.
-</P>
-<H3><A NAME="Heading3"></A>Masked Copying</H3>
-<P>Over the past two chapters, we&rsquo;ve put together most of the tools needed to implement animation in the VGA&rsquo;s undocumented 320x240 256-color Mode X. We now have mode set code, solid and 4x4 pattern fills, system memory-to-display memory block copies, and display memory-to-display memory block copies. The final piece of the puzzle is the ability to copy a nonrectangular image to display memory. I call this <I>masked copying</I>.</P>
-<P>Masked copying is sort of like drawing through a stencil, in that only certain pixels within the destination rectangle are drawn. The objective is to fit the image seamlessly into the background, without the rectangular fringe that results when nonrectangular images are drawn by block copying their bounding rectangle. This is accomplished by using a second rectangular bitmap, separate from the image but corresponding to it on a pixel-by-pixel basis, to control which destination pixels are set from the source and which are left unchanged. With a masked copy, only those pixels properly belonging to an image are drawn, and the image fits perfectly into the background, with no rectangular border. In fact, masked copying even makes it possible to have transparent areas within images.</P>
-<P>Note that another way to achieve this effect is to implement copying code that supports a transparent color; that is, a color that doesn&rsquo;t get copied but rather leaves the destination unchanged. Transparent copying makes for more compact images, because no separate mask is needed, and is generally faster in a software-only implementation. However, Mode X supports masked copying but not transparent copying in hardware, so we&rsquo;ll use masked copying in this chapter.</P>
-<P>The system memory to display memory masked copy routine in Listing 49.1 implements masked copying in a straightforward fashion. In the main drawing loop, the corresponding mask byte is consulted as each image pixel is encountered, and the image pixel is copied only if the mask byte is nonzero. As with most of the system-to-display code I&rsquo;ve presented, Listing 49.1 is not heavily optimized, because it&rsquo;s inherently slow; there&rsquo;s a better way to go when performance matters, and that&rsquo;s to use the VGA&rsquo;s hardware.</P>
-<P><B>LISTING 49.1 L49-1.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+  <p>Okay&mdash;no amusing stories or informative anecdotes to kick off this chapter; lotta ground to cover, gotta hurry&mdash;you&rsquo;re impatient, I can smell it. I won&rsquo;t talk about the time a friend made the mistake of loudly saying &ldquo;$100 bill&rdquo; during an animated discussion while walking among the bums on Market Street in San Francisco one night, thereby graphically illustrating that context is everything. I can&rsquo;t spare a word about how my daughter thinks my 11-year-old floppy-disk-based CP/M machine is more powerful than my 386 with its 100-MB hard disk because the CP/M machine&rsquo;s word processor loads and runs twice as fast as the 386&rsquo;s Windows-based word processor, demonstrating that progress is not the neat exponential curve we&rsquo;d like to think it is, and that features and performance are often conflicting notions. And, lord knows, I can&rsquo;t take the time to discuss the habits of small white dogs, notwithstanding that such dogs seem to be relevant to just about every aspect of computing, as Jeff Duntemann&rsquo;s writings make manifest. No lighthearted fluff for us; we have real work to do, for today we animate with 256 colors in Mode X.</p>
+
+  <h3><a id="Heading3"></a>Masked Copying</h3>
+
+  <p>Over the past two chapters, we&rsquo;ve put together most of the tools needed to implement animation in the VGA&rsquo;s undocumented 320x240 256-color Mode X. We now have mode set code, solid and 4x4 pattern fills, system memory-to-display memory block copies, and display memory-to-display memory block copies. The final piece of the puzzle is the ability to copy a nonrectangular image to display memory. I call this <i>masked copying</i>.</p>
+
+  <p>Masked copying is sort of like drawing through a stencil, in that only certain pixels within the destination rectangle are drawn. The objective is to fit the image seamlessly into the background, without the rectangular fringe that results when nonrectangular images are drawn by block copying their bounding rectangle. This is accomplished by using a second rectangular bitmap, separate from the image but corresponding to it on a pixel-by-pixel basis, to control which destination pixels are set from the source and which are left unchanged. With a masked copy, only those pixels properly belonging to an image are drawn, and the image fits perfectly into the background, with no rectangular border. In fact, masked copying even makes it possible to have transparent areas within images.</p>
+
+  <p>Note that another way to achieve this effect is to implement copying code that supports a transparent color; that is, a color that doesn&rsquo;t get copied but rather leaves the destination unchanged. Transparent copying makes for more compact images, because no separate mask is needed, and is generally faster in a software-only implementation. However, Mode X supports masked copying but not transparent copying in hardware, so we&rsquo;ll use masked copying in this chapter.</p>
+
+  <p>The system memory to display memory masked copy routine in Listing 49.1 implements masked copying in a straightforward fashion. In the main drawing loop, the corresponding mask byte is consulted as each image pixel is encountered, and the image pixel is copied only if the mask byte is nonzero. As with most of the system-to-display code I&rsquo;ve presented, Listing 49.1 is not heavily optimized, because it&rsquo;s inherently slow; there&rsquo;s a better way to go when performance matters, and that&rsquo;s to use the VGA&rsquo;s hardware.</p>
+
+  <p><b>LISTING 49.1 L49-1.ASM</b></p><!-- CODE //-->
+  <pre>
 ; Mode X (320x240, 256 colors) system memory-to-display memory masked copy
 ; routine. Not particularly fast; images for which performance is critical
 ; should be stored in off-screen memory and copied to screen via latches. Works
@@ -182,31 +190,29 @@ CopyDone:
         ret
 _CopySystemToScreenMaskedX endp
         end
-</PRE>
-<!-- END CODE //-->
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="48-05.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="49-02.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p><br /></p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="48-05.html">Previous</a></td>
 
-<!-- END FOOTER -->
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="49-02.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
 
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

@@ -1,44 +1,44 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Those Way-Down Polygon Nomenclature Blues</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=41//-->
+  <!--PAGES=766-771//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="41-03.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="42-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Those Way-Down Polygon Nomenclature Blues</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
-
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=41//-->
-<!--PAGES=766-771//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
-
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="41-03.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="42-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P><B>LISTING 41.4 L41-4.C</B></P>
-<!-- CODE //-->
-<PRE>
+  <p><b>LISTING 41.4 L41-4.C</b></p><!-- CODE //-->
+  <pre>
 /* Color-fills an arbitrarily-shaped polygon described by VertexList.
 If the first and last points in VertexList are not the same, the path
 around the polygon is automatically closed. All vertices are offset
@@ -200,18 +200,18 @@ static void BuildGET(struct PointListHeader * VertexList,
          /* Link the new edge into the GET so that the edge list is
             still sorted by Y coordinate, and by X coordinate for all
             edges with the same Y coordinate */
-         FollowingEdgeLink = &GETPtr;
+         FollowingEdgeLink = &amp;GETPtr;
          for (;;) {
             FollowingEdge = *FollowingEdgeLink;
             if ((FollowingEdge == NULL) ||
                   (FollowingEdge-&gt;StartY &gt; StartY) ||
-                  ((FollowingEdge-&gt;StartY == StartY) &&
+                  ((FollowingEdge-&gt;StartY == StartY) &amp;&amp;
                   (FollowingEdge-&gt;X &gt;= StartX))) {
                NewEdgePtr-&gt;NextEdge = FollowingEdge;
                *FollowingEdgeLink = NewEdgePtr;
                break;
             }
-            FollowingEdgeLink = &FollowingEdge-&gt;NextEdge;
+            FollowingEdgeLink = &amp;FollowingEdge-&gt;NextEdge;
          }
       }
    }
@@ -229,7 +229,7 @@ static void XSortAET() {
    if (AETPtr != NULL) {
       do {
          SwapOccurred = 0;
-         CurrentEdgePtr = &AETPtr;
+         CurrentEdgePtr = &amp;AETPtr;
          while ((CurrentEdge = *CurrentEdgePtr)-&gt;NextEdge != NULL) {
             if (CurrentEdge-&gt;X &gt; CurrentEdge-&gt;NextEdge-&gt;X) {
                /* The second edge has a lower X than the first;
@@ -240,7 +240,7 @@ static void XSortAET() {
                CurrentEdge-&gt;NextEdge = TempEdge;
                SwapOccurred = 1;
             }
-            CurrentEdgePtr = &(*CurrentEdgePtr)-&gt;NextEdge;
+            CurrentEdgePtr = &amp;(*CurrentEdgePtr)-&gt;NextEdge;
          }
       } while (SwapOccurred != 0);
    }
@@ -252,7 +252,7 @@ static void AdvanceAET() {
    struct EdgeState *CurrentEdge, **CurrentEdgePtr;
 
    /* Count down and remove or advance each edge in the AET */
-   CurrentEdgePtr = &AETPtr;
+   CurrentEdgePtr = &amp;AETPtr;
    while ((CurrentEdge = *CurrentEdgePtr) != NULL) {
       /* Count off one scan line for this edge */
       if ((--(CurrentEdge-&gt;Count)) == 0) {
@@ -267,7 +267,7 @@ static void AdvanceAET() {
             CurrentEdge-&gt;X += CurrentEdge-&gt;XDirection;
             CurrentEdge-&gt;ErrorTerm -= CurrentEdge-&gt;ErrorTermAdjDown;
          }
-         CurrentEdgePtr = &CurrentEdge-&gt;NextEdge;
+         CurrentEdgePtr = &amp;CurrentEdge-&gt;NextEdge;
       }
    }
 }
@@ -284,8 +284,8 @@ static void MoveXSortedToAET(int YToMove) {
       at the desired Y coordinate. Also, the GET is X sorted within
       each Y coordinate, so each successive edge we add to the AET is
       guaranteed to belong later in the AET than the one just added. */
-   AETEdgePtr = &AETPtr;
-   while ((GETPtr != NULL) && (GETPtr-&gt;StartY == YToMove)) {
+   AETEdgePtr = &amp;AETPtr;
+   while ((GETPtr != NULL) &amp;&amp; (GETPtr-&gt;StartY == YToMove)) {
       CurrentX = GETPtr-&gt;X;
       /* Link the new edge into the AET so that the AET is still
          sorted by X coordinate */
@@ -295,11 +295,11 @@ static void MoveXSortedToAET(int YToMove) {
             TempEdge = GETPtr-&gt;NextEdge;
             *AETEdgePtr = GETPtr;  /* link the edge into the AET */
             GETPtr-&gt;NextEdge = AETEdge;
-            AETEdgePtr = &GETPtr-&gt;NextEdge;
+            AETEdgePtr = &amp;GETPtr-&gt;NextEdge;
             GETPtr = TempEdge;   /* unlink the edge from the GET */
             break;
          } else {
-            AETEdgePtr = &AETEdge-&gt;NextEdge;
+            AETEdgePtr = &amp;AETEdge-&gt;NextEdge;
          }
       }
    }
@@ -323,11 +323,10 @@ static void ScanOutAET(int YToScan, int Color) {
       CurrentEdge = CurrentEdge-&gt;NextEdge;
    }
 }
-</PRE>
-<!-- END CODE //-->
-<P><B>LISTING 41.5 POLYGON.H</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p><b>LISTING 41.5 POLYGON.H</b></p><!-- CODE //-->
+  <pre>
 /* Header file for polygon-filling code */
 
 #define CONVEX    0
@@ -365,33 +364,33 @@ struct HLineList {
 
 /* Describes a color as an RGB triple, plus one byte for other info */
 struct RGB { unsigned char Red, Green, Blue, Spare; };
-</PRE>
-<!-- END CODE //-->
-<P>Is monotone-vertical polygon detection worth all this trouble? Under the right circumstances, you bet. In a situation where a great many polygons are being drawn, and the application either doesn&rsquo;t know whether they&rsquo;re monotone-vertical or has no way to tell the polygon filler that they are, performance can be increased considerably if most polygons are, in fact, monotone-vertical. This potential performance advantage is helped along by the surprising fact that Jim&rsquo;s test for monotone-vertical status is simpler and faster than my original, nonfunctional test for convexity.
-</P>
-<P>See what accurate terminology and effective communication can do?</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="41-03.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="42-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>Is monotone-vertical polygon detection worth all this trouble? Under the right circumstances, you bet. In a situation where a great many polygons are being drawn, and the application either doesn&rsquo;t know whether they&rsquo;re monotone-vertical or has no way to tell the polygon filler that they are, performance can be increased considerably if most polygons are, in fact, monotone-vertical. This potential performance advantage is helped along by the surprising fact that Jim&rsquo;s test for monotone-vertical status is simpler and faster than my original, nonfunctional test for convexity.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>See what accurate terminology and effective communication can do?</p>
 
-<!-- END FOOTER -->
+  <p><br /></p>
 
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="41-03.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="42-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

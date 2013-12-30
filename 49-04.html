@@ -1,54 +1,60 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X 256-Color Animation</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=49//-->
+  <!--PAGES=924-929//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="49-03.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="49-05.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X 256-Color Animation</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <h3><a id="Heading6"></a>Animation</h3>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=49//-->
-<!--PAGES=924-929//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p>Gosh. There&rsquo;s just no way I can discuss high-level animation fundamentals in any detail here; I could spend an entire (and entirely separate) book on animation techniques alone. You might want to have a look at Chapters 43 through 46 before attacking the code in this chapter; that will have to do us for the present volume. (I will return to <i>3-D</i> animation in the next chapter.)</p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="49-03.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="49-05.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<H3><A NAME="Heading6"></A>Animation</H3>
-<P>Gosh. There&rsquo;s just no way I can discuss high-level animation fundamentals in any detail here; I could spend an entire (and entirely separate) book on animation techniques alone. You might want to have a look at Chapters 43 through 46 before attacking the code in this chapter; that will have to do us for the present volume. (I will return to <I>3-D</I> animation in the next chapter.)</P>
-<P>Basically, I&rsquo;m going to perform page flipped animation, in which one page (that is, a bitmap large enough to hold a full screen) of display memory is displayed while another page is drawn to. When the drawing is finished, the newly modified page is displayed, and the other&mdash;now invisible&mdash;page is drawn to. The process repeats ad infinitum. For further information, some good places to start are <I>Computer Graphics</I>, by Foley and van Dam (Addison-Wesley); <I>Principles of Interactive Computer Graphics</I>, by Newman and Sproull (McGraw Hill); and &ldquo;Real-Time Animation&rdquo; by Rahner James (January 1990, <I>Dr. Dobb&rsquo;s Journal</I>).</P>
-<P>Some of the code in this chapter was adapted for Mode X from the code in Chapter 44&mdash;yet another reason to read that chapter before finishing this one.</P>
-<H3><A NAME="Heading7"></A>Mode X Animation in Action</H3>
-<P>Listing 49.5 ties together everything I&rsquo;ve discussed about Mode X so far in a compact but surprisingly powerful animation package. Listing 49.5 first uses solid and patterned fills and system-memory-to-screen-memory masked copying to draw a static background containing a mountain, a sun, a plain, water, and a house with puffs of smoke coming out of the chimney, and sets up the four alignments of a masked kite image. The background is transferred to both display pages, and drawing of 20 kite images in the nondisplayed page using fast masked copying begins. After all images have been drawn, the page is flipped to show the newly updated screen, and the kites are moved and drawn in the other page, which is no longer displayed. Kites are erased at their old positions in the nondisplayed page by block copying from the background page. (See the discussion in the previous chapter for the display memory organization used by Listing 49.5.) So far as the displayed image is concerned, there is never any hint of flicker or disturbance of the background. This continues at a rate of up to 60 times a second until Esc is pressed to exit the program. See Figure 49.1 for a screen shot of the resulting image&mdash;add the animation in your imagination.
-</P>
-<P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/49-01.jpg',227,175 )"> --><IMG SRC="images/49-01.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/49-01.jpg',227,175)"> --><B>Figure 49.1</B></A>&nbsp;&nbsp;<I>An animated Mode X screen.</I>
-</P>
-<P><B>LISTING 49.5 L49-5.C</B></P>
-<!-- CODE //-->
-<PRE>
+  <p>Basically, I&rsquo;m going to perform page flipped animation, in which one page (that is, a bitmap large enough to hold a full screen) of display memory is displayed while another page is drawn to. When the drawing is finished, the newly modified page is displayed, and the other&mdash;now invisible&mdash;page is drawn to. The process repeats ad infinitum. For further information, some good places to start are <i>Computer Graphics</i>, by Foley and van Dam (Addison-Wesley); <i>Principles of Interactive Computer Graphics</i>, by Newman and Sproull (McGraw Hill); and &ldquo;Real-Time Animation&rdquo; by Rahner James (January 1990, <i>Dr. Dobb&rsquo;s Journal</i>).</p>
+
+  <p>Some of the code in this chapter was adapted for Mode X from the code in Chapter 44&mdash;yet another reason to read that chapter before finishing this one.</p>
+
+  <h3><a id="Heading7"></a>Mode X Animation in Action</h3>
+
+  <p>Listing 49.5 ties together everything I&rsquo;ve discussed about Mode X so far in a compact but surprisingly powerful animation package. Listing 49.5 first uses solid and patterned fills and system-memory-to-screen-memory masked copying to draw a static background containing a mountain, a sun, a plain, water, and a house with puffs of smoke coming out of the chimney, and sets up the four alignments of a masked kite image. The background is transferred to both display pages, and drawing of 20 kite images in the nondisplayed page using fast masked copying begins. After all images have been drawn, the page is flipped to show the newly updated screen, and the kites are moved and drawn in the other page, which is no longer displayed. Kites are erased at their old positions in the nondisplayed page by block copying from the background page. (See the discussion in the previous chapter for the display memory organization used by Listing 49.5.) So far as the displayed image is concerned, there is never any hint of flicker or disturbance of the background. This continues at a rate of up to 60 times a second until Esc is pressed to exit the program. See Figure 49.1 for a screen shot of the resulting image&mdash;add the animation in your imagination.</p>
+
+  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/49-01.jpg',227,175 )"> --><img src="images/49-01.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/49-01.jpg',227,175)"> --><b>Figure 49.1</b></a>&nbsp;&nbsp;<i>An animated Mode X screen.</i></p>
+
+  <p><b>LISTING 49.5 L49-5.C</b></p><!-- CODE //-->
+  <pre>
 /* Sample mode X VGA animation program. Portions of this code first appeared
    in PC Techniques. Compiled with Borland C++ 2.0 in C compilation mode. */
 
@@ -283,31 +289,29 @@ void MoveObject(AnimatedObject * ObjectToMove) {
    ObjectToMove-&gt;Y = Y;
 }
 
-</PRE>
-<!-- END CODE //-->
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="49-03.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="49-05.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p><br /></p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="49-03.html">Previous</a></td>
 
-<!-- END FOOTER -->
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="49-05.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
 
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

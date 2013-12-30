@@ -1,107 +1,129 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: It's a Wonderful Life</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=18//-->
+  <!--PAGES=351-352//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="18-01.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="18-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: It's a Wonderful Life</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <h3><a id="Heading4"></a>Table-Driven Magic</h3>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=18//-->
-<!--PAGES=351-352//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p>David Stafford won my first Optimization Challenge by means of a huge look-up table and an incredible state machine driven by that table. The table didn&rsquo;t cause David&rsquo;s entry to exceed the line limit because David&rsquo;s submission included code to generate the table on the fly as part of the build process. David has done himself one better this time with his QLIFE program; not only does his build process generate a 64K table, but it also generates virtually all his code, consisting of 17,000-plus lines of assembly language spanning another 64K. What David has done is write the equivalent of a bitblt compiler for the Game of Life; one might in fact call it a Life compiler. What David&rsquo;s code generates is still a general-purpose program; it takes arbitrary seed values, and can run for an arbitrary number of generations, so it&rsquo;s not as if David simply hardwired the instructions to draw each successive screen. However, it&rsquo;s a general-purpose program that is exquisitely tailored to the task it needs to perform.</p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="18-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="18-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<H3><A NAME="Heading4"></A>Table-Driven Magic</H3>
-<P>David Stafford won my first Optimization Challenge by means of a huge look-up table and an incredible state machine driven by that table. The table didn&rsquo;t cause David&rsquo;s entry to exceed the line limit because David&rsquo;s submission included code to generate the table on the fly as part of the build process. David has done himself one better this time with his QLIFE program; not only does his build process generate a 64K table, but it also generates virtually all his code, consisting of 17,000-plus lines of assembly language spanning another 64K. What David has done is write the equivalent of a bitblt compiler for the Game of Life; one might in fact call it a Life compiler. What David&rsquo;s code generates is still a general-purpose program; it takes arbitrary seed values, and can run for an arbitrary number of generations, so it&rsquo;s not as if David simply hardwired the instructions to draw each successive screen. However, it&rsquo;s a general-purpose program that is exquisitely tailored to the task it needs to perform.
-</P>
-<P>All the pieces of QLIFE are shown in Listings 18.1 through 18.5, as follows: Listing 18.1 is BUILD.BAT, the batch file used to build QLIFE; Listing 18.2 is LCOMP.C, the program used to generate the assembler code and data file QLIFE.ASM; Listing 18.3 is MAIN.C, the main program for QLIFE; Listing 18.4 is VIDEO.C, the video-related functions, and Listing 18.5 is LIFE.H, the header file. The following sidebar contains David&rsquo;s build instructions, exactly as he wrote them. I certainly won&rsquo;t have room to discuss all the marvelous intricacies of David&rsquo;s code; I suggest you look over these listings until you understand them thoroughly (it took me a day to pick them apart) because there&rsquo;s a lot of neat stuff in there, and it&rsquo;s an approach to performance programming that operates at a more efficient, tightly integrated level than you may ever see again. One hint: It helps a <I>lot</I> to build and run LCOMP.C, redirect its output to QLIFE.ASM, and look at the assembly code in that file. This code is the entirety of David&rsquo;s generation engine, and it&rsquo;s almost impossible to visualize its operation without actually seeing it.</P>
-<blockquote style="font-size: 0.8em">
-	<hr />
-	How To Build Qlife
-	<p>QLIFE is written for Borland C<small>++</small>, but it shouldn&rsquo;t be too difficult to convert it to work with Microsoft C<small>++</small>. To build QLIFE, run the BUILD.BAT batch file with the size of the life grid on the command line (see below). The command-line options are:</p>
-	<table width="100%">
-		<tr>
-			<td width="3%"></td>
-			<td width="15%"><small>WIDTH 32</small></td>
-			<td><small>Sets the width of the life grid to 96 cells (divided by 3)</small>.</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td><small>HEIGHT 96</small></td>
-			<td><small>Sets the height of the life grid to 96 cells</small>.</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td><small>NOCOUNTER</small></td>
-			<td><small>Turns off the generation counter (optional)</small>.</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td><small>NODRAW</small></td>
-			<td><small>Turns off drawing of the cell map (optional)</small>.</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td><small>GEN 1000</small></td>
-			<td><small>Calculates 1,000 generations (optional)</small>.</td>
-		</tr>
-	</table>
-	<p>These <I>must</I> be in uppercase. For example, the minimum you really need is &ldquo;WIDTH 40 HEIGHT 120.&rdquo; I used &ldquo;WIDTH 46 HEIGHT 138 NOCOUNTER NODRAW GEN 7000&rdquo; during testing.</p>
-	<p>If you have selected the GEN option, you will have to press a key to exit QLIFE when it is finished. This is so I could visually compare the result of N generations under QLIFE with N generations under Abrash&rsquo;s original life program. You should be aware that the program from the listing contains a small bug, which may make it appear that they do not generate identical results. The original program does not display a cell until it changes, so if a cell is alive on the first generation and never dies, then it will never be displayed. This bug is not present in QLIFE.</p>
-	<p>You should have no trouble running QLIFE with cell grids up to 210x200.</p>
-	<p>You <I>must</I> have a VGA and at least a 386 to run QLIFE. The 386 features that it uses are not integral to the algorithm (they&rsquo;re a convenience for the code), so feel free to modify QLIFE to run on earlier CPUs if you wish. QLIFE works best if you have a large CPU cache (256K is recommended).</p>
-	<p>&mdash;<I>David Stafford</I></p>
-	<hr />
-</blockquote>
-<P>
-</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="18-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="18-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+  <p>All the pieces of QLIFE are shown in Listings 18.1 through 18.5, as follows: Listing 18.1 is BUILD.BAT, the batch file used to build QLIFE; Listing 18.2 is LCOMP.C, the program used to generate the assembler code and data file QLIFE.ASM; Listing 18.3 is MAIN.C, the main program for QLIFE; Listing 18.4 is VIDEO.C, the video-related functions, and Listing 18.5 is LIFE.H, the header file. The following sidebar contains David&rsquo;s build instructions, exactly as he wrote them. I certainly won&rsquo;t have room to discuss all the marvelous intricacies of David&rsquo;s code; I suggest you look over these listings until you understand them thoroughly (it took me a day to pick them apart) because there&rsquo;s a lot of neat stuff in there, and it&rsquo;s an approach to performance programming that operates at a more efficient, tightly integrated level than you may ever see again. One hint: It helps a <i>lot</i> to build and run LCOMP.C, redirect its output to QLIFE.ASM, and look at the assembly code in that file. This code is the entirety of David&rsquo;s generation engine, and it&rsquo;s almost impossible to visualize its operation without actually seeing it.</p>
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <blockquote style="font-size: 0.8em">
+    <hr />
+    How To Build Qlife
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+    <p>QLIFE is written for Borland C<small>++</small>, but it shouldn&rsquo;t be too difficult to convert it to work with Microsoft C<small>++</small>. To build QLIFE, run the BUILD.BAT batch file with the size of the life grid on the command line (see below). The command-line options are:</p>
 
-<!-- END FOOTER -->
+    <table width="100%">
+      <tr>
+        <td width="3%"></td>
 
+        <td width="15%"><small>WIDTH 32</small></td>
 
+        <td><small>Sets the width of the life grid to 96 cells (divided by 3)</small>.</td>
+      </tr>
+
+      <tr>
+        <td></td>
+
+        <td><small>HEIGHT 96</small></td>
+
+        <td><small>Sets the height of the life grid to 96 cells</small>.</td>
+      </tr>
+
+      <tr>
+        <td></td>
+
+        <td><small>NOCOUNTER</small></td>
+
+        <td><small>Turns off the generation counter (optional)</small>.</td>
+      </tr>
+
+      <tr>
+        <td></td>
+
+        <td><small>NODRAW</small></td>
+
+        <td><small>Turns off drawing of the cell map (optional)</small>.</td>
+      </tr>
+
+      <tr>
+        <td></td>
+
+        <td><small>GEN 1000</small></td>
+
+        <td><small>Calculates 1,000 generations (optional)</small>.</td>
+      </tr>
+    </table>
+
+    <p>These <i>must</i> be in uppercase. For example, the minimum you really need is &ldquo;WIDTH 40 HEIGHT 120.&rdquo; I used &ldquo;WIDTH 46 HEIGHT 138 NOCOUNTER NODRAW GEN 7000&rdquo; during testing.</p>
+
+    <p>If you have selected the GEN option, you will have to press a key to exit QLIFE when it is finished. This is so I could visually compare the result of N generations under QLIFE with N generations under Abrash&rsquo;s original life program. You should be aware that the program from the listing contains a small bug, which may make it appear that they do not generate identical results. The original program does not display a cell until it changes, so if a cell is alive on the first generation and never dies, then it will never be displayed. This bug is not present in QLIFE.</p>
+
+    <p>You should have no trouble running QLIFE with cell grids up to 210x200.</p>
+
+    <p>You <i>must</i> have a VGA and at least a 386 to run QLIFE. The 386 features that it uses are not integral to the algorithm (they&rsquo;re a convenience for the code), so feel free to modify QLIFE to run on earlier CPUs if you wish. QLIFE works best if you have a large CPU cache (256K is recommended).</p>
+
+    <p>&mdash;<i>David Stafford</i></p>
+    <hr />
+  </blockquote>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="18-01.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="18-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

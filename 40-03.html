@@ -1,47 +1,50 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Of Songs, Taxes, and the Simplicity of Complex Polygons</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=40//-->
+  <!--PAGES=750-753//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="40-02.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="40-04.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Of Songs, Taxes, and the Simplicity of Complex Polygons</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <h3><a id="Heading5"></a>Complex Polygon Filling: An Implementation</h3>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=40//-->
-<!--PAGES=750-753//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p>Listing 40.1 just shown presents a function, <b>FillPolygon()</b>, that fills polygons of all shapes. If <b>CONVEX_FILL_LINKED</b> is defined, the fast convex fill code from Chapter 39 is linked in and used to draw convex polygons. Otherwise, convex polygons are handled as if they were complex. Nonconvex polygons are also handled as complex, although this is not necessary, as discussed shortly.</p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="40-02.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="40-04.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<H3><A NAME="Heading5"></A>Complex Polygon Filling: An Implementation</H3>
-<P>Listing 40.1 just shown presents a function, <B>FillPolygon()</B>, that fills polygons of all shapes. If <B>CONVEX_FILL_LINKED</B> is defined, the fast convex fill code from Chapter 39 is linked in and used to draw convex polygons. Otherwise, convex polygons are handled as if they were complex. Nonconvex polygons are also handled as complex, although this is not necessary, as discussed shortly.</P>
-<P>Listing 40.1 is a faithful implementation of the complex polygon filling approach just described, with separate functions corresponding to each of the tasks, such as building the GET and X-sorting the AET. Listing 40.2 provides the actual drawing code used to fill spans, built on a draw pixel routine that is the only hardware dependency anywhere in the C code. Listing 40.3 is the header file for the polygon filling code; note that it is an expanded version of the header file used by the fast convex polygon fill code from Chapter 39. (They may have the same name but are <I>not</I> the same file!) Listing 40.4 is a sample program that, when linked to Listings 40.1 and 40.2, demonstrates drawing polygons of various sorts.</P>
-<P><B>LISTING 40.2 L40-2.C</B></P>
-<!-- CODE //-->
-<PRE>
+  <p>Listing 40.1 is a faithful implementation of the complex polygon filling approach just described, with separate functions corresponding to each of the tasks, such as building the GET and X-sorting the AET. Listing 40.2 provides the actual drawing code used to fill spans, built on a draw pixel routine that is the only hardware dependency anywhere in the C code. Listing 40.3 is the header file for the polygon filling code; note that it is an expanded version of the header file used by the fast convex polygon fill code from Chapter 39. (They may have the same name but are <i>not</i> the same file!) Listing 40.4 is a sample program that, when linked to Listings 40.1 and 40.2, demonstrates drawing polygons of various sorts.</p>
+
+  <p><b>LISTING 40.2 L40-2.C</b></p><!-- CODE //-->
+  <pre>
  /* Draws all pixels in the horizontal line segment passed in, from
     (LeftX,Y) to (RightX,Y), in the specified color in mode 13h, the
     VGA&rsquo;s 320x200 256-color mode. Both LeftX and RightX are drawn. No
@@ -76,11 +79,10 @@
  #endif
     *ScreenPtr = (unsigned char) Color;
  }
-</PRE>
-<!-- END CODE //-->
-<P><B>LISTING 40.3 POLYGON.H</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p><b>LISTING 40.3 POLYGON.H</b></p><!-- CODE //-->
+  <pre>
  /* POLYGON.H: Header file for polygon-filling code */
 
  #define CONVEX    0
@@ -115,11 +117,10 @@
     int YStart;                /* Y coordinate of topmost line */
     struct HLine * HLinePtr;   /* pointer to list of horz lines */
  };
-</PRE>
-<!-- END CODE //-->
-<P><B>LISTING 40.4 L40-4.C</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p><b>LISTING 40.4 L40-4.C</b></p><!-- CODE //-->
+  <pre>
  /* Sample program to exercise the polygon-filling routines */
 
  #include &lt;conio.h&gt;
@@ -129,7 +130,7 @@
  #define DRAW_POLYGON(PointList,Color,Shape,X,Y)             \
     Polygon.Length = sizeof(PointList)/sizeof(struct Point); \
     Polygon.PointPtr = PointList;                            \
-    FillPolygon(&Polygon, Color, Shape, X, Y);
+    FillPolygon(&amp;Polygon, Color, Shape, X, Y);
 
  void main(void);
  extern int FillPolygon(struct PointListHeader *, int, int, int, int);
@@ -155,7 +156,7 @@
 
     /* Set the display to VGA mode 13h, 320x200 256-color mode */
     regset.x.ax = 0x0013;
-    int86(0x10, &regset, &regset);
+    int86(0x10, &amp;regset, &amp;regset);
 
     /* Draw three complex polygons */
     DRAW_POLYGON(Polygon1, 15, COMPLEX, 0, 0);
@@ -199,31 +200,29 @@
     int86(0x10, &amp;regset, &amp;regset);
  }
 
-</PRE>
-<!-- END CODE //-->
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="40-02.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="40-04.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p><br /></p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="40-02.html">Previous</a></td>
 
-<!-- END FOOTER -->
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="40-04.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
 
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

@@ -1,86 +1,102 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Of Songs, Taxes, and the Simplicity of Complex Polygons</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=40//-->
+  <!--PAGES=739-744//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="39-05.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="40-02.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Of Songs, Taxes, and the Simplicity of Complex Polygons</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <h2><a id="Heading1"></a>Chapter 40<br />
+  Of Songs, Taxes, and the Simplicity of Complex Polygons</h2>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=40//-->
-<!--PAGES=739-744//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <h3><a id="Heading2"></a>Dealing with Irregular Polygonal Areas</h3>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="39-05.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="40-02.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<H2><A NAME="Heading1"></A>Chapter 40<BR>Of Songs, Taxes, and the Simplicity of Complex Polygons</H2>
-<H3><A NAME="Heading2"></A>Dealing with Irregular Polygonal Areas</H3>
-<P>Every so often, my daughter asks me to sing her to sleep. (If you&rsquo;ve ever heard me sing, this may cause you concern about either her hearing or her judgement, but love knows no bounds.) As any parent is well aware, singing a young child to sleep can easily take several hours, or until sunrise, whichever comes last. One night, running low on children&rsquo;s songs, I switched to a Beatles medley, and at long last her breathing became slow and regular. At the end, I softly sang &ldquo;A Hard Day&rsquo;s Night,&rdquo; then quietly stood up to leave. As I tiptoed out, she said, in a voice not even faintly tinged with sleep, &ldquo;Dad, what do they mean, &lsquo;working like a dog&rsquo;? Chasing a stick? That doesn&rsquo;t make sense; people don&rsquo;t chase sticks.&rdquo;
-</P>
-<P>That led us into a discussion of idioms, which made about as much sense to her as an explanation of quantum mechanics. Finally, I fell back on my standard explanation of the Universe, which is that a lot of the time it simply doesn&rsquo;t make sense.</P>
-<P>As a general principle, that explanation holds up remarkably well. (In fact, having just done my taxes, I think Earth is actually run by blob-creatures from the planet Mrxx, who are helplessly doubled over with laughter at the ridiculous things they can make us do. &ldquo;Let&rsquo;s make them get Social Security numbers for their pets next year!&rdquo; they&rsquo;re saying right now, gasping for breath.) Occasionally, however, one has the rare pleasure of finding a corner of the Universe that makes sense, where everything fits together as if preordained.</P>
-<P>Filling arbitrary polygons is such a case.</P>
-<H3><A NAME="Heading3"></A>Filling Arbitrary Polygons</H3>
-<P>In Chapter 38, I described three types of polygons: convex, nonconvex, and complex. <I>The RenderMan Companion</I>, a terrific book by Steve Upstill (Addison-Wesley, 1990) has an intuitive definition of <I>convex</I>: If a rubber band stretched around a polygon touches all vertices in the order they&rsquo;re defined, then the polygon is convex. If a polygon has intersecting edges, it&rsquo;s complex. If a polygon doesn&rsquo;t have intersecting edges but isn&rsquo;t convex, it&rsquo;s nonconvex. Nonconvex is a special case of complex, and convex is a special case of nonconvex. (Which, I&rsquo;m well aware, makes nonconvex a lousy name&mdash;noncomplex would have been better&mdash;but I&rsquo;m following X Window System nomenclature here.)</P>
-<P>The reason for distinguishing between these three types of polygons is that the more specialized types can be filled with markedly faster approaches. Complex polygons require the slowest approach; however, that approach will serve to fill any polygon of any sort. Nonconvex polygons require less sorting, because edges never cross. Convex polygons can be filled fastest of all by simply scanning the two sides of the polygon, as we saw in Chapter 39.</P>
-<P>Before we dive into complex polygon filling, I&rsquo;d like to point out that the code in this chapter, like all polygon filling code I&rsquo;ve ever seen, requires that the caller describe the type of the polygon to be filled. Often, however, the caller doesn&rsquo;t know what type of polygon it&rsquo;s passing, or specifies complex for simplicity, because that will work for all polygons; in such a case, the polygon filler will use the slow complex-fill code even if the polygon is, in fact, a convex polygon. In Chapter 41, I&rsquo;ll discuss one way to improve this situation.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading4"></A>Active Edges</H4>
-<P>The basic premise of filling a complex polygon is that for a given scan line, we determine all intersections between the polygon&rsquo;s edges and that scan line and then fill the spans between the intersections, as shown in Figure 40.1. (Section 3.6 of Foley and van Dam&rsquo;s <I>Computer Graphics</I>, Second Edition provides an overview of this and other aspects of polygon filling.) There are several rules that might be used to determine which spans are drawn and which aren&rsquo;t; we&rsquo;ll use the odd/even rule, which specifies that drawing turns on after odd-numbered intersections (first, third, and so on) and off after even-numbered intersections.</P>
-<P>The question then becomes how can we most efficiently determine which edges cross each scan line and where? As it happens, there is a great deal of coherence from one scan line to the next in a polygon edge list, because each edge starts at a given Y coordinate and continues unbroken until it ends. In other words, edges don&rsquo;t leap about and stop and start randomly; the X coordinate of an edge at one scan line is a consistent delta from that edge&rsquo;s X coordinate at the last scan line, and that is consistent for the length of the line.</P>
-<P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/40-01.jpg',409,221 )"> --><IMG SRC="images/40-01.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/40-01.jpg',409,221)"> --><B>Figure 40.1</B></A>&nbsp;&nbsp;<I>Filling one scan line by finding intersecting edges.</I>
-</P>
-<P>This allows us to reduce the number of edges that must be checked for intersection; on any given scan line, we only need to check for intersections with the currently active edges&mdash;edges that start on that scan line, plus all edges that start on earlier (above) scan lines and haven&rsquo;t ended yet&mdash;as shown in Figure 40.2. This suggests that we can proceed from the top scan line of the polygon to the bottom, keeping a running list of currently active edges&mdash;called the <I>active edge table</I> (AET)&mdash;with the edges sorted in order of ascending X coordinate of intersection with the current scan line. Then, we can simply fill each scan line in turn according to the list of active edges at that line.</P>
-<P><A NAME="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/40-02.jpg',409,194 )"> --><IMG SRC="images/40-02.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/40-02.jpg',409,194)"> --><B>Figure 40.2</B></A>&nbsp;&nbsp;<I>Checking currently active edges (solid lines).</I>
-</P>
-<P>Maintaining the AET from one scan line to the next involves three steps: First, we must add to the AET any edges that start on the current scan line, making sure to keep the AET X-sorted for efficient odd/even scanning. Second, we must remove edges that end on the current scan line. Third, we must advance the X coordinates of active edges with the same sort of error term-based, Bresenham&rsquo;s-like approach we used for convex polygons, again ensuring that the AET is X-sorted after advancing the edges.
-</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="39-05.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="40-02.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+  <p>Every so often, my daughter asks me to sing her to sleep. (If you&rsquo;ve ever heard me sing, this may cause you concern about either her hearing or her judgement, but love knows no bounds.) As any parent is well aware, singing a young child to sleep can easily take several hours, or until sunrise, whichever comes last. One night, running low on children&rsquo;s songs, I switched to a Beatles medley, and at long last her breathing became slow and regular. At the end, I softly sang &ldquo;A Hard Day&rsquo;s Night,&rdquo; then quietly stood up to leave. As I tiptoed out, she said, in a voice not even faintly tinged with sleep, &ldquo;Dad, what do they mean, &lsquo;working like a dog&rsquo;? Chasing a stick? That doesn&rsquo;t make sense; people don&rsquo;t chase sticks.&rdquo;</p>
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>That led us into a discussion of idioms, which made about as much sense to her as an explanation of quantum mechanics. Finally, I fell back on my standard explanation of the Universe, which is that a lot of the time it simply doesn&rsquo;t make sense.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>As a general principle, that explanation holds up remarkably well. (In fact, having just done my taxes, I think Earth is actually run by blob-creatures from the planet Mrxx, who are helplessly doubled over with laughter at the ridiculous things they can make us do. &ldquo;Let&rsquo;s make them get Social Security numbers for their pets next year!&rdquo; they&rsquo;re saying right now, gasping for breath.) Occasionally, however, one has the rare pleasure of finding a corner of the Universe that makes sense, where everything fits together as if preordained.</p>
 
-<!-- END FOOTER -->
+  <p>Filling arbitrary polygons is such a case.</p>
 
+  <h3><a id="Heading3"></a>Filling Arbitrary Polygons</h3>
 
+  <p>In Chapter 38, I described three types of polygons: convex, nonconvex, and complex. <i>The RenderMan Companion</i>, a terrific book by Steve Upstill (Addison-Wesley, 1990) has an intuitive definition of <i>convex</i>: If a rubber band stretched around a polygon touches all vertices in the order they&rsquo;re defined, then the polygon is convex. If a polygon has intersecting edges, it&rsquo;s complex. If a polygon doesn&rsquo;t have intersecting edges but isn&rsquo;t convex, it&rsquo;s nonconvex. Nonconvex is a special case of complex, and convex is a special case of nonconvex. (Which, I&rsquo;m well aware, makes nonconvex a lousy name&mdash;noncomplex would have been better&mdash;but I&rsquo;m following X Window System nomenclature here.)</p>
+
+  <p>The reason for distinguishing between these three types of polygons is that the more specialized types can be filled with markedly faster approaches. Complex polygons require the slowest approach; however, that approach will serve to fill any polygon of any sort. Nonconvex polygons require less sorting, because edges never cross. Convex polygons can be filled fastest of all by simply scanning the two sides of the polygon, as we saw in Chapter 39.</p>
+
+  <p>Before we dive into complex polygon filling, I&rsquo;d like to point out that the code in this chapter, like all polygon filling code I&rsquo;ve ever seen, requires that the caller describe the type of the polygon to be filled. Often, however, the caller doesn&rsquo;t know what type of polygon it&rsquo;s passing, or specifies complex for simplicity, because that will work for all polygons; in such a case, the polygon filler will use the slow complex-fill code even if the polygon is, in fact, a convex polygon. In Chapter 41, I&rsquo;ll discuss one way to improve this situation.</p>
+
+  <h4 align="left"><a id="Heading4"></a>Active Edges</h4>
+
+  <p>The basic premise of filling a complex polygon is that for a given scan line, we determine all intersections between the polygon&rsquo;s edges and that scan line and then fill the spans between the intersections, as shown in Figure 40.1. (Section 3.6 of Foley and van Dam&rsquo;s <i>Computer Graphics</i>, Second Edition provides an overview of this and other aspects of polygon filling.) There are several rules that might be used to determine which spans are drawn and which aren&rsquo;t; we&rsquo;ll use the odd/even rule, which specifies that drawing turns on after odd-numbered intersections (first, third, and so on) and off after even-numbered intersections.</p>
+
+  <p>The question then becomes how can we most efficiently determine which edges cross each scan line and where? As it happens, there is a great deal of coherence from one scan line to the next in a polygon edge list, because each edge starts at a given Y coordinate and continues unbroken until it ends. In other words, edges don&rsquo;t leap about and stop and start randomly; the X coordinate of an edge at one scan line is a consistent delta from that edge&rsquo;s X coordinate at the last scan line, and that is consistent for the length of the line.</p>
+
+  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/40-01.jpg',409,221 )"> --><img src="images/40-01.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/40-01.jpg',409,221)"> --><b>Figure 40.1</b></a>&nbsp;&nbsp;<i>Filling one scan line by finding intersecting edges.</i></p>
+
+  <p>This allows us to reduce the number of edges that must be checked for intersection; on any given scan line, we only need to check for intersections with the currently active edges&mdash;edges that start on that scan line, plus all edges that start on earlier (above) scan lines and haven&rsquo;t ended yet&mdash;as shown in Figure 40.2. This suggests that we can proceed from the top scan line of the polygon to the bottom, keeping a running list of currently active edges&mdash;called the <i>active edge table</i> (AET)&mdash;with the edges sorted in order of ascending X coordinate of intersection with the current scan line. Then, we can simply fill each scan line in turn according to the list of active edges at that line.</p>
+
+  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/40-02.jpg',409,194 )"> --><img src="images/40-02.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/40-02.jpg',409,194)"> --><b>Figure 40.2</b></a>&nbsp;&nbsp;<i>Checking currently active edges (solid lines).</i></p>
+
+  <p>Maintaining the AET from one scan line to the next involves three steps: First, we must add to the AET any edges that start on the current scan line, making sure to keep the AET X-sorted for efficient odd/even scanning. Second, we must remove edges that end on the current scan line. Third, we must advance the X coordinates of active edges with the same sort of error term-based, Bresenham&rsquo;s-like approach we used for convex polygons, again ensuring that the AET is X-sorted after advancing the edges.</p>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="39-05.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="40-02.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

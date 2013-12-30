@@ -1,84 +1,98 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Wu'ed in Haste; Fried, Stewed at Leisure</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=42//-->
+  <!--PAGES=773-778//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="41-04.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="42-02.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Wu'ed in Haste; Fried, Stewed at Leisure</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <h2><a id="Heading1"></a>Chapter 42<br />
+  Wu&rsquo;ed in Haste; Fried, Stewed at Leisure</h2>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=42//-->
-<!--PAGES=773-778//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <h3><a id="Heading2"></a>Fast Antialiased Lines Using Wu&rsquo;s Algorithm</h3>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="41-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="42-02.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<H2><A NAME="Heading1"></A>Chapter 42<BR>Wu&rsquo;ed in Haste; Fried, Stewed at Leisure</H2>
-<H3><A NAME="Heading2"></A>Fast Antialiased Lines Using Wu&rsquo;s Algorithm</H3>
-<P>The thought first popped into my head as I unenthusiastically picked through the salad bar at a local &ldquo;family&rdquo; restaurant, trying to decide whether the meatballs, the fried clams, or the lasagna was likely to shorten my life the least. I decided on the chicken in mystery sauce.
-</P>
-<P>The thought recurred when my daughter asked, &ldquo;Dad, is that fried chicken?&rdquo;</P>
-<P>&ldquo;I don&rsquo;t think so,&rdquo; I said. &ldquo;I think it&rsquo;s stewed chicken.&rdquo;</P>
-<P>&ldquo;It looks like fried chicken.&rdquo;</P>
-<P>&ldquo;Maybe it&rsquo;s fried, stewed chicken,&rdquo; my wife volunteered hopefully. I took a bite. It was, indeed, fried, stewed chicken. I can now, unhesitatingly and without reservation, recommend that you avoid fried, stewed chicken at all costs.</P>
-<P>The thought I had was as follows: <I>This is not good food</I>. Not a profound thought, but it raises an interesting question: Why was I eating in this restaurant? The answer, to borrow a phrase from E.F. Schumacher, is <I>appropriate technology</I>. For a family on a budget, with a small child, tired of staring at each other over the kitchen table, this was a perfect place to eat. It was cheap, it had greasy food and ice cream, no one cared if children dropped things or talked loudly or walked around, and, most important of all, it wasn&rsquo;t home. So what if the food was lousy? Good food was a luxury, a bonus; everything on the above list was necessary. A family restaurant was the appropriate dining-out technology, given the parameters within which we had to work.</P>
-<P>When I read through SIGGRAPH proceedings and other state-of-the-art computer-graphics material, all too often I feel like I&rsquo;m dining at a four-star restaurant with two-year-old triplets and an empty wallet. We&rsquo;re talking incredibly inappropriate technology for PC graphics here. Sure, I say to myself as I read about an antialiasing technique, that sounds wonderful&mdash;if I had 24-bpp color, and dedicated hardware to do the processing, and all day to wait to generate one image. Yes, I think, that is a good way to do hidden surface removal&mdash;in a system with hardware z-buffering. Most of the stuff in the journal <I>Computer Graphics</I> is riveting, but, alas, pretty much useless on PCs. When an x86 has to do all the work, speed becomes the overriding parameter, especially for real-time graphics.</P>
-<P>Literature that&rsquo;s applicable to fast PC graphics is hard enough to find, but what we&rsquo;d really like is above-average image quality combined with terrific speed, and there&rsquo;s almost no literature of that sort around. There is some, however, and you folks are right on top of it. For example, alert reader Michael Chaplin, of San Diego, wrote to suggest that I might enjoy the line-antialiasing algorithm presented in Xiaolin Wu&rsquo;s article, &ldquo;An Efficient Antialiasing Technique,&rdquo; in the July 1991 issue of <I>Computer Graphics</I>. Michael was dead-on right. This is a great algorithm, combining excellent antialiased line quality with speed that&rsquo;s close to that of non-antialiased Bresenham&rsquo;s line drawing. This is the sort of algorithm that makes you want to go out and write a wire-frame animation program, just so you can see how good those smooth lines look in motion. Wu antialiasing is a wonderful example of what can be accomplished on inexpensive, mass-market hardware with the proper programming perspective. In short, it&rsquo;s a splendid example of appropriate technology for PCs.</P>
-<H3><A NAME="Heading3"></A>Wu Antialiasing</H3>
-<P>Antialiasing, as we&rsquo;ve been discussing for the past few chapters, is the process of smoothing lines and edges so that they appear less jagged. Antialiasing is partly an aesthetic issue, because it makes images more attractive. It&rsquo;s also partly an accuracy issue, because it makes it possible to position and draw images with effectively more precision than the resolution of the display. Finally, it&rsquo;s partly a flat-out necessity, to avoid the horrible, crawling, jagged edges of temporal aliasing when performing animation.
-</P>
-<P>The basic premise of Wu antialiasing is almost ridiculously simple: As the algorithm steps one pixel unit at a time along the major (longer) axis of a line, it draws the two pixels bracketing the line along the minor axis at each point. Each of the two bracketing pixels is drawn with a weighted fraction of the full intensity of the drawing color, with the weighting for each pixel equal to one minus the pixel&rsquo;s distance along the minor axis from the ideal line. Yes, it&rsquo;s a mouthful, but Figure 42.1 illustrates the concept.</P>
-<P>The intensities of the two pixels that bracket the line are selected so that they always sum to exactly 1; that is, to the intensity of one fully illuminated pixel of the drawing color. The presence of aggregate full-pixel intensity means that at each step, the line has the same brightness it would have if a single pixel were drawn at precisely the correct location. Moreover, thanks to the distribution of the intensity weighting, that brightness is centered at the ideal line. Not coincidentally, a line drawn with pixel pairs of aggregate single-pixel intensity, centered on the ideal line, is perceived by the eye not as a jagged collection of pixel pairs, but as a smooth line centered on the ideal line. Thus, by weighting the bracketing pixels properly at each step, we can readily produce what looks like a smooth line at precisely the right location, rather than the jagged pattern of line segments that non-antialiased line-drawing algorithms such as Bresenham&rsquo;s (see Chapters 35, 36, and 37) trace out.</P>
-<P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/42-01.jpg',407,282 )"> --><IMG SRC="images/42-01.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/42-01.jpg',407,282)"> --><B>Figure 42.1</B></A>&nbsp;&nbsp;<I>The basic concept of Wu antialiasing.</I>
-</P>
-<P>You might expect that the implementation of Wu antialiasing would fall into two distinct areas: tracing out the line (that is, finding the appropriate pixel pairs to draw) and calculating the appropriate weightings for each pixel pair. Not so, however. The weighting calculations involve only a few shifts, XORs, and adds; for all practical purposes, tracing and weighting are rolled into one step&mdash;and a very fast step it is. How fast is it? On a 33-MHz 486 with a fast VGA, a good but not maxed-out assembly implementation of Wu antialiasing draws a more than respectable 5,000 150-pixel-long vectors per second. That&rsquo;s especially impressive considering that about 1,500,000 actual pixels are drawn per second, meaning that Wu antialiasing is drawing at around 50 percent of the maximum memory bandwidth&mdash;half the fastest theoretically possible drawing speed&mdash;of an AT-bus VGA. In short, Wu antialiasing is about as fast an antialiased line approach as you could ever hope to find for the VGA.
-</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="41-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="42-02.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+  <p>The thought first popped into my head as I unenthusiastically picked through the salad bar at a local &ldquo;family&rdquo; restaurant, trying to decide whether the meatballs, the fried clams, or the lasagna was likely to shorten my life the least. I decided on the chicken in mystery sauce.</p>
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>The thought recurred when my daughter asked, &ldquo;Dad, is that fried chicken?&rdquo;</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>&ldquo;I don&rsquo;t think so,&rdquo; I said. &ldquo;I think it&rsquo;s stewed chicken.&rdquo;</p>
 
-<!-- END FOOTER -->
+  <p>&ldquo;It looks like fried chicken.&rdquo;</p>
 
+  <p>&ldquo;Maybe it&rsquo;s fried, stewed chicken,&rdquo; my wife volunteered hopefully. I took a bite. It was, indeed, fried, stewed chicken. I can now, unhesitatingly and without reservation, recommend that you avoid fried, stewed chicken at all costs.</p>
 
+  <p>The thought I had was as follows: <i>This is not good food</i>. Not a profound thought, but it raises an interesting question: Why was I eating in this restaurant? The answer, to borrow a phrase from E.F. Schumacher, is <i>appropriate technology</i>. For a family on a budget, with a small child, tired of staring at each other over the kitchen table, this was a perfect place to eat. It was cheap, it had greasy food and ice cream, no one cared if children dropped things or talked loudly or walked around, and, most important of all, it wasn&rsquo;t home. So what if the food was lousy? Good food was a luxury, a bonus; everything on the above list was necessary. A family restaurant was the appropriate dining-out technology, given the parameters within which we had to work.</p>
+
+  <p>When I read through SIGGRAPH proceedings and other state-of-the-art computer-graphics material, all too often I feel like I&rsquo;m dining at a four-star restaurant with two-year-old triplets and an empty wallet. We&rsquo;re talking incredibly inappropriate technology for PC graphics here. Sure, I say to myself as I read about an antialiasing technique, that sounds wonderful&mdash;if I had 24-bpp color, and dedicated hardware to do the processing, and all day to wait to generate one image. Yes, I think, that is a good way to do hidden surface removal&mdash;in a system with hardware z-buffering. Most of the stuff in the journal <i>Computer Graphics</i> is riveting, but, alas, pretty much useless on PCs. When an x86 has to do all the work, speed becomes the overriding parameter, especially for real-time graphics.</p>
+
+  <p>Literature that&rsquo;s applicable to fast PC graphics is hard enough to find, but what we&rsquo;d really like is above-average image quality combined with terrific speed, and there&rsquo;s almost no literature of that sort around. There is some, however, and you folks are right on top of it. For example, alert reader Michael Chaplin, of San Diego, wrote to suggest that I might enjoy the line-antialiasing algorithm presented in Xiaolin Wu&rsquo;s article, &ldquo;An Efficient Antialiasing Technique,&rdquo; in the July 1991 issue of <i>Computer Graphics</i>. Michael was dead-on right. This is a great algorithm, combining excellent antialiased line quality with speed that&rsquo;s close to that of non-antialiased Bresenham&rsquo;s line drawing. This is the sort of algorithm that makes you want to go out and write a wire-frame animation program, just so you can see how good those smooth lines look in motion. Wu antialiasing is a wonderful example of what can be accomplished on inexpensive, mass-market hardware with the proper programming perspective. In short, it&rsquo;s a splendid example of appropriate technology for PCs.</p>
+
+  <h3><a id="Heading3"></a>Wu Antialiasing</h3>
+
+  <p>Antialiasing, as we&rsquo;ve been discussing for the past few chapters, is the process of smoothing lines and edges so that they appear less jagged. Antialiasing is partly an aesthetic issue, because it makes images more attractive. It&rsquo;s also partly an accuracy issue, because it makes it possible to position and draw images with effectively more precision than the resolution of the display. Finally, it&rsquo;s partly a flat-out necessity, to avoid the horrible, crawling, jagged edges of temporal aliasing when performing animation.</p>
+
+  <p>The basic premise of Wu antialiasing is almost ridiculously simple: As the algorithm steps one pixel unit at a time along the major (longer) axis of a line, it draws the two pixels bracketing the line along the minor axis at each point. Each of the two bracketing pixels is drawn with a weighted fraction of the full intensity of the drawing color, with the weighting for each pixel equal to one minus the pixel&rsquo;s distance along the minor axis from the ideal line. Yes, it&rsquo;s a mouthful, but Figure 42.1 illustrates the concept.</p>
+
+  <p>The intensities of the two pixels that bracket the line are selected so that they always sum to exactly 1; that is, to the intensity of one fully illuminated pixel of the drawing color. The presence of aggregate full-pixel intensity means that at each step, the line has the same brightness it would have if a single pixel were drawn at precisely the correct location. Moreover, thanks to the distribution of the intensity weighting, that brightness is centered at the ideal line. Not coincidentally, a line drawn with pixel pairs of aggregate single-pixel intensity, centered on the ideal line, is perceived by the eye not as a jagged collection of pixel pairs, but as a smooth line centered on the ideal line. Thus, by weighting the bracketing pixels properly at each step, we can readily produce what looks like a smooth line at precisely the right location, rather than the jagged pattern of line segments that non-antialiased line-drawing algorithms such as Bresenham&rsquo;s (see Chapters 35, 36, and 37) trace out.</p>
+
+  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/42-01.jpg',407,282 )"> --><img src="images/42-01.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/42-01.jpg',407,282)"> --><b>Figure 42.1</b></a>&nbsp;&nbsp;<i>The basic concept of Wu antialiasing.</i></p>
+
+  <p>You might expect that the implementation of Wu antialiasing would fall into two distinct areas: tracing out the line (that is, finding the appropriate pixel pairs to draw) and calculating the appropriate weightings for each pixel pair. Not so, however. The weighting calculations involve only a few shifts, XORs, and adds; for all practical purposes, tracing and weighting are rolled into one step&mdash;and a very fast step it is. How fast is it? On a 33-MHz 486 with a fast VGA, a good but not maxed-out assembly implementation of Wu antialiasing draws a more than respectable 5,000 150-pixel-long vectors per second. That&rsquo;s especially impressive considering that about 1,500,000 actual pixels are drawn per second, meaning that Wu antialiasing is drawing at around 50 percent of the maximum memory bandwidth&mdash;half the fastest theoretically possible drawing speed&mdash;of an AT-bus VGA. In short, Wu antialiasing is about as fast an antialiased line approach as you could ever hope to find for the VGA.</p>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="41-04.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="42-02.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

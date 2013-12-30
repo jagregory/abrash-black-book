@@ -1,87 +1,135 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: There Ain't No Such Thing as the Fastest Code</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=16//-->
+  <!--PAGES=295-300//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="15-04.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="16-02.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: There Ain't No Such Thing as the Fastest Code</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <h2><a id="Heading1"></a>Chapter 16<br />
+  There Ain&rsquo;t No Such Thing as the Fastest Code</h2>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=16//-->
-<!--PAGES=295-300//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <h3><a id="Heading2"></a>Lessons Learned in the Pursuit of the Ultimate Word Counter</h3>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="15-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="16-02.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<H2><A NAME="Heading1"></A>Chapter 16<BR>There Ain&rsquo;t No Such Thing as the Fastest Code</H2>
-<H3><A NAME="Heading2"></A>Lessons Learned in the Pursuit of the Ultimate Word Counter</H3>
-<P>I remember reading an overview of C<SMALL>++</SMALL> development tools for Windows in a past issue of <I>PC Week</I>. In the lower left corner was the familiar box listing the 10 leading concerns of corporate buyers when it comes to C<SMALL>++</SMALL>. Boiled down, the list looked like this, in order of descending importance to buyers:</P>
-<DL>
-<DD><B>1.</B>&nbsp;&nbsp;Debugging
-<DD><B>2.</B>&nbsp;&nbsp;Documentation
-<DD><B>3.</B>&nbsp;&nbsp;Windows development tools
-<DD><B>4.</B>&nbsp;&nbsp;High-level Windows support
-<DD><B>5.</B>&nbsp;&nbsp;Class library
-<DD><B>6.</B>&nbsp;&nbsp;Development cycle efficiency
-<DD><B>7.</B>&nbsp;&nbsp;Object-oriented development aids
-<DD><B>8.</B>&nbsp;&nbsp;Programming management aids
-<DD><B>9.</B>&nbsp;&nbsp;Online help
-<DD><B>10.</B>&nbsp;&nbsp;Windows development cycle automation
-</DL>
-<P>Is something missing here? You bet your maximum <I>gluteus</I> something&rsquo;s missing&mdash;nowhere on that list is there so much as one word about how fast the compiled code runs! I&rsquo;m not saying that performance is everything, but optimization isn&rsquo;t even down there at number 10, below online help! Ye gods and little fishes! We are talking here about people who would take a bus from LA to New York instead of a plane because it had a cleaner bathroom; who would choose a painting from a Holiday Inn over a Matisse because it had a fancier frame; who would buy a Yugo instead of&mdash;well, hell, anything&mdash;because it had a nice owner&rsquo;s manual and particularly attractive keys. We are talking about people who are focusing on means, and have forgotten about ends. We are talking about people with no programming souls.</P>
-<H3><A NAME="Heading3"></A>Counting Words in a Hurry</H3>
-<P>What are we to make of this? At the very least, we can safely guess that very few corporate buyers ever enter optimization contests. Most of my readers do, however; in fact, far more than I thought ever would, but that gladdens me to no end. I issued my first optimization challenge in a &ldquo;Pushing the Envelope&rdquo; column in <I>PC TECHNIQUES</I> back in 1991, and was deluged by respondents who, one might also gather, do not live by <I>PC Week</I>.</P>
-<P>That initial challenge was sparked by a column David Gerrold wrote (also in <I>PC TECHNIQUES</I> ) concerning the matter of counting the number of words in a document; David turned up some pretty interesting optimization issues along the way. David did all his coding in Pascal, pointing out that while an assembly language version would probably be faster, his Pascal utility worked properly and was fast enough for him.</P>
-<P>It wasn&rsquo;t, however, fast enough for me. The logical starting place for speeding up word counting would be David&rsquo;s original Pascal code, but I&rsquo;m much more comfortable with C, so Listing 16.1 is a loose approximation of David&rsquo;s word count program, translated to C. I left out a few details, such as handling comment blocks, partly because I don&rsquo;t use such blocks myself, and partly so we can focus on optimizing the core word-counting code. As Table 16.1 indicates, Listing 16.1 counts the words in a 104,448-word file in 4.6 seconds. The file was stored on a RAM disk, and Listing 16.1 was compiled with Borland C<SMALL>++</SMALL> with all optimization enabled. A RAM disk was used partly because it returns consistent times&mdash;no seek times, rotational latency, or cache to muddy the waters&mdash;and partly to highlight word-counting speed rather than disk access speed.</P>
-<TABLE WIDTH="80%"><TR>
-<TD COLSPAN="2"><HR>
-<TR>
-<TH ALIGN="LEFT" VALIGN="TOP" WIDTH="50%">Listing
-<TH ALIGN="LEFT" VALIGN="TOP" WIDTH="30%">Time to Count Words
-<TR>
-<TD COLSPAN="2"><HR>
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP">16.1 (C)
-<TD ALIGN="LEFT" VALIGN="TOP">4.6 seconds
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP">16.2 &amp; 16.3 (C+ASM)
-<TD ALIGN="LEFT" VALIGN="TOP">2.4 seconds
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP">16.2 &amp; 16.4 (C+ASM w/lookup)
-<TD ALIGN="LEFT" VALIGN="TOP">1.6 seconds
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP" COLSPAN="2"><SMALL>These are the times taken to search a file containing 104,448 words, timed from a RAM disk on a 20 MHz 386.</SMALL>
-<TR>
-<TH ALIGN="LEFT" VALIGN="TOP" COLSPAN="2">Table 16.1 Word count timings.
-<TR>
-<TD COLSPAN="2"><HR>
-</TABLE>
-<P><B>LISTING 16.1 L16-1.C</B></P>
-<!-- CODE //-->
-<PRE>
+  <p>I remember reading an overview of C<small>++</small> development tools for Windows in a past issue of <i>PC Week</i>. In the lower left corner was the familiar box listing the 10 leading concerns of corporate buyers when it comes to C<small>++</small>. Boiled down, the list looked like this, in order of descending importance to buyers:</p>
+
+  <dl>
+    <dd><b>1.</b>&nbsp;&nbsp;Debugging</dd>
+
+    <dd><b>2.</b>&nbsp;&nbsp;Documentation</dd>
+
+    <dd><b>3.</b>&nbsp;&nbsp;Windows development tools</dd>
+
+    <dd><b>4.</b>&nbsp;&nbsp;High-level Windows support</dd>
+
+    <dd><b>5.</b>&nbsp;&nbsp;Class library</dd>
+
+    <dd><b>6.</b>&nbsp;&nbsp;Development cycle efficiency</dd>
+
+    <dd><b>7.</b>&nbsp;&nbsp;Object-oriented development aids</dd>
+
+    <dd><b>8.</b>&nbsp;&nbsp;Programming management aids</dd>
+
+    <dd><b>9.</b>&nbsp;&nbsp;Online help</dd>
+
+    <dd><b>10.</b>&nbsp;&nbsp;Windows development cycle automation</dd>
+  </dl>
+
+  <p>Is something missing here? You bet your maximum <i>gluteus</i> something&rsquo;s missing&mdash;nowhere on that list is there so much as one word about how fast the compiled code runs! I&rsquo;m not saying that performance is everything, but optimization isn&rsquo;t even down there at number 10, below online help! Ye gods and little fishes! We are talking here about people who would take a bus from LA to New York instead of a plane because it had a cleaner bathroom; who would choose a painting from a Holiday Inn over a Matisse because it had a fancier frame; who would buy a Yugo instead of&mdash;well, hell, anything&mdash;because it had a nice owner&rsquo;s manual and particularly attractive keys. We are talking about people who are focusing on means, and have forgotten about ends. We are talking about people with no programming souls.</p>
+
+  <h3><a id="Heading3"></a>Counting Words in a Hurry</h3>
+
+  <p>What are we to make of this? At the very least, we can safely guess that very few corporate buyers ever enter optimization contests. Most of my readers do, however; in fact, far more than I thought ever would, but that gladdens me to no end. I issued my first optimization challenge in a &ldquo;Pushing the Envelope&rdquo; column in <i>PC TECHNIQUES</i> back in 1991, and was deluged by respondents who, one might also gather, do not live by <i>PC Week</i>.</p>
+
+  <p>That initial challenge was sparked by a column David Gerrold wrote (also in <i>PC TECHNIQUES</i> ) concerning the matter of counting the number of words in a document; David turned up some pretty interesting optimization issues along the way. David did all his coding in Pascal, pointing out that while an assembly language version would probably be faster, his Pascal utility worked properly and was fast enough for him.</p>
+
+  <p>It wasn&rsquo;t, however, fast enough for me. The logical starting place for speeding up word counting would be David&rsquo;s original Pascal code, but I&rsquo;m much more comfortable with C, so Listing 16.1 is a loose approximation of David&rsquo;s word count program, translated to C. I left out a few details, such as handling comment blocks, partly because I don&rsquo;t use such blocks myself, and partly so we can focus on optimizing the core word-counting code. As Table 16.1 indicates, Listing 16.1 counts the words in a 104,448-word file in 4.6 seconds. The file was stored on a RAM disk, and Listing 16.1 was compiled with Borland C<small>++</small> with all optimization enabled. A RAM disk was used partly because it returns consistent times&mdash;no seek times, rotational latency, or cache to muddy the waters&mdash;and partly to highlight word-counting speed rather than disk access speed.</p>
+
+  <table width="80%">
+    <tr>
+      <td colspan="2">
+        <hr />
+      </td>
+    </tr>
+
+    <tr>
+      <th align="left" valign="top" width="50%">Listing</th>
+
+      <th align="left" valign="top" width="30%">Time to Count Words</th>
+    </tr>
+
+    <tr>
+      <td colspan="2">
+        <hr />
+      </td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top">16.1 (C)</td>
+
+      <td align="left" valign="top">4.6 seconds</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top">16.2 &amp; 16.3 (C+ASM)</td>
+
+      <td align="left" valign="top">2.4 seconds</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top">16.2 &amp; 16.4 (C+ASM w/lookup)</td>
+
+      <td align="left" valign="top">1.6 seconds</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top" colspan="2"><small>These are the times taken to search a file containing 104,448 words, timed from a RAM disk on a 20 MHz 386.</small></td>
+    </tr>
+
+    <tr>
+      <th align="left" valign="top" colspan="2">Table 16.1 Word count timings.</th>
+    </tr>
+
+    <tr>
+      <td colspan="2">
+        <hr />
+      </td>
+    </tr>
+  </table>
+
+  <p><b>LISTING 16.1 L16-1.C</b></p><!-- CODE //-->
+  <pre>
  /* Word-counting program. Tested with Borland C++ in C
     compilation mode and the small model. */
  
@@ -91,7 +139,7 @@
  #include &lt;stdlib.h&gt;
  #include &lt;io.h&gt;
  
- #define  <I>B</I> UFFER_SIZE  0x8000   /* largest chunk of file worked 
+ #define  <i>B</i> UFFER_SIZE  0x8000   /* largest chunk of file worked 
                                   with at any one time */
  int main(int, char **);
  
@@ -142,7 +190,7 @@
                      ((Ch &gt;= &lsquo;0&rsquo;) &amp;&amp; (Ch &lt;= &lsquo;9&rsquo;)) ||
                      (Ch == &lsquo;\&rsquo;&rsquo;);
           if ((!CharFlag) &amp;&amp; PredCharFlag) {
-             WordCo <I>u</I> nt++; 
+             WordCo <i>u</i> nt++; 
           }
        } while (&mdash;BlockSize);
     }
@@ -155,31 +203,29 @@
     return(0);
  }
  
-</PRE>
-<!-- END CODE //-->
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="15-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="16-02.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p><br /></p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="15-04.html">Previous</a></td>
 
-<!-- END FOOTER -->
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="16-02.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
 
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

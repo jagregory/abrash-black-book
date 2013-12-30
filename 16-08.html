@@ -1,44 +1,44 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: There Ain't No Such Thing as the Fastest Code</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=16//-->
+  <!--PAGES=316-319//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="16-07.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="17-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: There Ain't No Such Thing as the Fastest Code</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
-
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=16//-->
-<!--PAGES=316-319//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
-
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="16-07.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="17-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P><B>Listing 16.7 L16-7.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+  <p><b>Listing 16.7 L16-7.ASM</b></p><!-- CODE //-->
+  <pre>
  ScanLoop:
          lodsw           ;get the next 2 bytes (AL = first, AH = 2nd)
          xlat            ;look up first&rsquo;s char/not status
@@ -53,18 +53,22 @@
          dec     dx
          jnz     ScanLoop
  
-</PRE>
-<!-- END CODE //-->
-<P>John later divides the transition count by two to get the word count. (Food for thought: It&rsquo;s also possible to use <B>CMP</B> and <B>ADC</B> to detect words without branching.)</P>
-<P>John&rsquo;s approach makes it clear that word-counting is nothing more than a fairly simple state machine. The interesting part, of course, is building the fastest state machine.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading12"></A>Level 3: Breakthrough</H4>
-<P>The boundaries between the levels of optimization are not sharply defined. In a sense, level 3 optimization is just like levels 1 and 2, but more so. At level 3, one takes whatever level 2 perspective seems most promising, and implements it as efficiently as possible on the x86. Even more than at level 2, at level 3 this means breaking out of familiar patterns of thinking.
-</P>
-<P>In the case of word counting, level 3 means building a table-driven state machine dedicated to processing a buffer of bytes into a count of words with a minimum of branching. This level of optimization strips away many of the abstractions we usually use in coding, such as loops, tests, and named variables&mdash;look back to Listing 16.5, and you&rsquo;ll see what I mean. Only a few people reached this level, and I don&rsquo;t think any of them did it without long, hard thinking; David Stafford&rsquo;s final entry (that is, the one I present as Listing 16.5) was <I>at least</I> the fifth entry he sent me.</P>
-<P>The key concept at level 3 is the use of a massive (64K) lookup table that processes byte sequences directly into word-count actions. With such a table, it&rsquo;s possible to look up the appropriate action for two bytes simultaneously in just a few instructions; next, I&rsquo;m going to look at the inspired and highly unusual way that David&rsquo;s code, shown in Listing 16.5, does exactly that. (Before assembling Listing 16.5, you must run the C code in Listing 16.8, to generate an include file defining the 64K lookup table. When you assemble Listing 16.5, TASM will report a &ldquo;location counter overflow&rdquo; warning; ignore it.)</P>
-<P><B>LISTING 16.8  MAKETAB.C</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p>John later divides the transition count by two to get the word count. (Food for thought: It&rsquo;s also possible to use <b>CMP</b> and <b>ADC</b> to detect words without branching.)</p>
+
+  <p>John&rsquo;s approach makes it clear that word-counting is nothing more than a fairly simple state machine. The interesting part, of course, is building the fastest state machine.</p>
+
+  <h4 align="left"><a id="Heading12"></a>Level 3: Breakthrough</h4>
+
+  <p>The boundaries between the levels of optimization are not sharply defined. In a sense, level 3 optimization is just like levels 1 and 2, but more so. At level 3, one takes whatever level 2 perspective seems most promising, and implements it as efficiently as possible on the x86. Even more than at level 2, at level 3 this means breaking out of familiar patterns of thinking.</p>
+
+  <p>In the case of word counting, level 3 means building a table-driven state machine dedicated to processing a buffer of bytes into a count of words with a minimum of branching. This level of optimization strips away many of the abstractions we usually use in coding, such as loops, tests, and named variables&mdash;look back to Listing 16.5, and you&rsquo;ll see what I mean. Only a few people reached this level, and I don&rsquo;t think any of them did it without long, hard thinking; David Stafford&rsquo;s final entry (that is, the one I present as Listing 16.5) was <i>at least</i> the fifth entry he sent me.</p>
+
+  <p>The key concept at level 3 is the use of a massive (64K) lookup table that processes byte sequences directly into word-count actions. With such a table, it&rsquo;s possible to look up the appropriate action for two bytes simultaneously in just a few instructions; next, I&rsquo;m going to look at the inspired and highly unusual way that David&rsquo;s code, shown in Listing 16.5, does exactly that. (Before assembling Listing 16.5, you must run the C code in Listing 16.8, to generate an include file defining the 64K lookup table. When you assemble Listing 16.5, TASM will report a &ldquo;location counter overflow&rdquo; warning; ignore it.)</p>
+
+  <p><b>LISTING 16.8 MAKETAB.C</b></p><!-- CODE //-->
+  <pre>
  //  MAKETAB.C &mdash; Build QSCAN3.INC for QSCAN3.ASM
   
  #include &lt;stdio.h&gt;
@@ -98,48 +102,53 @@
    fclose( t );
    }
  
-</PRE>
-<!-- END CODE //-->
-<P>David&rsquo;s approach is simplicity itself, although his implementation arguably is not. Consider any three sequential bytes in the buffer. Those three bytes define two potential places where a word might be counted, as shown in Figure 16.1. Given the separator/non-separator states of the three bytes, you can instantly determine whether to count a word or not; you count a word if and only if somewhere in the sequence there is a non-separator followed by a separator. Note that a maximum of one word can be counted per three-byte sequence.
-</P>
-<P>The trick, then, is to identify the separator/not statuses of each set of three bytes and turn them into a 1 (count word) or 0 (don&rsquo;t count word), as quickly as possible. Assuming that the separator/not status for the first byte is in the Carry flag, this is easily accomplished by a lookup in a 64K table, based on the Carry flag and the other two bytes, as shown in Figure 16.2. (Remember that we&rsquo;re counting 7-bit ASCII here, so the high bit is ignored.) Thus, David is able to add the word/not status for each pair of bytes to the main word count simply by getting the two bytes, working in the carry status from the last byte, and using the resulting value to index into the 64K table, adding in the 1 or 0 value found in that table. A sequence of <B>MOV/ADC/ADD</B> suffices to perform all word-counting tasks for a pair of bytes. Three instructions, no branches&mdash;pretty nearly perfect code.</P>
-<P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/16-01.jpg',410,122 )"> --><IMG SRC="images/16-01.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/16-01.jpg',410,122)"> --><B>Figure 16.1</B></A>&nbsp;&nbsp;<I>The two potential word count locations.</I>
-</P>
-<P>One detail remains to be attended to: setting the Carry flag for next time if the last byte was a non-separator. David does this in a bizarre and incredibly effective way: He presets the high bit of the count, and sets the high bit in the lookup table for those entries looked up by non-separators. When a non-separator&rsquo;s lookup entry is added to the count, it will produce a carry, as desired. The high bit of the count is masked off before being added to the total count, so David is essentially using different parts of the count variables for different purposes (counting, and setting the Carry flag).
-</P>
-<P><A NAME="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/16-02.jpg',408,232 )"> --><IMG SRC="images/16-02.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/16-02.jpg',408,232)"> --><B>Figure 16.2</B></A>&nbsp;&nbsp;<I>Looking up a word count status.</I>
-</P>
-<P>There are a number of other interesting details in David&rsquo;s code, including the unrolling of the loop 64 times, so that 256 bytes in a row are processed without a single branch. Unfortunately, I lack the space to discuss Listing 16.5 any further. Perhaps that&rsquo;s not so unfortunate, after all; I&rsquo;d hate to deny you the pleasure of discovering the wonders of this rather remarkable code yourself. I will say one more thing, though. The cycle count for David&rsquo;s inner loop is 6.5 cycles per byte processed, and the actual measured time for his routine, overhead and all, is 7.9 cycles/byte. The original C code clocked in at around 100 cycles/byte.
-</P>
-<P>Enough said, I trust.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading13"></A>Enough Word Counting Already!</H4>
-<P>Before I finish up this chapter, I&rsquo;d like to mention that Terje Mathisen&rsquo;s WC word-counting program, which I&rsquo;ve mentioned previously and which is available, with source, on Bix, is in the ballpark with David&rsquo;s code for performance. What&rsquo;s more, Terje&rsquo;s program handles 8-bit ASCII, counts lines as well as words, and supports user-definable separator sets. It&rsquo;s wonderful code, well worth a look; it also happens to be a great word-counting utility. By the way, Terje builds his 64K table on the fly, at program initialization; this allows for customized tables, shrinks the size of the EXE, and, according to Terje&rsquo;s calculations, takes less time than loading the table off disk as part of the EXE.
-</P>
-<P>So, has David written the fastest possible word-counting code? Well, maybe&mdash;but I have a letter from Terry Holmes, of San Rafael, California, that calculates the theoretical maximum performance of native 386 word-counting code at 5.5 cycles/byte, which would be significantly faster than David&rsquo;s code. Terry, alas, didn&rsquo;t bother to implement his design, but maybe I&rsquo;ll take a shot at it someday. It&rsquo;d be fun, for sure&mdash;but jeez, I&rsquo;ve got <I>real</I> work to do!</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="16-07.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="17-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>David&rsquo;s approach is simplicity itself, although his implementation arguably is not. Consider any three sequential bytes in the buffer. Those three bytes define two potential places where a word might be counted, as shown in Figure 16.1. Given the separator/non-separator states of the three bytes, you can instantly determine whether to count a word or not; you count a word if and only if somewhere in the sequence there is a non-separator followed by a separator. Note that a maximum of one word can be counted per three-byte sequence.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>The trick, then, is to identify the separator/not statuses of each set of three bytes and turn them into a 1 (count word) or 0 (don&rsquo;t count word), as quickly as possible. Assuming that the separator/not status for the first byte is in the Carry flag, this is easily accomplished by a lookup in a 64K table, based on the Carry flag and the other two bytes, as shown in Figure 16.2. (Remember that we&rsquo;re counting 7-bit ASCII here, so the high bit is ignored.) Thus, David is able to add the word/not status for each pair of bytes to the main word count simply by getting the two bytes, working in the carry status from the last byte, and using the resulting value to index into the 64K table, adding in the 1 or 0 value found in that table. A sequence of <b>MOV/ADC/ADD</b> suffices to perform all word-counting tasks for a pair of bytes. Three instructions, no branches&mdash;pretty nearly perfect code.</p>
 
-<!-- END FOOTER -->
+  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/16-01.jpg',410,122 )"> --><img src="images/16-01.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/16-01.jpg',410,122)"> --><b>Figure 16.1</b></a>&nbsp;&nbsp;<i>The two potential word count locations.</i></p>
 
+  <p>One detail remains to be attended to: setting the Carry flag for next time if the last byte was a non-separator. David does this in a bizarre and incredibly effective way: He presets the high bit of the count, and sets the high bit in the lookup table for those entries looked up by non-separators. When a non-separator&rsquo;s lookup entry is added to the count, it will produce a carry, as desired. The high bit of the count is masked off before being added to the total count, so David is essentially using different parts of the count variables for different purposes (counting, and setting the Carry flag).</p>
 
+  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/16-02.jpg',408,232 )"> --><img src="images/16-02.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/16-02.jpg',408,232)"> --><b>Figure 16.2</b></a>&nbsp;&nbsp;<i>Looking up a word count status.</i></p>
+
+  <p>There are a number of other interesting details in David&rsquo;s code, including the unrolling of the loop 64 times, so that 256 bytes in a row are processed without a single branch. Unfortunately, I lack the space to discuss Listing 16.5 any further. Perhaps that&rsquo;s not so unfortunate, after all; I&rsquo;d hate to deny you the pleasure of discovering the wonders of this rather remarkable code yourself. I will say one more thing, though. The cycle count for David&rsquo;s inner loop is 6.5 cycles per byte processed, and the actual measured time for his routine, overhead and all, is 7.9 cycles/byte. The original C code clocked in at around 100 cycles/byte.</p>
+
+  <p>Enough said, I trust.</p>
+
+  <h4 align="left"><a id="Heading13"></a>Enough Word Counting Already!</h4>
+
+  <p>Before I finish up this chapter, I&rsquo;d like to mention that Terje Mathisen&rsquo;s WC word-counting program, which I&rsquo;ve mentioned previously and which is available, with source, on Bix, is in the ballpark with David&rsquo;s code for performance. What&rsquo;s more, Terje&rsquo;s program handles 8-bit ASCII, counts lines as well as words, and supports user-definable separator sets. It&rsquo;s wonderful code, well worth a look; it also happens to be a great word-counting utility. By the way, Terje builds his 64K table on the fly, at program initialization; this allows for customized tables, shrinks the size of the EXE, and, according to Terje&rsquo;s calculations, takes less time than loading the table off disk as part of the EXE.</p>
+
+  <p>So, has David written the fastest possible word-counting code? Well, maybe&mdash;but I have a letter from Terry Holmes, of San Rafael, California, that calculates the theoretical maximum performance of native 386 word-counting code at 5.5 cycles/byte, which would be significantly faster than David&rsquo;s code. Terry, alas, didn&rsquo;t bother to implement his design, but maybe I&rsquo;ll take a shot at it someday. It&rsquo;d be fun, for sure&mdash;but jeez, I&rsquo;ve got <i>real</i> work to do!</p>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="16-07.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="17-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

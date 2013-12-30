@@ -1,44 +1,44 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Hints My Readers Gave Me</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=09//-->
+  <!--PAGES=182-185//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="09-05.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="09-07.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Hints My Readers Gave Me</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
-
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=09//-->
-<!--PAGES=182-185//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
-
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="09-05.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="09-07.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P><B>LISTING 9.5 L9-5.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+  <p><b>LISTING 9.5 L9-5.ASM</b></p><!-- CODE //-->
+  <pre>
 ; Divides an arbitrarily long unsigned dividend by a 16-bit unsigned
 ; divisor. C near-callable as:
 ;     unsigned int Div(unsigned int * Dividend,
@@ -105,11 +105,10 @@ DivLoop:
                ret
 _Divendp
                end
-</PRE>
-<!-- END CODE //-->
-<P><B>LISTING 9.6 L9-6.C</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p><b>LISTING 9.6 L9-6.C</b></p><!-- CODE //-->
+  <pre>
 /* Sample use of Div function to perform division when the result
    doesn&rsquo;t fit in 16 bits */
 
@@ -126,38 +125,47 @@ main() {
    k = Div((unsigned int *)&amp;i, sizeof(i), j, (unsigned int *)&amp;m);
    printf(&ldquo;%lu / %u = %lu r %u\n&rdquo;, i, j, m, k);
 }
-</PRE>
-<!-- END CODE //-->
-<H4 ALIGN="LEFT"><A NAME="Heading9"></A>Sweet Spot Revisited</H4>
-<P>Way back in Volume 1, Number 1 of <I>PC TECHNIQUES</I>, (April/May 1990) I wrote the very first of that magazine&rsquo;s HAX (#1), which extolled the virtues of placing your most commonly-used automatic (stack-based) variables within the stack&rsquo;s &ldquo;sweet spot,&rdquo; the area between +127 to -128 bytes away from BP, the stack frame pointer. The reason was that the 8088 can store addressing displacements that fall within that range in a single byte; larger displacements require a full word of storage, increasing code size by a byte per instruction, and thereby slowing down performance due to increased instruction fetching time.</P>
-<P>This takes on new prominence in 386 native mode, where straying from the sweet spot costs not one, but two or three bytes. Where the 8088 had two possible displacement sizes, either byte or word, on the 386 there are three possible sizes: byte, word, or dword. In native mode (32-bit protected mode), however, a prefix byte is needed in order to use a word-sized displacement, so a variable located outside the sweet spot requires either two extra bytes (an extra displacement byte plus a prefix byte) or three extra bytes (a dword displacement rather than a byte displacement). Either way, instructions grow alarmingly.</P>
-<P>Performance may or may not suffer from missing the sweet spot, depending on the processor, the memory architecture, and the code mix. On a 486, prefix bytes often cost a cycle; on a 386SX, increased code size often slows performance because instructions must be fetched through the half-pint 16-bit bus; on a 386, the effect depends on the instruction mix and whether there&rsquo;s a cache.</P>
-<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP" ALIGN="LEFT"><IMG SRC="images/i.jpg"><TD WIDTH="95%" VALIGN="TOP" ALIGN="LEFT"><SMALL><I>On balance, though, it&rsquo;s as important to keep your most-used variables in the stack&rsquo;s sweet spot in 386 native mode as it was on the 8088.</I></SMALL>
-</TABLE>
-<P>In assembly, it&rsquo;s easy to control the organization of your stack frame. In C, however, you&rsquo;ll have to figure out the allocation scheme your compiler uses to allocate automatic variables, and declare automatics appropriately to produce the desired effect. It can be done: I did it in Turbo C some years back, and trimmed the size of a program (admittedly, a large one) by several K&mdash;not bad, when you consider that the &ldquo;sweet spot&rdquo; optimization is essentially free, with no code reorganization, change in logic, or heavy thinking involved.
-</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="09-05.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="09-07.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <h4 align="left"><a id="Heading9"></a>Sweet Spot Revisited</h4>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>Way back in Volume 1, Number 1 of <i>PC TECHNIQUES</i>, (April/May 1990) I wrote the very first of that magazine&rsquo;s HAX (#1), which extolled the virtues of placing your most commonly-used automatic (stack-based) variables within the stack&rsquo;s &ldquo;sweet spot,&rdquo; the area between +127 to -128 bytes away from BP, the stack frame pointer. The reason was that the 8088 can store addressing displacements that fall within that range in a single byte; larger displacements require a full word of storage, increasing code size by a byte per instruction, and thereby slowing down performance due to increased instruction fetching time.</p>
 
-<!-- END FOOTER -->
+  <p>This takes on new prominence in 386 native mode, where straying from the sweet spot costs not one, but two or three bytes. Where the 8088 had two possible displacement sizes, either byte or word, on the 386 there are three possible sizes: byte, word, or dword. In native mode (32-bit protected mode), however, a prefix byte is needed in order to use a word-sized displacement, so a variable located outside the sweet spot requires either two extra bytes (an extra displacement byte plus a prefix byte) or three extra bytes (a dword displacement rather than a byte displacement). Either way, instructions grow alarmingly.</p>
 
+  <p>Performance may or may not suffer from missing the sweet spot, depending on the processor, the memory architecture, and the code mix. On a 486, prefix bytes often cost a cycle; on a 386SX, increased code size often slows performance because instructions must be fetched through the half-pint 16-bit bus; on a 386, the effect depends on the instruction mix and whether there&rsquo;s a cache.</p>
 
+  <table width="100%">
+    <tr>
+      <td width="5%" valign="top" align="left"><img src="images/i.jpg" /></td>
+
+      <td width="95%" valign="top" align="left"><small><i>On balance, though, it&rsquo;s as important to keep your most-used variables in the stack&rsquo;s sweet spot in 386 native mode as it was on the 8088.</i></small></td>
+    </tr>
+  </table>
+
+  <p>In assembly, it&rsquo;s easy to control the organization of your stack frame. In C, however, you&rsquo;ll have to figure out the allocation scheme your compiler uses to allocate automatic variables, and declare automatics appropriately to produce the desired effect. It can be done: I did it in Turbo C some years back, and trimmed the size of a program (admittedly, a large one) by several K&mdash;not bad, when you consider that the &ldquo;sweet spot&rdquo; optimization is essentially free, with no code reorganization, change in logic, or heavy thinking involved.</p>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="09-05.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="09-07.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

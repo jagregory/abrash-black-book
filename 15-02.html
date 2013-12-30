@@ -1,45 +1,44 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Linked Lists and Unintended Challenges</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=15//-->
+  <!--PAGES=284-287//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="15-01.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="15-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Linked Lists and Unintended Challenges</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
-
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=15//-->
-<!--PAGES=284-287//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
-
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="15-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="15-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-</P>
-<P><B>LISTING 15.1 L15-1.C</B></P>
-<!-- CODE //-->
-<PRE>
+  <p><b>LISTING 15.1 L15-1.C</b></p><!-- CODE //-->
+  <pre>
 /* Deletes the node in a linked list that follows the indicated node.
    Assumes list is headed by a dummy node, so no special testing for
    the head-of-list pointer is required.  Returns the same pointer
@@ -52,11 +51,10 @@ struct LinkNode *DeleteNodeAfter(struct LinkNode *NodeToDeleteAfter)
          NodeToDeleteAfter-&gt;NextNode-&gt;NextNode;
    return(NodeToDeleteAfter);
 }
-</PRE>
-<!-- END CODE //-->
-<P><B>LISTING 15.2 LLIST.H</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p><b>LISTING 15.2 LLIST.H</b></p><!-- CODE //-->
+  <pre>
 /* Linked list header file. */
 #define MAX_TEXT_LENGTH 100   /* longest allowed Text field */
 #define SENTINEL  32767       /* largest possible Value field */
@@ -72,11 +70,10 @@ struct LinkNode *FindNodeBeforeValue(struct LinkNode *, int);
 struct LinkNode *InitLinkedList(void);
 struct LinkNode *InsertNodeSorted(struct LinkNode *,
    struct LinkNode *);
-</PRE>
-<!-- END CODE //-->
-<P><B>LISTING 15.3 L15-3.C</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p><b>LISTING 15.3 L15-3.C</b></p><!-- CODE //-->
+  <pre>
 /* Deletes the node in the specified linked list that follows the
    indicated node. List is headed by a head-of-list pointer; if the
    pointer to the node to delete after points to the head-of-list
@@ -95,24 +92,36 @@ struct LinkNode *DeleteNodeAfter(struct LinkNode **HeadOfListPtr,
    }
    return(NodeToDeleteAfter);
 }
-</PRE>
-<!-- END CODE //-->
-<P>However, it is true that if you&rsquo;re going to store a variety of types of structures in your linked lists, you should start each node with the <B>LinkNode</B> field. That way, the link pointer is in the same place in <I>every</I> structure, and the same linked list code can handle all of the structure types by casting them to the base link-node structure type. This is a less than elegant approach, but it works. C<SMALL>++</SMALL> can handle data mixing more cleanly than C, via derivation from a base link-node class.</P>
-<P>Note that Listings 15.1 and 15.3 have to specify the linked-list delete operation as &ldquo;delete the <I>next</I> node,&rdquo; rather than &ldquo;delete this node,&rdquo; because in order to relink it&rsquo;s necessary to access the <B>NextNode</B> field of the node preceding the node to be deleted, and it&rsquo;s impossible to backtrack in a singly linked list. For this reason, singly-linked list operations tend to work with the structure preceding the one of interest&mdash;and that makes the problem of having to special-case the head pointer all the more acute.</P>
-<P>Similar problems with the head pointer crop up when you&rsquo;re inserting nodes, and in fact in all link manipulation code. It&rsquo;s easy to end up working with either pointers to pointers or lots of special-case code, and while those approaches work, they&rsquo;re inelegant and inefficient.</P>
-<H3><A NAME="Heading4"></A>Dummies and Sentinels</H3>
-<P>A far better approach is to use a <I>dummy node</I> for the head of the list, as shown in Figure 15.2. I invented this one for myself the next time I encountered linked lists, while designing a seed fill function for MetaWindows, back during my tenure at Metagraphics Corp. But I could have learned it by spending five minutes with Sedgewick&rsquo;s book.</P>
-<P><A NAME="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/15-02.jpg',407,102 )"> --><IMG SRC="images/15-02.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/15-02.jpg',407,102)"> --><B>Figure 15.2</B></A>&nbsp;&nbsp;<I>Using a dummy head and tail node with a linked list.</I>
-</P>
-<TABLE WIDTH="100%">
-<TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>The next-node pointer of the head node, which points to the first real node, is the only part of the head node that&rsquo;s actually used. This way the same code works on the head node as on the rest of the list, so there are no special cases.</I></SMALL>
-</TABLE>
-<P>Likewise, there should be a separate node for the tail of the list, so that every node that contains real data is guaranteed to have a node on either side of it. In this scheme, an empty list contains two nodes, as shown in Figure 15.3. Although it is not necessary, the tail node may point to itself as its own next node, rather than contain a <B>NULL</B> pointer. This way, a deletion operation on an empty list will have no effect&mdash;quite unlike the same operation performed on a list terminated with a <B>NULL</B> pointer. The tail node of a list terminated like this can be detected because it will be the only node for which the next-node pointer equals the current-node pointer.</P>
-<P>Figure 15.3 is a giant step in the right direction, but we can still make a few refinements. The inner loop of any code that scans through such a list has to perform a special test on each node to determine whether the tail has been reached. So, for example, code to find the first node containing a value field greater than or equal to a certain value has to perform two tests in the inner loop, as shown in Listing 15.4.</P>
-<P><B>LISTING 15.4 L15-4.C</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p>However, it is true that if you&rsquo;re going to store a variety of types of structures in your linked lists, you should start each node with the <b>LinkNode</b> field. That way, the link pointer is in the same place in <i>every</i> structure, and the same linked list code can handle all of the structure types by casting them to the base link-node structure type. This is a less than elegant approach, but it works. C<small>++</small> can handle data mixing more cleanly than C, via derivation from a base link-node class.</p>
+
+  <p>Note that Listings 15.1 and 15.3 have to specify the linked-list delete operation as &ldquo;delete the <i>next</i> node,&rdquo; rather than &ldquo;delete this node,&rdquo; because in order to relink it&rsquo;s necessary to access the <b>NextNode</b> field of the node preceding the node to be deleted, and it&rsquo;s impossible to backtrack in a singly linked list. For this reason, singly-linked list operations tend to work with the structure preceding the one of interest&mdash;and that makes the problem of having to special-case the head pointer all the more acute.</p>
+
+  <p>Similar problems with the head pointer crop up when you&rsquo;re inserting nodes, and in fact in all link manipulation code. It&rsquo;s easy to end up working with either pointers to pointers or lots of special-case code, and while those approaches work, they&rsquo;re inelegant and inefficient.</p>
+
+  <h3><a id="Heading4"></a>Dummies and Sentinels</h3>
+
+  <p>A far better approach is to use a <i>dummy node</i> for the head of the list, as shown in Figure 15.2. I invented this one for myself the next time I encountered linked lists, while designing a seed fill function for MetaWindows, back during my tenure at Metagraphics Corp. But I could have learned it by spending five minutes with Sedgewick&rsquo;s book.</p>
+
+  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/15-02.jpg',407,102 )"> --><img src="images/15-02.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/15-02.jpg',407,102)"> --><b>Figure 15.2</b></a>&nbsp;&nbsp;<i>Using a dummy head and tail node with a linked list.</i></p>
+
+  <table width="100%">
+    <tr>
+      <td align="left" valign="top" width="5%"><img src="images/i.jpg" /></td>
+
+      <td align="left" valign="top" width="95%"><small><i>The next-node pointer of the head node, which points to the first real node, is the only part of the head node that&rsquo;s actually used. This way the same code works on the head node as on the rest of the list, so there are no special cases.</i></small></td>
+    </tr>
+  </table>
+
+  <p>Likewise, there should be a separate node for the tail of the list, so that every node that contains real data is guaranteed to have a node on either side of it. In this scheme, an empty list contains two nodes, as shown in Figure 15.3. Although it is not necessary, the tail node may point to itself as its own next node, rather than contain a <b>NULL</b> pointer. This way, a deletion operation on an empty list will have no effect&mdash;quite unlike the same operation performed on a list terminated with a <b>NULL</b> pointer. The tail node of a list terminated like this can be detected because it will be the only node for which the next-node pointer equals the current-node pointer.</p>
+
+  <p>Figure 15.3 is a giant step in the right direction, but we can still make a few refinements. The inner loop of any code that scans through such a list has to perform a special test on each node to determine whether the tail has been reached. So, for example, code to find the first node containing a value field greater than or equal to a certain value has to perform two tests in the inner loop, as shown in Listing 15.4.</p>
+
+  <p><b>LISTING 15.4 L15-4.C</b></p><!-- CODE //-->
+  <pre>
 /*  Finds the first node in a linked list with a value field greater
     than or equal to a key value, and returns a pointer to the node
     preceding that node (to facilitate insertion and deletion), or a
@@ -135,34 +144,35 @@ struct LinkNode *FindNodeBeforeValueNotLess(
       return(NodePtr);  /* success; return pointer to node preceding
                            node that was &gt;= */
 }
-</PRE>
-<!-- END CODE //-->
-<P>Suppose, however, that we make the tail node a <I>sentinel</I> by giving it a value that is guaranteed to terminate the search, as shown in Figure 15.4. The list in Figure 15.4 has a sentinel with a value field of 32,767; since we&rsquo;re working with integers, that&rsquo;s the highest possible search value, and is guaranteed to satisfy any search that comes down the pike. The success or failure of the search can then be determined outside the loop, if necessary, by checking for the tail node&rsquo;s special pointer&mdash;but the inside of the loop is streamlined to just one test, as shown in Listing 15.5. Not all linked lists lend themselves to sentinels, but the performance benefits are considerable for those lend themselves to sentinels, but the performance benefits are considerable for those that do.</P>
-<P><A NAME="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/15-03.jpg',407,104 )"> --><IMG SRC="images/15-03.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/15-03.jpg',407,104)"> --><B>Figure 15.3</B></A>&nbsp;&nbsp;<I>Representing an empty list.</I>
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="15-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="15-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>Suppose, however, that we make the tail node a <i>sentinel</i> by giving it a value that is guaranteed to terminate the search, as shown in Figure 15.4. The list in Figure 15.4 has a sentinel with a value field of 32,767; since we&rsquo;re working with integers, that&rsquo;s the highest possible search value, and is guaranteed to satisfy any search that comes down the pike. The success or failure of the search can then be determined outside the loop, if necessary, by checking for the tail node&rsquo;s special pointer&mdash;but the inside of the loop is streamlined to just one test, as shown in Listing 15.5. Not all linked lists lend themselves to sentinels, but the performance benefits are considerable for those lend themselves to sentinels, but the performance benefits are considerable for those that do.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p><a id="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/15-03.jpg',407,104 )"> --><img src="images/15-03.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/15-03.jpg',407,104)"> --><b>Figure 15.3</b></a>&nbsp;&nbsp;<i>Representing an empty list.</i></p>
 
-<!-- END FOOTER -->
+  <p><br /></p>
 
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="15-01.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="15-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

@@ -1,44 +1,44 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Boyer-Moore String Searching</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=14//-->
+  <!--PAGES=268-271//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="14-03.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="14-05.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Boyer-Moore String Searching</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
-
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=14//-->
-<!--PAGES=268-271//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
-
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="14-03.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="14-05.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P><B>LISTING 14.1 L14-1.C</B></P>
-<!-- CODE //-->
-<PRE>
+  <p><b>LISTING 14.1 L14-1.C</b></p><!-- CODE //-->
+  <pre>
 /* Searches a buffer for a specified pattern. In case of a mismatch,
    uses the value of the mismatched byte to skip across as many
    potential match locations as possible (partial Boyer-Moore).
@@ -124,11 +124,10 @@ unsigned char * FindString(unsigned char * BufferPtr,
       BufferPtr += Skip;
    }
 }
-</PRE>
-<!-- END CODE //-->
-<P><B>LISTING 14.2 L14-2.C</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p><b>LISTING 14.2 L14-2.C</b></p><!-- CODE //-->
+  <pre>
 /* Program to exercise buffer-search routines in Listings 14.1 &amp; 14.3.
    (Must be modified to put copy of pattern as sentinel at end of the
    search buffer in order to be used with Listing 14.4.) */
@@ -183,31 +182,31 @@ void main() {
    }
    exit(0);
 }
-</PRE>
-<!-- END CODE //-->
-<P>Well, architecture carries a lot of weight, but it sure as heck isn&rsquo;t destiny. I had simply fallen into the trap of figuring that the algorithm was so clever that I didn&rsquo;t have to do any thinking myself. The path leading to <B>REPNZ SCASB</B> from the original brute-force approach of <B>REPZ CMPSB</B> at every location had been based on my observation that the first character comparison at each buffer location usually fails. Why not apply the same concept to Boyer-Moore? Listing 14.3 is just like the standard implementation&mdash;except that it&rsquo;s optimized to handle a first-comparison mismatch as quickly as possible in the loop at <B>QuickSearchLoop</B>, much as <B>REPNZ SCASB</B> optimizes first-comparison mismatches for the brute-force approach. The results in Table 14.1 speak for themselves; Listing 14.3 is more than twice as fast as what I assure you was already a nice, tight assembly implementation (and unrolling <B>QuickSearchLoop</B> could boost performance by up to 10 percent more). Listing 14.3 is also <I>four times</I> faster than <B>REPNZ SCASB</B> in one case.</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="14-03.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="14-05.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>Well, architecture carries a lot of weight, but it sure as heck isn&rsquo;t destiny. I had simply fallen into the trap of figuring that the algorithm was so clever that I didn&rsquo;t have to do any thinking myself. The path leading to <b>REPNZ SCASB</b> from the original brute-force approach of <b>REPZ CMPSB</b> at every location had been based on my observation that the first character comparison at each buffer location usually fails. Why not apply the same concept to Boyer-Moore? Listing 14.3 is just like the standard implementation&mdash;except that it&rsquo;s optimized to handle a first-comparison mismatch as quickly as possible in the loop at <b>QuickSearchLoop</b>, much as <b>REPNZ SCASB</b> optimizes first-comparison mismatches for the brute-force approach. The results in Table 14.1 speak for themselves; Listing 14.3 is more than twice as fast as what I assure you was already a nice, tight assembly implementation (and unrolling <b>QuickSearchLoop</b> could boost performance by up to 10 percent more). Listing 14.3 is also <i>four times</i> faster than <b>REPNZ SCASB</b> in one case.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p><br /></p>
 
-<!-- END FOOTER -->
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="14-03.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="14-05.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

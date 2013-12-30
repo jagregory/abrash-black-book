@@ -1,168 +1,251 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bones and Sinew</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=23//-->
+  <!--PAGES=427-430//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="23-01.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="23-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Bones and Sinew</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <h3><a id="Heading5"></a>At the Core</h3>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=23//-->
-<!--PAGES=427-430//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p>A little background is necessary before we&rsquo;re ready to examine Listing 23.1. The VGA is built around four functional blocks, named the CRT Controller (CRTC), the Sequence Controller (SC), the Attribute Controller (AC), and the Graphics Controller (GC). The single-chip VGA could have been designed to treat the registers for all the blocks as one large set, addressed at one pair of I/O ports, but in the EGA, each of these blocks was a separate chip, and the legacy of EGA compatibility is why each of these blocks has a separate set of registers and is addressed at different I/O ports in the VGA.</p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="23-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="23-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<H3><A NAME="Heading5"></A>At the Core</H3>
-<P>A little background is necessary before we&rsquo;re ready to examine Listing 23.1. The VGA is built around four functional blocks, named the CRT Controller (CRTC), the Sequence Controller (SC), the Attribute Controller (AC), and the Graphics Controller (GC). The single-chip VGA could have been designed to treat the registers for all the blocks as one large set, addressed at one pair of I/O ports, but in the EGA, each of these blocks was a separate chip, and the legacy of EGA compatibility is why each of these blocks has a separate set of registers and is addressed at different I/O ports in the VGA.
-</P>
-<P>Each of these blocks has a sizable complement of registers. It is not particularly important that you understand why a given block has a given register; all the registers together make up the programming interface, and it is the entire interface that is of interest to the VGA programmer. However, the means by which most VGA registers are addressed makes it necessary for you to remember which registers are in which blocks.</P>
-<P>Most VGA registers are addressed as <I>internally indexed</I> registers. The internal address of the register is written to a given block&rsquo;s Index register, and then the data for that register is written to the block&rsquo;s Data register. For example, GC register 8, the Bit Mask register, is set to 0FFH by writing 8 to port 3CEH, the GC Index register, and then writing 0FFH to port 3CFH, the GC Data register. Internal indexing makes it possible to address the 9 GC registers through only two ports, and allows the entire VGA programming interface to be squeezed into fewer than a dozen ports. The downside is that two I/O operations are required to access most VGA registers.</P>
-<P>The ports used to control the VGA are shown in Table 23.1. The CRTC, SC, and GC Data registers are located at the addresses of their respective Index registers plus one. However, the AC Index and Data registers are located at the same address, 3C0H. The function of this port toggles on every <B>OUT</B> to 3C0H, and resets to Index mode (in which the Index register is programmed by the next <B>OUT</B> to 3C0H) on every read from the Input Status 1 register (3DAH when the VGA is in a color mode,</P>
-<TABLE WIDTH="75%"><TR>
-<TD COLSPAN="2"><HR>
-<TR>
-<TH WIDTH="45%" ALIGN="LEFT" VALIGN="TOP">Register
-<TH WIDTH="30%" VALIGN="TOP" ALIGN="LEFT">Address
-<TR>
-<TD COLSPAN="2"><HR>
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">AC Index/Data register
-<TD VALIGN="TOP" ALIGN="LEFT">3C0H (write with toggle)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">AC Index register
-<TD VALIGN="TOP" ALIGN="LEFT">3C0H (read)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">AC Data register
-<TD VALIGN="TOP" ALIGN="LEFT">3C1H (read)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">Miscellaneous Output register
-<TD VALIGN="TOP" ALIGN="LEFT">3C2H (write)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">
-<TD VALIGN="TOP" ALIGN="LEFT">3CCH (read)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">Input Status 0 register
-<TD VALIGN="TOP" ALIGN="LEFT">3C2H (read)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">SC Index register
-<TD VALIGN="TOP" ALIGN="LEFT">3C4H (read/write)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">SC Data register
-<TD VALIGN="TOP" ALIGN="LEFT">3C5H (read/write)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">GC Index register
-<TD VALIGN="TOP" ALIGN="LEFT">3CEH (read/write)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">GC Data register
-<TD VALIGN="TOP" ALIGN="LEFT">3CFH (read/write)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">CRTC Index register
-<TD VALIGN="TOP" ALIGN="LEFT">3B4H/3D4H (read/write)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">CRTC Data register
-<TD VALIGN="TOP" ALIGN="LEFT">3B5H/3D5H (read/write)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">Input Status 1 register/
-<TD VALIGN="TOP" ALIGN="LEFT">
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">AC Index/Data reset
-<TD VALIGN="TOP" ALIGN="LEFT">3 BAH/3DAH (read)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">Feature Control
-<TD VALIGN="TOP" ALIGN="LEFT">3BAH/3DAH (write)
-<TR>
-<TD VALIGN="TOP" ALIGN="LEFT">
-<TD VALIGN="TOP" ALIGN="LEFT">3CAH (read)
-<TR>
-<TH CAPTION ALIGN="LEFT" COLSPAN="2">Table 1.1 The Ports through which the VGA is controlled.
-<TR>
-<TD COLSPAN="2"><HR>
-</TABLE>
-<P>3BAH in monochrome modes). Note that all CRTC registers are addressed at either 3DXH or 3BXH, the former in color modes and the latter in monochrome modes. This provides compatibility with the register addressing of the now-vanished Color/Graphics Adapter and Monochrome Display Adapter.
-</P>
-<P>The method used in the VGA BIOS to set registers is to point DX to the desired Index register, load AL with the index, perform a byte <B>OUT</B>, increment DX to point to the Data register (except in the case of the AC, where DX remains the same), load AL with the desired data, and perform a byte <B>OUT</B>. A handy shortcut is to point DX to the desired Index register, load AL with the index, load AH with the data, and perform a word <B>OUT</B>. Since the high byte of the <B>OUT</B> value goes to port DX+1, this is equivalent to the first method but is faster. However, this technique does not work for programming the AC Index and Data registers; both AC registers are addressed at 3C0H, so two separate byte <B>OUT</B>s must be used to program the AC. (Actually, word <B>OUT</B>s to the AC do work in the EGA, but not in the VGA, so they shouldn&rsquo;t be used.) As mentioned above, you must be sure which mode&mdash;Index or Data&mdash;the AC is in before you do an <B>OUT</B> to 3C0H; you can read the Input Status 1 register at any time to force the AC to Index mode.</P>
-<P>How safe is the word-<B>OUT</B> method of addressing VGA registers? I have, in the past, run into adapter/computer combinations that had trouble with word <B>OUT</B>s; however, all such problems I am aware of have been fixed. Moreover, a great deal of graphics software now uses word <B>OUT</B>s, so any computer or VGA that doesn&rsquo;t properly support word <B>OUT</B>s could scarcely be considered a clone at all.</P>
-<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="95%" VALIGN="TOP"><SMALL><I>A speed tip: The setting of each chip&rsquo;s Index register remains the same until it is reprogrammed. This means that in cases where you are setting the same internal register repeatedly, you can set the Index register to point to that internal register once, then write to the Data register multiple times. For example, the Bit Mask register (GC register 8) is often set repeatedly inside a loop when drawing lines. The standard code for this is:</I></SMALL>
-</TABLE>
-<!-- CODE SNIP //-->
-<PRE>
+  <p>Each of these blocks has a sizable complement of registers. It is not particularly important that you understand why a given block has a given register; all the registers together make up the programming interface, and it is the entire interface that is of interest to the VGA programmer. However, the means by which most VGA registers are addressed makes it necessary for you to remember which registers are in which blocks.</p>
+
+  <p>Most VGA registers are addressed as <i>internally indexed</i> registers. The internal address of the register is written to a given block&rsquo;s Index register, and then the data for that register is written to the block&rsquo;s Data register. For example, GC register 8, the Bit Mask register, is set to 0FFH by writing 8 to port 3CEH, the GC Index register, and then writing 0FFH to port 3CFH, the GC Data register. Internal indexing makes it possible to address the 9 GC registers through only two ports, and allows the entire VGA programming interface to be squeezed into fewer than a dozen ports. The downside is that two I/O operations are required to access most VGA registers.</p>
+
+  <p>The ports used to control the VGA are shown in Table 23.1. The CRTC, SC, and GC Data registers are located at the addresses of their respective Index registers plus one. However, the AC Index and Data registers are located at the same address, 3C0H. The function of this port toggles on every <b>OUT</b> to 3C0H, and resets to Index mode (in which the Index register is programmed by the next <b>OUT</b> to 3C0H) on every read from the Input Status 1 register (3DAH when the VGA is in a color mode,</p>
+
+  <table width="75%">
+    <tr>
+      <td colspan="2">
+        <hr />
+      </td>
+    </tr>
+
+    <tr>
+      <th width="45%" align="left" valign="top">Register</th>
+
+      <th width="30%" valign="top" align="left">Address</th>
+    </tr>
+
+    <tr>
+      <td colspan="2">
+        <hr />
+      </td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">AC Index/Data register</td>
+
+      <td valign="top" align="left">3C0H (write with toggle)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">AC Index register</td>
+
+      <td valign="top" align="left">3C0H (read)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">AC Data register</td>
+
+      <td valign="top" align="left">3C1H (read)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">Miscellaneous Output register</td>
+
+      <td valign="top" align="left">3C2H (write)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left"></td>
+
+      <td valign="top" align="left">3CCH (read)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">Input Status 0 register</td>
+
+      <td valign="top" align="left">3C2H (read)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">SC Index register</td>
+
+      <td valign="top" align="left">3C4H (read/write)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">SC Data register</td>
+
+      <td valign="top" align="left">3C5H (read/write)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">GC Index register</td>
+
+      <td valign="top" align="left">3CEH (read/write)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">GC Data register</td>
+
+      <td valign="top" align="left">3CFH (read/write)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">CRTC Index register</td>
+
+      <td valign="top" align="left">3B4H/3D4H (read/write)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">CRTC Data register</td>
+
+      <td valign="top" align="left">3B5H/3D5H (read/write)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">Input Status 1 register/</td>
+
+      <td valign="top" align="left"></td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">AC Index/Data reset</td>
+
+      <td valign="top" align="left">3 BAH/3DAH (read)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left">Feature Control</td>
+
+      <td valign="top" align="left">3BAH/3DAH (write)</td>
+    </tr>
+
+    <tr>
+      <td valign="top" align="left"></td>
+
+      <td valign="top" align="left">3CAH (read)</td>
+    </tr>
+
+    <tr>
+      <th caption="" align="left" colspan="2">Table 1.1 The Ports through which the VGA is controlled.</th>
+    </tr>
+
+    <tr>
+      <td colspan="2">
+        <hr />
+      </td>
+    </tr>
+  </table>
+
+  <p>3BAH in monochrome modes). Note that all CRTC registers are addressed at either 3DXH or 3BXH, the former in color modes and the latter in monochrome modes. This provides compatibility with the register addressing of the now-vanished Color/Graphics Adapter and Monochrome Display Adapter.</p>
+
+  <p>The method used in the VGA BIOS to set registers is to point DX to the desired Index register, load AL with the index, perform a byte <b>OUT</b>, increment DX to point to the Data register (except in the case of the AC, where DX remains the same), load AL with the desired data, and perform a byte <b>OUT</b>. A handy shortcut is to point DX to the desired Index register, load AL with the index, load AH with the data, and perform a word <b>OUT</b>. Since the high byte of the <b>OUT</b> value goes to port DX+1, this is equivalent to the first method but is faster. However, this technique does not work for programming the AC Index and Data registers; both AC registers are addressed at 3C0H, so two separate byte <b>OUT</b>s must be used to program the AC. (Actually, word <b>OUT</b>s to the AC do work in the EGA, but not in the VGA, so they shouldn&rsquo;t be used.) As mentioned above, you must be sure which mode&mdash;Index or Data&mdash;the AC is in before you do an <b>OUT</b> to 3C0H; you can read the Input Status 1 register at any time to force the AC to Index mode.</p>
+
+  <p>How safe is the word-<b>OUT</b> method of addressing VGA registers? I have, in the past, run into adapter/computer combinations that had trouble with word <b>OUT</b>s; however, all such problems I am aware of have been fixed. Moreover, a great deal of graphics software now uses word <b>OUT</b>s, so any computer or VGA that doesn&rsquo;t properly support word <b>OUT</b>s could scarcely be considered a clone at all.</p>
+
+  <table width="100%">
+    <tr>
+      <td width="5%" valign="top"><img src="images/i.jpg" /></td>
+
+      <td width="95%" valign="top"><small><i>A speed tip: The setting of each chip&rsquo;s Index register remains the same until it is reprogrammed. This means that in cases where you are setting the same internal register repeatedly, you can set the Index register to point to that internal register once, then write to the Data register multiple times. For example, the Bit Mask register (GC register 8) is often set repeatedly inside a loop when drawing lines. The standard code for this is:</i></small></td>
+    </tr>
+  </table><!-- CODE SNIP //-->
+  <pre>
      MOV     DX,03CEH   ;point to GC Index register
      MOV     AL,8       ;internal index of Bit Mask register
      OUT     DX,AX      ;AH contains Bit Mask register setting
-</PRE>
-<!-- END CODE SNIP //-->
-<TABLE WIDTH="100%">
-<TD WIDTH="5%" VALIGN="TOP">
-<TD WIDTH="95%" VALIGN="TOP"><SMALL><I>Alternatively, the GC Index register could initially be set to point to the Bit Mask register with</I></SMALL>
-</TABLE>
-<!-- CODE SNIP //-->
-<PRE>
+</pre><!-- END CODE SNIP //-->
+
+  <table width="100%">
+    <tr>
+      <td width="5%" valign="top"></td>
+
+      <td width="95%" valign="top"><small><i>Alternatively, the GC Index register could initially be set to point to the Bit Mask register with</i></small></td>
+    </tr>
+  </table><!-- CODE SNIP //-->
+  <pre>
      MOV     DX,03CEH  ;point to GC Index register
      MOV     AL,8      ;internal index of Bit Mask register
      OUT     DX,AL     ;set GC Index register
      INC     DX        ;point to GC Data register
-</PRE>
-<!-- END CODE SNIP //-->
-<TABLE WIDTH="100%">
-<TD WIDTH="5%" VALIGN="TOP">
-<TD WIDTH="95%" VALIGN="TOP"><SMALL><I>and then the Bit Mask register could be set repeatedly with the byte-size <B>OUT</B> instruction</I></SMALL>
-</TABLE>
-<!-- CODE SNIP //-->
-<PRE>
+</pre><!-- END CODE SNIP //-->
+
+  <table width="100%">
+    <tr>
+      <td width="5%" valign="top"></td>
+
+      <td width="95%" valign="top"><small><i>and then the Bit Mask register could be set repeatedly with the byte-size <b>OUT</b> instruction</i></small></td>
+    </tr>
+  </table><!-- CODE SNIP //-->
+  <pre>
      OUT     DX,AL    ;AL contains Bit Mask register setting
-</PRE>
-<!-- END CODE SNIP //-->
-<TABLE WIDTH="100%">
-<TD WIDTH="5%" VALIGN="TOP">
-<TD WIDTH="95%" VALIGN="TOP"><SMALL><I>which is generally faster (and never slower) than a word-sized <B>OUT</B>, and which does not require AH to be set, freeing up a register. Of course, this method only works if the GC Index register remains unchanged throughout the loop.</I></SMALL>
-</TABLE>
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="23-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="23-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE SNIP //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <table width="100%">
+    <tr>
+      <td width="5%" valign="top"></td>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+      <td width="95%" valign="top"><small><i>which is generally faster (and never slower) than a word-sized <b>OUT</b>, and which does not require AH to be set, freeing up a register. Of course, this method only works if the GC Index register remains unchanged throughout the loop.</i></small></td>
+    </tr>
+  </table>
 
-<!-- END FOOTER -->
+  <p><br /></p>
 
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="23-01.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="23-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

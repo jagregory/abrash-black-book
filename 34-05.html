@@ -1,82 +1,95 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Changing Colors without Writing Pixels</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=34//-->
+  <!--PAGES=650-652//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="34-04.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="35-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Changing Colors without Writing Pixels</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>Yet another and somewhat odder workaround is that of using only 128 DAC locations and page flipping. (Page flipping in 256-color modes involves using the VGA&rsquo;s undocumented 256-color modes; see Chapters 31, 43, and 47 for details.) In this mode of operation, you&rsquo;d first display page 0, which is drawn entirely with colors 0-127. Then you&rsquo;d draw page 1 to look just like page 0, except that colors 128-255 are used instead. You&rsquo;d load DAC locations 128-255 with the next cycle settings for the 128 colors you&rsquo;re using, then you&rsquo;d switch to display the second page with the new colors. Then you could modify page 0 as needed, drawing in colors 0-127, load DAC locations 0-127 with the next color cycle settings, and flip back to page 0.</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=34//-->
-<!--PAGES=650-652//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p>The idea is that you modify only those DAC locations that are not used to display any pixels on the current screen. The advantage of this is <i>not</i>, as you might think, that you don&rsquo;t generate garbage on the screen when modifying undisplayed DAC locations; in fact, you do, for a spot of interference will show up if you set a DAC location, displayed or not, during display time. No, you still have to wait for vertical sync and load only during vertical blanking before loading the DAC when page flipping with 128 colors; the advantage is that since none of the DAC locations you&rsquo;re modifying is currently displayed, you can spread the loading out over two or more vertical blanking periods&mdash;however long it takes. If you did this without the 128-color page flipping, you might get odd on-screen effects as some of the colors changed after one frame, some after the next, and so on&mdash;or you might not; changing the entire DAC in chunks over several frames is another possibility worth considering.</p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="34-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="35-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>Yet another and somewhat odder workaround is that of using only 128 DAC locations and page flipping. (Page flipping in 256-color modes involves using the VGA&rsquo;s undocumented 256-color modes; see Chapters 31, 43, and 47 for details.) In this mode of operation, you&rsquo;d first display page 0, which is drawn entirely with colors 0-127. Then you&rsquo;d draw page 1 to look just like page 0, except that colors 128-255 are used instead. You&rsquo;d load DAC locations 128-255 with the next cycle settings for the 128 colors you&rsquo;re using, then you&rsquo;d switch to display the second page with the new colors. Then you could modify page 0 as needed, drawing in colors 0-127, load DAC locations 0-127 with the next color cycle settings, and flip back to page 0.
-</P>
-<P>The idea is that you modify only those DAC locations that are not used to display any pixels on the current screen. The advantage of this is <I>not</I>, as you might think, that you don&rsquo;t generate garbage on the screen when modifying undisplayed DAC locations; in fact, you do, for a spot of interference will show up if you set a DAC location, displayed or not, during display time. No, you still have to wait for vertical sync and load only during vertical blanking before loading the DAC when page flipping with 128 colors; the advantage is that since none of the DAC locations you&rsquo;re modifying is currently displayed, you can spread the loading out over two or more vertical blanking periods&mdash;however long it takes. If you did this without the 128-color page flipping, you might get odd on-screen effects as some of the colors changed after one frame, some after the next, and so on&mdash;or you might not; changing the entire DAC in chunks over several frames is another possibility worth considering.</P>
-<P>Yet another approach to color cycling is that of loading a bit of the DAC during each horizontal blanking period. Combine that with counting scan lines, and you could vastly expand the number of simultaneous on-screen colors by cycling colors <I>as a frame is displayed</I>, so that the color set changes from scan line to scan line down the screen.</P>
-<P>The possibilities are endless. However, were I to be writing 256-color software that used color cycling, I&rsquo;d find out how many colors could be cycled after the start of vertical sync on the slowest computer I expected the software to run on, I&rsquo;d lop off at least 10 percent for a safety margin, and I&rsquo;d structure my program so that no color cycling set exceeded that size, interleaving several color cycling sets if necessary.</P>
-<P>That&rsquo;s what <I>I&rsquo;d</I> do. Don&rsquo;t let yourself be held back by my limited imagination, though! Color cycling may be the most complicated of all the color control techniques, but it&rsquo;s also the most powerful.</P>
-<H3><A NAME="Heading9"></A>Odds and Ends</H3>
-<P>In my experience, when relying on the autoincrementing feature while loading the DAC, the Write Index register wraps back from 255 to 0, and likewise when you load a block of registers through the BIOS. So far as I know, this is a characteristic of the hardware, and should be consistent; also, Richard Wilton documents this behavior for the BIOS in the VGA bible, <I>Programmer&rsquo;s Guide to PC Video Systems, Second Edition</I> (Microsoft Press), so you should be able to count on it. Not that I see that DAC index wrapping is especially useful, but it never hurts to understand exactly how your resources behave, and I never know when one of you might come up with a serviceable application for any particular quirk.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading10"></A>The DAC Mask</H4>
-<P>There&rsquo;s one register in the DAC that I haven&rsquo;t mentioned yet, the DAC Mask register at 03C6H. The operation of this register is simple but powerful; it can mask off any or all of the 8 bits of pixel information coming into the DAC from the VGA. Whenever a bit of the DAC Mask register is 1, the corresponding bit of pixel information is passed along to the DAC to be used in looking up the RGB triplet to be sent to the screen. Whenever a bit of the DAC Mask register is 0, the corresponding pixel bit is ignored, and a 0 is used for that bit position in all look-ups of RGB triplets. At the extreme, a DAC Mask setting of 0 causes all 8 bits of pixel information to be ignored, so DAC location 0 is looked up for every pixel, and the entire screen displays the color stored in DAC location 0. This makes setting the DAC Mask register to 0 a quick and easy way to blank the screen.
-</P>
-<H4 ALIGN="LEFT"><A NAME="Heading11"></A>Reading the DAC</H4>
-<P>The DAC can be read directly, via the DAC Read Index register at 3C7H and the DAC Data register at 3C9H, in much the same way as it can be written directly by way of the DAC Write Index register&mdash;complete with autoincrementing the DAC Read Index register after every three reads. Everything I&rsquo;ve said about writing to the DAC applies to reading from the DAC. In fact, reading from the DAC can even cause snow, just as loading the DAC does, so it should ideally be performed during vertical blanking.
-</P>
-<P>The DAC can also be read by way of the BIOS in either of two ways. <B>INT</B> 10H, function 10H (AH=10H), subfunction 15H (AL=15H) reads out a single DAC location, specified by BX; this function returns the RGB triplet stored in the specified location with the red component in the lower 6 bits of DH, the green component in the lower 6 bits of CH, and the blue component in the lower 6 bits of CL.</P>
-<P><B>INT</B> 10H, function 10H (AH=10H), subfunction 17H (AL=17H) reads out a block of DAC locations of length CX, starting with the location specified by BX. ES:DX must point to the buffer in which the RGB values from the specified block of DAC locations are to be stored. The form of this buffer (RGB, RGB, RGB ..., with three bytes per RGB triple) is exactly the same as that of the buffer used when calling the BIOS to load a block of registers.</P>
-<P>Listing 34.1 illustrates reading the DAC both through the BIOS block-read function and directly, with the direct-read code capable of conditionally assembling to either guard against interrupts or not and to use <B>REP INSB</B> or not. As you can see, reading the DAC settings is very much symmetric with setting the DAC.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading12"></A>Cycling Down</H4>
-<P>And so, at long last, we come to the end of our discussion of color control on the VGA. If it has been more complex than anyone might have imagined, it has also been most rewarding. There&rsquo;s as much obscure but very real potential in color control as there is anywhere on the VGA, which is to say that there&rsquo;s a very great deal of potential indeed. Put color cycling or color paging together with the page flipping and image drawing techniques explored elsewhere in this book, and you&rsquo;ll leave the audience gasping and wondering &ldquo;How the heck did they <I>do</I> that?&rdquo;</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="34-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="35-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+  <p>Yet another approach to color cycling is that of loading a bit of the DAC during each horizontal blanking period. Combine that with counting scan lines, and you could vastly expand the number of simultaneous on-screen colors by cycling colors <i>as a frame is displayed</i>, so that the color set changes from scan line to scan line down the screen.</p>
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>The possibilities are endless. However, were I to be writing 256-color software that used color cycling, I&rsquo;d find out how many colors could be cycled after the start of vertical sync on the slowest computer I expected the software to run on, I&rsquo;d lop off at least 10 percent for a safety margin, and I&rsquo;d structure my program so that no color cycling set exceeded that size, interleaving several color cycling sets if necessary.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>That&rsquo;s what <i>I&rsquo;d</i> do. Don&rsquo;t let yourself be held back by my limited imagination, though! Color cycling may be the most complicated of all the color control techniques, but it&rsquo;s also the most powerful.</p>
 
-<!-- END FOOTER -->
+  <h3><a id="Heading9"></a>Odds and Ends</h3>
 
+  <p>In my experience, when relying on the autoincrementing feature while loading the DAC, the Write Index register wraps back from 255 to 0, and likewise when you load a block of registers through the BIOS. So far as I know, this is a characteristic of the hardware, and should be consistent; also, Richard Wilton documents this behavior for the BIOS in the VGA bible, <i>Programmer&rsquo;s Guide to PC Video Systems, Second Edition</i> (Microsoft Press), so you should be able to count on it. Not that I see that DAC index wrapping is especially useful, but it never hurts to understand exactly how your resources behave, and I never know when one of you might come up with a serviceable application for any particular quirk.</p>
 
+  <h4 align="left"><a id="Heading10"></a>The DAC Mask</h4>
+
+  <p>There&rsquo;s one register in the DAC that I haven&rsquo;t mentioned yet, the DAC Mask register at 03C6H. The operation of this register is simple but powerful; it can mask off any or all of the 8 bits of pixel information coming into the DAC from the VGA. Whenever a bit of the DAC Mask register is 1, the corresponding bit of pixel information is passed along to the DAC to be used in looking up the RGB triplet to be sent to the screen. Whenever a bit of the DAC Mask register is 0, the corresponding pixel bit is ignored, and a 0 is used for that bit position in all look-ups of RGB triplets. At the extreme, a DAC Mask setting of 0 causes all 8 bits of pixel information to be ignored, so DAC location 0 is looked up for every pixel, and the entire screen displays the color stored in DAC location 0. This makes setting the DAC Mask register to 0 a quick and easy way to blank the screen.</p>
+
+  <h4 align="left"><a id="Heading11"></a>Reading the DAC</h4>
+
+  <p>The DAC can be read directly, via the DAC Read Index register at 3C7H and the DAC Data register at 3C9H, in much the same way as it can be written directly by way of the DAC Write Index register&mdash;complete with autoincrementing the DAC Read Index register after every three reads. Everything I&rsquo;ve said about writing to the DAC applies to reading from the DAC. In fact, reading from the DAC can even cause snow, just as loading the DAC does, so it should ideally be performed during vertical blanking.</p>
+
+  <p>The DAC can also be read by way of the BIOS in either of two ways. <b>INT</b> 10H, function 10H (AH=10H), subfunction 15H (AL=15H) reads out a single DAC location, specified by BX; this function returns the RGB triplet stored in the specified location with the red component in the lower 6 bits of DH, the green component in the lower 6 bits of CH, and the blue component in the lower 6 bits of CL.</p>
+
+  <p><b>INT</b> 10H, function 10H (AH=10H), subfunction 17H (AL=17H) reads out a block of DAC locations of length CX, starting with the location specified by BX. ES:DX must point to the buffer in which the RGB values from the specified block of DAC locations are to be stored. The form of this buffer (RGB, RGB, RGB ..., with three bytes per RGB triple) is exactly the same as that of the buffer used when calling the BIOS to load a block of registers.</p>
+
+  <p>Listing 34.1 illustrates reading the DAC both through the BIOS block-read function and directly, with the direct-read code capable of conditionally assembling to either guard against interrupts or not and to use <b>REP INSB</b> or not. As you can see, reading the DAC settings is very much symmetric with setting the DAC.</p>
+
+  <h4 align="left"><a id="Heading12"></a>Cycling Down</h4>
+
+  <p>And so, at long last, we come to the end of our discussion of color control on the VGA. If it has been more complex than anyone might have imagined, it has also been most rewarding. There&rsquo;s as much obscure but very real potential in color control as there is anywhere on the VGA, which is to say that there&rsquo;s a very great deal of potential indeed. Put color cycling or color paging together with the page flipping and image drawing techniques explored elsewhere in this book, and you&rsquo;ll leave the audience gasping and wondering &ldquo;How the heck did they <i>do</i> that?&rdquo;</p>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="34-04.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="35-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

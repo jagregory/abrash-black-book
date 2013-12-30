@@ -1,104 +1,137 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Frames of Reference</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=61//-->
+  <!--PAGES=1135-1138//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="61-01.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="61-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Frames of Reference</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>I&rsquo;ll be working in a left-handed coordinate system, whereby if you wrap the fingers of your left hand around the z axis with your thumb pointing in the positive z direction, your fingers will curl from the positive x axis to the positive y axis. The positive x axis runs left to right across the screen, the positive y axis runs bottom to top across the screen, and the positive z axis runs into the screen.</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=61//-->
-<!--PAGES=1135-1138//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p>For our purposes, <i>projection</i> is the process of mapping coordinates onto a line or surface. <i>Perspective projection</i> projects 3-D coordinates onto a viewplane, scaling coordinates according to their z distance from the viewpoint in order to provide proper perspective. <i>Objectspace</i> is the coordinate space in which an object is defined, independent of other objects and the world itself. <i>Worldspace</i> is the absolute frame of reference for a 3-D world; all objects&rsquo; locations and orientations are with respect to worldspace, and this is the frame of reference around which the viewpoint and view direction move. <i>Viewspace</i> is worldspace as seen from the viewpoint, looking in the view direction. <i>Screenspace</i> is viewspace after perspective projection and scaling to the screen.</p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="61-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="61-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>I&rsquo;ll be working in a left-handed coordinate system, whereby if you wrap the fingers of your left hand around the z axis with your thumb pointing in the positive z direction, your fingers will curl from the positive x axis to the positive y axis. The positive x axis runs left to right across the screen, the positive y axis runs bottom to top across the screen, and the positive z axis runs into the screen.
-</P>
-<P>For our purposes, <I>projection</I> is the process of mapping coordinates onto a line or surface. <I>Perspective projection</I> projects 3-D coordinates onto a viewplane, scaling coordinates according to their z distance from the viewpoint in order to provide proper perspective. <I>Objectspace</I> is the coordinate space in which an object is defined, independent of other objects and the world itself. <I>Worldspace</I> is the absolute frame of reference for a 3-D world; all objects&rsquo; locations and orientations are with respect to worldspace, and this is the frame of reference around which the viewpoint and view direction move. <I>Viewspace</I> is worldspace as seen from the viewpoint, looking in the view direction. <I>Screenspace</I> is viewspace after perspective projection and scaling to the screen.</P>
-<P>Finally, <I>transformation</I> is the process of converting points from one coordinate space into another; in our case, that&rsquo;ll mean rotating and translating (moving) points from objectspace or worldspace to viewspace.</P>
-<P>For additional information, you might want to check out Foley &amp; van Dam&rsquo;s <I>Computer Graphics</I> (ISBN 0-201-12110-7), or the chapters in this book dealing with my X-Sharp 3-D graphics library.</P>
-<H3><A NAME="Heading5"></A>The Dot Product</H3>
-<P>Now we&rsquo;re ready to move on to the dot product. Given two vectors <B>U</B> = [u<SUB>1</SUB> u<SUB>2</SUB> u<SUB>3</SUB>] and <B>V</B> = [v<SUB>1</SUB> v<SUB>2</SUB> v<SUB>3</SUB>], their dot product, denoted by the symbol &bull;, is calculated as:</P>
-<P ALIGN="LEFT"><P ALIGN="CENTER"><IMG SRC="images/61-02d.jpg"></P>
-</P>
-<P ALIGN="RIGHT">(eq. 2)</P>
-<P>As you can see, the result is a scalar value (a single real-valued number), <I>not</I> another vector.</P>
-<P>Now that we know how to calculate a dot product, what does that get us? Not much. The dot product isn&rsquo;t of much use for graphics until you start thinking of it this way</P>
-<P ALIGN="LEFT"><P ALIGN="CENTER"><IMG SRC="images/61-03d.jpg"></P>
-</P>
-<P ALIGN="RIGHT">(eq. 3)</P>
-<P>where q is the angle between the two vectors, and the other two terms are the lengths of the vectors, as shown in Figure 61.1. Although it&rsquo;s not immediately obvious, equation 3 has a wide variety of applications in 3-D graphics.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading6"></A>Dot Products of Unit Vectors</H4>
-<P>The simplest case of the dot product is when both vectors are <I>unit vectors</I>; that is, when their lengths are both one, as calculated as in Equation 1. In this case, equation 3 simplifies to:</P>
-<P ALIGN="LEFT"><P ALIGN="CENTER"><IMG SRC="images/61-04d.jpg"></P>
-</P>
-<P ALIGN="RIGHT">(eq. 4)</P>
-<P>In other words, the dot product of two unit vectors is the cosine of the angle between them.</P>
-<P>One obvious use of this is to find angles between unit vectors, in conjunction with an inverse cosine function or lookup table. A more useful application in 3-D graphics lies in lighting surfaces, where the cosine of the angle between incident light and the normal (perpendicular vector) of a surface determines the fraction of the light&rsquo;s full intensity at which the surface is illuminated, as in</P>
-<P ALIGN="RIGHT"><P ALIGN="CENTER"><IMG SRC="images/61-05d.jpg"></P>
-</P>
-<P ALIGN="RIGHT">(eq. 5)</P>
-<P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/61-01.jpg',406,234 )"> --><IMG SRC="images/61-01.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/61-01.jpg',406,234)"> --><B>Figure 61.1</B></A>&nbsp;&nbsp;<I>The dot product.</I>
-</P>
-<P>where <B>I</B><SUB>s</SUB> is the intensity of illumination of the surface, <B>I</B><SUB>l</SUB> is the intensity of the light, and q is the angle between <B>-D</B><SUB>l</SUB> (where <B>D</B><SUB>l</SUB> is the light direction vector) and the surface normal. If the inverse light vector and the surface normal are both unit vectors, then this calculation can be performed with four multiplies and three additions&mdash;and no explicit cosine calculations&mdash;as</P>
-<P ALIGN="LEFT"><P ALIGN="CENTER"><IMG SRC="images/61-06d.jpg"></P>
-</P>
-<P ALIGN="RIGHT">(eq. 6)</P>
-<P>where <B>N</B><SUB>s</SUB> is the surface unit normal and <B>D</B><SUB>l</SUB> is the light unit direction vector, as shown in Figure 61.2.</P>
-<H3><A NAME="Heading7"></A>Cross Products and the Generation of Polygon Normals</H3>
-<P>One question equation 6 begs is where the surface unit normal comes from. One approach is to store the end of a surface normal as an extra data point with each polygon (with the start being some point that&rsquo;s already in the polygon), and transform it along with the rest of the points. This has the advantage that if the normal starts out as a unit normal, it will end up that way too, if only rotations and translations (but not scaling and shears) are performed.
-</P>
-<P>The problem with having an explicit normal is that it will remain a normal&mdash;that is, perpendicular to the surface&mdash;only through viewspace. Rotation, translation, and scaling preserve right angles, which is why normals are still normals in viewspace, but perspective projection does not preserve angles, so vectors that were surface normals in viewspace are no longer normals in screenspace.</P>
-<P><A NAME="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/61-02.jpg',406,158 )"> --><IMG SRC="images/61-02.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/61-02.jpg',406,158)"> --><B>Figure 61.2</B></A>&nbsp;&nbsp;<I>The dot product as used in calculating lighting intensity.</I>
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="61-01.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="61-03.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+  <p>Finally, <i>transformation</i> is the process of converting points from one coordinate space into another; in our case, that&rsquo;ll mean rotating and translating (moving) points from objectspace or worldspace to viewspace.</p>
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>For additional information, you might want to check out Foley &amp; van Dam&rsquo;s <i>Computer Graphics</i> (ISBN 0-201-12110-7), or the chapters in this book dealing with my X-Sharp 3-D graphics library.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <h3><a id="Heading5"></a>The Dot Product</h3>
 
-<!-- END FOOTER -->
+  <p>Now we&rsquo;re ready to move on to the dot product. Given two vectors <b>U</b> = [u<sub>1</sub> u<sub>2</sub> u<sub>3</sub>] and <b>V</b> = [v<sub>1</sub> v<sub>2</sub> v<sub>3</sub>], their dot product, denoted by the symbol &bull;, is calculated as:</p>
 
+  <p align="left"></p>
 
+  <p align="center"><img src="images/61-02d.jpg" /></p>
+
+  <p align="right">(eq. 2)</p>
+
+  <p>As you can see, the result is a scalar value (a single real-valued number), <i>not</i> another vector.</p>
+
+  <p>Now that we know how to calculate a dot product, what does that get us? Not much. The dot product isn&rsquo;t of much use for graphics until you start thinking of it this way</p>
+
+  <p align="left"></p>
+
+  <p align="center"><img src="images/61-03d.jpg" /></p>
+
+  <p align="right">(eq. 3)</p>
+
+  <p>where q is the angle between the two vectors, and the other two terms are the lengths of the vectors, as shown in Figure 61.1. Although it&rsquo;s not immediately obvious, equation 3 has a wide variety of applications in 3-D graphics.</p>
+
+  <h4 align="left"><a id="Heading6"></a>Dot Products of Unit Vectors</h4>
+
+  <p>The simplest case of the dot product is when both vectors are <i>unit vectors</i>; that is, when their lengths are both one, as calculated as in Equation 1. In this case, equation 3 simplifies to:</p>
+
+  <p align="left"></p>
+
+  <p align="center"><img src="images/61-04d.jpg" /></p>
+
+  <p align="right">(eq. 4)</p>
+
+  <p>In other words, the dot product of two unit vectors is the cosine of the angle between them.</p>
+
+  <p>One obvious use of this is to find angles between unit vectors, in conjunction with an inverse cosine function or lookup table. A more useful application in 3-D graphics lies in lighting surfaces, where the cosine of the angle between incident light and the normal (perpendicular vector) of a surface determines the fraction of the light&rsquo;s full intensity at which the surface is illuminated, as in</p>
+
+  <p align="right"></p>
+
+  <p align="center"><img src="images/61-05d.jpg" /></p>
+
+  <p align="right">(eq. 5)</p>
+
+  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/61-01.jpg',406,234 )"> --><img src="images/61-01.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/61-01.jpg',406,234)"> --><b>Figure 61.1</b></a>&nbsp;&nbsp;<i>The dot product.</i></p>
+
+  <p>where <b>I</b><sub>s</sub> is the intensity of illumination of the surface, <b>I</b><sub>l</sub> is the intensity of the light, and q is the angle between <b>-D</b><sub>l</sub> (where <b>D</b><sub>l</sub> is the light direction vector) and the surface normal. If the inverse light vector and the surface normal are both unit vectors, then this calculation can be performed with four multiplies and three additions&mdash;and no explicit cosine calculations&mdash;as</p>
+
+  <p align="left"></p>
+
+  <p align="center"><img src="images/61-06d.jpg" /></p>
+
+  <p align="right">(eq. 6)</p>
+
+  <p>where <b>N</b><sub>s</sub> is the surface unit normal and <b>D</b><sub>l</sub> is the light unit direction vector, as shown in Figure 61.2.</p>
+
+  <h3><a id="Heading7"></a>Cross Products and the Generation of Polygon Normals</h3>
+
+  <p>One question equation 6 begs is where the surface unit normal comes from. One approach is to store the end of a surface normal as an extra data point with each polygon (with the start being some point that&rsquo;s already in the polygon), and transform it along with the rest of the points. This has the advantage that if the normal starts out as a unit normal, it will end up that way too, if only rotations and translations (but not scaling and shears) are performed.</p>
+
+  <p>The problem with having an explicit normal is that it will remain a normal&mdash;that is, perpendicular to the surface&mdash;only through viewspace. Rotation, translation, and scaling preserve right angles, which is why normals are still normals in viewspace, but perspective projection does not preserve angles, so vectors that were surface normals in viewspace are no longer normals in screenspace.</p>
+
+  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/61-02.jpg',406,158 )"> --><img src="images/61-02.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/61-02.jpg',406,158)"> --><b>Figure 61.2</b></a>&nbsp;&nbsp;<i>The dot product as used in calculating lighting intensity.</i></p>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="61-01.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="61-03.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

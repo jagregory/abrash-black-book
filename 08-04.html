@@ -1,45 +1,46 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Speeding Up C with Assembly Language</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=08//-->
+  <!--PAGES=160-163//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="08-03.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="08-05.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Speeding Up C with Assembly Language</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>It&rsquo;s hard to squeeze much more performance from this code by tweaking it, as exemplified by Listing 8.3, a fine-tuned assembly version of <b>FindIDAverage</b> that was produced by looking at the assembly output of MS C/C<small>++</small> and tightening it. Listing 8.3 eliminates all stack frame access in the inner loop, but that&rsquo;s about all the tightening there is to do. The result, as shown in Table 8.1, is that Listing 8.3 runs a modest 11 percent faster than Listing 8.1 on a 386. The results could vary considerably, depending on the nature of the data set searched through (average block size and frequency of matches). But, then, understanding the typical and worst case conditions is part of optimization, isn&rsquo;t it?</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=08//-->
-<!--PAGES=160-163//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
-
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="08-03.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="08-05.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>It&rsquo;s hard to squeeze much more performance from this code by tweaking it, as exemplified by Listing 8.3, a fine-tuned assembly version of <B>FindIDAverage</B> that was produced by looking at the assembly output of MS C/C<SMALL>++</SMALL> and tightening it. Listing 8.3 eliminates all stack frame access in the inner loop, but that&rsquo;s about all the tightening there is to do. The result, as shown in Table 8.1, is that Listing 8.3 runs a modest 11 percent faster than Listing 8.1 on a 386. The results could vary considerably, depending on the nature of the data set searched through (average block size and frequency of matches). But, then, understanding the typical and worst case conditions is part of optimization, isn&rsquo;t it?</P>
-<P><B>LISTING 8.3  L8-3.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+  <p><b>LISTING 8.3 L8-3.ASM</b></p><!-- CODE //-->
+  <pre>
 ; Typically optimized assembly language version of FindIDAverage.
 SearchedForID   equ     4      ;Passed parameter offsets in the
 BlockPointer    equ     6      ; stack frame (skip over pushed BP
@@ -53,59 +54,110 @@ DATA_ELEMENT_SIZE equ   4      ;Number of bytes in struct DataElement
         .model  small
         .code
         public  _FindIDAverage
-</PRE>
-<!-- END CODE //-->
-<TABLE WIDTH="100%">
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP" COLSPAN="3"><HR>
-<TR>
-<TH ALIGN="LEFT" VALIGN="TOP">
-<TH ALIGN="LEFT" VALIGN="TOP">On 20 MHz 386
-<TH ALIGN="LEFT" VALIGN="TOP">On 10 MHz 286
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP" COLSPAN="3"><HR>
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP"><B>Listing 8.1</B>
-<TD ALIGN="LEFT" VALIGN="TOP">294 microseconds
-<TD ALIGN="LEFT" VALIGN="TOP">768 microseconds
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP">(MSC with maximum optimization)
-<TD ALIGN="LEFT" VALIGN="TOP">
-<TD ALIGN="LEFT" VALIGN="TOP">
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP"><B>Listing 8.3</B>
-<TD ALIGN="LEFT" VALIGN="TOP">265
-<TD ALIGN="LEFT" VALIGN="TOP">644
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP">(Assembly)
-<TD ALIGN="LEFT" VALIGN="TOP">
-<TD ALIGN="LEFT" VALIGN="TOP">
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP"><B>Listing 8.4</B>
-<TD ALIGN="LEFT" VALIGN="TOP">212
-<TD ALIGN="LEFT" VALIGN="TOP">486
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP">(Optimized assembly)
-<TD ALIGN="LEFT" VALIGN="TOP">
-<TD ALIGN="LEFT" VALIGN="TOP">
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP"><B>Listing 8.6</B>
-<TD ALIGN="LEFT" VALIGN="TOP">100
-<TD ALIGN="LEFT" VALIGN="TOP">207
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP">(Optimized assembly with reorganized data)
-<TD ALIGN="LEFT" VALIGN="TOP">
-<TD ALIGN="LEFT" VALIGN="TOP">
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP" COLSPAN="3"><HR>
-<TR>
-<TH ALIGN="LEFT" VALIGN="TOP">Table 8.1  Execution Times of FindIDAverage.
-<TR>
-<TD ALIGN="LEFT" VALIGN="TOP" COLSPAN="3"><HR>
-<TR>
-</TABLE>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <table width="100%">
+    <tr>
+      <td align="left" valign="top" colspan="3">
+        <hr />
+      </td>
+    </tr>
+
+    <tr>
+      <th align="left" valign="top"></th>
+
+      <th align="left" valign="top">On 20 MHz 386</th>
+
+      <th align="left" valign="top">On 10 MHz 286</th>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top" colspan="3">
+        <hr />
+      </td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>Listing 8.1</b></td>
+
+      <td align="left" valign="top">294 microseconds</td>
+
+      <td align="left" valign="top">768 microseconds</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top">(MSC with maximum optimization)</td>
+
+      <td align="left" valign="top"></td>
+
+      <td align="left" valign="top"></td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>Listing 8.3</b></td>
+
+      <td align="left" valign="top">265</td>
+
+      <td align="left" valign="top">644</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top">(Assembly)</td>
+
+      <td align="left" valign="top"></td>
+
+      <td align="left" valign="top"></td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>Listing 8.4</b></td>
+
+      <td align="left" valign="top">212</td>
+
+      <td align="left" valign="top">486</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top">(Optimized assembly)</td>
+
+      <td align="left" valign="top"></td>
+
+      <td align="left" valign="top"></td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top"><b>Listing 8.6</b></td>
+
+      <td align="left" valign="top">100</td>
+
+      <td align="left" valign="top">207</td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top">(Optimized assembly with reorganized data)</td>
+
+      <td align="left" valign="top"></td>
+
+      <td align="left" valign="top"></td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top" colspan="3">
+        <hr />
+      </td>
+    </tr>
+
+    <tr>
+      <th align="left" valign="top">Table 8.1 Execution Times of FindIDAverage.</th>
+    </tr>
+
+    <tr>
+      <td align="left" valign="top" colspan="3">
+        <hr />
+      </td>
+    </tr>
+  </table><!-- CODE //-->
+  <pre>
 _FindIDAverage  proc    near
         push    bp              ;Save caller&rsquo;s stack frame
         mov     bp,sp           ;Point to our stack frame
@@ -149,12 +201,12 @@ Done:   pop     si              ;Restore C register variables
         ret
 _FindIDAverage  ENDP
         end
-</PRE>
-<!-- END CODE //-->
-<P>Listing 8.4 tosses some sophisticated optimization techniques into the mix. The loop is unrolled eight times, eliminating a good deal of branching, and <B>SCASW</B> is used instead of <B>CMP [DI],AX.</B> (Note, however, that <B>SCASW</B> is in fact slower than <B>CMP [DI],AX</B> on the 386 and 486, and is sometimes faster on the 286 and 8088 only because it&rsquo;s shorter and therefore may prefetch faster.) This advanced tweaking produces a 39 percent improvement over the original C code&mdash;substantial, but not a tremendous return for the optimization effort invested.</P>
-<P><B>LISTING 8.4  L8-4.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p>Listing 8.4 tosses some sophisticated optimization techniques into the mix. The loop is unrolled eight times, eliminating a good deal of branching, and <b>SCASW</b> is used instead of <b>CMP [DI],AX.</b> (Note, however, that <b>SCASW</b> is in fact slower than <b>CMP [DI],AX</b> on the 386 and 486, and is sometimes faster on the 286 and 8088 only because it&rsquo;s shorter and therefore may prefetch faster.) This advanced tweaking produces a 39 percent improvement over the original C code&mdash;substantial, but not a tremendous return for the optimization effort invested.</p>
+
+  <p><b>LISTING 8.4 L8-4.ASM</b></p><!-- CODE //-->
+  <pre>
 ; Heavily optimized assembly language version of FindIDAverage.
 ; Features an unrolled loop and more efficient pointer use.
 SearchedForID   equ     4       ;Passed parameter offsets in the
@@ -243,31 +295,29 @@ Done:   pop     si              ;Restore C register variables
         ret
 _FindIDAverage  ENDP
         end
-</PRE>
-<!-- END CODE //-->
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="08-03.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="08-05.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p><br /></p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="08-03.html">Previous</a></td>
 
-<!-- END FOOTER -->
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="08-05.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
 
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

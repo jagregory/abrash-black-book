@@ -1,81 +1,99 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Crossing the Border</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=05//-->
+  <!--PAGES=122-123//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="05-04.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="06-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Crossing the Border</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>It might also be worth converting the search engine to assembly for searches performed entirely in memory; with the overhead of file access eliminated, improvements in search-engine performance would translate directly into significantly faster overall performance. One such application that would have much the same structure as Listing 5.1 would be searching through expanded memory buffers, and another would be searching through huge (segment-spanning) buffers.</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=05//-->
-<!--PAGES=122-123//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p>And so we find, as we so often will, that optimization is definitely not a cut-and-dried matter, and that there is no such thing as a single &ldquo;best&rdquo; approach.</p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="05-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="06-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>It might also be worth converting the search engine to assembly for searches performed entirely in memory; with the overhead of file access eliminated, improvements in search-engine performance would translate directly into significantly faster overall performance. One such application that would have much the same structure as Listing 5.1 would be searching through expanded memory buffers, and another would be searching through huge (segment-spanning) buffers.
-</P>
-<P>And so we find, as we so often will, that optimization is definitely not a cut-and-dried matter, and that there is no such thing as a single &ldquo;best&rdquo; approach.</P>
-<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>You must know what your application will typically do, and you must know whether you&rsquo;re more concerned with average or worst-case performance before you can decide how best to speed up your program&mdash;and, indeed, whether speeding it up is worth doing at all.</I></SMALL>
-</TABLE>
-<P>By the way, don&rsquo;t think that just because very large block sizes don&rsquo;t much improve performance, it wasn&rsquo;t worth using restartable blocks in Listing 5.1. Listing 5.1 runs more than three times more slowly with a block size of 32 bytes than with a block size of 4K, and any byte-by-byte approach would surely be slower still, due to the overhead of repeated calls to DOS and/or the C stream I/O library.
-</P>
-<P>Restartable blocks do minimize the overhead of DOS file-access calls in Listing 5.1; it&rsquo;s just that there&rsquo;s no way to reduce that overhead to the point where it becomes worth attempting to further improve the performance of our relatively efficient search engine. Although the search engine is by no means fully optimized, it&rsquo;s nonetheless as fast as there&rsquo;s any reason for it to be, given the balance of performance among the components of this program.</P>
-<H3><A NAME="Heading10"></A>Always Look Where Execution Is Going</H3>
-<P>I&rsquo;ve explained two important lessons: Know when it&rsquo;s worth optimizing further, and use restartable blocks to process large data sets as a series of blocks, with each block handled at high speed. The first lesson is less obvious than it seems.
-</P>
-<P>When I set out to write this chapter, I fully intended to write an assembly language version of Listing 5.1, and I expected the assembly version to be much faster. When I actually looked at where execution time was going (which I did by modifying the program to remove the calls to the <B>read()</B> function, but a code profiler could be used to do the same thing much more easily), I found that the best code in the world wouldn&rsquo;t make much difference.</P>
-<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>When you try to speed up code, take a moment to identify the hot spots in your program so that you know where optimization is needed and whether it will make a significant difference before you invest your time.</I></SMALL>
-</TABLE>
-<P>As for restartable blocks: Here we tackled a considerably more complex application of restartable blocks than we did in Chapter 1&mdash;which turned out not to be so difficult after all. Don&rsquo;t let irregularities in the programming tasks you tackle, such as strings that span blocks, fluster you into settling for easy, general&mdash;and slow&mdash;solutions. Focus on making the inner loop&mdash;the code that handles each block&mdash;as efficient as possible, then structure the rest of your code to support the inner loop.
-</P>
-<P>Programming with restartable blocks isn&rsquo;t easy, but when speed is an issue, using restartable blocks in the right places more than pays for itself with greatly improved performance. And when speed is <I>not</I> an issue, of course, or in code that&rsquo;s not time-critical, you wouldn&rsquo;t dream of wasting your time on optimization.</P>
-<P>Would you?</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="05-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="06-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+  <table width="100%">
+    <tr>
+      <td align="left" valign="top" width="5%"><img src="images/i.jpg" /></td>
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+      <td align="left" valign="top" width="95%"><small><i>You must know what your application will typically do, and you must know whether you&rsquo;re more concerned with average or worst-case performance before you can decide how best to speed up your program&mdash;and, indeed, whether speeding it up is worth doing at all.</i></small></td>
+    </tr>
+  </table>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>By the way, don&rsquo;t think that just because very large block sizes don&rsquo;t much improve performance, it wasn&rsquo;t worth using restartable blocks in Listing 5.1. Listing 5.1 runs more than three times more slowly with a block size of 32 bytes than with a block size of 4K, and any byte-by-byte approach would surely be slower still, due to the overhead of repeated calls to DOS and/or the C stream I/O library.</p>
 
-<!-- END FOOTER -->
+  <p>Restartable blocks do minimize the overhead of DOS file-access calls in Listing 5.1; it&rsquo;s just that there&rsquo;s no way to reduce that overhead to the point where it becomes worth attempting to further improve the performance of our relatively efficient search engine. Although the search engine is by no means fully optimized, it&rsquo;s nonetheless as fast as there&rsquo;s any reason for it to be, given the balance of performance among the components of this program.</p>
 
+  <h3><a id="Heading10"></a>Always Look Where Execution Is Going</h3>
 
+  <p>I&rsquo;ve explained two important lessons: Know when it&rsquo;s worth optimizing further, and use restartable blocks to process large data sets as a series of blocks, with each block handled at high speed. The first lesson is less obvious than it seems.</p>
+
+  <p>When I set out to write this chapter, I fully intended to write an assembly language version of Listing 5.1, and I expected the assembly version to be much faster. When I actually looked at where execution time was going (which I did by modifying the program to remove the calls to the <b>read()</b> function, but a code profiler could be used to do the same thing much more easily), I found that the best code in the world wouldn&rsquo;t make much difference.</p>
+
+  <table width="100%">
+    <tr>
+      <td align="left" valign="top" width="5%"><img src="images/i.jpg" /></td>
+
+      <td align="left" valign="top" width="95%"><small><i>When you try to speed up code, take a moment to identify the hot spots in your program so that you know where optimization is needed and whether it will make a significant difference before you invest your time.</i></small></td>
+    </tr>
+  </table>
+
+  <p>As for restartable blocks: Here we tackled a considerably more complex application of restartable blocks than we did in Chapter 1&mdash;which turned out not to be so difficult after all. Don&rsquo;t let irregularities in the programming tasks you tackle, such as strings that span blocks, fluster you into settling for easy, general&mdash;and slow&mdash;solutions. Focus on making the inner loop&mdash;the code that handles each block&mdash;as efficient as possible, then structure the rest of your code to support the inner loop.</p>
+
+  <p>Programming with restartable blocks isn&rsquo;t easy, but when speed is an issue, using restartable blocks in the right places more than pays for itself with greatly improved performance. And when speed is <i>not</i> an issue, of course, or in code that&rsquo;s not time-critical, you wouldn&rsquo;t dream of wasting your time on optimization.</p>
+
+  <p>Would you?</p>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="05-04.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="06-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

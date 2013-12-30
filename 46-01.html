@@ -1,75 +1,86 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Who Was that Masked Image?</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=46//-->
+  <!--PAGES=859-862//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="45-06.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="46-02.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Who Was that Masked Image?</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <h2><a id="Heading1"></a>Chapter 46<br />
+  Who Was that Masked Image?</h2>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=46//-->
-<!--PAGES=859-862//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <h3><a id="Heading2"></a>Optimizing Dirty-Rectangle Animation</h3>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="45-06.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="46-02.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<H2><A NAME="Heading1"></A>Chapter 46<BR>Who Was that Masked Image?</H2>
-<H3><A NAME="Heading2"></A>Optimizing Dirty-Rectangle Animation</H3>
-<P>Programming is, by and large, a linear process. One statement or instruction follows another, in predictable sequences, with tiny building blocks strung together to make thinking, which is, of course, A Good Thing. Still, it&rsquo;s important to keep in mind that there&rsquo;s a large chunk of the human mind that doesn&rsquo;t work in a linear fashion.
-</P>
-<P>I&rsquo;ve written elsewhere about the virtues of nonlinear/right-brain/lateral/what-have-you thinking in solving tough programming problems, such as debugging or optimization, but it bears repeating. The mind can be an awesome pattern-matching and extrapolation tool, if you let it. For example, the other day was grinding my way through a particularly difficult bit of debugging. The code had been written by someone else, and, to my mind, there&rsquo;s nothing worse than debugging someone else&rsquo;s code; there&rsquo;s always the nasty feeling that you don&rsquo;t quite know what&rsquo;s going on. The overall operation of this code wouldn&rsquo;t come clear in my head, no matter how long stared at it, leaving me with a rising sense of frustration and a determination not to quit until got this bug.</P>
-<P>In the midst of this, a coworker poked his head through the door and told me he had something had to listen to. Reluctantly, went to his office, whereupon he played a tape of what is surely one of the most bizarre 911 calls in history. No doubt some of you have heard this tape, which will briefly describe as involving a deer destroying the interior of a car and biting a man in the neck. Perhaps you found it funny, perhaps not&mdash;but as for me, it hit me exactly right. started laughing helplessly, tears rolling down my face. When went back to work&mdash;presto!&mdash;the pieces of the debugging puzzle had come together in my head, and the work went quickly and easily.</P>
-<P>Obviously, my mind needed a break from linear, left-brain, push-it-out thinking, so it could do the sort of integrating work it does so well&mdash;but that it&rsquo;s rarely willing to do under conscious control. It was exactly this sort of thinking had in mind when titled my 1989 optimization book of <I>Zen of Assembly Language.</I> (Although must admit that few people seem to have gotten the connection, and I&rsquo;ve had to field a lot of questions about whether I&rsquo;m a Zen disciple. I&rsquo;m not&mdash;actually, I&rsquo;m more of a Dave Barry disciple. If you don&rsquo;t know who Dave Barry is, you should; he&rsquo;s good for your right brain.) Give your mind a break once in a while, and I&rsquo;ll bet you&rsquo;ll find you&rsquo;re more productive.</P>
-<P>We&rsquo;re strange thinking machines, but we&rsquo;re the best ones yet invented, and it&rsquo;s worth learning how to tap our full potential. And with that, it&rsquo;s back to dirty-rectangle animation.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading3"></A>Dirty-Rectangle Animation, Continued</H4>
-<P>In the last chapter, Introduced the idea of dirty-rectangle animation. This technique is an alternative to page flipping that&rsquo;s capable of producing animation of very high visual quality, without any help at all from video hardware, and without the need for any extra, nondisplayed video memory. This makes dirty-rectangle animation more widely usable than page flipping, because many adapters don&rsquo;t support page flipping. Dirty-rectangle animation also tends to be simpler to implement than page flipping, because there&rsquo;s only one bitmap to keep track of. A final advantage of dirty-rectangle animation is that it&rsquo;s potentially somewhat faster than page flipping, because display-memory accesses can theoretically be reduced to exactly one access for each pixel that changes from one frame to the next.
-</P>
-<P>The speed advantage of dirty-rectangle animation was entirely theoretical in the previous chapter, because the implementation was completely in C, and because no attempt was made to minimize display memory accesses. The visual quality of Chapter 45&rsquo;s animation was also less than ideal, for reasons we&rsquo;ll explore shortly. The code in Listings 46.1 and 46.2 addresses the shortcomings of Chapter 45&rsquo;s code. <P>Listing 46.2 implements the low-level drawing routines in assembly language, which boosts performance a good deal. For maximum performance, it would be worthwhile to convert more of Listing 46.1 into assembly, so a call isn&rsquo;t required for each animated image, and overall performance could be improved by streamlining the C code, but Listing 46.2 goes a long way toward boosting animation speed. This program now supports snappy animation of 15 images (as opposed to 10 for the software presented in the last chapter), and the images are now two pixels wider. That level of performance is all the more impressive considering that for this chapter I&rsquo;ve converted the code from using rectangular images to using masked images.</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="45-06.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="46-02.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+  <p>Programming is, by and large, a linear process. One statement or instruction follows another, in predictable sequences, with tiny building blocks strung together to make thinking, which is, of course, A Good Thing. Still, it&rsquo;s important to keep in mind that there&rsquo;s a large chunk of the human mind that doesn&rsquo;t work in a linear fashion.</p>
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>I&rsquo;ve written elsewhere about the virtues of nonlinear/right-brain/lateral/what-have-you thinking in solving tough programming problems, such as debugging or optimization, but it bears repeating. The mind can be an awesome pattern-matching and extrapolation tool, if you let it. For example, the other day was grinding my way through a particularly difficult bit of debugging. The code had been written by someone else, and, to my mind, there&rsquo;s nothing worse than debugging someone else&rsquo;s code; there&rsquo;s always the nasty feeling that you don&rsquo;t quite know what&rsquo;s going on. The overall operation of this code wouldn&rsquo;t come clear in my head, no matter how long stared at it, leaving me with a rising sense of frustration and a determination not to quit until got this bug.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>In the midst of this, a coworker poked his head through the door and told me he had something had to listen to. Reluctantly, went to his office, whereupon he played a tape of what is surely one of the most bizarre 911 calls in history. No doubt some of you have heard this tape, which will briefly describe as involving a deer destroying the interior of a car and biting a man in the neck. Perhaps you found it funny, perhaps not&mdash;but as for me, it hit me exactly right. started laughing helplessly, tears rolling down my face. When went back to work&mdash;presto!&mdash;the pieces of the debugging puzzle had come together in my head, and the work went quickly and easily.</p>
 
-<!-- END FOOTER -->
+  <p>Obviously, my mind needed a break from linear, left-brain, push-it-out thinking, so it could do the sort of integrating work it does so well&mdash;but that it&rsquo;s rarely willing to do under conscious control. It was exactly this sort of thinking had in mind when titled my 1989 optimization book of <i>Zen of Assembly Language.</i> (Although must admit that few people seem to have gotten the connection, and I&rsquo;ve had to field a lot of questions about whether I&rsquo;m a Zen disciple. I&rsquo;m not&mdash;actually, I&rsquo;m more of a Dave Barry disciple. If you don&rsquo;t know who Dave Barry is, you should; he&rsquo;s good for your right brain.) Give your mind a break once in a while, and I&rsquo;ll bet you&rsquo;ll find you&rsquo;re more productive.</p>
 
+  <p>We&rsquo;re strange thinking machines, but we&rsquo;re the best ones yet invented, and it&rsquo;s worth learning how to tap our full potential. And with that, it&rsquo;s back to dirty-rectangle animation.</p>
 
+  <h4 align="left"><a id="Heading3"></a>Dirty-Rectangle Animation, Continued</h4>
+
+  <p>In the last chapter, Introduced the idea of dirty-rectangle animation. This technique is an alternative to page flipping that&rsquo;s capable of producing animation of very high visual quality, without any help at all from video hardware, and without the need for any extra, nondisplayed video memory. This makes dirty-rectangle animation more widely usable than page flipping, because many adapters don&rsquo;t support page flipping. Dirty-rectangle animation also tends to be simpler to implement than page flipping, because there&rsquo;s only one bitmap to keep track of. A final advantage of dirty-rectangle animation is that it&rsquo;s potentially somewhat faster than page flipping, because display-memory accesses can theoretically be reduced to exactly one access for each pixel that changes from one frame to the next.</p>
+
+  <p>The speed advantage of dirty-rectangle animation was entirely theoretical in the previous chapter, because the implementation was completely in C, and because no attempt was made to minimize display memory accesses. The visual quality of Chapter 45&rsquo;s animation was also less than ideal, for reasons we&rsquo;ll explore shortly. The code in Listings 46.1 and 46.2 addresses the shortcomings of Chapter 45&rsquo;s code.</p>
+
+  <p>Listing 46.2 implements the low-level drawing routines in assembly language, which boosts performance a good deal. For maximum performance, it would be worthwhile to convert more of Listing 46.1 into assembly, so a call isn&rsquo;t required for each animated image, and overall performance could be improved by streamlining the C code, but Listing 46.2 goes a long way toward boosting animation speed. This program now supports snappy animation of 15 images (as opposed to 10 for the software presented in the last chapter), and the images are now two pixels wider. That level of performance is all the more impressive considering that for this chapter I&rsquo;ve converted the code from using rectangular images to using masked images.</p>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="45-06.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="46-02.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

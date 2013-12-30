@@ -1,80 +1,94 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Surface Catching and Quake's Triangle Models</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=69//-->
+  <!--PAGES=1257-1261//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="68-04.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="69-02.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Surface Catching and Quake's Triangle Models</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <h2><a id="Heading1"></a>Chapter 69<br />
+  Surface Caching and Quake&rsquo;s Triangle Models</h2>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=69//-->
-<!--PAGES=1257-1261//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <h3><a id="Heading2"></a>Probing Hardware-Assisted Surfaces and Fast Model Animation Without Sprites</h3>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="68-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="69-02.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<H2><A NAME="Heading1"></A>Chapter 69<BR>Surface Caching and Quake&rsquo;s Triangle Models</H2>
-<H3><A NAME="Heading2"></A>Probing Hardware-Assisted Surfaces and Fast Model Animation Without Sprites</H3>
-<P>In the late &rsquo;70s, I spent a summer doing contract programming at a government-funded installation called the Northeast Solar Energy Center (NESEC). Those were heady times for solar energy, what with the oil shortages, and there was lots of money being thrown at places like NESEC, which was growing fast.
-</P>
-<P>NESEC was across the street from MIT, which made for good access to resources. Unfortunately, it also meant that NESEC was in a severely parking-impaired part of the world, what with the student population and Boston&rsquo;s chronic parking shortage. The NESEC building did have its own parking lot, but it wasn&rsquo;t nearly big enough, because students parked in it at every opportunity. The lot was posted, and cars periodically got towed, but King Canute stood a better chance against the tide than NESEC did against the student hordes, and late arrivals to work often had to park blocks away and hike to work, to their considerable displeasure.</P>
-<P>Back then, I drove an aging Volvo sedan that was sorely in need of a ring job. It ran fine but burned a quart of oil every 250 miles, so I carried a case of oil in the trunk, and checked the level frequently. One day, walking to the computer center a couple of blocks away, I cut through the parking lot and checked the oil in my car. It was low, so I topped it off, left the empty oil can next to the car so I would see it and remember to pick it up to throw out on my way back, and headed toward the computer center.</P>
-<P>I&rsquo;d gone only a few hundred feet when I heard footsteps and shouting behind me, and a wild-eyed man in a business suit came running up to me, screaming. &ldquo;It&rsquo;s bad enough you park in our lot, but now you&rsquo;re leaving your garbage lying around!&rdquo; he yelled. &ldquo;Don&rsquo;t you people have any sense of decency?&rdquo; I told him I worked at NESEC and was going to pick up the can on my way back, and he shouted, &ldquo;Don&rsquo;t give me that!&rdquo; I repeated my statements, calmly, and told him who I worked for and where my office was, and he said, &ldquo;Don&rsquo;t give me that&rdquo; again, but with a little less certainty. I kept adding detail until it was obvious that I was telling the truth, and he suddenly said, &ldquo;Oh, my God,&rdquo; turned red, and started to apologize profusely. A few days later, we passed in the hallway, and he didn&rsquo;t look me in the eye.</P>
-<P>The interesting point is that there was really no useful outcome that could have resulted from his outburst. Suppose I had been a student&mdash;what would he have accomplished by yelling at me? He let his emotions overrule his common sense, and as a result, did something he later wished he hadn&rsquo;t. I&rsquo;ve seen many programmers do the same thing, especially when they&rsquo;re working long hours and not feeling adequately appreciated. For example, some time back I got mail from a programmer who complained bitterly that although he was critical to his company&rsquo;s success, management didn&rsquo;t appreciate his hard work and talent, and asked if I could help him find a better job. I suggested several ways that he might look for another job, but also asked if he had tried working his problems out with his employers; if he really was that valuable, what did he have to lose? He admitted he hadn&rsquo;t, and recently he wrote back and said that he had talked to his boss, and now he was getting paid a lot more money, was getting credit for his work, and was just flat-out happy.</P>
-<P>We programmers think of ourselves as rational creatures, but most of us get angry at times, and when we do, like everyone else, we tend to be driven by our emotions instead of our minds. It&rsquo;s my experience that thinking rationally under those circumstances can be difficult, but produces better long-term results every time&mdash;so if you find yourself in that situation, stay cool and think your way through it, and odds are you&rsquo;ll be happier down the road.</P>
-<P>Of course, most of the time programmers really <I>are</I> rational creatures, and the more information we have, the better. In that spirit, let&rsquo;s look at more of the stuff that makes Quake tick, starting with what I&rsquo;ve recently learned about surface caching.</P>
-<H3><A NAME="Heading3"></A>Surface Caching with Hardware Assistance</H3>
-<P>In Chapter 68, I discussed in detail the surface caching technique that Quake uses to do detailed, high-quality lighting without lots of polygons. Since writing that chapter, I&rsquo;ve gone further, and spent a considerable amount of time working on the port of Quake to Rendition&rsquo;s Verite 3-D accelerator chip. So let me start off this chapter by discussing what I&rsquo;ve learned about using surface caching in conjunction with hardware.
-</P>
-<P>As you&rsquo;ll recall, the key to surface caching is that lighting information and polygon detail are stored separately, with lighting not tied to polygon vertices, then combined on demand into what I call <I>surfaces</I>: lit, textured rectangles that are used as the input to the texture mapper. Building surfaces takes time, so performance is enhanced by caching the surfaces from one frame to the next. As I pointed out in Chapter 68, 3-D hardware accelerators are designed to optimize Gouraud shading, but surface caching can also work on hardware accelerators, with some significant quality advantages.</P>
-<P>The surface-caching architecture of the Verite version of Quake (which we call VQuake) is essentially the same as in the software-only version of Quake: The CPU builds surfaces on demand, which are then downloaded to the accelerator&rsquo;s memory and cached there. There are a couple of key differences, however: the need to download surfaces, and the requirement that the surfaces be in 16-bit-per-pixel (bpp) format.</P>
-<P>Downloading surfaces to the accelerator is a performance hit that doesn&rsquo;t exist in the software-only version. Although Verite uses DMA to download surfaces, DMA does in fact steal performance from the CPU. This cost is increased by the requirement for 16-bpp surfaces, because twice as much data must be downloaded. Worse still, it takes about twice as long to build 16-bpp surfaces as 8-bpp surfaces, so the cost of missing the surface cache is well over twice as expensive in VQuake as in Quake. Fortunately, there&rsquo;s 4 MB of memory on Verite-based adapters, so the surface cache doesn&rsquo;t miss very often and VQuake runs fine (and looks very good, thanks to bilinear texture filtering, which by itself is pretty much worth the cost of 3-D hardware), but it&rsquo;s nonetheless true that a completely straightforward port of the surface-caching model is not as appealing for hardware as for software. This is especially true at high resolutions, where the needs of the surface cache increase due to more detailed surfaces but available memory decreases due to frame buffer size.</P>
-<P>Does my recent experience indicate that as the PC market moves to hardware, there&rsquo;s no choice but to move to Gouraud shading, despite the quality issues? Not at all. First of all, surface caching does still work well, just not as relatively well compared to Gouraud shading as is the case in software. Second, there are at least two alternatives that preserve the advantages of surface caching without many of the disadvantages noted above.</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="68-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="69-02.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+  <p>In the late &rsquo;70s, I spent a summer doing contract programming at a government-funded installation called the Northeast Solar Energy Center (NESEC). Those were heady times for solar energy, what with the oil shortages, and there was lots of money being thrown at places like NESEC, which was growing fast.</p>
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>NESEC was across the street from MIT, which made for good access to resources. Unfortunately, it also meant that NESEC was in a severely parking-impaired part of the world, what with the student population and Boston&rsquo;s chronic parking shortage. The NESEC building did have its own parking lot, but it wasn&rsquo;t nearly big enough, because students parked in it at every opportunity. The lot was posted, and cars periodically got towed, but King Canute stood a better chance against the tide than NESEC did against the student hordes, and late arrivals to work often had to park blocks away and hike to work, to their considerable displeasure.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>Back then, I drove an aging Volvo sedan that was sorely in need of a ring job. It ran fine but burned a quart of oil every 250 miles, so I carried a case of oil in the trunk, and checked the level frequently. One day, walking to the computer center a couple of blocks away, I cut through the parking lot and checked the oil in my car. It was low, so I topped it off, left the empty oil can next to the car so I would see it and remember to pick it up to throw out on my way back, and headed toward the computer center.</p>
 
-<!-- END FOOTER -->
+  <p>I&rsquo;d gone only a few hundred feet when I heard footsteps and shouting behind me, and a wild-eyed man in a business suit came running up to me, screaming. &ldquo;It&rsquo;s bad enough you park in our lot, but now you&rsquo;re leaving your garbage lying around!&rdquo; he yelled. &ldquo;Don&rsquo;t you people have any sense of decency?&rdquo; I told him I worked at NESEC and was going to pick up the can on my way back, and he shouted, &ldquo;Don&rsquo;t give me that!&rdquo; I repeated my statements, calmly, and told him who I worked for and where my office was, and he said, &ldquo;Don&rsquo;t give me that&rdquo; again, but with a little less certainty. I kept adding detail until it was obvious that I was telling the truth, and he suddenly said, &ldquo;Oh, my God,&rdquo; turned red, and started to apologize profusely. A few days later, we passed in the hallway, and he didn&rsquo;t look me in the eye.</p>
 
+  <p>The interesting point is that there was really no useful outcome that could have resulted from his outburst. Suppose I had been a student&mdash;what would he have accomplished by yelling at me? He let his emotions overrule his common sense, and as a result, did something he later wished he hadn&rsquo;t. I&rsquo;ve seen many programmers do the same thing, especially when they&rsquo;re working long hours and not feeling adequately appreciated. For example, some time back I got mail from a programmer who complained bitterly that although he was critical to his company&rsquo;s success, management didn&rsquo;t appreciate his hard work and talent, and asked if I could help him find a better job. I suggested several ways that he might look for another job, but also asked if he had tried working his problems out with his employers; if he really was that valuable, what did he have to lose? He admitted he hadn&rsquo;t, and recently he wrote back and said that he had talked to his boss, and now he was getting paid a lot more money, was getting credit for his work, and was just flat-out happy.</p>
 
+  <p>We programmers think of ourselves as rational creatures, but most of us get angry at times, and when we do, like everyone else, we tend to be driven by our emotions instead of our minds. It&rsquo;s my experience that thinking rationally under those circumstances can be difficult, but produces better long-term results every time&mdash;so if you find yourself in that situation, stay cool and think your way through it, and odds are you&rsquo;ll be happier down the road.</p>
+
+  <p>Of course, most of the time programmers really <i>are</i> rational creatures, and the more information we have, the better. In that spirit, let&rsquo;s look at more of the stuff that makes Quake tick, starting with what I&rsquo;ve recently learned about surface caching.</p>
+
+  <h3><a id="Heading3"></a>Surface Caching with Hardware Assistance</h3>
+
+  <p>In Chapter 68, I discussed in detail the surface caching technique that Quake uses to do detailed, high-quality lighting without lots of polygons. Since writing that chapter, I&rsquo;ve gone further, and spent a considerable amount of time working on the port of Quake to Rendition&rsquo;s Verite 3-D accelerator chip. So let me start off this chapter by discussing what I&rsquo;ve learned about using surface caching in conjunction with hardware.</p>
+
+  <p>As you&rsquo;ll recall, the key to surface caching is that lighting information and polygon detail are stored separately, with lighting not tied to polygon vertices, then combined on demand into what I call <i>surfaces</i>: lit, textured rectangles that are used as the input to the texture mapper. Building surfaces takes time, so performance is enhanced by caching the surfaces from one frame to the next. As I pointed out in Chapter 68, 3-D hardware accelerators are designed to optimize Gouraud shading, but surface caching can also work on hardware accelerators, with some significant quality advantages.</p>
+
+  <p>The surface-caching architecture of the Verite version of Quake (which we call VQuake) is essentially the same as in the software-only version of Quake: The CPU builds surfaces on demand, which are then downloaded to the accelerator&rsquo;s memory and cached there. There are a couple of key differences, however: the need to download surfaces, and the requirement that the surfaces be in 16-bit-per-pixel (bpp) format.</p>
+
+  <p>Downloading surfaces to the accelerator is a performance hit that doesn&rsquo;t exist in the software-only version. Although Verite uses DMA to download surfaces, DMA does in fact steal performance from the CPU. This cost is increased by the requirement for 16-bpp surfaces, because twice as much data must be downloaded. Worse still, it takes about twice as long to build 16-bpp surfaces as 8-bpp surfaces, so the cost of missing the surface cache is well over twice as expensive in VQuake as in Quake. Fortunately, there&rsquo;s 4 MB of memory on Verite-based adapters, so the surface cache doesn&rsquo;t miss very often and VQuake runs fine (and looks very good, thanks to bilinear texture filtering, which by itself is pretty much worth the cost of 3-D hardware), but it&rsquo;s nonetheless true that a completely straightforward port of the surface-caching model is not as appealing for hardware as for software. This is especially true at high resolutions, where the needs of the surface cache increase due to more detailed surfaces but available memory decreases due to frame buffer size.</p>
+
+  <p>Does my recent experience indicate that as the PC market moves to hardware, there&rsquo;s no choice but to move to Gouraud shading, despite the quality issues? Not at all. First of all, surface caching does still work well, just not as relatively well compared to Gouraud shading as is the case in software. Second, there are at least two alternatives that preserve the advantages of surface caching without many of the disadvantages noted above.</p>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="68-04.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="69-02.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

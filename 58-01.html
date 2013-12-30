@@ -1,85 +1,102 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Heinlein's Crystal Ball, Spock's Brain, and the 9-Cycle Dare</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=58//-->
+  <!--PAGES=1077-1081//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="57-04.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="58-02.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Heinlein's Crystal Ball, Spock's Brain, and the 9-Cycle Dare</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <h2><a id="Heading1"></a>Chapter 58<br />
+  Heinlein&rsquo;s Crystal Ball, Spock&rsquo;s Brain, and the 9-Cycle Dare</h2>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=58//-->
-<!--PAGES=1077-1081//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <h3><a id="Heading2"></a>Using the Whole-Brain Approach to Accelerate Texture Mapping</h3>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="57-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="58-02.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<H2><A NAME="Heading1"></A>Chapter 58<BR>Heinlein&rsquo;s Crystal Ball, Spock&rsquo;s Brain, and the 9-Cycle Dare</H2>
-<H3><A NAME="Heading2"></A>Using the Whole-Brain Approach to Accelerate Texture Mapping</H3>
-<P>I&rsquo;ve had the pleasure recently of rereading several of the works of Robert A. Heinlein, and I&rsquo;m as impressed as I was as a teenager&mdash;but in a different way. The first time around, I was wowed by the sheer romance of technology married to powerful stories; this time, I&rsquo;m struck most of all by The Master&rsquo;s remarkable prescience. &ldquo;Blowups Happen&rdquo; is about the risks of nuclear power, and their effects on human psychology&mdash;written before a chain reaction had ever happened on this planet. &ldquo;Solution Unsatisfactory&rdquo; is about the unsolvable dilemma&mdash;ultimate offense, no defense&mdash;posed by atomic weapons; this in 1941. And in <I>Between Planets</I> (1951), consider this minor bit of action:</P>
-<BLOCKQUOTE><P>The doctor&rsquo;s phone regretted politely that Dr. Jefferson was not at home and requested him to leave a message. He was dictating it when a warm voice interrupted: &lsquo;I&rsquo;m at home to you, Donald. Where are you, lad?&rsquo;
-</P>
-</BLOCKQUOTE><P>Predicting the widespread use of answering machines is perhaps not so remarkable, but foreseeing that they would be used for call screening is; technology is much easier to extrapolate than are social patterns.
-</P>
-<P>Even so, Heinlein was no prophet; his crystal ball was just a little less fuzzy than ours. The aforementioned call in <I>Between Planets</I> was placed on a viewphone; while that technology has indeed come to pass, its widespread use has not. The ultimate weapon in &ldquo;Solution Unsatisfactory&rdquo; was radioactive dust, not nuclear bombs, and we have somehow survived nearly 50 years of nuclear weapons without either acquiring a world dictator or destroying ourselves. Slide rules are all over the place in Heinlein&rsquo;s works, and in one story (the name now lost to memory), an astronaut straps himself into a massive integral calculator; computers are nowhere to be found.</P>
-<P>Most telling, I think, is that in &ldquo;Blowups Happen,&rdquo; the engineers running the nuclear power plant&mdash;at considerable risk to both body and sanity&mdash;are the best of the best, highly skilled in math and required to ride the nuclear reaction on a second-to-second basis, with the risk of an explosion that might end life on Earth, and would surely kill them, if they slip. Contrast that with our present-day reality of nuclear plants run by generally competent technicians, with the occasional report of shoddy maintenance and bored power-plant employees using drugs, playing games, and falling asleep while on duty. Heinlein&rsquo;s universe makes for a better story, of course, but, more than that, it shows the filters and biases through which he viewed the world. At least in print, Heinlein was an unwavering believer in science, technology, and rationality, and in his stories it is usually the engineers and scientists who are the heroes and push civilization forward, often kicking and screaming. In the real world, I have rarely observed that to be the case.</P>
-<P>But of course Heinlein was hardly the only person to have his or her perceptions of the universe, past, present, or future, blurred by his built-in assumptions; you and I, as programmers, are also on that list&mdash;and probably pretty near the top, at that. Performance programming is basically a process of going from the general to the specific, special-casing the code so that it does just what it has to, and no more. The greatest impediment to this process is seeing the problem in terms of what the code currently does, or what you already know, thereby ignoring many possible solutions. Put another way, how you look at an optimization problem determines how you&rsquo;ll solve it; your assumptions may speed and simplify the process, but they are also your limitations. Consider, for example, how a seemingly intractable problem becomes eminently tractable the instant you learn that someone else has solved it.</P>
-<P>As Exhibit #1, I present my experience with speeding up the texture mapper in X-Sharp.</P>
-<H3><A NAME="Heading3"></A>Texture Mapping Redux</H3>
-<P>We&rsquo;ve spent the previous several chapters exploring the X Sharp graphics library, something I built over time as a serious exercise in 3-D graphics. When X-Sharp reached the point at which we left it at the end of the previous chapter, I was rather pleased with it&mdash;with one exception.
-</P>
-<P>My last addition to X-Sharp was a <I>texture mapper,</I> a routine that warped and rotated any desired bitmap to map onto an arbitrary convex polygon. Texture mappers are critical to good 3-D games; just a few texture-mapped polygons, backed with well-drawn bitmaps, can represent more detail and look more realistic than dozens or even hundreds of solid-color polygons. My X-Sharp texture mapper was in reasonable assembly&mdash;pretty good code, by most standards!&mdash;and I felt comfortable with my implementation; but then I got a letter from John Miles, who was at the time getting seriously into 3-D and is now the author of a 3-D game library. (Yes, you can license it from his company, Non-Linear Arts, if you&rsquo;d like; John can be reached at 70322.2457@compuserve.com.) John wrote me as follows: &ldquo;Hmm, so <I>that&rsquo;s</I> how texture-mapping works. But 3 jumps <I>per pixel?</I> Hmph!&rdquo;</P>
-<P>It was the &ldquo;Hmph&rdquo; that really got to me.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading4"></A>Left-Brain Optimization</H4>
-<P>That was the first shot of juice for my optimizer (or at least blow to my ego, which can be just as productive). John went on to say he had gotten texture mapping down to 9 cycles per pixel and one jump per <I>scanline</I> on a 486 (all cycle times will be for the 486 unless otherwise noted); given that my code took, on average, about 44 cycles and 2 taken jumps (plus 1 not taken) per pixel, I had a long way to go.</P>
-<P>The inner loop of my original texture-mapping code is shown in Listing 58.1. All this code does is draw a single texture-mapped scanline, as shown in Figure 58.1; an outer loop runs through all the scanlines in whatever polygon is being drawn. I immediately saw that I could eliminate nearly 10 percent of the cycles by unrolling the loop; obviously, John had done that, else there&rsquo;s no way he could branch only once per scanline. (By the way, branching only once per scanline via a fully unrolled loop is not generally recommended. A branch every few pixels costs relatively little, and the cache effects of fully unrolled code are <I>not</I> good.) I quickly came up with several other ways to speed up the code, but soon realized that all the clever coding in the world wasn&rsquo;t going to get me within 100 percent of John&rsquo;s performance so long as I had to cycle from one plane to the next for every pixel.</P>
-<P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/58-01.jpg',408,174 )"> --><IMG SRC="images/58-01.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/58-01.jpg',408,174)"> --><B>Figure 58.1</B></A>&nbsp;&nbsp;<I>Texture mapping a single horizontal scanline.</I>
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="57-04.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="58-02.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+  <p>I&rsquo;ve had the pleasure recently of rereading several of the works of Robert A. Heinlein, and I&rsquo;m as impressed as I was as a teenager&mdash;but in a different way. The first time around, I was wowed by the sheer romance of technology married to powerful stories; this time, I&rsquo;m struck most of all by The Master&rsquo;s remarkable prescience. &ldquo;Blowups Happen&rdquo; is about the risks of nuclear power, and their effects on human psychology&mdash;written before a chain reaction had ever happened on this planet. &ldquo;Solution Unsatisfactory&rdquo; is about the unsolvable dilemma&mdash;ultimate offense, no defense&mdash;posed by atomic weapons; this in 1941. And in <i>Between Planets</i> (1951), consider this minor bit of action:</p>
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <blockquote>
+    <p>The doctor&rsquo;s phone regretted politely that Dr. Jefferson was not at home and requested him to leave a message. He was dictating it when a warm voice interrupted: &lsquo;I&rsquo;m at home to you, Donald. Where are you, lad?&rsquo;</p>
+  </blockquote>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>Predicting the widespread use of answering machines is perhaps not so remarkable, but foreseeing that they would be used for call screening is; technology is much easier to extrapolate than are social patterns.</p>
 
-<!-- END FOOTER -->
+  <p>Even so, Heinlein was no prophet; his crystal ball was just a little less fuzzy than ours. The aforementioned call in <i>Between Planets</i> was placed on a viewphone; while that technology has indeed come to pass, its widespread use has not. The ultimate weapon in &ldquo;Solution Unsatisfactory&rdquo; was radioactive dust, not nuclear bombs, and we have somehow survived nearly 50 years of nuclear weapons without either acquiring a world dictator or destroying ourselves. Slide rules are all over the place in Heinlein&rsquo;s works, and in one story (the name now lost to memory), an astronaut straps himself into a massive integral calculator; computers are nowhere to be found.</p>
 
+  <p>Most telling, I think, is that in &ldquo;Blowups Happen,&rdquo; the engineers running the nuclear power plant&mdash;at considerable risk to both body and sanity&mdash;are the best of the best, highly skilled in math and required to ride the nuclear reaction on a second-to-second basis, with the risk of an explosion that might end life on Earth, and would surely kill them, if they slip. Contrast that with our present-day reality of nuclear plants run by generally competent technicians, with the occasional report of shoddy maintenance and bored power-plant employees using drugs, playing games, and falling asleep while on duty. Heinlein&rsquo;s universe makes for a better story, of course, but, more than that, it shows the filters and biases through which he viewed the world. At least in print, Heinlein was an unwavering believer in science, technology, and rationality, and in his stories it is usually the engineers and scientists who are the heroes and push civilization forward, often kicking and screaming. In the real world, I have rarely observed that to be the case.</p>
 
+  <p>But of course Heinlein was hardly the only person to have his or her perceptions of the universe, past, present, or future, blurred by his built-in assumptions; you and I, as programmers, are also on that list&mdash;and probably pretty near the top, at that. Performance programming is basically a process of going from the general to the specific, special-casing the code so that it does just what it has to, and no more. The greatest impediment to this process is seeing the problem in terms of what the code currently does, or what you already know, thereby ignoring many possible solutions. Put another way, how you look at an optimization problem determines how you&rsquo;ll solve it; your assumptions may speed and simplify the process, but they are also your limitations. Consider, for example, how a seemingly intractable problem becomes eminently tractable the instant you learn that someone else has solved it.</p>
+
+  <p>As Exhibit #1, I present my experience with speeding up the texture mapper in X-Sharp.</p>
+
+  <h3><a id="Heading3"></a>Texture Mapping Redux</h3>
+
+  <p>We&rsquo;ve spent the previous several chapters exploring the X Sharp graphics library, something I built over time as a serious exercise in 3-D graphics. When X-Sharp reached the point at which we left it at the end of the previous chapter, I was rather pleased with it&mdash;with one exception.</p>
+
+  <p>My last addition to X-Sharp was a <i>texture mapper,</i> a routine that warped and rotated any desired bitmap to map onto an arbitrary convex polygon. Texture mappers are critical to good 3-D games; just a few texture-mapped polygons, backed with well-drawn bitmaps, can represent more detail and look more realistic than dozens or even hundreds of solid-color polygons. My X-Sharp texture mapper was in reasonable assembly&mdash;pretty good code, by most standards!&mdash;and I felt comfortable with my implementation; but then I got a letter from John Miles, who was at the time getting seriously into 3-D and is now the author of a 3-D game library. (Yes, you can license it from his company, Non-Linear Arts, if you&rsquo;d like; John can be reached at 70322.2457@compuserve.com.) John wrote me as follows: &ldquo;Hmm, so <i>that&rsquo;s</i> how texture-mapping works. But 3 jumps <i>per pixel?</i> Hmph!&rdquo;</p>
+
+  <p>It was the &ldquo;Hmph&rdquo; that really got to me.</p>
+
+  <h4 align="left"><a id="Heading4"></a>Left-Brain Optimization</h4>
+
+  <p>That was the first shot of juice for my optimizer (or at least blow to my ego, which can be just as productive). John went on to say he had gotten texture mapping down to 9 cycles per pixel and one jump per <i>scanline</i> on a 486 (all cycle times will be for the 486 unless otherwise noted); given that my code took, on average, about 44 cycles and 2 taken jumps (plus 1 not taken) per pixel, I had a long way to go.</p>
+
+  <p>The inner loop of my original texture-mapping code is shown in Listing 58.1. All this code does is draw a single texture-mapped scanline, as shown in Figure 58.1; an outer loop runs through all the scanlines in whatever polygon is being drawn. I immediately saw that I could eliminate nearly 10 percent of the cycles by unrolling the loop; obviously, John had done that, else there&rsquo;s no way he could branch only once per scanline. (By the way, branching only once per scanline via a fully unrolled loop is not generally recommended. A branch every few pixels costs relatively little, and the cache effects of fully unrolled code are <i>not</i> good.) I quickly came up with several other ways to speed up the code, but soon realized that all the clever coding in the world wasn&rsquo;t going to get me within 100 percent of John&rsquo;s performance so long as I had to cycle from one plane to the next for every pixel.</p>
+
+  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/58-01.jpg',408,174 )"> --><img src="images/58-01.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/58-01.jpg',408,174)"> --><b>Figure 58.1</b></a>&nbsp;&nbsp;<i>Texture mapping a single horizontal scanline.</i></p>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="57-04.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="58-02.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

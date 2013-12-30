@@ -1,45 +1,44 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Linked Lists and Unintended Challenges</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=15//-->
+  <!--PAGES=287-290//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="15-02.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="15-04.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Linked Lists and Unintended Challenges</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
-
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=15//-->
-<!--PAGES=287-290//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
-
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="15-02.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="15-04.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-</P>
-<P><B>LISTING 15.5 L15-5.C</B></P>
-<!-- CODE //-->
-<PRE>
+  <p><b>LISTING 15.5 L15-5.C</b></p><!-- CODE //-->
+  <pre>
 /* Finds the first node in a value-sorted linked list that
    has a Value field greater than or equal to a key value, and
    returns a pointer to the node preceding that node (to facilitate
@@ -61,23 +60,30 @@ struct LinkNode *FindNodeBeforeValueNotLess(
       return(NodePtr);  /* success; return pointer to node preceding
                            node that was &gt;= */
 }
-</PRE>
-<!-- END CODE //-->
-<P><A NAME="Fig4"><!-- </A><A HREF="javascript:displayWindow('images/15-04.jpg',405,105 )"> --><IMG SRC="images/15-04.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/15-04.jpg',405,105)"> --><B>Figure 15.4</B></A>&nbsp;&nbsp;<I>List terminated by a sentinel.</I>
-</P>
-<H3><A NAME="Heading5"></A>Circular Lists</H3>
-<P>One minor but elegant refinement yet remains: Use a single node as both the head <I>and</I> the tail of the list. We can do this by connecting the last node back to the first through the head/tail node in a circular fashion, as shown in Figure 15.5. This head/tail node can also, of course, be a sentinel; when it&rsquo;s necessary to check for the end of the list explicitly, that can be done by comparing the current node pointer to the head pointer. If they&rsquo;re equal, you&rsquo;re at the head/tail node.</P>
-<P>Why am I so fond of this circular list architecture? For one thing, it saves a node, and most of my linked list programming has been done in severely memory-constrained environments. Mostly, though, it&rsquo;s just so <I>neat;</I> with this setup, there&rsquo;s not a single node or inner-loop instruction wasted. Perfect economy of programming, if you ask me.</P>
-<P>I must admit that I racked my brains for quite a while to come up with the circular list, simple as it may seem. Shortly after coming up with it, I happened to look in Sedgewick&rsquo;s book, only to find my nifty optimization described plain as day; and a little while after <I>that,</I> I came across a thread in the algorithms/computer.sci topic on BIX that described it in considerable detail. Folks, the information is out there. Look it up <I>before</I> turning on your optimizer afterburners!</P>
-<P>Listings 15.1 and 15.6 together form a suite of C functions for maintaining a circular linked list sorted by ascending value. (Listing 15.5 requires modification before it will work with circular lists.) Listing 15.7 is an assembly language version of <B>InsertNodeSorted()</B>; note the tremendous efficiency of the scanning loop in <B>InsertNodeSorted()&mdash;</B>four instructions per node!&mdash;thanks to the dummy head/tail/sentinel node. Listing 15.8 is a simple application that illustrates the use of the linked-list functions in Listings 15.1 and 15.6.</P>
-<P>Contrast Figure 15.5 with Figure 15.1, and Listings 15.1, 15.5, 15.6, and 15.7 with Listings 15.3 and 15.4. Yes, linked lists are simple, but not so simple that a little knowledge doesn&rsquo;t make a substantial difference. Make it a habit to read Knuth or Sedgewick or the like before you write a single line of code.</P>
-<P><A NAME="Fig5"><!-- </A><A HREF="javascript:displayWindow('images/15-05.jpg',410,112 )"> --><IMG SRC="images/15-05.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/15-05.jpg',410,112)"> --><B>Figure 15.5</B></A>&nbsp;&nbsp;<I>Representing a circular list.</I>
-</P>
-<P><B>LISTING 15.6 L15-6.C</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p><a id="Fig4"><!-- </A><A HREF="javascript:displayWindow('images/15-04.jpg',405,105 )"> --><img src="images/15-04.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/15-04.jpg',405,105)"> --><b>Figure 15.4</b></a>&nbsp;&nbsp;<i>List terminated by a sentinel.</i></p>
+
+  <h3><a id="Heading5"></a>Circular Lists</h3>
+
+  <p>One minor but elegant refinement yet remains: Use a single node as both the head <i>and</i> the tail of the list. We can do this by connecting the last node back to the first through the head/tail node in a circular fashion, as shown in Figure 15.5. This head/tail node can also, of course, be a sentinel; when it&rsquo;s necessary to check for the end of the list explicitly, that can be done by comparing the current node pointer to the head pointer. If they&rsquo;re equal, you&rsquo;re at the head/tail node.</p>
+
+  <p>Why am I so fond of this circular list architecture? For one thing, it saves a node, and most of my linked list programming has been done in severely memory-constrained environments. Mostly, though, it&rsquo;s just so <i>neat;</i> with this setup, there&rsquo;s not a single node or inner-loop instruction wasted. Perfect economy of programming, if you ask me.</p>
+
+  <p>I must admit that I racked my brains for quite a while to come up with the circular list, simple as it may seem. Shortly after coming up with it, I happened to look in Sedgewick&rsquo;s book, only to find my nifty optimization described plain as day; and a little while after <i>that,</i> I came across a thread in the algorithms/computer.sci topic on BIX that described it in considerable detail. Folks, the information is out there. Look it up <i>before</i> turning on your optimizer afterburners!</p>
+
+  <p>Listings 15.1 and 15.6 together form a suite of C functions for maintaining a circular linked list sorted by ascending value. (Listing 15.5 requires modification before it will work with circular lists.) Listing 15.7 is an assembly language version of <b>InsertNodeSorted()</b>; note the tremendous efficiency of the scanning loop in <b>InsertNodeSorted()&mdash;</b>four instructions per node!&mdash;thanks to the dummy head/tail/sentinel node. Listing 15.8 is a simple application that illustrates the use of the linked-list functions in Listings 15.1 and 15.6.</p>
+
+  <p>Contrast Figure 15.5 with Figure 15.1, and Listings 15.1, 15.5, 15.6, and 15.7 with Listings 15.3 and 15.4. Yes, linked lists are simple, but not so simple that a little knowledge doesn&rsquo;t make a substantial difference. Make it a habit to read Knuth or Sedgewick or the like before you write a single line of code.</p>
+
+  <p><a id="Fig5"><!-- </A><A HREF="javascript:displayWindow('images/15-05.jpg',410,112 )"> --><img src="images/15-05.jpg" /><br />
+  <!-- </A>
+<BR><A HREF="javascript:displayWindow('images/15-05.jpg',410,112)"> --><b>Figure 15.5</b></a>&nbsp;&nbsp;<i>Representing a circular list.</i></p>
+
+  <p><b>LISTING 15.6 L15-6.C</b></p><!-- CODE //-->
+  <pre>
 /*  Suite of functions for maintaining a linked list sorted by
     ascending order of the Value field. The list is circular; that
     is,it has a dummy node as both the head and the tail of the list.
@@ -143,31 +149,29 @@ struct LinkNode *InsertNodeSorted(struct LinkNode *HeadOfListNode,
    NodePtr-&gt;NextNode = NodeToInsert;
    return(NodePtr);
 }
-</PRE>
-<!-- END CODE //-->
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="15-02.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="15-04.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p><br /></p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="15-02.html">Previous</a></td>
 
-<!-- END FOOTER -->
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="15-04.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
 
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

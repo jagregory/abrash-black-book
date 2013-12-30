@@ -1,44 +1,44 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Zenning and the Flexible Mind</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=22//-->
+  <!--PAGES=419-420//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="22-02.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="23-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Zenning and the Flexible Mind</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
-
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=22//-->
-<!--PAGES=419-420//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
-
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="22-02.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="23-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P><B>LISTING 22.5 L22-5.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+  <p><b>LISTING 22.5 L22-5.ASM</b></p><!-- CODE //-->
+  <pre>
 ClearS         proc near
       push     bp                       ;save caller&rsquo;s BP
       mov      bp,sp                    ;point to stack frame
@@ -56,14 +56,14 @@ Bye:
       pop      bp                       ;restore caller&rsquo;s BP
       ret      EndMrk-RetAddr-2         ;return, clearing the parms from the stack
 ClearS         endp
-</PRE>
-<!-- END CODE //-->
-<P>(We could get rid of yet another instruction by having the calling code pack both the attribute and the fill value into the same word, but that&rsquo;s not part of the specification for this particular routine.)
-</P>
-<P>Another nifty instruction-rearrangement trick saves 6 more bytes. <B>ClearS</B> checks to see whether the far pointer is null (zero) at the start of the routine...then loads and uses that same far pointer later on. Let&rsquo;s get that pointer into registers and keep it there; that way we can check to see whether it&rsquo;s null with a single comparison, and can use it later without having to reload it from memory. This technique is shown in Listing 22.6.</P>
-<P><B>LISTING 22.6 L22-6.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p>(We could get rid of yet another instruction by having the calling code pack both the attribute and the fill value into the same word, but that&rsquo;s not part of the specification for this particular routine.)</p>
+
+  <p>Another nifty instruction-rearrangement trick saves 6 more bytes. <b>ClearS</b> checks to see whether the far pointer is null (zero) at the start of the routine...then loads and uses that same far pointer later on. Let&rsquo;s get that pointer into registers and keep it there; that way we can check to see whether it&rsquo;s null with a single comparison, and can use it later without having to reload it from memory. This technique is shown in Listing 22.6.</p>
+
+  <p><b>LISTING 22.6 L22-6.ASM</b></p><!-- CODE //-->
+  <pre>
 ClearS         proc near
       push     bp                       ;save caller&rsquo;s BP
       mov      bp,sp                    ;point to stack frame
@@ -80,19 +80,24 @@ Bye:
       pop      bp                       ;restore caller&rsquo;s BP
       ret      EndMrk-RetAddr-2         ;return, clearing the parms from the stack
 ClearS         endp
-</PRE>
-<!-- END CODE //-->
-<P>Well. Now we&rsquo;re down to 28 bytes, having reduced the size of this subroutine by nearly 50 percent. Only 13 instructions remain. Realistically, how much smaller can we make this code?
-</P>
-<P>About one-third smaller yet, as it turns out&mdash;but in order to do that, we must stretch our minds and use the 8088&rsquo;s instructions in unusual ways. Let me ask you this: What do most of the instructions in the current version of <B>ClearS</B> do?</P>
-<P>They either load parameters from the stack frame or set up the registers so that the parameters can be accessed. Mind you, there&rsquo;s nothing wrong with the stack-frame-oriented instructions used in <B>ClearS</B>; those instructions access the stack frame in a highly efficient way, exactly as the designers of the 8088 intended, and just as the code generated by a high-level language would. That means that we aren&rsquo;t going to be able to improve the code if we don&rsquo;t bend the rules a bit.</P>
-<P>Let&rsquo;s think...the parameters are sitting on the stack, and most of our instruction bytes are being used to read bytes off the stack with BP-based addressing...we need a more efficient way to address the stack...<I>the stack</I>...THE STACK!</P>
-<P>Ye gods! That&rsquo;s easy&mdash;we can use the <I>stack pointer</I> to address the stack rather than BP. While it&rsquo;s true that the stack pointer can&rsquo;t be used for <I>mod-reg-rm</I> addressing, as BP can, it <I>can</I> be used to pop data off the stack&mdash;and <B>POP</B> is a one-byte instruction. Instructions don&rsquo;t get any shorter than that.</P>
-<P>There is one detail to be taken care of before we can put our plan into action: The return address&mdash;the address of the calling code&mdash;is on top of the stack, so the parameters we want can&rsquo;t be reached with <B>POP</B>. That&rsquo;s easily solved, however&mdash;we&rsquo;ll just pop the return address into an unused register, then branch through that register when we&rsquo;re done, as we learned to do in Chapter 14. As we pop the parameters, we&rsquo;ll also be removing them from the stack, thereby neatly avoiding the need to discard them when it&rsquo;s time to return.</P>
-<P>With that problem dealt with, Listing 22.7 shows the Zenned version of <B>ClearS</B>.</P>
-<P><B>LISTING 22.7 L22-7.ASM</B></P>
-<!-- CODE //-->
-<PRE>
+</pre><!-- END CODE //-->
+
+  <p>Well. Now we&rsquo;re down to 28 bytes, having reduced the size of this subroutine by nearly 50 percent. Only 13 instructions remain. Realistically, how much smaller can we make this code?</p>
+
+  <p>About one-third smaller yet, as it turns out&mdash;but in order to do that, we must stretch our minds and use the 8088&rsquo;s instructions in unusual ways. Let me ask you this: What do most of the instructions in the current version of <b>ClearS</b> do?</p>
+
+  <p>They either load parameters from the stack frame or set up the registers so that the parameters can be accessed. Mind you, there&rsquo;s nothing wrong with the stack-frame-oriented instructions used in <b>ClearS</b>; those instructions access the stack frame in a highly efficient way, exactly as the designers of the 8088 intended, and just as the code generated by a high-level language would. That means that we aren&rsquo;t going to be able to improve the code if we don&rsquo;t bend the rules a bit.</p>
+
+  <p>Let&rsquo;s think...the parameters are sitting on the stack, and most of our instruction bytes are being used to read bytes off the stack with BP-based addressing...we need a more efficient way to address the stack...<i>the stack</i>...THE STACK!</p>
+
+  <p>Ye gods! That&rsquo;s easy&mdash;we can use the <i>stack pointer</i> to address the stack rather than BP. While it&rsquo;s true that the stack pointer can&rsquo;t be used for <i>mod-reg-rm</i> addressing, as BP can, it <i>can</i> be used to pop data off the stack&mdash;and <b>POP</b> is a one-byte instruction. Instructions don&rsquo;t get any shorter than that.</p>
+
+  <p>There is one detail to be taken care of before we can put our plan into action: The return address&mdash;the address of the calling code&mdash;is on top of the stack, so the parameters we want can&rsquo;t be reached with <b>POP</b>. That&rsquo;s easily solved, however&mdash;we&rsquo;ll just pop the return address into an unused register, then branch through that register when we&rsquo;re done, as we learned to do in Chapter 14. As we pop the parameters, we&rsquo;ll also be removing them from the stack, thereby neatly avoiding the need to discard them when it&rsquo;s time to return.</p>
+
+  <p>With that problem dealt with, Listing 22.7 shows the Zenned version of <b>ClearS</b>.</p>
+
+  <p><b>LISTING 22.7 L22-7.ASM</b></p><!-- CODE //-->
+  <pre>
 ClearS         procnear
       pop      dx                  ;get the return address
       pop      ax                  ;put fill char into AL
@@ -109,32 +114,33 @@ ClearS         procnear
 Bye:
       jmp      dx                  ;return to the calling code
 ClearS         endp
-</PRE>
-<!-- END CODE //-->
-<P>At long last, we&rsquo;re down to the bare metal. This version of <B>ClearS</B> is just 19 bytes long. That&rsquo;s just 37 percent as long as the original version, <I>without any change whatsoever in the functionality that <B>ClearS</B> makes available to the calling code</I>. The code is bound to run a bit faster too, given that there are far fewer instruction bytes and fewer memory accesses.</P>
-<P>All in all, the Zenned version of <B>ClearS</B> is a vast improvement over the original. Probably not the best possible implementation&mdash;<I>never say never!</I>&mdash;but an awfully good one.</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="22-02.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="23-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>At long last, we&rsquo;re down to the bare metal. This version of <b>ClearS</b> is just 19 bytes long. That&rsquo;s just 37 percent as long as the original version, <i>without any change whatsoever in the functionality that <b>ClearS</b> makes available to the calling code</i>. The code is bound to run a bit faster too, given that there are far fewer instruction bytes and fewer memory accesses.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>All in all, the Zenned version of <b>ClearS</b> is a vast improvement over the original. Probably not the best possible implementation&mdash;<i>never say never!</i>&mdash;but an awfully good one.</p>
 
-<!-- END FOOTER -->
+  <p><br /></p>
 
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="22-02.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="23-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

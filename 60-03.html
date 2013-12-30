@@ -1,44 +1,44 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Compiling BSP Trees</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=60//-->
+  <!--PAGES=1123-1127//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="60-02.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="60-04.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Compiling BSP Trees</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
-
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=60//-->
-<!--PAGES=1123-1127//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
-
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="60-02.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="60-04.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P><B>Listing 60.1 L60_1.CPP</B></P>
-<!-- CODE //-->
-<PRE>
+  <p><b>Listing 60.1 L60_1.CPP</b></p><!-- CODE //-->
+  <pre>
 #define MAX_NUM_LINESEGS 1000
 #define MAX_INT          0x7FFFFFFF
 #define MATCH_TOLERANCE  0.00001
@@ -115,7 +115,7 @@ LINESEG * SelectBSPTree(LINESEG * plineseghead,
                 // actual line segment intersects the infinite line
                 // of the root, and split if so
                 t =  numer / denom;
-                if ((t &gt; pcurrentline-&gt;tstart) &&
+                if ((t &gt; pcurrentline-&gt;tstart) &amp;&amp;
                         (t &lt; pcurrentline-&gt;tend)) {
                     // The root splits the current line
                     tempsplitcount++;
@@ -204,7 +204,7 @@ LINESEG * BuildBSPTree(LINESEG * plineseghead, LINESEG * prootline,
             // line segment intersects the infinite line of the root,
             // and split if so
             t =  numer / denom;
-            if ((t &gt; pcurrentline-&gt;tstart) &&
+            if ((t &gt; pcurrentline-&gt;tstart) &amp;&amp;
                     (t &lt; pcurrentline-&gt;tend)) {
                 // The line segment must be split; add one split
                 // segment to each list
@@ -214,7 +214,7 @@ LINESEG * BuildBSPTree(LINESEG * plineseghead, LINESEG * prootline,
                     return NULL;
                 }
                 // Make a new line entry for the split part of line
-                psplitline = &pCompiledLinesegs[NumCompiledLinesegs];
+                psplitline = &amp;pCompiledLinesegs[NumCompiledLinesegs];
                 NumCompiledLinesegs++;
                 *psplitline = *pcurrentline;
                 psplitline-&gt;tstart = t;
@@ -282,7 +282,7 @@ LINESEG * BuildBSPTree(LINESEG * plineseghead, LINESEG * prootline,
         prootline-&gt;pfronttree = NULL;
     } else {
         if (!SelectBSPTree(pfrontlines, pCurrentTree,
-                          &prootline-&gt;pfronttree)) {
+                          &amp;prootline-&gt;pfronttree)) {
             return NULL;
         }
     }
@@ -290,37 +290,35 @@ LINESEG * BuildBSPTree(LINESEG * plineseghead, LINESEG * prootline,
         prootline-&gt;pbacktree = NULL;
     } else {
         if (!SelectBSPTree(pbacklines, pCurrentTree,
-                          &prootline-&gt;pbacktree)) {
+                          &amp;prootline-&gt;pbacktree)) {
             return NULL;
         }
     }
     return(prootline);
 }
-</PRE>
-<!-- END CODE //-->
-<P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="60-02.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="60-04.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+</pre><!-- END CODE //-->
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p><br /></p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="60-02.html">Previous</a></td>
 
-<!-- END FOOTER -->
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="60-04.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
 
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>

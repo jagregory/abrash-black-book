@@ -1,86 +1,103 @@
-<HTML>
-<HEAD>
-<META name=vsisbn content="1576101746">
-<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
-<META name=vsauthor content="Michael Abrash">
-<META name=vspublisher content="The Coriolis Group">
-<META name=vspubdate content="07/01/97">
-<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="vsisbn" content="1576101746" />
+  <meta name="vstitle" content="Michael Abrash's Graphics Programming Black Book, Special Edition" />
+  <meta name="vsauthor" content="Michael Abrash" />
+  <meta name="vspublisher" content="The Coriolis Group" />
+  <meta name="vspubdate" content="07/01/97" />
+  <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Quake's Hidden-Surface Removal</title><!-- HEADER -->
+  <!-- Empty Reference Subhead -->
+  <!--ISBN=1576101746//-->
+  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+  <!--AUTHOR=Michael Abrash//-->
+  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <!--CHAPTER=66//-->
+  <!--PAGES=1221-1222//-->
+  <!--UNASSIGNED1//-->
+  <!--UNASSIGNED2//-->
+</head>
 
+<body>
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="66-03.html">Previous</a></td>
 
+        <td><a href="index.html">Table of Contents</a></td>
 
+        <td><a href="67-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
 
-<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Quake's Hidden-Surface Removal</TITLE>
+  <p><br /></p>
 
-<!-- HEADER -->
-<!-- Empty Reference Subhead -->
+  <p>The obvious way to get a 1/z value at any arbitrary point on a polygon is to calculate 1/z at the vertices, interpolate it down both edges of the polygon, and interpolate between the edges to get the value at the point of interest. Unfortunately, that requires doing a lot of work along each edge, and worse, requires division to calculate the 1/z step per pixel across each span.</p>
 
-<!--ISBN=1576101746//-->
-<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-<!--AUTHOR=Michael Abrash//-->
-<!--PUBLISHER=The Coriolis Group, Inc.//-->
-<!--CHAPTER=66//-->
-<!--PAGES=1221-1222//-->
-<!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><body>
+  <p>A better solution is to calculate 1/z directly from the plane equation and the screen x and y of the pixel of interest. The equation is</p>
 
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="66-03.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="67-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
-<P><BR></P>
-<P>The obvious way to get a 1/z value at any arbitrary point on a polygon is to calculate 1/z at the vertices, interpolate it down both edges of the polygon, and interpolate between the edges to get the value at the point of interest. Unfortunately, that requires doing a lot of work along each edge, and worse, requires division to calculate the 1/z step per pixel across each span.
-</P>
-<P>A better solution is to calculate 1/z directly from the plane equation and the screen x and y of the pixel of interest. The equation is</P>
-<P>1/z = (a/d)x&rsquo; - (b/d)y&rsquo; + c/d</P>
-<P>where z is the viewspace z coordinate of the point on the plane that projects to screen coordinate (x&rsquo;,y&rsquo;) (the origin for this calculation is the center of projection, the point on the screen straight ahead of the viewpoint), [a b c] is the plane normal in viewspace, and d is the distance from the viewspace origin to the plane along the normal. Division is done only once per plane, because a, b, c, and d are per-plane constants.</P>
-<P>The full 1/z calculation requires two multiplies and two adds, all of which should be floating-point to avoid range errors. That much floating-point math sounds expensive but really isn&rsquo;t, especially on a Pentium, where a plane&rsquo;s 1/z value at any point can be calculated in as little as six cycles in assembly language.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading10"></A>Where That 1/Z Equation Comes From</H4>
-<P>For those who are interested, here&rsquo;s a quick derivation of the 1/z equation. The plane equation for a plane is
-</P>
-<P>ax + by + cz - d = 0</P>
-<P>where x and y are viewspace coordinates, and a, b, c, d, and z are defined above. If we substitute x=x&rsquo;z and y=-y&rsquo;z (from the definition of the perspective projection, with y inverted because y increases upward in viewspace but downward in screenspace), and do some rearrangement, we get:</P>
-<P>z = d / (ax&rsquo; - by&rsquo; + c)</P>
-<P>Inverting and distributing yields:</P>
-<P>= ax&rsquo;/d - by&rsquo;/d + c/d</P>
-<P>We&rsquo;ll see 1/z sorting in action in Chapter 67.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading11"></A>Quake and Z-Sorting</H4>
-<P>I mentioned earlier that Quake no longer uses BSP order as the sorting key; in fact, it uses 1/z as the key now. Elegant as the gradients are, calculating 1/z from them is clearly slower than just doing a compare on a BSP-ordered key, so why have we switched Quake to 1/z?
-</P>
-<P>The primary reason is to reduce the number of polygons. Drawing in BSP order means following certain rules, including the rule that polygons must be split if they cross BSP planes. This splitting increases the numbers of polygons and edges considerably. By sorting on 1/z, we&rsquo;re able to leave polygons unsplit but still get correct drawing order, so we have far fewer edges to process and faster drawing overall, despite the added cost of 1/z sorting.</P>
-<P>Another advantage of 1/z sorting is that it solves the sorting issues I mentioned at the start involving moving models that are themselves small BSP trees. Sorting in world BSP order wouldn&rsquo;t work here, because these models are separate BSPs, and there&rsquo;s no easy way to work them into the world BSP&rsquo;s sequence order. We don&rsquo;t want to use z-buffering for these models because they&rsquo;re often large objects such as doors, and we don&rsquo;t want to lose the overdraw-reduction benefits that closed doors provide when drawn through the edge list. With sorted spans, the edges of moving BSP models are simply placed in the edge list (first clipping polygons so they don&rsquo;t cross any solid world surfaces, to avoid complications associated with interpenetration), along with all the world edges, and 1/z sorting takes care of the rest.</P>
-<H3><A NAME="Heading12"></A>Decisions Deferred</H3>
-<P>There is, without a doubt, an awful lot of information in the preceding pages, and it may not all connect together yet in your mind. The code and accompanying explanation in the next chapter should help; if you want to peek ahead, the code is available on the CD-ROM as DDJZSORT.ZIP in the directory for Chapter 67. You may also want to take a look at Foley and van Dam&rsquo;s <I>Computer Graphics</I> or Rogers&rsquo; <I>Procedural Elements for Computer Graphics</I>.</P>
-<P>As I write this, it&rsquo;s unclear whether Quake will end up sorting edges by BSP order or 1/z. Actually, there&rsquo;s no guarantee that sorted spans in any form will be the final design. Sometimes it seems like we change graphics engines as often as they play Elvis on the &lsquo;50s oldies stations (but, one would hope, with more aesthetically pleasing results!) and no doubt we&rsquo;ll be considering the alternatives right up until the day we ship.</P><P><BR></P>
-<CENTER>
-<TABLE BORDER>
-<TR>
-<TD><A HREF="66-03.html">Previous</A></TD>
-<TD><A HREF="index.html">Table of Contents</A></TD>
-<TD><A HREF="67-01.html">Next</A></TD>
-</TR>
-</TABLE>
-</CENTER>
+  <p>1/z = (a/d)x&rsquo; - (b/d)y&rsquo; + c/d</p>
 
-<hr width="90%" size="1" noshade>
-<div align="center">
-Graphics Programming Black Book &copy; 2001 Michael Abrash
-</div>
-<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-<!-- reference_subfoot = footer -->
-<!-- reference_footer = subfoot -->
+  <p>where z is the viewspace z coordinate of the point on the plane that projects to screen coordinate (x&rsquo;,y&rsquo;) (the origin for this calculation is the center of projection, the point on the screen straight ahead of the viewpoint), [a b c] is the plane normal in viewspace, and d is the distance from the viewspace origin to the plane along the normal. Division is done only once per plane, because a, b, c, and d are per-plane constants.</p>
 
-<!-- BEGIN SUB FOOTER -->
-</BODY>
-</HTML>
+  <p>The full 1/z calculation requires two multiplies and two adds, all of which should be floating-point to avoid range errors. That much floating-point math sounds expensive but really isn&rsquo;t, especially on a Pentium, where a plane&rsquo;s 1/z value at any point can be calculated in as little as six cycles in assembly language.</p>
 
-<!-- END FOOTER -->
+  <h4 align="left"><a id="Heading10"></a>Where That 1/Z Equation Comes From</h4>
 
+  <p>For those who are interested, here&rsquo;s a quick derivation of the 1/z equation. The plane equation for a plane is</p>
 
+  <p>ax + by + cz - d = 0</p>
+
+  <p>where x and y are viewspace coordinates, and a, b, c, d, and z are defined above. If we substitute x=x&rsquo;z and y=-y&rsquo;z (from the definition of the perspective projection, with y inverted because y increases upward in viewspace but downward in screenspace), and do some rearrangement, we get:</p>
+
+  <p>z = d / (ax&rsquo; - by&rsquo; + c)</p>
+
+  <p>Inverting and distributing yields:</p>
+
+  <p>= ax&rsquo;/d - by&rsquo;/d + c/d</p>
+
+  <p>We&rsquo;ll see 1/z sorting in action in Chapter 67.</p>
+
+  <h4 align="left"><a id="Heading11"></a>Quake and Z-Sorting</h4>
+
+  <p>I mentioned earlier that Quake no longer uses BSP order as the sorting key; in fact, it uses 1/z as the key now. Elegant as the gradients are, calculating 1/z from them is clearly slower than just doing a compare on a BSP-ordered key, so why have we switched Quake to 1/z?</p>
+
+  <p>The primary reason is to reduce the number of polygons. Drawing in BSP order means following certain rules, including the rule that polygons must be split if they cross BSP planes. This splitting increases the numbers of polygons and edges considerably. By sorting on 1/z, we&rsquo;re able to leave polygons unsplit but still get correct drawing order, so we have far fewer edges to process and faster drawing overall, despite the added cost of 1/z sorting.</p>
+
+  <p>Another advantage of 1/z sorting is that it solves the sorting issues I mentioned at the start involving moving models that are themselves small BSP trees. Sorting in world BSP order wouldn&rsquo;t work here, because these models are separate BSPs, and there&rsquo;s no easy way to work them into the world BSP&rsquo;s sequence order. We don&rsquo;t want to use z-buffering for these models because they&rsquo;re often large objects such as doors, and we don&rsquo;t want to lose the overdraw-reduction benefits that closed doors provide when drawn through the edge list. With sorted spans, the edges of moving BSP models are simply placed in the edge list (first clipping polygons so they don&rsquo;t cross any solid world surfaces, to avoid complications associated with interpenetration), along with all the world edges, and 1/z sorting takes care of the rest.</p>
+
+  <h3><a id="Heading12"></a>Decisions Deferred</h3>
+
+  <p>There is, without a doubt, an awful lot of information in the preceding pages, and it may not all connect together yet in your mind. The code and accompanying explanation in the next chapter should help; if you want to peek ahead, the code is available on the CD-ROM as DDJZSORT.ZIP in the directory for Chapter 67. You may also want to take a look at Foley and van Dam&rsquo;s <i>Computer Graphics</i> or Rogers&rsquo; <i>Procedural Elements for Computer Graphics</i>.</p>
+
+  <p>As I write this, it&rsquo;s unclear whether Quake will end up sorting edges by BSP order or 1/z. Actually, there&rsquo;s no guarantee that sorted spans in any form will be the final design. Sometimes it seems like we change graphics engines as often as they play Elvis on the &lsquo;50s oldies stations (but, one would hope, with more aesthetically pleasing results!) and no doubt we&rsquo;ll be considering the alternatives right up until the day we ship.</p>
+
+  <p><br /></p>
+
+  <center>
+    <table border="1">
+      <tr>
+        <td><a href="66-03.html">Previous</a></td>
+
+        <td><a href="index.html">Table of Contents</a></td>
+
+        <td><a href="67-01.html">Next</a></td>
+      </tr>
+    </table>
+  </center>
+  <hr width="90%" size="1" noshade="noshade" />
+
+  <div align="center">
+    Graphics Programming Black Book &copy; 2001 Michael Abrash
+  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+  <!-- reference_subfoot = footer -->
+  <!-- reference_footer = subfoot -->
+  <!-- BEGIN SUB FOOTER -->
+  <!-- END FOOTER -->
+</body>
+</html>
