@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Fast Convex Polygons</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Fast Convex Polygons</title>
   <meta name="chapter" content="39" />
   <meta name="pages" content="730-733" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -41,7 +34,7 @@
 
   <p>Ya gotta love that integer arithmetic.</p>
 
-  <p><b>LISTING 39.2 L39-2.C</b></p><!-- CODE //-->
+  <p><b>LISTING 39.2 L39-2.C</b></p>
   <pre>
 /* Scan converts an edge from (X1,Y1) to (X2,Y2), not including the
    point at (X2,Y2). If SkipFirst == 1, the point at (X1,Y1) isn&rsquo;t
@@ -158,9 +151,9 @@ void ScanEdge(int X1, int Y1, int X2, int Y2, int SetXStart,
 
    *EdgePointPtr = WorkingEdgePointPtr;   /* advance caller&rsquo;s ptr */
 }
-</pre><!-- END CODE //-->
+</pre>
 
-  <h3><a id="Heading6"></a>The Finishing Touch: Assembly Language</h3>
+  <h3 id="Heading6">The Finishing Touch: Assembly Language</h3>
 
   <p>The C implementation in Listing 39.2 is now nearly 20 times as fast as the original, which is good enough for most purposes. Still, it requires that one of the large data models be used (for <b>memset</b> ), and it&rsquo;s certainly not the fastest possible code. The obvious next step is assembly language.</p>
 
@@ -183,10 +176,6 @@ void ScanEdge(int X1, int Y1, int X2, int Y2, int SetXStart,
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

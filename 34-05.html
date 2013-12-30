@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Changing Colors without Writing Pixels</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Changing Colors without Writing Pixels</title>
   <meta name="chapter" content="34" />
   <meta name="pages" content="650-652" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -47,15 +40,15 @@
 
   <p>That&rsquo;s what <i>I&rsquo;d</i> do. Don&rsquo;t let yourself be held back by my limited imagination, though! Color cycling may be the most complicated of all the color control techniques, but it&rsquo;s also the most powerful.</p>
 
-  <h3><a id="Heading9"></a>Odds and Ends</h3>
+  <h3 id="Heading9">Odds and Ends</h3>
 
   <p>In my experience, when relying on the autoincrementing feature while loading the DAC, the Write Index register wraps back from 255 to 0, and likewise when you load a block of registers through the BIOS. So far as I know, this is a characteristic of the hardware, and should be consistent; also, Richard Wilton documents this behavior for the BIOS in the VGA bible, <i>Programmer&rsquo;s Guide to PC Video Systems, Second Edition</i> (Microsoft Press), so you should be able to count on it. Not that I see that DAC index wrapping is especially useful, but it never hurts to understand exactly how your resources behave, and I never know when one of you might come up with a serviceable application for any particular quirk.</p>
 
-  <h4 align="left"><a id="Heading10"></a>The DAC Mask</h4>
+  <h4 align="left" id="Heading10">The DAC Mask</h4>
 
   <p>There&rsquo;s one register in the DAC that I haven&rsquo;t mentioned yet, the DAC Mask register at 03C6H. The operation of this register is simple but powerful; it can mask off any or all of the 8 bits of pixel information coming into the DAC from the VGA. Whenever a bit of the DAC Mask register is 1, the corresponding bit of pixel information is passed along to the DAC to be used in looking up the RGB triplet to be sent to the screen. Whenever a bit of the DAC Mask register is 0, the corresponding pixel bit is ignored, and a 0 is used for that bit position in all look-ups of RGB triplets. At the extreme, a DAC Mask setting of 0 causes all 8 bits of pixel information to be ignored, so DAC location 0 is looked up for every pixel, and the entire screen displays the color stored in DAC location 0. This makes setting the DAC Mask register to 0 a quick and easy way to blank the screen.</p>
 
-  <h4 align="left"><a id="Heading11"></a>Reading the DAC</h4>
+  <h4 align="left" id="Heading11">Reading the DAC</h4>
 
   <p>The DAC can be read directly, via the DAC Read Index register at 3C7H and the DAC Data register at 3C9H, in much the same way as it can be written directly by way of the DAC Write Index register&mdash;complete with autoincrementing the DAC Read Index register after every three reads. Everything I&rsquo;ve said about writing to the DAC applies to reading from the DAC. In fact, reading from the DAC can even cause snow, just as loading the DAC does, so it should ideally be performed during vertical blanking.</p>
 
@@ -65,7 +58,7 @@
 
   <p>Listing 34.1 illustrates reading the DAC both through the BIOS block-read function and directly, with the direct-read code capable of conditionally assembling to either guard against interrupts or not and to use <b>REP INSB</b> or not. As you can see, reading the DAC settings is very much symmetric with setting the DAC.</p>
 
-  <h4 align="left"><a id="Heading12"></a>Cycling Down</h4>
+  <h4 align="left" id="Heading12">Cycling Down</h4>
 
   <p>And so, at long last, we come to the end of our discussion of color control on the VGA. If it has been more complex than anyone might have imagined, it has also been most rewarding. There&rsquo;s as much obscure but very real potential in color control as there is anywhere on the VGA, which is to say that there&rsquo;s a very great deal of potential indeed. Put color cycling or color paging together with the page flipping and image drawing techniques explored elsewhere in this book, and you&rsquo;ll leave the audience gasping and wondering &ldquo;How the heck did they <i>do</i> that?&rdquo;</p>
 
@@ -86,10 +79,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

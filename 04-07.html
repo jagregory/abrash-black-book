@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: In the Lair of the Cycle-Eaters</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: In the Lair of the Cycle-Eaters</title>
   <meta name="chapter" content="04" />
   <meta name="pages" content="097-099" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,11 +30,11 @@
 
   <p><br /></p>
 
-  <h4 align="left"><a id="Heading17"></a>The Impact of DRAM Refresh</h4>
+  <h4 align="left" id="Heading17">The Impact of DRAM Refresh</h4>
 
   <p>Let&rsquo;s look at examples from opposite ends of the spectrum in terms of the impact of DRAM refresh on code performance. First, consider the series of <b>MUL</b> instructions in Listing 4.9. Since a 16-bit <b>MUL</b> on the 8088 executes in between 118 and 133 cycles and is only 2 bytes long, there should be plenty of time for the prefetch queue to fill after each instruction, even after DRAM refresh has taken its slice of memory access time. Consequently, the prefetch queue should be able to keep the Execution Unit well-supplied with instruction bytes at all times. Since Listing 4.9 uses no memory operands, the Execution Unit should never have to wait for data from memory, and DRAM refresh should have no impact on performance. (Remember that the Execution Unit can operate normally during DRAM refreshes so long as it doesn&rsquo;t need to request a memory access from the Bus Interface Unit.)</p>
 
-  <p><b>LISTING 4.9 LST4-9.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 4.9 LST4-9.ASM</b></p>
   <pre>
 ; Measures the performance of repeated MUL instructions,
 ; which allow the prefetch queue to be full at all times,
@@ -54,13 +47,13 @@
      mul  ax
      endm
      call ZTimerOff
-</pre><!-- END CODE //-->
+</pre>
 
   <p>Running Listing 4.9, we find that each <b>MUL</b> executes in 24.72 &micro;s, or exactly 118 cycles. Since that&rsquo;s the shortest time in which <b>MUL</b> can execute, we can see that no performance is lost to DRAM refresh. Listing 4.9 clearly illustrates that DRAM refresh only affects code performance when a DRAM refresh forces the Execution Unit of the 8088 to wait for a memory access.</p>
 
   <p>Now let&rsquo;s look at the series of <b>SHR</b> instructions shown in Listing 4.10. Since <b>SHR</b> executes in 2 cycles but is 2 bytes long, the prefetch queue should be empty while Listing 4.10 executes, with the 8088 prefetching instruction bytes non-stop. As a result, the time per instruction of Listing 4.10 should precisely reflect the time required to fetch the instruction bytes.</p>
 
-  <p><b>LISTING 4.10 LST4-10.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 4.10 LST4-10.ASM</b></p>
   <pre>
 ; Measures the performance of repeated SHR instructions,
 ; which empty the prefetch queue, to demonstrate the
@@ -71,7 +64,7 @@
      shr  ax,1
      endm
      call ZTimerOff
-</pre><!-- END CODE //-->
+</pre>
 
   <p>Since 4 cycles are required to read each instruction byte, we&rsquo;d expect each <b>SHR</b> to execute in 8 cycles, or 1.676 &micro;s, if there were no DRAM refresh. In fact, each <b>SHR</b> in Listing 4.10 executes in 1.81 &micro;s, indicating that DRAM refresh is taking 7.4 percent of the program&rsquo;s execution time. That&rsquo;s nearly 2 percent more than our worst-case estimate of the loss to DRAM refresh overhead! In fact, the result indicates that DRAM refresh is stealing not 4, but 5.33 cycles out of every 72 cycles. How can this be?</p>
 
@@ -79,7 +72,7 @@
 
   <p>Which of the two cases we&rsquo;ve examined reflects reality? While either case <i>can</i> happen, the latter case&mdash;significant performance reduction, ranging as high as 8.33 percent&mdash;is far more likely to occur. This is especially true for high-performance assembly code, which uses fast instructions that tend to cause non-stop instruction fetching.</p>
 
-  <h4 align="left"><a id="Heading18"></a>What to Do About the DRAM Refresh Cycle-Eater?</h4>
+  <h4 align="left" id="Heading18">What to Do About the DRAM Refresh Cycle-Eater?</h4>
 
   <p><i>Hmmm.</i> When we discovered the prefetch queue cycle-eater, we learned to use short instructions. When we discovered the 8-bit bus cycle-eater, we learned to use byte-sized memory operands whenever possible, and to keep word-sized variables in registers. What can we do to work around the DRAM refresh cycle-eater?</p>
 
@@ -91,7 +84,7 @@
 
   <p>The important thing to understand about DRAM refresh is that it generally slows your code down, and that the extent of that performance reduction can vary considerably and unpredictably, depending on how the DRAM refreshes interact with your code&rsquo;s pattern of memory accesses. When you use the Zen timer and get a fractional cycle count for the execution time of an instruction, that&rsquo;s often the DRAM refresh cycle-eater at work. (The display adapter cycleis another possible culprit, and, on 386s and later processors, cache misses and pipeline execution hazards produce this sort of effect as well.) Whenever you get two timing results that differ less or more than they seemingly should, that&rsquo;s usually DRAM refresh too. Thanks to DRAM refresh, variations of up to 8.33 percent in PC code performance are par for the course.</p>
 
-  <h3><a id="Heading19"></a>Wait States</h3>
+  <h3 id="Heading19">Wait States</h3>
 
   <p>Wait states are cycles during which a bus access by the CPU to a device on the PC&rsquo;s bus is temporarily halted by that device while the device gets ready to complete the read or write. Wait states are well and truly the lowest level of code performance. Everything we have discussed (and will discuss)&mdash;even DMA accesses&mdash;can be affected by wait states.</p>
 
@@ -112,10 +105,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

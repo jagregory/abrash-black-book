@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pushing the 486</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pushing the 486</title>
   <meta name="chapter" content="12" />
   <meta name="pages" content="243-246" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -39,41 +32,41 @@
 
   <p>You don&rsquo;t need to understand every corner of the 486 universe unless you&rsquo;re a diehard ASMhead who does this stuff for fun. Just learn enough to be able to speed up the key portions of your programs, and spend the rest of your time on a fast design and overall implementation.</p>
 
-  <h4 align="left"><a id="Heading10"></a>More Fun with Byte Registers</h4>
+  <h4 align="left" id="Heading10">More Fun with Byte Registers</h4>
 
   <p>Rule #4: Don&rsquo;t load <i>any</i> byte register exactly 2 cycles before using <i>any</i> register to address memory.</p>
 
-  <p>This, the last of this chapter&rsquo;s rules, is the strangest of the lot. If any byte register is loaded, and then two cycles later any register is used to point to memory, one cycle is lost. So, for example, this code</p><!-- CODE SNIP //-->
+  <p>This, the last of this chapter&rsquo;s rules, is the strangest of the lot. If any byte register is loaded, and then two cycles later any register is used to point to memory, one cycle is lost. So, for example, this code</p>
   <pre>
 mov    al,bl
 mov    cx,dx
 mov    si,[di]
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>takes four rather than the expected three cycles to execute. Note that it is <i>not</i> required that the byte register be part of the register used to address memory; any byte register will do the trick.</p>
 
-  <p>Worse still, loading byte registers both one and two cycles before a register is used to address memory costs two cycles, as in</p><!-- CODE SNIP //-->
+  <p>Worse still, loading byte registers both one and two cycles before a register is used to address memory costs two cycles, as in</p>
   <pre>
 mov    bl,al
 mov    cl,3
 mov    bx,[si]
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>which takes five rather than three cycles to run. However, there is <i>no</i> penalty if a byte register is loaded one cycle but not two cycles before a register is used to address memory. Therefore,</p><!-- CODE SNIP //-->
+  <p>which takes five rather than three cycles to run. However, there is <i>no</i> penalty if a byte register is loaded one cycle but not two cycles before a register is used to address memory. Therefore,</p>
   <pre>
 mov    cx,3
 mov    dl,al
 mov    si,[bx]
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>runs in the expected three cycles.</p>
 
-  <p>In truth, I do not know why this happens. Clearly, it has something to do with interrupting the start of the addressing pipeline, and I have my theories about how this works, but at this point they&rsquo;re pure speculation. Whatever the reason for this rule, ignorance of it&mdash;and of its interaction with the other rules&mdash;could lead to considerable performance loss in seemingly air-tight code. For instance, a casual observer would expect the following code to run in 3 cycles:</p><!-- CODE SNIP //-->
+  <p>In truth, I do not know why this happens. Clearly, it has something to do with interrupting the start of the addressing pipeline, and I have my theories about how this works, but at this point they&rsquo;re pure speculation. Whatever the reason for this rule, ignorance of it&mdash;and of its interaction with the other rules&mdash;could lead to considerable performance loss in seemingly air-tight code. For instance, a casual observer would expect the following code to run in 3 cycles:</p>
   <pre>
 mov    bx,offset MemVar
 mov    cl,al
 mov    ax,[bx]
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>A more sophisticated programmer would expect to lose one cycle, because BX is loaded two cycles before being used to address memory. In fact, though, this code takes 5 cycles&mdash;2 cycles, or 67 percent, longer than normal. Why? Well, under normal conditions, loading a byte register&mdash;CL in this case&mdash;one cycle before using a register to address memory produces no penalty; loading 2 cycles ahead is the only case that normally incurs a penalty. However, think of Rule #4 as meaning that loading a byte register disrupts the memory addressing pipeline as it starts up. Viewed that way, we can see that <b>MOV BX,OFFSET MemVar</b> interrupts the addressing pipeline, forcing it to start again, and then, presumably, <b>MOV CL,AL</b> interrupts the pipeline again because the pipeline is now on its first cycle: the one that loading a byte register can affect.</p>
 
@@ -85,11 +78,11 @@ mov    ax,[bx]
     </tr>
   </table>
 
-  <h4 align="left"><a id="Heading11"></a>Timing Your Own 486 Code</h4>
+  <h4 align="left" id="Heading11">Timing Your Own 486 Code</h4>
 
   <p>In case you want to do some 486 performance analysis of your own, let me show you how I arrived at one of the above conclusions; at the same time, I can warn you of the timing hazards of the cache. Listings 12.1 and 12.2 show the code I ran through the Zen timer in order to establish the effects of loading a byte register before using a register to address memory. Listing 12.1 ran in 120 &micro;s on a 33 MHz 486, or 4 cycles per repetition (120 &micro;s/1000 repetitions = 120 ns per repetition; 120 ns per repetition/30 ns per cycle = 4 cycles per repetition); Listing 12.2 ran in 90 &micro;s, or 3 cycles, establishing that loading a byte register costs a cycle only when it&rsquo;s performed exactly 2 cycles before addressing memory.</p>
 
-  <p><b>LISTING 12.1 LST12-1.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 12.1 LST12-1.ASM</b></p>
   <pre>
 ; Measures the effect of loading a byte register 2 cycles before
 ; using a register to address memory.
@@ -108,9 +101,9 @@ CacheFillLoop:
     jz      Done
     jmp     CacheFillLoop
 Done:
-</pre><!-- END CODE //-->
+</pre>
 
-  <p><b>LISTING 12.2 LST12-2.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 12.2 LST12-2.ASM</b></p>
   <pre>
 ; Measures the effect of loading a byte register 1 cycle before
 ; using a register to address memory.
@@ -129,7 +122,7 @@ CacheFillLoop:
     jz     Done
     jmp    CacheFillLoop
 Done:
-</pre><!-- END CODE //-->
+</pre>
 
   <p>Note that Listings 12.1 and 12.2 each repeat the timing of the code under test a second time, to make sure that the instructions are in the cache on the second pass, the one for which results are displayed. Also note that the code is less than 8K in size, so that it can all fit in the 486&rsquo;s 8K internal cache. If I double the <b>REPT</b> value in Listing 12.2 to 2,000, making the test code larger than 8K, the execution time more than doubles to 224 &micro;s, or 3.7 cycles per repetition; the extra seven-tenths of a cycle comes from fetching non-cached instruction bytes.</p>
 
@@ -141,7 +134,7 @@ Done:
     </tr>
   </table>
 
-  <h3><a id="Heading12"></a>The Story Continues</h3>
+  <h3 id="Heading12">The Story Continues</h3>
 
   <p>There&rsquo;s certainly plenty more 486 lore to explore, including the 486&rsquo;s unique prefetch queue, more optimization rules, branching optimizations, performance implications of the cache, the cost of cache misses for reads, and the implications of cache write-through for writes. Nonetheless, we&rsquo;ve covered quite a bit of ground in this chapter, and I trust you&rsquo;ve gotten a feel for the considerable extent to which 486 optimization differs from what you&rsquo;re used to. Odd as 486 optimization is, though, it&rsquo;s well worth mastering, for the 486 is, at its best, so staggeringly fast that carefully crafted 486 code can do more than twice as much per cycle as the best 386 code&mdash;which makes it perhaps 50 times as fast as optimized code for the original PC.</p>
 
@@ -164,10 +157,6 @@ Done:
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

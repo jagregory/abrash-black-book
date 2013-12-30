@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Heinlein's Crystal Ball, Spock's Brain, and the 9-Cycle Dare</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Heinlein's Crystal Ball, Spock's Brain, and the 9-Cycle Dare</title>
   <meta name="chapter" content="58" />
   <meta name="pages" content="1085-1089" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -47,57 +40,53 @@
     </tr>
   </table>
 
-  <p><a id="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/58-03.jpg',407,145 )"> --><img src="images/58-03.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/58-03.jpg',407,145)"> --><b>Figure 58.3</b></a>&nbsp;&nbsp;<i>Texture mapping a single vertical column.</i></p>
+  <p><a id="Fig3"><img src="images/58-03.jpg" /><br />
+  <b>Figure 58.3</b></a>&nbsp;&nbsp;<i>Texture mapping a single vertical column.</i></p>
 
   <p>There are a few complications with Chris&rsquo;s approach, not least that X-Sharp&rsquo;s polygon-filling convention (top and left edges included, bottom and right edges excluded) is hard to reproduce for column-oriented texture mapping. I solved this in X-Sharp version 22 by tweaking the edge-scanning code to allow column-oriented texture mapping to match the current convention. (You&rsquo;ll find X-Sharp 22 on the listings diskette in the directory for this chapter.)</p>
 
   <p>Chris also illustrated another important principle of optimization: A second pair of eyes is invaluable. Even the best of us have blind spots and get caught up in particular implementations; if you bounce your ideas off someone, you may well find them coming back with an unexpected&mdash;and welcome&mdash;spin.</p>
 
-  <h3><a id="Heading6"></a>That&rsquo;s Nice&mdash;But it Sure as Heck Ain&rsquo;t 9 Cycles</h3>
+  <h3 id="Heading6">That&rsquo;s Nice&mdash;But it Sure as Heck Ain&rsquo;t 9 Cycles</h3>
 
   <p>Excellent as Chris&rsquo;s suggestion was, I still had work to do: Listing 58.2 is still more than twice as slow as John Miles&rsquo;s code. Traditionally, I start the optimization process with algorithmic optimization, then try to tie the algorithm and the hardware together for maximum efficiency, and finish up with instruction-by-instruction, take-no-prisoners optimization. We&rsquo;ve already done the first two steps, so it&rsquo;s time to get down to the bare metal.</p>
 
   <p>Listing 58.2 contains three functional parts: Drawing the pixel, advancing the destination pointer, and advancing the source texture pointer. Each of the three parts is amenable to further acceleration.</p>
 
-  <p>Drawing the pixel is difficult to speed up, given that it consists of only two instructions&mdash;difficult, but not impossible. True, the instructions themselves are indeed irreducible, but if we can get rid of the ES: prefix (and, as we shall see, we can), we can rearrange the code to make it run faster on the Pentium. Without a prefix, the instructions execute as follows on the Pentium:</p><!-- CODE SNIP //-->
+  <p>Drawing the pixel is difficult to speed up, given that it consists of only two instructions&mdash;difficult, but not impossible. True, the instructions themselves are indeed irreducible, but if we can get rid of the ES: prefix (and, as we shall see, we can), we can rearrange the code to make it run faster on the Pentium. Without a prefix, the instructions execute as follows on the Pentium:</p>
   <pre>
 
 MOV  AH,[BX]    ;cycle 1 U-pipe
                 ;cycle 1 V-pipe idle; reg contention
 MOV  [DI],AH    ;cycle 2 U-pipe
 
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>The second <b>MOV</b>, being dependent on the value loaded into AH by the first <b>MOV</b>, can&rsquo;t execute until the first <b>MOV</b> is finished, so the Pentium&rsquo;s second pipe, the V-pipe, lies idle for a cycle. We can reclaim that cycle simply by shuffling another instruction between the two <b>MOV</b>s.</p>
 
-  <p>Advancing the destination pointer is easy to speed up: Just build the offset from one scanline to the next into each pixel-drawing instruction as a constant, as in</p><!-- CODE SNIP //-->
+  <p>Advancing the destination pointer is easy to speed up: Just build the offset from one scanline to the next into each pixel-drawing instruction as a constant, as in</p>
   <pre>
 
 MOV [EDI+SCANOFFSET],AH
 
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>and advance EDI only once per unrolled loop iteration.</p>
 
   <p>Advancing the source texture pointer is more complex, but correspondingly more rewarding. Listing 58.2 uses a variant form of 32-bit fixed-point arithmetic to advance the source pointer, with the source texture coordinates and increments stored in 16.16 (16 bits of integer, 16 bits of fraction) format. The source coordinates are stored in a slightly unusual format, whereby the fractional X and Y coordinates are stored and advanced separately, but a single integer value, the source pointer, is used to reflect both the X and Y coordinates. In Listing 58.2, the integer and fractional parts are added into the current coordinates with four separate 16-bit operations, and carries from fractional to integer parts are detected via conditional jumps, as shown in Figure 58.4. There&rsquo;s quite a lot we can do to improve this.</p>
 
-  <p><a id="Fig4"><!-- </A><A HREF="javascript:displayWindow('images/58-04.jpg',407,396 )"> --><img src="images/58-04.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/58-04.jpg',407,396)"> --><b>Figure 58.4</b></a>&nbsp;&nbsp;<i>Original method for advancing the source texture pointer.</i></p>
+  <p><a id="Fig4"><img src="images/58-04.jpg" /><br />
+  <b>Figure 58.4</b></a>&nbsp;&nbsp;<i>Original method for advancing the source texture pointer.</i></p>
 
   <p>First, we can sum the X and Y integer advance amounts outside the loop, then add them both to the source pointer with a single instruction. Second, we can recognize that X advances exactly one extra byte when its fractional part carries, and use <b>ADC</b> to account for X carries, as shown in Figure 58.5. That single <b>ADC</b> can add in not only any X carry, but both the X and Y integer advance amounts as well, thereby eliminating a good chunk of the source-advance code in Listing 58.2. Furthermore, we should somehow be able to use 32-bit registers and instructions to help with the 32-bit fixed-point arithmetic; true, the size override prefix (because we&rsquo;re in a 16-bit segment) will cost a cycle per 32-bit instruction, but that&rsquo;s better than the 3 cycles it takes to do 32-bit arithmetic with 16-bit instructions. It isn&rsquo;t obvious, but there&rsquo;s a nifty trick we can use here, again courtesy of Chris Hecker (who, as you can tell, has done a fair amount of thinking about the complexities of texture mapping).</p>
 
   <p>We can store the current fractional parts of both the X <i>and</i> Y source coordinates in a single 32-bit register, EDX, as shown in Figure 58.6. It&rsquo;s important to note that the Y fraction is actually only 15 bits, with bit 15 of EDX always kept at zero; this allows bit 15 to store the carry status from each Y advance. We can similarly store the fractional X and Y advance amounts in ECX, and can store the sum of the integer parts of the X and Y advance amounts in BP. With this arrangement, the single instruction <b>ADD EDX,ECX</b> advances the fractional parts of both X and Y, and the following instruction <b>ADC SI,BP</b> finishes advancing the source pointer in X. That&rsquo;s a mere 3 cycles, and all that remains is to finish advancing the source pointer in Y.</p>
 
-  <p><a id="Fig5"><!-- </A><A HREF="javascript:displayWindow('images/58-05.jpg',406,252 )"> --><img src="images/58-05.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/58-05.jpg',406,252)"> --><b>Figure 58.5</b></a>&nbsp;&nbsp;<i>Efficient method for advancing source texture pointer.</i></p>
+  <p><a id="Fig5"><img src="images/58-05.jpg" /><br />
+  <b>Figure 58.5</b></a>&nbsp;&nbsp;<i>Efficient method for advancing source texture pointer.</i></p>
 
-  <p><a id="Fig6"><!-- </A><A HREF="javascript:displayWindow('images/58-06.jpg',408,115 )"> --><img src="images/58-06.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/58-06.jpg',408,115)"> --><b>Figure 58.6</b></a>&nbsp;&nbsp;<i>Storing both X and Y fractional coordinates in one register.</i></p>
+  <p><a id="Fig6"><img src="images/58-06.jpg" /><br />
+  <b>Figure 58.6</b></a>&nbsp;&nbsp;<i>Storing both X and Y fractional coordinates in one register.</i></p>
 
   <p>Actually, we also advanced the source pointer by the Y integer amount back when we added BP to SI; all that&rsquo;s left is to detect whether our addition to the Y fractional current coordinate produced a carry. That&rsquo;s easily done by testing bit 15 of EDX; if it&rsquo;s zero, there was no carry and we&rsquo;re done; otherwise, Y carried, so we have to reset bit 15 and advance the source pointer by one scanline. The resulting program flow is shown in Figure 58.7. Note that unlike the X fractional addition, we can&rsquo;t get away with just adding in the carry from the Y fractional addition, because when the Y fraction carries, it indicates a move not from one pixel to the next on a scanline (a single byte), but rather from one scanline to the next (a full scanline width).</p>
 
@@ -118,10 +107,6 @@ MOV [EDI+SCANOFFSET],AH
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Linked Lists and Unintended Challenges</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Linked Lists and Unintended Challenges</title>
   <meta name="chapter" content="15" />
   <meta name="pages" content="287-290" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p><b>LISTING 15.5 L15-5.C</b></p><!-- CODE //-->
+  <p><b>LISTING 15.5 L15-5.C</b></p>
   <pre>
 /* Finds the first node in a value-sorted linked list that
    has a Value field greater than or equal to a key value, and
@@ -60,13 +53,12 @@ struct LinkNode *FindNodeBeforeValueNotLess(
       return(NodePtr);  /* success; return pointer to node preceding
                            node that was &gt;= */
 }
-</pre><!-- END CODE //-->
+</pre>
 
-  <p><a id="Fig4"><!-- </A><A HREF="javascript:displayWindow('images/15-04.jpg',405,105 )"> --><img src="images/15-04.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/15-04.jpg',405,105)"> --><b>Figure 15.4</b></a>&nbsp;&nbsp;<i>List terminated by a sentinel.</i></p>
+  <p><a id="Fig4"><img src="images/15-04.jpg" /><br />
+  <b>Figure 15.4</b></a>&nbsp;&nbsp;<i>List terminated by a sentinel.</i></p>
 
-  <h3><a id="Heading5"></a>Circular Lists</h3>
+  <h3 id="Heading5">Circular Lists</h3>
 
   <p>One minor but elegant refinement yet remains: Use a single node as both the head <i>and</i> the tail of the list. We can do this by connecting the last node back to the first through the head/tail node in a circular fashion, as shown in Figure 15.5. This head/tail node can also, of course, be a sentinel; when it&rsquo;s necessary to check for the end of the list explicitly, that can be done by comparing the current node pointer to the head pointer. If they&rsquo;re equal, you&rsquo;re at the head/tail node.</p>
 
@@ -78,11 +70,10 @@ struct LinkNode *FindNodeBeforeValueNotLess(
 
   <p>Contrast Figure 15.5 with Figure 15.1, and Listings 15.1, 15.5, 15.6, and 15.7 with Listings 15.3 and 15.4. Yes, linked lists are simple, but not so simple that a little knowledge doesn&rsquo;t make a substantial difference. Make it a habit to read Knuth or Sedgewick or the like before you write a single line of code.</p>
 
-  <p><a id="Fig5"><!-- </A><A HREF="javascript:displayWindow('images/15-05.jpg',410,112 )"> --><img src="images/15-05.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/15-05.jpg',410,112)"> --><b>Figure 15.5</b></a>&nbsp;&nbsp;<i>Representing a circular list.</i></p>
+  <p><a id="Fig5"><img src="images/15-05.jpg" /><br />
+  <b>Figure 15.5</b></a>&nbsp;&nbsp;<i>Representing a circular list.</i></p>
 
-  <p><b>LISTING 15.6 L15-6.C</b></p><!-- CODE //-->
+  <p><b>LISTING 15.6 L15-6.C</b></p>
   <pre>
 /*  Suite of functions for maintaining a linked list sorted by
     ascending order of the Value field. The list is circular; that
@@ -149,7 +140,7 @@ struct LinkNode *InsertNodeSorted(struct LinkNode *HeadOfListNode,
    NodePtr-&gt;NextNode = NodeToInsert;
    return(NodePtr);
 }
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -168,10 +159,6 @@ struct LinkNode *InsertNodeSorted(struct LinkNode *HeadOfListNode,
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

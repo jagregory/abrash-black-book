@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Local Optimization</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Local Optimization</title>
   <meta name="chapter" content="07" />
   <meta name="pages" content="136-139" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 7<br />
+  <h2 id="Heading1">Chapter 7<br />
   Local Optimization</h2>
 
-  <h3><a id="Heading2"></a>Optimizing Halfway between Algorithms and Cycle Counting</h3>
+  <h3 id="Heading2">Optimizing Halfway between Algorithms and Cycle Counting</h3>
 
   <p>You might not think it, but there&rsquo;s much to learn about performance programming from the Great Buffalo Sauna Fiasco. To wit:</p>
 
@@ -74,7 +67,7 @@
 
   <p>And yes, in case you&rsquo;re wondering, the above story is indeed true. Was I there? Let me put it this way: If I were, I&rsquo;d never admit it!</p>
 
-  <h4 align="left"><a id="Heading3"></a>When LOOP Is a Bad Idea</h4>
+  <h4 align="left" id="Heading3">When LOOP Is a Bad Idea</h4>
 
   <p>Let&rsquo;s examine first an instruction that is less than it appears to be: <b>LOOP</b>. There&rsquo;s no mystery about what <b>LOOP</b> does; it decrements CX and branches if CX doesn&rsquo;t decrement to zero. It&rsquo;s so beautifully suited to the task of counting down loops that any experienced x86 programmer instinctively stuffs the loop count in CX and reaches for <b>LOOP</b> when setting up a loop. That&rsquo;s fine&mdash;<b>LOOP</b> does, of course, work as advertised&mdash;but there is one problem:</p>
 
@@ -113,10 +106,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: The Polygon Primeval</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: The Polygon Primeval</title>
   <meta name="chapter" content="38" />
   <meta name="pages" content="712-717" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h4 align="left"><a id="Heading5"></a>How Do You Fit Polygons Together?</h4>
+  <h4 align="left" id="Heading5">How Do You Fit Polygons Together?</h4>
 
   <p>How, then, do you fit polygons together? <i>Very</i> carefully. First, the line-tracing algorithm must be adjusted so that it selects only those pixels that are truly inside the polygon. This basically requires shifting a standard line-drawing algorithm horizontally by one half-pixel toward the polygon&rsquo;s interior. That leaves the issue of how to handle points that are exactly on the boundary, and points that lie at vertices, so that those points are drawn once and only once. To deal with that, we&rsquo;re going to adopt the following rules:</p>
 
@@ -67,11 +60,11 @@
 
   <p>For our purposes, nonoverlapping polygons are the way to go, so let&rsquo;s have at them.</p>
 
-  <h3><a id="Heading6"></a>Filling Non-Overlapping Convex Polygons</h3>
+  <h3 id="Heading6">Filling Non-Overlapping Convex Polygons</h3>
 
   <p>Without further ado, Listing 38.1 contains a function, <b>FillConvexPolygon</b>, that accepts a list of points that describe a convex polygon, with the last point assumed to connect to the first, and scans it into a list of lines to fill, then passes that list to the function <b>DrawHorizontalLineList</b> in Listing 38.2. Listing 38.3 is a sample program that calls <b>FillConvexPolygon</b> to draw polygons of various sorts, and Listing 38.4 is a header file included by the other listings. Here are the listings; we&rsquo;ll pick up discussion on the other side.</p>
 
-  <p><b>LISTING 38.1 L38-1.C</b></p><!-- CODE //-->
+  <p><b>LISTING 38.1 L38-1.C</b></p>
   <pre>
  /* Color-fills a convex polygon. All vertices are offset by (XOffset,
     YOffset). &ldquo;Convex&rdquo; means that every horizontal line drawn through
@@ -280,9 +273,9 @@
     }
     *EdgePointPtr = WorkingEdgePointPtr;   /* advance caller&rsquo;s ptr */
  }
-</pre><!-- END CODE //-->
+</pre>
 
-  <p><b>LISTING 38.2 L38-2.C</b></p><!-- CODE //-->
+  <p><b>LISTING 38.2 L38-2.C</b></p>
   <pre>
  /* Draws all pixels in the list of horizontal lines passed in, in
     mode 13h, the VGA&rsquo;s 320x200 256-color mode. Uses a slow pixel-by-
@@ -329,7 +322,7 @@
  #endif
     *ScreenPtr = (unsigned char)Color;
  }
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -348,10 +341,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

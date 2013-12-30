@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Unleashing the Pentium's</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Unleashing the Pentium's</title>
   <meta name="chapter" content="21" />
   <meta name="pages" content="407-409" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -41,7 +34,7 @@
 
   <p>Listing 21.2 shows one interesting alternative that doesn&rsquo;t really buy us anything. Here, we&rsquo;ve eliminated all size prefixes by doing byte-sized <b>MOVs</b> and <b>ADDs</b>, but because the size prefix on <b>ADD AX,[ESI]</b>, for whatever reason, didn&rsquo;t cost anything in Listing 21.1, our efforts are to no avail&mdash;Listing 21.2 still takes 4 cycles per checksummed word. What&rsquo;s worth noting about Listing 21.2 is the extent to which the code is broken into simple instructions and reordered so as to avoid size prefixes, register contention, AGIs, and data bank conflicts (the latter because both <b>[ESI]</b> and <b>[ESI+1]</b> are in the same cache data bank, as discussed in the last chapter).</p>
 
-  <p><b>LISTING 21.2 L21-2.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 21.2 L21-2.ASM</b></p>
   <pre>
 ; Calculates TCP/IP (16-bit carry-wrapping) checksum for buffer
 ;  starting at ESI, of length ECX words.
@@ -69,11 +62,11 @@ ckloop:
 ckloopend:
         add     ax,dx           ;checksum the last word
         adc     eax,0
-</pre><!-- END CODE //-->
+</pre>
 
   <p>Listing 21.3 is a more sophisticated attempt to speed up the checksum calculation. Here we see a hallmark of Pentium optimization: two operations (the checksumming of the current and next pair of words) interleaved together to allow both pipes to run at near maximum capacity. Another hallmark that&rsquo;s apparent in Listing 21.3 is that Pentium-optimized code tends to use more registers and require more instructions than 486-optimized code. Again, note the careful mixing of byte-sized reads to avoid AGIs, register contention, and cache bank collisions, in particular the way in which the byte reads of memory are interspersed with the additions to avoid register contention, and the placement of <b>ADD ESI,4</b> to avoid an AGI.</p>
 
-  <p><b>LISTING 21.3 L21-3.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 21.3 L21-3.ASM</b></p>
   <pre>
 ; Calculates TCP/IP (16-bit carry-wrapping) checksum for buffer
 ;  starting at ESI, of length ECX words.
@@ -121,7 +114,7 @@ ckloopend:
         add         ax,dx
         adc         eax,0
 ckloopdone:
-</pre><!-- END CODE //-->
+</pre>
 
   <p>The checksum loop in Listing 21.3 takes longer than the loop in Listing 21.2, at 6 cycles versus 4 cycles for Listing 21.2&mdash;but Listing 21.3 does two checksum operations in those 6 cycles, so we&rsquo;ve cut the time per checksum addition from 4 to 3 cycles. You might think that this small an improvement doesn&rsquo;t justify the additional complexity of Listing 21.3, but it is a one-third speedup, well worth it if this is a critical loop&mdash;and, in general, if it isn&rsquo;t critical, there&rsquo;s no point in hand-tuning it. That&rsquo;s why I haven&rsquo;t bothered to try to optimize the non-inner-loop code in Listing 21.3; it&rsquo;s only executed once per checksum, so it&rsquo;s unlikely that a cycle or two saved there would make any real-world difference.</p>
 
@@ -144,10 +137,6 @@ ckloopdone:
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

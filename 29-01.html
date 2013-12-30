@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Saving Screens and Other VGA Mysteries</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Saving Screens and Other VGA Mysteries</title>
   <meta name="chapter" content="29" />
   <meta name="pages" content="539-545" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,16 +30,16 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 29<br />
+  <h2 id="Heading1">Chapter 29<br />
   Saving Screens and Other VGA Mysteries</h2>
 
-  <h3><a id="Heading2"></a>Useful Nuggets from the VGA Zen File</h3>
+  <h3 id="Heading2">Useful Nuggets from the VGA Zen File</h3>
 
   <p>There are a number of VGA graphics topics that aren&rsquo;t quite involved enough to warrant their own chapters, yet still cause a fair amount of programmer headscratching&mdash;and thus deserve treatment somewhere in this book. This is the place, and during the course of this chapter we&rsquo;ll touch on saving and restoring 16-color EGA and VGA screens, the 16-out-of-64 colors issue, and techniques involved in reading and writing VGA control registers.</p>
 
   <p>That&rsquo;s a lot of ground to cover, so let&rsquo;s get started!</p>
 
-  <h3><a id="Heading3"></a>Saving and Restoring EGA and VGA Screens</h3>
+  <h3 id="Heading3">Saving and Restoring EGA and VGA Screens</h3>
 
   <p>The memory architectures of EGAs and VGAs are similar enough to treat both together in this regard. The basic principle for saving EGA and VGA 16-color graphics screens is astonishingly simple: Write each plane to disk separately. Let&rsquo;s take a look at how this works in the EGA&rsquo;s hi-res mode 10H, which provides 16 colors at 640x350.</p>
 
@@ -54,15 +47,14 @@
 
   <p>The program shown later on in Listing 29.1 does just what I&rsquo;ve described here, putting the screen into mode 10H, putting up some bittext so there is something to save, and creating the 112K file SNAPSHOT.SCR, which contains the visible portion of the mode 10H frame buffer.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/29-01.jpg',406,303 )"> --><img src="images/29-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/29-01.jpg',406,303)"> --><b>Figure 29.1</b></a>&nbsp;&nbsp;<i>Saving EGA/VGA display memory.</i></p>
+  <p><a id="Fig1"><img src="images/29-01.jpg" /><br />
+  <b>Figure 29.1</b></a>&nbsp;&nbsp;<i>Saving EGA/VGA display memory.</i></p>
 
   <p>The only part of Listing 29.1 that&rsquo;s even remotely tricky is the use of the Read Map register (Graphics Controller register 4) to make each of the four planes of display memory readable in turn. The same code is used to write 28,000 bytes of display memory to disk four times, and 28,000 bytes of memory starting at A000:0000 are written to disk each time; however, a different plane is read each time, thanks to the changing setting of the Read Map register. (If this is unclear, refer back to Figure 29.1; you may also want to reread Chapter 28 to brush up on the operation of the Read Map register in particular and reading EGA and VGA memory in general.)</p>
 
   <p>Of course, we&rsquo;ll want the ability to restore what we&rsquo;ve saved, and Listing 29.2 does this. Listing 29.2 reverses the action of Listing 29.1, selecting mode 10H and then loading 28,000 bytes from SNAPSHOT.SCR into each plane of display memory. The Map Mask register (Sequence Controller register 2) is used to select the plane to be written to. If your computer is slow enough, you can see the colors of the text change as each plane is loaded when Listing 29.2 runs. Note that Listing 29.2 does not itself draw any text, but rather simply loads the bit map saved by Listing 29.1 back into the mode 10H frame buffer.</p>
 
-  <p><b>LISTING 29.1 L29-1.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 29.1 L29-1.ASM</b></p>
   <pre>
 ; Program to put up a mode 10h EGA graphics screen, then save it
 ; to the file SNAPSHOT.SCR.
@@ -192,7 +184,7 @@ Done:
 Start          endp
 Code           ends
                end      Start
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -211,10 +203,6 @@ Code           ends
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

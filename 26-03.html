@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: VGA Write Mode</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: VGA Write Mode</title>
   <meta name="chapter" content="26" />
   <meta name="pages" content="489-497" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -55,7 +48,7 @@
 
   <p>The write mode 3 approach used in Listing 26.1 can be efficiently extended to drawing large blocks of text. For example, suppose that we were to draw a line of 8-pixel-wide bit-mapped text 40 characters long. We could then set up the bit mask and data rotation as appropriate for the left portion of each bit-aligned character (the portion of each character to the left of the byte boundary) and then draw the left portions only of all 40 characters in write mode 3. Then the bit mask could be set up for the right portion of each character, and the right portions of all 40 characters could be drawn. The VGA&rsquo;s fast rotator would be used to do all rotation, and the only <b>OUT</b>s required would be those required to set the bit mask and data rotation. This technique could well outperform single-character bit-mapped text drivers such as the one in Listing 26.1 by a significant margin. Listing 26.2 illustrates one implementation of such an approach. Incidentally, note the use of the 8x14 ROM font in Listing 26.2, rather than the 8x8 ROM font used in Listing 26.1. There is also an 8x16 font stored in ROM, along with the tables used to alter the 8x14 and 8x16 ROM fonts into 9x14 and 9x16 fonts.</p>
 
-  <p><b>LISTING 26.2 L26-2.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 26.2 L26-2.ASM</b></p>
   <pre>
 ; Program to illustrate high-speed text-drawing operation of
 ;  write mode 3 of the VGA.
@@ -375,7 +368,7 @@ SelectFont      endp
 ;
 cseg    ends
         end     start
-</pre><!-- END CODE //-->
+</pre>
 
   <p>In this chapter, I&rsquo;ve tried to give you a feel for how write mode 3 works and what it might be used for, rather than providing polished, optimized, plug-it-in-and-go code. Like the rest of the VGA&rsquo;s write path, write mode 3 is a resource that can be used in a remarkable variety of ways, and I don&rsquo;t want to lock you into thinking of it as useful in just one context. Instead, you should take the time to thoroughly understand what write mode 3 does, and then, when you do VGA programming, think about how write mode 3 can best be applied to the task at hand. Because I focused on illustrating the operation of write mode 3, neither listing in this chapter is the fastest way to accomplish the desired result. For example, Listing 26.2 could be made nearly twice as fast by simply having the CPU rotate, mask, and join the bytes from adjacent characters, then draw the combined bytes to display memory in a single operation.</p>
 
@@ -383,7 +376,7 @@ cseg    ends
 
   <p>As a final note, consider that non-transparent text could also be accelerated with write mode 3. The latches could be filled with the background (text box) color, set/reset could be set to the foreground (text) color, and write mode 3 could then be used to turn monochrome text bytes written by the CPU into characters on the screen with just one write per byte. There are complications, such as drawing partial bytes, and rotating the bytes to align the characters, which we&rsquo;ll revisit later on in Chapter 55, while we&rsquo;re working through the details of the X-Sharp library. Nonetheless, the performance benefit of this approach can be a speedup of as much as four times&mdash;all thanks to the decidedly quirky but surprisingly powerful and flexible write mode 3.</p>
 
-  <h3><a id="Heading4"></a>A Note on Preserving Register Bits</h3>
+  <h3 id="Heading4">A Note on Preserving Register Bits</h3>
 
   <p>If you take a quick look, you&rsquo;ll see that the code in Listing 26.1 uses the readable register feature of the VGA to preserve reserved bits and bits other than those being modified. Older adapters such as the CGA and EGA had few readable registers, so it was necessary to set all bits in a register whenever that register was modified. Happily, all VGA registers are readable, which makes it possible to change only those bits of immediate interest, and, in general, I highly recommend doing exactly that, since IBM (or clone manufacturers) may well someday use some of those reserved bits or change the meanings of some of the bits that are currently in use.</p>
 
@@ -404,10 +397,6 @@ cseg    ends
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: 3-D Clipping and Other Thoughts</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: 3-D Clipping and Other Thoughts</title>
   <meta name="chapter" content="65" />
   <meta name="pages" content="1206-1208" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h4 align="left"><a id="Heading7"></a>The Lessons of Listing 65.3</h4>
+  <h4 align="left" id="Heading7">The Lessons of Listing 65.3</h4>
 
   <p>There are several interesting points to Listing 65.3. First, floating-point arithmetic is used throughout the clipping process. While it is possible to use fixed-point, doing so requires considerable care regarding range and precision. Floating-point is much easier&mdash;and, with the Pentium generation of processors, is generally comparable in speed. In fact, for some operations, such as multiplication in general and division when the floating-point unit is in single-precision mode, floating-point is much faster. Check out Chris Hecker&rsquo;s column in the February 1996 <i>Game Developer</i> for an interesting discussion along these lines.</p>
 
@@ -49,7 +42,7 @@
 
   <p>Finally, clipping in Listing 65.3 is performed in worldspace, rather than in viewspace. The frustum is backtransformed from viewspace (where it is defined, since it exists relative to the viewer) to worldspace for this purpose. Worldspace clipping allows us to transform only those vertices that are visible, rather than transforming all vertices into viewspace, then clipping them. However, the decision whether to clip in worldspace or viewspace is not clear-cut and is affected by several factors.</p>
 
-  <h3><a id="Heading8"></a>Advantages of Viewspace Clipping</h3>
+  <h3 id="Heading8">Advantages of Viewspace Clipping</h3>
 
   <p>Although viewspace clipping requires transforming vertices that may not be drawn, it has potential performance advantages. For example, in worldspace, near and far clip planes are just additional planes that have to be tested and clipped to, using dot products. In viewspace, near and far clip planes are typically planes with constant z coordinates, so testing whether a vertex is near or far-clipped can be performed with a single z compare, and the fractional distance along a line segment to a near or far clip intersection can be calculated with a couple of z subtractions and a divide; no dot products are needed.</p>
 
@@ -59,7 +52,7 @@
 
   <p>I didn&rsquo;t implement normalized clipping in Listing 65.3 because I wanted to illustrate the general 3-D clipping mechanism without additional complications, and because for many applications the dot product (which, after all, takes only 10-20 cycles on a Pentium) is sufficient. However, the more frustum clipping you&rsquo;re doing, especially if most of the polygons are trivially visible, the more attractive the performance advantages of normalized clipping become.</p>
 
-  <h3><a id="Heading9"></a>Further Reading</h3>
+  <h3 id="Heading9">Further Reading</h3>
 
   <p>You now have the basics of 3-D clipping, but because fast clipping is central to high-performance 3-D, there&rsquo;s a lot more to be learned. One good place for further reading is Foley and van Dam; another is <i>Procedural Elements of Computer Graphics</i>, by David F. Rogers. Read and understand either of these books, and you&rsquo;ll know everything you need for world-class clipping.</p>
 
@@ -82,10 +75,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

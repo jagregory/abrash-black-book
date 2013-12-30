@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Higher 256-Color Resolution on the VGA</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Higher 256-Color Resolution on the VGA</title>
   <meta name="chapter" content="31" />
   <meta name="pages" content="587-591" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 31<br />
+  <h2 id="Heading1">Chapter 31<br />
   Higher 256-Color Resolution on the VGA</h2>
 
-  <h3><a id="Heading2"></a>When Is 320x200 Really 320x400?</h3>
+  <h3 id="Heading2">When Is 320x200 Really 320x400?</h3>
 
   <p>One of the more appealing features of the VGA is its ability to display 256 simultaneous colors. Unfortunately, one of the <i>less</i> appealing features of the VGA is the limited resolution (320x200) of the one 256-color mode the IBM-standard BIOS supports. (There are, of course, higher resolution 256-color modes in the legion of SuperVGAs, but they are by no means a standard, and differences between seemingly identical modes from different manufacturers can be vexing.) More colors can often compensate for less resolution, but the resolution difference between the 640x480 16-color mode and the 320x200 256-color mode is so great that many programmers must regretfully decide that they simply can&rsquo;t afford to use the 256-color mode.</p>
 
@@ -50,7 +43,7 @@
 
   <p>So. Let&rsquo;s get started.</p>
 
-  <h3><a id="Heading3"></a>Why 320x200? Only IBM Knows for Sure</h3>
+  <h3 id="Heading3">Why 320x200? Only IBM Knows for Sure</h3>
 
   <p>The first question, of course, is, &ldquo;How can it be possible to get higher 256-color resolutions out of the VGA?&rdquo; After all, there were no unused higher resolutions to be found in the CGA, Hercules card, or EGA.</p>
 
@@ -60,7 +53,7 @@
 
   <p>On the other hand, the smaller display memory size of the MCGA also limits the number of colors supported in 640x480 mode to 2, rather than the 16 supported by the VGA. In this case, though, IBM simply created two modes and made both available on the VGA: mode 11H for 640x480 2-color graphics and mode 12H for 640x480 16-color graphics. The same could have been done for 256-color graphics&mdash;but wasn&rsquo;t. Why? I don&rsquo;t know. Maybe IBM just didn&rsquo;t like the odd aspect ratio of a 320x400 graphics mode. Maybe they didn&rsquo;t want to have to worry about how to map in more than 64K of display memory. Heck, maybe they made a mistake in designing the chip. Whatever the reason, mode 13H is really a 400-scan-line mode masquerading as a 200-scan-line mode, and we can readily end that masquerade.</p>
 
-  <h3><a id="Heading4"></a>320x400 256-Color Mode</h3>
+  <h3 id="Heading4">320x400 256-Color Mode</h3>
 
   <p>Okay, what&rsquo;s so great about 320x400 256-color mode? Two things: easy, safe mode sets and page flipping.</p>
 
@@ -70,7 +63,7 @@
 
   <p>That&rsquo;s why I like 320x400 256-color mode. The next step is to understand how display memory is organized in 320x400 mode, and that&rsquo;s not so simple.</p>
 
-  <h4 align="left"><a id="Heading5"></a>Display Memory Organization in 320x400 Mode</h4>
+  <h4 align="left" id="Heading5">Display Memory Organization in 320x400 Mode</h4>
 
   <p>First, let&rsquo;s look at why display memory must be organized differently in 320x400 256-color mode than in mode 13H. The designers of the VGA intentionally limited the maximum size of the bitmap in mode 13H to 64K, thereby limiting resolution to 320x200. This was accomplished <i>in hardware</i>, so there is no way to extend the bitmap organization of mode 13H to 320x400 mode.</p>
 
@@ -91,10 +84,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Assume Nothing</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Assume Nothing</title>
   <meta name="chapter" content="03" />
   <meta name="pages" content="031-035" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 3<br />
+  <h2 id="Heading1">Chapter 3<br />
   Assume Nothing</h2>
 
-  <h3><a id="Heading2"></a>Understanding and Using the Zen Timer</h3>
+  <h3 id="Heading2">Understanding and Using the Zen Timer</h3>
 
   <p>When you&rsquo;re pushing the envelope in writing optimized PC code, you&rsquo;re likely to become more than a little compulsive about finding approaches that let you wring more speed from your computer. In the process, you&rsquo;re bound to make mistakes, which is fine&mdash;as long as you watch for those mistakes and <i>learn</i> from them.</p>
 
@@ -50,7 +43,7 @@
 
   <p>It ran slower than the original version!</p>
 
-  <h3><a id="Heading3"></a>The Costs of Ignorance</h3>
+  <h3 id="Heading3">The Costs of Ignorance</h3>
 
   <p>As diligent as the author had been, he had nonetheless committed a cardinal sin of x86 assembly language programming: He had assumed that the information available to him was both correct and complete. While the execution times provided by Intel for its processors are indeed correct, they are incomplete; the other&mdash;and often more important&mdash;part of code performance is instruction <i>fetch</i> time, a topic to which I will return in later chapters.</p>
 
@@ -70,7 +63,7 @@
 
   <p>Ignorance can also be responsible for considerable wasted effort. I recall a debate in the letters column of one computer magazine about exactly how quickly text can be drawn on a Color/Graphics Adapter (CGA) screen without causing snow. The letter-writers counted every cycle in their timing loops, just as the author in the story that started this chapter had. Like that author, the letter-writers had failed to take the prefetch queue into account. In fact, they had neglected the effects of video wait states as well, so the code they discussed was actually <i>much</i> slower than their estimates. The proper test would, of course, have been to run the code to see if snow resulted, since the only true measure of code performance is observing it in action.</p>
 
-  <h3><a id="Heading4"></a>The Zen Timer</h3>
+  <h3 id="Heading4">The Zen Timer</h3>
 
   <p>Clearly, one key to mastering Zen-class optimization is a tool with which to measure code performance. The most accurate way to measure performance is with expensive hardware, but reasonable measurements at no cost can be made with the PC&rsquo;s 8253 timer chip, which counts at a rate of slightly over 1,000,000 times per second. The 8253 can be started at the beginning of a block of code of interest and stopped at the end of that code, with the resulting count indicating how long the code took to execute with an accuracy of about 1 microsecond. (A microsecond is one millionth of a second, and is abbreviated &micro;s). To be precise, the 8253 counts once every 838.1 nanoseconds. (A nanosecond is one billionth of a second, and is abbreviated ns.)</p>
 
@@ -93,10 +86,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

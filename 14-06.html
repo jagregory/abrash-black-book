@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Boyer-Moore String Searching</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Boyer-Moore String Searching</title>
   <meta name="chapter" content="14" />
   <meta name="pages" content="274-277" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -41,11 +34,11 @@
 
   <p>Know your data and use your smarts. Don&rsquo;t stop thinking just because you&rsquo;re implementing a big-name algorithm; you know more than it does.</p>
 
-  <h3><a id="Heading6"></a>Further Optimization of Boyer-Moore</h3>
+  <h3 id="Heading6">Further Optimization of Boyer-Moore</h3>
 
   <p>We can do substantially better yet than Listing 14.3 if we&rsquo;re willing to accept tighter limits on the data. Limiting the length of the searched-for pattern to a maximum of 255 bytes allows us to use the <b>XLAT</b> instruction and generally tighten the critical loop. (Be aware, however, that <b>XLAT</b> is a relatively expensive instruction on the 486 and Pentium.) Putting a copy of the searched-for string at the end of the search buffer as a sentinel, so that the search never fails, frees us from counting down the buffer length, and makes it easy to unroll the critical loop. Listing 14.4, which implements these optimizations, is about 60 percent faster than Listing 14.3.</p>
 
-  <p><b>LISTING 14.4 L14-4.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 14.4 L14-4.ASM</b></p>
   <pre>
 ; Searches a buffer for a specified pattern. In case of a mismatch,
 ; uses the value of the mismatched byte to skip across as many
@@ -193,11 +186,11 @@ Done:
         ret
 _FindString     endp
         end
-</pre><!-- END CODE //-->
+</pre>
 
   <p>Note that Table 14.1 includes the time required to build the skip table each time <b>FindString</b> is called. This time could be eliminated for all but the first search when repeatedly searching for a particular pattern, by building the skip table externally and passing a pointer to it as a parameter.</p>
 
-  <h3><a id="Heading7"></a>Know What You Know</h3>
+  <h3 id="Heading7">Know What You Know</h3>
 
   <p>Here we&rsquo;ve turned up our nose at a repeated string instruction, we&rsquo;ve gone against the grain by comparing backward, and yet we&rsquo;ve speeded up our code quite a bit. All this without any restrictions or special requirements (excluding Listing 14.4)&mdash;and without any new information. Everything we needed was sitting there all along; we just needed to think to look at it.</p>
 
@@ -220,10 +213,6 @@ _FindString     endp
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

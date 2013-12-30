@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Local Optimization</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Local Optimization</title>
   <meta name="chapter" content="07" />
   <meta name="pages" content="143-145" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p><b>LISTING 7.2 L7-2.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 7.2 L7-2.ASM</b></p>
   <pre>
 ; Program to illustrate searching through a buffer of a specified
 ; length until a specified zero byte is encountered.
@@ -167,7 +160,7 @@ ByteFound:
      ret
 SearchMaxLengthendp
      end    Start
-</pre><!-- END CODE //-->
+</pre>
 
   <p>How much difference? Listing 7.2 runs in 121 &micro;s&mdash;40 percent faster than Listing 7.1, even though Listing 7.2 still uses <b>LOOP</b> rather than <b>DEC CX/JNZ.</b> (The loop in Listing 7.2 could be unrolled further, too; it&rsquo;s just a question of how much more memory you want to trade for ever-decreasing performance benefits.) That&rsquo;s typical of local optimization; it won&rsquo;t often yield the order-of-magnitude improvements that algorithmic improvements can produce, but it can get you a critical 50 percent or 100 percent improvement when you&rsquo;ve exhausted all other avenues.</p>
 
@@ -196,10 +189,6 @@ SearchMaxLengthendp
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

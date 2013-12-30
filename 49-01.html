@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X 256-Color Animation</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X 256-Color Animation</title>
   <meta name="chapter" content="49" />
   <meta name="pages" content="913-918" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,14 +30,14 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 49<br />
+  <h2 id="Heading1">Chapter 49<br />
   Mode X 256-Color Animation</h2>
 
-  <h3><a id="Heading2"></a>How to Make the VGA Really Get up and Dance</h3>
+  <h3 id="Heading2">How to Make the VGA Really Get up and Dance</h3>
 
   <p>Okay&mdash;no amusing stories or informative anecdotes to kick off this chapter; lotta ground to cover, gotta hurry&mdash;you&rsquo;re impatient, I can smell it. I won&rsquo;t talk about the time a friend made the mistake of loudly saying &ldquo;$100 bill&rdquo; during an animated discussion while walking among the bums on Market Street in San Francisco one night, thereby graphically illustrating that context is everything. I can&rsquo;t spare a word about how my daughter thinks my 11-year-old floppy-disk-based CP/M machine is more powerful than my 386 with its 100-MB hard disk because the CP/M machine&rsquo;s word processor loads and runs twice as fast as the 386&rsquo;s Windows-based word processor, demonstrating that progress is not the neat exponential curve we&rsquo;d like to think it is, and that features and performance are often conflicting notions. And, lord knows, I can&rsquo;t take the time to discuss the habits of small white dogs, notwithstanding that such dogs seem to be relevant to just about every aspect of computing, as Jeff Duntemann&rsquo;s writings make manifest. No lighthearted fluff for us; we have real work to do, for today we animate with 256 colors in Mode X.</p>
 
-  <h3><a id="Heading3"></a>Masked Copying</h3>
+  <h3 id="Heading3">Masked Copying</h3>
 
   <p>Over the past two chapters, we&rsquo;ve put together most of the tools needed to implement animation in the VGA&rsquo;s undocumented 320x240 256-color Mode X. We now have mode set code, solid and 4x4 pattern fills, system memory-to-display memory block copies, and display memory-to-display memory block copies. The final piece of the puzzle is the ability to copy a nonrectangular image to display memory. I call this <i>masked copying</i>.</p>
 
@@ -54,7 +47,7 @@
 
   <p>The system memory to display memory masked copy routine in Listing 49.1 implements masked copying in a straightforward fashion. In the main drawing loop, the corresponding mask byte is consulted as each image pixel is encountered, and the image pixel is copied only if the mask byte is nonzero. As with most of the system-to-display code I&rsquo;ve presented, Listing 49.1 is not heavily optimized, because it&rsquo;s inherently slow; there&rsquo;s a better way to go when performance matters, and that&rsquo;s to use the VGA&rsquo;s hardware.</p>
 
-  <p><b>LISTING 49.1 L49-1.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 49.1 L49-1.ASM</b></p>
   <pre>
 ; Mode X (320x240, 256 colors) system memory-to-display memory masked copy
 ; routine. Not particularly fast; images for which performance is critical
@@ -190,7 +183,7 @@ CopyDone:
         ret
 _CopySystemToScreenMaskedX endp
         end
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -209,10 +202,6 @@ _CopySystemToScreenMaskedX endp
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pooh and the Space Station</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pooh and the Space Station</title>
   <meta name="chapter" content="56" />
   <meta name="pages" content="1046-1050" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 56<br />
+  <h2 id="Heading1">Chapter 56<br />
   Pooh and the Space Station</h2>
 
-  <h3><a id="Heading2"></a>Using Fast Texture Mapping to Place Pooh on a Polygon</h3>
+  <h3 id="Heading2">Using Fast Texture Mapping to Place Pooh on a Polygon</h3>
 
   <p>So, here&rsquo;s where Winnie the Pooh lives: in a space station orbiting Saturn. No, really; I have it straight from my daughter, and an eight-year-old wouldn&rsquo;t make up something that important, would she? One day she wondered aloud, &ldquo;Where is the Hundred Acre Wood, exactly?&rdquo; and before I could give one of those boring parental responses about how it was imaginary&mdash;but A.A. Milne probably imagined it to be somewhere near London&mdash;my daughter announced that the Hundred Acre Wood was in a space station orbiting Saturn, and there you have it.</p>
 
@@ -54,21 +47,19 @@
 
   <p>The rest is history.</p>
 
-  <h3><a id="Heading3"></a>Principles of Quick-and-Dirty Texture Mapping</h3>
+  <h3 id="Heading3">Principles of Quick-and-Dirty Texture Mapping</h3>
 
   <p>The key to our texture-mapping approach will be to quickly determine what pixel value to draw for each pixel in the transformed destination polygon. These polygon pixel values will be determined by mapping each destination pixel in the transformed polygon back to the image bitmap, via a reverse transformation, and seeing what color resides at the corresponding location in the image bitmap, as shown in Figure 56.1. It might seem more intuitive to map pixels the other way, from the image bitmap to the transformed polygon, but in fact it&rsquo;s crucial that the mapping proceed backward from the destination to avoid gaps in the final image. With the approach of finding the right value for each destination pixel in turn, via a backward mapping, there&rsquo;s no way we can miss any destination pixels. On the other hand, with the forward-mapping method, some destination pixels may be skipped or double-drawn, because this is not necessarily a one-to-one or one-to-many mapping. Although we&rsquo;re not going to take advantage of it now, mapping back to the source makes it possible to average several neighboring image pixels together to calculate the value for each destination pixel; that is, to antialias the image. This can greatly improve texture quality, although it is slower.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/56-01.jpg',408,158 )"> --><img src="images/56-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/56-01.jpg',408,158)"> --><b>Figure 56.1</b></a>&nbsp;&nbsp;<i>Using reverse transformation to find the source pixel color.</i></p>
+  <p><a id="Fig1"><img src="images/56-01.jpg" /><br />
+  <b>Figure 56.1</b></a>&nbsp;&nbsp;<i>Using reverse transformation to find the source pixel color.</i></p>
 
-  <h4 align="left"><a id="Heading4"></a>Mapping Textures Made Easy</h4>
+  <h4 align="left" id="Heading4">Mapping Textures Made Easy</h4>
 
   <p>To understand how we&rsquo;re going to map textures, consider Figure 56.2, which maps a bitmapped image directly onto an untransformed polygon. Here, we simply map the origin of the polygon&rsquo;s untransformed coordinate system somewhere within the image, then map the vertices to the corresponding image pixels. (For simplicity, I&rsquo;ll assume in this discussion that the polygon&rsquo;s coordinate system is in units of pixels, but scaling images to polygons is eminently doable. This will become clearer when we look at mapping images onto transformed polygons, next.) Mapping the image to the polygon is then a simple matter of stepping one scan line at a time in both the image and the polygon, each time advancing the X coordinates of the edges according to the slopes of the lines, just as is normally done when filling a polygon. Since the polygon is untransformed, the stepping is identical in both the image and the polygon, and the pixel mapping is one-to-one, so the appropriate part of each scan line of the image can simply be block copied to the destination.</p>
 
-  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/56-02.jpg',405,163 )"> --><img src="images/56-02.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/56-02.jpg',405,163)"> --><b>Figure 56.2</b></a>&nbsp;&nbsp;<i>Mapping a texture onto an untransformed polygon.</i></p>
+  <p><a id="Fig2"><img src="images/56-02.jpg" /><br />
+  <b>Figure 56.2</b></a>&nbsp;&nbsp;<i>Mapping a texture onto an untransformed polygon.</i></p>
 
   <p>Now, matters get more complicated. What if the destination polygon is rotated in two dimensions? We no longer have a neat direct mapping from image scan lines to destination polygon scan lines. We still want to draw across each destination scan line, but the proper source pixels for each destination scan line may now track across the source bitmap at an angle, as shown in Figure 56.3. What can we do?</p>
 
@@ -91,10 +82,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

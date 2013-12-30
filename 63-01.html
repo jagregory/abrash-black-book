@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Floating-Point for Real-Time 3-D</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Floating-Point for Real-Time 3-D</title>
   <meta name="chapter" content="63" />
   <meta name="pages" content="1163-1167" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 63<br />
+  <h2 id="Heading1">Chapter 63<br />
   Floating-Point for Real-Time 3-D</h2>
 
-  <h3><a id="Heading2"></a>Knowing When to Hurl Conventional Math Wisdom Out the Window</h3>
+  <h3 id="Heading2">Knowing When to Hurl Conventional Math Wisdom Out the Window</h3>
 
   <p>In a crisis, sometimes it&rsquo;s best to go with the first solution that comes into your head&mdash;but not very often.</p>
 
@@ -66,7 +59,7 @@
 
   <p>For example, consider floating-point math.</p>
 
-  <h3><a id="Heading3"></a>Not Your Father&rsquo;s Floating-Point</h3>
+  <h3 id="Heading3">Not Your Father&rsquo;s Floating-Point</h3>
 
   <p>Until last year, I had never done any serious floating-point (FP) optimization, for the perfectly good reason that FP math had never been fast enough for any of the code I needed to write. It was an article of faith that FP, while undeniably convenient, because of its automatic support for constant precision over an enormous range of magnitudes, was just not fast enough for real-time programming, so I, like pretty much everyone else doing 3-D, expended a lot of time and effort in making fixed-point do the job.</p>
 
@@ -78,7 +71,7 @@
 
   <p>By way of getting you started with floating-point for real-time 3-D, in this chapter I&rsquo;ll examine the basics of Pentium FP optimization, then look at how some key mathematical techniques for 3-D&mdash;dot product, cross product, transformation, and projection&mdash;can be accelerated.</p>
 
-  <h3><a id="Heading4"></a>Pentium Floating-Point Optimization</h3>
+  <h3 id="Heading4">Pentium Floating-Point Optimization</h3>
 
   <p>I&rsquo;m going to assume you&rsquo;re already familiar with x86 FP code in general; for additional information, check out Intel&rsquo;s <i>Pentium Processor User&rsquo;s Manual</i> (order #241430-001; 1-800-548-4725), a book that you should have if you&rsquo;re doing Pentium programming of any sort. I&rsquo;d also recommend taking a look around <a href="http://www.intel.com">http://www.intel.com</a>.</p>
 
@@ -101,10 +94,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

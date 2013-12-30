@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Quake: A Post-Mortem and a Glimpse into the Future</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Quake: A Post-Mortem and a Glimpse into the Future</title>
   <meta name="chapter" content="70" />
   <meta name="pages" content="1286-1288" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,25 +30,25 @@
 
   <p><br /></p>
 
-  <h4 align="left"><a id="Heading12"></a>The Subdivision Rasterizer</h4>
+  <h4 align="left" id="Heading12">The Subdivision Rasterizer</h4>
 
   <p>This rasterizer, which we call the <i>subdivision rasterizer</i>, first draws all the vertices in the model. Then it takes each front-facing triangle, and determines if it has a side that&rsquo;s at least two pixels long. If it does, we split that side into two pieces at the pixel nearest to the middle (using adds and shifts to average the endpoints of that side), draw the vertex at the split point, and process each of the two split triangles recursively, until we get down to triangles that have only one-pixel sides and hence have nothing left to draw. This approach is hideously slow and quite ugly (due to inaccuracies from integer quantization) for 100-pixel triangles&mdash;but it&rsquo;s very fast for, say, five-pixel triangles, and is indistinguishable from more accurate rasterization when a model is 25 or 50 feet away. Better yet, the subdivider is ridiculously simple&mdash;a few dozen lines of code, far simpler than the affine rasterizer&mdash;and was implemented in an evening, immediately making the drawing of distant models about three times as fast, a very good return for a bit of conceptual work. The affine rasterizer got fairly close to the same performance with further optimization&mdash;in the range of 10% to 50% slower&mdash;but that took weeks of difficult programming.</p>
 
   <p>We switch between the two rasterizers based on the model&rsquo;s distance and average triangle size, and in almost any scene, most models are far enough away so subdivision rasterization is used. There are undoubtedly faster ways yet to rasterize distant models adequately well, but the subdivider was clearly a win, and is a good example of how thinking in a radically different direction can pay off handsomely.</p>
 
-  <h4 align="left"><a id="Heading13"></a>Sprites</h4>
+  <h4 align="left" id="Heading13">Sprites</h4>
 
   <p>We had hoped to be able to eliminate sprites completely, making Quake 100% 3-D, but sprites&mdash;although sometimes very visibly 2-D&mdash;were used for a few purposes, most noticeably the cores of explosions. As of CGDC last year, explosions consisted of an exploding spray of particles (discussed below), but there just wasn&rsquo;t enough visual punch with that representation; adding a series of sprites animating an explosion did the trick. (In hindsight, we probably should have made the explosions polygon models rather than sprites; it would have looked about as good, and the few sprites we used didn&rsquo;t justify the considerable amount of code and programming time required to support them.) Drawing a sprite is similar to drawing a normal polygon, complete with perspective correction, although of course the inner loop must detect and skip over transparent pixels, and must also perform z-buffering.</p>
 
-  <h4 align="left"><a id="Heading14"></a>Particles</h4>
+  <h4 align="left" id="Heading14">Particles</h4>
 
   <p>The last drawing entity type is particles. Each particle is a solid-colored rectangle, scaled by distance from the viewer and drawn with z-buffering. There can be up to 2,000 particles in a scene, and they are used for rocket trails, explosions, and the like. In one sense, particles are very primitive technology, but they allow effects that would be extremely difficult to do well with the other types of entities, and they work well in tandem with other entities, as, for example, providing a trail of fire behind a polygon-model lava ball that flies into the air, or generating an expanding cloud around a sprite explosion core.</p>
 
-  <h3><a id="Heading15"></a>How We Spent Our Summer Vacation: After Shipping Quake</h3>
+  <h3 id="Heading15">How We Spent Our Summer Vacation: After Shipping Quake</h3>
 
   <p>Since shipping Quake in the summer of 1996, we&rsquo;ve extended it in several ways: We&rsquo;ve worked with Rendition to port it to the Verite accelerator chip, we&rsquo;ve ported it to OpenGL, we&rsquo;ve ported it to Win32, we&rsquo;ve done QuakeWorld, and we&rsquo;ve added features for Quake 2. I&rsquo;ll discuss each of these briefly.</p>
 
-  <h4 align="left"><a id="Heading16"></a>Verite Quake</h4>
+  <h4 align="left" id="Heading16">Verite Quake</h4>
 
   <p>Verite Quake (VQuake) was the first hardware-accelerated version of Quake. It looks extremely good, due to bilinear texture filtering, which eliminates most pixel aliasing, and because it provides good performance at higher resolutions such as 512x384 and 640x480. Implementing VQuake proved to be an interesting task, for two reasons: The Verite chip&rsquo;s fill rate was marginal for Quake&rsquo;s needs, and Verite contains a programmable RISC chip, enabling more sophisticated processing than most 3-D accelerators. The need to squeeze as much performance as possible out of Verite ruled out the use of a standard API such as Direct 3D or OpenGL; instead, VQuake uses Rendition&rsquo;s proprietary API, Speedy3D, with the addition of some special calls and custom Verite code.</p>
 
@@ -82,10 +75,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: 3-D Shading</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: 3-D Shading</title>
   <meta name="chapter" content="54" />
   <meta name="pages" content="1023-1025" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,31 +30,29 @@
 
   <p><br /></p>
 
-  <h4 align="left"><a id="Heading4"></a>Shading</h4>
+  <h4 align="left" id="Heading4">Shading</h4>
 
   <p>So far, the polygons out of which our animated objects have been built have had colors of fixed intensities. For example, a face of a cube might be blue, or green, or white, but whatever color it is, that color never brightens or dims. Fixed colors are easy to implement, but they don&rsquo;t make for very realistic animation. In the real world, the intensity of the color of a surface varies depending on how brightly it is illuminated. The ability to simulate the illumination of a surface, or shading, is the next feature we&rsquo;ll add to X-Sharp.</p>
 
   <p>The overall shading of an object is the sum of several types of shading components. <i>Ambient shading</i> is illumination by what you might think of as background light, light that&rsquo;s coming from all directions; all surfaces are equally illuminated by ambient light, regardless of their orientation. <i>Directed lighting</i>, producing diffuse shading, is illumination from one or more specific light sources. Directed light has a specific direction, and the angle at which it strikes a surface determines how brightly it lights that surface. <i>Specular reflection</i> is the tendency of a surface to reflect light in a mirrorlike fashion. There are other sorts of shading components, including transparency and atmospheric effects, but the ambient and diffuse-shading components are all we&rsquo;re going to deal with in X-Sharp.</p>
 
-  <h4 align="center"><a id="Heading5"></a>Ambient Shading</h4>
+  <h4 align="center" id="Heading5">Ambient Shading</h4>
 
   <p>The basic model for both ambient and diffuse shading is a simple one. Each surface has a reflectivity between 0 and 1, where 0 means all light is absorbed and 1 means all light is reflected. A certain amount of light energy strikes each surface. The energy (intensity) of the light is expressed such that if light of intensity 1 strikes a surface with reflectivity 1, then the brightest possible shading is displayed for that surface. Complicating this somewhat is the need to support color; we do this by separating reflectance and shading into three components each&mdash;red, green, and blue&mdash;and calculating the shading for each color component separately for each surface.</p>
 
   <p>Given an ambient-light red intensity of IA<sub><small>red</small></sub> and a surface red reflectance R<sub><small>red</small></sub>, the displayed red ambient shading for that surface, as a fraction of the maximum red intensity, is simply min(IA<sub><small>red</small></sub>x R<sub><small>red</small></sub>, 1). The green and blue color components are handled similarly. That&rsquo;s really all there is to ambient shading, although of course we must design some way to map displayed color components into the available palette of colors; I&rsquo;ll do that in the next chapter. Ambient shading isn&rsquo;t the whole shading picture, though. In fact, scenes tend to look pretty bland without diffuse shading.</p>
 
-  <h4 align="center"><a id="Heading6"></a>Diffuse Shading</h4>
+  <h4 align="center" id="Heading6">Diffuse Shading</h4>
 
   <p>Diffuse shading is more complicated than ambient shading, because the effective intensity of directed light falling on a surface depends on the angle at which it strikes the surface. According to Lambert&rsquo;s law, the light energy from a directed light source striking a surface is proportional to the cosine of the angle at which it strikes the surface, with the angle measured relative to a vector perpendicular to the polygon (a polygon normal), as shown in Figure 54.1. If the red intensity of directed light is ID<sub><small>red</small></sub>, the red reflectance of the surface is R<sub><small>red</small></sub>, and the angle between the incoming directed light and the surface&rsquo;s normal is theta, then the displayed red diffuse shading for that surface, as a fraction of the largest possible red intensity, is min (ID<sub><small>red</small></sub>xR<sub><small>red</small></sub>xcos(&theta;), 1).</p>
 
   <p>That&rsquo;s easy enough to calculate&mdash;but seemingly slow. Determining the cosine of an angle can be sped up with a table lookup, but there&rsquo;s also the task of figuring out the angle, and, all in all, it doesn&rsquo;t seem that diffuse shading is going to be speedy enough for our purposes. Consider this, however: According to the properties of the dot product (denoted by the operator &ldquo;&bull;&rdquo;, as shown in Figure 54.2), cos(q)=(v&bull;w)/ |v| x |w| ), where v and w are vectors, q is the angle between v and w, and |v| is the length of v. Suppose, now, that v and w are unit vectors; that is, vectors exactly one unit long. Then the above equation reduces to cos(q)=v&bull;w. In other words, we can calculate the cosine between N, the unit-normal vector (one-unit-long perpendicular vector) of a polygon, and L', the reverse of a unit vector describing the direction of a light source, with just three multiplies and two adds. (I&rsquo;ll explain why the light-direction vector must be reversed later.) Once we have that, we can easily calculate the red diffuse shading from a directed light source as min(ID<sub><small>red</small></sub>xR<sub><small>red</small></sub>x(L'&bull; N), 1) and likewise for the green and blue color components.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/54-01.jpg',406,116 )"> --><img src="images/54-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/54-01.jpg',406,116)"> --><b>Figure 54.1</b></a>&nbsp;&nbsp;<i>Illumination by a directed light source</i></p>
+  <p><a id="Fig1"><img src="images/54-01.jpg" /><br />
+  <b>Figure 54.1</b></a>&nbsp;&nbsp;<i>Illumination by a directed light source</i></p>
 
-  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/54-02.jpg',409,86 )"> --><img src="images/54-02.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/54-02.jpg',409,86)"> --><b>Figure 54.2</b></a>&nbsp;&nbsp;<i>The dot product of two vectors.</i></p>
+  <p><a id="Fig2"><img src="images/54-02.jpg" /><br />
+  <b>Figure 54.2</b></a>&nbsp;&nbsp;<i>The dot product of two vectors.</i></p>
 
   <p>The overall red shading for each polygon can be calculated by summing the ambient-shading red component with the diffuse-shading component from each light source, as in min((IA<sub><small>red</small></sub>xR<sub><small>red</small></sub>) + (ID<sub><small>red0</small></sub>xR<sub><small>red</small></sub>x(L<sub><small>0</small></sub>' &bull; N)) + (ID<sub><small>red1</small></sub>xR<sub><small>red</small></sub>x(L<sub><small>1</small></sub>' &bull; N)) +..., 1) where ID<sub><small>red0</small></sub> and L<sub><small>0</small></sub>' are the red intensity and the reversed unit-direction vector, respectively, for spotlight 0. Listing 54.2 shows the X-Sharp module DRAWPOBJ.C, which performs ambient and diffuse shading. Toward the end, you will find the code that performs shading exactly as described by the above equation, first calculating the ambient red, green, and blue shadings, then summing that with the diffuse red, green, and blue shadings generated by each directed light source.</p>
 
@@ -82,10 +73,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

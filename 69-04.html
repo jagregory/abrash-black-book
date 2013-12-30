@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Surface Catching and Quake's Triangle Models</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Surface Catching and Quake's Triangle Models</title>
   <meta name="chapter" content="69" />
   <meta name="pages" content="1266-1271" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -43,7 +36,7 @@
 
   <p>How much does subdivision rasterization help performance? When John originally implemented it, it more than doubled triangle-model drawing speed, because the affine texture mapper was not yet optimized. However, I took it upon myself to see how fast I could make the mapper, so now affine texture mapping is only about 20 percent slower than subdivision rasterization. While 20 percent may not sound impressive, it includes clipping, transform, projection, and backface-culling time, so the rasterization difference alone is more than 50 percent. Besides, 20 percent overall means that we can have 12 monsters now where we could only have had 10 before, so we count subdivision rasterization as a clear success.</p>
 
-  <p><b>LISTING 69.1 L69-1.C</b></p><!-- CODE //-->
+  <p><b>LISTING 69.1 L69-1.C</b></p>
   <pre>
 // Quake&rsquo;s recursive subdivision triangle rasterizer; draws all
 // pixels in a triangle other than the vertices by splitting an
@@ -157,13 +150,12 @@ nodraw:
 D_PolysetRecursiveTriangle (lp3, lp1, new);
 D_PolysetRecursiveTriangle (lp3, new, lp2);
 }
-</pre><!-- END CODE //-->
+</pre>
 
-  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/69-02.jpg',407,511 )"> --><img src="images/69-02.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/69-02.jpg',407,511)"> --><b>Figure 69.2</b></a>&nbsp;&nbsp;<i>One recursive subdivision triangle-drawing step.</i></p>
+  <p><a id="Fig2"><img src="images/69-02.jpg" /><br />
+  <b>Figure 69.2</b></a>&nbsp;&nbsp;<i>One recursive subdivision triangle-drawing step.</i></p>
 
-  <h4 align="left"><a id="Heading11"></a>More Ideas that Might Work</h4>
+  <h4 align="left" id="Heading11">More Ideas that Might Work</h4>
 
   <p>Useful as subdivision rasterization proved to be, we by no means think that we&rsquo;ve maxed out triangle-model drawing, if only because we spent far less design and development time on subdivision than on the affine rasterizer, so it&rsquo;s likely that there&rsquo;s quite a bit more performance to be found for drawing small triangles. For example, it could be faster to precalculate drawing masks or even precompile drawing code for all possible small triangles (say, up to 4x4 or 5x5), and the memory footprint looks reasonable. (It&rsquo;s worth noting that both precalculated drawing and subdivision rasterization are only possible because we snap to integer coordinates; none of this stuff works with fixed-point vertices.)</p>
 
@@ -188,10 +180,6 @@ D_PolysetRecursiveTriangle (lp3, new, lp2);
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

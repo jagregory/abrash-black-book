@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: VGA Data Machinery</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: VGA Data Machinery</title>
   <meta name="chapter" content="25" />
   <meta name="pages" content="470-472" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -53,15 +46,14 @@
 
   <p>He&rsquo;s got a point there.</p>
 
-  <h3><a id="Heading5"></a>The VGA&rsquo;s Set/Reset Circuitry</h3>
+  <h3 id="Heading5">The VGA&rsquo;s Set/Reset Circuitry</h3>
 
   <p>At last we come to the final aspect of data flow through the GC on write mode 0 writes: the set/reset circuitry. Figure 25.3 shows data flow on a write mode 0 write. The only difference between this figure and Figure 25.1 is that on its way to each plane potentially the rotated CPU data passes through the set/reset circuitry, which may or may not replace the CPU data with set/reset data. Briefly put, the set/reset circuitry enables the programmer to elect to independently replace the CPU data for each plane with either 00 or 0FFH.</p>
 
   <p>What is the use of such a feature? Well, the standard way to control color is to set the Map Mask register to enable writes to only those planes that need to be set to produce the desired color. For example, the Map Mask register would be set to 09H to draw in high-intensity blue; here, bits 0 and 3 are set to 1, so only the blue plane (plane 0) and the intensity plane (plane 3) are written to.</p>
 
-  <p><a id="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/25-03.jpg',409,242 )"> --><img src="images/25-03.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/25-03.jpg',409,242)"> --><b>Figure 25.3</b></a>&nbsp;&nbsp;<i>Data flow during a write mode 0 write operation.</i></p>
+  <p><a id="Fig3"><img src="images/25-03.jpg" /><br />
+  <b>Figure 25.3</b></a>&nbsp;&nbsp;<i>Data flow during a write mode 0 write operation.</i></p>
 
   <p>Remember, though, that planes that are disabled by the Map Mask register are not written to or modified in any way. This means that the above approach works only if the memory being written to is zeroed; if, however, the memory already contains non-zero data, that data will remain in the planes disabled by the Map Mask, and the end result will be that some planes contain the data just written and other planes contain old data. In short, color control using the Map Mask does not force all planes to contain the desired color. In particular, it is not possible to force some planes to zero and other planes to one in a single write with the Map Mask register.</p>
 
@@ -84,10 +76,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

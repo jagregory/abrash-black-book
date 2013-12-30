@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: The Best Optimizer Is between Your Ears</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: The Best Optimizer Is between Your Ears</title>
   <meta name="chapter" content="01" />
   <meta name="pages" content="010-013" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -165,7 +158,7 @@
     </tr>
   </table>
 
-  <p><b>LISTING 1.2 L1-2.C</b></p><!-- CODE //-->
+  <p><b>LISTING 1.2 L1-2.C</b></p>
   <pre>
 /*
 * Program to calculate the 16-bit checksum of the stream of bytes
@@ -199,9 +192,9 @@ main(int argc, char *argv[]) {
       printf(&ldquo;The checksum is: %u\n&rdquo;, Checksum);
       exit(0);
 }
-</pre><!-- END CODE //-->
+</pre>
 
-  <p><b>LISTING 1.3 L1-3.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 1.3 L1-3.ASM</b></p>
   <pre>
 ; Assembler subroutine to perform a 16-bit checksum on the file
 ; opened on the passed-in handle. Stores the result in the
@@ -267,13 +260,13 @@ Done:
                  ret
 _ChecksumFileendp
                  end
-</pre><!-- END CODE //-->
+</pre>
 
   <p>The lesson is clear: Optimization makes code faster, but without proper design, optimization just creates fast slow code.</p>
 
   <p>Well, then, how are we going to improve our design? Before we can do that, we have to understand what&rsquo;s wrong with the current design.</p>
 
-  <h4 align="left"><a id="Heading9"></a>Know the Territory</h4>
+  <h4 align="left" id="Heading9">Know the Territory</h4>
 
   <p>Just why is Listing 1.1 so slow? In a word: overhead. The C library implements the <b>read()</b> function by calling DOS to read the desired number of bytes. (I figured this out by watching the code execute with a debugger, but you can buy library source code from both Microsoft and Borland.) That means that Listing 1.1 (and Listing 1.3 as well) executes one DOS function per byte processed&mdash;and DOS functions, especially this one, come with a lot of overhead.</p>
 
@@ -302,10 +295,6 @@ _ChecksumFileendp
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

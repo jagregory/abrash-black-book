@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Dog Hair and Dirty Rectangles</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Dog Hair and Dirty Rectangles</title>
   <meta name="chapter" content="45" />
   <meta name="pages" content="851-853" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -49,7 +42,7 @@
 
   <p>If you keep a close watch, you&rsquo;ll notice that many high-performance animation games similarly restrict their full-featured animation area to a relatively small region. Often, it&rsquo;s hard to tell that this is the case, because the animation region is surrounded by flashy digitized graphics and by items such as scoreboards and status screens, but look closely and see if the animation region in your favorite game isn&rsquo;t smaller than you thought.</p>
 
-  <h3><a id="Heading8"></a>Hi-Res VGA Page Flipping</h3>
+  <h3 id="Heading8">Hi-Res VGA Page Flipping</h3>
 
   <p>On a standard VGA, hi-res mode is mode 12H, which offers 640x480 resolution with 16 colors. That&rsquo;s a nice mode, with plenty of pixels, and square ones at that, but it lacks one thing&mdash;page flipping. The problem is that the mode 12H bitmap is 150 K in size, and the standard VGA has only 256 K total, too little memory for two of those monster mode 12H pages. With only one page, flipping is obviously out of the question, and without page flipping, top-flight, hi-res animation can&rsquo;t be implemented. The standard fallback is to use the EGA&rsquo;s hi-res mode, mode 10H (640x350, 16 colors) for page flipping, but this mode is less than ideal for a couple of reasons: It offers sharply lower vertical resolution, and it&rsquo;s lousy for handling scaled-up CGA graphics, because the vertical resolution is a fractional multiple&mdash;1.75 times, to be exact&mdash;of that of the CGA. CGA resolution may not seem important these days, but many images were originally created for the CGA, as were many graphics packages and games, and it&rsquo;s at least convenient to be able to handle CGA graphics easily. Then, too, 640x350 is also a poor multiple of the 200 scan lines of the popular 320x200 256-color mode 13H of the VGA.</p>
 
@@ -59,7 +52,7 @@
 
   <p>The key to 640x400 mode is understanding that on a VGA, mode 10H (640x350) is, at heart, a 400-scan-line mode. What I mean by that is that in mode 10H, the Vertical Total register, which controls the total number of scan lines, both displayed and nondisplayed, is set to 447, exactly the same as in the VGA&rsquo;s text modes, which do in fact support 400 scan lines. A properly sized and centered display is achieved in mode 10H by setting the polarity of the sync pulses to tell the monitor to scan vertically at a faster rate (to make fewer lines fill the screen), by starting the overscan after 350 lines, and by setting the vertical sync and blanking pulses appropriately for the faster vertical scanning rate. Changing those settings is all that&rsquo;s required to turn mode 10H into a 640x400 mode, and that&rsquo;s easy to do, as illustrated by Listing 45.2, which provides mode set code for 640x400 mode.</p>
 
-  <p><b>LISTING 45.2 L45-2.C</b></p><!-- CODE //-->
+  <p><b>LISTING 45.2 L45-2.C</b></p>
   <pre>
 /* Mode set routine for VGA 640x400 16-color mode. Tested with
    Borland C++ in C compilation mode. */
@@ -92,7 +85,7 @@ void Set640x400()
    outpw(0x3D4, 0xB916);   /* adjust the Vertical Blank End register
                               for 400 scan lines */
 }
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -111,10 +104,6 @@ void Set640x400()
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

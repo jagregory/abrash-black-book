@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bones and Sinew</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bones and Sinew</title>
   <meta name="chapter" content="23" />
   <meta name="pages" content="427-430" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h3><a id="Heading5"></a>At the Core</h3>
+  <h3 id="Heading5">At the Core</h3>
 
   <p>A little background is necessary before we&rsquo;re ready to examine Listing 23.1. The VGA is built around four functional blocks, named the CRT Controller (CRTC), the Sequence Controller (SC), the Attribute Controller (AC), and the Graphics Controller (GC). The single-chip VGA could have been designed to treat the registers for all the blocks as one large set, addressed at one pair of I/O ports, but in the EGA, each of these blocks was a separate chip, and the legacy of EGA compatibility is why each of these blocks has a separate set of registers and is addressed at different I/O ports in the VGA.</p>
 
@@ -185,12 +178,12 @@
 
       <td width="95%" valign="top"><small><i>A speed tip: The setting of each chip&rsquo;s Index register remains the same until it is reprogrammed. This means that in cases where you are setting the same internal register repeatedly, you can set the Index register to point to that internal register once, then write to the Data register multiple times. For example, the Bit Mask register (GC register 8) is often set repeatedly inside a loop when drawing lines. The standard code for this is:</i></small></td>
     </tr>
-  </table><!-- CODE SNIP //-->
+  </table>
   <pre>
      MOV     DX,03CEH   ;point to GC Index register
      MOV     AL,8       ;internal index of Bit Mask register
      OUT     DX,AX      ;AH contains Bit Mask register setting
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <table width="100%">
     <tr>
@@ -198,13 +191,13 @@
 
       <td width="95%" valign="top"><small><i>Alternatively, the GC Index register could initially be set to point to the Bit Mask register with</i></small></td>
     </tr>
-  </table><!-- CODE SNIP //-->
+  </table>
   <pre>
      MOV     DX,03CEH  ;point to GC Index register
      MOV     AL,8      ;internal index of Bit Mask register
      OUT     DX,AL     ;set GC Index register
      INC     DX        ;point to GC Data register
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <table width="100%">
     <tr>
@@ -212,10 +205,10 @@
 
       <td width="95%" valign="top"><small><i>and then the Bit Mask register could be set repeatedly with the byte-size <b>OUT</b> instruction</i></small></td>
     </tr>
-  </table><!-- CODE SNIP //-->
+  </table>
   <pre>
      OUT     DX,AL    ;AL contains Bit Mask register setting
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <table width="100%">
     <tr>
@@ -242,10 +235,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

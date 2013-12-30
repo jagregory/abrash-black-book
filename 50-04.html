@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Adding a Dimension</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Adding a Dimension</title>
   <meta name="chapter" content="50" />
   <meta name="pages" content="943-945" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -43,7 +36,7 @@
 
   <p>Other modules required are: Listings 47.1 and 47.6 from Chapter 47 (Mode X mode set, rectangle fill); Listing 49.6 from Chapter 49; Listing 39.4 from Chapter 39 (polygon edge scan); and the <b>FillConvexPolygon()</b> function from Listing 38.1 in Chapter 38. All necessary code modules, along with a project file, are present in the subdirectory for this chapter on the listings disk, whether they were presented in this chapter or some earlier chapter. This will be the case for the next several chapters as well, where listings from previous chapters are referenced. This scheme may crowd the listings diskette a little bit, but it will certainly reduce confusion!</p>
 
-  <p><b>LISTING 50.2 L50-2.C</b></p><!-- CODE //-->
+  <p><b>LISTING 50.2 L50-2.C</b></p>
   <pre>
 /* Matrix arithmetic functions.
    Tested with Borland C++ in the small model. */
@@ -89,9 +82,9 @@ void ConcatXforms(double SourceXform1[4][4], double SourceXform2[4][4],
       }
    }
 }
-</pre><!-- END CODE //-->
+</pre>
 
-  <p><b>LISTING 50.3 L50-3.C</b></p><!-- CODE //-->
+  <p><b>LISTING 50.3 L50-3.C</b></p>
   <pre>
 /* Transforms convex polygon Poly (which has PolyLength vertices),
    performing the transformation according to Xform (which generally
@@ -146,7 +139,7 @@ void XformAndProjectPoly(double Xform[4][4], struct Point3 * Poly,
    /* Draw the polygon */
    DRAW_POLYGON(ProjectedPoly, PolyLength, Color, 0, 0);
 }
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -165,10 +158,6 @@ void XformAndProjectPoly(double Xform[4][4], struct Point3 * Poly,
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

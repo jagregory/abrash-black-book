@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: The Best Optimizer Is between Your Ears</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: The Best Optimizer Is between Your Ears</title>
   <meta name="chapter" content="01" />
   <meta name="pages" content="015-017" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -47,7 +40,7 @@
     </tr>
   </table>
 
-  <p><b>LISTING 1.5 L1-5.C</b></p><!-- CODE //-->
+  <p><b>LISTING 1.5 L1-5.C</b></p>
   <pre>
 /*
 * Program to calculate the 16-bit checksum of the stream of bytes
@@ -105,7 +98,7 @@ main(int argc, char *argv[]) {
       printf(&ldquo;The checksum is: %u\n&rdquo;, Checksum);
       exit(0);
 }
-</pre><!-- END CODE //-->
+</pre>
 
   <p>That brings us to the fourth reason: avoiding an internal-buffered implementation like Listing 1.5 because of the difficulty of coding such an approach. True, it is easier to let a C library function do the work, but it&rsquo;s not all that hard to do the buffering internally. The key is the concept of handling data in <i>restartable blocks;</i> that is, reading a chunk of data, operating on the data until it runs out, suspending the operation while more data is read in, and then continuing as though nothing had happened.</p>
 
@@ -113,11 +106,11 @@ main(int argc, char *argv[]) {
 
   <p>At any rate, Listing 1.5 isn&rsquo;t much more complicated than Listing 1.4&mdash;and it&rsquo;s a <i>lot</i> faster. Always consider the alternatives; a bit of clever thinking and program redesign can go a long way.</p>
 
-  <h4 align="left"><a id="Heading12"></a>Know How to Turn On the Juice</h4>
+  <h4 align="left" id="Heading12">Know How to Turn On the Juice</h4>
 
   <p>I have said time and again that optimization is pointless until the design is settled. When that time comes, however, optimization can indeed make a significant difference. Table 1.1 indicates that the optimized version of Listing 1.5 produced by Microsoft C outperforms an unoptimized version of the same code by more than 60 percent. What&rsquo;s more, a mostly-assembly version of Listing 1.5, shown in Listings 1.6 and 1.7, outperforms even the best-optimized C version of List1.5 by 26 percent. These are considerable improvements, well worth pursuing&mdash;once the design has been maxed out.</p>
 
-  <p><b>LISTING 1.6 L1-6.C</b></p><!-- CODE //-->
+  <p><b>LISTING 1.6 L1-6.C</b></p>
   <pre>
 /*
 * Program to calculate the 16-bit checksum of the stream of bytes
@@ -172,7 +165,7 @@ main(int argc, char *argv[]) {
             printf(&ldquo;The checksum is: %u\n&rdquo;, Checksum);
             exit(0);
 }
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -191,10 +184,6 @@ main(int argc, char *argv[]) {
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

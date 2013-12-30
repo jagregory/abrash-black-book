@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Quake: A Post-Mortem and a Glimpse into the Future</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Quake: A Post-Mortem and a Glimpse into the Future</title>
   <meta name="chapter" content="70" />
   <meta name="pages" content="1279-1281" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h3><a id="Heading4"></a>Passages: The Last-Minute Change that Didn&rsquo;t Happen</h3>
+  <h3 id="Heading4">Passages: The Last-Minute Change that Didn&rsquo;t Happen</h3>
 
   <p>Earlier, I mentioned that we almost changed 3-D engines again in the last month of Quake&rsquo;s development. Here&rsquo;s what happened: One of the alternatives to the PVS is the use of <i>portals</i>, where the focus is on the places where polygons don&rsquo;t exist along leaf faces, rather than the more usual focus on the polygons themselves. These &ldquo;empty&rdquo; places are themselves polygons, called portals, that describe all the places that visibility can pass from one leaf to another. Portals are used by the PVS generator to determine visibility, and are used in other 3-D engines as the primary mechanism for determining leaf or sector visibility. For example, portals can be projected to screenspace, then used as a 2-D clipping region to restrict drawing of more distant polygons to only those that are visible through the portal. Or, as in Quake&rsquo;s preprocessor, visibility boundary planes can be constructed from one portal to the next, and 3-D clipping to those planes can be used to determine visible polygons or leaves. Used either way, portals can support more changeable worlds than the PVS, because, unlike the PVS, the portals themselves can easily be changed on the fly.</p>
 
@@ -47,7 +40,7 @@
 
   <p>The more approaches you try, the larger your toolkit and the broader your understanding will be when you tackle your next project.</p>
 
-  <h3><a id="Heading5"></a>Drawing the World</h3>
+  <h3 id="Heading5">Drawing the World</h3>
 
   <p>Everything described so far is a preprocessing step. When Quake is actually running, the world is drawn as follows: First, the PVS for the view leaf is decompressed, and each leaf flagged as visible is marked as being in the current frame&rsquo;s PVS. (The marking is done by storing the current frame&rsquo;s number in the leaf; this avoids having to clear the PVS marking each frame.) All the parent nodes of each leaf in the PVS are also marked; this information could have been stored as additional PVS flags, but to save space is bubbled up the BSP from each visible leaf.</p>
 
@@ -82,10 +75,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

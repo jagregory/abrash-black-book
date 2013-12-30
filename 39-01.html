@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Fast Convex Polygons</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Fast Convex Polygons</title>
   <meta name="chapter" content="39" />
   <meta name="pages" content="723-727" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 39<br />
+  <h2 id="Heading1">Chapter 39<br />
   Fast Convex Polygons</h2>
 
-  <h3><a id="Heading2"></a>Filling Polygons in a Hurry</h3>
+  <h3 id="Heading2">Filling Polygons in a Hurry</h3>
 
   <p>In the previous chapter, we explored the surprisingly intricate process of filling convex polygons. Now we&rsquo;re going to fill them an order of magnitude or so faster.</p>
 
@@ -60,7 +53,7 @@
 
   <p>In short, even though doing so runs counter to current trends, it helps to understand how things work, especially when they&rsquo;re very visible parts of the software you develop. That said, let&rsquo;s learn more about filling convex polygons.</p>
 
-  <h3><a id="Heading3"></a>Fast Convex Polygon Filling</h3>
+  <h3 id="Heading3">Fast Convex Polygon Filling</h3>
 
   <p>In addressing the topic of filling convex polygons in the previous chapter, the implementation we came up with met all of our functional requirements. In particular, it met stringent rules that guaranteed that polygons would never overlap or have gaps at shared edges, an important consideration when building polygon-based images. Unfortunately, the implementation was also slow as molasses. In this chapter we&rsquo;ll work up polygon-filling code that&rsquo;s fast enough to be truly usable.</p>
 
@@ -76,7 +69,7 @@
 
   <p>The amount of time that the previous chapter&rsquo;s sample program spent in each of these areas is shown in Table 39.1. As you can see, half the time was spent drawing and the other half was spent tracing the polygon edges (the time spent in <b>FillConvexPolygon</b> was relatively minuscule), so we have our choice of where to begin optimizing.</p>
 
-  <h4 align="left"><a id="Heading4"></a>Fast Drawing</h4>
+  <h4 align="left" id="Heading4">Fast Drawing</h4>
 
   <p>Let&rsquo;s start with drawing, which is easily sped up. The previous chapter&rsquo;s code used a double-nested loop that called a draw-pixel function to plot each pixel in the polygon individually. That&rsquo;s a ridiculous approach in a graphics mode that offers linearly mapped memory, as does VGA mode 13H, the mode in which we&rsquo;re working. At the very least, we could point a far pointer to the left edge of each polygon scan line, then draw each pixel in that scan line in quick succession, using something along the lines of <b>*ScrPtr<small>++</small> = FillColor;</b> inside a loop.</p>
 
@@ -99,10 +92,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

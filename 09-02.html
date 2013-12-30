@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Hints My Readers Gave Me</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Hints My Readers Gave Me</title>
   <meta name="chapter" content="09" />
   <meta name="pages" content="172-175" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -39,7 +32,7 @@
 
   <p>However, it generally is. Sure, if the length is odd, John&rsquo;s approach incurs a penalty approximately equal to the <b>REP</b> startup time for <b>MOVSB</b>. However, if the length is even, John&rsquo;s approach doesn&rsquo;t branch, saving cycles and not emptying the prefetch queue. If copy lengths are evenly distributed between even and odd, John&rsquo;s approach is faster in most x86 systems. (Not on the 486, though.)</p>
 
-  <p>John also points out that on the 386, multiple <b>LEA</b>s can be combined to perform multiplications that can&rsquo;t be handled by a single <b>LEA</b>, much as multiple shifts and adds can be used for multiplication, only faster. <b>LEA</b> can be used to multiply in a single instruction on the 386, but only by the values 2, 3, 4, 5, 8, and 9; several <b>LEA</b>s strung together can handle a much wider range of values. For example, video programmers are undoubtedly familiar with the following code to multiply AX times 80 (the width in bytes of the bitmap in most PC display modes):</p><!-- CODE SNIP //-->
+  <p>John also points out that on the 386, multiple <b>LEA</b>s can be combined to perform multiplications that can&rsquo;t be handled by a single <b>LEA</b>, much as multiple shifts and adds can be used for multiplication, only faster. <b>LEA</b> can be used to multiply in a single instruction on the 386, but only by the values 2, 3, 4, 5, 8, and 9; several <b>LEA</b>s strung together can handle a much wider range of values. For example, video programmers are undoubtedly familiar with the following code to multiply AX times 80 (the width in bytes of the bitmap in most PC display modes):</p>
   <pre>
 SHL   AX,1        ;*2
 SH   LAX,1        ;*4
@@ -49,31 +42,31 @@ MO   VBX,AX
 SH   LAX,1        ;*32
 SH   LAX,1        ;*64
 ADD  AX,BX        ;*80
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>Using <b>LEA</b> on the 386, the above could be reduced to</p><!-- CODE SNIP //-->
+  <p>Using <b>LEA</b> on the 386, the above could be reduced to</p>
   <pre>
 LEA   EAX,[EAX*2]     ;*2
 LEA   EAX,[EAX*8]     ;*16
 LEA   EAX,[EAX+EAX*4] ;*80
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>which still isn&rsquo;t as fast as using a lookup table like</p><!-- CODE SNIP //-->
+  <p>which still isn&rsquo;t as fast as using a lookup table like</p>
   <pre>
 MOV   EAX,MultiplesOf80Table[EAX*4]
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>but is close and takes a great deal less space.</p>
 
-  <p>Of course, on the 386, the shift and add version could also be reduced to this considerably more efficient code:</p><!-- CODE SNIP //-->
+  <p>Of course, on the 386, the shift and add version could also be reduced to this considerably more efficient code:</p>
   <pre>
 SH    LAX,4      ;*16
 MOV   BX,AX
 SHL   AX,2       ;*64
 ADD   AX,BX      ;*80
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <h4 align="left"><a id="Heading5"></a>Speeding Up Multiplication</h4>
+  <h4 align="left" id="Heading5">Speeding Up Multiplication</h4>
 
   <p>That brings us to multiplication, one of the slowest of x86 operations and one that allows for considerable optimization. One way to speed up multiplication is to use shift and add, <b>LEA</b>, or a lookup table to hard-code a multiplication operation for a fixed multiplier, as shown above. Another is to take advantage of the early-out feature of the 386 (and the 486, but in the interests of brevity I&rsquo;ll just say &ldquo;386&rdquo; from now on) by arranging your operands so that the multiplier (always the rightmost operand following <b>MUL</b> or <b>IMUL</b>) is no larger than the other operand.</p>
 
@@ -103,13 +96,12 @@ ADD   AX,BX      ;*80
 
   <p>That doesn&rsquo;t mean that your code should test and swap operands to make sure the smaller one is the multiplier; that rarely pays off. I&rsquo;m speaking more of the case where you&rsquo;re scaling an array up by a value that&rsquo;s always in the range of, say, 2 to 10; because the scale value will always be small and the array elements may have any value, the scale value is the logical choice for the multiplier.</p>
 
-  <h4 align="left"><a id="Heading6"></a>Optimizing Optimized Searching</h4>
+  <h4 align="left" id="Heading6">Optimizing Optimized Searching</h4>
 
   <p>Rob Williams writes with a wonderful optimization to the <b>REPNZ SCASB-</b>based optimized searching routine I discussed in Chapter 5. As a quick refresher, I described searching a buffer for a text string as follows: Scan for the first byte of the text string with <b>REPNZ SCASB</b>, then use <b>REPZ CMPS</b> to check for a full match whenever <b>REPNZ SCASB</b> finds a match for the first character, as shown in Figure 9.1. The principle is that most buffer characters won&rsquo;t match the first character of any given string, so <b>REPNZ SCASB</b>, by far the fastest way to search on the PC, can be used to eliminate most potential matches; each remaining potential match can then be checked in its entirety with <b>REPZ CMPS</b>.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/09-01.jpg',406,306 )"> --><img src="images/09-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/09-01.jpg',406,306)"> --><b>Figure 9.1</b></a>&nbsp;&nbsp;<i>Simple searching method for locating a text string.</i></p>
+  <p><a id="Fig1"><img src="images/09-01.jpg" /><br />
+  <b>Figure 9.1</b></a>&nbsp;&nbsp;<i>Simple searching method for locating a text string.</i></p>
 
   <p>Rob&rsquo;s revelation, which he credits without explanation to Edgar Allen Poe (search nevermore?), was that by far the slowest part of the whole deal is handling <b>REPNZ SCASB</b> matches, which require checking the remainder of the string with <b>REPZ CMPS</b> and restarting <b>REPNZ SCASB</b> if no match is found.</p>
 
@@ -140,10 +132,6 @@ ADD   AX,BX      ;*80
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

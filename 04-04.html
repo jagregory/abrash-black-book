@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: In the Lair of the Cycle-Eaters</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: In the Lair of the Cycle-Eaters</title>
   <meta name="chapter" content="04" />
   <meta name="pages" content="087-090" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h4 align="left"><a id="Heading10"></a>Official Execution Times Are Only Part of the Story</h4>
+  <h4 align="left" id="Heading10">Official Execution Times Are Only Part of the Story</h4>
 
   <p>The sequence of 5 <b>SHR</b> instructions in the last example is 10 bytes long. That means that it can never execute in less than 24 cycles even if the 4-byte prefetch queue is full when it starts, since 6 instruction bytes would still remain to be fetched, at 4 cycles per fetch. If the prefetch queue is empty at the start, the sequence <i>could</i> take 40 cycles. In short, thanks to instruction fetching, the code won&rsquo;t run at its documented speed, and could take up to four times longer than it is supposed to.</p>
 
@@ -55,7 +48,7 @@
 
   <p>So now you know why the official instruction execution times are often wrong, and why Intel can&rsquo;t provide better specifications. You also know now why it is that you must time your code if you want to know how fast it really is.</p>
 
-  <h4 align="left"><a id="Heading11"></a>There Is No Such Beast as a True Instruction Execution Time</h4>
+  <h4 align="left" id="Heading11">There Is No Such Beast as a True Instruction Execution Time</h4>
 
   <p>The effect of the code preceding an instruction on the execution time of that instruction makes the Zen timer trickier to use than you might expect, and complicates the interpretation of the results reported by the Zen timer. For one thing, the Zen timer is best used to time code sequences that are more than a few instructions long; below 10&micro;s or so, prefetch queue effects and the limited resolution of the clock driving the timer can cause problems.</p>
 
@@ -65,7 +58,7 @@
 
   <p>For example, consider the code in Listings 4.5 and 4.6. Listing 4.5 shows our familiar <b>SHR</b> case. Here, because the prefetch queue is always empty, execution time should work out to about 4 cycles per byte, or 8 cycles per <b>SHR,</b> as shown in Figure 4.3. (Figure 4.3 illustrates the relationship between instruction fetching and execution in a simplified way, and is not intended to show the exact timings of 8088 operations.) That&rsquo;s quite a contrast to the official 2-cycle execution time of <b>SHR</b>. In fact, the Zen timer reports that Listing 4.5 executes in 1.81&micro;s per byte, or slightly <i>more</i> than 4 cycles per byte. (The extra time is the result of the dynamic RAM refresh cycle-eater, which we&rsquo;ll discuss shortly.) Going by Listing 4.5, we would conclude that the &ldquo;true&rdquo; execution time of <b>SHR</b> is 8.64 cycles.</p>
 
-  <p><b>LISTING 4.5 LST4-5.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 4.5 LST4-5.ASM</b></p>
   <pre>
 ; Measures the performance of 1,000 SHR instructions
 ; in a row. Since SHR executes in 2 cycles but is
@@ -78,9 +71,9 @@
       shr   ax,1
       endm
       call  ZTimerOff
-</pre><!-- END CODE //-->
+</pre>
 
-  <p><b>LISTING 4.6 LST4-6.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 4.6 LST4-6.ASM</b></p>
   <pre>
 ; Measures the performance of 1,000 MUL/SHR instruction
 ; pairs in a row. The lengthy execution time of MUL
@@ -94,11 +87,10 @@
       shr   ax,1
       endm
       call  ZTimerOff
-</pre><!-- END CODE //-->
+</pre>
 
-  <p><a id="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/04-03.jpg',414,337 )"> --><img src="images/04-03.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/04-03.jpg',414,337)"> --><b>Figure 4.3</b></a>&nbsp;&nbsp;<i>Execution and instruction prefetching sequence for Listing 4.5.</i></p>
+  <p><a id="Fig3"><img src="images/04-03.jpg" /><br />
+  <b>Figure 4.3</b></a>&nbsp;&nbsp;<i>Execution and instruction prefetching sequence for Listing 4.5.</i></p>
 
   <p>Now let&rsquo;s examine Listing 4.6. Here each <b>SHR</b> follows a <b>MUL</b> instruction. Since <b>MUL</b> instructions take so long to execute that the prefetch queue is always full when they finish, each <b>SHR</b> should be ready and waiting in the prefetch queue when the preceding <b>MUL</b> ends. As a result, we&rsquo;d expect that each <b>SHR</b> would execute in 2 cycles; together with the 118-cycle execution time of multiplying 0 times 0, the total execution time should come to 120 cycles per <b>SHR/MUL</b> pair, as shown in Figure 4.4. And, by God, when we run Listing 4.6 we get an execution time of 25.14 &micro;s per <b>SHR/MUL</b> pair, or <i>exactly</i> 120 cycles! According to these results, the &ldquo;true&rdquo; execution time of <b>SHR</b> would seem to be 2 cycles, quite a change from the conclusion we drew from Listing 4.5.</p>
 
@@ -121,10 +113,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Those Way-Down Polygon Nomenclature Blues</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Those Way-Down Polygon Nomenclature Blues</title>
   <meta name="chapter" content="41" />
   <meta name="pages" content="766-771" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p><b>LISTING 41.4 L41-4.C</b></p><!-- CODE //-->
+  <p><b>LISTING 41.4 L41-4.C</b></p>
   <pre>
 /* Color-fills an arbitrarily-shaped polygon described by VertexList.
 If the first and last points in VertexList are not the same, the path
@@ -323,9 +316,9 @@ static void ScanOutAET(int YToScan, int Color) {
       CurrentEdge = CurrentEdge-&gt;NextEdge;
    }
 }
-</pre><!-- END CODE //-->
+</pre>
 
-  <p><b>LISTING 41.5 POLYGON.H</b></p><!-- CODE //-->
+  <p><b>LISTING 41.5 POLYGON.H</b></p>
   <pre>
 /* Header file for polygon-filling code */
 
@@ -364,7 +357,7 @@ struct HLineList {
 
 /* Describes a color as an RGB triple, plus one byte for other info */
 struct RGB { unsigned char Red, Green, Blue, Spare; };
-</pre><!-- END CODE //-->
+</pre>
 
   <p>Is monotone-vertical polygon detection worth all this trouble? Under the right circumstances, you bet. In a situation where a great many polygons are being drawn, and the application either doesn&rsquo;t know whether they&rsquo;re monotone-vertical or has no way to tell the polygon filler that they are, performance can be increased considerably if most polygons are, in fact, monotone-vertical. This potential performance advantage is helped along by the surprising fact that Jim&rsquo;s test for monotone-vertical status is simpler and faster than my original, nonfunctional test for convexity.</p>
 
@@ -387,10 +380,6 @@ struct RGB { unsigned char Red, Green, Blue, Spare; };
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

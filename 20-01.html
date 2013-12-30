@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pentium Rules</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pentium Rules</title>
   <meta name="chapter" content="20" />
   <meta name="pages" content="381-386" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 20<br />
+  <h2 id="Heading1">Chapter 20<br />
   Pentium Rules</h2>
 
-  <h3><a id="Heading2"></a>How Your Carbon-Based Optimizer Can Put the &ldquo;Super&rdquo; in Superscalar</h3>
+  <h3 id="Heading2">How Your Carbon-Based Optimizer Can Put the &ldquo;Super&rdquo; in Superscalar</h3>
 
   <p>At the 1983 West Coast Computer Faire, my friend Dan Illowsky, Andy Greenberg (co-author of Wizardry, at that time the best-selling computer game ever), and I had an animated discussion about starting a company in the then-budding world of microcomputer software. One hot new software category at the time was educational software, and one of the hottest new educational software companies was Spinnaker Software. Andy used Spinnaker as an example of a company that had been aimed at a good market and started up properly, and was succeeding as a result. Dan didn&rsquo;t buy this; his point was that Spinnaker had been given a bundle of money to get off the ground, and was growing only by spending a lot of that money in order to move its products. &ldquo;Heck,&rdquo; said Dan, &ldquo;I could get that kind of market share too if I gave away a fifty-dollar bill with each of my games.&rdquo;</p>
 
@@ -52,7 +45,7 @@
 
   <p>Similarly, there&rsquo;s no such thing as inherently fast code, only fast code in context. At the moment, the context is the Pentium, and the truth is that a sizable number of the x86 optimization tricks that you and I have learned over the past ten years are obsolete on the Pentium. True, the Pentium contains what amounts to about one-and-a-half 486s, but, as we&rsquo;ll see shortly, that doesn&rsquo;t mean that optimized Pentium code looks much like optimized 486 code, or that fast 486 code runs particularly well on a Pentium. (Fast Pentium code, on the other hand, does tend to run well on the 486; the only major downsides are that it&rsquo;s larger, and that the <b>FXCH</b> instruction, which is largely free on the Pentium, is expensive on the 486.) So discard your x86 preconceptions as we delve into superscalar optimization for this one-of-a-kind processor.</p>
 
-  <h3><a id="Heading3"></a>An Instruction in Every Pipe</h3>
+  <h3 id="Heading3">An Instruction in Every Pipe</h3>
 
   <p>In the last chapter, we took a quick tour of the Pentium&rsquo;s architecture, and started to look into the Pentium&rsquo;s optimization rules. Now we&rsquo;re ready to get to the key rules, those having to do with the Pentium&rsquo;s most unique and powerful feature, the ability to execute more than one instruction per cycle. This is known as <i>superscalar execution</i>, and has heretofore been the sole province of fast RISC CPUs. The Pentium has two integer execution units, called the <i>U-pipe</i> and the <i>V-pipe</i>, which can execute two separate instructions simultaneously, potentially doubling performance&mdash;but only under the proper conditions. (There is also a separate floating-point execution unit that I won&rsquo;t have the space to cover in this book.) Your job, as a performance programmer, is to understand the conditions needed for superscalar performance and make sure they&rsquo;re met, and that&rsquo;s what this and the next chapters are all about.</p>
 
@@ -60,9 +53,8 @@
 
   <p>The U-pipe is the more capable of the two pipes, able to execute any instruction in the Pentium&rsquo;s instruction set. (A number of instructions actually use both pipes at once. Logically, though, you can think of such instructions as U-pipe instructions, and of the Pentium optimization model as one in which the U-pipe is able to execute all instructions and is always active, with the objective being to keep the V-pipe also working as much of the time as possible.) The U-pipe is generally similar to a full 486 in terms of both capabilities and instruction cycle counts. The V-pipe is a 486 subset, able to execute simple instructions such as <b>MOV</b> and <b>ADD</b>, but unable to handle <b>MUL, DIV</b>, string instructions, any sort of rotation or shift, or even <b>ADC</b> or <b>SBB</b>.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/20-01.jpg',407,335 )"> --><img src="images/20-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/20-01.jpg',407,335)"> --><b>Figure 20.1</b></a>&nbsp;&nbsp;<i>The Pentium&rsquo;s two pipes.</i></p>
+  <p><a id="Fig1"><img src="images/20-01.jpg" /><br />
+  <b>Figure 20.1</b></a>&nbsp;&nbsp;<i>The Pentium&rsquo;s two pipes.</i></p>
 
   <p>Getting two instructions executing simultaneously in the two pipes is trickier than it sounds, not only because the V-pipe can handle only a relatively small subset of the Pentium&rsquo;s instruction set, but also because those instructions that the V-pipe can handle are able to pair only with certain U-pipe instructions. For example, <b>MOVSD</b> uses both pipes, so no instruction can be executed in parallel with <b>MOVSD</b>.</p>
 
@@ -95,10 +87,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

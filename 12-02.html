@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pushing the 486</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pushing the 486</title>
   <meta name="chapter" content="12" />
   <meta name="pages" content="237-241" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -47,35 +40,35 @@
 
   <p>In a key loop on the 486, 1 cycle can indeed matter.</p>
 
-  <h4 align="left"><a id="Heading6"></a>Calculate Memory Pointers Ahead of Time</h4>
+  <h4 align="left" id="Heading6">Calculate Memory Pointers Ahead of Time</h4>
 
   <p>Rule #2: Don&rsquo;t use a register as a memory pointer during the next two cycles after loading it.</p>
 
   <p>Intel states that if the destination of one instruction is used as the base addressing component of the next instruction, then a one-cycle penalty is imposed. This rule, unlike anything ever before seen in the x86 family, reflects the heavily pipelined nature of the 486. Apparently, the 486 starts each effective address calculation before the start of the instruction that will need it, as shown in Figure 12.1; this effectively makes the address calculation time vanish, because it happens while the preceding instruction executes.</p>
 
-  <p>Of course, the 486 <i>can&rsquo;t</i> perform an effective address calculation for a target instruction ahead of time if one of the address components isn&rsquo;t known until the instruction starts, and that&rsquo;s exactly the case when the preceding instruction modifies one of the target instruction&rsquo;s addressing registers. For example, in the code</p><!-- CODE SNIP //-->
+  <p>Of course, the 486 <i>can&rsquo;t</i> perform an effective address calculation for a target instruction ahead of time if one of the address components isn&rsquo;t known until the instruction starts, and that&rsquo;s exactly the case when the preceding instruction modifies one of the target instruction&rsquo;s addressing registers. For example, in the code</p>
   <pre>
 MOV  BX,OFFSET MemVar
 MOV  AX,[BX]
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>there&rsquo;s no way that the 486 can calculate the address referenced by <b>MOV AX,[BX]</b> until <b>MOV BX,OFFSET MemVar</b> finishes, so pipelining that calculation ahead of time is not possible. A good workaround is rearranging your code so that at least one instruction lies between the loading of the memory pointer and its use. For example, postdecrementing, as in the following</p><!-- CODE SNIP //-->
+  <p>there&rsquo;s no way that the 486 can calculate the address referenced by <b>MOV AX,[BX]</b> until <b>MOV BX,OFFSET MemVar</b> finishes, so pipelining that calculation ahead of time is not possible. A good workaround is rearranging your code so that at least one instruction lies between the loading of the memory pointer and its use. For example, postdecrementing, as in the following</p>
   <pre>
 LoopTop:
     add    ax,[si]
     add    si,2
     dec    cx
     jnz    LoopTop
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>is faster than preincrementing, as in:</p><!-- CODE SNIP //-->
+  <p>is faster than preincrementing, as in:</p>
   <pre>
 LoopTop:
     add    si,2
     add    ax,[SI]
     dec    cx
     jnz    LoopTop
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>Now that we understand what Intel means by this rule, let me make a very important comment: My observations indicate that for real-mode code, the documentation understates the extent of the penalty for interrupting the address calculation pipeline by loading a memory pointer just before it&rsquo;s used.</p>
 
@@ -91,46 +84,44 @@ LoopTop:
 
   <p>Considering that <b>MOV</b> normally takes only one cycle total, that&rsquo;s quite a loss. For example, the postdecrement loop shown above is 2 full cycles faster than the preincrement loop, resulting in a 29 percent improvement in the performance of the entire loop. But wait, there&rsquo;s more. If a register is loaded 2 cycles (which generally means 2 instructions, but, because some 486 instructions take more than 1 cycle,</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/12-01.jpg',407,155 )"> --><img src="images/12-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/12-01.jpg',407,155)"> --><b>Figure 12.1</b></a>&nbsp;&nbsp;<i>One-cycle-ahead address pipelining.</i></p>
+  <p><a id="Fig1"><img src="images/12-01.jpg" /><br />
+  <b>Figure 12.1</b></a>&nbsp;&nbsp;<i>One-cycle-ahead address pipelining.</i></p>
 
-  <p>the 2 are not always equivalent) before it&rsquo;s used to point to memory, 1 cycle is lost. Therefore, whereas this code</p><!-- CODE SNIP //-->
+  <p>the 2 are not always equivalent) before it&rsquo;s used to point to memory, 1 cycle is lost. Therefore, whereas this code</p>
   <pre>
 mov    bx,offset MemVar
 mov    ax,[bx]
 inc    dx
 dec    cx
 jnz    LoopTop
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>loses two cycles from interrupting the address calculation pipeline, this code</p><!-- CODE SNIP //-->
+  <p>loses two cycles from interrupting the address calculation pipeline, this code</p>
   <pre>
 mov    bx,offset MemVar
 inc    dx
 mov    ax,[bx]
 dec    cx
 jnz    LoopTop
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>loses only one cycle, and this code</p><!-- CODE SNIP //-->
+  <p>loses only one cycle, and this code</p>
   <pre>
 mov    bx,offset MemVar
 inc    dx
 dec    cx
 mov    ax,[bx]
 jnz    LoopTop
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>loses no cycles at all. Apparently, the 486&rsquo;s addressing calculation pipeline actually starts 2 cycles ahead, as shown in Figure 12.2. (In truth, my best guess at the moment is that the addressing pipeline really does start only 1 cycle ahead; the additional cycle crops up when the addressing pipeline has to wait for a register to be written into the register file before it can read it out for use in addressing calculations. However, I&rsquo;m guessing here, and the 2-cycle-ahead model in Figure 12.2 will do just fine for optimization purposes.)</p>
 
   <p>Clearly, there&rsquo;s considerable optimization potential in careful rearrangement of 486 code.</p>
 
-  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/12-02.jpg',411,158 )"> --><img src="images/12-02.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/12-02.jpg',411,158)"> --><b>Figure 12.2</b></a>&nbsp;&nbsp;<i>Two-cycle-ahead address pipelining.</i></p>
+  <p><a id="Fig2"><img src="images/12-02.jpg" /><br />
+  <b>Figure 12.2</b></a>&nbsp;&nbsp;<i>Two-cycle-ahead address pipelining.</i></p>
 
-  <h3><a id="Heading7"></a>Caveat Programmor</h3>
+  <h3 id="Heading7">Caveat Programmor</h3>
 
   <p>A caution: I&rsquo;m quite certain that the 2-cycle-ahead addressing pipeline interruption penalty I&rsquo;ve described exists in the two 486s I&rsquo;ve tested. However, there&rsquo;s no guarantee that Intel won&rsquo;t change this aspect of the 486 in the future, especially given that the documentation indicates otherwise. Perhaps the 2-cycle penalty is the result of a bug in the initial steps of the 486, and will revert to the documented 1-cycle penalty someday; likewise for the undocumented optimizations I&rsquo;ll describe below. Nonetheless, none of the optimizations I suggest would hurt performance even if the undocumented performance characteristics of the 486 were to vanish, and they certainly will help performance on at least some 486s right now, so I feel they&rsquo;re well worth using.</p>
 
@@ -151,10 +142,6 @@ jnz    LoopTop
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: The Best Optimizer Is between Your Ears</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: The Best Optimizer Is between Your Ears</title>
   <meta name="chapter" content="01" />
   <meta name="pages" content="007-009" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h3><a id="Heading5"></a>Rules for Building High-Performance Code</h3>
+  <h3 id="Heading5">Rules for Building High-Performance Code</h3>
 
   <p>We&rsquo;ve got the following rules for creating high-performance software:</p>
 
@@ -59,15 +52,15 @@
 
   <p>Making rules is easy; the hard part is figuring out how to apply them in the real world. For my money, examining some actual working code is always a good way to get a handle on programming concepts, so let&rsquo;s look at some of the performance rules in action.</p>
 
-  <h4 align="left"><a id="Heading6"></a>Know Where You&rsquo;re Going</h4>
+  <h4 align="left" id="Heading6">Know Where You&rsquo;re Going</h4>
 
   <p>If we&rsquo;re going to create high-performance code, first we have to know what that code is going to do. As an example, let&rsquo;s write a program that generates a 16-bit checksum of the bytes in a file. In other words, the program will add each byte in a specified file in turn into a 16-bit value. This checksum value might be used to make sure that a file hasn&rsquo;t been corrupted, as might occur during transmission over a modem or if a Trojan horse virus rears its ugly head. We&rsquo;re not going to do anything with the checksum value other than print it out, however; right now we&rsquo;re only interested in generating that checksum value as rapidly as possible.</p>
 
-  <h4 align="left"><a id="Heading7"></a>Make a Big Map</h4>
+  <h4 align="left" id="Heading7">Make a Big Map</h4>
 
   <p>How are we going to generate a checksum value for a specified file? The logical approach is to get the file name, open the file, read the bytes out of the file, add them together, and print the result. Most of those actions are straightforward; the only tricky part lies in reading the bytes and adding them together.</p>
 
-  <h4 align="left"><a id="Heading8"></a>Make Lots of Little Maps</h4>
+  <h4 align="left" id="Heading8">Make Lots of Little Maps</h4>
 
   <p>Actually, we&rsquo;re only going to make one little map, because we only have one program section that requires much thought&mdash;the section that reads the bytes and adds them up. What&rsquo;s the best way to do this?</p>
 
@@ -79,7 +72,7 @@
 
   <p>It&rsquo;s <i>slow</i>.</p>
 
-  <p><b>LISTING 1.1 L1-1.C</b></p><!-- CODE //-->
+  <p><b>LISTING 1.1 L1-1.C</b></p>
   <pre>
 /*
 * Program to calculate the 16-bit checksum of all bytes in the
@@ -121,7 +114,7 @@ main(int argc, char *argv[]) {
      printf(&ldquo;The checksum is: %u\n&rdquo;, Checksum);
      exit(0);
 }
-</pre><!-- END CODE //-->
+</pre>
 
   <p>Table 1.1 shows the time taken for Listing 1.1 to generate a checksum of the WordPerfect version 4.2 thesaurus file, TH.WP (362,293 bytes in size), on a 10 MHz AT machine of no special parentage. Execution times are given for Listing 1.1 compiled with Borland and Microsoft compilers, with optimization both on and off; all four times are pretty much the same, however, and all are much too slow to be acceptable. Listing 1.1 requires over two and one-half minutes to checksum <i>one</i> file!</p>
 
@@ -152,10 +145,6 @@ main(int argc, char *argv[]) {
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

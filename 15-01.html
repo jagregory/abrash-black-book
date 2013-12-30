@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Linked Lists and Unintended Challenges</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Linked Lists and Unintended Challenges</title>
   <meta name="chapter" content="15" />
   <meta name="pages" content="279-284" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 15<br />
+  <h2 id="Heading1">Chapter 15<br />
   Linked Lists and plain Unintended Challenges</h2>
 
-  <h3><a id="Heading2"></a>Unfamiliar Problems with Familiar Data Structures</h3>
+  <h3 id="Heading2">Unfamiliar Problems with Familiar Data Structures</h3>
 
   <p>After 21 years, this story still makes me wince. Oh, the humiliations I suffer for your enlightenment....</p>
 
@@ -58,7 +51,7 @@
 
   <p>Maybe you can&mdash;but I sure can&rsquo;t. For example, consider the evolution of my understanding of linked lists.</p>
 
-  <h3><a id="Heading3"></a>Linked Lists</h3>
+  <h3 id="Heading3">Linked Lists</h3>
 
   <p>Linked lists are data structures composed of discrete elements, or nodes, joined together with links. In C, the links are typically pointers. Like all data structures, linked lists have their strengths and their weaknesses. Primary among the strengths are: simplicity; speedy sequential processing; ease and speed of insertion and deletion; the ability to mix nodes of various sizes and types; and the ability to handle variable amounts of data, especially when the total amount of data changes dynamically or is not always known beforehand. Weaknesses include: greater memory requirements than arrays (the pointers take up space); slow non-sequential processing, including finding arbitrary nodes; and an inability to backtrack, unless doubly-linked lists are used. Unfortunately, doubly linked lists need more memory, as well as processing time to maintain the backward links.</p>
 
@@ -74,9 +67,8 @@
 
   <p>The fundamental problem is that the model of Figure 15.1 unnecessarily complicates link manipulation. In order to delete a node, for example, you must change the preceding node&rsquo;s <b>NextNode</b> pointer to point to the following node, as shown in Listing 15.1. (Listing 15.2 is the header file LLIST.H, which is <b>#include</b>d by all the linked list listings in this chapter.) Easy enough&mdash;unless the preceding node happens to be the head pointer, which doesn&rsquo;t <i>have</i> a <b>NextNode</b> field, because it&rsquo;s not a node, so Listing 15.1 won&rsquo;t work. Cumbersome special code and extra information (a pointer to the head of the list) are required to handle the head-pointer case, as shown in Listing 15.3. (I&rsquo;ll grant you that if you make the next-node pointer the first field in the <b>LinkNode</b> structure, at offset 0, then you could successfully point to the head pointer and pretend it was a <b>LinkNode</b> structure&mdash;but that&rsquo;s an ugly and potentially dangerous trick, and we&rsquo;ll see a better approach next.)</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/15-01.jpg',405,97 )"> --><img src="images/15-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/15-01.jpg',405,97)"> --><b>Figure 15.1</b></a>&nbsp;&nbsp;<i>The basic concept of a linked list.</i></p>
+  <p><a id="Fig1"><img src="images/15-01.jpg" /><br />
+  <b>Figure 15.1</b></a>&nbsp;&nbsp;<i>The basic concept of a linked list.</i></p>
 
   <p><br /></p>
 
@@ -95,10 +87,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

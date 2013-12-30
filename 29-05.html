@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Saving Screens and Other VGA Mysteries</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Saving Screens and Other VGA Mysteries</title>
   <meta name="chapter" content="29" />
   <meta name="pages" content="555-557" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h3><a id="Heading5"></a>Overscan</h3>
+  <h3 id="Heading5">Overscan</h3>
 
   <p>While we&rsquo;re at it, I&rsquo;m going to touch on overscan. Overscan is the color of the border of the display, the rectangular area around the edge of the monitor that&rsquo;s outside the region displaying active video data but inside the blanking area. The overscan (or border) color can be programmed to any of the 64 possible colors by either setting Attribute Controller register 11H directly or calling video function 10H, subfunction 1.</p>
 
@@ -49,11 +42,11 @@
     </tr>
   </table>
 
-  <h3><a id="Heading6"></a>A Bonus Blanker</h3>
+  <h3 id="Heading6">A Bonus Blanker</h3>
 
   <p>An interesting bonus: The Attribute Controller provides a very convenient way to blank the screen, in the form of the aforementioned bit 5 of the Attribute Controller Index register (at address 3C0H after the Input Status 1 register&mdash;3DAH in color, 3BAH in monochrome&mdash;has been read and on every other write to 3C0H thereafter). Whenever bit 5 of the AC Index register is 0, video data is cut off, effectively blanking the screen. Setting bit 5 of the AC Index back to 1 restores video data immediately. Listing 29.4 illustrates this simple but effective form of screen blanking.</p>
 
-  <p><b>LISTING 29.4 L29-4.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 29.4 L29-4.ASM</b></p>
   <pre>
 ; Program to demonstrate screen blanking via bit 5 of the
 ; Attribute Controller Index register.
@@ -136,7 +129,7 @@ Done:
 Start              endp
 Code               ends
             end    Start
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -155,10 +148,6 @@ Code               ends
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

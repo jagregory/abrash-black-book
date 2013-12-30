@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Changing Colors without Writing Pixels</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Changing Colors without Writing Pixels</title>
   <meta name="chapter" content="34" />
   <meta name="pages" content="641-643" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h4 align="left"><a id="Heading5"></a>Loading the DAC via the BIOS</h4>
+  <h4 align="left" id="Heading5">Loading the DAC via the BIOS</h4>
 
   <p>The DAC can be loaded either directly or through subfunctions 10H (for a single DAC register) or 12H (for a block of DAC registers) of the BIOS video service interrupt 10H, function 10H, described in Chapter 33. For cycling the contents of the entire DAC, the block-load function (invoked by executing <b>INT</b> 10H with AH = 10H and AL = 12H to load a block of CX DAC locations, starting at location BX, from the block of RGB triplets&mdash;3 bytes per triplet&mdash;starting at ES:DX into the DAC) would be the better of the two, due to the considerably greater efficiency of calling the BIOS once rather than 256 times. At any rate, we&rsquo;d like to use one or the other of the BIOS functions for color cycling, because we know that whenever possible, one should use a BIOS function in preference to accessing hardware directly, in the interests of avoiding compatibility problems. In the case of color cycling, however, it is emphatically <i>not</i> possible to use either of the BIOS functions, for they have problems. Serious problems.</p>
 
@@ -57,7 +50,7 @@
 
   <p>Which is not to say that loading the DAC directly is a picnic either, as we&rsquo;ll see next.</p>
 
-  <h4 align="left"><a id="Heading6"></a>Loading the DAC Directly</h4>
+  <h4 align="left" id="Heading6">Loading the DAC Directly</h4>
 
   <p>So we must load the DAC directly in order to perform color cycling. The DAC is loaded directly by sending (with an <b>OUT</b> instruction) the number of the DAC location to be loaded to the DAC Write Index register at 3C8H and then performing three <b>OUT</b>s to write an RGB triplet to the DAC Data register at 3C9H. This approach must be repeated 256 times to load the entire DAC, requiring over a thousand <b>OUT</b>s in all.</p>
 
@@ -84,10 +77,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

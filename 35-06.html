@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bresenham Is Fast, and Fast Is Good</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bresenham Is Fast, and Fast Is Good</title>
   <meta name="chapter" content="35" />
   <meta name="pages" content="670-671" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -41,7 +34,7 @@
 
   <p>Line drawing would be somewhat faster if the code of <b>EVGADot</b> were made an inline part of <b>Octant0</b> and <b>Octant1</b>, thereby saving the overhead of preparing parameters and calling the function. Feel free to do this if you wish; I maintained <b>EVGADot</b> as a separate function for clarity and for ease of inserting a pixel-drawing function for a different graphics adapter, should that be desired. If you do install a pixel-drawing function for a different adapter, or a fundamentally different mode such as a 256-color SuperVGA mode, remember to remove the hardware-dependent <b>outportb</b> lines in <b>EVGALine</b> itself.</p>
 
-  <h3><a id="Heading10"></a>Comments on the C Implementation</h3>
+  <h3 id="Heading10">Comments on the C Implementation</h3>
 
   <p><b>EVGALine</b> does no error checking whatsoever. My assumption in writing <b>EVGALine</b> was that it would be ultimately used as the lowest-level primitive of a graphics software package, with operations such as error checking and clipping performed at a higher level. Similarly, <b>EVGALine</b> is tied to the VGA&rsquo;s screen coordinate system of (0,0) to (639,199) (in mode 0EH), (0,0) to (639,349) (in modes 0FH and 10H), or (0,0) to (639,479) (in mode 12H), with the upper left corner considered to be (0,0). Again, transformation from any coordinate system to the coordinate system used by <b>EVGALine</b> can be performed at a higher level. <b>EVGALine</b> is specifically designed to do one thing: draw lines into the display memory of the VGA. Additional functionality can be supplied by the code that calls <b>EVGALine</b>.</p>
 
@@ -51,7 +44,7 @@
 
   <p>Given which, a high-speed assembly language version of <b>EVGALine</b> would seem to be a logical next step.</p>
 
-  <h3><a id="Heading11"></a>Bresenham&rsquo;s Algorithm in Assembly</h3>
+  <h3 id="Heading11">Bresenham&rsquo;s Algorithm in Assembly</h3>
 
   <p>Listing 35.3 is a high-performance implementation of Bresenham&rsquo;s algorithm, written entirely in assembly language. The code is callable from C just as is Listing 35.1, with the same name, <b>EVGALine</b>, and with the same parameters. Either of the two can be linked to any program that calls <b>EVGALine</b>, since they appear to be identical to the calling program. The only difference between the two versions is that the sample program in Listing 35.2 runs over three times as fast on a 486 with an ISA-bus VGA when calling the assembly-language version of <b>EVGALine</b> as when calling the C version, and the difference would be considerably greater yet on a local bus, or with the use of write mode 3. Link each version with Listing 35.2 and compare performance&mdash;the difference is startling.</p>
 
@@ -72,10 +65,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

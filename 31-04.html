@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Higher 256-Color Resolution on the VGA</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Higher 256-Color Resolution on the VGA</title>
   <meta name="chapter" content="31" />
   <meta name="pages" content="599-600" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -67,7 +60,7 @@
 
   <p>It&rsquo;s all a bit complicated, but as I say, you should be able to design an adequately fast&mdash;and often <i>very</i> fast&mdash;version for 320x400 mode of whatever graphics function you need. If you&rsquo;re not all that concerned with speed, <b>WritePixel</b> and <b>ReadPixel</b> should meet your needs.</p>
 
-  <h3><a id="Heading7"></a>Two 256-Color Pages</h3>
+  <h3 id="Heading7">Two 256-Color Pages</h3>
 
   <p>Listing 31.2 demonstrates the two pages of 320x400 256-color mode by drawing slanting color bars in page 0, then drawing color bars slanting the other way in page 1 and flipping to page 1 on the next key press. (Note that page 1 is accessed starting at offset 8000H in display memory, and is&mdash;unsurprisingly&mdash;displayed by setting the start address to 8000H.) Finally, Listing 31.2 draws vertical color bars in page 0 and flips back to page 0 when another key is pressed.</p>
 
@@ -90,10 +83,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

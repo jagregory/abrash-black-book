@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Color Modeling in 256-Color Mode</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Color Modeling in 256-Color Mode</title>
   <meta name="chapter" content="55" />
   <meta name="pages" content="1036-1038" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -43,7 +36,7 @@
 
   <p>One way to deal with the limited simultaneous color capabilities of the VGA is to build an application that uses only a subset of RGB space, then bias the VGA&rsquo;s palette toward that subspace. This is the approach used in the DEMO1 sample program in X-Sharp; Listings 55.2 and 55.3 show the versions of <b>InitializePalette()</b> and <b>ModelColorToColorIndex()</b> that set up and perform the color mapping for DEMO1.</p>
 
-  <p><b>LISTING 55.2 L55-2.C</b></p><!-- CODE //-->
+  <p><b>LISTING 55.2 L55-2.C</b></p>
   <pre>
  /* Sets up the palette in mode X, to a 2-2-2 general R-G-B organization, with
     64 separate levels each of pure red, green, and blue. This is very good
@@ -130,7 +123,7 @@
     sregset.es = DS; /* segment of array from which to load settings */
     int86x(0x10, &amp;regset, &amp;regset, &amp;sregset); /* load the palette block */
  }
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -149,10 +142,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

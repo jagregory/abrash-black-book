@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Hints My Readers Gave Me</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Hints My Readers Gave Me</title>
   <meta name="chapter" content="09" />
   <meta name="pages" content="182-185" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p><b>LISTING 9.5 L9-5.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 9.5 L9-5.ASM</b></p>
   <pre>
 ; Divides an arbitrarily long unsigned dividend by a 16-bit unsigned
 ; divisor. C near-callable as:
@@ -105,9 +98,9 @@ DivLoop:
                ret
 _Divendp
                end
-</pre><!-- END CODE //-->
+</pre>
 
-  <p><b>LISTING 9.6 L9-6.C</b></p><!-- CODE //-->
+  <p><b>LISTING 9.6 L9-6.C</b></p>
   <pre>
 /* Sample use of Div function to perform division when the result
    doesn&rsquo;t fit in 16 bits */
@@ -125,9 +118,9 @@ main() {
    k = Div((unsigned int *)&amp;i, sizeof(i), j, (unsigned int *)&amp;m);
    printf(&ldquo;%lu / %u = %lu r %u\n&rdquo;, i, j, m, k);
 }
-</pre><!-- END CODE //-->
+</pre>
 
-  <h4 align="left"><a id="Heading9"></a>Sweet Spot Revisited</h4>
+  <h4 align="left" id="Heading9">Sweet Spot Revisited</h4>
 
   <p>Way back in Volume 1, Number 1 of <i>PC TECHNIQUES</i>, (April/May 1990) I wrote the very first of that magazine&rsquo;s HAX (#1), which extolled the virtues of placing your most commonly-used automatic (stack-based) variables within the stack&rsquo;s &ldquo;sweet spot,&rdquo; the area between +127 to -128 bytes away from BP, the stack frame pointer. The reason was that the 8088 can store addressing displacements that fall within that range in a single byte; larger displacements require a full word of storage, increasing code size by a byte per instruction, and thereby slowing down performance due to increased instruction fetching time.</p>
 
@@ -162,10 +155,6 @@ main() {
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

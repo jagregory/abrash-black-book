@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Sneakers in Space</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Sneakers in Space</title>
   <meta name="chapter" content="51" />
   <meta name="pages" content="965-967" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p><b>LISTING 51.5 POLYGON.H</b></p><!-- CODE //-->
+  <p><b>LISTING 51.5 POLYGON.H</b></p>
   <pre>
 /* POLYGON.H: Header file for polygon-filling code, also includes a number of
    useful items for 3D animation. */
@@ -121,13 +114,13 @@ extern void AppendRotationY(double XformToChange[4][4], double Angle);
 extern void AppendRotationZ(double XformToChange[4][4], double Angle);
 extern int DisplayedPage, NonDisplayedPage;
 extern struct Rect EraseRect[];
-</pre><!-- END CODE //-->
+</pre>
 
-  <h3><a id="Heading6"></a>A Note on Rounding Negative Numbers</h3>
+  <h3 id="Heading6">A Note on Rounding Negative Numbers</h3>
 
   <p>In the previous chapter, I added 0.5 and truncated in order to round values from floating-point to integer format. Here, in Listing 51.2, I&rsquo;ve switched to adding 0.5 and using the <b>floor()</b> function. For positive values, the two approaches are equivalent; for negative values, only the <b>floor()</b> approach works properly.</p>
 
-  <h3><a id="Heading7"></a>Object Representation</h3>
+  <h3 id="Heading7">Object Representation</h3>
 
   <p>Each object consists of a list of vertices and a list of faces, with the vertices of each face defined by pointers into the vertex list; this allows each vertex to be transformed exactly once, even though several faces may share a single vertex. Each object contains the vertices not only in their original, untransformed state, but in three other forms as well: transformed to view space, transformed and projected to screen space, and converted to screen coordinates. Earlier, we saw that it can be convenient to store the screen coordinates within the object, so that if the object hasn&rsquo;t moved with respect to the viewer, it can be redrawn without the need for recalculation, but why bother storing the view and screen space forms of the vertices as well?</p>
 
@@ -150,10 +143,6 @@ extern struct Rect EraseRect[];
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

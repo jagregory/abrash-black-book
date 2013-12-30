@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Linked Lists and Unintended Challenges</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Linked Lists and Unintended Challenges</title>
   <meta name="chapter" content="15" />
   <meta name="pages" content="290-293" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p><b>LISTING 15.7 L15-7.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 15.7 L15-7.ASM</b></p>
   <pre>
 ; C near-callable assembly function for inserting a new node in a
 ; linked list sorted by ascending order of the Value field. The list
@@ -98,9 +91,9 @@ SearchLoop:
         ret
 _InsertNodeSorted endp
         end
-</pre><!-- END CODE //-->
+</pre>
 
-  <p><b>LISTING 15.8 L15-8.C</b></p><!-- CODE //-->
+  <p><b>LISTING 15.8 L15-8.C</b></p>
   <pre>
 /* Sample linked list program. Tested with Borland C++. */
 #include &lt;stdlib.h&gt;
@@ -183,9 +176,9 @@ void main()
       }
    }
 }
-</pre><!-- END CODE //-->
+</pre>
 
-  <h3><a id="Heading6"></a>Hi/Lo in 24 Bytes</h3>
+  <h3 id="Heading6">Hi/Lo in 24 Bytes</h3>
 
   <p>In one of my <i>PC TECHNIQUES</i> &ldquo;Pushing the Envelope&rdquo; columns, I passed along one of David Stafford&rsquo;s fiendish programming puzzles: Write a C-callable function to find the greatest or smallest unsigned <b>int</b>. Not a big deal&mdash;except that David had <i>already</i> done it in 24 bytes, so the challenge was to do it in 24 bytes or less.</p>
 
@@ -195,7 +188,7 @@ void main()
 
   <p>Yes, a 24-byte hi/lo function is possible, anatomically improbable as it might seem. Which I guess goes to show that when one of David&rsquo;s puzzles seems less than impossible, odds are you&rsquo;re missing something. Listing 15.9 is David&rsquo;s 24-byte solution, from which a lot may be learned if one reads closely enough.</p>
 
-  <p><b>LISTING 15.9 L15-9.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 15.9 L15-9.ASM</b></p>
   <pre>
 ; Find the greatest or smallest unsigned int.
 ; C callable (small model); 24 bytes.
@@ -224,7 +217,7 @@ around:         ja      save
                 jnz     top
 
                 ret
-</pre><!-- END CODE //-->
+</pre>
 
   <p>Before I end this chapter, let me say that I get a lot of feedback from my readers, and it&rsquo;s much appreciated. Keep those cards, letters, and email messages coming. And if any of you know Jeannie Schweigert, have her drop me a line and let me know how she&rsquo;s doing these days....</p>
 
@@ -245,10 +238,6 @@ around:         ja      save
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

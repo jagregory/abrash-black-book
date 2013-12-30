@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X: 256-color VGA Magic</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X: 256-color VGA Magic</title>
   <meta name="chapter" content="47" />
   <meta name="pages" content="891-893" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p><b>LISTING 47.6 L47-6.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 47.6 L47-6.ASM</b></p>
   <pre>
 ; Mode X (320x240, 256 colors) rectangle fill routine. Works on all
 ; VGAs. Uses fast approach that fans data out to up to four planes at
@@ -152,13 +145,13 @@ FillDone:
         ret
 _FillRectangleX endp
         end
-</pre><!-- END CODE //-->
+</pre>
 
   <p>Just so you can see Mode X in action, Listing 47.7 is a sample program that selects Mode X and draws a number of rectangles. Listing 47.7 links to any of the rectangle fill routines I&rsquo;ve presented.</p>
 
   <p>And now, I hope, you&rsquo;re beginning to see why I&rsquo;m so fond of Mode X. In the next chapter, we&rsquo;ll continue with Mode X by exploring the wonders that the latches and parallel plane hardware can work on scrolls, copies, blits, and pattern fills.</p>
 
-  <p><b>LISTING 47.7 L47-7.C</b></p><!-- CODE //-->
+  <p><b>LISTING 47.7 L47-7.C</b></p>
   <pre>
 /* Program to demonstrate mode X (320x240, 256-colors) rectangle
    fill by drawing adjacent 20x20 rectangles in successive colors from
@@ -184,7 +177,7 @@ void main() {
    regset.x.ax = 0x0003;   /* switch back to text mode and done */
    int86(0x10, &amp;regset, &amp;regset);
 }
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -203,10 +196,6 @@ void main() {
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

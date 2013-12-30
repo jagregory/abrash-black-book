@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Frames of Reference</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Frames of Reference</title>
   <meta name="chapter" content="61" />
   <meta name="pages" content="1141-1144" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h3><a id="Heading9"></a>Using the Dot Product for Projection</h3>
+  <h3 id="Heading9">Using the Dot Product for Projection</h3>
 
   <p>Consider Equation 3 again, but this time make one of the vectors, say <b>V</b>, a unit vector. Now the equation reduces to:</p>
 
@@ -49,20 +42,19 @@
 
   <p>In other words, the result is the cosine of the angle between the two vectors, scaled by the magnitude of the non-unit vector. Now, consider that cosine is really just the length of the adjacent leg of a right triangle, and think of the non-unit vector as the hypotenuse of a right triangle, and remember that all sides of similar triangles scale equally. What it all works out to is that the value of the dot product of any vector with a unit vector is the length of the first vector projected onto the unit vector, as shown in Figure 61.6.</p>
 
-  <p><a id="Fig6"><!-- </A><A HREF="javascript:displayWindow('images/61-06.jpg',408,163 )"> --><img src="images/61-06.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/61-06.jpg',408,163)"> --><b>Figure 61.6</b></a>&nbsp;&nbsp;<i>How the dot product with a unit vector performs a projection.</i></p>
+  <p><a id="Fig6"><img src="images/61-06.jpg" /><br />
+  <b>Figure 61.6</b></a>&nbsp;&nbsp;<i>How the dot product with a unit vector performs a projection.</i></p>
 
-  <p>This unlocks all sorts of neat stuff. Want to know the distance from a point to a plane? Just dot the vector from the point <b>P</b> to the plane origin <b>O</b><sub>p</sub> with the plane unit normal <b>N</b><sub>p</sub>, to project the vector onto the normal, then take the absolute value</p><!-- CODE SNIP //-->
+  <p>This unlocks all sorts of neat stuff. Want to know the distance from a point to a plane? Just dot the vector from the point <b>P</b> to the plane origin <b>O</b><sub>p</sub> with the plane unit normal <b>N</b><sub>p</sub>, to project the vector onto the normal, then take the absolute value</p>
   <pre>
 distance = |(<b>P</b> - <b>O</b><sub>p</sub>) &bull; <b>N</b><sub>p</sub>|
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>as shown in Figure 61.7.</p>
 
   <p>Want to clip a line to a plane? Calculate the distance from one endpoint to the plane, as just described, and dot the whole line segment with the plane normal, to get the full length of the line along the plane normal. The ratio of the two dot products is then how far along the line from the endpoint the intersection point is; just move along the line segment by that distance from the endpoint, and you&rsquo;re at the intersection point, as shown in Listing 61.1.</p>
 
-  <p><b>LISTING 61.1 L61_1.C</b></p><!-- CODE //-->
+  <p><b>LISTING 61.1 L61_1.C</b></p>
   <pre>
 // Given two line endpoints, a point on a plane, and a unit normal
 // for the plane, returns the point of intersection of the line
@@ -93,15 +85,14 @@ void LineIntersectPlane (float *linestart, float *lineend,
    intersectpoint[1] = linestart[1] - vec1[1] * scale;
    intersectpoint[2] = linestart[1] - vec1[2] * scale;
 }
-</pre><!-- END CODE //-->
+</pre>
 
-  <h3><a id="Heading10"></a>Rotation by Projection</h3>
+  <h3 id="Heading10">Rotation by Projection</h3>
 
   <p>We can use the dot product&rsquo;s projection capability to look at rotation in an interesting way. Typically, rotations are represented by matrices. This is certainly a workable representation that encapsulates all aspects of transformation in a single object, and is ideal for concatenations of rotations and translations. One problem with matrices, though, is that many people, myself included, have a hard time looking at a matrix of sines and cosines and visualizing what&rsquo;s actually going on. So when two 3-D experts, John Carmack and Billy Zelsnack, mentioned that they think of rotation differently, in a way that seemed more intuitive to me, I thought it was worth passing on.</p>
 
-  <p><a id="Fig7"><!-- </A><A HREF="javascript:displayWindow('images/61-07.jpg',406,222 )"> --><img src="images/61-07.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/61-07.jpg',406,222)"> --><b>Figure 61.7</b></a>&nbsp;&nbsp;<i>Using the dot product to get the distance from a point to a plane.</i></p>
+  <p><a id="Fig7"><img src="images/61-07.jpg" /><br />
+  <b>Figure 61.7</b></a>&nbsp;&nbsp;<i>Using the dot product to get the distance from a point to a plane.</i></p>
 
   <p>Their approach is this: Think of rotation as projecting coordinates onto new axes. That is, given that you have points in, say, worldspace, define the new coordinate space (viewspace, for example) you want to rotate to by a set of three orthogonal unit vectors defining the new axes, and then project each point onto each of the three axes to get the coordinates in the new coordinate space, as shown for the 2-D case in Figure 61.8. In 3-D, this involves three dot products per point, one to project the point onto each axis. Translation can be done separately from rotation by simple addition.</p>
 
@@ -115,9 +106,8 @@ void LineIntersectPlane (float *linestart, float *lineend,
 
   <p>Three things I&rsquo;ve learned over the years are that it never hurts to learn a new way of looking at things, that it helps to have a clearer, more intuitive model in your head of whatever it is you&rsquo;re working on, and that new tools, or new ways to use old tools, are Good Things. My experience has been that rotation by projection, and dot product tricks in general, offer those sorts of benefits for 3-D.</p>
 
-  <p><a id="Fig8"><!-- </A><A HREF="javascript:displayWindow('images/61-08.jpg',407,198 )"> --><img src="images/61-08.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/61-08.jpg',407,198)"> --><b>Figure 61.8</b></a>&nbsp;&nbsp;<i>Rotation to a new coordinate space by projection onto new axes.</i></p>
+  <p><a id="Fig8"><img src="images/61-08.jpg" /><br />
+  <b>Figure 61.8</b></a>&nbsp;&nbsp;<i>Rotation to a new coordinate space by projection onto new axes.</i></p>
 
   <p><br /></p>
 
@@ -136,10 +126,6 @@ void LineIntersectPlane (float *linestart, float *lineend,
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

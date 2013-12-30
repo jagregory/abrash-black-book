@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X: 256-color VGA Magic</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X: 256-color VGA Magic</title>
   <meta name="chapter" content="47" />
   <meta name="pages" content="889-891" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h3><a id="Heading6"></a>Hardware Assist from an Unexpected Quarter</h3>
+  <h3 id="Heading6">Hardware Assist from an Unexpected Quarter</h3>
 
   <p>Listing 47.5 illustrates the benefits of designing code from a Mode X perspective; this is the software aspect of Mode X optimization, which suffices to make Mode X about as fast as mode 13H. That alone makes Mode X an attractive mode, given its square pixels, page flipping, and offscreen memory, but superior performance would nonetheless be a pleasant addition to that list. Superior performance is indeed possible in Mode X, although, oddly enough, it comes courtesy of the VGA&rsquo;s hardware, which was never designed to be used in 256-color modes.</p>
 
@@ -47,9 +40,8 @@
 
   <p>In 16-color modes, each plane contains one-quarter of each of eight pixels, with the 4 bits of each pixel spanning all four planes. Not so in Mode X. Look at Figure 47.1 again; each plane contains one pixel in its entirety, with four pixels at any given address, one per plane. Still, the Map Mask register does the same job in Mode X as in 16-color modes; set it to 0FH (all 1-bits), and all four planes will be written to by each CPU access. Thus, it would seem that up to four pixels could be set by a single Mode X byte-sized write to display memory, potentially speeding up operations like rectangle fills by four times.</p>
 
-  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/47-02.jpg',409,214 )"> --><img src="images/47-02.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/47-02.jpg',409,214)"> --><b>Figure 47.2</b></a>&nbsp;&nbsp;<i>Selecting planes with the Map Mask register.</i></p>
+  <p><a id="Fig2"><img src="images/47-02.jpg" /><br />
+  <b>Figure 47.2</b></a>&nbsp;&nbsp;<i>Selecting planes with the Map Mask register.</i></p>
 
   <p>And, as it turns out, four-plane parallelism works quite nicely indeed. Listing 47.6 is yet another rectangle-fill routine, this time using the Map Mask to set up to four pixels per <b>STOS.</b> The only trick to Listing 47.6 is that any left or right edge that isn&rsquo;t aligned to a multiple-of-four pixel column (that is, a column at which one four-pixel set ends and the next begins) must be clipped via the Map Mask register, because not all pixels at the address containing the edge are modified. Performance is as expected; Listing 47.6 is nearly ten times faster at clearing the screen than Listing 47.4 and just about four times faster than Listing 47.5&mdash;and also about four times faster than the same rectangle fill in mode 13H. Understanding the bitmap organization and display hardware of Mode X does indeed pay.</p>
 
@@ -72,10 +64,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

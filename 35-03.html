@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bresenham Is Fast, and Fast Is Good</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bresenham Is Fast, and Fast Is Good</title>
   <meta name="chapter" content="35" />
   <meta name="pages" content="661-664" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,11 +30,11 @@
 
   <p><br /></p>
 
-  <h3><a id="Heading6"></a>An Implementation in C</h3>
+  <h3 id="Heading6">An Implementation in C</h3>
 
   <p>It&rsquo;s time to get down and look at some actual working code. Listing 35.1 is a C implementation of Bresenham&rsquo;s line-drawing algorithm for modes 0EH, 0FH, 10H, and 12H of the VGA, called as function <b>EVGALine</b>. Listing 35.2 is a sample program to demonstrate the use of <b>EVGALine</b>.</p>
 
-  <p><b>LISTING 35.1 L35-1.C</b></p><!-- CODE //-->
+  <p><b>LISTING 35.1 L35-1.C</b></p>
   <pre>
 /*
  * C implementation of Bresenham&rsquo;s line drawing algorithm
@@ -233,7 +226,7 @@ char Color;    /* color to draw line in */
    outportb(GC_INDEX, BIT_MASK_INDEX);
    outportb(GC_DATA, 0xFF);
 }
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -252,10 +245,6 @@ char Color;    /* color to draw line in */
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

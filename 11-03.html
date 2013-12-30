@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pushing the 286 and 386</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pushing the 286 and 386</title>
   <meta name="chapter" content="11" />
   <meta name="pages" content="212-216" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -65,7 +58,7 @@
 
   <p>Of course, those are exactly the rules that apply to 8088 optimization as well. Isn&rsquo;t it convenient that the same general rules apply across the board?</p>
 
-  <h4 align="center"><a id="Heading7"></a>Data Alignment</h4>
+  <h4 align="center" id="Heading7">Data Alignment</h4>
 
   <p>Thanks to its 16-bit bus, the 286 can access word-sized memory variables just as fast as byte-sized variables. There&rsquo;s a catch, however: That&rsquo;s only true for word-sized variables that start at even addresses. When the 286 is asked to perform a word-sized access starting at an odd address, it actually performs two separate accesses, each of which fetches 1 byte, just as the 8088 does for all word-sized accesses.</p>
 
@@ -83,15 +76,14 @@
 
   <p>That, in a nutshell, is the data alignment cycle-eater, the one new cycle-eater of the 286 and 386. (The data alignment cycle-eater is a close relative of the 8088&rsquo;s 8-bit bus cycle-eater, but since it behaves differently&mdash;occurring only at odd addresses&mdash;and is avoided with a different workaround, we&rsquo;ll consider it to be a new cycle-eater.)</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/11-01.jpg',409,328 )"> --><img src="images/11-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/11-01.jpg',409,328)"> --><b>Figure 11.1</b></a>&nbsp;&nbsp;<i>The data alignment cycle-eater.</i></p>
+  <p><a id="Fig1"><img src="images/11-01.jpg" /><br />
+  <b>Figure 11.1</b></a>&nbsp;&nbsp;<i>The data alignment cycle-eater.</i></p>
 
   <p>The way to deal with the data alignment cycle-eater is straightforward: <i>Don&rsquo;t perform word-sized accesses to odd addresses on the 286 if you can help it</i>. The easiest way to avoid the data alignment cycle-eater is to place the directive <b>EVEN</b> before each of your word-sized variables. <b>EVEN</b> forces the offset of the next byte assembled to be even by inserting a <b>NOP</b> if the current offset is odd; consequently, you can ensure that any word-sized variable can be accessed efficiently by the 286 simply by preceding it with <b>EVEN</b>.</p>
 
   <p>Listing 11.2, which accesses memory a word at a time with each word starting at an odd address, runs on a 10 MHz AT clone in 1.27 ms per repetition of <b>MOVSW</b>, or 0.64 ms per word-sized memory access. That&rsquo;s 6-plus cycles per word-sized access, which breaks down to two separate memory accesses&mdash;3 cycles to access the high byte of each word and 3 cycles to access the low byte of each word, the inevitable result of non-word-aligned word-sized memory accesses&mdash;plus a bit extra for DRAM refresh.</p>
 
-  <p><b>LISTING 11.2 L11-2.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 11.2 L11-2.ASM</b></p>
   <pre>
 ;
 ; *** Listing 11.2 ***
@@ -110,11 +102,11 @@ Skip:
         call    ZTimerOn
         rep     movsw
         call    ZTimerOff
-</pre><!-- END CODE //-->
+</pre>
 
   <p>On the other hand, Listing 11.3, which is exactly the same as Listing 11.2 save that the memory accesses are word-aligned (start at even addresses), runs in 0.64 ms per repetition of <b>MOVSW</b>, or 0.32 &micro;s per word-sized memory access. That&rsquo;s 3 cycles per word-sized access&mdash;exactly twice as fast as the non-word-aligned accesses of Listing 11.2, just as we predicted.</p>
 
-  <p><b>LISTING 11.3 L11-3.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 11.3 L11-3.ASM</b></p>
   <pre>
 ;
 ; *** Listing 11.3 ***
@@ -132,11 +124,11 @@ Skip:
         call    ZTimerOn
         rep     movsw
         call    ZTimerOff
-</pre><!-- END CODE //-->
+</pre>
 
   <p>The data alignment cycle-eater has intriguing implications for speeding up 286/386 code. The expenditure of a little care and a few bytes to make sure that word-sized variables and memory blocks are word-aligned can literally double the performance of certain code running on the 286. Even if it doesn&rsquo;t double performance, word alignment usually helps and never hurts.</p>
 
-  <h4 align="left"><a id="Heading8"></a>Code Alignment</h4>
+  <h4 align="left" id="Heading8">Code Alignment</h4>
 
   <p>Lack of word alignment can also interfere with instruction fetching on the 286, although not to the extent that it interferes with access to word-sized memory variables. The 286 prefetches instructions a word at a time; even if a given instruction doesn&rsquo;t begin at an even address, the 286 simply fetches the first byte of that instruction at the same time that it fetches the last byte of the previous instruction, as shown in Figure 11.2, then separates the bytes internally. That means that in most cases, instructions run just as fast whether they&rsquo;re word-aligned or not.</p>
 
@@ -159,10 +151,6 @@ Skip:
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

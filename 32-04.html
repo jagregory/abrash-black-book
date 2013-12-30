@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Be It Resolved: 360x480</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Be It Resolved: 360x480</title>
   <meta name="chapter" content="32" />
   <meta name="pages" content="618-620" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -43,19 +36,19 @@
 
   <p>Now that we&rsquo;ve seen the wonders of which our new mode is capable, let&rsquo;s take the time to understand how it works.</p>
 
-  <h3><a id="Heading5"></a>How 360x480 256-Color Mode Works</h3>
+  <h3 id="Heading5">How 360x480 256-Color Mode Works</h3>
 
   <p>In describing 360x480 256-color mode, I&rsquo;m going to assume that you&rsquo;re familiar with the discussion of 320x400 256-color mode in the last chapter. If not, go back to that chapter and read it; the two modes have a great deal in common, and I&rsquo;m not going to bore you by repeating myself when the goods are just a few page flips (the paper kind) away.</p>
 
   <p>360x480 256-color mode is essentially 320x400 256-color mode, but stretched in both dimensions. Let&rsquo;s look at the vertical stretching first, since that&rsquo;s the simpler of the two.</p>
 
-  <h4 align="left"><a id="Heading6"></a>480 Scan Lines per Screen: A Little Slower, But No Big Deal</h4>
+  <h4 align="left" id="Heading6">480 Scan Lines per Screen: A Little Slower, But No Big Deal</h4>
 
   <p>There&rsquo;s nothing unusual about 480 scan lines; standard modes 11H and 12H support that vertical resolution. The number of scan lines has nothing to do with either the number of colors or the horizontal resolution, so converting 320x400 256mode to 320x480 256-color mode is a simple matter of reprogramming the VGA&rsquo;s vertical control registers&mdash;which control the scan lines displayed, the vertical sync pulse, vertical blanking, and the total number of scan lines&mdash;to the 480-scansettings, and setting the polarities of the horizontal and vertical sync pulses to tell the monitor to adjust to a 480-line screen.</p>
 
   <p>Switching to 480 scan lines has the effect of slowing the screen refresh rate. The VGA always displays at 70 Hz <i>except</i> in 480-scan-line modes; there, due to the time required to scan the extra lines, the refresh rate slows to 60 Hz. (VGA monitors always scan at the same rate horizontally; that is, the distance across the screen covered by the electron beam in a given period of time is the same in all modes. Consequently, adding extra lines per frame requires extra time.) 60 Hz isn&rsquo;t <i>bad</i>&mdash;that&rsquo;s the only refresh rate the EGA ever supported, and the EGA was the industry standard in its time&mdash;but it does tend to flicker a little more and so is a little harder on the eyes than 70 Hz.</p>
 
-  <h4 align="left"><a id="Heading7"></a>360 Pixels per Scan Line: No Mean Feat</h4>
+  <h4 align="left" id="Heading7">360 Pixels per Scan Line: No Mean Feat</h4>
 
   <p>Converting from 320 to 360 pixels per scan line is more difficult than converting from 400 to 480 scan lines per screen. None of the VGA&rsquo;s graphics modes supports 360 pixels across the screen, or anything like it; the standard choices are 320 and 640 pixels across. However, the VGA <i>does</i> support the horizontal resolution we seek&mdash;360 pixels&mdash;in 40-column <i>text</i> mode.</p>
 
@@ -78,10 +71,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

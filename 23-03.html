@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bones and Sinew</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bones and Sinew</title>
   <meta name="chapter" content="23" />
   <meta name="pages" content="430-441" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h4 align="left"><a id="Heading6"></a>Linear Planes and True VGA Modes</h4>
+  <h4 align="left" id="Heading6">Linear Planes and True VGA Modes</h4>
 
   <p>The VGA&rsquo;s memory is organized as four 64K planes. Each of these planes is a linear bitmap; that is, each byte from a given plane controls eight adjacent pixels on the screen, the next byte controls the next eight pixels, and so on to the end of the scan line. The next byte then controls the first eight pixels of the next scan line, and so on to the end of the screen.</p>
 
@@ -49,13 +42,12 @@
 
   <p>The VGA BIOS supports several graphics modes (modes 4, 5, and 6) in which VGA memory appears not to be organized as four linear planes. These modes exist for CGA compatibility only, and are not true VGA graphics modes; use them when you need CGA-type operation and ignore them the rest of the time. The VGA&rsquo;s special features are most powerful in true VGA modes, and it is on the 16-color true-VGA modes (modes 0DH (320x200), 0EH (640x200), 10H (640x350), and 12H (640x480)) that I will concentrate in this part of the book. There is also a 256-color mode, mode 13H, that appears to be a single linear plane, but, as we will see in Chapters 31-34 and 47-49 of this book, that&rsquo;s a polite fiction&mdash;and discarding that fiction gives us an opportunity to unleash the power of the VGA&rsquo;s hardware for vastly better performance. VGA text modes, which feature soft fonts, are another matter entirely, upon which we&rsquo;ll touch from time to time.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/23-01.jpg',409,240 )"> --><img src="images/23-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/23-01.jpg',409,240)"> --><b>Figure 23.1</b></a>&nbsp;&nbsp;<i>Video data from memory to pixel.</i></p>
+  <p><a id="Fig1"><img src="images/23-01.jpg" /><br />
+  <b>Figure 23.1</b></a>&nbsp;&nbsp;<i>Video data from memory to pixel.</i></p>
 
   <p>With that background out of the way, we can get on to the sample VGA program shown in Listing 23.1. I suggest you run the program before continuing, since the explanations will mean far more to you if you&rsquo;ve seen the features in action.</p>
 
-  <p><b>LISTING 23.1 L23-1.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 23.1 L23-1.ASM</b></p>
   <pre>
 ; Sample VGA program.
 ; Animates four balls bouncing around a playfield by using
@@ -612,7 +604,7 @@ DrawBorderBlock endp
 AdjustPanning   endp
 cseg    ends
         end     start
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -631,10 +623,6 @@ cseg    ends
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

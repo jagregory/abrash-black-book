@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Yet Another VGA Write Mode</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Yet Another VGA Write Mode</title>
   <meta name="chapter" content="27" />
   <meta name="pages" content="508-515" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -47,13 +40,13 @@
     </tr>
   </table>
 
-  <h4 align="left"><a id="Heading6"></a>Drawing Color-Patterned Lines Using Write Mode 2</h4>
+  <h4 align="left" id="Heading6">Drawing Color-Patterned Lines Using Write Mode 2</h4>
 
   <p>A more serviceable use of write mode 2 is shown in the program presented in Listing 27.2. The program draws multicolored horizontal, vertical, and diagonal lines, basing the color patterns on passed color tables. Write mode 2 is ideal because in this application color can vary from one pixel to the next, and in write mode 2 all that&rsquo;s required to set pixel color is a change of the lower nibble of the byte written by the CPU. Set/reset could be used to achieve the same result, but an index/data pair of <b>OUT</b>s would be required to set the Set/Reset register to each new color. Similarly, the Map Mask register could be used in write mode 0 to set pixel color, but in this case not only would an index/data pair of <b>OUT</b>s be required but there would also be no guarantee that data already in display memory wouldn&rsquo;t interfere with the color of the pixel being drawn, since the Map Mask register allows only selected planes to be drawn to.</p>
 
   <p>Listing 27.2 is hardly a comprehensive line drawing program. It draws only a few special line cases, and although it is reasonably fast, it is far from the fastest possible code to handle those cases, because it goes through a dot-plot routine and because it draws horizontal lines a pixel rather than a byte at a time. Write mode 2 would, however, serve just as well in a full-blown line drawing routine. For any type of patterned line drawing on the VGA, the basic approach remains the same: Use the bit mask to select the pixel (or pixels) to be altered and use the CPU byte in write mode 2 to select the color in which to draw.</p>
 
-  <p><b>LISTING 27.2 L27-2.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 27.2 L27-2.ASM</b></p>
   <pre>
 ; Program to illustrate one use of write mode 2 of the VGA and EGA by
 ; drawing lines in color patterns.
@@ -381,7 +374,7 @@ DotUpInColor    endp
 Start   endp
 Code    ends
         end     Start
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -400,10 +393,6 @@ Code    ends
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

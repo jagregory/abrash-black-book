@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Crossing the Border</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Crossing the Border</title>
   <meta name="chapter" content="05" />
   <meta name="pages" content="111-115" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 5<br />
+  <h2 id="Heading1">Chapter 5<br />
   Crossing the Border</h2>
 
-  <h3><a id="Heading2"></a>Searching Files with Restartable Blocks</h3>
+  <h3 id="Heading2">Searching Files with Restartable Blocks</h3>
 
   <p><i>We just moved.</i> Those three little words should strike terror into the heart of anyone who owns more than a sleeping bag and a toothbrush. Our last move was the usual zoo&mdash;and then some. Because the distance from the old house to the new was only five miles, we used cars to move everything smaller than a washing machine. We have a sizable household&mdash;cats, dogs, kids, com, you name it&mdash;so the moving process took a number of car trips. A <i>large</i> number&mdash;33, to be exact. I personally spent about 15 hours just driving back and forth between the two houses. The move took days to complete.</p>
 
@@ -66,7 +59,7 @@
 
   <p>And with that, let&rsquo;s look at a fairly complex application of restartable blocks.</p>
 
-  <h4 align="left"><a id="Heading3"></a>Searching for Text</h4>
+  <h4 align="left" id="Heading3">Searching for Text</h4>
 
   <p>The application we&rsquo;re going to examine searches a file for a specified string. We&rsquo;ll develop a program that will search the file specified on the command line for a string (also specified on the comline), then report whether the string was found or not. (Because the searched-for string is obtained via <b>argv</b>, it can&rsquo;t contain any whitespace characters.)</p>
 
@@ -78,7 +71,7 @@
 
   <p>Well, it might be instructive to consider how we would search if our search involved only one buffer, already resident in memory. In other words, suppose we don&rsquo;t have to bother with file handling at all, and further suppose that we don&rsquo;t have to deal with searching through multiple blocks. After all, that&rsquo;s a good description of the all-important inner loop of our searching program, where the program will spend virtually all of its time (aside from the unavoidable disk access overhead).</p>
 
-  <h3><a id="Heading4"></a>Avoiding the String Trap</h3>
+  <h3 id="Heading4">Avoiding the String Trap</h3>
 
   <p>The easiest approach would be to use a C/C<small>++</small> library function. The closest match to what we need is <b>strstr()</b>, which searches one string for the first occurrence of a second string. However, while <b>strstr()</b> would work, it isn&rsquo;t ideal for our purposes. The problem is this: Where we want to search a fixed-length buffer for the first occurrence of a string, <b>strstr()</b> searches a <i>string</i> for the first occurrence of another string.</p>
 
@@ -99,10 +92,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

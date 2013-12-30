@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: A World Apart</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: A World Apart</title>
   <meta name="chapter" content="02" />
   <meta name="pages" content="025-028" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h4 align="left"><a id="Heading5"></a>Transformation Inefficiencies</h4>
+  <h4 align="left" id="Heading5">Transformation Inefficiencies</h4>
 
   <p>No matter how well an implementation is derived from the corresponding design, however, high-level languages like C/C<small>++</small> and Pascal inevitably introduce additional transformation inefficiencies, as shown in Figure 2.1.</p>
 
@@ -45,25 +38,23 @@
 
   <p>High-level languages provide artificial environments that lend themselves relatively well to human programming skills, in order to ease the transition from design to implementation. The price for this ease of implementation is a considerable loss of efficiency in transforming source code into machine language. This is particularly true given that the x86 family in real and 16-bit protected mode, with its specialized memory-addressing instructions and segmented memory architecture, does not lend itself particularly well to compiler design. Even the 32-bit mode of the 386 and its successors, with their more powerful addressing modes, offer fewer registers than compilers would like.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/02-01.jpg',417,202 )"> --><img src="images/02-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/02-01.jpg',417,202)"> --><b>Figure 2.1</b></a>&nbsp;&nbsp;<i>The high-level language transformation inefficiencies.</i></p>
+  <p><a id="Fig1"><img src="images/02-01.jpg" /><br />
+  <b>Figure 2.1</b></a>&nbsp;&nbsp;<i>The high-level language transformation inefficiencies.</i></p>
 
   <p>Assembly, on the other hand, is simply a human-oriented representation of machine language. As a result, assembly provides a difficult programming environment&mdash;the bare hardware and systems software of the computer&mdash;<i>but properly constructed assembly programs suffer no transformation loss</i>, as shown in Figure 2.2.</p>
 
   <p>Only one transformation is required when creating an assembler program, and that single transformation is completely under the programmer&rsquo;s control. Assemblers perform no transformation from source code to machine language; instead, they merely map assembler instructions to machine language instructions on a one-to-one basis. As a result, the programmer is able to produce machine language code that&rsquo;s precisely tailored to the needs of each task a given application requires.</p>
 
-  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/02-02.jpg',414,201 )"> --><img src="images/02-02.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/02-02.jpg',414,201)"> --><b>Figure 2.2</b></a>&nbsp;&nbsp;<i>Properly constructed assembly programs suffer no transformation loss.</i></p>
+  <p><a id="Fig2"><img src="images/02-02.jpg" /><br />
+  <b>Figure 2.2</b></a>&nbsp;&nbsp;<i>Properly constructed assembly programs suffer no transformation loss.</i></p>
 
   <p>The key, of course, is the programmer, since in assembly the programmer must essentially perform the transformation from the application specification to machine language entirely on his or her own. (The assembler merely handles the <i>direct</i> translation from assembly to machine language.)</p>
 
-  <h4 align="left"><a id="Heading6"></a>Self-Reliance</h4>
+  <h4 align="left" id="Heading6">Self-Reliance</h4>
 
   <p>The first part of assembly language optimization, then, is self. An assembler is nothing more than a tool to let you design machine-language programs without having to think in hexadecimal codes. So assembly language programmers&mdash;unlike all other programmers&mdash;must take full responsibility for the quality of their code. Since assemblers provide little help at any level higher than the generation of machine language, the assembly programmer must be capable both of coding any programming construct directly and of controlling the PC at the lowest practical level&mdash;the operating system, the BIOS, even the hardware where necessary. High-level languages handle most of this transparently to the programmer, but in assembly everything is fair&mdash;and necessary&mdash;game, which brings us to another aspect of assembly optimization: knowledge.</p>
 
-  <h4 align="left"><a id="Heading7"></a>Knowledge</h4>
+  <h4 align="left" id="Heading7">Knowledge</h4>
 
   <p>In the PC world, you can never have enough knowledge, and every item you add to your store will make your programs better. Thorough familiarity with both the operating system APIs and BIOS interfaces is important; since those interfaces are well-documented and reasonably straightforward, my advice is to get a good book or two and bring yourself up to speed. Similarly, familiarity with the PC hardware is required. While that topic covers a lot of ground&mdash;display adapters, keyboards, serial ports, printer ports, timer and DMA channels, memory organization, and more&mdash;most of the hardware is well-documented, and articles about programming major hardware components appear frequently in the literature, so this sort of knowledge can be acquired readily enough.</p>
 
@@ -94,10 +85,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

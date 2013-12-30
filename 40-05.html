@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Of Songs, Taxes, and the Simplicity of Complex Polygons</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Of Songs, Taxes, and the Simplicity of Complex Polygons</title>
   <meta name="chapter" content="40" />
   <meta name="pages" content="755-756" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -47,11 +40,11 @@
     </tr>
   </table>
 
-  <h3><a id="Heading8"></a>Nonconvex Polygons</h3>
+  <h3 id="Heading8">Nonconvex Polygons</h3>
 
   <p>Nonconvex polygons can be filled somewhat faster than complex polygons. Because edges never cross or switch positions with other edges once they&rsquo;re in the AET, the AET for a nonconvex polygon needs to be sorted only when new edges are added. In order for this to work, though, edges must be added to the AET in strict left-to-right order. Complications arise when dealing with two edges that start at the same point, because slopes must be compared to determine which edge is leftmost. This is certainly doable, but because of space limitations and limited performance returns, I haven&rsquo;t implemented this in Listing 40.1.</p>
 
-  <h4 align="left"><a id="Heading9"></a>Details, Details</h4>
+  <h4 align="left" id="Heading9">Details, Details</h4>
 
   <p>Every so often, a programming demon that I&rsquo;d thought I&rsquo;d forever laid to rest arises to haunt me once again. A minor example of this&mdash;an imp, if you will&mdash;is the use of &ldquo; = &rdquo; when I mean &ldquo; == ,&rdquo; which I&rsquo;ve done all too often in the past, and am sure I&rsquo;ll do again. That&rsquo;s minor deviltry, though, compared to the considerably greater evils of one of my personal scourges, of which I was recently reminded anew: too-close attention to detail. Not seeing the forest for the trees. Looking low when I should have looked high. Missing the big picture, if you catch my drift.</p>
 
@@ -84,10 +77,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

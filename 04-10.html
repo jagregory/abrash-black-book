@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: In the Lair of the Cycle-Eaters</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: In the Lair of the Cycle-Eaters</title>
   <meta name="chapter" content="04" />
   <meta name="pages" content="106-109" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -49,7 +42,7 @@
 
   <p>Nonetheless, the display adapter cycle-eater always takes its toll on graphics code. Interestingly, that toll becomes much higher on ATs and 80386 machines because while those computers can execute many more instructions per microsecond than can the 8088-based PC, it takes just as long to access display memory on those computers as on the 8088-based PC. Remember, the limited speed of access to a graphics adapter is an inherent characteristic of the adapter, so the fastest computer around can&rsquo;t access display memory one iota faster than the adapter will allow.</p>
 
-  <h4 align="left"><a id="Heading22"></a>What to Do about the Display Adapter Cycle-Eater?</h4>
+  <h4 align="left" id="Heading22">What to Do about the Display Adapter Cycle-Eater?</h4>
 
   <p>What can we do about the display adapter cycle-eater? Well, we can minimize display memory accesses whenever possible. In particular, we can try to avoid read/modify/write display memory operations of the sort used to mask individual pixels and clip images. Why? Because read/modify/write operations require two display memory accesses (one read and one write) each time display memory is manipulated. Instead, we should try to use writes of the sort that set all the pixels in a given byte of display memory at once, since such writes don&rsquo;t require accompanying read accesses. The key here is that only half as many display memory accesses are required to write a byte to display memory as are required to read a byte from display memory, mask part of it off and alter the rest, and write the byte back to display memory. Half as many display memory accesses means half as many display memory wait states.</p>
 
@@ -67,7 +60,7 @@
 
   <p>It would be handy to explore the display adapter cycle-eater issue in depth, with lots of example code and execution timings, but alas, I don&rsquo;t have the space for that right now. For the time being, all you really need to know about the display adapter cycle-eater is that on the 8088 you can lose more than 8 cycles of execution time on each access to display memory. For intensive access to display memory, the loss really can be as high as 8cycles (and up to 50, 100, or even more on 486s and Pentiums paired with slow VGAs), while for average graphics code the loss is closer to 4 cycles; in either case, the impact on performance is significant. There is only one way to discover just how significant the impact of the display adapter cycle-eater is for any particular graphics code, and that is of course to measure the performance of that code.</p>
 
-  <h4 align="left"><a id="Heading23"></a>Cycle-Eaters: A Summary</h4>
+  <h4 align="left" id="Heading23">Cycle-Eaters: A Summary</h4>
 
   <p>We&rsquo;ve covered a great deal of sophisticated material in this chapter, so don&rsquo;t feel bad if you haven&rsquo;t understood everything you&rsquo;ve read; it will all become clear from further reading, especially once you study, time, and tune code that you have written yourself. What&rsquo;s really important is that you come away from this chapter understanding that on the 8088:</p>
 
@@ -83,7 +76,7 @@
 
   <p>This basic knowledge about cycle-eaters puts you in a good position to understand the results reported by the Zen timer, and that means that you&rsquo;re well on your way to writing high-performance assembler code.</p>
 
-  <h4 align="left"><a id="Heading24"></a>What Does It All Mean?</h4>
+  <h4 align="left" id="Heading24">What Does It All Mean?</h4>
 
   <p>There you have it: life under the programming interface. It&rsquo;s not a particularly pretty picture for the inhabitants of that strange realm where hardware and software meet are little-known cycle-eaters that sap the speed from your unsuspecting code. Still, some of those cycle-eaters can be minimized by keeping instructions short, using the registers, using byte-sized memory operands, and accessing display memory as little as possible. None of the cycle-eaters can be eliminated, and dynamic RAM refresh can scarcely be addressed at all; still, aren&rsquo;t you better off knowing how fast your code <i>really</i> runs&mdash;and why&mdash;than you were reading the official execution times and guessing? And while specific cycle-eaters vary in importance on later x86-family processors, with some cycle-eaters vanishing altogether and new ones appearing, the concept that understanding these obscure gremlins is a key to performance remains unchanged, as we&rsquo;ll see again and again in later chapters.</p>
 
@@ -104,10 +97,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

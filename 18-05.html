@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: It's a Wonderful Life</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: It's a Wonderful Life</title>
   <meta name="chapter" content="18" />
   <meta name="pages" content="365-367" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -45,7 +38,7 @@
 
   <p>Segment usage in David&rsquo;s assembly code is summarized in Listing 18.6.</p>
 
-  <p><b>LISTING 18.6 QLIFE Assembly Segment Usage</b></p><!-- CODE SNIP //-->
+  <p><b>LISTING 18.6 QLIFE Assembly Segment Usage</b></p>
   <pre>
 CS : 64K code (table of routines on 256 byte boundaries)
 DS : DGROUP (1st pass) / 64K cell life/death classification table (second pass)
@@ -53,18 +46,18 @@ ES : Change list
 SS : DGROUP; the life cell grid and row/column table
 FS : Video segment
 GS : Unused
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <h4 align="left"><a id="Heading6"></a>A Layperson&rsquo;s Overview of QLIFE</h4>
+  <h4 align="left" id="Heading6">A Layperson&rsquo;s Overview of QLIFE</h4>
 
   <p>Most likely, you&rsquo;re scratching your head right now in bemusement. I don&rsquo;t blame you; I felt the same way myself at first. It&rsquo;s actually pretty simple, though, once you have the hang of it. Basically, David runs down the change list, visiting every cell that&rsquo;s due to change in this generation, setting it to the new state, drawing it in the new state, and adjusting the counts of all its neighbors. David has a separate assembly routine for every possible change of state for a cell triplet, and he jumps to the proper routine by taking the cell triplet word, masking off the lower 9 bits, and jumping to the address where the appropriate code to perform that particular change of state resides. He does this for every entry in the change list. When this is completed, the current generation has been drawn and updated.</p>
 
-  <p>Now David runs down the change list again to generate the change list for the next generation. In this case, for every changed cell triplet, David looks at that triplet and all affected neighbors to see which will change in the next generation. He tests for this condition by using each potentially changed cell triplet word as an index into the aforementioned lookup table of new states. If the current state matches the appropriate state for the next generation, then there&rsquo;s nothing to do and the cell is not added to the change list. If the states don&rsquo;t match, then the cell is added to the change list, and the appropriate state for the next generation is set in the cell triplet. David checks the minimum possible number of cells for change by branching to code that checks only the relevant cells around each cell triplet in the current change list; that branching is accomplished by taking the cell triplet word, masking off the lower 9 bits, setting bit 8 to a 1-bit, and branching to the routine at that address. As with everything in this amazing program, this represents the least possible work to accomplish the desired result&mdash;just three instructions:</p><!-- CODE SNIP //-->
+  <p>Now David runs down the change list again to generate the change list for the next generation. In this case, for every changed cell triplet, David looks at that triplet and all affected neighbors to see which will change in the next generation. He tests for this condition by using each potentially changed cell triplet word as an index into the aforementioned lookup table of new states. If the current state matches the appropriate state for the next generation, then there&rsquo;s nothing to do and the cell is not added to the change list. If the states don&rsquo;t match, then the cell is added to the change list, and the appropriate state for the next generation is set in the cell triplet. David checks the minimum possible number of cells for change by branching to code that checks only the relevant cells around each cell triplet in the current change list; that branching is accomplished by taking the cell triplet word, masking off the lower 9 bits, setting bit 8 to a 1-bit, and branching to the routine at that address. As with everything in this amazing program, this represents the least possible work to accomplish the desired result&mdash;just three instructions:</p>
   <pre>
 mov dh,[bp+1]
 or dh,1
 jmp dx
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>These suffice to select the proper, minimum-work code to process the next cell triplet that has changed, and all potentially affected neighbors. For all the size of David&rsquo;s code, it has an astonishing economy of effort, as execution glides through the change list without a wasted instruction.</p>
 
@@ -89,10 +82,6 @@ jmp dx
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Fast Convex Polygons</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Fast Convex Polygons</title>
   <meta name="chapter" content="39" />
   <meta name="pages" content="733-735" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -53,7 +46,7 @@
     </tr>
   </table>
 
-  <p><b>LISTING 39.3 L39-3.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 39.3 L39-3.ASM</b></p>
   <pre>
 ; Draws all pixels in the list of horizontal lines passed in, in
 ; mode 13h, the VGA&rsquo;s 320x200 256-color mode. Uses REP STOS to fill
@@ -140,15 +133,15 @@ FillDone:
    ret
 _DrawHorizontalLineList   endp
    end
-</pre><!-- END CODE //-->
+</pre>
 
-  <h4 align="left"><a id="Heading7"></a>Maximizing REP STOS</h4>
+  <h4 align="left" id="Heading7">Maximizing REP STOS</h4>
 
   <p>Listing 39.3 doesn&rsquo;t take the easy way out and use <b>REP STOSB</b> to fill each scan line; instead, it uses <b>REP STOSW</b> to fill as many pixel pairs as possible via word-sized accesses, using <b>STOSB</b> only to do odd bytes. Word accesses to odd addresses are always split by the processor into 2-byte accesses. Such word accesses take twice as long as word accesses to even addresses, so Listing 39.3 makes sure that all word accesses occur at even addresses, by performing a leading <b>STOSB</b> first if necessary.</p>
 
   <p>Listing 39.3 is another case in which it&rsquo;s worth knowing the environment in which your code will run. Extra code is required to perform aligned word-at-a-time filling, resulting in extra overhead. For very small or narrow polygons, that overhead might overwhelm the advantage of drawing a word at a time, making plain old <b>REP STOSB</b> faster.</p>
 
-  <h3><a id="Heading8"></a>Faster Edge Tracing</h3>
+  <h3 id="Heading8">Faster Edge Tracing</h3>
 
   <p>Finally, Listing 39.4 is an assembly language version of <b>ScanEdge</b>. Listing 39.4 is a relatively straightforward translation from C to assembly, but is nonetheless about twice as fast as Listing 39.2.</p>
 
@@ -175,10 +168,6 @@ _DrawHorizontalLineList   endp
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

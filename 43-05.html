@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bit-Plane Animation</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bit-Plane Animation</title>
   <meta name="chapter" content="43" />
   <meta name="pages" content="811-813" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -175,13 +168,12 @@
 
   <p>Not allowing images in the same plane to overlap is actually less of a limitation than it seems. Run Listing 43.1 again. Unless you were looking for it, you&rsquo;d never notice that images of the same color almost never overlap&mdash;there&rsquo;s plenty of action to distract the eye, and the trajectories of images of the same color are arranged so that they have a full range of motion without running into each other. The only exception is the chain of green images, which occasionally doubles back on itself when it bounces directly into a corner and reverses direction. Here, however, the images are moving so quickly that the brief moment during which one image&rsquo;s fringe blanks a portion of another image is noticeable only upon close inspection, and not particularly unaesthetic even then.</p>
 
-  <p><a id="Fig5"><!-- </A><A HREF="javascript:displayWindow('images/43-05.jpg',410,203 )"> --><img src="images/43-05.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/43-05.jpg',410,203)"> --><b>Figure 43.5</b></a>&nbsp;&nbsp;<i>Pixel precedence for plane 3 only.</i></p>
+  <p><a id="Fig5"><img src="images/43-05.jpg" /><br />
+  <b>Figure 43.5</b></a>&nbsp;&nbsp;<i>Pixel precedence for plane 3 only.</i></p>
 
   <p>When a technique has such tremendous visual and performance advantages as does bit-plane animation, it behooves you to design your animation software so that the limitations of the animation technique don&rsquo;t get in the way. For example, you might design a shooting gallery game with all the images in a given plane marching along in step in a continuous band. The images could never overlap, so bit-plane animation would produce very high image quality.</p>
 
-  <h3><a id="Heading7"></a>Shearing and Page Flipping</h3>
+  <h3 id="Heading7">Shearing and Page Flipping</h3>
 
   <p>As Listing 43.1 runs, you may occasionally see an image shear, with the top and bottom parts of the image briefly offset. This is a consequence of drawing an image directly into memory as that memory is being scanned for video data. Occasionally the CRT controller scans a given area of display memory for pixel data just as the program is changing that same memory. If the CRT controller scans memory faster than the CPU can modify that memory, then the CRT controller can scan out the bytes of display memory that have been already been changed, pass the point in the image that the CPU is currently drawing, and start scanning out bytes that haven&rsquo;t yet been changed. The result: Mismatched upper and lower portions of the image.</p>
 
@@ -202,10 +194,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

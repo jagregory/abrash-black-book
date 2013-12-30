@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bresenham Is Fast, and Fast Is Good</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bresenham Is Fast, and Fast Is Good</title>
   <meta name="chapter" content="35" />
   <meta name="pages" content="653-658" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 35<br />
+  <h2 id="Heading1">Chapter 35<br />
   Bresenham Is Fast, and Fast Is Good</h2>
 
-  <h3><a id="Heading2"></a>Implementing and Optimizing Bresenham&rsquo;s Line-Drawing Algorithm</h3>
+  <h3 id="Heading2">Implementing and Optimizing Bresenham&rsquo;s Line-Drawing Algorithm</h3>
 
   <p>For all the complexity of graphics design and programming, surprisingly few primitive functions lie at the heart of most graphics software. Heavily used primitives include routines that draw dots, circles, area fills, bit block logical transfers, and, of course, lines. For many years, computer graphics were created primarily with specialized line-drawing hardware, so lines are in a way the <i>lingua franca</i> of computer graphics. Lines are used in a wide variety of microcomputer graphics applications today, notably CAD/CAM and computer-aided engineering.</p>
 
@@ -58,7 +51,7 @@
 
   <p>Notwithstanding, the line-drawing implementation in Listing 35.3 is plenty fast enough for most purposes, so let&rsquo;s get the discussion underway.</p>
 
-  <h3><a id="Heading3"></a>The Task at Hand</h3>
+  <h3 id="Heading3">The Task at Hand</h3>
 
   <p>There are two important characteristics of any line-drawing function. First, it must draw a reasonable approximation of a line. A computer screen has limited resolution, and so a line-drawing function must actually approximate a straight line by drawing a series of pixels in what amounts to a jagged pattern that generally proceeds in the desired direction. That pattern of pixels must reliably suggest to the human eye the true line it represents. Second, to be usable, a line-drawing function must be <i>fast</i>. Minicomputers and mainframes generally have hardware that performs line drawing, but most microcomputers offer no such assistance. True, nowadays graphics accelerators such as the S3 and ATI chips have line drawing hardware, but some other accelerators don&rsquo;t; when drawing lines on the latter sort of chip, when drawing on the CGA, EGA, and VGA, and when drawing sorts of lines not supported by line-drawing hardware as well, the PC&rsquo;s CPU must draw lines on its own, and, as many users of graphics-oriented software know, that can be a slow process indeed.</p>
 
@@ -70,13 +63,12 @@
 
   <p>Bresenham&rsquo;s line-drawing algorithm, on the other hand, is uniquely suited to microcomputer implementation in that it requires no floating-point operations, no divides, and no multiplies inside the line-drawing loop. Moreover, it can be implemented with surprisingly little code.</p>
 
-  <h3><a id="Heading4"></a>Bresenham&rsquo;s Line-Drawing Algorithm</h3>
+  <h3 id="Heading4">Bresenham&rsquo;s Line-Drawing Algorithm</h3>
 
   <p>The key to grasping Bresenham&rsquo;s algorithm is to understand that when drawing an approximation of a line on a finite-resolution display, each pixel drawn will lie either exactly on the true line or to one side or the other of the true line. The amount by which the pixel actually drawn deviates from the true line is the <i>error</i> of the line drawing at that point. As the drawing of the line progresses from one pixel to the next, the error can be used to tell when, given the resolution of the display, a more accurate approximation of the line can be drawn by placing a given pixel one unit of screen resolution away from its predecessor in either the horizontal or the vertical direction, or both.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/35-01.jpg',409,162 )"> --><img src="images/35-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/35-01.jpg',409,162)"> --><b>Figure 35.1</b></a>&nbsp;&nbsp;<i>Approximating a true line from a pixel array.</i></p>
+  <p><a id="Fig1"><img src="images/35-01.jpg" /><br />
+  <b>Figure 35.1</b></a>&nbsp;&nbsp;<i>Approximating a true line from a pixel array.</i></p>
 
   <p><br /></p>
 
@@ -95,10 +87,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

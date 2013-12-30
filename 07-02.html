@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Local Optimization</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Local Optimization</title>
   <meta name="chapter" content="07" />
   <meta name="pages" content="139-141" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,31 +30,31 @@
 
   <p><br /></p>
 
-  <p>By the way, don&rsquo;t fall victim to the lures of <b>JCXZ</b> and do something like this:</p><!-- CODE SNIP //-->
+  <p>By the way, don&rsquo;t fall victim to the lures of <b>JCXZ</b> and do something like this:</p>
   <pre>
 and     cx,ofh          ;Isolate the desired field
 jcxz    SkipLoop        ;If field is 0, don&rsquo;t bother
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>The <b>AND</b> instruction has already set the Zero flag, so this</p><!-- CODE SNIP //-->
+  <p>The <b>AND</b> instruction has already set the Zero flag, so this</p>
   <pre>
 and     cx,0fh           ;Isolate the desired field
 jz      SkipLoop         ;If field is 0, don&rsquo;t bother
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>will do just fine and is faster on all processors. Use <b>JCXZ</b> only when the Zero flag isn&rsquo;t already set to reflect the status of CX.</p>
 
-  <h3><a id="Heading4"></a>The Lessons of LOOP and JCXZ</h3>
+  <h3 id="Heading4">The Lessons of LOOP and JCXZ</h3>
 
   <p>What can we learn from <b>LOOP</b> and <b>JCXZ?</b> First, that a single instruction that is intended to do a complex task is not necessarily faster than several instructions that together do the same thing. Second, that the relative merits of instructions and optimization rules vary to a surprisingly large degree across the x86 family.</p>
 
   <p>In particular, if you&rsquo;re going to write 386 protected mode code, which will run only on the 386, 486, and Pentium, you&rsquo;d be well advised to rethink your use of the more esoteric members of the x86 instruction set. <b>LOOP, JCXZ,</b> the various accumulator-specific instructions, and even the string instructions in many circumstances no longer offer the advantages they did on the 8088. Sometimes they&rsquo;re just not any faster than more general instructions, so they&rsquo;re not worth going out of your way to use; sometimes, as with <b>LOOP,</b> they&rsquo;re actually slower, and you&rsquo;d do well to avoid them altogether in the 386/486 world. Reviewing the instruction cycle times in the MASM or TASM manuals, or looking over the cycle times in Intel&rsquo;s literature, is a good place to start; published cycle times are closer to actual execution times on the 386 and 486 than on the 8088, and are reasonably reliable indicators of the relative performance levels of x86 instructions.</p>
 
-  <h4 align="left"><a id="Heading5"></a>Avoiding LOOPS of Any Stripe</h4>
+  <h4 align="left" id="Heading5">Avoiding LOOPS of Any Stripe</h4>
 
   <p>Cycle counting and directly substituting instructions (<b>DEC CX/JNZ</b> for <b>LOOP,</b> for example) are techniques that belong at the lowest level of optimization. It&rsquo;s an important level, but it&rsquo;s fairly mechanical; once you&rsquo;ve learned the capabilities and relative performance levels of the various instructions, you should be able to select the best instructions fairly easily. What&rsquo;s more, this is a task at which compilers excel. What I&rsquo;m saying is that you shouldn&rsquo;t get too caught up in counting cycles because that&rsquo;s a small (albeit important) part of the optimization picture, and not the area in which your greatest advantage lies.</p>
 
-  <h3><a id="Heading6"></a>Local Optimization</h3>
+  <h3 id="Heading6">Local Optimization</h3>
 
   <p>One level at which assembly language programming pays off handsomely is that of <i>local optimization;</i> that is, selecting the best <i>sequence</i> of instructions for a task. The key to local optimization is viewing the 80x86 instruction set as a set of building blocks, each with unique characteristics. Your job is to sequence those blocks so that they perform well. It doesn&rsquo;t matter what the instructions are intended to do or what their names are; all that matters is what they <i>do.</i></p>
 
@@ -98,10 +91,6 @@ jz      SkipLoop         ;If field is 0, don&rsquo;t bother
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

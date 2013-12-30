@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Of Songs, Taxes, and the Simplicity of Complex Polygons</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Of Songs, Taxes, and the Simplicity of Complex Polygons</title>
   <meta name="chapter" content="40" />
   <meta name="pages" content="750-753" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,13 +30,13 @@
 
   <p><br /></p>
 
-  <h3><a id="Heading5"></a>Complex Polygon Filling: An Implementation</h3>
+  <h3 id="Heading5">Complex Polygon Filling: An Implementation</h3>
 
   <p>Listing 40.1 just shown presents a function, <b>FillPolygon()</b>, that fills polygons of all shapes. If <b>CONVEX_FILL_LINKED</b> is defined, the fast convex fill code from Chapter 39 is linked in and used to draw convex polygons. Otherwise, convex polygons are handled as if they were complex. Nonconvex polygons are also handled as complex, although this is not necessary, as discussed shortly.</p>
 
   <p>Listing 40.1 is a faithful implementation of the complex polygon filling approach just described, with separate functions corresponding to each of the tasks, such as building the GET and X-sorting the AET. Listing 40.2 provides the actual drawing code used to fill spans, built on a draw pixel routine that is the only hardware dependency anywhere in the C code. Listing 40.3 is the header file for the polygon filling code; note that it is an expanded version of the header file used by the fast convex polygon fill code from Chapter 39. (They may have the same name but are <i>not</i> the same file!) Listing 40.4 is a sample program that, when linked to Listings 40.1 and 40.2, demonstrates drawing polygons of various sorts.</p>
 
-  <p><b>LISTING 40.2 L40-2.C</b></p><!-- CODE //-->
+  <p><b>LISTING 40.2 L40-2.C</b></p>
   <pre>
  /* Draws all pixels in the horizontal line segment passed in, from
     (LeftX,Y) to (RightX,Y), in the specified color in mode 13h, the
@@ -79,9 +72,9 @@
  #endif
     *ScreenPtr = (unsigned char) Color;
  }
-</pre><!-- END CODE //-->
+</pre>
 
-  <p><b>LISTING 40.3 POLYGON.H</b></p><!-- CODE //-->
+  <p><b>LISTING 40.3 POLYGON.H</b></p>
   <pre>
  /* POLYGON.H: Header file for polygon-filling code */
 
@@ -117,9 +110,9 @@
     int YStart;                /* Y coordinate of topmost line */
     struct HLine * HLinePtr;   /* pointer to list of horz lines */
  };
-</pre><!-- END CODE //-->
+</pre>
 
-  <p><b>LISTING 40.4 L40-4.C</b></p><!-- CODE //-->
+  <p><b>LISTING 40.4 L40-4.C</b></p>
   <pre>
  /* Sample program to exercise the polygon-filling routines */
 
@@ -200,7 +193,7 @@
     int86(0x10, &amp;regset, &amp;regset);
  }
 
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -219,10 +212,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

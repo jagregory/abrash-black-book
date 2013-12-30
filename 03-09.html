@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Assume Nothing</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Assume Nothing</title>
   <meta name="chapter" content="03" />
   <meta name="pages" content="067-070" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p><b>LISTING 3.7 LZTIME.BAT</b></p><!-- CODE //-->
+  <p><b>LISTING 3.7 LZTIME.BAT</b></p>
   <pre>
 echo off
 rem
@@ -100,11 +93,11 @@ echo ***************************************************************
 echo * An error occurred while building the long-period Zen timer. *
 echo ***************************************************************
 :end
-</pre><!-- END CODE //-->
+</pre>
 
   <p>Listing 3.8 shows sample code that can be timed with the test-bed program of Listing 3.6. Listing 3.8 measures the time required to execute 20,000 loads of AL from memory, a length of time too long for the precision Zen timer to handle on the 8088.</p>
 
-  <p><b>LISTING 3.8 LST3-8.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 3.8 LST3-8.ASM</b></p>
   <pre>
 ;
 ; Measures the performance of 20,000 loads of AL from
@@ -133,25 +126,25 @@ endm
 ; Stop timing.
 ;
 callZTimerOff
-</pre><!-- END CODE //-->
+</pre>
 
-  <p>When LZTIME.BAT is run on a PC with the following command line (assuming the code in Listing 3.8 is the file LST3-8.ASM)</p><!-- CODE SNIP //-->
+  <p>When LZTIME.BAT is run on a PC with the following command line (assuming the code in Listing 3.8 is the file LST3-8.ASM)</p>
   <pre>
 lztime lst3-8.asm
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>the result is 72,544 &micro;s, or about 3.63 &micro;s per load of AL from memory. This is just slightly longer than the time per load of AL measured by the precision Zen timer, as we would expect given that interrupts are left enabled by the long-period Zen timer. The extra fraction of a microsecond measured per <b>MOV</b> reflects the time required to execute the BIOS code that handles the 18.2 timer interrupts that occur each second.</p>
 
   <p>Note that the command can take as much as 10 minutes to finish on a slow PC if you are using MASM, with most of that time spent assembling Listing 3.8. Why? Because MASM is notoriously slow at assembling <b>REPT</b> blocks, and the block in Listing 3.8 is repeated 20,000 times.</p>
 
-  <h3><a id="Heading15"></a>Using the Zen Timer from C</h3>
+  <h3 id="Heading15">Using the Zen Timer from C</h3>
 
   <p>The Zen timer can be used to measure code performance when programming in C&mdash;but not right out of the box. As presented earlier, the timer is designed to be called from assembly language; some relatively minor modifications are required before the <b>ZTimerOn</b> (start timer), <b>ZTimerOff</b> (stop timer), and <b>ZTimerReport</b> (display timing results) routines can be called from C. There are two separate cases to be dealt with here: small code model and large; I&rsquo;ll tackle the simpler one, the small code model, first.</p>
 
-  <p>Altering the Zen timer for linking to a small code model C program involves the following steps: <b>C</b> hange <b>ZTimerOn</b> to <b>_ZTimerOn</b>, change <b>ZTimerOff</b> to <b>_ZTimerOff</b>, change <b>ZTimerReport</b> to <b>_ZTimerReport</b>, and change <b>Code</b> to <b>_TEXT</b> . Figure 3.2 shows the line numbers and new states of all lines from Listing 3.1 that must be changed. These changes convert the code to use C-style external label names and the small model C code segment. (In C<small>++</small>, use the &ldquo;C&rdquo; specifier, as in</p><!-- CODE SNIP //-->
+  <p>Altering the Zen timer for linking to a small code model C program involves the following steps: <b>C</b> hange <b>ZTimerOn</b> to <b>_ZTimerOn</b>, change <b>ZTimerOff</b> to <b>_ZTimerOff</b>, change <b>ZTimerReport</b> to <b>_ZTimerReport</b>, and change <b>Code</b> to <b>_TEXT</b> . Figure 3.2 shows the line numbers and new states of all lines from Listing 3.1 that must be changed. These changes convert the code to use C-style external label names and the small model C code segment. (In C<small>++</small>, use the &ldquo;C&rdquo; specifier, as in</p>
   <pre>
 extern &ldquo;C&rdquo; ZTimerOn(void);
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p><br /></p>
 
@@ -170,10 +163,6 @@ extern &ldquo;C&rdquo; ZTimerOn(void);
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

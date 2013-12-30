@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: There Ain't No Such Thing as the Fastest Code</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: There Ain't No Such Thing as the Fastest Code</title>
   <meta name="chapter" content="16" />
   <meta name="pages" content="303-305" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p><b>LISTING 16.4 L16-4.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 16.4 L16-4.ASM</b></p>
   <pre>
  ; Assembly subroutine for Listing 16.2. Scans through Buffer, of
  ; length BufferLength, counting words and updating WordCount as
@@ -130,7 +123,7 @@
  _ScanBuffer     endp
          end
  
-</pre><!-- END CODE //-->
+</pre>
 
   <p>Listing 16.4 features several interesting tricks. First, it uses <b>LODSB</b> and <b>XLAT</b> in succession, a very neat way to get a pointed-to byte, advance the pointer, and look up the value indexed by the byte in a table, all with just two instruction bytes. (Interestingly, Listing 16.4 would probably run quite a bit better still on an 8088, where <b>LODSB</b> and <b>XLAT</b> have a greater advantage over conventional instructions. On the 486 and Pentium, however, <b>LODSB</b> and <b>XLAT</b> lose much of their appeal, and should be replaced with <b>MOV</b> instructions.) Better yet, <b>LODSB</b> and <b>XLAT</b> don&rsquo;t alter the flags, so the Zero flag status set before <b>LODSB</b> is still around to be tested after <b>XLAT</b> .</p>
 
@@ -146,7 +139,7 @@
     </tr>
   </table>
 
-  <h3><a id="Heading5"></a>Challenges and Hazards</h3>
+  <h3 id="Heading5">Challenges and Hazards</h3>
 
   <p>The challenge I put to the readers of <i>PC TECHNIQUES</i> was to write a faster module to replace Listing 16.4. The author of the code that counted the words in my secret test file fastest on my 20 MHz cached 386 would be the winner and receive Numerous Valuable Prizes.</p>
 
@@ -171,10 +164,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

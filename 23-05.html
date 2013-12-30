@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bones and Sinew</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bones and Sinew</title>
   <meta name="chapter" content="23" />
   <meta name="pages" content="443-445" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h4 align="left"><a id="Heading8"></a>Color Plane Manipulation</h4>
+  <h4 align="left" id="Heading8">Color Plane Manipulation</h4>
 
   <p>The VGA provides a considerable amount of hardware assistance for manipulating the four display memory planes. Two features illustrated by the sample program are the ability to control which planes are written to by a CPU write and the ability to copy four bytes&mdash;one from each plane&mdash;with a single CPU read and a single CPU write.</p>
 
@@ -57,7 +50,7 @@
 
   <p>Don&rsquo;t worry if you&rsquo;re not catching everything in this chapter on the first pass; the VGA is a complicated beast, and learning about it is an iterative process. We&rsquo;ll be going over these features again, in different contexts, over the course of the rest of this book.</p>
 
-  <h4 align="left"><a id="Heading9"></a>Page Flipping</h4>
+  <h4 align="left" id="Heading9">Page Flipping</h4>
 
   <p>When animated graphics are drawn directly on the screen, with no intermediate frame-composition stage, the image typically flickers and/or ripples, an unavoidable result of modifying display memory at the same time that it is being scanned for video data. The display memory of the VGA makes it possible to perform page flipping, which eliminates such problems. The basic premise of page flipping is that one area of display memory is displayed while another is being modified. The modifications never affect an area of memory as it is providing video data, so no undesirable side effects occur. Once the modification is complete, the modified buffer is selected for display, causing the screen to change to the new image in a single frame&rsquo;s time, typically 1/60th or 1/70th of a second. The other buffer is then available for modification.</p>
 
@@ -86,10 +79,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Dead Cats and Lightning Lines</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Dead Cats and Lightning Lines</title>
   <meta name="chapter" content="37" />
   <meta name="pages" content="695-704" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 37<br />
+  <h2 id="Heading1">Chapter 37<br />
   Dead Cats and Lightning Lines</h2>
 
-  <h3><a id="Heading2"></a>Optimizing Run-Length Slice Line Drawing in a Major Way</h3>
+  <h3 id="Heading2">Optimizing Run-Length Slice Line Drawing in a Major Way</h3>
 
   <p>As I write this, the wife, the kid, and I are in the throes of yet another lightning-quick transcontinental move, this time to Redmond, Washington, to work for You Know Who. Moving is never fun, but what makes it worse for us is the pets. Getting them into kennels and to the airport is hard; there&rsquo;s always the possibility that they might not be allowed to fly because of the weather; and, worst of all, they might not make it. Animals don&rsquo;t usually end up injured or dead, but it does happen.</p>
 
@@ -54,11 +47,11 @@
 
   <p>Okay, but what&rsquo;s the point? The point is, if it isn&rsquo;t broken, don&rsquo;t fix it. And if it is broken, maybe that&rsquo;s all right, too. Which brings us, neat as a pin, to the topic of drawing lines in a serious hurry.</p>
 
-  <h3><a id="Heading3"></a>Fast Run-Length Slice Line Drawing</h3>
+  <h3 id="Heading3">Fast Run-Length Slice Line Drawing</h3>
 
   <p>In the last chapter, we examined the principles of run-length slice line drawing, which draws lines a run at a time rather than a pixel at a time, a run being a series of pixels along the major (longer) axis. It&rsquo;s time to turn theory into useful practice by developing a fast assembly version. Listing 37.1 is the assembly version, in a form that&rsquo;s plug-compatible with the C code from the previous chapter.</p>
 
-  <p><b>LISTING 37.1 L37-1.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 37.1 L37-1.ASM</b></p>
   <pre>
 ; Fast run-length slice line drawing implementation for mode 0x13, the VGA&rsquo;s
 ; 320x200 256-color mode.
@@ -408,7 +401,7 @@ Done:
       ret
 _LineDraw   endp
       end
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -427,10 +420,6 @@ _LineDraw   endp
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Hints My Readers Gave Me</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Hints My Readers Gave Me</title>
   <meta name="chapter" content="09" />
   <meta name="pages" content="167-172" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,19 +30,19 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 9<br />
+  <h2 id="Heading1">Chapter 9<br />
   Hints My Readers Gave Me</h2>
 
-  <h3><a id="Heading2"></a>Optimization Odds and Ends from the Field</h3>
+  <h3 id="Heading2">Optimization Odds and Ends from the Field</h3>
 
   <p>Back in high school, I took a pre-calculus class from Mr. Bourgeis, whose most notable characteristics were incessant pacing and truly enormous feet. My friend Barry, who sat in the back row, right behind me, claimed that it was because of his large feet that Mr. Bourgeis was so restless. Those feet were <i>so</i> heavy, Barry hypothesized, that if Mr. Bourgeis remained in any one place for too long, the floor would give way under the strain, plunging the unfortunate teacher deep into the mantle of the Earth and possibly all the way through to China. Many amusing cartoons were drawn to this effect.</p>
 
   <p>Unfortunately, Barry was too busy drawing cartoons, or, alternatively, sleeping, to actually learn any math. In the long run, that didn&rsquo;t turn out to be a handicap for Barry, who went on to become vice-president of sales for a ham-packing company, where presumably he was rarely called upon to derive the quadratic equation. Barry&rsquo;s lack of scholarship caused some problems back then, though. On one memorable occasion, Barry was half-asleep, with his eyes open but unfocused and his chin balanced on his hand in the classic &ldquo;if I fall asleep my head will fall off my hand and I&rsquo;ll wake up&rdquo; posture, when Mr. Bourgeis popped a killer problem:</p>
 
-  <p>&ldquo;Barry, solve this for X, please.&rdquo; On the blackboard lay the equation:</p><!-- CODE SNIP //-->
+  <p>&ldquo;Barry, solve this for X, please.&rdquo; On the blackboard lay the equation:</p>
   <pre>
 X - 1 = 0
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>&ldquo;Minus 1,&rdquo; Barry said promptly.</p>
 
@@ -71,23 +64,23 @@ X - 1 = 0
 
   <p>I like to think I know more about performance programming than Barry knew about math. Nonetheless, I always welcome good ideas and comments, and many readers have sent me a slew of those over the years. So in this chapter, I think I&rsquo;ll return the favor by devoting a chapter to reader feedback.</p>
 
-  <h4 align="left"><a id="Heading3"></a>Another Look at LEA</h4>
+  <h4 align="left" id="Heading3">Another Look at LEA</h4>
 
-  <p>Several people have pointed out that while <b>LEA</b> is great for performing certain additions (see Chapter 6), it isn&rsquo;t a perfect replacement for <b>ADD</b>. What&rsquo;s the difference? <b>LEA</b>, an addressing instruction by trade, doesn&rsquo;t affect the flags, while the arithmetic <b>ADD</b> instruction most certainly does. This is no problem when performing additions that involve only quantities that fit in one machine word (32 bits in 386 protected mode, 16 bits otherwise), but it renders <b>LEA</b> useless for multiword operations, which use the Carry flag to tie together partial results. For example, these instructions</p><!-- CODE SNIP //-->
+  <p>Several people have pointed out that while <b>LEA</b> is great for performing certain additions (see Chapter 6), it isn&rsquo;t a perfect replacement for <b>ADD</b>. What&rsquo;s the difference? <b>LEA</b>, an addressing instruction by trade, doesn&rsquo;t affect the flags, while the arithmetic <b>ADD</b> instruction most certainly does. This is no problem when performing additions that involve only quantities that fit in one machine word (32 bits in 386 protected mode, 16 bits otherwise), but it renders <b>LEA</b> useless for multiword operations, which use the Carry flag to tie together partial results. For example, these instructions</p>
   <pre>
 ADD  EAX,EBX
 ADC  EDX,ECX
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>could <i>not</i> be replaced</p><!-- CODE SNIP //-->
+  <p>could <i>not</i> be replaced</p>
   <pre>
 LEA  EAX,[EAX+EBX]
 ADC  EDX,ECX
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>because <b>LEA</b> doesn&rsquo;t affect the Carry flag.</p>
 
-  <p>The no-carry characteristic of <b>LEA</b> becomes a distinct advantage when performing pointer arithmetic, however. For instance, the following code uses <b>LEA</b> to advance the pointers while adding one 128-bit memory variable to another such variable:</p><!-- CODE //-->
+  <p>The no-carry characteristic of <b>LEA</b> becomes a distinct advantage when performing pointer arithmetic, however. For instance, the following code uses <b>LEA</b> to advance the pointers while adding one 128-bit memory variable to another such variable:</p>
   <pre>
    MOV   ECX,4   ;# of 32-bit words to add
    CLC
@@ -99,7 +92,7 @@ ADDLOOP:
    LEA   ESI,[ESI+4]  ;advance one array&rsquo;s pointer
    LEA   EDI,[EDI+4]  ;advance the other array&rsquo;s pointer
          LOOP ADDLOOP
-</pre><!-- END CODE //-->
+</pre>
 
   <p>(Yes, I could use <b>LODSD</b> instead of <b>MOV/LEA</b>; I&rsquo;m just illustrating a point here. Besides, <b>LODS</b> is only 1 cycle faster than <b>MOV/LEA</b> on the 386, and is actually more than twice as slow on the 486.) If we used <b>ADD</b> rather than <b>LEA</b> to advance the pointers, the carry from one <b>ADC</b> to the next would have to be preserved with either <b>PUSHF/POPF</b> or <b>LAHF/SAHF</b>. (Alternatively, we could use multiple <b>INC</b>s, since <b>INC</b> doesn&rsquo;t affect the Carry flag.)</p>
 
@@ -107,37 +100,37 @@ ADDLOOP:
 
   <p>But there sure are a lot of interesting options, aren&rsquo;t there?</p>
 
-  <h4 align="left"><a id="Heading4"></a>The Kennedy Portfolio</h4>
+  <h4 align="left" id="Heading4">The Kennedy Portfolio</h4>
 
   <p>Reader John Kennedy regularly passes along intriguing assembly programming tricks, many of which I&rsquo;ve never seen mentioned anywhere else. John likes to optimize for size, whereas I lean more toward speed, but many of his optimizations are good for both purposes. Here are a few of my favorites:</p>
 
-  <p>John&rsquo;s code for setting AX to its absolute value is:</p><!-- CODE SNIP //-->
+  <p>John&rsquo;s code for setting AX to its absolute value is:</p>
   <pre>
 CWD
 XOR   AX,DX
 SUB   AX,DX
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>This does nothing when bit 15 of AX is 0 (that is, if AX is positive). When AX is negative, the code &ldquo;nots&rdquo; it and adds 1, which is exactly how you perform a two&rsquo;s complement negate. For the case where AX is not negative, this trick usually beats the stuffing out of the standard absolute value code:</p><!-- CODE SNIP //-->
+  <p>This does nothing when bit 15 of AX is 0 (that is, if AX is positive). When AX is negative, the code &ldquo;nots&rdquo; it and adds 1, which is exactly how you perform a two&rsquo;s complement negate. For the case where AX is not negative, this trick usually beats the stuffing out of the standard absolute value code:</p>
   <pre>
    AND   AX,AX        ;negative?
    JNS   IsPositive   ;no
    NEG   AX           ;yes,negate it
 IsPositive:
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>However, John&rsquo;s code is slower on a 486; as you&rsquo;re no doubt coming to realize (and as I&rsquo;ll explain in Chapters 12 and 13), the 486 is an optimization world unto itself.</p>
 
-  <p>Here&rsquo;s how John copies a block of bytes from DS:SI to ES:DI, moving as much data as possible a word at a time:</p><!-- CODE SNIP //-->
+  <p>Here&rsquo;s how John copies a block of bytes from DS:SI to ES:DI, moving as much data as possible a word at a time:</p>
   <pre>
 SHR   CX,1      ;word count
 REP   MOVSW     ;copy as many words as possible
 ADC   CX,CX     ;CX=1 if copy length was odd,
                 ;0 else
 REP   MOVSB     ;copy any odd byte
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>(<b>ADC CX,CX</b> can be replaced with <b>RCL CX,1</b>; which is faster depends on the processor type.) It might be hard to believe that the above is faster than this:</p><!-- CODE SNIP //-->
+  <p>(<b>ADC CX,CX</b> can be replaced with <b>RCL CX,1</b>; which is faster depends on the processor type.) It might be hard to believe that the above is faster than this:</p>
   <pre>
    SHR   CX,1      ;word count
    REP   MOVSW     ;copy as many words as
@@ -145,7 +138,7 @@ REP   MOVSB     ;copy any odd byte
    JNC   CopyDone  ;done if even copy length
    MOVSB           ;copy the odd byte
 CopyDone:
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p><br /></p>
 
@@ -164,10 +157,6 @@ CopyDone:
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

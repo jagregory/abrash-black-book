@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Sorted Spans in Action</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Sorted Spans in Action</title>
   <meta name="chapter" content="67" />
   <meta name="pages" content="1227-1230" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -45,31 +38,29 @@
 
   <p>For the remainder of this chapter, I&rsquo;m going to look at the three main types of 1/z span sorting, then discuss a sample 3-D app built around 1/z span sorting.</p>
 
-  <h3><a id="Heading4"></a>Types of 1/z Span Sorting</h3>
+  <h3 id="Heading4">Types of 1/z Span Sorting</h3>
 
   <p>As a quick refresher: With 1/z span sorting, all the polygons in a scene are treated as sets of screenspace pixel spans, and 1/z (where z is distance from the viewpoint in viewspace, as measured along the viewplane normal) is used to sort the spans so that the nearest span overlapping each pixel is drawn. As I discussed in Chapter 66, in the sample program we&rsquo;re actually going to do all our sorting with polygon edges, which represent spans in an implicit form.</p>
 
   <p>There are three types of 1/z span sorting, each requiring a different implementation. In order of increasing speed and decreasing complexity, they are: intersecting, abutting, and independent. (These are names of my own devising; I haven&rsquo;t come across any standard nomenclature in the literature.)</p>
 
-  <h4 align="left"><a id="Heading5"></a>Intersecting Span Sorting</h4>
+  <h4 align="left" id="Heading5">Intersecting Span Sorting</h4>
 
   <p>Intersecting span sorting occurs when polygons can interpenetrate. Thus, two spans may cross such that part of each span is visible, in which case the spans have to be split and drawn appropriately, as shown in Figure 67.1.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/67-01.jpg',407,204 )"> --><img src="images/67-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/67-01.jpg',407,204)"> --><b>Figure 67.1</b></a>&nbsp;&nbsp;<i>Intersecting span sorting.</i></p>
+  <p><a id="Fig1"><img src="images/67-01.jpg" /><br />
+  <b>Figure 67.1</b></a>&nbsp;&nbsp;<i>Intersecting span sorting.</i></p>
 
   <p>Intersecting is the slowest and most complicated type of span sorting, because it is necessary to compare 1/z values at two points in order to detect interpenetration, and additional work must be done to split the spans as necessary. Thus, although intersecting span sorting certainly works, it&rsquo;s not the first choice for performance.</p>
 
-  <h4 align="left"><a id="Heading6"></a>Abutting Span Sorting</h4>
+  <h4 align="left" id="Heading6">Abutting Span Sorting</h4>
 
   <p>Abutting span sorting occurs when polygons that are not part of a continuous surface can butt up against one another, but don&rsquo;t interpenetrate, as shown in Figure 67.2. This is the sorting used in Quake, where objects like doors often abut walls and floors, and turns out to be more complicated than you might think. The problem is that when an abutting polygon starts on a given scan line, as with polygon B in Figure 67.2, it starts at exactly the same 1/z value as the polygon it abuts, in this case, polygon A, so additional sorting is needed when these ties happen. Of course, the two-point sorting used for intersecting polygons would work, but we&rsquo;d like to find something faster.</p>
 
   <p>As it turns out, the additional sorting for abutting polygons is actually quite simple; whichever polygon has a greater 1/z gradient with respect to screen x (that is, whichever polygon is heading fastest toward the viewer along the scan line) is the front one. The hard part is identifying <i>when</i> ties&mdash;that is, abutting polygons&mdash;occur; due to floating-point imprecision, as well as fixed-point edge-stepping imprecision that can move an edge slightly on the screen, calculations of 1/z from the combination of screen coordinates and 1/z gradients (as discussed last time) can be slightly off, so most tie cases will show up as near matches, not exact matches. This imprecision makes it necessary to perform two comparisons, one with an adjust-up by a small epsilon and one with an adjust-down, creating a range in which near-matches are considered matches. Fine-tuning this epsilon to catch all ties, without falsely reporting close-but-not-abutting edges as ties, proved to be troublesome in Quake, and the epsilon calculations and extra comparisons slowed things down.</p>
 
-  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/67-02.jpg',406,216 )"> --><img src="images/67-02.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/67-02.jpg',406,216)"> --><b>Figure 67.2</b></a>&nbsp;&nbsp;<i>Abutting span sorting.</i></p>
+  <p><a id="Fig2"><img src="images/67-02.jpg" /><br />
+  <b>Figure 67.2</b></a>&nbsp;&nbsp;<i>Abutting span sorting.</i></p>
 
   <p>I do think that abutting 1/z span sorting could have been made reliable enough for production use in Quake, were it not that we share edges between adjacent polygons in Quake, so that the world is a large polygon mesh. When a polygon ends and is followed by an adjacent polygon that shares the edge that just ended, we simply assume that the adjacent polygon sorts relative to other active polygons in the same place as the one that ended (because the mesh is continuous and there&rsquo;s no interpenetration), rather than doing a 1/z sort from scratch. This speeds things up by saving a lot of sorting, but it means that if there is a sorting error, a whole string of adjacent polygons can be sorted incorrectly, pulled in by the one missorted polygon. Missorting is a very real hazard when a polygon is very nearly perpendicular to the screen, so that the 1/z calculations push the limits of numeric precision, especially in single-precision floating point.</p>
 
@@ -92,10 +83,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

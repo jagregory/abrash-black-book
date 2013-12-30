@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pentium: Not the Same Old Song</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pentium: Not the Same Old Song</title>
   <meta name="chapter" content="19" />
   <meta name="pages" content="375-377" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,16 +30,16 @@
 
   <p><br /></p>
 
-  <h3><a id="Heading7"></a>Faster Addressing and More</h3>
+  <h3 id="Heading7">Faster Addressing and More</h3>
 
   <p>I&rsquo;ll spend the rest of this chapter covering a variety of Pentium optimization tips. For starters, effective address calculations (that is, the addition and scaling required to calculate a memory operand&rsquo;s address, as for example in <b>MOV EAX,[EBX+ECX*2+4]</b>) never take any extra cycles on the Pentium (other than possibly an AGI cycle), even for the use of base+index addressing (as in <b>MOV [ESI+EDI],EAX</b>) or scaling (*2, *4, or *8, as in <b>INC ARRAY[ESI*4]</b>). On the 486, both of the latter cases cause a 1-cycle penalty. The faster effective address calculations have the side effect of making <b>LEA</b> very attractive as an arithmetic instruction. <b>LEA</b> can add any two registers, one of which can be multiplied by one, two, four, or eight, plus a constant value, and can store the result in any register&mdash;all in one cycle, apart from AGIs. Not only that, but as we&rsquo;ll see in the next chapter, <b>LEA</b> can go through either pipe, whereas <b>SHL</b> can only go through the U-pipe, so <b>LEA</b> is often a superior choice for multiplication by three, four, five, eight, or nine. (<b>ADD</b> is the best choice for multiplication by two.) If you use <b>LEA</b> for arithmetic, do remember that unlike <b>ADD</b> and <b>SHL</b>, it doesn&rsquo;t modify any flags.</p>
 
-  <p>As on the 486, memory operands should not cross any more alignment boundaries than absolutely necessary. Word operands should be word-aligned, dword operands should be dword-aligned, and qword operands (double-precision variables) should be qword-aligned. Spanning a dword boundary, as in</p><!-- CODE SNIP //-->
+  <p>As on the 486, memory operands should not cross any more alignment boundaries than absolutely necessary. Word operands should be word-aligned, dword operands should be dword-aligned, and qword operands (double-precision variables) should be qword-aligned. Spanning a dword boundary, as in</p>
   <pre>
 mov ebx,3
  :
 mov eax,[ebx]
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>costs three cycles. On the other hand, as noted above, branch targets can now span cache lines with impunity, so on the Pentium there&rsquo;s no good argument for the paragraph (that is, 16-byte) alignment that Intel recommends for 486 jump targets. The 32-byte alignment might make for slightly more efficient Pentium cache usage, but would make code much bigger overall.</p>
 
@@ -89,10 +82,6 @@ mov eax,[ebx]
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Aiming the 486</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Aiming the 486</title>
   <meta name="chapter" content="13" />
   <meta name="pages" content="256-258" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,12 +30,12 @@
 
   <p><br /></p>
 
-  <h3><a id="Heading7"></a>32-Bit Addressing Modes</h3>
+  <h3 id="Heading7">32-Bit Addressing Modes</h3>
 
-  <p>The 386 and 486 both support 32-bit addressing modes, in which any register may serve as the base memory addressing register, and almost any register may serve as the potentially scaled index register. For example,</p><!-- CODE SNIP //-->
+  <p>The 386 and 486 both support 32-bit addressing modes, in which any register may serve as the base memory addressing register, and almost any register may serve as the potentially scaled index register. For example,</p>
   <pre>
 mov al,BaseTable[ecx+edx*4]
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>uses a perfectly valid 32-bit address, with the byte accessed being the one at the offset in DS pointed to by the sum of EDX times 4 plus the offset of <b>BaseTable</b> plus ECX. This is a very powerful memory addressing scheme, far superior to 8088-style 16-bit addressing, but it&rsquo;s not without its quirks and costs, so let&rsquo;s take a quick look at 32-bit addressing. (By the way, 32-bit addressing is not limited to protected mode; 32-bit instructions may be used in real mode, although each instruction that uses 32-bit addressing must have an address-size prefix byte, and the presence of a prefix byte costs a cycle on a 486.)</p>
 
@@ -60,16 +53,16 @@ mov al,BaseTable[ecx+edx*4]
     </tr>
   </table>
 
-  <p>However, because 32-bit addressing supports many more addressing combinations than 16-bit addressing, the Mod-R/M byte can&rsquo;t describe all the combinations. Therefore, whenever an index register (as described above) is involved, a second byte, the SIB byte, follows the Mod-R/M byte to provide additional address information. Consequently, whenever you use a scaled memory addressing register or use the sum of two registers to point to memory, you automatically add 1 cycle and 1 byte to that instruction. This is not to say that you shouldn&rsquo;t use index registers when they&rsquo;re needed, but if you find yourself using them inside key loops, you should see if it&rsquo;s possible to move the index calculation outside the loop as, for example, in a loop like this:</p><!-- CODE SNIP //-->
+  <p>However, because 32-bit addressing supports many more addressing combinations than 16-bit addressing, the Mod-R/M byte can&rsquo;t describe all the combinations. Therefore, whenever an index register (as described above) is involved, a second byte, the SIB byte, follows the Mod-R/M byte to provide additional address information. Consequently, whenever you use a scaled memory addressing register or use the sum of two registers to point to memory, you automatically add 1 cycle and 1 byte to that instruction. This is not to say that you shouldn&rsquo;t use index registers when they&rsquo;re needed, but if you find yourself using them inside key loops, you should see if it&rsquo;s possible to move the index calculation outside the loop as, for example, in a loop like this:</p>
   <pre>
 LoopTop:
       add   ax,DataTable[ebx*2]
       inc   ebx
       dec   cx
       jnz   LoopTop
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>You could change this to the following for greater performance:</p><!-- CODE SNIP //-->
+  <p>You could change this to the following for greater performance:</p>
   <pre>
       add   ebx,ebx      ;ebx*2
 LoopTop:
@@ -78,7 +71,7 @@ LoopTop:
       dec   cx
       jnz   LoopTop
       shr   ebx,1 ;ebx*2/2
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>I&rsquo;ll end this chapter with two more quirks of 32-bit addressing. First, as with 16-bit addressing, addressing that uses EBP as a base register both accesses the SS segment by default and always has a displacement of at least 1 byte. This reflects the common use of EBP to address a stack frame, but is worth keeping in mind if you should happen to use EBP to address non-stack memory.</p>
 
@@ -101,10 +94,6 @@ LoopTop:
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

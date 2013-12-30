@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Linked Lists and Unintended Challenges</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Linked Lists and Unintended Challenges</title>
   <meta name="chapter" content="15" />
   <meta name="pages" content="284-287" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p><b>LISTING 15.1 L15-1.C</b></p><!-- CODE //-->
+  <p><b>LISTING 15.1 L15-1.C</b></p>
   <pre>
 /* Deletes the node in a linked list that follows the indicated node.
    Assumes list is headed by a dummy node, so no special testing for
@@ -51,9 +44,9 @@ struct LinkNode *DeleteNodeAfter(struct LinkNode *NodeToDeleteAfter)
          NodeToDeleteAfter-&gt;NextNode-&gt;NextNode;
    return(NodeToDeleteAfter);
 }
-</pre><!-- END CODE //-->
+</pre>
 
-  <p><b>LISTING 15.2 LLIST.H</b></p><!-- CODE //-->
+  <p><b>LISTING 15.2 LLIST.H</b></p>
   <pre>
 /* Linked list header file. */
 #define MAX_TEXT_LENGTH 100   /* longest allowed Text field */
@@ -70,9 +63,9 @@ struct LinkNode *FindNodeBeforeValue(struct LinkNode *, int);
 struct LinkNode *InitLinkedList(void);
 struct LinkNode *InsertNodeSorted(struct LinkNode *,
    struct LinkNode *);
-</pre><!-- END CODE //-->
+</pre>
 
-  <p><b>LISTING 15.3 L15-3.C</b></p><!-- CODE //-->
+  <p><b>LISTING 15.3 L15-3.C</b></p>
   <pre>
 /* Deletes the node in the specified linked list that follows the
    indicated node. List is headed by a head-of-list pointer; if the
@@ -92,7 +85,7 @@ struct LinkNode *DeleteNodeAfter(struct LinkNode **HeadOfListPtr,
    }
    return(NodeToDeleteAfter);
 }
-</pre><!-- END CODE //-->
+</pre>
 
   <p>However, it is true that if you&rsquo;re going to store a variety of types of structures in your linked lists, you should start each node with the <b>LinkNode</b> field. That way, the link pointer is in the same place in <i>every</i> structure, and the same linked list code can handle all of the structure types by casting them to the base link-node structure type. This is a less than elegant approach, but it works. C<small>++</small> can handle data mixing more cleanly than C, via derivation from a base link-node class.</p>
 
@@ -100,13 +93,12 @@ struct LinkNode *DeleteNodeAfter(struct LinkNode **HeadOfListPtr,
 
   <p>Similar problems with the head pointer crop up when you&rsquo;re inserting nodes, and in fact in all link manipulation code. It&rsquo;s easy to end up working with either pointers to pointers or lots of special-case code, and while those approaches work, they&rsquo;re inelegant and inefficient.</p>
 
-  <h3><a id="Heading4"></a>Dummies and Sentinels</h3>
+  <h3 id="Heading4">Dummies and Sentinels</h3>
 
   <p>A far better approach is to use a <i>dummy node</i> for the head of the list, as shown in Figure 15.2. I invented this one for myself the next time I encountered linked lists, while designing a seed fill function for MetaWindows, back during my tenure at Metagraphics Corp. But I could have learned it by spending five minutes with Sedgewick&rsquo;s book.</p>
 
-  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/15-02.jpg',407,102 )"> --><img src="images/15-02.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/15-02.jpg',407,102)"> --><b>Figure 15.2</b></a>&nbsp;&nbsp;<i>Using a dummy head and tail node with a linked list.</i></p>
+  <p><a id="Fig2"><img src="images/15-02.jpg" /><br />
+  <b>Figure 15.2</b></a>&nbsp;&nbsp;<i>Using a dummy head and tail node with a linked list.</i></p>
 
   <table width="100%">
     <tr>
@@ -120,7 +112,7 @@ struct LinkNode *DeleteNodeAfter(struct LinkNode **HeadOfListPtr,
 
   <p>Figure 15.3 is a giant step in the right direction, but we can still make a few refinements. The inner loop of any code that scans through such a list has to perform a special test on each node to determine whether the tail has been reached. So, for example, code to find the first node containing a value field greater than or equal to a certain value has to perform two tests in the inner loop, as shown in Listing 15.4.</p>
 
-  <p><b>LISTING 15.4 L15-4.C</b></p><!-- CODE //-->
+  <p><b>LISTING 15.4 L15-4.C</b></p>
   <pre>
 /*  Finds the first node in a linked list with a value field greater
     than or equal to a key value, and returns a pointer to the node
@@ -144,13 +136,12 @@ struct LinkNode *FindNodeBeforeValueNotLess(
       return(NodePtr);  /* success; return pointer to node preceding
                            node that was &gt;= */
 }
-</pre><!-- END CODE //-->
+</pre>
 
   <p>Suppose, however, that we make the tail node a <i>sentinel</i> by giving it a value that is guaranteed to terminate the search, as shown in Figure 15.4. The list in Figure 15.4 has a sentinel with a value field of 32,767; since we&rsquo;re working with integers, that&rsquo;s the highest possible search value, and is guaranteed to satisfy any search that comes down the pike. The success or failure of the search can then be determined outside the loop, if necessary, by checking for the tail node&rsquo;s special pointer&mdash;but the inside of the loop is streamlined to just one test, as shown in Listing 15.5. Not all linked lists lend themselves to sentinels, but the performance benefits are considerable for those lend themselves to sentinels, but the performance benefits are considerable for those that do.</p>
 
-  <p><a id="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/15-03.jpg',407,104 )"> --><img src="images/15-03.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/15-03.jpg',407,104)"> --><b>Figure 15.3</b></a>&nbsp;&nbsp;<i>Representing an empty list.</i></p>
+  <p><a id="Fig3"><img src="images/15-03.jpg" /><br />
+  <b>Figure 15.3</b></a>&nbsp;&nbsp;<i>Representing an empty list.</i></p>
 
   <p><br /></p>
 
@@ -169,10 +160,6 @@ struct LinkNode *FindNodeBeforeValueNotLess(
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

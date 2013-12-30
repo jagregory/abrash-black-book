@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Assume Nothing</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Assume Nothing</title>
   <meta name="chapter" content="03" />
   <meta name="pages" content="070-073" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -39,43 +32,41 @@
 
   <p>when declaring the timer routines <b>extern</b>, so that name-mangling doesn&rsquo;t occur, and the linker can find the routines&rsquo; C-style names.)</p>
 
-  <p>That&rsquo;s all it takes; after doing this, you&rsquo;ll be able to use the Zen timer from C, as, for example, in:</p><!-- CODE SNIP //-->
+  <p>That&rsquo;s all it takes; after doing this, you&rsquo;ll be able to use the Zen timer from C, as, for example, in:</p>
   <pre>
 ZTimerOn():
 for (i=0, x=0; i&lt;100; i++)
      x += i;
 ZTimerOff();
 ZTimerReport();
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>(I&rsquo;m talking about the precision timer here. The long-period timer&mdash;Listing 3.5&mdash;requires the same modifications, but to different lines.)</p>
 
-  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/03-02.jpg',410,189 )"> --><img src="images/03-02.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/03-02.jpg',410,189)"> --><b>Figure 3.2</b></a>&nbsp;&nbsp;<i>Changes for use with small code model C.</i></p>
+  <p><a id="Fig2"><img src="images/03-02.jpg" /><br />
+  <b>Figure 3.2</b></a>&nbsp;&nbsp;<i>Changes for use with small code model C.</i></p>
 
   <p>Altering the Zen timer for use in C&rsquo;s large code model is a tad more complex, because in addition to the above changes, all functions, including the internal reference timing routines that are used to calculate overhead so it can be subtracted out, must be converted to far. Figure 3.3 shows the line numbers and new states of all lines from Listing 3.1 that must be changed in order to call the Zen timer from large code model C. Again, the line numbers are specific to the precision timer, but the long-period timer is very similar.</p>
 
   <p>The full listings for the C-callable Zen timers are presented in Chapter K on the companion CD-ROM.</p>
 
-  <h4 align="left"><a id="Heading16"></a>Watch Out for Optimizing Assemblers!</h4>
+  <h4 align="left" id="Heading16">Watch Out for Optimizing Assemblers!</h4>
 
-  <p>One important safety tip when modifying the Zen timer for use with large code model C code: Watch out for optimizing assemblers! TASM actually replaces</p><!-- CODE SNIP //-->
+  <p>One important safety tip when modifying the Zen timer for use with large code model C code: Watch out for optimizing assemblers! TASM actually replaces</p>
   <pre>
 call     far ptr ReferenceZTimerOn
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>with</p><!-- CODE SNIP //-->
+  <p>with</p>
   <pre>
 push     cs
 call     near ptr ReferenceZTimerOn
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>(and likewise for <b>ReferenceZTimerOff</b> ), which works because <b>ReferenceZTimerOn</b> is in the same segment as the calling code. This is normally a great optimization, being both smaller and faster than a far call. However, it&rsquo;s not so great for the Zen</p>
 
-  <p><a id="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/03-03.jpg',413,221 )"> --><img src="images/03-03.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/03-03.jpg',413,221)"> --><b>Figure 3.3</b></a>&nbsp;&nbsp;<i>Changes for use with large code model C.</i></p>
+  <p><a id="Fig3"><img src="images/03-03.jpg" /><br />
+  <b>Figure 3.3</b></a>&nbsp;&nbsp;<i>Changes for use with large code model C.</i></p>
 
   <p>timer, because our purpose in calling the reference timing code is to determine exactly how much time is taken by overhead code&mdash;including the far calls to <b>ZTimerOn</b> and <b>ZTimerOf</b>f! By converting the far calls to push/near call pairs within the Zen timer module, TASM makes it impossible to emulate exactly the overhead of the Zen timer, and makes timings slightly (about 16 cycles on a 386) less accurate.</p>
 
@@ -85,13 +76,13 @@ call     near ptr ReferenceZTimerOn
 
   <p>I&rsquo;ve tested the changes shown in Figures 3.2 and 3.3 with TASM and Borland C<small>++</small> 4.0, and also with the latest MASM and Microsoft C/C<small>++</small> compiler.</p>
 
-  <h4 align="left"><a id="Heading17"></a>Further Reading</h4>
+  <h4 align="left" id="Heading17">Further Reading</h4>
 
   <p>For those of you who wish to pursue the mechanics of code measurement further, one good article about measuring code performance with the 8253 timer is &ldquo;Programming Insight: High-Performance Software Analysis on the IBM PC,&rdquo; by Byron Sheppard, which appeared in the January, 1987 issue of <i>Byte</i>. For complete if somewhat cryptic information on the 8253 timer itself, I refer you to Intel&rsquo;s <i>Microsystem Components Handbook</i>, which is also a useful reference for a number of other PC components, including the 8259 Programmable Interrupt Controller and the 8237 DMA Controller. For details about the way the 8253 is used in the PC, as well as a great deal of additional information about the PC&rsquo;s hardware and BIOS resources, I suggest you consult IBM&rsquo;s series of technical reference manuals for the PC, XT, AT, Model 30, and microchannel computers, such as the Models 50, 60, and 80.</p>
 
   <p>For our purposes, however, it&rsquo;s not critical that you understand exactly how the Zen timer works. All you really need to know is what the Zen timer can do and how to use it, and we&rsquo;ve accomplished that in this chapter.</p>
 
-  <h4 align="left"><a id="Heading18"></a>Armed with the Zen Timer, Onward and Upward</h4>
+  <h4 align="left" id="Heading18">Armed with the Zen Timer, Onward and Upward</h4>
 
   <p>The Zen timer is not perfect. For one thing, the finest resolution to which it can measure an interval is at best about 1&micro;s, a period of time in which a 66 MHz Pentium computer can execute as many as 132 instructions (although an 8088-based PC would be hard-pressed to manage two instructions in a microsecond). Another problem is that the timing code itself interferes with the state of the prefetch queue and processor cache at the start of the code being timed, because the timing code is not necessarily fetched and does not necessarily access memory in exactly the same time sequence as the code immediately preceding the code under measurement normally does. This prefetch effect can introduce as much as 3 to 4 &micro; of inaccuracy. Similarly, the state of the prefetch queue at the end of the code being timed affects how long the code that stops the timer takes to execute. Consequently, the Zen timer tends to be more accurate for longer code sequences, since the relative magnitude of the inaccuracy introduced by the Zen timer becomes less over longer periods.</p>
 
@@ -114,10 +105,6 @@ call     near ptr ReferenceZTimerOn
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: The Good, the Bad, and the Run-Sliced</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: The Good, the Bad, and the Run-Sliced</title>
   <meta name="chapter" content="36" />
   <meta name="pages" content="687-692" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h3><a id="Heading5"></a>Run-Length Slice Details</h3>
+  <h3 id="Heading5">Run-Length Slice Details</h3>
 
   <p>A couple of run-length slice implementation details yet remain. First is the matter of how error-term turnover is detected. This is done in much the same way as it is with standard Bresenham&rsquo;s: The error term is maintained as a negative valve and advances for each step; when the error term reaches 0, it&rsquo;s time to add an extra pixel to the current run. This means that we only have to test for carry after advancing the error term to determine whether or not to add an extra pixel to each run. (Actually, the code in this chapter tests for the error term being greater than zero, but the assembly code in the next chapter will use the very efficient carry approach.)</p>
 
@@ -49,11 +42,10 @@
 
   <p>That&rsquo;s all there is to run-length slice line drawing; the partial first and last runs are the only tricky part. Listing 36.1 is a run-length slice implementation in C. This is not an optimized implementation, nor is it meant to be; this listing is provided so that you can see how the run-length slice algorithm works. In the next chapter, I&rsquo;ll move on to an optimized version, but for now, Listing 36.1 will make it much easier to grasp the principles of run-length slice drawing, and to understand the optimized code I&rsquo;ll present in the next chapter.</p>
 
-  <p><a id="Fig5"><!-- </A><A HREF="javascript:displayWindow('images/36-05.jpg',412,327 )"> --><img src="images/36-05.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/36-05.jpg',412,327)"> --><b>Figure 36.5</b></a>&nbsp;&nbsp;<i>Balancing run-length slice lines: a) unbalanced; b) balanced.</i></p>
+  <p><a id="Fig5"><img src="images/36-05.jpg" /><br />
+  <b>Figure 36.5</b></a>&nbsp;&nbsp;<i>Balancing run-length slice lines: a) unbalanced; b) balanced.</i></p>
 
-  <p><b>LISTING 36.1 L36-1.C</b></p><!-- CODE //-->
+  <p><b>LISTING 36.1 L36-1.C</b></p>
   <pre>
 /* Run-length slice line drawing implementation for mode 0x13, the VGA&rsquo;s
 320x200 256-color mode. Not optimized! Tested with Borland C++ in
@@ -293,7 +285,7 @@ void DrawVerticalRun(char far **ScreenPtr, int XAdvance,
    *ScreenPtr = WorkingScreenPtr;
 }
 
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -312,10 +304,6 @@ void DrawVerticalRun(char far **ScreenPtr, int XAdvance,
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

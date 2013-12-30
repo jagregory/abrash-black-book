@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Saving Screens and Other VGA Mysteries</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Saving Screens and Other VGA Mysteries</title>
   <meta name="chapter" content="29" />
   <meta name="pages" content="550-555" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -41,9 +34,8 @@
 
   <p>Video function 10H is invoked by performing an <b>INT</b> 10H with AH set to 10H. If AL is 0 (subfunction 0), then BL contains the number of the palette register to set, and BH contains the value to set that register to. If AL is 1 (subfunction 1), then BH contains the value to set the overscan (border) color to. Finally, if AL is 2 (subfunction 2), then ES:DX points to a 17-byte array containing the values to set palette registers 0-15 and the overscan register to. (For completeness, although it&rsquo;s unrelated to the palette registers, there is one more subfunction of video function 10H. If AL = 3 (subfunction 3), bit 0 of BL is set to 1 to cause bit 7 of text attributes to select blinking, or set to 0 to cause bit 7 of text attributes to select highreverse video.)</p>
 
-  <p><a id="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/29-03.jpg',407,152 )"> --><img src="images/29-03.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/29-03.jpg',407,152)"> --><b>Figure 29.3</b></a>&nbsp;&nbsp;<i>Bit organization within a palette register.</i></p>
+  <p><a id="Fig3"><img src="images/29-03.jpg" /><br />
+  <b>Figure 29.3</b></a>&nbsp;&nbsp;<i>Bit organization within a palette register.</i></p>
 
   <p>Listing 29.3 uses video function 10H, subfunction 2 to step through all 64 possible colors. This is accomplished by putting up 16 color bars, one for each of the 16 possible 4-bit pixel values, then changing the mapping provided by the palette registers to select a different group of 16 colors from the set of 64 each time a key is pressed. Initially, colors 0-15 are displayed, then 1-16, then 2-17, and so on up to color 3FH wrapping around to colors 0-14, and finally back to colors 0-15. (By the way, at mode set time the 16 palette registers are not set to colors 0-15, but rather to 0H, 1H, 2H, H, 4H, 5H, 14H, 7H, 38H, 39H, 3AH, 3BH, 3CH, 3DH, 3EH, and 3FH, respectively. Bits 6, 5, and 4&mdash;secondary red, green, and blue&mdash;are all set to 1 in palette registers 8-15 in order to produce high-intensity colors. Palette register 6 is set to 14H to produce brown, rather than the yellow that the expected value of 6H would produce.)</p>
 
@@ -51,7 +43,7 @@
 
   <p>It&rsquo;s important to understand that in Listing 29.3 the contents of display memory are never changed after initialization. The only change is the mapping from the 4-bit pixel data coming out of display memory to the 6-bit data going to the monitor. For this reason, it&rsquo;s technically inaccurate to speak of bits in display memory as representing colors; more accurately, they represent attributes in the range 0-15, which are mapped to colors 0-3FH by the palette registers.</p>
 
-  <p><b>LISTING 29.3 L29-3.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 29.3 L29-3.ASM</b></p>
   <pre>
 ; Program to illustrate the color mapping capabilities of the
 ; EGA&rsquo;s palette registers.
@@ -303,7 +295,7 @@ ColorNumbersUpendp
 Start          endp
 Code           ends
                end       Start
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -322,10 +314,6 @@ Code           ends
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

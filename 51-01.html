@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Sneakers in Space</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Sneakers in Space</title>
   <meta name="chapter" content="51" />
   <meta name="pages" content="951-955" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 51<br />
+  <h2 id="Heading1">Chapter 51<br />
   Sneakers in Space</h2>
 
-  <h3><a id="Heading2"></a>Using Backface Removal to Eliminate Hidden Surfaces</h3>
+  <h3 id="Heading2">Using Backface Removal to Eliminate Hidden Surfaces</h3>
 
   <p>As I&rsquo;m fond of pointing out, computer animation isn&rsquo;t a matter of mathematically exact modeling or raw technical prowess, but rather of fooling the eye and the mind. That&rsquo;s especially true for 3-D animation, where we&rsquo;re not only trying to convince viewers that they&rsquo;re seeing objects on a screen&mdash;when in truth that screen contains no objects at all, only gaggles of pixels&mdash;but we&rsquo;re also trying to create the illusion that the objects exist in three-space, possessing four dimensions (counting movement over time as a fourth dimension) of their own. To make this magic happen, we must provide cues for the eye not only to pick out boundaries, but also to detect depth, orientation, and motion. This involves perspective, shading, proper handling of hidden surfaces, and rapid and smooth screen updates; the whole deal is considerably more difficult to pull off on a PC than 2-D animation.</p>
 
@@ -58,7 +51,7 @@
 
   <p>If it&rsquo;s good enough for George Lucas, it&rsquo;s good enough for us. And with that, let&rsquo;s resume our quest for realtime 3-D animation on the PC.</p>
 
-  <h3><a id="Heading3"></a>One-sided Polygons: Backface Removal</h3>
+  <h3 id="Heading3">One-sided Polygons: Backface Removal</h3>
 
   <p>In the previous chapter, we implemented the basic polygon drawing pipeline, transforming a polygon all the way from its basic definition in object space, through the shared 3-D world space, and into the 3-D space as seen from the viewpoint, called <i>view space</i>. From view space, we performed a perspective projection to convert the polygon into screen space, then mapped the transformed and projected vertices to the nearest screen coordinates and filled the polygon. Armed with code that implemented this pipeline, we were able to watch as a polygon rotated about its Y axis, and were able to move the polygon around in space freely.</p>
 
@@ -81,10 +74,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

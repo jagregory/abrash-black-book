@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Sorted Spans in Action</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Sorted Spans in Action</title>
   <meta name="chapter" content="67" />
   <meta name="pages" content="1223-1227" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 67<br />
+  <h2 id="Heading1">Chapter 67<br />
   Sorted Spans in Action</h2>
 
-  <h3><a id="Heading2"></a>Implementing Independent Span Sorting for Rendering without Overdraw</h3>
+  <h3 id="Heading2">Implementing Independent Span Sorting for Rendering without Overdraw</h3>
 
   <p>In Chapter 66, we dove headlong into the intricacies of hidden surface removal by way of z-sorted (actually, 1/z-sorted) spans. At the end of that chapter, I noted that we were currently using 1/z-sorted spans in Quake, but it was unclear whether we&rsquo;d switch back to BSP order. Well, some time after that writing, it&rsquo;s become clear: We&rsquo;re back to sorting spans by BSP order.</p>
 
@@ -48,7 +41,7 @@
 
   <p>1/z-sorted spans in Quake turned out pretty much the same way, as we&rsquo;ll see in a moment. First, though, I&rsquo;d like to note up front that this chapter is very technical and builds heavily on material I covered earlier in this section of the book; if you haven&rsquo;t already read Chapters 59 through 66, you really should. Make no mistake about it, this is commercial-quality stuff; in fact, the code in this chapter uses the same sorting technique as the test version of Quake, QTEST1.ZIP, that id Software placed on the Internet in early March 1996. This material is the Real McCoy, true reports from the leading edge, and I trust that you&rsquo;ll be patient if careful rereading and some occasional catch-up reading of earlier chapters are required to absorb everything contained herein. Besides, the ultimate reference for any design is working code, which you&rsquo;ll find, in part, in Listing 67.1, and in its entirety in the file DDJZSORT.ZIP on the CD-ROM.</p>
 
-  <h3><a id="Heading3"></a>Quake and Sorted Spans</h3>
+  <h3 id="Heading3">Quake and Sorted Spans</h3>
 
   <p>As you&rsquo;ll recall from Chapter 66, Quake uses sorted spans to get zero overdraw while rendering the world, thereby both improving overall performance and leveling frame rates by speeding up scenes that would otherwise experience heavy overdraw. Our original design used spans sorted by BSP order; because we traverse the world BSP tree from front-to-back relative to the viewpoint, the order in which BSP nodes are visited is a guaranteed front-to-back sorting order. We simply gave each node an increasing BSP sequence number as it was visited, set each polygon&rsquo;s sort key to the BSP sequence number of the node (BSP splitting plane) it lay on, and used those sort keys when generating spans.</p>
 
@@ -81,10 +74,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Patient Coding, Faster Code</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Patient Coding, Faster Code</title>
   <meta name="chapter" content="10" />
   <meta name="pages" content="196-200" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -39,15 +32,14 @@
 
   <p>Listing 10.2 repeatedly subtracts iS from iL until iL becomes less than or equal to iS. If iL becomes equal to iS, then that&rsquo;s the GCD; alternatively, if iL becomes <i>less</i> than iS, iL and iS switch values, and the process is repeated, as shown in Figure 10.2. The number of iterations this approach requires relative to Listing 10.1 depends heavily on the values of iL and iS, so it&rsquo;s not always faster, but, as Table 10.1 indicates, Listing 10.2 is generally much better code.</p>
 
-  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/10-02.jpg',415,306 )"> --><img src="images/10-02.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/10-02.jpg',415,306)"> --><b>Figure 10.2</b></a>&nbsp;&nbsp;<i>Using repeated subtraction algorithm to find a GCD.</i></p>
+  <p><a id="Fig2"><img src="images/10-02.jpg" /><br />
+  <b>Figure 10.2</b></a>&nbsp;&nbsp;<i>Using repeated subtraction algorithm to find a GCD.</i></p>
 
   <p>Listing 10.2 is a far graver misstep than Listing 10.1, for all that it&rsquo;s faster. Listing 10.1 is obviously a hacked-up, brute-force approach; no one could mistake it for anything else. It could be speeded up in any of a number of ways with a little thought. (Simply skipping testing all the divisors between iS and iS/2, not inclusive, would cut the worst-case time in half, for example; that&rsquo;s not a particularly <i>good</i> optimization, but it illustrates how easily Listing 10.1 can be improved.) Listing 10.1 is a hack job, crying out for inspiration.</p>
 
   <p>Listing 10.2, on the other hand, has gotten the inspiration&mdash;and largely wasted it through haste. Had Sedgewick not told me otherwise, I might well have assumed that Listing 10.2 was optimized, a mistake I would never have made with Listing 10.1. I experienced a conceptual breakthrough when I understood Sedgewick&rsquo;s point: A smaller number can be subtracted from a larger number without affecting their GCD, thereby inexpensively reducing the scale of the problem. And, in my hurry to make this breakthrough reality, I missed its full scope. As Sedgewick says on the very next page, the number that one gets by subtracting iS from iL until iL is less than iS is precisely the same as the remainder that one gets by dividing iL by iS&mdash;again, this is inherent in the nature of division&mdash;and <i>that</i> is the basis for Euclid&rsquo;s algorithm, shown in Figure 10.3. Listing 10.3 is an implementation of Euclid&rsquo;s algorithm.</p>
 
-  <p><b>LISTING 10.3 L10-3.C</b></p><!-- CODE //-->
+  <p><b>LISTING 10.3 L10-3.C</b></p>
   <pre>
 /* Finds and returns the greatest common divisor of two integers.
    Uses Euclid&rsquo;s algorithm: divides the larger integer by the
@@ -92,7 +84,7 @@ static unsigned int gcd_recurs(unsigned int larger_int,
       continue the process */
    return(gcd_recurs(smaller_int, temp));
 }
-</pre><!-- END CODE //-->
+</pre>
 
   <p>As you can see from Table 10.1, Euclid&rsquo;s algorithm is superior, especially for large numbers (and imagine if we were working with large <i>longs!</i>).</p>
 
@@ -104,17 +96,16 @@ static unsigned int gcd_recurs(unsigned int larger_int,
     </tr>
   </table>
 
-  <p><a id="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/10-03.jpg',411,279 )"> --><img src="images/10-03.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/10-03.jpg',411,279)"> --><b>Figure 10.3</b></a>&nbsp;&nbsp;<i>Using Euclid&rsquo;s algorithm to find a GCD.</i></p>
+  <p><a id="Fig3"><img src="images/10-03.jpg" /><br />
+  <b>Figure 10.3</b></a>&nbsp;&nbsp;<i>Using Euclid&rsquo;s algorithm to find a GCD.</i></p>
 
   <p>Give your mind time and space to wander around the edges of important programming problems before you settle on any one approach. I titled this book&rsquo;s first chapter &ldquo;The Best Optimizer Is between Your Ears,&rdquo; and that&rsquo;s still true; what&rsquo;s even more true is that the optimizer between your ears does its best work not at the implementation stage, but at the very beginning, when you try to imagine how what you want to do and what a computer is capable of doing can best be brought together.</p>
 
-  <h3><a id="Heading6"></a>Recursion</h3>
+  <h3 id="Heading6">Recursion</h3>
 
   <p>Euclid&rsquo;s algorithm lends itself to recursion beautifully, so much so that an implementation like Listing 10.3 comes almost without thought. Again, though, take a moment to stop and consider what&rsquo;s really going on, at the assembly language level, in Listing 10.3. There&rsquo;s recursion and then there&rsquo;s recursion; code recursion and data recursion, to be exact. Listing 10.3 is code recursion&mdash;recursion through calls&mdash;the sort most often used because it is conceptually simplest. However, code recursion tends to be slow because it pushes parameters and calls a subroutine for every iteration. Listing 10.4, which uses data recursion, is much faster and no more complicated than Listing 10.3. Actually, you could just say that Listing 10.4 uses a loop and ignore any mention of recursion; conceptually, though, Listing 10.4 performs the same recursive operations that Listing 10.3 does.</p>
 
-  <p><b>LISTING 10.4 L10-4.C</b></p><!-- CODE //-->
+  <p><b>LISTING 10.4 L10-4.C</b></p>
   <pre>
 /* Finds and returns the greatest common divisor of two integers.
    Uses Euclid&rsquo;s algorithm: divides the larger integer by the
@@ -148,9 +139,9 @@ unsigned int gcd(unsigned int int1, unsigned int int2) {
       int2 = temp;
    }
 }
-</pre><!-- END CODE //-->
+</pre>
 
-  <h4 align="left"><a id="Heading7"></a>Patient Optimization</h4>
+  <h4 align="left" id="Heading7">Patient Optimization</h4>
 
   <p>At long last, we&rsquo;re ready to optimize GCD determination in the classic sense. Table 10.1 shows the performance of Listing 10.4 with and without Microsoft C/C<small>++</small>&rsquo;s maximum optimization, and also shows the performance of Listing 10.5, an assembly language version of Listing 10.4. Sure, the optimized versions are faster than the unoptimized version of Listing 10.4&mdash;but the gains are small compared to those realized from the higher-level optimizations in Listings 10.2 through 10.4.</p>
 
@@ -171,10 +162,6 @@ unsigned int gcd(unsigned int int1, unsigned int int2) {
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

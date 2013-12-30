@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Dog Hair and Dirty Rectangles</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Dog Hair and Dirty Rectangles</title>
   <meta name="chapter" content="45" />
   <meta name="pages" content="843-846" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -165,21 +158,19 @@
 
   <p>It is indeed a strange concept: The key to fast graphics is staying away from the graphics adapter as much as possible.</p>
 
-  <h3><a id="Heading5"></a>Dirty-Rectangle Animation</h3>
+  <h3 id="Heading5">Dirty-Rectangle Animation</h3>
 
   <p>The relative slowness of VGA hardware is part of the appeal of the technique that I call &ldquo;dirty-rectangle&rdquo; animation, in which a complete copy of the contents of display memory is maintained in offscreen system (nondisplay) memory. All drawing is done to this system buffer. As offscreen drawing is done, a list is maintained of the bounding rectangles for the drawn-to areas; these are the <i>dirty rectangles</i>, &ldquo;dirty&rdquo; in the sense that that have been altered and no longer match the contents of the screen. After all drawing for a frame is completed, all the dirty rectangles for that frame are copied to the screen in a burst, and then the cycle of off-screen drawing begins again.</p>
 
   <p>Why, exactly, would we want to go through all this complication, rather than simply drawing to the screen in the first place? The reason is visual quality. If we were to do all our drawing directly to the screen, there&rsquo;d be a lot of flicker as objects were erased and then redrawn. Similarly, overlapped drawing done with the painter&rsquo;s algorithm (in which farther objects are drawn first, so that nearer objects obscure them) would flicker as farther objects were visible for short periods. With dirty-rectangle animation, only the finished pixels for any given frame ever appear on the screen; intermediate results are never visible. Figure 45.1 illustrates the visual problems associated with drawing directly to the screen; Figure 45.2 shows how dirty-rectangle animation solves these problems.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/45-01.jpg',409,160 )"> --><img src="images/45-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/45-01.jpg',409,160)"> --><b>Figure 45.1</b></a>&nbsp;&nbsp;<i>Drawing directly to the screen.</i></p>
+  <p><a id="Fig1"><img src="images/45-01.jpg" /><br />
+  <b>Figure 45.1</b></a>&nbsp;&nbsp;<i>Drawing directly to the screen.</i></p>
 
-  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/45-02.jpg',411,301 )"> --><img src="images/45-02.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/45-02.jpg',411,301)"> --><b>Figure 45.2</b></a>&nbsp;&nbsp;<i>Dirty rectangle animation.</i></p>
+  <p><a id="Fig2"><img src="images/45-02.jpg" /><br />
+  <b>Figure 45.2</b></a>&nbsp;&nbsp;<i>Dirty rectangle animation.</i></p>
 
-  <h4 align="left"><a id="Heading6"></a>So Why Not Use Page Flipping?</h4>
+  <h4 align="left" id="Heading6">So Why Not Use Page Flipping?</h4>
 
   <p>Well, then, if we want good visual quality, why not use page flipping? For one thing, not all adapters and all modes support page flipping. The CGA and MCGA don&rsquo;t, and neither do the VGA&rsquo;s 640x480 16-color or 320x200 256-color modes, or many SuperVGA modes. In contrast, <i>all</i> adapters support dirty-rectangle animation. Another advantage of dirty-rectangle animation is that it&rsquo;s generally faster. While it may seem strange that it would be faster to draw off-screen and then copy the result to the screen, that is often the case, because dirty-rectangle animation usually reduces the number of times the VGA&rsquo;s hardware needs to be touched, especially in 256-color modes.</p>
 
@@ -202,10 +193,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

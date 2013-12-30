@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Be It Resolved: 360x480</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Be It Resolved: 360x480</title>
   <meta name="chapter" content="32" />
   <meta name="pages" content="607-611" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 32<br />
+  <h2 id="Heading1">Chapter 32<br />
   Be It Resolved: 360x480</h2>
 
-  <h3><a id="Heading2"></a>Taking 256-Color Modes About as Far as the Standard VGA Can Take Them</h3>
+  <h3 id="Heading2">Taking 256-Color Modes About as Far as the Standard VGA Can Take Them</h3>
 
   <p>In the last chapter, we learned how to coax 320x400 256-color resolution out of a standard VGA. At the time, I noted that the VGA was actually capable of supporting 256-color resolutions as high as 360x480, but didn&rsquo;t pursue the topic further, preferring to concentrate on the versatile and easy-to-set 320x400 256-color mode instead.</p>
 
@@ -48,7 +41,7 @@
 
   <p>In this chapter, I&rsquo;m going to combine John&rsquo;s mode set code with appropriately modified versions of the dot-plot code from Chapter 31 and the line-drawing code that we&rsquo;ll develop in Chapter 35. Together, those routines will make a pretty nifty demo of the capabilities of 360x480 256-color mode.</p>
 
-  <h3><a id="Heading3"></a>Extended 256-Color Modes: What&rsquo;s Not to Like?</h3>
+  <h3 id="Heading3">Extended 256-Color Modes: What&rsquo;s Not to Like?</h3>
 
   <p>When last we left 256-color programming, we had found that the standard 256-color mode, mode 13H, which officially offers 320x200 resolution, actually displays 400, not 200, scan lines, with line-doubling used to reduce the effective resolution to 320x200. By tweaking a few of the VGA&rsquo;s mode registers, we converted mode 13H to a true 320x400 256-color mode. As an added bonus, that 320x400 mode supports two graphics pages, a distinct improvement over the single graphics page supported by mode 13H. (We also learned how to get <i>four</i> graphics pages at 320x200 resolution, should that be needed.)</p>
 
@@ -64,7 +57,7 @@
 
   <p>In other words, 360x480 256-color mode is worth considering&mdash;so let&rsquo;s have a look.</p>
 
-  <h3><a id="Heading4"></a>360x480 256-Color Mode</h3>
+  <h3 id="Heading4">360x480 256-Color Mode</h3>
 
   <p>I&rsquo;m going to start by showing you 360x480 256-color mode in action, after which we&rsquo;ll look at how it works. I suspect that once you see what this mode looks like, you&rsquo;ll be more than eager to learn how to use it.</p>
 
@@ -89,10 +82,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

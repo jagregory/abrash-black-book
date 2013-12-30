@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Wu'ed in Haste; Fried, Stewed at Leisure</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Wu'ed in Haste; Fried, Stewed at Leisure</title>
   <meta name="chapter" content="42" />
   <meta name="pages" content="773-778" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 42<br />
+  <h2 id="Heading1">Chapter 42<br />
   Wu&rsquo;ed in Haste; Fried, Stewed at Leisure</h2>
 
-  <h3><a id="Heading2"></a>Fast Antialiased Lines Using Wu&rsquo;s Algorithm</h3>
+  <h3 id="Heading2">Fast Antialiased Lines Using Wu&rsquo;s Algorithm</h3>
 
   <p>The thought first popped into my head as I unenthusiastically picked through the salad bar at a local &ldquo;family&rdquo; restaurant, trying to decide whether the meatballs, the fried clams, or the lasagna was likely to shorten my life the least. I decided on the chicken in mystery sauce.</p>
 
@@ -58,7 +51,7 @@
 
   <p>Literature that&rsquo;s applicable to fast PC graphics is hard enough to find, but what we&rsquo;d really like is above-average image quality combined with terrific speed, and there&rsquo;s almost no literature of that sort around. There is some, however, and you folks are right on top of it. For example, alert reader Michael Chaplin, of San Diego, wrote to suggest that I might enjoy the line-antialiasing algorithm presented in Xiaolin Wu&rsquo;s article, &ldquo;An Efficient Antialiasing Technique,&rdquo; in the July 1991 issue of <i>Computer Graphics</i>. Michael was dead-on right. This is a great algorithm, combining excellent antialiased line quality with speed that&rsquo;s close to that of non-antialiased Bresenham&rsquo;s line drawing. This is the sort of algorithm that makes you want to go out and write a wire-frame animation program, just so you can see how good those smooth lines look in motion. Wu antialiasing is a wonderful example of what can be accomplished on inexpensive, mass-market hardware with the proper programming perspective. In short, it&rsquo;s a splendid example of appropriate technology for PCs.</p>
 
-  <h3><a id="Heading3"></a>Wu Antialiasing</h3>
+  <h3 id="Heading3">Wu Antialiasing</h3>
 
   <p>Antialiasing, as we&rsquo;ve been discussing for the past few chapters, is the process of smoothing lines and edges so that they appear less jagged. Antialiasing is partly an aesthetic issue, because it makes images more attractive. It&rsquo;s also partly an accuracy issue, because it makes it possible to position and draw images with effectively more precision than the resolution of the display. Finally, it&rsquo;s partly a flat-out necessity, to avoid the horrible, crawling, jagged edges of temporal aliasing when performing animation.</p>
 
@@ -66,9 +59,8 @@
 
   <p>The intensities of the two pixels that bracket the line are selected so that they always sum to exactly 1; that is, to the intensity of one fully illuminated pixel of the drawing color. The presence of aggregate full-pixel intensity means that at each step, the line has the same brightness it would have if a single pixel were drawn at precisely the correct location. Moreover, thanks to the distribution of the intensity weighting, that brightness is centered at the ideal line. Not coincidentally, a line drawn with pixel pairs of aggregate single-pixel intensity, centered on the ideal line, is perceived by the eye not as a jagged collection of pixel pairs, but as a smooth line centered on the ideal line. Thus, by weighting the bracketing pixels properly at each step, we can readily produce what looks like a smooth line at precisely the right location, rather than the jagged pattern of line segments that non-antialiased line-drawing algorithms such as Bresenham&rsquo;s (see Chapters 35, 36, and 37) trace out.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/42-01.jpg',407,282 )"> --><img src="images/42-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/42-01.jpg',407,282)"> --><b>Figure 42.1</b></a>&nbsp;&nbsp;<i>The basic concept of Wu antialiasing.</i></p>
+  <p><a id="Fig1"><img src="images/42-01.jpg" /><br />
+  <b>Figure 42.1</b></a>&nbsp;&nbsp;<i>The basic concept of Wu antialiasing.</i></p>
 
   <p>You might expect that the implementation of Wu antialiasing would fall into two distinct areas: tracing out the line (that is, finding the appropriate pixel pairs to draw) and calculating the appropriate weightings for each pixel pair. Not so, however. The weighting calculations involve only a few shifts, XORs, and adds; for all practical purposes, tracing and weighting are rolled into one step&mdash;and a very fast step it is. How fast is it? On a 33-MHz 486 with a fast VGA, a good but not maxed-out assembly implementation of Wu antialiasing draws a more than respectable 5,000 150-pixel-long vectors per second. That&rsquo;s especially impressive considering that about 1,500,000 actual pixels are drawn per second, meaning that Wu antialiasing is drawing at around 50 percent of the maximum memory bandwidth&mdash;half the fastest theoretically possible drawing speed&mdash;of an AT-bus VGA. In short, Wu antialiasing is about as fast an antialiased line approach as you could ever hope to find for the VGA.</p>
 
@@ -89,10 +81,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

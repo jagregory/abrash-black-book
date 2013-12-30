@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: VGA Data Machinery</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: VGA Data Machinery</title>
   <meta name="chapter" content="25" />
   <meta name="pages" content="461-466" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,32 +30,30 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 25<br />
+  <h2 id="Heading1">Chapter 25<br />
   VGA Data Machinery</h2>
 
-  <h3><a id="Heading2"></a>The Barrel Shifter, Bit Mask, and Set/Reset Mechanisms</h3>
+  <h3 id="Heading2">The Barrel Shifter, Bit Mask, and Set/Reset Mechanisms</h3>
 
   <p>In the last chapter, we examined a simplified model of data flow within the GC portion of the VGA, featuring the latches and ALUs. Now we&rsquo;re ready to expand that model to include the barrel shifter, bit mask, and the set/reset capabilities, leaving only the write modes to be explored over the next few chapters.</p>
 
-  <h3><a id="Heading3"></a>VGA Data Rotation</h3>
+  <h3 id="Heading3">VGA Data Rotation</h3>
 
   <p>Figure 25.1 shows an expanded model of GC data flow, featuring the barrel shifter and bit mask circuitry. Let&rsquo;s look at the barrel shifter first. A barrel shifter is circuitry capable of shifting&mdash;or rotating, in the VGA&rsquo;s case&mdash;data an arbitrary number of bits in a single operation, as opposed to being able to shift only one bit position at a time. The barrel shifter in the VGA can rotate incoming CPU data up to seven bits to the right (toward the least significant bit), with bit 0 wrapping back to bit 7, after which the VGA continues processing the rotated byte just as it normally processes unrotated CPU data. Thanks to the nature of barrel shifters, this rotation requires no extra processing time over unrotated VGA operations. The number of bits by which CPU data is shifted is controlled by bits 2-0 of GC register 3, the Data Rotate register, which also contains the ALU function select bits (data unmodified, AND, OR, and XOR) that we looked at in the last chapter.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/25-01.jpg',408,237 )"> --><img src="images/25-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/25-01.jpg',408,237)"> --><b>Figure 25.1</b></a>&nbsp;&nbsp;<i>Data flow through the Graphics Controller.</i></p>
+  <p><a id="Fig1"><img src="images/25-01.jpg" /><br />
+  <b>Figure 25.1</b></a>&nbsp;&nbsp;<i>Data flow through the Graphics Controller.</i></p>
 
   <p>The barrel shifter is powerful, but (as sometimes happens in this business) it sounds more useful than it really is. This is because the GC can only rotate CPU data, a task that the CPU itself is perfectly capable of performing. Two <b>OUT</b>s are needed to select a given rotation: one to set the GC Index register, and one to set the Data Rotate register. However, with careful programming it&rsquo;s sometimes possible to leave the GC Index always pointing to the Data Rotate register, so only one <b>OUT</b> is needed. Even so, it&rsquo;s often easier and/or faster to simply have the CPU rotate the data of interest CL times than to set the Data Rotate register. (Bear in mind that a single <b>OUT</b> takes from 11 to 31 cycles on a 486&mdash;and longer if the VGA is sluggish at responding to OUTs, as many VGAs are.) If only the VGA could rotate <i>latched</i> data, then there would be all sorts of useful applications for rotation, but, sadly, only CPU data can be rotated.</p>
 
   <p>The drawing of bit-mapped text is one use for the barrel shifter, and I&rsquo;ll demonstrate that application below. In general, though, don&rsquo;t knock yourself out trying to figure out how to work data rotation into your programs&mdash;it just isn&rsquo;t all that useful in most cases.</p>
 
-  <h3><a id="Heading4"></a>The Bit Mask</h3>
+  <h3 id="Heading4">The Bit Mask</h3>
 
   <p>The VGA has bit mask circuitry for each of the four memory planes. The four bit masks operate in parallel and are all driven by the same mask data for each operation, so they&rsquo;re generally referred to in the singular, as &ldquo;the bit mask.&rdquo; Figure 25.2 illustrates the operation of one bit of the bit mask for one plane. This circuitry occurs eight times in the bit mask for a given plane, once for each bit of the byte written to display memory. Briefly, the bit mask determines on a bit-by-bit basis whether the source for each byte written to display memory is the ALU for that plane or the latch for that plane.</p>
 
-  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/25-02.jpg',408,197 )"> --><img src="images/25-02.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/25-02.jpg',408,197)"> --><b>Figure 25.2</b></a>&nbsp;&nbsp;<i>Bit mask operation.</i></p>
+  <p><a id="Fig2"><img src="images/25-02.jpg" /><br />
+  <b>Figure 25.2</b></a>&nbsp;&nbsp;<i>Bit mask operation.</i></p>
 
   <p>The bit mask is controlled by GC register 8, the Bit Mask register. If a given bit of the Bit Mask register is 1, then the corresponding bit of data from the ALUs is written to display memory for all four planes, while if that bit is 0, then the corresponding bit of data from the latches for the four planes is written to display memory unchanged. (In write mode 3, the actual bit mask that&rsquo;s applied to data written to display memory is the logical AND of the contents of the Bit Mask register and the data written by the CPU, as we&rsquo;ll see in Chapter 26.)</p>
 
@@ -87,10 +78,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

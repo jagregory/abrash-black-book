@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Yogi Bear and Eurythmics Confront VGA Colors</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Yogi Bear and Eurythmics Confront VGA Colors</title>
   <meta name="chapter" content="33" />
   <meta name="pages" content="628-630" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h4 align="left"><a id="Heading6"></a>Color Paging with the Color Select Register</h4>
+  <h4 align="left" id="Heading6">Color Paging with the Color Select Register</h4>
 
   <p>&ldquo;Wait a minute,&rdquo; you say bemusedly. &ldquo;Aren&rsquo;t you missing some bits between the palette RAM and the DAC?&rdquo; Indeed I am. The palette RAM puts out 6 bits at a time, and the DAC takes in 8 bits at a time. The two missing bits&mdash;bits 6 and 7 going into the DAC&mdash;are supplied by bits 2 and 3 of the Color Select register (Attribute Controller register 14H). This has intriguing implications. In 16-color modes, pixel data can select only one of 16 attributes, which the EGA palette RAM translates into one of 64 attributes. Normally, those 64 attributes look up colors from registers 0 through 63 in the DAC, because bits 2 and 3 of the Color Select register are both zero. By changing the Color Select register, however, one of three other 64 color sets can be selected instantly. I&rsquo;ll refer to the process of flipping through color sets in this manner as <i>color paging</i>.</p>
 
@@ -45,7 +38,7 @@
 
   <p>Why is it a good idea to set the palette RAM to a pass-through state? It&rsquo;s a good idea because the palette RAM is programmed by the BIOS to EGA-compatible settings and the first 64 DAC registers are programmed to emulate the 64 colors that an EGA can display during mode sets for 16-color modes. This is done for compatibility with EGA programs, and it&rsquo;s useless if you&rsquo;re going to tinker with the VGA&rsquo;s colors. As a VGA programmer, you want to take a 4-bit pixel value and turn it into an 18-bit RGB value; you can do that without any help from the palette RAM, and setting the palette RAM to pass-through values effectively takes it out of the circuit and simplifies life something wonderful. The palette RAM exists solely for EGA compatibility, and serves no useful purpose that I know of for VGA-only color programming.</p>
 
-  <h4 align="left"><a id="Heading7"></a>256-Color Mode</h4>
+  <h4 align="left" id="Heading7">256-Color Mode</h4>
 
   <p>So far I&rsquo;ve spoken only of 16-color modes; what of 256-color modes?</p>
 
@@ -53,7 +46,7 @@
 
   <p>On the other hand, feel free to alter the DAC settings to your heart&rsquo;s content in 256-color mode, all the more so because this is the only mode in which all 256 DAC settings can be displayed simultaneously. By the way, the Color Select register and bit 7 of the Attribute Controller Mode register are ignored in 256-color mode; all 8 bits sent from the VGA chip to the DAC come from display memory. Therefore, there is no color paging in 256-color mode. Of course, that makes sense given that all 256 DAC registers are simultaneously in use in 256-color mode.</p>
 
-  <h4 align="left"><a id="Heading8"></a>Setting the Palette RAM</h4>
+  <h4 align="left" id="Heading8">Setting the Palette RAM</h4>
 
   <p>The palette RAM can be programmed either directly or through BIOS interrupt 10H, function 10H. I strongly recommend using the BIOS interrupt; a clone BIOS may mask incompatibilities with genuine IBM silicon. Such incompatibilities could include anything from flicker to trashing the palette RAM; or they may not exist at all, but why find out the hard way? My policy is to use the BIOS unless there&rsquo;s a clear reason not to do so, and there&rsquo;s no such reason that I know of in this case.</p>
 
@@ -80,10 +73,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

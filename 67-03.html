@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Sorted Spans in Action</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Sorted Spans in Action</title>
   <meta name="chapter" content="67" />
   <meta name="pages" content="1230-1238" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,17 +30,17 @@
 
   <p><br /></p>
 
-  <h4 align="left"><a id="Heading7"></a>Independent Span Sorting</h4>
+  <h4 align="left" id="Heading7">Independent Span Sorting</h4>
 
   <p>Finally, we come to independent span sorting, the simplest and fastest of the three, and the type the sample code in Listing 67.1 uses. Here, polygons never intersect or touch any other polygons except adjacent polygons with which they form a continuous mesh. This means that when a polygon starts on a scan line, a single 1/z comparison between that polygon and the polygons it overlaps on the screen is guaranteed to produce correct sorting, with no extra calculations or tricky cases to worry about.</p>
 
   <p>Independent span sorting is ideal for scenes with lots of moving objects that never actually touch each other, such as a space battle. Next, we&rsquo;ll look at an implementation of independent 1/z span sorting.</p>
 
-  <h3><a id="Heading8"></a>1/z Span Sorting in Action</h3>
+  <h3 id="Heading8">1/z Span Sorting in Action</h3>
 
   <p>Listing 67.1 is a portion of a program that demonstrates independent 1/z span sorting. This program is based on the sample 3-D clipping program from Chapter 65; however, the earlier program did hidden surface removal (HSR) by simply z-sorting whole objects and drawing them back-to-front, while Listing 67.1 draws all polygons by way of a 1/z-sorted edge list. Consequently, where the earlier program worked only so long as object centers correctly described sorting order, Listing 67.1 works properly for all combinations of non-intersecting and non-abutting polygons. In particular, Listing 67.1 correctly handles concave polyhedra; a new L-shaped object (the data for which is not included in Listing 67.1) has been added to the sample program to illustrate this capability. The ability to handle complex shapes makes Listing 67.1 vastly more useful for real-world applications than the 3-D clipping demo from Chapter 65.</p>
 
-  <p><b>Listing 67.1 L67_1.C</b></p><!-- CODE //-->
+  <p><b>Listing 67.1 L67_1.C</b></p>
   <pre>
 // Part of Win32 program to demonstrate z-sorted spans. Whitespace
 // removed for space reasons. Full source code, with whitespace,
@@ -481,7 +474,7 @@ void UpdateWorld()
     SelectObject(hdcDIBSection, holdbitmap);
     DeleteDC(hdcDIBSection);
 }
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -500,10 +493,6 @@ void UpdateWorld()
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

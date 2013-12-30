@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Local Optimization</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Local Optimization</title>
   <meta name="chapter" content="07" />
   <meta name="pages" content="141-143" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p><b>LISTING 7.1 L7-1.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 7.1 L7-1.ASM</b></p>
   <pre>
 ; Program to illustrate searching through a buffer of a specified
 ; length until either a specified byte or a zero byte is
@@ -129,9 +122,9 @@ ByteFound:
       ret
 SearchMaxLengthendp
       end   Start
-</pre><!-- END CODE //-->
+</pre>
 
-  <h3><a id="Heading7"></a>Unrolling Loops</h3>
+  <h3 id="Heading7">Unrolling Loops</h3>
 
   <p>Listing 7.2 takes a different tack, unrolling the loop so that four bytes are checked for each <b>LOOP</b> performed. The same instructions are used inside the loop in each listing, but Listing 7.2 is arranged so that three-quarters of the <b>LOOP</b>s are eliminated. Listings 7.1 and 7.2 perform exactly the same task, and they use the same instructions in the loop&mdash;the searching algorithm hasn&rsquo;t changed in any way&mdash;but we have sequenced the instructions differently in Listing 7.2, and that makes all the difference.</p>
 
@@ -152,10 +145,6 @@ SearchMaxLengthendp
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Speeding Up C with Assembly Language</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Speeding Up C with Assembly Language</title>
   <meta name="chapter" content="08" />
   <meta name="pages" content="160-163" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -39,7 +32,7 @@
 
   <p>It&rsquo;s hard to squeeze much more performance from this code by tweaking it, as exemplified by Listing 8.3, a fine-tuned assembly version of <b>FindIDAverage</b> that was produced by looking at the assembly output of MS C/C<small>++</small> and tightening it. Listing 8.3 eliminates all stack frame access in the inner loop, but that&rsquo;s about all the tightening there is to do. The result, as shown in Table 8.1, is that Listing 8.3 runs a modest 11 percent faster than Listing 8.1 on a 386. The results could vary considerably, depending on the nature of the data set searched through (average block size and frequency of matches). But, then, understanding the typical and worst case conditions is part of optimization, isn&rsquo;t it?</p>
 
-  <p><b>LISTING 8.3 L8-3.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 8.3 L8-3.ASM</b></p>
   <pre>
 ; Typically optimized assembly language version of FindIDAverage.
 SearchedForID   equ     4      ;Passed parameter offsets in the
@@ -54,7 +47,7 @@ DATA_ELEMENT_SIZE equ   4      ;Number of bytes in struct DataElement
         .model  small
         .code
         public  _FindIDAverage
-</pre><!-- END CODE //-->
+</pre>
 
   <table width="100%">
     <tr>
@@ -156,7 +149,7 @@ DATA_ELEMENT_SIZE equ   4      ;Number of bytes in struct DataElement
         <hr />
       </td>
     </tr>
-  </table><!-- CODE //-->
+  </table>
   <pre>
 _FindIDAverage  proc    near
         push    bp              ;Save caller&rsquo;s stack frame
@@ -201,11 +194,11 @@ Done:   pop     si              ;Restore C register variables
         ret
 _FindIDAverage  ENDP
         end
-</pre><!-- END CODE //-->
+</pre>
 
   <p>Listing 8.4 tosses some sophisticated optimization techniques into the mix. The loop is unrolled eight times, eliminating a good deal of branching, and <b>SCASW</b> is used instead of <b>CMP [DI],AX.</b> (Note, however, that <b>SCASW</b> is in fact slower than <b>CMP [DI],AX</b> on the 386 and 486, and is sometimes faster on the 286 and 8088 only because it&rsquo;s shorter and therefore may prefetch faster.) This advanced tweaking produces a 39 percent improvement over the original C code&mdash;substantial, but not a tremendous return for the optimization effort invested.</p>
 
-  <p><b>LISTING 8.4 L8-4.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 8.4 L8-4.ASM</b></p>
   <pre>
 ; Heavily optimized assembly language version of FindIDAverage.
 ; Features an unrolled loop and more efficient pointer use.
@@ -295,7 +288,7 @@ Done:   pop     si              ;Restore C register variables
         ret
 _FindIDAverage  ENDP
         end
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -314,10 +307,6 @@ _FindIDAverage  ENDP
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

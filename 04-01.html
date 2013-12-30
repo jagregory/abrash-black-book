@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: In the Lair of the Cycle-Eaters</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: In the Lair of the Cycle-Eaters</title>
   <meta name="chapter" content="04" />
   <meta name="pages" content="075-080" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 4<br />
+  <h2 id="Heading1">Chapter 4<br />
   In the Lair of the Cycle-Eaters</h2>
 
-  <h3><a id="Heading2"></a>How the PC Hardware Devours Code Performance</h3>
+  <h3 id="Heading2">How the PC Hardware Devours Code Performance</h3>
 
   <p>This chapter, adapted from my earlier book, <i>Zen of Assembly Language</i> located on the companion CD-ROM, goes right to the heart of my philosophy of optimization: Understand where the time really goes when your code runs. That may sound ridiculously simple, but, as this chapter makes clear, it turns out to be a challenging task indeed, one that at times verges on black magic. This chapter is a long-time favorite of mine because it was the first&mdash;and to a large extent only&mdash;work that I know of that discussed this material, thereby introducing a generation of PC programmers to pedal-to-the-metal optimization.</p>
 
@@ -48,7 +41,7 @@
 
   <p>So, don&rsquo;t take either the absolute or the relative execution times presented in this chapter as gospel for newer processors, and read on to later chapters to see how the cycle-eaters and optimization rules have changed over time, but do take the time to at least skim through this chapter to give yourself a good start on the material in the rest of this book.</p>
 
-  <h3><a id="Heading3"></a>Cycle-Eaters</h3>
+  <h3 id="Heading3">Cycle-Eaters</h3>
 
   <p>Programming has many levels, ranging from the familiar (high-level languages, DOS calls, and the like) down to the esoteric things that lie on the shadowy edge of hardware-land. I call these <i>cycle-eaters</i> because, like the monsters in a bad 50s horror movie, they lurk in those shadows, taking their share of your program&rsquo;s performance without regard to the forces of goodness or the U.S. Army. In this chapter, we&rsquo;re going to jump right in at the lowest level by examining the cycle-eaters that live beneath the programming interface; that is, beneath your application, DOS, and BIOS&mdash;in fact, beneath the instruction set itself.</p>
 
@@ -58,13 +51,13 @@
 
   <p>Which brings us to cycle-eaters.</p>
 
-  <h3><a id="Heading4"></a>The Nature of Cycle-Eaters</h3>
+  <h3 id="Heading4">The Nature of Cycle-Eaters</h3>
 
   <p>Cycle-eaters are gremlins that live on the bus or in peripherals (and sometimes within the CPU itself), slowing the performance of PC code so that it doesn&rsquo;t execute at full speed. Most cycle-eaters (and all of those haunting the older Intel processors) live outside the CPU&rsquo;s Execution Unit, where they can <i>only</i> affect the CPU when the CPU performs a bus access (a memory or I/O read or write). Once your code and data are already inside the CPU, those cycle-eaters can no longer be a problem. Only on the 486 and Pentium CPUs will you find cycle-eaters inside the chip, as we&rsquo;ll see in later chapters.</p>
 
   <p>The nature and severity of the cycle-eaters vary enormously from processor to processor, and (especially) from memory architecture to memory architecture. In order to understand them all, we need first to understand the simplest among them, those that haunted the original 8088-based IBM PC. Later on in this book, I&rsquo;ll be better able to explain the newer generation of cycle-eaters in terms of those ancestral cycle-eaters&mdash;but we have to get the groundwork down first.</p>
 
-  <h4 align="left"><a id="Heading5"></a>The 8088&rsquo;s Ancestral Cycle-Eaters</h4>
+  <h4 align="left" id="Heading5">The 8088&rsquo;s Ancestral Cycle-Eaters</h4>
 
   <p>Internally, the 8088 is a 16-bit processor, capable of running at full speed at all times&mdash;unless external data is required. External data must traverse the 8088&rsquo;s external data bus and the PC&rsquo;s data bus one byte at a time to and from peripherals, with cycle-eaters lurking along every step of the way. What&rsquo;s more, external data includes not only memory operands <i>but also instruction bytes,</i> so even instructions with no memory operands can suffer from cycle-eaters. Since some of the 8088&rsquo;s fastest instructions are register-only instructions, that&rsquo;s important indeed.</p>
 
@@ -82,7 +75,7 @@
 
   <p>The locations of these cycle-eaters in the primordial 8088-based PC are shown in Figure 4.1. We&rsquo;ll cover each of the cycle-eaters in turn in this chapter. The material won&rsquo;t be easy since cycle-eaters are among the most subtle aspects of assembly programming. By the same token, however, this will be one of the most important and rewarding chapters in this book. Don&rsquo;t worry if you don&rsquo;t catch everything in this chapter, but do read it all even if the going gets a bit tough. Cycle-eaters play a key role in later chapters, so some familiarity with them is highly desirable.</p>
 
-  <h3><a id="Heading6"></a>The 8-Bit Bus Cycle-Eater</h3>
+  <h3 id="Heading6">The 8-Bit Bus Cycle-Eater</h3>
 
   <p><i>Look! Down on the motherboard! It&rsquo;s a 16-bit processor! It&rsquo;s an 8-bit processor! It&rsquo;s...</i></p>
 
@@ -109,10 +102,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

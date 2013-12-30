@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Local Optimization</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Local Optimization</title>
   <meta name="chapter" content="07" />
   <meta name="pages" content="145-148" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,20 +30,20 @@
 
   <p><br /></p>
 
-  <h4 align="left"><a id="Heading8"></a>Rotating and Shifting with Tables</h4>
+  <h4 align="left" id="Heading8">Rotating and Shifting with Tables</h4>
 
   <p>As another example of local optimization, consider the matter of rotating or shifting a mask into position. First, let&rsquo;s look at the simple task of setting bit N of AX to 1.</p>
 
-  <p>The obvious way to do this is to place N in CL, rotate the bit into position, and OR it with AX, as follows:</p><!-- CODE SNIP //-->
+  <p>The obvious way to do this is to place N in CL, rotate the bit into position, and OR it with AX, as follows:</p>
   <pre>
 MOV  BX,1
 SHL  BX,CL
 OR   AX,BX
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>This solution is obvious because it takes good advantage of the special ability of the x86 family to shift or rotate by the variable number of bits specified by CL. However, it takes an average of about 45 cycles on an 8088. It&rsquo;s actually far faster to precalculate the results, pass the bit number in BX, and look the shifted bit up, as shown in Listing 7.3.</p>
 
-  <p><b>LISTING 7.3 L7-3.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 7.3 L7-3.ASM</b></p>
   <pre>
      SHL  BX,1                ;prepare for word sized look up
      OR   AX,ShiftTable[BX]   ;look up the bit and OR it in
@@ -61,13 +54,13 @@ BIT_PATTERN=0001H
      DW   BIT_PATTERN
 BIT_PATTERN=BIT_PATTERN SHL 1
      ENDM
-</pre><!-- END CODE //-->
+</pre>
 
   <p>Even though it accesses memory, this approach takes only 20 cycles&mdash;more than twice as fast as the variable shift. Once again, we were able to improve performance considerably&mdash;not by knowing the fastest instructions, but by selecting the fastest <i>sequence</i> of instructions.</p>
 
   <p>In the particular example above, we once again run into the difficulty of optimizing across the x86 family. The table lookup is faster on the 8088 and 286, but it&rsquo;s slightly slower on the 386 and no faster on the 486. However, 386/486-specific code could use enhanced addressing to accomplish the whole job in just one instruction, along the lines of the code snippet in Listing 7.4.</p>
 
-  <p><b>LISTING 7.4 L7-4.ASM</b></p><!-- CODE SNIP //-->
+  <p><b>LISTING 7.4 L7-4.ASM</b></p>
   <pre>
      OR   EAX,ShiftTable[EBX*4]    ;look up the bit and OR it in
           :
@@ -77,7 +70,7 @@ BIT_PATTERN=0001H
      DD   BIT_PATTERN
 BIT_PATTERN=BIT_PATTERN SHL 1
      ENDM
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <table width="100%">
     <tr>
@@ -87,7 +80,7 @@ BIT_PATTERN=BIT_PATTERN SHL 1
     </tr>
   </table>
 
-  <h4 align="left"><a id="Heading9"></a>NOT Flips Bits&mdash;Not Flags</h4>
+  <h4 align="left" id="Heading9">NOT Flips Bits&mdash;Not Flags</h4>
 
   <p>The <b>NOT</b> instruction flips all the bits in the operand, from 0 to 1 or from 1 to 0. That&rsquo;s as simple as could be, but <b>NOT</b> nonetheless has a minor but interesting talent: It doesn&rsquo;t affect the flags. That can be irritating; I once spent a good hour tracking down a bug caused by my unconscious assumption that <b>NOT</b> does set the flags. After all, every other arithmetic and logical instruction sets the flags; why not <b>NOT</b>? Probably because <b>NOT</b> isn&rsquo;t considered to be an arithmetic or logical instruction at all; rather, it&rsquo;s a data manipulation instruction, like <b>MOV</b> and the various rotates. (These are <b>RCR, RCL, ROR,</b> and <b>ROL,</b> which affect only the Carry and Overflow flags.) NOT is often used for tasks, such as flipping masks, where there&rsquo;s no reason to test the state of the result, and in that context it can be handy to keep the flags unmodified for later testing.</p>
 
@@ -101,13 +94,13 @@ BIT_PATTERN=BIT_PATTERN SHL 1
 
   <p>The x86 instruction set offers many ways to accomplish almost any task. Understanding the subtle distinctions between the instructions&mdash;whether and which flags are set, for example&mdash;can be critical when you&rsquo;re trying to optimize a code sequence and you&rsquo;re running out of registers, or when you&rsquo;re trying to minimize branching.</p>
 
-  <h4 align="left"><a id="Heading10"></a>Incrementing with and without Carry</h4>
+  <h4 align="left" id="Heading10">Incrementing with and without Carry</h4>
 
   <p>Another case in which there are two slightly different ways to perform a task involves adding 1 to an operand. You can do this with <b>INC,</b> as in <b>INC AX,</b> or you can do it with <b>ADD,</b> as in <b>ADD AX,1.</b> What&rsquo;s the difference? The obvious difference is that <b>INC</b> is usually a byte or two shorter (the exception being <b>ADD AL,1,</b> which at two bytes is the same length as <b>INC AL</b>), and is faster on some processors. Less obvious, but no less important, is that <b>ADD</b> sets the Carry flag while <b>INC</b> leaves the Carry flag untouched.</p>
 
   <p>Why is that important? Because it allows <b>INC</b> to function as a data pointer manipulation instruction for multi-word arithmetic. You can use <b>INC</b> to advance the pointers in code like that shown in Listing 7.5 without having to do any work to preserve the Carry status from one addition to the next.</p>
 
-  <p><b>LISTING 7.5 L7-5.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 7.5 L7-5.ASM</b></p>
   <pre>
         CLC                  ;clear the Carry for the initial addition
 LOOP_TOP:
@@ -118,11 +111,11 @@ LOOP_TOP:
         INC    DI            ;point to next dest operand word
         INC    DI
         LOOP   LOOP_TOP
-</pre><!-- END CODE //-->
+</pre>
 
   <p>If <b>ADD</b> were used, the Carry flag would have to be saved between additions, with code along the lines shown in Listing 7.6.</p>
 
-  <p><b>LISTING 7.6 L7-6.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 7.6 L7-6.ASM</b></p>
   <pre>
      CLC            ;clear the carry for the initial addition
 LOOP_TOP:
@@ -133,7 +126,7 @@ LOOP_TOP:
      ADD  DI,2      ;point to next dest operand word
      SAHF           ;restore the carry flag
      LOOP LOOP_TOP
-</pre><!-- END CODE //-->
+</pre>
 
   <p>It&rsquo;s not that the Listing 7.6 approach is necessarily better or worse; that depends on the processor and the situation. The Listing 7.6 approach is <i>different,</i> and if you understand the differences, you&rsquo;ll be able to choose the best approach for whatever code you happen to write. (<b>DEC</b> has the same property of preserving the Carry flag, by the way.)</p>
 
@@ -151,17 +144,17 @@ LOOP_TOP:
 
   <p>The other interesting point about the last example is the use of <b>LAHF</b> and <b>SAHF,</b> which transfer the low byte of the FLAGS register to and from AH, respectively. These instructions were created to help provide compatibility with the 8080&rsquo;s (that&rsquo;s <i>8080</i>, not <i>8088</i>) <b>PUSH</b> <b>PSW</b> and <b>POP PSW</b> instructions, but turn out to be compact (one byte) instructions for saving and restoring the arithmetic flags. A word of caution, however: <b>SAHF</b> restores the Carry, Zero, Sign, Auxiliary Carry, and Parity flags&mdash;but <i>not</i> the Overflow flag, which resides in the high byte of the FLAGS register. Also, be aware that <b>LAHF</b> and <b>SAHF</b> provide a fast way to preserve the flags on an 8088 but are relatively slow instructions on the 486 and Pentium.</p>
 
-  <p>There are times when it&rsquo;s a clear liability that <b>INC</b> doesn&rsquo;t set the Carry flag. For instance</p><!-- CODE SNIP //-->
+  <p>There are times when it&rsquo;s a clear liability that <b>INC</b> doesn&rsquo;t set the Carry flag. For instance</p>
   <pre>
 INC   AX
 ADC   DX,0
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>does <i>not</i> increment the 32-bit value in DX:AX. To do that, you&rsquo;d need the following:</p><!-- CODE SNIP //-->
+  <p>does <i>not</i> increment the 32-bit value in DX:AX. To do that, you&rsquo;d need the following:</p>
   <pre>
 ADD   AX,1
 ADC   DX,0
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>As always, pay attention!</p>
 
@@ -182,10 +175,6 @@ ADC   DX,0
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

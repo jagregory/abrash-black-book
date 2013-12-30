@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Hints My Readers Gave Me</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Hints My Readers Gave Me</title>
   <meta name="chapter" content="09" />
   <meta name="pages" content="180-182" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -41,11 +34,11 @@
 
   <p>The point is that you can improve performance dramatically by understanding the nature of the data with which you work. (This is equally true for high-level language programming, by the way.) Listing 9.2 is very similar to and only slightly more complex than Listing 9.1; the difference lies not in elbow grease or cycle counting but in the organic integrating optimizer technology we all carry around in our heads.</p>
 
-  <h4 align="left"><a id="Heading7"></a>Short Sorts</h4>
+  <h4 align="left" id="Heading7">Short Sorts</h4>
 
   <p>David Stafford (recently of Borland and Borland Japan) who happens to be one of the best assembly language programmers I&rsquo;ve ever met, has written a C-callable routine that sorts an array of integers in ascending order. That wouldn&rsquo;t be particularly noteworthy, except that David&rsquo;s routine, shown in Listing 9.4, is exactly <i>25 bytes</i> long. Look at the code; you&rsquo;ll keep saying to yourself, &ldquo;But this doesn&rsquo;t work...oh, yes, I guess it does.&rdquo; As they say in the Prego spaghetti sauce ads, <i>it&rsquo;s in there</i>&mdash;and what a job of packing. Anyway, David says that a 24-byte sort routine eludes him, and he&rsquo;d like to know if anyone can come up with one.</p>
 
-  <p><b>LISTING 9.4 L9-4.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 9.4 L9-4.ASM</b></p>
   <pre>
 .
 ;--------------------------------------------------------------------------
@@ -79,9 +72,9 @@ _sort:  pop     dx              ;get return address (entry point)
         ret
 
       end
-</pre><!-- END CODE //-->
+</pre>
 
-  <h4 align="left"><a id="Heading8"></a>Full 32-Bit Division</h4>
+  <h4 align="left" id="Heading8">Full 32-Bit Division</h4>
 
   <p>One of the most annoying limitations of the x86 is that while the dividend operand to the <b>DIV</b> instruction can be 32 bits in size, both the divisor and the result must be 16 bits. That&rsquo;s particularly annoying in regards to the result because sometimes you just don&rsquo;t know whether the ratio of the dividend to the divisor is greater than 64K-1 or not&mdash;and if you guess wrong, you get that godawful Divide By Zero interrupt. So, what is one to do when the result might not fit in 16 bits, or when the dividend is larger than 32 bits? Fall back to a software division approach? That will work&mdash;but oh so slowly.</p>
 
@@ -89,9 +82,8 @@ _sort:  pop     dx              ;get return address (entry point)
 
   <p>This technique involves nothing more complicated than breaking up the division into word-sized chunks, starting with the most significant word of the dividend. The most significant word is divided by the divisor (with no chance of overflow because there are only 16 bits in each); then the remainder is prepended to the next 16 bits of dividend, and the process is repeated, as shown in Figure 9.3. This process is equivalent to dividing by hand, except that here we stop to carry the remainder manually only after each word of the dividend; the hardware divide takes care of the rest. Listing 9.5 shows a function to divide an arbitrarily large dividend by a 16-bit divisor, and Listing 9.6 shows a sample division of a large dividend. Note that the same principle can be applied to handling arbitrarily large dividends in 386 native mode code, but in that case the operation can proceed a dword, rather than a word, at a time.</p>
 
-  <p><a id="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/09-03.jpg',406,231 )"> --><img src="images/09-03.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/09-03.jpg',406,231)"> --><b>Figure 9.3</b></a>&nbsp;&nbsp;<i>Fast multiword division on the 386.</i></p>
+  <p><a id="Fig3"><img src="images/09-03.jpg" /><br />
+  <b>Figure 9.3</b></a>&nbsp;&nbsp;<i>Fast multiword division on the 386.</i></p>
 
   <p>As for handling signed division with arbitrarily large dividends, that can be done easily enough by remembering the signs of the dividend and divisor, dividing the absolute value of the dividend by the absolute value of the divisor, and applying the stored signs to set the proper signs for the quotient and remainder. There may be more clever ways to produce the same result, by using <b>IDIV</b>, for example; if you know of one, drop me a line c/o Coriolis Group Books.</p>
 
@@ -112,10 +104,6 @@ _sort:  pop     dx              ;get return address (entry point)
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

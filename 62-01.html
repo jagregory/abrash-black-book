@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: On Story, Two Rules, and a BSP Renderer</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: On Story, Two Rules, and a BSP Renderer</title>
   <meta name="chapter" content="62" />
   <meta name="pages" content="1145-1149" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 62<br />
+  <h2 id="Heading1">Chapter 62<br />
   One Story, Two Rules, and a BSP Renderer</h2>
 
-  <h3><a id="Heading2"></a>Taking a Compiled BSP Tree from Logical to Visual Reality</h3>
+  <h3 id="Heading2">Taking a Compiled BSP Tree from Logical to Visual Reality</h3>
 
   <p>As I&rsquo;ve noted before, I&rsquo;m working on Quake, id Software&rsquo;s follow-up to DOOM. A month or so back, we added page flipping to Quake, and made the startling discovery that the program ran nearly twice as fast with page flipping as it did with the alternative method of drawing the whole frame to system memory, then copying it to the screen. We were delighted by this, but baffled. I did a few tests and came up with several possible explanations, including slow writes through the external cache, poor main memory performance, and cache misses when copying the frame from system memory to video memory. Although each of these can indeed affect performance, none seemed to account for the magnitude of the speedup, so I assumed there was some hidden hardware interaction at work. Anyway, &ldquo;why&rdquo; was secondary; what really mattered was that we had a way to double performance, which meant I had a lot of work to do to support page flipping as widely as possible.</p>
 
@@ -66,15 +59,14 @@
 
   <p>Onward to rendering from a BSP tree.</p>
 
-  <h4 align="left"><a id="Heading3"></a>BSP-based Rendering</h4>
+  <h4 align="left" id="Heading3">BSP-based Rendering</h4>
 
   <p>For the last several chapters I&rsquo;ve been discussing the nature of BSP (Binary Space Partitioning) trees, and in Chapter 60 I presented a compiler for 2-D BSP trees. Now we&rsquo;re ready to use those compiled BSP trees to do realtime rendering.</p>
 
   <p>As you&rsquo;ll recall, the BSP compiler took a list of vertical walls and built a 2-D BSP tree from the walls, as viewed from above. The result is shown in Figure 62.1. The world is split into two pieces by the line of the root wall, and each half of the world is then split again by the root&rsquo;s children, and so on, until the world is carved into subspaces along the lines of all the walls.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/62-01.jpg',400,153 )"> --><img src="images/62-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/62-01.jpg',400,153)"> --><b>Figure 62.1</b></a>&nbsp;&nbsp;<i>Vertical walls and a BSP tree to represent them.</i></p>
+  <p><a id="Fig1"><img src="images/62-01.jpg" /><br />
+  <b>Figure 62.1</b></a>&nbsp;&nbsp;<i>Vertical walls and a BSP tree to represent them.</i></p>
 
   <p>Our objective is to draw the world so that whenever walls overlap we see the nearer wall at each overlapped pixel. The simplest way to do that is with the painter&rsquo;s algorithm; that is, drawing the walls in back-to-front order, assuming no polygons interpenetrate or form cycles. BSP trees guarantee that no polygons interpenetrate (such polygons are automatically split), and make it easy to walk the polygons in back-to-front (or front-to-back) order.</p>
 
@@ -97,10 +89,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

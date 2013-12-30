@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: The Game of Life</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: The Game of Life</title>
   <meta name="chapter" content="17" />
   <meta name="pages" content="331-334" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -39,19 +32,17 @@
 
   <p>There&rsquo;s a kicker here, though, and that&rsquo;s the counting of neighbors for cells at the edge of the cellmap. When cellmap wrapping is enabled (so that the cellmap becomes essentially a toroid, with each edge joined seamlessly to the opposite edge, as opposed to having a border of off-cells), neighbors that reside on the other edge of the cellmap can&rsquo;t be accessed by the standard fixed offset, as shown in Figure 17.1. So, in general, we could improve performance by hard-wiring our neighbor-counting for the bit-per-cell cellmap format, but it seems we&rsquo;d need a lot of conditional code to handle wrapping, and that would slow things back down again.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/17-01.jpg',408,258 )"> --><img src="images/17-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/17-01.jpg',408,258)"> --><b>Figure 17.1</b></a>&nbsp;&nbsp;<i>Edge-wrapping complications.</i></p>
+  <p><a id="Fig1"><img src="images/17-01.jpg" /><br />
+  <b>Figure 17.1</b></a>&nbsp;&nbsp;<i>Edge-wrapping complications.</i></p>
 
   <p>When a problem doesn&rsquo;t lend itself well to optimization, make it a practice to see if you can change the problem definition to one that allows for greater efficiency. In this case, we&rsquo;ll change the problem by putting padding bytes around the edge of the cellmap, and duplicating each edge of the cellmap in the padding bytes at the opposite side, as shown in Figure 17.2. That way, a hard-wired neighbor count will find exactly what it should&mdash;the opposite edge&mdash;without any special code at all.</p>
 
   <p>But doesn&rsquo;t that extra copying of the edges take time? Sure, but only a little; we can build it into the cellmap copying function, and then frankly we won&rsquo;t even notice it. Avoiding tens or hundreds of thousands of calls to <b>cell_state(),</b> on the other hand, will be <i>very</i> noticeable. Listing 17.3 shows the alterations to Listing 17.1 required to implement a hard-wired neighbor-counting function. This is a minor change, in truth, implemented in about half an hour and not making the code significantly larger&mdash;but Listing 17.3 is 3.6 times faster than Listing 17.1, as shown in Table 17.1. We&rsquo;re up to about 10 generations per second on a 486; not where we want to be, but it is a vast improvement.</p>
 
-  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/17-02.jpg',407,260 )"> --><img src="images/17-02.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/17-02.jpg',407,260)"> --><b>Figure 17.2</b></a>&nbsp;&nbsp;<i>The &ldquo;padding cells&rdquo; solution.</i></p>
+  <p><a id="Fig2"><img src="images/17-02.jpg" /><br />
+  <b>Figure 17.2</b></a>&nbsp;&nbsp;<i>The &ldquo;padding cells&rdquo; solution.</i></p>
 
-  <p><b>LISTING 17.3 L17-3.CPP</b></p><!-- CODE //-->
+  <p><b>LISTING 17.3 L17-3.CPP</b></p>
   <pre>
 /* cellmap class definition, constructor, copy_cells(), set_cell(),
    clear_cell(), cell_state(), count_neighbors(), and
@@ -214,7 +205,7 @@ void cellmap::next_generation(cellmap&amp; next_map)
       }
    }
 }
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -233,10 +224,6 @@ void cellmap::next_generation(cellmap&amp; next_map)
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

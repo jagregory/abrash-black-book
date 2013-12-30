@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X 256-Color Animation</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X 256-Color Animation</title>
   <meta name="chapter" content="49" />
   <meta name="pages" content="924-929" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h3><a id="Heading6"></a>Animation</h3>
+  <h3 id="Heading6">Animation</h3>
 
   <p>Gosh. There&rsquo;s just no way I can discuss high-level animation fundamentals in any detail here; I could spend an entire (and entirely separate) book on animation techniques alone. You might want to have a look at Chapters 43 through 46 before attacking the code in this chapter; that will have to do us for the present volume. (I will return to <i>3-D</i> animation in the next chapter.)</p>
 
@@ -45,15 +38,14 @@
 
   <p>Some of the code in this chapter was adapted for Mode X from the code in Chapter 44&mdash;yet another reason to read that chapter before finishing this one.</p>
 
-  <h3><a id="Heading7"></a>Mode X Animation in Action</h3>
+  <h3 id="Heading7">Mode X Animation in Action</h3>
 
   <p>Listing 49.5 ties together everything I&rsquo;ve discussed about Mode X so far in a compact but surprisingly powerful animation package. Listing 49.5 first uses solid and patterned fills and system-memory-to-screen-memory masked copying to draw a static background containing a mountain, a sun, a plain, water, and a house with puffs of smoke coming out of the chimney, and sets up the four alignments of a masked kite image. The background is transferred to both display pages, and drawing of 20 kite images in the nondisplayed page using fast masked copying begins. After all images have been drawn, the page is flipped to show the newly updated screen, and the kites are moved and drawn in the other page, which is no longer displayed. Kites are erased at their old positions in the nondisplayed page by block copying from the background page. (See the discussion in the previous chapter for the display memory organization used by Listing 49.5.) So far as the displayed image is concerned, there is never any hint of flicker or disturbance of the background. This continues at a rate of up to 60 times a second until Esc is pressed to exit the program. See Figure 49.1 for a screen shot of the resulting image&mdash;add the animation in your imagination.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/49-01.jpg',227,175 )"> --><img src="images/49-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/49-01.jpg',227,175)"> --><b>Figure 49.1</b></a>&nbsp;&nbsp;<i>An animated Mode X screen.</i></p>
+  <p><a id="Fig1"><img src="images/49-01.jpg" /><br />
+  <b>Figure 49.1</b></a>&nbsp;&nbsp;<i>An animated Mode X screen.</i></p>
 
-  <p><b>LISTING 49.5 L49-5.C</b></p><!-- CODE //-->
+  <p><b>LISTING 49.5 L49-5.C</b></p>
   <pre>
 /* Sample mode X VGA animation program. Portions of this code first appeared
    in PC Techniques. Compiled with Borland C++ 2.0 in C compilation mode. */
@@ -289,7 +281,7 @@ void MoveObject(AnimatedObject * ObjectToMove) {
    ObjectToMove-&gt;Y = Y;
 }
 
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -308,10 +300,6 @@ void MoveObject(AnimatedObject * ObjectToMove) {
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Those Way-Down Polygon Nomenclature Blues</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Those Way-Down Polygon Nomenclature Blues</title>
   <meta name="chapter" content="41" />
   <meta name="pages" content="764-766" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p><b>LISTING 41.3 L41-3.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 41.3 L41-3.ASM</b></p>
   <pre>
 ; Draws all pixels in list of horizontal lines passed in, in mode 13h, VGA&rsquo;s 
 ; 320x200 256-color mode. Uses REP STOS to fill each line.
@@ -129,7 +122,7 @@ FillDone:
         ret
 _DrawHorizontalLineList endp
         end
-</pre><!-- END CODE //-->
+</pre>
 
   <p>Listing 41.4 is almost identical to Listing 40.1 from Chapter 40. I&rsquo;ve modified Listing 40.1 to employ the vertical-monotone detection test we&rsquo;ve been talking about and use the fast vertical-monotone drawing code whenever possible; that&rsquo;s what Listing 41.4 is. Note well that Listing 40.5 from Chapter 40 is also required in order for this code to link. Listing 41.5 is an appropriately updated version of the POLYGON.H header file.</p>
 
@@ -150,10 +143,6 @@ _DrawHorizontalLineList endp
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

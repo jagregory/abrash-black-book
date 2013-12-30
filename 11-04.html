@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pushing the 286 and 386</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pushing the 286 and 386</title>
   <meta name="chapter" content="11" />
   <meta name="pages" content="216-220" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p>When I was developing the Zen timer, I used my trusty 10 MHz 286-based AT clone to verify the basic functionality of the timer by measuring the performance of simple instruction sequences. I was cruising along with no problems until I timed the following code:</p><!-- CODE SNIP //-->
+  <p>When I was developing the Zen timer, I used my trusty 10 MHz 286-based AT clone to verify the basic functionality of the timer by measuring the performance of simple instruction sequences. I was cruising along with no problems until I timed the following code:</p>
   <pre>
 
     mov    cx,1000
@@ -45,19 +38,17 @@
 LoopTop:
     loop   LoopTop
     call   ZTimerOff
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/11-02.jpg',406,204 )"> --><img src="images/11-02.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/11-02.jpg',406,204)"> --><b>Figure 11.2</b></a>&nbsp;&nbsp;<i>Word-aligned prefetching on the 286.</i></p>
+  <p><a id="Fig2"><img src="images/11-02.jpg" /><br />
+  <b>Figure 11.2</b></a>&nbsp;&nbsp;<i>Word-aligned prefetching on the 286.</i></p>
 
-  <p><a id="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/11-03.jpg',408,240 )"> --><img src="images/11-03.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/11-03.jpg',408,240)"> --><b>Figure 11.3</b></a>&nbsp;&nbsp;<i>How instruction bytes are fetched after a branch.</i></p>
+  <p><a id="Fig3"><img src="images/11-03.jpg" /><br />
+  <b>Figure 11.3</b></a>&nbsp;&nbsp;<i>How instruction bytes are fetched after a branch.</i></p>
 
   <p>Now, this code <i>should</i> run in, say, about 12 cycles per loop at most. Instead, it took over 14 cycles per loop, an execution time that I could not explain in any way. After rolling it around in my head for a while, I took a look at the code under a debugger...and the answer leaped out at me. <i>The loop began at an odd address!</i> That meant that two instruction fetches were required each time through the loop; one to get the opcode byte of the <b>LOOP</b> instruction, which resided at the end of one word-aligned word, and another to get the displacement byte, which resided at the start of the next word-aligned word.</p>
 
-  <p>One simple change brought the execution time down to a reasonable 12.5 cycles per loop:</p><!-- CODE SNIP //-->
+  <p>One simple change brought the execution time down to a reasonable 12.5 cycles per loop:</p>
   <pre>
   mov   cx,1000
   call  ZTimerOn
@@ -65,7 +56,7 @@ LoopTop:
 LoopTop:
   loop  LoopTop
   call  ZTimerOff
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>While word-aligning branch destinations can improve branching performance, it&rsquo;s a nuisance and can increase code size a good deal, so it&rsquo;s not worth doing in most code. Besides, <b>EVEN</b> inserts a <b>NOP</b> instruction if necessary, and the time required to execute a <b>NOP</b> can sometimes cancel the performance advantage of having a word-aligned branch destination.</p>
 
@@ -77,16 +68,16 @@ LoopTop:
     </tr>
   </table>
 
-  <p>I recommend that you only go out of your way to word-align the start offsets of your subroutines, as in:</p><!-- CODE SNIP //-->
+  <p>I recommend that you only go out of your way to word-align the start offsets of your subroutines, as in:</p>
   <pre>
           even
 FindChar  proc near
           :
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>In my experience, this simple practice is the one form of code alignment that consistently provides a reasonable return for bytes and effort expended, although sometimes it also pays to word-align tight time-critical loops.</p>
 
-  <h4 align="center"><a id="Heading9"></a>Alignment and the 386</h4>
+  <h4 align="center" id="Heading9">Alignment and the 386</h4>
 
   <p>So far we&rsquo;ve only discussed alignment as it pertains to the 286. What, you may well ask, of the 386?</p>
 
@@ -94,7 +85,7 @@ FindChar  proc near
 
   <p>As for code alignment...the subroutine-start word-alignment rule of the 286 serves reasonably well there too since it avoids the worst case, where just 1 byte is fetched on entry to a subroutine. While optimum performance would dictate doubleword alignment of subroutines, that takes 3 bytes, a high price to pay for an optimization that improves performance <i>only</i> on the post 286 processors.</p>
 
-  <h4 align="center"><a id="Heading10"></a>Alignment and the Stack</h4>
+  <h4 align="center" id="Heading10">Alignment and the Stack</h4>
 
   <p>One side-effect of the data alignment cycle-eater of the 286 and 386 is that you should <i>never</i> allow the stack pointer to become odd. (You can make the stack pointer odd by adding an odd value to it or subtracting an odd value from it, or by loading it with an odd value.) An odd stack pointer on the 286 or 386 (or a non-doubleword-aligned stack in 32-bit protected mode on the 386, 486, or Pentium) will significantly reduce the performance of <b>PUSH,</b> <b>POP,</b> <b>CALL</b>, and <b>RET</b>, as well as <b>INT</b> and <b>IRET</b>, which are executed to invoke DOS and BIOS functions, handle keystrokes and incoming serial characters, and manage the mouse. I know of a Forth programmer who vastly improved the performance of a complex application on the AT simply by forcing the Forth interpreter to maintain an even stack pointer at all times.</p>
 
@@ -108,7 +99,7 @@ FindChar  proc near
     </tr>
   </table>
 
-  <h4 align="center"><a id="Heading11"></a>The DRAM Refresh Cycle-Eater: Still an Act of God</h4>
+  <h4 align="center" id="Heading11">The DRAM Refresh Cycle-Eater: Still an Act of God</h4>
 
   <p>The DRAM refresh cycle-eater is the cycle-eater that&rsquo;s least changed from its 8088 form on the 286 and 386. In the AT, DRAM refresh uses a little over five percent of all available memory accesses, slightly less than it uses in the PC, but in the same ballpark. While the DRAM refresh penalty varies somewhat on various AT clones and 386 computers (in fact, a few computers are built around static RAM, which requires no refresh at all; likewise, caches are made of static RAM so cached systems generally suffer less from DRAM refresh), the 5 percent figure is a good rule of thumb.</p>
 
@@ -116,7 +107,7 @@ FindChar  proc near
 
   <p>There&rsquo;s nothing much new with DRAM refresh on 286/386 computers, then. Be aware of it, but don&rsquo;t overly concern yourself&mdash;DRAM refresh is still an act of God, and there&rsquo;s not a blessed thing you can do about it. Happily, the internal caches of the 486 and Pentium make DRAM refresh largely a performance non-issue on those processors.</p>
 
-  <h4 align="center"><a id="Heading12"></a>The Display Adapter Cycle-Eater</h4>
+  <h4 align="center" id="Heading12">The Display Adapter Cycle-Eater</h4>
 
   <p>Finally we come to the last of the cycle-eaters, the display adapter cycle-eater. There are two ways of looking at this cycle-eater on 286/386 computers: (1) It&rsquo;s much worse than it was on the PC, or (2) it&rsquo;s just about the same as it was on the PC.</p>
 
@@ -141,10 +132,6 @@ FindChar  proc near
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: It's a Wonderful Life</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: It's a Wonderful Life</title>
   <meta name="chapter" content="18" />
   <meta name="pages" content="361-365" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p><b>LISTING 18.3 MAIN.C</b></p><!-- CODE //-->
+  <p><b>LISTING 18.3 MAIN.C</b></p>
   <pre>
 // MAIN.C
 //
@@ -129,9 +122,9 @@ void main( void )
   printf( &ldquo;Time: %f generations/second\n&rdquo;,
           (double)generation / (double)end_time * 18.2 );
   }
-</pre><!-- END CODE //-->
+</pre>
 
-  <p><b>LISTING 18.4 VIDEO.C</b></p><!-- CODE //-->
+  <p><b>LISTING 18.4 VIDEO.C</b></p>
   <pre>
 /* VGA mode 13h functions for Game of Life.
    Tested with Borland C++. */
@@ -169,9 +162,9 @@ void show_text(int x, int y, char *text)
    gotoxy(TEXT_X_OFFSET + x, y);
    puts(text);
 }
-</pre><!-- END CODE //-->
+</pre>
 
-  <p><b>LISTING 18.5 LIFE.H</b></p><!-- CODE //-->
+  <p><b>LISTING 18.5 LIFE.H</b></p>
   <pre>
 void far NextGen( void );
 
@@ -190,9 +183,9 @@ extern unsigned short far ChangeList1[];
 #define WRAPRIGHT   (LEFT  * (WIDTH - 1))
 #define WRAPUP      (DOWN  * (HEIGHT - 1))
 #define WRAPDOWN    (UP    * (HEIGHT - 1))
-</pre><!-- END CODE //-->
+</pre>
 
-  <h3><a id="Heading5"></a>Keeping Track of Change with a Change List</h3>
+  <h3 id="Heading5">Keeping Track of Change with a Change List</h3>
 
   <p>In my earlier optimizations to the Game of Life, described in the last chapter, I noted that most cells in a Life cellmap are dead, and in most cases all the neighbors are dead as well. This observation enabled me to get a major speed-up by scanning the cellmap for the few non-zero bytes (cells that were either alive or have neighbors that are alive). Although that was a big improvement, it still required my code to touch every cell to check its state. David has improved on this by maintaining a <i>change list;</i> that is, a list of pointers to cells that change in the current generation. Only those cells and their neighbors need to be checked or touched in any way in order to create the next generation, saving a great many instructions and also a great many cache misses due to the fact that cellmaps are too big to fit into the 486&rsquo;s internal cache. During a given generation, David runs down the list of cells that changed from the previous generation to make the changes for this generation, and in the process generates the change list for the next generation.</p>
 
@@ -202,9 +195,8 @@ extern unsigned short far ChangeList1[];
 
   <p>&ldquo;Since every cell has from zero to eight neighbors, you may be wondering how I can manage to keep track of them with only three bits. Each cell really has only a maximum of seven neighbors since we only need to keep track of neighbors <i>outside</i> of the current cell word. That is, if cell &lsquo;B&rsquo; changes state then we don&rsquo;t need to reflect this in the neighbor counts of cells &lsquo;A&rsquo; and &lsquo;C.&rsquo; Updating is made a little faster. [In other words, when David picks up a word representing three cells, each of the three cells has at least one of the other cells in that word as a neighbor, and the state of that neighbor is stored right in that word, as shown in Figure 18.1. Therefore, the neighbor count for a given cell never needs to reflect more than seven neighbors, because at least one of the eight neighbors&rsquo; states is already encoded in the word.]</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/18-01.jpg',414,279 )"> --><img src="images/18-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/18-01.jpg',414,279)"> --><b>Figure 18.1</b></a>&nbsp;&nbsp;<i>Cell triplet storage.</i></p>
+  <p><a id="Fig1"><img src="images/18-01.jpg" /><br />
+  <b>Figure 18.1</b></a>&nbsp;&nbsp;<i>Cell triplet storage.</i></p>
 
   <p><br /></p>
 
@@ -223,10 +215,6 @@ extern unsigned short far ChangeList1[];
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

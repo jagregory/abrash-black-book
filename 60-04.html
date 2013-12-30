@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Compiling BSP Trees</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Compiling BSP Trees</title>
   <meta name="chapter" content="60" />
   <meta name="pages" content="1127-1129" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -39,7 +32,7 @@
 
   <p>Listing 60.1 isn&rsquo;t very long or complex, but it&rsquo;s somewhat more complicated than it could be because it&rsquo;s structured to allow visual display of the ongoing compilation process. That&rsquo;s because Listing 60.1 is actually just a part of a BSP compiler for Win32 that visually depicts the progressive subdivision of space as the BSP tree is built. (Note that Listing 60.1 might not compile as printed; I may have missed copying some global variables that it uses.) The complete code is too large to print here in its entirety, but it&rsquo;s on the CD-ROM in file DDJBSP.ZIP.</p>
 
-  <h3><a id="Heading7"></a>Optimizing the BSP Tree</h3>
+  <h3 id="Heading7">Optimizing the BSP Tree</h3>
 
   <p>In the previous chapter, I promised that I&rsquo;d discuss how to go about deciding which wall to use as the splitter at each node in constructing a BSP tree. That turns out to be a far more difficult problem than one might think, but we can&rsquo;t ignore it, because the choice of splitter can make a huge difference.</p>
 
@@ -53,7 +46,7 @@
 
   <p>In Listing 60.1, I&rsquo;ve applied the popular heuristic of choosing as the splitter at each node the surface that splits the fewest of the other surfaces that are being considered for that node. In other words, I choose the wall that splits the fewest of the walls in the subspace it&rsquo;s subdividing.</p>
 
-  <h3><a id="Heading8"></a>BSP Optimization: an Undiscovered Country</h3>
+  <h3 id="Heading8">BSP Optimization: an Undiscovered Country</h3>
 
   <p>Although BSP trees have been around for at least 15 years now, they&rsquo;re still only partially understood and are a ripe area for applied research and general ingenuity. You might want to try your hand at inventing new BSP optimization approaches; it&rsquo;s an interesting problem, and you might strike paydirt. There are many things that BSP trees can&rsquo;t do well, because it takes so long to build them&mdash;but what they do, they do exceedingly well, so a better compilation approach that allowed BSP trees to be used for more purposes would be valuable, indeed.</p>
 
@@ -74,10 +67,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

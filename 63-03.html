@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Floating-Point for Real-Time 3-D</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Floating-Point for Real-Time 3-D</title>
   <meta name="chapter" content="63" />
   <meta name="pages" content="1170-1173" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p><b>Listing 63.2 1 L63-2.ASM</b></p><!-- CODE //-->
+  <p><b>Listing 63.2 1 L63-2.ASM</b></p>
   <pre>
 ; unoptimized dot product; 17 cycles
         fld     [vec0+0]        ;starts &amp; ends on cycle 0
@@ -53,9 +46,9 @@
                                 ;stalls for cycles 12-14
         fstp    [dot]           ;starts on cycle 15,
                                 ; ends on cycle 16
-</pre><!-- END CODE //-->
+</pre>
 
-  <p><b>Listing 63.3 L63-3.ASM</b></p><!-- CODE //-->
+  <p><b>Listing 63.3 L63-3.ASM</b></p>
   <pre>
 ;optimized dot product; 15 cycles
         fld     [vec0+0]        ;starts &amp; ends on cycle 0
@@ -71,13 +64,13 @@
                                 ;stalls for cycles 10-12
         fstp    [dot]           ;starts on cycle 13,
                                 ; ends on cycle 14
-</pre><!-- END CODE //-->
+</pre>
 
-  <h3><a id="Heading8"></a>The Cross Product</h3>
+  <h3 id="Heading8">The Cross Product</h3>
 
   <p>When last we looked at the cross product, we found that it&rsquo;s handy for generating a vector that&rsquo;s normal to two other vectors. The cross product is calculated as [u<sub>2</sub>v<sub>3</sub>-u<sub>3</sub>v<sub>2</sub> u<sub>3</sub>v<sub>1</sub>-u<sub>1</sub>v<sub>3</sub> u<sub>1</sub>v<sub>2</sub>-u<sub>2</sub>v<sub>1</sub>]. The theoretical minimum cycle count for the cross product is 21 cycles. Listing 63.4 shows a straightforward implementation that calculates each component of the result separately, losing 15 cycles to stalls.</p>
 
-  <p><b>Listing 63.4 L63-4.ASM</b></p><!-- CODE //-->
+  <p><b>Listing 63.4 L63-4.ASM</b></p>
   <pre>
 ;unoptimized cross product; 36 cycles
         fld     [vec0+4]         ;starts &amp; ends on cycle 0
@@ -108,11 +101,11 @@
                                  ;stalls for cycles 31-33
         fstp    [vec2+8]         ;starts on cycle 34,
                                  ; ends on cycle 35
-</pre><!-- END CODE //-->
+</pre>
 
   <p>We couldn&rsquo;t get rid of many of the stalls in the dot product code because with six inputs and one output, it was impossible to interleave all the operations. However, the cross product, with three outputs, is much more amenable to optimization. In fact, three is the magic number; because we have three calculation streams and the latency of FADD, FSUB, and FMUL is 3 cycles, we can eliminate almost every single stall in the cross-product calculation, as shown in Listing 63.5. Listing 63.5 loses only one cycle to a stall, the cycle before the first FST; the relevant FSUB has just finished on the preceding cycle, so we run into the extra cycle of latency associated with FST. Listing 63.5 is more than 60 percent faster than Listing 63.4, a striking illustration of the power of properly managing the Pentium&rsquo;s FP pipeline.</p>
 
-  <p><b>Listing 63.5 L63-5.ASM</b></p><!-- CODE //-->
+  <p><b>Listing 63.5 L63-5.ASM</b></p>
   <pre>
 ;optimized cross product; 22 cycles
         fld       [vec0+4]        ;starts &amp; ends on cycle 0
@@ -139,13 +132,13 @@
                                   ; ends on cycle 19
         fstp      [vec2+8]        ;starts on cycle 20,
                                   ; ends on cycle 21
-</pre><!-- END CODE //-->
+</pre>
 
-  <h3><a id="Heading9"></a>Transformation</h3>
+  <h3 id="Heading9">Transformation</h3>
 
   <p>Transforming a point, for example from worldspace to viewspace, is one of the most heavily used FP operations in realtime 3-D. Conceptually, transformation is nothing more than three dot products and three additions, as I will discuss in Chapter 61. (Note that I&rsquo;m talking about a subset of a general 4x4 transformation matrix, where the fourth row is always implicitly [0 0 0 1]. This limited form suffices for common transformations, and does 25 percent less work than a full 4x4 transformation.)</p>
 
-  <p>Transformation is calculated as:</p><!-- CODE SNIP //-->
+  <p>Transformation is calculated as:</p>
   <pre>
 -  -    -                -  -   -
  v<sub>1</sub>      m<sub>11</sub> m<sub>12</sub> m<sub>13</sub> m<sub>14</sub>    u<sub>1</sub>
@@ -153,14 +146,14 @@
  v<sub>3</sub>      m<sub>31</sub> m<sub>32</sub> m<sub>33</sub> m<sub>34</sub>    u<sub>3</sub>
  1       0   0   0   1     1
 -  -    -                -  -   -
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>or</p><!-- CODE SNIP //-->
+  <p>or</p>
   <pre>
 v<sub>1</sub> = m<sub>11</sub>u<sub>1</sub> + m<sub>12</sub>u<sub>2</sub> + m<sub>13</sub>u<sub>3</sub> + m<sub>14</sub>
 v<sub>2</sub> = m<sub>21</sub>u<sub>1</sub> + m<sub>22</sub>u<sub>2</sub> + m<sub>23</sub>u<sub>3</sub> + m<sub>24</sub>
 v<sub>3</sub> = m<sub>31</sub>u<sub>1</sub> + m<sub>32</sub>u<sub>2</sub> + m<sub>33</sub>u<sub>3</sub> + m<sub>34.</sub>
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p><br /></p>
 
@@ -179,10 +172,6 @@ v<sub>3</sub> = m<sub>31</sub>u<sub>1</sub> + m<sub>32</sub>u<sub>2</sub> + m<su
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

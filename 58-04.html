@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Heinlein's Crystal Ball, Spock's Brain, and the 9-Cycle Dare</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Heinlein's Crystal Ball, Spock's Brain, and the 9-Cycle Dare</title>
   <meta name="chapter" content="58" />
   <meta name="pages" content="1089-1091" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -41,7 +34,7 @@
 
   <p>Or can we?</p>
 
-  <p><b>LISTING 58.3 L58-3.ASM</b></p><!-- CODE SNIP //-->
+  <p><b>LISTING 58.3 L58-3.ASM</b></p>
   <pre>
 ; Inner loop to draw a single texture-mapped vertical column,
 ; rather than a horizontal scanline. Maxed-out 16-bit version.
@@ -51,11 +44,10 @@
 ;       ECX = fractional Y advance in lower 15 bits of CX,
 ;             fractional X advance in high word of ECX, bit
 ;             15 set to 0
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p><a id="Fig7"><!-- </A><A HREF="javascript:displayWindow('images/58-07.jpg',407,289 )"> --><img src="images/58-07.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/58-07.jpg',407,289)"> --><b>Figure 58.7</b></a>&nbsp;&nbsp;<i>Final method for advancing source texture pointer.</i></p><!-- CODE //-->
+  <p><a id="Fig7"><img src="images/58-07.jpg" /><br />
+  <b>Figure 58.7</b></a>&nbsp;&nbsp;<i>Final method for advancing source texture pointer.</i></p>
   <pre>
 ;       EDX = fractional source texture Y coordinate in lower
 ;             15 bits of CX, fractional source texture X coord
@@ -85,9 +77,9 @@ SCANOFFSET=0
 SCANOFFSET = SCANOFFSET + SCANWIDTH
 
      ENDM
-</pre><!-- END CODE //-->
+</pre>
 
-  <h4 align="left"><a id="Heading7"></a>Don&rsquo;t Stop Thinking about Those Cycles</h4>
+  <h4 align="left" id="Heading7">Don&rsquo;t Stop Thinking about Those Cycles</h4>
 
   <p>Remember what I said at the outset, that knowing something has been done makes it much easier to do? A corollary is that pushing past that point, once attained, is very difficult. It&rsquo;s only natural to want to relax in the satisfaction of a job well done; then, too, the very nature of the work changes. Getting from 44 cycles down to John&rsquo;s 9 cycles was a huge leap, but we knew it could be done&mdash;therefore the nature of the problem was to figure out <i>how</i> it was done; in cases like this, if we&rsquo;re sharp enough (and of course we are!), we&rsquo;re guaranteed eventual gratification. Now that we&rsquo;ve reached John&rsquo;s level of performance, the problem becomes <i>whether</i> the code can be made faster yet, and that&rsquo;s a different kettle of fish altogether, for it may well be that after thinking about it for a while, we&rsquo;ll conclude that it can&rsquo;t. Not only will we have wasted time, but we&rsquo;ll also never be sure we were right; we&rsquo;ll know only that <i>we</i> couldn&rsquo;t find a solution. That way lies madness.</p>
 
@@ -110,10 +102,6 @@ SCANOFFSET = SCANOFFSET + SCANWIDTH
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

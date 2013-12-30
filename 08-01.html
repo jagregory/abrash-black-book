@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Speeding Up C with Assembly Language</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Speeding Up C with Assembly Language</title>
   <meta name="chapter" content="08" />
   <meta name="pages" content="149-153" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 8<br />
+  <h2 id="Heading1">Chapter 8<br />
   Speeding Up C with Assembly Language</h2>
 
-  <h3><a id="Heading2"></a>Jumping Languages When You Know It&rsquo;ll Help</h3>
+  <h3 id="Heading2">Jumping Languages When You Know It&rsquo;ll Help</h3>
 
   <p>When I was a senior in high school, a pop song called &ldquo;Seasons in the Sun,&rdquo; sung by one Terry Jacks, soared up the pop charts and spent, as best I can recall, two straight weeks atop <i>Kasey Kasem&rsquo;s American Top 40.</i> &ldquo;Seasons in the Sun&rdquo; wasn&rsquo;t a particularly good song, primarily because the lyrics were silly. I&rsquo;ve never understood why the song was a hit, but, as so often happens with undistinguished but popular music by forgotten one- or two-shot groups (&ldquo;Don&rsquo;t Pull Your Love Out on Me Baby,&rdquo; &ldquo;Billy Don&rsquo;t Be a Hero,&rdquo; <i>et al.</i>), I heard it everywhere for a month or so, then gave it not another thought for 15 years.</p>
 
@@ -62,7 +55,7 @@
 
   <p>Apropos of which, when was the last time you heard of Terry Jacks?</p>
 
-  <h4 align="left"><a id="Heading3"></a>Billy, Don&rsquo;t Be a Compiler</h4>
+  <h4 align="left" id="Heading3">Billy, Don&rsquo;t Be a Compiler</h4>
 
   <p>The key to optimizing C programs with assembly language is, as always, writing good assembly language code, but with an added twist. Rule 1 when converting C code to assembly is this: <i>Don&rsquo;t think like a compiler.</i> That&rsquo;s more easily said than done, especially when the C code you&rsquo;re converting is readily available as a model and the assembly code that the compiler generates is available as well. Nevertheless, the principle of not thinking like a compiler is essential, and is, in one form or another, the basis for all that I&rsquo;ll discuss below.</p>
 
@@ -80,7 +73,7 @@
     </tr>
   </table>
 
-  <h3><a id="Heading4"></a>Don&rsquo;t Call Your Functions on Me, Baby</h3>
+  <h3 id="Heading4">Don&rsquo;t Call Your Functions on Me, Baby</h3>
 
   <p>In order to think differently from a compiler, you must understand both what compilers and C programmers tend to do and how that differs from what assembly language does well. In this pursuit, it can be useful to examine the code your compiler generates, either by viewing the code in a debugger or by having the compiler generate an assembly language output file. (The latter is done with /Fa or /Fc in Microsoft C/C<small>++</small> and -S in Borland C<small>++</small>.)</p>
 
@@ -105,10 +98,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

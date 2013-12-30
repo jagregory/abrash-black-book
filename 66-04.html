@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Quake's Hidden-Surface Removal</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Quake's Hidden-Surface Removal</title>
   <meta name="chapter" content="66" />
   <meta name="pages" content="1221-1222" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -47,7 +40,7 @@
 
   <p>The full 1/z calculation requires two multiplies and two adds, all of which should be floating-point to avoid range errors. That much floating-point math sounds expensive but really isn&rsquo;t, especially on a Pentium, where a plane&rsquo;s 1/z value at any point can be calculated in as little as six cycles in assembly language.</p>
 
-  <h4 align="left"><a id="Heading10"></a>Where That 1/Z Equation Comes From</h4>
+  <h4 align="left" id="Heading10">Where That 1/Z Equation Comes From</h4>
 
   <p>For those who are interested, here&rsquo;s a quick derivation of the 1/z equation. The plane equation for a plane is</p>
 
@@ -63,7 +56,7 @@
 
   <p>We&rsquo;ll see 1/z sorting in action in Chapter 67.</p>
 
-  <h4 align="left"><a id="Heading11"></a>Quake and Z-Sorting</h4>
+  <h4 align="left" id="Heading11">Quake and Z-Sorting</h4>
 
   <p>I mentioned earlier that Quake no longer uses BSP order as the sorting key; in fact, it uses 1/z as the key now. Elegant as the gradients are, calculating 1/z from them is clearly slower than just doing a compare on a BSP-ordered key, so why have we switched Quake to 1/z?</p>
 
@@ -71,7 +64,7 @@
 
   <p>Another advantage of 1/z sorting is that it solves the sorting issues I mentioned at the start involving moving models that are themselves small BSP trees. Sorting in world BSP order wouldn&rsquo;t work here, because these models are separate BSPs, and there&rsquo;s no easy way to work them into the world BSP&rsquo;s sequence order. We don&rsquo;t want to use z-buffering for these models because they&rsquo;re often large objects such as doors, and we don&rsquo;t want to lose the overdraw-reduction benefits that closed doors provide when drawn through the edge list. With sorted spans, the edges of moving BSP models are simply placed in the edge list (first clipping polygons so they don&rsquo;t cross any solid world surfaces, to avoid complications associated with interpenetration), along with all the world edges, and 1/z sorting takes care of the rest.</p>
 
-  <h3><a id="Heading12"></a>Decisions Deferred</h3>
+  <h3 id="Heading12">Decisions Deferred</h3>
 
   <p>There is, without a doubt, an awful lot of information in the preceding pages, and it may not all connect together yet in your mind. The code and accompanying explanation in the next chapter should help; if you want to peek ahead, the code is available on the CD-ROM as DDJZSORT.ZIP in the directory for Chapter 67. You may also want to take a look at Foley and van Dam&rsquo;s <i>Computer Graphics</i> or Rogers&rsquo; <i>Procedural Elements for Computer Graphics</i>.</p>
 
@@ -94,10 +87,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

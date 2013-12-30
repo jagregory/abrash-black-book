@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Looking Past Face Value</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Looking Past Face Value</title>
   <meta name="chapter" content="06" />
   <meta name="pages" content="129-133" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,14 +30,14 @@
 
   <p><br /></p>
 
-  <p>The two approaches are functionally interchangeable but <i>not</i> equivalent from a performance standpoint, and which is better depends on the particular context. If it&rsquo;s a one-shot memory access, it&rsquo;s best to let the processor perform the addition; it&rsquo;s generally faster at doing this than a separate <b>ADD</b> instruction would be. If it&rsquo;s a memory access within a loop, however, it&rsquo;s advantageous on the 8088 CPU to perform the addition outside the loop, if possible, reducing effective address calculation time inside the loop, as in the following:</p><!-- CODE SNIP //-->
+  <p>The two approaches are functionally interchangeable but <i>not</i> equivalent from a performance standpoint, and which is better depends on the particular context. If it&rsquo;s a one-shot memory access, it&rsquo;s best to let the processor perform the addition; it&rsquo;s generally faster at doing this than a separate <b>ADD</b> instruction would be. If it&rsquo;s a memory access within a loop, however, it&rsquo;s advantageous on the 8088 CPU to perform the addition outside the loop, if possible, reducing effective address calculation time inside the loop, as in the following:</p>
   <pre>
       add   bx,si
 LoopTop:
       mov   al,[bx]
       inc   bx
       loop  LoopTop
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>Here, <b>MOV AL,[BX]</b> is two cycles faster than <b>MOV AL,[BX+SI]</b>.</p>
 
@@ -52,7 +45,7 @@ LoopTop:
 
   <p>The 486 is an odd case, in which the use of an index register or the use of a base register that&rsquo;s the destination of the previous instruction may slow things down, so it is generally but not always better to perform the addition outside the loop on the 486. All memory addressing calculations are free on the Pentium, however. I&rsquo;ll discuss 486 performance issues in Chapters 12 and 13, and the Pentium in Chapters 19 through 21.</p>
 
-  <h3><a id="Heading4"></a>Math via Memory Addressing</h3>
+  <h3 id="Heading4">Math via Memory Addressing</h3>
 
   <p>You&rsquo;re probably not particularly wowed to hear that you can use addressing modes to perform memory addressing arithmetic that would otherwise have to be performed with separate arithmetic instructions. You may, however, be a tad more interested to hear that you can also use addressing modes to perform arithmetic that has nothing to do with memory addressing, and with a couple of advantages over arithmetic instructions, at that.</p>
 
@@ -62,75 +55,73 @@ LoopTop:
 
   <p>What does that give us? Two things that <b>ADD</b> doesn&rsquo;t provide: the ability to perform addition with either two or three operands, and the ability to store the result in <i>any</i> register, not just in one of the source operands.</p>
 
-  <p>Imagine that we want to add BX to DI, add two to the result, and store the result in AX. The obvious solution is this:</p><!-- CODE SNIP //-->
+  <p>Imagine that we want to add BX to DI, add two to the result, and store the result in AX. The obvious solution is this:</p>
   <pre>
 mov  ax,bx
 add  ax,di
 add  ax,2
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>(It would be more compact to increment AX twice than to add two to it, and would probably be faster on an 8088, but that&rsquo;s not what we&rsquo;re after at the moment.) An elegant alternative solution is simply:</p><!-- CODE SNIP //-->
+  <p>(It would be more compact to increment AX twice than to add two to it, and would probably be faster on an 8088, but that&rsquo;s not what we&rsquo;re after at the moment.) An elegant alternative solution is simply:</p>
   <pre>
 lea  ax,[bx+di+2]
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>Likewise, either of the following would copy SI plus two to DI</p><!-- CODE SNIP //-->
+  <p>Likewise, either of the following would copy SI plus two to DI</p>
   <pre>
 mov  di,si
 add  di,2
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>or:</p><!-- CODE SNIP //-->
+  <p>or:</p>
   <pre>
 lea  di,[si+2]
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>Mind you, the only components <b>LEA</b> can add are BX or BP, SI or DI, and a constant displacement, so it&rsquo;s not going to replace <b>ADD</b> most of the time. Also, <b>LEA</b> is considerably slower than <b>ADD</b> on an 8088, although it is just as fast as <b>ADD</b> on a 286 or 386 when fewer than three memory addressing components are used. <b>LEA</b> is 1 cycle slower than <b>ADD</b> on a 486 if the sum of two registers is used to point to memory, but no slower than <b>ADD</b> on a Pentium. On both a 486 and Pentium, <b>LEA</b> can also be slowed down by addressing interlocks.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/06-01.jpg',418,276 )"> --><img src="images/06-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/06-01.jpg',418,276)"> --><b>Figure 6.1</b></a>&nbsp;&nbsp;<i>Operation of ADD Reg,Reg vs. LEA Reg,{Addr}.</i></p>
+  <p><a id="Fig1"><img src="images/06-01.jpg" /><br />
+  <b>Figure 6.1</b></a>&nbsp;&nbsp;<i>Operation of ADD Reg,Reg vs. LEA Reg,{Addr}.</i></p>
 
-  <h4 align="left"><a id="Heading5"></a>The Wonders of LEA on the 386</h4>
+  <h4 align="left" id="Heading5">The Wonders of LEA on the 386</h4>
 
   <p><b>LEA</b> really comes into its own as a &ldquo;super-ADD&rdquo; instruction on the 386, 486, and Pentium, where it can take advantage of the enhanced memory addressing modes of those processors. (The 486 and Pentium offer the same modes as the 386, so I&rsquo;ll refer only to the 386 from now on.) The 386 can do two very interesting things: It can use <i>any</i> 32-bit register (EAX, EBX, and so on) as the memory addressing base register and/or the memory addressing index register, and it can multiply any 32-bit register used as an index by two, four, or eight in the process of calculating a memory address, as shown in Figure 6.2. Let&rsquo;s see what that&rsquo;s good for.</p>
 
   <p>Well, the obvious advantage is that any two 32-bit registers, or any 32-bit register and any constant, or any two 32-bit registers and any constant, can be added together, with the result stored in any register. This makes the 32-bit <b>LEA</b> much more generally useful than the standard 16-bit <b>LEA</b> in the role of an <b>ADD</b> with an independent destination.</p>
 
-  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/06-02.jpg',421,197 )"> --><img src="images/06-02.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/06-02.jpg',421,197)"> --><b>Figure 6.2</b></a>&nbsp;&nbsp;<i>Operation of the 32-bit LEA reg,[Addr].</i></p>
+  <p><a id="Fig2"><img src="images/06-02.jpg" /><br />
+  <b>Figure 6.2</b></a>&nbsp;&nbsp;<i>Operation of the 32-bit LEA reg,[Addr].</i></p>
 
   <p>But what else can <b>LEA</b> do on a 386, besides add?</p>
 
-  <p>It can multiply any register used as an index. <b>LEA</b> can multiply only by the power-of-two values 2, 4, or 8, but that&rsquo;s useful more often than you might imagine, especially when dealing with pointers into tables. Besides, multiplying by 2, 4, or 8 amounts to a left shift of 1, 2, or 3 bits, so we can now add up to two 32-bit registers and a constant, <i>and</i> shift (or multiply) one of the registers to some extent&mdash;all with a single instruction. For example,</p><!-- CODE SNIP //-->
+  <p>It can multiply any register used as an index. <b>LEA</b> can multiply only by the power-of-two values 2, 4, or 8, but that&rsquo;s useful more often than you might imagine, especially when dealing with pointers into tables. Besides, multiplying by 2, 4, or 8 amounts to a left shift of 1, 2, or 3 bits, so we can now add up to two 32-bit registers and a constant, <i>and</i> shift (or multiply) one of the registers to some extent&mdash;all with a single instruction. For example,</p>
   <pre>
 lea  edi,TableBase[ecx+edx*4]
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>replaces all this</p><!-- CODE SNIP //-->
+  <p>replaces all this</p>
   <pre>
 mov  edi,edx
 shl  edi,2
 add  edi,ecx
 add  edi,offset TableBase
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>when pointing to an entry in a doubly indexed table.</p>
 
-  <h3><a id="Heading6"></a>Multiplication with LEA Using Non-Powers of Two</h3>
+  <h3 id="Heading6">Multiplication with LEA Using Non-Powers of Two</h3>
 
-  <p>Are you impressed yet with all that <b>LEA</b> can do on the 386? Believe it or not, one more feature still awaits us. <b>LEA</b> can actually perform a fast multiply of a 32-bit register by some values <i>other</i> than powers of two. You see, the same 32-bit register can be both base and index on the 386, and can be scaled as the index while being used unchanged as the base. That means that you can, for example, multiply EBX by 5 with:</p><!-- CODE SNIP //-->
+  <p>Are you impressed yet with all that <b>LEA</b> can do on the 386? Believe it or not, one more feature still awaits us. <b>LEA</b> can actually perform a fast multiply of a 32-bit register by some values <i>other</i> than powers of two. You see, the same 32-bit register can be both base and index on the 386, and can be scaled as the index while being used unchanged as the base. That means that you can, for example, multiply EBX by 5 with:</p>
   <pre>
 lea ebx,[ebx+ebx*4]
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>Without <b>LEA</b> and scaling, multiplication of EBX by 5 would require either a relatively slow <b>MUL</b>, along with a set-up instruction or two, or three separate instructions along the lines of the following</p><!-- CODE SNIP //-->
+  <p>Without <b>LEA</b> and scaling, multiplication of EBX by 5 would require either a relatively slow <b>MUL</b>, along with a set-up instruction or two, or three separate instructions along the lines of the following</p>
   <pre>
 mov  edx,ebx
 shl  ebx,2
 add  ebx,edx
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>and would in either case require the destruction of the contents of another register.</p>
 
@@ -163,10 +154,6 @@ add  ebx,edx
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

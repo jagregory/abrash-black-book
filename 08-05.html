@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Speeding Up C with Assembly Language</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Speeding Up C with Assembly Language</title>
   <meta name="chapter" content="08" />
   <meta name="pages" content="163-166" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -39,7 +32,7 @@
 
   <p>Listings 8.5 and 8.6 together go the final step and change the rules in favor of assembly language. Listing 8.5 creates the same list of linked blocks as Listing 8.1. However, instead of storing an array of structures within each block, it stores <i>two</i> arrays in each block, one consisting of ID numbers and the other consisting of the corresponding values, as shown in Figure 8.3. No information is lost; the data is merely rearranged.</p>
 
-  <p><b>LISTING 8.5 L8-5.C</b></p><!-- CODE //-->
+  <p><b>LISTING 8.5 L8-5.C</b></p>
   <pre>
 /* Program to search an array spanning a linked list of variable-
    sized blocks, for all entries with a specified ID number,
@@ -59,11 +52,10 @@ void main(void);
 void exit(int);
 extern unsigned int FindIDAverage2(unsigned int,
                                    struct BlockHeader *);
-</pre><!-- END CODE //-->
+</pre>
 
-  <p><a id="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/08-03.jpg',413,261 )"> --><img src="images/08-03.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/08-03.jpg',413,261)"> --><b>Figure 8.3</b></a>&nbsp;&nbsp;<i>Linked array storage format (version 2).</i></p><!-- CODE //-->
+  <p><a id="Fig3"><img src="images/08-03.jpg" /><br />
+  <b>Figure 8.3</b></a>&nbsp;&nbsp;<i>Linked array storage format (version 2).</i></p>
   <pre>
 /* Structure that starts each variable-sized block */
 struct BlockHeader {
@@ -117,9 +109,9 @@ void main(void) {
          IDToFind, FindIDAverage2(IDToFind, BaseArrayBlockPointer));
    exit(0);
 }
-</pre><!-- END CODE //-->
+</pre>
 
-  <p><b>LISTING 8.6 L8-6.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 8.6 L8-6.ASM</b></p>
   <pre>
 ; Alternative optimized assembly language version of FindIDAverage
 ; requires data organized as two arrays within each block rather
@@ -188,7 +180,7 @@ Done:   pop     si              ;Restore C register variables
         ret
 _FindIDAverage2 ENDP
         end
-</pre><!-- END CODE //-->
+</pre>
 
   <p>The whole point of this rearrangement is to allow us to use <b>REP SCASW</b> to search through each block, and that&rsquo;s exactly what <b>FindIDAverage2</b> in Listing 8.6 does. The result: Listing 8.6 calculates the average about <i>three times</i> as fast as the original C implementation and more than twice as fast as Listing 8.4, heavily optimized as the latter code is.</p>
 
@@ -211,10 +203,6 @@ _FindIDAverage2 ENDP
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

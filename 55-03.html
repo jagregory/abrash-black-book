@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Color Modeling in 256-Color Mode</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Color Modeling in 256-Color Mode</title>
   <meta name="chapter" content="55" />
   <meta name="pages" content="1038-1040" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p><b>LISTING 55.3 L55-3.C</b></p><!-- CODE //-->
+  <p><b>LISTING 55.3 L55-3.C</b></p>
   <pre>
  /* Converts a model color (a color in the RGB color cube, in the current
     color model) to a color index for mode X. Pure primary colors are
@@ -62,7 +55,7 @@
           ((Color-&gt;Blue &amp; 0xC0) &gt;&gt; 6));
  }
 
-</pre><!-- END CODE //-->
+</pre>
 
   <p>In DEMO1, three-quarters of the palette is set up with 64 intensity levels of each of the three pure primary colors (red, green, and blue), and then most drawing is done with only pure primary colors. The resulting rendering quality is very good because there are so many levels of each primary.</p>
 
@@ -74,7 +67,7 @@
 
   <p>The sad truth is that the VGA&rsquo;s 256-color palette is an inadequate resource for general RGB shading. The good news is that clever workarounds can make VGA graphics look nearly as good as 24-bpp graphics; but the burden falls on you, the programmer, to design your applications and color mapping to compensate for the VGA&rsquo;s limitations. To experiment with a different 256-color model in X-Sharp, just change <b>InitializePalette()</b> to set up the desired palette and <b>ModelColorToColorIndex()</b> to map 24-bit RGB triplets into the palette you&rsquo;ve set up. It&rsquo;s that simple, and the results can be striking indeed.</p>
 
-  <h4 align="left"><a id="Heading4"></a>A Bonus from the BitMan</h4>
+  <h4 align="left" id="Heading4">A Bonus from the BitMan</h4>
 
   <p>Finally, a note on fast VGA text, which came in from a correspondent who asked to be referred to simply as the BitMan. The BitMan passed along a nifty application of the VGA&rsquo;s under-appreciated write mode 3 that is, under the proper circumstances, the fastest possible way to draw text in any 16-color VGA mode.</p>
 
@@ -82,9 +75,8 @@
 
   <p>Solid text is useful for drawing menus, text areas, and the like; basically, it can be used whenever you want to display text on a solid-color background. The obvious way to implement solid text is to fill the rectangle representing the background box, then draw transparent text on top of the background box. However, there are two problems with doing solid text this way. First, there&rsquo;s some flicker, because for a little while the box is there but the text hasn&rsquo;t yet arrived. More important is that the background-followed-by-foreground approach accesses display memory three times for each byte of font data: once to draw the background box, once to read display memory to load the latches, and once to actually draw the font pattern. Display memory is incredibly slow, so we&rsquo;d like to reduce the number of accesses as much as possible. With the BitMan&rsquo;s approach, we can reduce the number of accesses to just one per font byte, and eliminate flicker, too.</p>
 
-  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/55-02.jpg',408,163 )"> --><img src="images/55-02.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/55-02.jpg',408,163)"> --><b>Figure 55.2</b></a>&nbsp;&nbsp;<i>Drawing solid text.</i></p>
+  <p><a id="Fig2"><img src="images/55-02.jpg" /><br />
+  <b>Figure 55.2</b></a>&nbsp;&nbsp;<i>Drawing solid text.</i></p>
 
   <p>The keys to fast solid text are the latches and write mode 3. The latches, as you may recall from earlier discussions in this book, are four internal VGA registers that hold the last bytes read from the VGA&rsquo;s four planes; every read from VGA memory loads the latches with the values stored at that display memory address across the four planes. Whenever a write is performed to VGA memory, the latches can provide some, none, or all of the bits written to memory, depending on the bit mask, which selects between the latched data and the drawing data on a bit-by-bit basis. The latches solve half our problem; we can fill the latches with the background color, then use them to draw the background box. The trick now is drawing the text pixels in the foreground color at the same time.</p>
 
@@ -105,10 +97,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

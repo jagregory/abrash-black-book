@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Compiling BSP Trees</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Compiling BSP Trees</title>
   <meta name="chapter" content="60" />
   <meta name="pages" content="1115-1119" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 60<br />
+  <h2 id="Heading1">Chapter 60<br />
   Compiling BSP Trees</h2>
 
-  <h3><a id="Heading2"></a>Taking BSP Trees from Concept to Reality</h3>
+  <h3 id="Heading2">Taking BSP Trees from Concept to Reality</h3>
 
   <p>As long-time readers of my columns know, I tend to move my family around the country quite a bit. Change doesn&rsquo;t come out of the blue, so there&rsquo;s some interesting history to every move, but the roots of the latest move go back even farther than usual. To wit:</p>
 
@@ -62,7 +55,7 @@
 
   <p>Onward to compiling BSP trees.</p>
 
-  <h3><a id="Heading3"></a>Compiling BSP Trees</h3>
+  <h3 id="Heading3">Compiling BSP Trees</h3>
 
   <p>As you&rsquo;ll recall from the previous chapter, a BSP tree is nothing more than a series of binary subdivisions that partion space into ever-smaller pieces. That&rsquo;s a simple data structure, and a BSP compiler is a correspondingly simple tool. First, it groups all the surfaces (lines in 2-D, or polygons in 3-D) together into a single subspace that encompasses the entire world of the database. Then, it chooses one of the surfaces as the root node, and uses its line or plane to divide the remaining surfaces into two subspaces, splitting surfaces into two parts if they cross the line or plane of the root. Each of the two resultant subspaces is then processed in the same fashion, and so on, recursively, until the point is reached where all surfaces have been assigned to nodes, and each leaf surface subdivides a subspace that is empty except for that surface. Put another way, the root node carves space into two parts, and the root&rsquo;s children carve each of those parts into two more parts, and so on, with each surface carving ever smaller subspaces, until all surfaces have been used. (Actually, there are many other lines or planes that a BSP tree can use to carve up space, but this is the approach we&rsquo;ll use in the current discussion.)</p>
 
@@ -83,10 +76,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X Marks the Latch</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X Marks the Latch</title>
   <meta name="chapter" content="48" />
   <meta name="pages" content="908-911" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -41,13 +34,13 @@
 
   <p>Now that we have a fast way to copy images around in display memory, we can draw icons and other images as much as four times faster than in mode 13H, depending on the speed of the VGA&rsquo;s display memory. (In case you&rsquo;re worried about the nibble-alignment limitation on fast copies, don&rsquo;t be; I&rsquo;ll address that fully in due time, but the secret is to store all four possible rotations in off-screen memory, then select the correct one for each copy.) However, before our fast display memory-to-display memory copy routine can do us any good, we must have a way to get pixel patterns from system memory into display memory, so that they can then be copied with the fast copy routine.</p>
 
-  <h4 align="left"><a id="Heading5"></a>Copying to Display Memory</h4>
+  <h4 align="left" id="Heading5">Copying to Display Memory</h4>
 
   <p>The final piece of the puzzle is the system memory to display-memory-copy-routine shown in Listing 48.4. This routine assumes that pixels are stored in system memory in exactly the order in which they will ultimately appear on the screen; that is, in the same linear order that mode 13H uses. It would be more efficient to store all the pixels for one plane first, then all the pixels for the next plane, and so on for all four planes, because many <b>OUT</b>s could be avoided, but that would make images rather hard to create. And, while it is true that the speed of drawing images is, in general, often a critical performance factor, the speed of copying images from system memory to display memory is not particularly critical in Mode X. Important images can be stored in off-screen memory and copied to the screen via the latches much faster than even the speediest system memory-to-display memory copy routine could manage.</p>
 
   <p>I&rsquo;m not going to present a routine to perform Mode X copies from display memory to system memory, but such a routine would be a straightforward inverse of Listing 48.4.</p>
 
-  <p><b>LISTING 48.4 L48-4.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 48.4 L48-4.ASM</b></p>
   <pre>
 ; Mode X (320x240, 256 colors) system memory to display memory copy
 ; routine. Uses approach of changing the plane for each pixel copied;
@@ -167,9 +160,9 @@ CopyDone:
         ret
 _CopySystemToScreenX endp
         end
-</pre><!-- END CODE //-->
+</pre>
 
-  <h3><a id="Heading6"></a>Who Was that Masked Image Copier?</h3>
+  <h3 id="Heading6">Who Was that Masked Image Copier?</h3>
 
   <p>At this point, it&rsquo;s getting to be time for us to take all the Mode X tools we&rsquo;ve developed, together with one more tool&mdash;masked image copying&mdash;and the remaining unexplored feature of Mode X, page flipping, and build an animation application. I hope that when we&rsquo;re done, you&rsquo;ll agree with me that Mode X is <i>the</i> way to animate on the PC.</p>
 
@@ -194,10 +187,6 @@ _CopySystemToScreenX endp
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

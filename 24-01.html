@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Parallel Processing</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Parallel Processing</title>
   <meta name="chapter" content="24" />
   <meta name="pages" content="449-453" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,14 +30,14 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 24<br />
+  <h2 id="Heading1">Chapter 24<br />
   Parallel Processing with the VGA</h2>
 
-  <h3><a id="Heading2"></a>Taking on Graphics Memory Four Bytes at a Time</h3>
+  <h3 id="Heading2">Taking on Graphics Memory Four Bytes at a Time</h3>
 
   <p>This heading refers to the ability of the VGA chip to manipulate up to four bytes of display memory at once. In particular, the VGA provides four ALUs (Arithmetic Logic Units) to assist the CPU during display memory writes, and this hardware is a tremendous resource in the task of manipulating the VGA&rsquo;s sizable frame buffer. The ALUs are actually only one part of the surprisingly complex data flow architecture of the VGA, but since they&rsquo;re involved in almost all memory access operations, they&rsquo;re a good place to begin.</p>
 
-  <h3><a id="Heading3"></a>VGA Programming: ALUs and Latches</h3>
+  <h3 id="Heading3">VGA Programming: ALUs and Latches</h3>
 
   <p>I&rsquo;m going to begin our detailed tour of the VGA at the heart of the flow of data through the VGA: the four ALUs built into the VGA&rsquo;s Graphics Controller (GC) circuitry. The ALUs (one for each display memory plane) are capable of ORing, ANDing, and XORing CPU data and display memory data together, as well as masking off some or all of the bits in the data from affecting the final result. All the ALUs perform the same logical operation at any given time, but each ALU operates on a different display memory byte.</p>
 
@@ -54,9 +47,8 @@
 
   <p>Each ALU logically combines the byte written by the CPU and the byte stored in the matching latch, according to the settings of bits 3 and 4 of the Data Rotate register (and the Bit Mask register as well, which I&rsquo;ll cover next time), and then writes the result to display memory. It is most important to understand that neither ALU operand comes directly from display memory. The temptation is to think of the ALUs as combining CPU data and the contents of the display memory address being written to, but they actually combine CPU data and the contents of the last display memory location read, which need not be the location being modified. The most common application of the ALUs is indeed to modify a given display memory location, but doing so requires a read from that location to load the latches before the write that modifies it. Omission of the read results in a write operation that logically combines CPU data n with whatever data happens to be in the latches from the last read, which is normally undesirable.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/24-01.jpg',411,237 )"> --><img src="images/24-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/24-01.jpg',411,237)"> --><b>Figure 24.1</b></a>&nbsp;&nbsp;<i>VGA ALU data flow.</i></p>
+  <p><a id="Fig1"><img src="images/24-01.jpg" /><br />
+  <b>Figure 24.1</b></a>&nbsp;&nbsp;<i>VGA ALU data flow.</i></p>
 
   <p>Occasionally, however, the independence of the latches from the display memory location being written to can be used to great advantage. The latches can be used to perform 4-byte-at-a-time (one byte from each plane) block copying; in this application, the latches are loaded with a read from the source area and written unmodified to the destination area. The latches can be written unmodified in one of two ways: By selecting write mode 1 (for an example of this, see the last chapter), or by setting the Bit Mask register to 0 so only the latched bits are written.</p>
 
@@ -83,10 +75,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

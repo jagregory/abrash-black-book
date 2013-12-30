@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Higher 256-Color Resolution on the VGA</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Higher 256-Color Resolution on the VGA</title>
   <meta name="chapter" content="31" />
   <meta name="pages" content="591-593" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -43,9 +36,8 @@
 
   <p>Let&rsquo;s look at this another way. Ideally, we&rsquo;d like one long bitmap, with each pixel at the address that&rsquo;s just after the address of the pixel to the left. Well, that&rsquo;s true in this case too, <i>if</i> you consider the number of the plane that the pixel is in to be part of the pixel&rsquo;s address. View the pixel numbers on the screen as increasing from left to right and from the end of one scan line to the start of the next. Then the pixel number, n, of the pixel at display memory address <i>address</i> in plane <i>plane</i> is:</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/31-01.jpg',405,331 )"> --><img src="images/31-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/31-01.jpg',405,331)"> --><b>Figure 31.1</b></a>&nbsp;&nbsp;<i>Bitmap organization in 320x400 256-color mode in 320x400 256-color mode.</i></p>
+  <p><a id="Fig1"><img src="images/31-01.jpg" /><br />
+  <b>Figure 31.1</b></a>&nbsp;&nbsp;<i>Bitmap organization in 320x400 256-color mode in 320x400 256-color mode.</i></p>
 
   <p><i>n</i> = (<i>address</i> * 4) + <i>plane</i></p>
 
@@ -63,7 +55,7 @@
 
   <p>Our next task is to convert standard mode 13H into 320x400 mode. That&rsquo;s accomplished by undoing some of the mode bits that are set up especially for mode 13H, so that from a programming perspective the VGA reverts to a straightforward planar model of memory. That means taking the VGA out of chain 4 mode and doubleword mode, turning off the double display of each scan line, making sure chain mode, odd/even mode, and word mode are turned off, and selecting byte mode for video data display. All that&rsquo;s done in the <b>Set320x400Mode</b> subroutine in Listing 31.1, which we&rsquo;ll discuss next.</p>
 
-  <h4 align="left"><a id="Heading6"></a>Reading and Writing Pixels</h4>
+  <h4 align="left" id="Heading6">Reading and Writing Pixels</h4>
 
   <p>The basic graphics functions in any mode are functions to read and write single pixels. Any more complex function can be built on these primitives, although that&rsquo;s rarely the speediest solution. What&rsquo;s more, once you understand the operation of the read and write pixel functions, you&rsquo;ve got all the knowledge you need to create functions that perform more complex graphics functions. Consequently, we&rsquo;ll start our exploration of 320x400 mode with pixel-at-a-time line drawing.</p>
 
@@ -86,10 +78,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

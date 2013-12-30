@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Who Was that Masked Image?</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Who Was that Masked Image?</title>
   <meta name="chapter" content="46" />
   <meta name="pages" content="859-862" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 46<br />
+  <h2 id="Heading1">Chapter 46<br />
   Who Was that Masked Image?</h2>
 
-  <h3><a id="Heading2"></a>Optimizing Dirty-Rectangle Animation</h3>
+  <h3 id="Heading2">Optimizing Dirty-Rectangle Animation</h3>
 
   <p>Programming is, by and large, a linear process. One statement or instruction follows another, in predictable sequences, with tiny building blocks strung together to make thinking, which is, of course, A Good Thing. Still, it&rsquo;s important to keep in mind that there&rsquo;s a large chunk of the human mind that doesn&rsquo;t work in a linear fashion.</p>
 
@@ -52,7 +45,7 @@
 
   <p>We&rsquo;re strange thinking machines, but we&rsquo;re the best ones yet invented, and it&rsquo;s worth learning how to tap our full potential. And with that, it&rsquo;s back to dirty-rectangle animation.</p>
 
-  <h4 align="left"><a id="Heading3"></a>Dirty-Rectangle Animation, Continued</h4>
+  <h4 align="left" id="Heading3">Dirty-Rectangle Animation, Continued</h4>
 
   <p>In the last chapter, Introduced the idea of dirty-rectangle animation. This technique is an alternative to page flipping that&rsquo;s capable of producing animation of very high visual quality, without any help at all from video hardware, and without the need for any extra, nondisplayed video memory. This makes dirty-rectangle animation more widely usable than page flipping, because many adapters don&rsquo;t support page flipping. Dirty-rectangle animation also tends to be simpler to implement than page flipping, because there&rsquo;s only one bitmap to keep track of. A final advantage of dirty-rectangle animation is that it&rsquo;s potentially somewhat faster than page flipping, because display-memory accesses can theoretically be reduced to exactly one access for each pixel that changes from one frame to the next.</p>
 
@@ -77,10 +70,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

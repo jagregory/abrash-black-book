@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Wu'ed in Haste; Fried, Stewed at Leisure</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Wu'ed in Haste; Fried, Stewed at Leisure</title>
   <meta name="chapter" content="42" />
   <meta name="pages" content="787-792" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p><b>LISTING 42.6 L42-6.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 42.6 L42-6.ASM</b></p>
   <pre>
 ; C near-callable function to draw an antialiased line from
 ; (X0,Y0) to (X1,Y1), in mode 13h, the VGA's standard 320x200 256-color
@@ -308,9 +301,9 @@ Done:                           ;we're done with this line
         ret                     ;done
 _DrawWuLine endp
         end
-</pre><!-- END CODE //-->
+</pre>
 
-  <h4 align="left"><a id="Heading6"></a>Notes on Wu Antialiasing</h4>
+  <h4 align="left" id="Heading6">Notes on Wu Antialiasing</h4>
 
   <p>Wu antialiasing can be applied to any curve for which it&rsquo;s possible to calculate at each step the positions and intensities of two bracketing pixels, although the implementation will generally be nowhere near as efficient as it is for lines. However, Wu&rsquo;s article in <i>Computer Graphics</i> does describe an efficient algorithm for drawing antialiased circles. Wu also describes a technique for antialiasing solids, such as filled circles and polygons. Wu&rsquo;s approach biases the edges of filled objects outward. Although this is no good for adjacent polygons of the sort used in rendering, it&rsquo;s certainly possible to design a more accurate polygon-antialiasing approach around Wu&rsquo;s basic weighting technique. The results would not be quite so good as more sophisticated antialiasing techniques, but they would be much faster.</p>
 
@@ -347,10 +340,6 @@ _DrawWuLine endp
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

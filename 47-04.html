@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X: 256-color VGA Magic</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X: 256-color VGA Magic</title>
   <meta name="chapter" content="47" />
   <meta name="pages" content="885-887" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,11 +30,11 @@
 
   <p><br /></p>
 
-  <h3><a id="Heading5"></a>Designing from a Mode X Perspective</h3>
+  <h3 id="Heading5">Designing from a Mode X Perspective</h3>
 
   <p>Listing 47.4 shows Mode X rectangle fill code. The plane is selected for each pixel in turn, with drawing cycling from plane 0 to plane 3, then wrapping back to plane 0. This is the sort of code that stems from a write-pixel line of thinking; it reflects not a whit of the unique perspective that Mode X demands, and although it looks reasonably efficient, it is in fact some of the slowest graphics code you will ever see. I&rsquo;ve provided Listing 47.4 partly for illustrative purposes, but mostly so we&rsquo;ll have a point of reference for the substantial speed-up that&rsquo;s possible with code that&rsquo;s designed from a Mode X perspective.</p>
 
-  <p><b>LISTING 47.4 L47-4.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 47.4 L47-4.ASM</b></p>
   <pre>
 ; Mode X (320x240, 256 colors) rectangle fill routine. Works on all
 ; VGAs. Uses slow approach that selects the plane explicitly for each
@@ -133,7 +126,7 @@ FillDone:
         ret
 _FillRectangleX endp
         end
-</pre><!-- END CODE //-->
+</pre>
 
   <p>The two major weaknesses of Listing 47.4 both result from selecting the plane on a pixel by pixel basis. First, endless <b>OUT</b>s (which are particularly slow on 386s, 486s, and Pentiums, much slower than accesses to display memory) must be performed, and, second, <b>REP STOS</b> can&rsquo;t be used. Listing 47.5 overcomes both these problems by tailoring the fill technique to the organization of display memory. Each plane is filled in its entirety in one burst before the next plane is processed, so only five <b>OUT</b>s are required in all, and <b>REP STOS</b> can indeed be used; I&rsquo;ve used <b>REP STOSB</b> in Listings 47.5 and 47.6. <b>REP STOSW</b> could be used and would improve performance on most VGAs; however, <b>REP STOSW</b> requires extra overhead to set up, so it can be slower for small rectangles, especially on 8-bit VGAs. Note that doing an entire plane at a time can produce a &ldquo;fading-in&rdquo; effect for large images, because all columns for one plane are drawn before any columns for the next. If this is a problem, the four planes can be cycled through once for each scan line, rather than once for the entire rectangle.</p>
 
@@ -156,10 +149,6 @@ _FillRectangleX endp
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Heinlein's Crystal Ball, Spock's Brain, and the 9-Cycle Dare</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Heinlein's Crystal Ball, Spock's Brain, and the 9-Cycle Dare</title>
   <meta name="chapter" content="58" />
   <meta name="pages" content="1091-1093" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p><b>LISTING 58.4 L58-4.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 58.4 L58-4.ASM</b></p>
   <pre>
 ; Inner loop to draw a single texture-mapped vertical column,
 ; rather than a horizontal scanline. Maxed-out 32-bit version.
@@ -78,13 +71,13 @@ SCANOFFSET = SCANOFFSET + SCANWIDTH
 
      ENDM
 
-</pre><!-- END CODE //-->
+</pre>
 
   <p>And there you have it: A five to 10-times speedup of a decent assembly language texture mapper. All it took was some help from my friends, a good, stiff jolt of right-brain thinking, and some solid left-brain polishing&mdash;plus the knowledge that such a speedup was possible. Treat every optimization task as if John Miles has just written to inform you that he&rsquo;s made it faster than your wildest dreams, and you&rsquo;ll be amazed at what you can do!</p>
 
-  <h3><a id="Heading8"></a>Texture Mapping Notes</h3>
+  <h3 id="Heading8">Texture Mapping Notes</h3>
 
-  <p>Listing 58.3 contains no 486 pipeline stalls; it has Pentium stalls, but not much can be done for them because of the size prefix on <b>ADD EDX,ECX</b>, which takes 1 cycle to go through the U-pipe, and shuts down the V-pipe for that cycle. Listing 58.4, on the other hand, has been rearranged to eliminate all Pentium stalls save one. When the Y coordinate fractional part carries and ESI advances, the code executes as follows:</p><!-- CODE SNIP //-->
+  <p>Listing 58.3 contains no 486 pipeline stalls; it has Pentium stalls, but not much can be done for them because of the size prefix on <b>ADD EDX,ECX</b>, which takes 1 cycle to go through the U-pipe, and shuts down the V-pipe for that cycle. Listing 58.4, on the other hand, has been rearranged to eliminate all Pentium stalls save one. When the Y coordinate fractional part carries and ESI advances, the code executes as follows:</p>
   <pre>
 
 ADD ESI,ECX     ;cycle 1 U-pipe
@@ -93,7 +86,7 @@ AND DH,NOT 80H  ;cycle 1 V-pipe
 MOV BL,[ESI]    ;cycle 3 U-pipe
 ADD EDX,EBP     ;cycle 3 V-pipe
 
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>However, I don&rsquo;t see any way to eliminate this last AGI, which happens about half the time; even with it, the Pentium execution time for Listing 58.4 is 5.5 cycles. That&rsquo;s 61 nanoseconds&mdash;a highly respectable 16 million texture-mapped pixels per second&mdash;on a 90 MHz Pentium.</p>
 
@@ -120,10 +113,6 @@ ADD EDX,EBP     ;cycle 3 V-pipe
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

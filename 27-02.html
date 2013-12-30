@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Yet Another VGA Write Mode</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Yet Another VGA Write Mode</title>
   <meta name="chapter" content="27" />
   <meta name="pages" content="504-508" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h4 align="left"><a id="Heading5"></a>Copying Chunky Bitmaps to VGA Memory Using Write Mode 2</h4>
+  <h4 align="left" id="Heading5">Copying Chunky Bitmaps to VGA Memory Using Write Mode 2</h4>
 
   <p>Let&rsquo;s take a look at two examples of write mode 2 in action. Listing 27.1 presents a program that uses write mode 2 to copy a graphics image in chunky format to the VGA. In chunky format adjacent bits in a single byte make up each pixel: mode 4 of the CGA, EGA, and VGA is a 2-bit-per-pixel chunky mode, and mode 13H of the VGA is an 8-bit-per-pixel chunky mode. Chunky format is convenient, since all the information about each pixel is contained in a single byte; consequently chunky format is often used to store bitmaps in system memory.</p>
 
@@ -47,7 +40,7 @@
 
   <p>This process is then repeated for the rightmost chunky pixel, if necessary, and repeated again for as many pixels as there are in the image.</p>
 
-  <p><b>LISTING 27.1 L27-1.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 27.1 L27-1.ASM</b></p>
   <pre>
 ; Program to illustrate one use of write mode 2 of the VGA and EGA by
 ; animating the image of an &ldquo;A&rdquo; drawn by copying it from a chunky
@@ -266,7 +259,7 @@ CheckMoreScanLines:
 DrawFromChunkyBitmap    endp
 Code    ends
         end     Start
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -285,10 +278,6 @@ Code    ends
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

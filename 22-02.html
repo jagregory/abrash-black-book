@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Zenning and the Flexible Mind</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Zenning and the Flexible Mind</title>
   <meta name="chapter" content="22" />
   <meta name="pages" content="417-418" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p><b>LISTING 22.2 L22-2.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 22.2 L22-2.ASM</b></p>
   <pre>
 ClearS        proc near
       push    bp                        ;save caller&rsquo;s BP
@@ -60,7 +53,7 @@ Bye:
      pop       bp                       ;restore caller&rsquo;s BP
      ret       EndMrk-RetAddr-2         ;return, clearing the parms from the stack
 ClearS         endp
-</pre><!-- END CODE //-->
+</pre>
 
   <p>(The <b>OnStack</b> structure definition doesn&rsquo;t change in any of our examples, so I&rsquo;m not going clutter up this chapter by reproducing it for each new version of <b>ClearS</b>.)</p>
 
@@ -68,7 +61,7 @@ ClearS         endp
 
   <p>Well, <b>LES</b> would serve better than two <b>MOV</b> instructions for loading ES and DI as shown in Listing 22.3.</p>
 
-  <p><b>LISTING 22.3 L22-3.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 22.3 L22-3.ASM</b></p>
   <pre>
 ClearS         proc near
       push     bp                       ;save caller&rsquo;s BP
@@ -91,13 +84,13 @@ Bye:
       pop      bp                       ;restore caller&rsquo;s BP
       ret      EndMrk-RetAddr-2         ;return, clearing the parms from the stack
 ClearS         endp
-</pre><!-- END CODE //-->
+</pre>
 
   <p>That&rsquo;s good for another three bytes. We&rsquo;re down to 43 bytes, and counting.</p>
 
   <p>We can save 3 more bytes by clearing the low and high bytes of AX and BX, respectively, by using <b>SUB <i>reg8,reg8</i></b> rather than ANDing 16-bit values as shown in Listing 22.4.</p>
 
-  <p><b>LISTING 22.4 L22-4.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 22.4 L22-4.ASM</b></p>
   <pre>
 ClearS         proc near
       push     bp                       ;save caller&rsquo;s BP
@@ -120,7 +113,7 @@ Bye:
       pop      bp                       ;restore caller&rsquo;s BP
       ret      EndMrk-RetAddr-2         ;return, clearing the parms from the stack
 ClearS         endp
-</pre><!-- END CODE //-->
+</pre>
 
   <p>Now we&rsquo;re down to 40 bytes&mdash;more than 20 percent smaller than the original code. That&rsquo;s pretty much it for simple instruction optimizations. Now let&rsquo;s look for instruction optimizations.</p>
 
@@ -145,10 +138,6 @@ ClearS         endp
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

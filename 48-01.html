@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X Marks the Latch</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X Marks the Latch</title>
   <meta name="chapter" content="48" />
   <meta name="pages" content="895-900" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,22 +30,20 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 48<br />
+  <h2 id="Heading1">Chapter 48<br />
   Mode X Marks the Latch</h2>
 
-  <h3><a id="Heading2"></a>The Internals of Animation&rsquo;s Best Video Display Mode</h3>
+  <h3 id="Heading2">The Internals of Animation&rsquo;s Best Video Display Mode</h3>
 
   <p>In the previous chapter, I introduced you to what I call Mode X, an undocumented 320x240 256-color mode of the VGA. Mode X is distinguished from mode 13H, the documented 320x200 256-color VGA mode, in that it supports page flipping, makes off-screen memory available, has square pixels, and, above all, lets you use the VGA&rsquo;s hardware to increase performance by as much as four times. (Of course, those four times come at the cost of more complex and demanding programming, to be sure&mdash;but end users care about results, not how hard the code was to write, and Mode X delivers results in a big way.) In the previous chapter we saw how the VGA&rsquo;s plane-oriented hardware can be used to speed solid fills. That&rsquo;s a nice technique, but now we&rsquo;re going to move up to the big guns&mdash;the VGA latches.</p>
 
   <p>The VGA has four latches, one for each plane of display memory. Each latch stores exactly one byte, and that byte is always the last byte read from the corresponding plane of display memory, as shown in Figure 48.1. Furthermore, whenever a given address in display memory is read, all four planes&rsquo; bytes at that address are read and stored in the corresponding latches, regardless of which plane supplied the byte returned to the CPU (as determined by the Read Map register). As with so much else about the VGA, the above will make little sense to VGA neophytes, but the important point is this: By reading one display memory byte, 4 bytes&mdash;one from each plane&mdash;can be loaded into the latches at once. Any or all of those 4 bytes can then be written anywhere in display memory with a single byte-sized write, as shown in Figure 48.2.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/48-01.jpg',411,234 )"> --><img src="images/48-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/48-01.jpg',411,234)"> --><b>Figure 48.1</b></a>&nbsp;&nbsp;<i>How the VGA latches are loaded.</i></p>
+  <p><a id="Fig1"><img src="images/48-01.jpg" /><br />
+  <b>Figure 48.1</b></a>&nbsp;&nbsp;<i>How the VGA latches are loaded.</i></p>
 
-  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/48-02.jpg',408,245 )"> --><img src="images/48-02.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/48-02.jpg',408,245)"> --><b>Figure 48.2</b></a>&nbsp;&nbsp;<i>Writing 4 bytes to display memory in a single operation.</i></p>
+  <p><a id="Fig2"><img src="images/48-02.jpg" /><br />
+  <b>Figure 48.2</b></a>&nbsp;&nbsp;<i>Writing 4 bytes to display memory in a single operation.</i></p>
 
   <p>The upshot is that the latches make it possible to copy data around from one part of display memory to another, 32 bits (four pixels) at a time&mdash;four times as fast as normal. (Recall from the previous chapter that in Mode X, pixels are stored one per byte, with four pixels in a row stored in successive planes at the same address, one pixel per plane.) However, any one latch can only be loaded from and written to the corresponding plane, so an individual latch can only work with every fourth pixel on the screen; the latch for plane 0 can work with pixels 0, 4, 8..., the latch for plane 1 with pixels 1, 5, 9..., and so on.</p>
 
@@ -60,7 +51,7 @@
 
   <p>Fast Mode X fills using patterns that are four pixels in width can be performed by drawing the pattern once to the four pixels at any one address in display memory, reading that address to load the pattern into the latches, setting the Bit Mask register to 0 to specify that all bits drawn to display memory should come from the latches, and then performing the fill pretty much as we did in the previous chapter&mdash;except that each line of the pattern must be loaded into the latches before the corresponding scan line on the screen is filled. Listings 48.1 and 48.2 together demonstrate a variety of fast Mode X four-by-four pattern fills. (The mode set function called by Listing 48.1 is from the previous chapter&rsquo;s listings.)</p>
 
-  <p><b>LISTING 48.1 L48-1.C</b></p><!-- CODE //-->
+  <p><b>LISTING 48.1 L48-1.C</b></p>
   <pre>
 /* Program to demonstrate Mode X (320x240, 256 colors) patterned
    rectangle fills by filling the screen with adjacent 80x60
@@ -106,7 +97,7 @@ void main() {
    regset.x.ax = 0x0003;   /* switch back to text mode and done */
    int86(0x10, &amp;regset, &amp;regset);
 }
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -125,10 +116,6 @@ void main() {
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

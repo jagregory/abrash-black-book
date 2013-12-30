@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Video Est Omnis Divisa</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Video Est Omnis Divisa</title>
   <meta name="chapter" content="30" />
   <meta name="pages" content="572-574" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h4 align="left"><a id="Heading5"></a>VGA and EGA Split-Screen Operation Don&rsquo;t Mix</h4>
+  <h4 align="left" id="Heading5">VGA and EGA Split-Screen Operation Don&rsquo;t Mix</h4>
 
   <p>You must set the <b>IS_VGA</b> equate at the start of Listing 30.1 correctly for the adapter the code will run on in order for the program to perform properly. This equate determines how the upper bits of the split screen start scan line are set by <b>SetSplitScreenRow</b>. If <b>IS_VGA</b> is 0 (specifying an EGA target), then bit 8 of the split screen start scan line is set by programming the entire Overflow register to 1FH; this is hard-wired for the 350-scan-line modes of the EGA. If <b>IS_VGA</b> is 1 (specifying a VGA target), then bits 8 and 9 of the split screen start scan line are set by reading the registers they reside in, changing only the split-screen-related bits, and writing the modified settings back to their respective registers.</p>
 
@@ -45,7 +38,7 @@
 
   <p>By the way, Listing 30.1 operates in mode 10H because that&rsquo;s the highest-resolution mode the VGA and EGA share. That&rsquo;s not the only mode the split screen works in, however. In fact, it works in <i>all</i> modes, as we&rsquo;ll see later.</p>
 
-  <h3><a id="Heading6"></a>Setting the Split-Screen-Related Registers</h3>
+  <h3 id="Heading6">Setting the Split-Screen-Related Registers</h3>
 
   <p>Setting the split-screen-related registers is not as simple a matter as merely outputting the right values to the right registers; timing is also important. The split screen start scan line value is checked against the number of each scan line as that scan line is displayed, which means that the split screen start scan line potentially takes effect the moment it is set. In other words, if the screen is displaying scan line 15 and you set the split screen start to 16, that change will be picked up immediately and the split screen will start after the next scan line. This is markedly different from changes to the start address, which take effect only at the start of the next frame.</p>
 
@@ -63,7 +56,7 @@
 
   <p>One interesting effect of setting the split screen registers at the start of vertical sync is that it has the effect of synchronizing the program to the display adapter&rsquo;s frame rate. No matter how fast the computer running Listing 30.1 may be, the split screen will move at a maximum rate of once per frame. This is handy for regulating execution speed over a wide variety of hardware performance ranges; however, be aware that the VGA supports 70 Hz frame rates in all non-480-scan-line modes, while the VGA in 480-scan-line-modes and the EGA in all color modes support 60 Hz frame rates.</p>
 
-  <h3><a id="Heading7"></a>The Problem with the EGA Split Screen</h3>
+  <h3 id="Heading7">The Problem with the EGA Split Screen</h3>
 
   <p>I mentioned earlier that the EGA&rsquo;s split screen is a little buggy. How? you may well ask, particularly given that Listing 30.1 illustrates that the EGA split screen seems pretty functional.</p>
 
@@ -98,10 +91,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

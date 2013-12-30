@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Looking Past Face Value</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Looking Past Face Value</title>
   <meta name="chapter" content="06" />
   <meta name="pages" content="125-129" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 6<br />
+  <h2 id="Heading1">Chapter 6<br />
   Looking Past Face Value</h2>
 
-  <h3><a id="Heading2"></a>How Machine Instructions May Do More Than You Think</h3>
+  <h3 id="Heading2">How Machine Instructions May Do More Than You Think</h3>
 
   <p>I first met Jeff Duntemann at an authors&rsquo; dinner hosted by <i>PC Tech Journal</i> at Fall Comdex, back in 1985. Jeff was already reasonably well-known as a computer editor and writer, although not as famous as <i>Complete Turbo Pascal</i>, editions 1 through 672 (or thereabouts), <i>TURBO TECHNIX</i>, and <i>PC TECHNIQUES</i> would soon make him. I was fortunate enough to be seated next to Jeff at the dinner table, and, not surprisingly, our often animated conversation revolved around computers, computer writing, and more computers (not necessarily in that order).</p>
 
@@ -66,7 +59,7 @@
 
   <p>In short, the x86 family can do much more than you think&mdash;if you&rsquo;ll use everything it has to offer. Give it a shot!</p>
 
-  <h4 align="left"><a id="Heading3"></a>Memory Addressing and Arithmetic</h4>
+  <h4 align="left" id="Heading3">Memory Addressing and Arithmetic</h4>
 
   <p>Years ago, I saw a clip on the David Letterman show in which Letterman walked into a store by the name of &ldquo;Just Lamps&rdquo; and asked, &ldquo;So what do you sell here?&rdquo;</p>
 
@@ -82,16 +75,16 @@
 
   <p>They perform arithmetic, that&rsquo;s what they do, and that&rsquo;s a distinctly different and often useful perspective on memory address calculations.</p>
 
-  <p>For example, suppose you have an array base address in BX and an index into the array in SI. You could add the two registers together to address memory, like this:</p><!-- CODE SNIP //-->
+  <p>For example, suppose you have an array base address in BX and an index into the array in SI. You could add the two registers together to address memory, like this:</p>
   <pre>
 add  bx,si
 mov  al,[bx]
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>Or you could let the processor do the arithmetic for you in a single instruction:</p><!-- CODE SNIP //-->
+  <p>Or you could let the processor do the arithmetic for you in a single instruction:</p>
   <pre>
 mov  al,[bx+si]
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p><br /></p>
 
@@ -110,10 +103,6 @@ mov  al,[bx+si]
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

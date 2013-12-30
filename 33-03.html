@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Yogi Bear and Eurythmics Confront VGA Colors</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Yogi Bear and Eurythmics Confront VGA Colors</title>
   <meta name="chapter" content="33" />
   <meta name="pages" content="630-632" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h4 align="left"><a id="Heading9"></a>Setting the DAC</h4>
+  <h4 align="left" id="Heading9">Setting the DAC</h4>
 
   <p>Like the palette RAM, the DAC registers can be set either directly or through the BIOS. Again, the BIOS should be used whenever possible, but there are a few complications here. My experience is that varying degrees of flicker and screen bounce occur on many VGAs when a large block of DAC registers is set through the BIOS. That&rsquo;s not a problem when the DAC is loaded just once and then left that way, as is the case in Listing 33.1, which we&rsquo;ll get to shortly, but it can be a serious problem when the color set is changed rapidly (&ldquo;cycled&rdquo;) to produce on-screen effects such as rippling colors. My (limited) experience is that it&rsquo;s necessary to program the DAC directly in order to cycle colors cleanly, although input from readers who have worked extensively with VGA color is welcome.</p>
 
@@ -47,7 +40,7 @@
 
   <p>A block of sequential DAC registers ranging in size from one register up to all 256 can be set via subfunction 12H (AL=12H) of interrupt 10H, function 10H (AH=10H). In this case, BX contains the number of the first register to set, CX contains the number of registers to set, and ES:DX contains the address of a table of color entries to which DAC registers BX through BX+CX-1 are to be set. The color entry for each DAC register consists of three bytes; the first byte is a 6-bit red component, the second byte is a 6-bit green component, and the third byte is a 6-bit blue component, as illustrated by Listing 33.1.</p>
 
-  <h3><a id="Heading10"></a>If You Can&rsquo;t Call the BIOS, Who Ya Gonna Call?</h3>
+  <h3 id="Heading10">If You Can&rsquo;t Call the BIOS, Who Ya Gonna Call?</h3>
 
   <p>Although the palette RAM and DAC registers should be set through the BIOS whenever possible, there are times when the BIOS is not the best choice or even a choice at all; for example, a protected-mode program may not have access to the BIOS. Also, as mentioned earlier, it may be necessary to program the DAC directly when performing color cycling. Therefore, I&rsquo;ll briefly describe how to set the palette RAM and DAC registers directly; in Chapter A on the companion CD-ROM I&rsquo;ll discuss programming the DAC directly in more detail.</p>
 
@@ -63,7 +56,7 @@
 
   <p>In the meantime, if you can use the BIOS to set the DAC, do so; then you won&rsquo;t have to worry about the real and potential complications of setting the DAC directly.</p>
 
-  <h3><a id="Heading11"></a>An Example of Setting the DAC</h3>
+  <h3 id="Heading11">An Example of Setting the DAC</h3>
 
   <p>This chapter has gotten about as big as a chapter really ought to be; the VGA color saga will continue in the next few. Quickly, then, Listing 33.1 is a simple example of setting the DAC that gives you a taste of the spectacular effects that color translation makes possible. There&rsquo;s nothing particularly complex about Listing 33.1; it just selects 256-color mode, fills the screen with one-pixel-wide concentric diamonds drawn with sequential attributes, and sets the DAC to produce a smooth gradient of each of the three primary colors and of a mix of red and blue. Run the program; I suspect you&rsquo;ll be surprised at the stunning display this short program produces. Clever color manipulation is perhaps the easiest way to produce truly eye-catching effects on the PC.</p>
 
@@ -84,10 +77,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

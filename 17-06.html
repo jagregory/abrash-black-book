@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: The Game of Life</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: The Game of Life</title>
   <meta name="chapter" content="17" />
   <meta name="pages" content="338-340" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -49,7 +42,7 @@
     <li>Cells change state relatively infrequently.</li>
   </ul>
 
-  <h3><a id="Heading8"></a>Bringing In the Right Brain</h3>
+  <h3 id="Heading8">Bringing In the Right Brain</h3>
 
   <p>In the previous section, we saw how a C<small>++</small> program could be sped up about eight times simply by rearranging the data and code in straightforward ways. Now we&rsquo;re going to see how right-brain non-linear optimization can speed things up by another four times&mdash;and make the code <i>simpler.</i></p>
 
@@ -57,7 +50,7 @@
 
   <p>I have two objectives to achieve in the remainder of this chapter. First, I want to show that optimization consists of many levels, from assembly language up to conceptual design, and that assembly language kicks in pretty late in the optimization process. Second, I want to encourage you to saturate your brain with everything you know about any particular optimization problem, then make space for your right brain to solve the problem.</p>
 
-  <h4 align="left"><a id="Heading9"></a>Re-Examining the Task</h4>
+  <h4 align="left" id="Heading9">Re-Examining the Task</h4>
 
   <p>Earlier in this chapter, we looked at a straightforward Game of Life implementation, then increased performance considerably by making the implementation a little less abstract and a little less general. We made a small change to the cellmap format, adding padding bytes off the edges so that pointer arithmetic would always work, but the major optimizations were moving the critical code into a single loop and using pointers rather than member functions whenever possible. In other words, we took what we already knew and made it more efficient.</p>
 
@@ -79,11 +72,10 @@
 
   <p><i>Know your data.</i></p>
 
-  <p><a id="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/17-03.jpg',405,113 )"> --><img src="images/17-03.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/17-03.jpg',405,113)"> --><b>Figure 17.3</b></a>&nbsp;&nbsp;<i>New cell format.</i></p>
+  <p><a id="Fig3"><img src="images/17-03.jpg" /><br />
+  <b>Figure 17.3</b></a>&nbsp;&nbsp;<i>New cell format.</i></p>
 
-  <h4 align="left"><a id="Heading10"></a>Acting on What We Know</h4>
+  <h4 align="left" id="Heading10">Acting on What We Know</h4>
 
   <p>Once we&rsquo;ve changed the cellmap format to store neighbor counts as well as states, with a byte for each cell, we can get another performance boost by again examining what we know about our data. I said earlier that most cells are off during any given generation. This means that most cells have no neighbors that are on. Since the cell map representation for an off-cell that has no neighbors is a zero byte, we can skip over scads of unchanged cells at a pop simply by scanning for non-zero bytes. This is much faster than explicitly testing cell states and neighbor counts, and lends itself beautifully to assembly language implementation as <b>REPZ SCASB</b> or (with a little cleverness) <b>REPZ SCASW.</b> (Unfortunately, there&rsquo;s no C library function that can scan memory for the next byte that&rsquo;s non-zero.)</p>
 
@@ -106,10 +98,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

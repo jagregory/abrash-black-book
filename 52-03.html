@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Fast 3-D Animation: Meet X-Sharp</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Fast 3-D Animation: Meet X-Sharp</title>
   <meta name="chapter" content="52" />
   <meta name="pages" content="975-977" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p><b>LISTING 52.3 L52-3.C</b></p><!-- CODE //-->
+  <p><b>LISTING 52.3 L52-3.C</b></p>
   <pre>
 /* Routines to perform incremental rotations around the three axes. */
 
@@ -123,9 +116,9 @@ void AppendRotationZ(Xform XformToChange, double Angle)
    XformToChange[0][2] = Temp02; XformToChange[1][0] = Temp10;
    XformToChange[1][1] = Temp11; XformToChange[1][2] = Temp12;
 }
-</pre><!-- END CODE //-->
+</pre>
 
-  <p><b>LISTING 52.4 L52-4.C</b></p><!-- CODE //-->
+  <p><b>LISTING 52.4 L52-4.C</b></p>
   <pre>
 /* Fixed point matrix arithmetic functions. */
 
@@ -165,9 +158,9 @@ void ConcatXforms(Xform SourceXform1, Xform SourceXform2,
                SourceXform1[i][3];
    }
 }
-</pre><!-- END CODE //-->
+</pre>
 
-  <p><b>LISTING 52.5 L52-5.C</b></p><!-- CODE //-->
+  <p><b>LISTING 52.5 L52-5.C</b></p>
   <pre>
 /* Set up basic data that needs to be in fixed point, to avoid data
    definition hassles. */
@@ -196,7 +189,7 @@ void InitializeFixedPoint()
       CubeVerts[i].Z = INT_TO_FIXED(IntCubeVerts[i].Z);
    }
 }
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -215,10 +208,6 @@ void InitializeFixedPoint()
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

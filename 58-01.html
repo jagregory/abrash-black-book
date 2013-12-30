@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Heinlein's Crystal Ball, Spock's Brain, and the 9-Cycle Dare</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Heinlein's Crystal Ball, Spock's Brain, and the 9-Cycle Dare</title>
   <meta name="chapter" content="58" />
   <meta name="pages" content="1077-1081" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 58<br />
+  <h2 id="Heading1">Chapter 58<br />
   Heinlein&rsquo;s Crystal Ball, Spock&rsquo;s Brain, and the 9-Cycle Dare</h2>
 
-  <h3><a id="Heading2"></a>Using the Whole-Brain Approach to Accelerate Texture Mapping</h3>
+  <h3 id="Heading2">Using the Whole-Brain Approach to Accelerate Texture Mapping</h3>
 
   <p>I&rsquo;ve had the pleasure recently of rereading several of the works of Robert A. Heinlein, and I&rsquo;m as impressed as I was as a teenager&mdash;but in a different way. The first time around, I was wowed by the sheer romance of technology married to powerful stories; this time, I&rsquo;m struck most of all by The Master&rsquo;s remarkable prescience. &ldquo;Blowups Happen&rdquo; is about the risks of nuclear power, and their effects on human psychology&mdash;written before a chain reaction had ever happened on this planet. &ldquo;Solution Unsatisfactory&rdquo; is about the unsolvable dilemma&mdash;ultimate offense, no defense&mdash;posed by atomic weapons; this in 1941. And in <i>Between Planets</i> (1951), consider this minor bit of action:</p>
 
@@ -58,7 +51,7 @@
 
   <p>As Exhibit #1, I present my experience with speeding up the texture mapper in X-Sharp.</p>
 
-  <h3><a id="Heading3"></a>Texture Mapping Redux</h3>
+  <h3 id="Heading3">Texture Mapping Redux</h3>
 
   <p>We&rsquo;ve spent the previous several chapters exploring the X Sharp graphics library, something I built over time as a serious exercise in 3-D graphics. When X-Sharp reached the point at which we left it at the end of the previous chapter, I was rather pleased with it&mdash;with one exception.</p>
 
@@ -66,15 +59,14 @@
 
   <p>It was the &ldquo;Hmph&rdquo; that really got to me.</p>
 
-  <h4 align="left"><a id="Heading4"></a>Left-Brain Optimization</h4>
+  <h4 align="left" id="Heading4">Left-Brain Optimization</h4>
 
   <p>That was the first shot of juice for my optimizer (or at least blow to my ego, which can be just as productive). John went on to say he had gotten texture mapping down to 9 cycles per pixel and one jump per <i>scanline</i> on a 486 (all cycle times will be for the 486 unless otherwise noted); given that my code took, on average, about 44 cycles and 2 taken jumps (plus 1 not taken) per pixel, I had a long way to go.</p>
 
   <p>The inner loop of my original texture-mapping code is shown in Listing 58.1. All this code does is draw a single texture-mapped scanline, as shown in Figure 58.1; an outer loop runs through all the scanlines in whatever polygon is being drawn. I immediately saw that I could eliminate nearly 10 percent of the cycles by unrolling the loop; obviously, John had done that, else there&rsquo;s no way he could branch only once per scanline. (By the way, branching only once per scanline via a fully unrolled loop is not generally recommended. A branch every few pixels costs relatively little, and the cache effects of fully unrolled code are <i>not</i> good.) I quickly came up with several other ways to speed up the code, but soon realized that all the clever coding in the world wasn&rsquo;t going to get me within 100 percent of John&rsquo;s performance so long as I had to cycle from one plane to the next for every pixel.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/58-01.jpg',408,174 )"> --><img src="images/58-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/58-01.jpg',408,174)"> --><b>Figure 58.1</b></a>&nbsp;&nbsp;<i>Texture mapping a single horizontal scanline.</i></p>
+  <p><a id="Fig1"><img src="images/58-01.jpg" /><br />
+  <b>Figure 58.1</b></a>&nbsp;&nbsp;<i>Texture mapping a single horizontal scanline.</i></p>
 
   <p><br /></p>
 
@@ -93,10 +85,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

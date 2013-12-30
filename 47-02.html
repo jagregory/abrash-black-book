@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X: 256-color VGA Magic</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X: 256-color VGA Magic</title>
   <meta name="chapter" content="47" />
   <meta name="pages" content="879-882" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -41,7 +34,7 @@
 
   <p>The mode set code is the logical place to begin.</p>
 
-  <h3><a id="Heading4"></a>Selecting 320x240 256-Color Mode</h3>
+  <h3 id="Heading4">Selecting 320x240 256-Color Mode</h3>
 
   <p>We could, if we wished, write our own mode set code for Mode X from scratch&mdash;but why bother? Instead, we&rsquo;ll let the BIOS do most of the work by having it set up mode 13H, which we&rsquo;ll then turn into Mode X by changing a few registers. Listing 47.1 does exactly that.</p>
 
@@ -57,7 +50,7 @@
 
   <p>When people ask why software isn&rsquo;t bulletproof; why it crashes or doesn&rsquo;t coexist with certain programs; why PC clones aren&rsquo;t always compatible; why, in short, the myriad irritations of using a PC exist&mdash;this is a big part of the reason. I guess that&rsquo;s just the price we pay for the unfettered creativity and vast choice of the PC market.</p>
 
-  <p><b>LISTING 47.1 L47-1.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 47.1 L47-1.ASM</b></p>
   <pre>
 ; Mode X (320x240, 256 colors) mode set routine. Works on all VGAs.
 ; ****************************************************************
@@ -147,7 +140,7 @@ SetCRTParmsLoop:
         ret
 _Set320x240Mode endp
         end
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -166,10 +159,6 @@ _Set320x240Mode endp
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

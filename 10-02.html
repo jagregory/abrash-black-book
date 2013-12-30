@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Patient Coding, Faster Code</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Patient Coding, Faster Code</title>
   <meta name="chapter" content="10" />
   <meta name="pages" content="193-196" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -43,9 +36,8 @@
 
   <p>Listing 10.1 is an implementation of the brute-force approach to GCD calculation. Table 10.1 shows how long it takes this approach to find the GCD for several integer pairs. As expected, performance is extremely poor when iS is large.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/10-01.jpg',411,233 )"> --><img src="images/10-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/10-01.jpg',411,233)"> --><b>Figure 10.1</b></a>&nbsp;&nbsp;<i>Using a brute-force algorithm to find a GCD.</i></p>
+  <p><a id="Fig1"><img src="images/10-01.jpg" /><br />
+  <b>Figure 10.1</b></a>&nbsp;&nbsp;<i>Using a brute-force algorithm to find a GCD.</i></p>
 
   <table width="100%">
     <tr>
@@ -222,7 +214,7 @@
     </tr>
   </table>
 
-  <p><b>LISTING 10.1 L10-1.C</b></p><!-- CODE //-->
+  <p><b>LISTING 10.1 L10-1.C</b></p>
   <pre>
 /* Finds and returns the greatest common divisor of two positive
    integers. Works by trying every integral divisor between the
@@ -246,13 +238,13 @@ unsigned int gcd(unsigned int int1, unsigned int int2) {
       ;
    return(trial_divisor);
 }
-</pre><!-- END CODE //-->
+</pre>
 
-  <h4 align="left"><a id="Heading5"></a>Wasted Breakthroughs</h4>
+  <h4 align="left" id="Heading5">Wasted Breakthroughs</h4>
 
   <p>Sedgewick&rsquo;s first solution to the GCD problem was pretty much the one I came up with. He then pointed out that the GCD of iL and iS is the same as the GCD of iL-iS and iS. This was obvious (once Sedgewick pointed it out); by the very nature of division, any number that divides iL evenly nL times and iS evenly nS times must divide iL-iS evenly nL-nS times. Given that insight, I immediately designed a new, faster approach, shown in Listing 10.2.</p>
 
-  <p><b>LISTING 10.2 L10-2.C</b></p><!-- CODE //-->
+  <p><b>LISTING 10.2 L10-2.C</b></p>
   <pre>
 /* Finds and returns the greatest common divisor of two positive
    integers. Works by subtracting the smaller integer from the
@@ -283,7 +275,7 @@ unsigned int gcd(unsigned int int1, unsigned int int2) {
    /* Now recursively call this function to continue the process */
    return(gcd(int1, int2));
 }
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -302,10 +294,6 @@ unsigned int gcd(unsigned int int1, unsigned int int2) {
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

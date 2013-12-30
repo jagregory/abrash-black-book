@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Those Way-Down Polygon Nomenclature Blues</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Those Way-Down Polygon Nomenclature Blues</title>
   <meta name="chapter" content="41" />
   <meta name="pages" content="757-761" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 41<br />
+  <h2 id="Heading1">Chapter 41<br />
   Those Way-Down Polygon Nomenclature Blues</h2>
 
-  <h3><a id="Heading2"></a>Names Do Matter when You Conceptualize a Data Structure</h3>
+  <h3 id="Heading2">Names Do Matter when You Conceptualize a Data Structure</h3>
 
   <p>After I wrote the columns on polygons in <i>Dr. Dobb&rsquo;s Journal</i> that became Chapters 38-40, long-time reader Bill Huber wrote to take me to task&mdash;and a well-deserved kick in the fanny it was, I might add&mdash;for my use of non-standard polygon terminology in those columns. Unix&rsquo;s X-Window System (XWS) defines three categories of polygons: complex, nonconvex, and convex. These three categories, each a specialized subset of the preceding category, not-so-coincidentally map quite nicely to three increasingly fast polygon filling techniques. Therefore, I used the XWS names to describe the sorts of polygons that can be drawn with each of the polygon filling techniques.</p>
 
@@ -58,7 +51,7 @@
 
   <p>Or, as Bill Huber put it, &ldquo;You are free to adopt your own terminology when it suits your purposes well. But you risk losing or confusing those who could be among your most astute readers&mdash;those who already have been trained in the same or a related field.&rdquo; Ditto. Likewise. <i>D&rsquo;accord</i>. And <i>mea culpa</i> ; I shall endeavor to watch my language in the future.</p>
 
-  <h3><a id="Heading3"></a>Nomenclature in Action</h3>
+  <h3 id="Heading3">Nomenclature in Action</h3>
 
   <p>Just to show you how much difference proper description and interchange of ideas can make, consider the case of identifying convex polygons. When I was writing about polygons in my column in <i>DDJ</i>, a nonfunctional method for identifying such polygons&mdash;checking for exactly two X direction changes and two Y direction changes around the perimeter of the polygon&mdash;crept into the column by accident. That method, as I noted in a later column, does not work. (That&rsquo;s why you won&rsquo;t find it in this book.) Still, a fast method of checking for convex polygons would be highly desirable, because such polygons can be drawn with the fast code from Chapter 39, rather than the relatively slow, general-purpose code from Chapter 40.</p>
 
@@ -66,7 +59,7 @@
 
   <p>What we have is an approach passed along by Jim Kent, of Autodesk Animator fame. If we modify the low-level code to check which edge is left-most on each scan line and start drawing there, as just described, then we can handle any polygon that&rsquo;s monotone with respect to a vertical line regardless of whether the edges cross. (I&rsquo;ll call this &ldquo;monotone-vertical&rdquo; from now on; if anyone wants to correct that terminology, jump right in.) In other words, we can then handle nonsimple polygons that are monotone-vertical; self-intersection is no longer a problem. We just scan around the polygon&rsquo;s perimeter looking for exactly two direction reversals along the Y axis only, and if that proves to be the case, we can handle the polygon at high speed. Figure 41.1 shows polygons that can be drawn by a monotone-vertical capable filler; Figure 41.2 shows some that cannot. Listing 41.1 shows code to test whether a polygon is appropriately monotone.</p>
 
-  <p><b>LISTING 41.1 L41-1.C</b></p><!-- CODE //-->
+  <p><b>LISTING 41.1 L41-1.C</b></p>
   <pre>
 /* Returns 1 if polygon described by passed-in vertex list is monotone with
 respect to a vertical line, 0 otherwise. Doesn&rsquo;t matter if polygon is simple 
@@ -110,7 +103,7 @@ int PolygonIsMonotoneVertical(struct PointListHeader * VertexList)
    } while (i++ &lt; (Length-1));
    return(1);  /* it&rsquo;s a vertical-monotone polygon */
 }
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -129,10 +122,6 @@ int PolygonIsMonotoneVertical(struct PointListHeader * VertexList)
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

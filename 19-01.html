@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pentium: Not the Same Old Song</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pentium: Not the Same Old Song</title>
   <meta name="chapter" content="19" />
   <meta name="pages" content="369-373" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 19<br />
+  <h2 id="Heading1">Chapter 19<br />
   Pentium: Not the Same Old Song</h2>
 
-  <h3><a id="Heading2"></a>Learning a Whole Different Set of Optimization Rules</h3>
+  <h3 id="Heading2">Learning a Whole Different Set of Optimization Rules</h3>
 
   <p>I can still remember the day I did my first 8088 programming. I had just moved over from the distantly related Z80, so the 8088 wasn&rsquo;t totally alien, but it was nonetheless an incredibly exciting processor. The 8088&rsquo;s instruction set was vastly more powerful and varied than the Z80&rsquo;s, and as someone who thrives on puzzles of all sorts, from crosswords to Freecell to jigsaws to assembly language optimization, I was delighted to find that the 8088 made the optimization universe an order of magnitude more complicated&mdash;and correspondingly more interesting.</p>
 
@@ -48,7 +41,7 @@
 
   <p>Happily, the 486 traveled to the beat of a different drum. The 486 had some interesting internal pipeline hazards, as well as an internal cache that made cycle counting more meaningful than ever before, and careful code massaging sometimes yielded startling results. Nonetheless, the 486 was still too simple to mark a return to the golden age of optimization.</p>
 
-  <h3><a id="Heading3"></a>The Return of Optimization as Art</h3>
+  <h3 id="Heading3">The Return of Optimization as Art</h3>
 
   <p>Then the Pentium came around, and filled our code with optimization hazards, and life was good again. The Pentium has two execution pipelines and enough rules and exceptions to those rules to bring joy to the heart of the hardest-core assembly junkie. For a change, Intel documented most of the Pentium optimization rules and spread the word about them, so we don&rsquo;t have to go through as much spelunking of the Pentium as with its predecessors. They&rsquo;ve done this, I suspect, largely because more than any previous x86 processor, the Pentium&rsquo;s performance is highly dependent on properly optimized code.</p>
 
@@ -60,7 +53,7 @@
 
   <p>Gimme a &ldquo;P&rdquo;....</p>
 
-  <h3><a id="Heading4"></a>The Pentium: An Overview</h3>
+  <h3 id="Heading4">The Pentium: An Overview</h3>
 
   <p>Architecturally, the Pentium is vastly different in many ways from the 486, but most of those differences are transparent to programmers. After all, the whole idea behind the Pentium is that it runs the same code as previous x86 processors, but faster; otherwise, Intel could have made a faster, cheaper RISC processor. Still, knowledge of the Pentium&rsquo;s architecture is useful for understanding exactly how code will perform, and a few of the architectural differences are most decidedly <i>not</i> transparent to performance programmers.</p>
 
@@ -85,10 +78,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

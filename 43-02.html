@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bit-Plane Animation</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bit-Plane Animation</title>
   <meta name="chapter" content="43" />
   <meta name="pages" content="799-801" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h4 align="left"><a id="Heading4"></a>Stacking the Palette Registers</h4>
+  <h4 align="left" id="Heading4">Stacking the Palette Registers</h4>
 
   <p>Suppose that instead of viewing the four bits per pixel coming out of display memory as selecting one of sixteen colors,we view those bits as selecting one of <i>four</i> colors. If the bit from plane 0 is 1, that would select color 0 (say, red). The bit from plane 1 would select color 1 (say, green), the bit from plane 2 would select color 2 (say, blue), and the bit from plane 3 would select color 3 (say, white). Whenever more than 1 bit is 1, the 1 bit from the lowest-numbered plane would determine the color, and 1 bits from all other planes would be ignored. Finally, the absence of any 1 bits at all would select the background color (say, black).</p>
 
@@ -214,13 +207,12 @@
     </tr>
   </table>
 
-  <p><a id="Fig4"><!-- </A><A HREF="javascript:displayWindow('images/43-04.jpg',405,198 )"> --><img src="images/43-04.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/43-04.jpg',405,198)"> --><b>Figure 43.4</b></a>&nbsp;&nbsp;<i>How pixel precedence works.</i></p>
+  <p><a id="Fig4"><img src="images/43-04.jpg" /><br />
+  <b>Figure 43.4</b></a>&nbsp;&nbsp;<i>How pixel precedence works.</i></p>
 
   <p>Seems almost too easy, doesn&rsquo;t it? Nonetheless, it works beautifully, as we&rsquo;ll see very shortly. First, though, I&rsquo;d like to point out that there&rsquo;s nothing sacred about plane 0 having precedence. We could rearrange the palette register settings so that any plane had the highest precedence, followed by the other planes in any order. I&rsquo;ve chosen to make plane 0 the highest precedence only because it seems simplest to think of plane 0 as appearing in front of plane 1, which is in front of plane 2, which is in front of plane 3.</p>
 
-  <h3><a id="Heading5"></a>Bit-Plane Animation in Action</h3>
+  <h3 id="Heading5">Bit-Plane Animation in Action</h3>
 
   <p>Without further ado, Listing 43.1 shows bit-plane animation in action. Listing 43.1 animates 13 rather large images (each 32 pixels on a side) over a complex background at a good clip <i>even on a primordial 8088-based PC</i>. Five of the images move very quickly, while the other 8 bounce back and forth at a steady pace.</p>
 
@@ -241,10 +233,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pushing the 286 and 386</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pushing the 286 and 386</title>
   <meta name="chapter" content="11" />
   <meta name="pages" content="210-212" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -47,7 +40,7 @@
 
   <p>The most significant reason that the prefetch queue cycle-eater not only survives but prospers on the 286 and 386, however, lies in the various memory architectures used in computers built around the 286 and 386. Due to the memory architectures, the 8-bit bus cycle-eater is replaced by a new form of the wait state cycle-eater: wait states on accesses to normal system memory.</p>
 
-  <h4 align="center"><a id="Heading6"></a>System Wait States</h4>
+  <h4 align="center" id="Heading6">System Wait States</h4>
 
   <p>The 286 and 386 were designed to lose relatively little performance to the prefetch queue cycle-eater...<i>when used with zero-wait-state memory:</i> memory that can complete memory accesses so rapidly that no wait states are needed. However, true zero-wait-state memory is almost never used with those processors. Why? Because memory that can keep up with a 286 is fairly expensive, and memory that can keep up with a 386 is <i>very</i> expensive. Instead, computer designers use alternative memory architectures that offer more performance for the dollar&mdash;but less performance overall&mdash;than zero-wait-state memory. (It <i>is</i> possible to build zero-wait-state systems for the 286 and 386; it&rsquo;s just so expensive that it&rsquo;s rarely done.)</p>
 
@@ -71,7 +64,7 @@
 
   <p>Let&rsquo;s check out the prefetch queue cycle-eater in action. Listing 11.1 times <b>MOV [WordVar],0</b>. The Zen timer reports that on a one-wait-state 10 MHz 286-based AT clone (the computer used for all tests in this chapter), Listing 11.1 runs in 1.27 &micro;s per instruction. That&rsquo;s 12.7 cycles per instruction, just as we calculated. (That extra seven-tenths of a cycle comes from DRAM refresh, which we&rsquo;ll get to shortly.)</p>
 
-  <p><b>LISTING 11.1 L11-1.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 11.1 L11-1.ASM</b></p>
   <pre>
 ;
 ; *** Listing 11.1 ***
@@ -92,7 +85,7 @@ Skip:
         mov     [WordVar],0
         endm
         call    ZTimerOff
-</pre><!-- END CODE //-->
+</pre>
 
   <p>What does this mean? It means that, practically speaking, the 286 as used in the AT doesn&rsquo;t have a 16-bit bus. From a performance perspective, the 286 in an AT has two-thirds of a 16-bit bus (a 10.7-bit bus?), since every bus access on an AT takes 50 percent longer than it should. A 286 running at 10 MHz <i>should</i> be able to access memory at a maximum rate of 1 word every 200 ns; in a 10 MHz AT, however, that rate is reduced to 1 word every 300 ns by the one-wait-state memory.</p>
 
@@ -113,10 +106,6 @@ Skip:
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

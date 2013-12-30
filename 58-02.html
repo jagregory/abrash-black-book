@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Heinlein's Crystal Ball, Spock's Brain, and the 9-Cycle Dare</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Heinlein's Crystal Ball, Spock's Brain, and the 9-Cycle Dare</title>
   <meta name="chapter" content="58" />
   <meta name="pages" content="1082-1085" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p><b>LISTING 58.1 L58-1.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 58.1 L58-1.ASM</b></p>
   <pre>
 ; Inner loop to draw a single texture-mapped horizontal scanline in
 ; Mode X, the VGA&rsquo;s page-flipped 256-color mode. Because adjacent
@@ -86,13 +79,12 @@ NoExtraYAdvance:
         dec     si
         jnz     TexScanLoop
 
-</pre><!-- END CODE //-->
+</pre>
 
   <p>Figure 58.2 shows why this cycling is necessary. In Mode X, the page-flipped 256-color mode of the VGA, each successive pixel across a scanline is stored in a different hardware plane, and an <b>OUT</b> to the VGA&rsquo;s hardware is needed to select the plane being drawn to. (See Chapters 47, 48, and 49 for details.) An <b>OUT</b> instruction <i>by itself</i> takes 16 cycles (and in the neighborhood of 30 cycles in virtual-86 or non-privileged protected mode), and an <b>ROL</b> takes 2 more, for a total of 18 cycles, double John&rsquo;s 9 cycles, just to handle plane management. Clearly, getting plane control out of the inner loop was absolutely necessary.</p>
 
-  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/58-02.jpg',406,209 )"> --><img src="images/58-02.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/58-02.jpg',406,209)"> --><b>Figure 58.2</b></a>&nbsp;&nbsp;<i>Display memory organization in Mode X.</i></p>
+  <p><a id="Fig2"><img src="images/58-02.jpg" /><br />
+  <b>Figure 58.2</b></a>&nbsp;&nbsp;<i>Display memory organization in Mode X.</i></p>
 
   <p>I must confess, with some embarrassment, that at this point I threw myself into designing a solution that involved executing the texture mapping code up to four times per scanline, once for the pixels in each plane. It&rsquo;s hard to overstate the complexity of this approach, which involves quadrupling the normal pixel-to-pixel increments, adjusting the start value for each of the passes, and dealing with some nasty boundary cases. Make no mistake, the code was perfectly doable, and would in fact have gotten plane control out of the inner loop, but would have been very difficult to get exactly right, and would have suffered from substantial overhead.</p>
 
@@ -102,11 +94,11 @@ NoExtraYAdvance:
 
   <p>Why indeed?</p>
 
-  <h4 align="left"><a id="Heading5"></a>A 90-Degree Shift in Perspective</h4>
+  <h4 align="left" id="Heading5">A 90-Degree Shift in Perspective</h4>
 
   <p>As I said earlier, how you look at an optimization problem defines how you&rsquo;ll be able to solve it. In order to boost performance, sometimes it&rsquo;s necessary to look at things from a different angle&mdash;and for texture mapping this was literally as well as figuratively true. Chris suggested nothing more nor less than scanning out polygons at a 90-degree angle to normal, starting, say, at the left edge of the polygon, and texture-mapping vertically along each column of pixels, as shown in Figure 58.3. That way, all the pixels in each texture-mapped column would be in the same plane, and I would need to change planes only between columns&mdash;outside the inner loop. A trivial change, not fundamental in any sense&mdash;and yet just that one change, plus unrolling the loop, reduced the inner loop to the 22-cycles-per-pixel version shown in Listing 58.2. That&rsquo;s exactly twice as fast as Listing 58.1&mdash;and given how incredibly slow most VGAs are at completing <b>OUT</b>s, the real-world speedup should be considerably greater still. (The fastest byte <b>OUT</b> I&rsquo;ve ever measured for a VGA is 29 cycles, the slowest more than 60 cycles; in the latter case, Listing 58.2 would be on the order of <i>four</i> times faster than Listing 58.1.)</p>
 
-  <p><b>LISTING 58.2 L58-2.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 58.2 L58-2.ASM</b></p>
   <pre>
 ; Inner loop to draw a single texture-mapped vertical column, rather
 ; than a horizontal scanline. This allows all pixels handled
@@ -150,7 +142,7 @@ NoExtraYAdvance:
 
 ENDM
 
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -169,10 +161,6 @@ ENDM
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

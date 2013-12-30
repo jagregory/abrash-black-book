@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Assume Nothing</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Assume Nothing</title>
   <meta name="chapter" content="03" />
   <meta name="pages" content="053-065" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -41,7 +34,7 @@
 
   <p>The long-period Zen timer has some of the same effects on the system time as does the precision Zen timer, so it&rsquo;s a good idea to reboot the system after a session with the long-period Zen timer. The long-period Zen timer does not, however, have the same potential for introducing major inaccuracy into the system clock time during a single timing run since it leaves interrupts enabled and therefore allows the system clock to update normally.</p>
 
-  <h4 align="left"><a id="Heading13"></a>Stopping the Clock</h4>
+  <h4 align="left" id="Heading13">Stopping the Clock</h4>
 
   <p>There&rsquo;s a potential problem with the long-period Zen timer. The problem is this: In order to measure times longer than 54 ms, we must maintain not one but two timing components, the timer 0 count and the BIOS time-of-day count. The time-of-day count measures the passage of 54.9 ms intervals, while the timer 0 count measures time within those 54.9 ms intervals. We need to read the two time components simultaneously in order to get a clean reading. Otherwise, we may read the timer count just before it turns over and generates an interrupt, then read the BIOS time-of-day count just after the interrupt has occurred and caused the time-of-day count to turn over, with a resulting 54 ms measurement inaccuracy. (The opposite sequence&mdash;reading the time-of-day count and then the timer count&mdash;can result in a 54 ms inaccuracy in the other direction.)</p>
 
@@ -53,7 +46,7 @@
 
   <p>I&rsquo;ve set up Listing 3.5 so that it can assemble to either use or not use the undocumented timer-stopping feature, as you please. The <b>PS2</b> equate selects between the two modes of operation. If <b>PS2</b> is 1 (as it is in Listing 3.5), then the latch-and-read method is used; if <b>PS2</b> is 0, then the undocumented timer-stop approach is used. The latch-and-read method will work on all PC-compatible computers, but may occasionally produce results that are incorrect by 54 ms. The timer-stop approach avoids synchronization problems, but doesn&rsquo;t work on all computers.</p>
 
-  <p><b>LISTING 3.5 LZTIMER.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 3.5 LZTIMER.ASM</b></p>
   <pre>
 ;
 ; The long-period Zen timer. (LZTIMER.ASM)
@@ -689,7 +682,7 @@ ZTimerReport    endp
 
 Code   ends
        end
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -708,10 +701,6 @@ Code   ends
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

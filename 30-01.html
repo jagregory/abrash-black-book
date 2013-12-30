@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Video Est Omnis Divisa</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Video Est Omnis Divisa</title>
   <meta name="chapter" content="30" />
   <meta name="pages" content="561-566" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 30<br />
+  <h2 id="Heading1">Chapter 30<br />
   Video Est Omnis Divisa</h2>
 
-  <h3><a id="Heading2"></a>The Joys and Galling Problems of Using Split Screens on the EGA and VGA</h3>
+  <h3 id="Heading2">The Joys and Galling Problems of Using Split Screens on the EGA and VGA</h3>
 
   <p>The ability to split the screen into two largely independent portions one&mdash;displayed above the other on the screen&mdash;is one of the more intriguing capabilities of the VGA and EGA. The split screen feature can be used for popups (including popups that slide smoothly onto the screen), or simply to display two separate portions of display memory on a single screen. While it&rsquo;s possible to accomplish the same effects purely in software without using the split screen, software solutions tend to be slow and hard to implement.</p>
 
@@ -48,7 +41,7 @@
 
   <p>Let&rsquo;s start with the basic operation of the split screen.</p>
 
-  <h3><a id="Heading3"></a>How the Split Screen Works</h3>
+  <h3 id="Heading3">How the Split Screen Works</h3>
 
   <p>The <i>operation</i> of the split screen is simplicity itself. A split screen start scan line value is programmed into two EGA registers or three VGA registers. (More on exactly which registers in a moment.) At the beginning of each frame, the video circuitry begins to scan display memory for video data starting at the address specified by the start address registers, just as it normally would. When the video circuitry encounters the specified split screen start scan line in the course of scanning video data onto the screen, it completes that scan line normally, then resets the internal pointer which addresses the next byte of display memory to be read for video data to zero. Display memory from address zero onward is then scanned for video data in the usual way, progressing toward the high end of memory. At the end of the frame, the pointer to the next byte of display memory to scan is reloaded from the start address registers, and the whole process starts over.</p>
 
@@ -56,9 +49,8 @@
 
   <p>If both the start address and the split screen start scan line are set to 0, the data at offset zero in display memory is displayed as both the first scan line on the screen <i>and</i> the second scan line. There is no way to make the split screen cover the entire screen&mdash;it always comes up at least one scan line short.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/30-01.jpg',405,239 )"> --><img src="images/30-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/30-01.jpg',405,239)"> --><b>Figure 30.1</b></a>&nbsp;&nbsp;<i>Display memory and the split screen.</i></p>
+  <p><a id="Fig1"><img src="images/30-01.jpg" /><br />
+  <b>Figure 30.1</b></a>&nbsp;&nbsp;<i>Display memory and the split screen.</i></p>
 
   <p>So, where is the split screen start scan line stored? The answer varies a bit, depending on whether you&rsquo;re talking about the EGA or the VGA. On the EGA, the split screen start scan line is a 9-bit value, with bits 7-0 stored in the Line Compare register (CRTC register 18H) and bit 8 stored in bit 4 of the Overflow register (CRTC register 7). Other bits in the Overflow register serve as the high bits of other values, such as the vertical total and the vertical blanking start. Since EGA registers are&mdash;alas!&mdash;not readable, you must know the correct settings for the other bits in the Overflow registers to use the split screen on an EGA. Fortunately, there are only two standard Overflow register settings on the EGA: 11H for 200-scan-line modes and 1FH for 350-scan-line modes.</p>
 
@@ -66,7 +58,7 @@
 
   <p>Turning the split screen on involves nothing more than setting all bits of the split screen start scan line to the scan line after which you want the split screen to start appearing. (Of course, you&rsquo;ll probably want to change the start address before using the split screen; otherwise, you&rsquo;ll just end up displaying the memory at offset zero <i>twice:</i> once in the normal screen and once in the split screen.) Turning off the split screen is a simple matter of setting the split screen start scan line to a value equal to or greater than the last scan line displayed; the safest such approach is to set all bits of the split screen start scan line to 1. (That is, in fact, the split screen start scan line value programmed by the BIOS during a mode set.)</p>
 
-  <h4 align="left"><a id="Heading4"></a>The Split Screen in Action</h4>
+  <h4 align="left" id="Heading4">The Split Screen in Action</h4>
 
   <p>All of these points are illustrated by Listing 30.1. Listing 30.1 fills display memory starting at offset zero (the split screen area of memory) with text identifying the split screen, fills display memory starting at offset 8000H with a graphics pattern, and sets the start address to 8000H. At this point, the normal screen is being displayed (the split screen start scan line is still set to the BIOS default setting, with all bits equal to 1, so the split screen is off), with the pixels based on the contents of display memory at offset 8000H. The contents of display memory between offset 0 and offset 7FFFH are not visible at all.</p>
 
@@ -91,10 +83,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

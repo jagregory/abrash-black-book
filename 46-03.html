@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Who Was that Masked Image?</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Who Was that Masked Image?</title>
   <meta name="chapter" content="46" />
   <meta name="pages" content="871-874" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h4 align="left"><a id="Heading4"></a>Masked Images</h4>
+  <h4 align="left" id="Heading4">Masked Images</h4>
 
   <p>Masked images are rendered by drawing an object&rsquo;s pixels through a mask; pixels are actually drawn only where the mask specifies that drawing is allowed. This makes it possible to draw nonrectangular objects that don&rsquo;t improperly interfere with one another when they overlap. Masked images also make it possible to have transparent areas (windows) within objects. Masked images produce far more realistic animation than do rectangular images, and therefore are more desirable. Unfortunately, masked images are also considerably slower to draw&mdash;however, a good assembly language implementation can go a long way toward making masked images draw rapidly enough, as illustrated by this chapter&rsquo;s code. (Masked images are also known as <i>sprites</i>; some video hardware supports sprites directly, but on the PC it&rsquo;s necessary to handle sprites in software.)</p>
 
@@ -45,11 +38,11 @@
 
   <p>In this chapter, I&rsquo;ve used the approach of having separate, paired masks and images. Another, quite different approach to masking is to specify a transparent color for copying, and copy only those pixels that are not the transparent color. This has the advantage of not requiring separate mask data, so it&rsquo;s more compact, and the code to implement this is a little less complex than the full masking I&rsquo;ve implemented. On the other hand, the transparent color approach is less flexible because it makes one color undrawable. Also, with a transparent color, it&rsquo;s not possible to keep the same base image but use different masks, because the mask information is embedded in the image data.</p>
 
-  <h4 align="left"><a id="Heading5"></a>Internal Animation</h4>
+  <h4 align="left" id="Heading5">Internal Animation</h4>
 
   <p>I&rsquo;ve added another feature essential to producing convincing animation: <i>internal animation</i>, which is the process of changing the appearance of a given object over time, as distinguished from changing only the <i>location</i> of a given object. Internal animation makes images look active and alive. I&rsquo;ve implemented the simplest possible form of internal animation in Listing 46.1&mdash;alternation between two images&mdash;but even this level of internal animation greatly improves the feel of the overall animation. You could easily increase the number of images cycled through, simply by increasing the value of <b>InternalAnimateMax</b> for a given entity. You could also implement more complex image-selection logic to produce more interesting and less predictable internal-animation effects, such as jumping, ducking, running, and the like.</p>
 
-  <h4 align="center"><a id="Heading6"></a>Dirty-Rectangle Management</h4>
+  <h4 align="center" id="Heading6">Dirty-Rectangle Management</h4>
 
   <p>As mentioned above, dirty-rectangle animation makes it possible to access display memory a minimum number of times. The previous chapter&rsquo;s code didn&rsquo;t do any of that; instead, it copied all portions of every dirty rectangle to the screen, regardless of overlap between rectangles. The code I&rsquo;ve presented in this chapter goes to the other extreme, taking great pains never to draw overlapped portions of rectangles more than once. This is accomplished by checking for overlap whenever a rectangle is to be added to the dirty list. When overlap with an existing rectangle is detected, the new rectangle is reduced to between zero and four nonoverlapping rectangles. Those rectangles are then again considered for addition to the dirty list, and may again be reduced, if additional overlap is detected.</p>
 
@@ -59,7 +52,7 @@
 
   <p>You might also try taking advantage of the natural coherence of animated graphics screens. In particular, because the rectangle used to erase an image at its old location often overlaps the rectangle within which the image resides at its new location, you could just directly generate the two or three nonoverlapped rectangles required to copy both the erase rectangle and the new-image rectangle for any single moving image. The calculation of these rectangles could be very efficient, given that you know in advance the direction of motion of your images. Handling this particular overlap case would eliminate most overlapped drawing, at a minimal cost. You might then decide to ignore overlapped drawing between different images, which tends to be both less common and more expensive to identify and handle.</p>
 
-  <h4 align="left"><a id="Heading7"></a>Drawing Order and Visual Quality</h4>
+  <h4 align="left" id="Heading7">Drawing Order and Visual Quality</h4>
 
   <p>A final note on dirty-rectangle animation concerns the quality of the displayed screen image. In the last chapter, we simply stuffed dirty rectangles into a list in the order they became dirty, and then copied all of the rectangles in that same order. Unfortunately, this caused all of the erase rectangles to be copied first, followed by all of the rectangles of the images at their new locations. Consequently, there was a significant delay between the appearance of the erase rectangle for a given image and the appearance of the new rectangle. A byproduct was the fact that a partially complete&mdash;part old, part new&mdash;image was visible long enough to be noticed. In short, although the pixels ended up correct, they were in an intermediate, incorrect state for a sufficient period of time to make the animation look wrong.</p>
 
@@ -84,10 +77,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

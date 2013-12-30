@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Raw Speed and More</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Raw Speed and More</title>
   <meta name="chapter" content="53" />
   <meta name="pages" content="999-1001" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h3><a id="Heading4"></a>Raw Speed, Part II: Look it Up</h3>
+  <h3 id="Heading4">Raw Speed, Part II: Look it Up</h3>
 
   <p>It&rsquo;s a funny thing about Turbo Profiler: Time spent in the Borland C<small>++</small> 80x87 emulator doesn&rsquo;t show up directly anywhere that I can see in the timing results. The only way to detect it is by way of the line that reports what percent of total time is represented by all the areas that were profiled; if you&rsquo;re profiling all areas, whatever&rsquo;s not explicitly accounted for seems to be the floating-point emulator time. This quirk fooled me for a while, leading me to think sine and cosine weren&rsquo;t major drags on performance, because the <b>sin()</b> and <b>cos()</b> functions spend most of their time in the emulator, and that time doesn&rsquo;t show up in Turbo Profiler&rsquo;s statistics on those functions. Once I figured out what was going on, it turned out that not only were <b>sin()</b> and <b>cos()</b> major drags, they were taking up over half the total execution time by themselves.</p>
 
@@ -45,7 +38,7 @@
 
   <p>FIXED.ASM (Listing 53.1) speeds X-Sharp up quite a bit, and it changes the performance balance a great deal. When we started out with 3-D animation, calculation time was the dragon we faced; more than 90 percent of the total time was spent doing matrix and projection math. Additional optimizations in the area of math could still be made (using 32-bit multiplies in the backface-removal code, for example), but fixed-point math, the sine and cosine lookup, and selective assembly optimizations have done a pretty good job already. The bulk of the time taken by X-Sharp is now spent drawing polygons, drawing rectangles (to erase objects), and waiting for the page to flip. In other words, we&rsquo;ve slain the dragon of 3-D math, or at least wounded it grievously; now we&rsquo;re back to the dragon of polygon filling. We&rsquo;ll address faster polygon filling soon, but for the moment, we have more than enough horsepower to have some fun with. First, though, we need one more feature: hidden surfaces.</p>
 
-  <h4 align="left"><a id="Heading5"></a>Hidden Surfaces</h4>
+  <h4 align="left" id="Heading5">Hidden Surfaces</h4>
 
   <p>So far, we&rsquo;ve made a number of simplifying assumptions in order to get the animation to look good; for example, all objects must currently be convex polyhedrons. What&rsquo;s more, right now, objects can never pass behind or in front of each other. What that means is that it&rsquo;s time to have a look at hidden surfaces.</p>
 
@@ -57,9 +50,8 @@
 
   <p>Listing 53.2 shows X-Sharp file OLIST.C, which includes the key routines for depth sorting. Objects are now stored in a linked list. The initial, empty list, created by <b>InitializeObjectList(),</b> consists of a sentinel entry at either end, one at the farthest possible z coordinate, and one at the nearest. New entries are inserted by <b>AddObject()</b> in z-sorted order. Each time the objects are moved, before they&rsquo;re drawn at their new locations, <b>SortObjects()</b> is called to Z-sort the object list, so that drawing will proceed from back to front. The Z-sorting is done on the basis of the objects&rsquo; center points; a center-point field has been added to the object structure to support this, and the center point for each object is now transformed along with the vertices. That&rsquo;s really all there is to depth sorting&mdash;and now we can have objects that overlap in X and Y.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/53-01.jpg',407,199 )"> --><img src="images/53-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/53-01.jpg',407,199)"> --><b>Figure 53.1</b></a>&nbsp;&nbsp;<i>Why back-to-front sorting doesn&rsquo;t always work properly.</i></p>
+  <p><a id="Fig1"><img src="images/53-01.jpg" /><br />
+  <b>Figure 53.1</b></a>&nbsp;&nbsp;<i>Why back-to-front sorting doesn&rsquo;t always work properly.</i></p>
 
   <p><br /></p>
 
@@ -78,10 +70,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

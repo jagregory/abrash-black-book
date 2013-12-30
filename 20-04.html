@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pentium Rules</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pentium Rules</title>
   <meta name="chapter" content="20" />
   <meta name="pages" content="393-396" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -39,35 +32,33 @@
 
   <p>However, this beneficial pairing does not extend to non-<b>MOV</b> instructions with explicit memory destination operands, such as <b>ADD [EBX],EAX</b>. The Pentium executes only one such memory instruction at a time; if two memory-destination complex instructions get paired, first the U-pipe instruction is executed, and then the V-pipe instruction, with only one cycle of overlap, as shown in Figure 20.6. I don&rsquo;t know for sure, but I&rsquo;d guess that this is to guarantee that the two pipes will never perform out-of-order access to any given memory location. Thus, even though <b>AND [EBX],AL</b> pairs with <b>AND [ECX],DL</b>, the two instructions take 5 cycles in all to execute, and 4 cycles of idle time&mdash;2 in the U-pipe and 2 in the V-pipe, out of 10 cycles in all&mdash;are incurred in the process.</p>
 
-  <p><a id="Fig6"><!-- </A><A HREF="javascript:displayWindow('images/20-06.jpg',407,306 )"> --><img src="images/20-06.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/20-06.jpg',407,306)"> --><b>Figure 20.6</b></a>&nbsp;&nbsp;<i>Non-overlapped lockstep execution.</i></p>
+  <p><a id="Fig6"><img src="images/20-06.jpg" /><br />
+  <b>Figure 20.6</b></a>&nbsp;&nbsp;<i>Non-overlapped lockstep execution.</i></p>
 
-  <p><a id="Fig7"><!-- </A><A HREF="javascript:displayWindow('images/20-07.jpg',411,287 )"> --><img src="images/20-07.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/20-07.jpg',411,287)"> --><b>Figure 20.7</b></a>&nbsp;&nbsp;<i>Interleaving simple instructions for maximum performance.</i></p>
+  <p><a id="Fig7"><img src="images/20-07.jpg" /><br />
+  <b>Figure 20.7</b></a>&nbsp;&nbsp;<i>Interleaving simple instructions for maximum performance.</i></p>
 
   <p>The solution is to break the instructions into simple instructions and interleave them, as shown in Figure 20.7, which accomplishes the same task in 3 cycles, with no idle cycles whatsoever. Figure 20.7 is a good example of what optimized Pentium code generally looks like: mostly one-cycle instructions, mixed together so that at least two operations are in progress at once. It&rsquo;s not the easiest code to read or write, but it&rsquo;s the only way to get both pipes running at capacity.</p>
 
-  <h3><a id="Heading6"></a>Superscalar Notes</h3>
+  <h3 id="Heading6">Superscalar Notes</h3>
 
-  <p>You may well ask why it&rsquo;s necessary to interleave operations, as is done in Figure 20.7. It seems simpler just to turn</p><!-- CODE SNIP //-->
+  <p>You may well ask why it&rsquo;s necessary to interleave operations, as is done in Figure 20.7. It seems simpler just to turn</p>
   <pre>
 and [ebx],al
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>into</p><!-- CODE SNIP //-->
+  <p>into</p>
   <pre>
 mov   dl,[ebx]
 and   dl,al
 mov   [ebx],dl
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>and be done with it. The problem here is one of dependency. Before the Pentium can execute <b>AND DL,AL,</b>, it must first know what is in DL, and it can&rsquo;t know that until it loads DL from the address pointed to by EBX. Therefore, <b>AND DL,AL</b> can&rsquo;t happen until the cycle after <b>MOV DL,[EBX]</b> executes. Likewise, the result can&rsquo;t be stored until the cycle after <b>AND DL,AL</b> has finished. This means that these instructions, as written, can&rsquo;t possibly pair, so the sequence takes the same three cycles as <b>AND [EBX],AL</b>. (Now it should be clear why <b>AND [EBX]</b>, AL takes 3 cycles.) Consequently, it&rsquo;s necessary to interleave these instructions with instructions that use other registers, so this set of operations can execute in one pipe while the other, unrelated set executes in the other pipe, as is done in Figure 20.7.</p>
 
   <p>What we&rsquo;ve just seen is the read-after-write form of the superscalar hazard known as <i>register contention</i>. I&rsquo;ll return to the subject of register contention in the next chapter; in the remainder of this chapter I&rsquo;d like to cover a few short items about superscalar execution.</p>
 
-  <h4 align="left"><a id="Heading7"></a>Register Starvation</h4>
+  <h4 align="left" id="Heading7">Register Starvation</h4>
 
   <p>The above examples should make it pretty clear that effective superscalar programming puts a lot of strain on the Pentium&rsquo;s relatively small register set. There are only seven general-purpose registers (I strongly suggest using EBP in critical loops), and it does not help to have to sacrifice one of those registers for temporary storage on each complex memory operation; in pre-superscalar days, we used to employ those handy CISC memory instructions to do all that stuff without using any extra registers.</p>
 
@@ -85,9 +76,8 @@ mov   [ebx],dl
 
   <p>It should be excruciatingly clear by this point that you <i>must</i> time your Pentium-optimized code if you&rsquo;re to have any hope of knowing if your optimizations are working as well as you think they are; there are just too many details involved for you to be sure your optimizations are working properly without checking. My most basic optimization rule has always been to grab the Zen timer and <i>measure actual performance</i>&mdash;and nowhere is this more true than on the Pentium. Don&rsquo;t believe it until you measure it!</p>
 
-  <p><a id="Fig8"><!-- </A><A HREF="javascript:displayWindow('images/20-08.jpg',410,247 )"> --><img src="images/20-08.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/20-08.jpg',410,247)"> --><b>Figure 20.8</b></a>&nbsp;&nbsp;<i>Prefix delays.</i></p>
+  <p><a id="Fig8"><img src="images/20-08.jpg" /><br />
+  <b>Figure 20.8</b></a>&nbsp;&nbsp;<i>Prefix delays.</i></p>
 
   <p><br /></p>
 
@@ -106,10 +96,6 @@ mov   [ebx],dl
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Aiming the 486</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Aiming the 486</title>
   <meta name="chapter" content="13" />
   <meta name="pages" content="248-251" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 13<br />
+  <h2 id="Heading1">Chapter 13<br />
   Aiming the 486</h2>
 
-  <h3><a id="Heading2"></a>Pipelines and Other Hazards of the High End</h3>
+  <h3 id="Heading2">Pipelines and Other Hazards of the High End</h3>
 
   <p>It&rsquo;s a sad but true fact that 84 percent of American schoolchildren are ignorant of 92 percent of American history. Not my daughter, though. We recently visited historical Revolutionary-War-vintage Fort Ticonderoga, and she&rsquo;s now 97 percent aware of a key element of our national heritage: that the basic uniform for soldiers in those days was what appears to be underwear, plus a hat so that no one could complain that they were undermining family values. Ha! Just kidding! Actually, what she learned was that in those days, it was pure coincidence if a cannonball actually hit anything it was aimed at, which isn&rsquo;t surprising considering the lack of rifling, precision parts, and ballistics. The guides at the fort shot off three cannons; the closest they came to the target was about 50 feet, and that was only because the wind helped. I think the idea in early wars was just to put so much lead in the air that some of it was bound to hit <i>something;</i> preferably, but not necessarily, the enemy.</p>
 
@@ -50,27 +43,26 @@
 
   <p>For example, consider how Terje Mathisen doubled the speed of his word-counting program on a 486 simply by shuffling a couple of instructions.</p>
 
-  <h4 align="left"><a id="Heading3"></a>486 Pipeline Optimization</h4>
+  <h4 align="left" id="Heading3">486 Pipeline Optimization</h4>
 
   <p>I&rsquo;ve mentioned Terje Mathisen in my writings before. Terje is an assembly language programmer extraordinaire, and author of the incredibly fast public-domain word-counting program WC (which comes complete with source code; well worth a look, if you want to see what <i>really</i> fast code looks like). Terje&rsquo;s a regular participant in the ibm.pc/fast.code topic on Bix. In a thread titled &ldquo;486 Pipeline Optimization, or TANSTATFC (There Ain&rsquo;t No Such Thing As The Fastest Code),&rdquo; he detailed the following optimization to WC, perhaps the best example of 486 pipeline optimization I&rsquo;ve yet seen.</p>
 
   <p>Terje&rsquo;s inner loop originally looked something like the code in Listing 13.1. (I&rsquo;ve taken a few liberties for illustrative purposes.) Of course, Terje unrolls this loop a few times (128 times, to be exact). By the way, in Listing 13.1 you&rsquo;ll notice that Terje counts not only words but also lines, at a rate of three instructions for every two characters!</p>
 
-  <p><b>LISTING 13.1 L13-1.ASM</b></p><!-- CODE SNIP //-->
+  <p><b>LISTING 13.1 L13-1.ASM</b></p>
   <pre>
 mov di,[bp+OFFS]    ;get the next pair of characters
 mov bl,[di]         ;get the state value for the pair
 add dx,[bx+8000h]   ;increment word and line count
                     ; appropriately for the pair
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>Listing 13.1 looks as tight as it could be, with just two one-cycle instructions, one two-cycle instruction, and no branches. It <i>is</i> tight, but those three instructions actually take a minimum of 8 cycles to execute, as shown in Figure 13.1. The problem is that DI is loaded just before being used to address memory, and that costs 2 cycles because it interrupts the 486&rsquo;s internal instruction pipeline. Likewise, BX is loaded just before being used to address memory, costing another two cycles. Thus, this loop takes twice as long as cycle counts would seem to indicate, simply because two registers are loaded immediately before being used, disrupting the 486&rsquo;s pipeline.</p>
 
   <p>Listing 13.2 shows Terje&rsquo;s immediate response to these pipelining problems; he simply swapped the instructions that load DI and BL. This one change cut execution time per character pair from eight cycles to five cycles! The load of BL is now separated by one instruction from the use of BX to address memory, so the pipeline penalty is reduced from two cycles to one cycle. The load of DI is also separated by one instruction from the use of DI to address memory (remember, the loop is unrolled, so the last instruction is followed by the first instruction), but because the intervening instruction takes two cycles, there&rsquo;s no penalty at all.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/13-01.jpg',100,65 )"> --><img src="images/13-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/13-01.jpg',100,65)"> --><b>Figure 13.1</b></a>&nbsp;&nbsp;<i>Cycle-eaters in the original WC.</i></p>
+  <p><a id="Fig1"><img src="images/13-01.jpg" /><br />
+  <b>Figure 13.1</b></a>&nbsp;&nbsp;<i>Cycle-eaters in the original WC.</i></p>
 
   <table width="100%">
     <tr>
@@ -80,13 +72,13 @@ add dx,[bx+8000h]   ;increment word and line count
     </tr>
   </table>
 
-  <p><b>LISTING 13.2 L13-2.ASM</b></p><!-- CODE SNIP //-->
+  <p><b>LISTING 13.2 L13-2.ASM</b></p>
   <pre>
 mov bl,[di]         ;get the state value for the pair
 mov di,[bp+OFFS]    ;get the next pair of characters
 add dx,[bx+8000h]   ;increment word and line count
                     ; appropriately for the pair
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>At this point, Terje had nearly doubled the performance of this code simply by moving one instruction. (Note that swapping the instructions also made it necessary to preload DI at the start of the loop; Listing 13.2 is not exactly equivalent to Listing 13.1.) I&rsquo;ll let Terje describe his next optimization in his own words:</p>
 
@@ -107,10 +99,6 @@ add dx,[bx+8000h]   ;increment word and line count
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

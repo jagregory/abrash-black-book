@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Split Screens Save the Page Flipped Day</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Split Screens Save the Page Flipped Day</title>
   <meta name="chapter" content="44" />
   <meta name="pages" content="817-820" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,10 +30,10 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 44<br />
+  <h2 id="Heading1">Chapter 44<br />
   Split Screens Save the Page Flipped Day</h2>
 
-  <h3><a id="Heading2"></a>640x480 Page Flipped Animation in 64K...Almost</h3>
+  <h3 id="Heading2">640x480 Page Flipped Animation in 64K...Almost</h3>
 
   <p>Almost doesn&rsquo;t count, they say&mdash;at least in horseshoes and maybe a few other things. This is especially true in digital circles, where if you need 12 MB of hard disk to install something and you only have 10 MB left (a situation that seems to be some sort of eternal law) you&rsquo;re stuck.</p>
 
@@ -50,7 +43,7 @@
 
   <p>No horseshoes here.</p>
 
-  <h4 align="left"><a id="Heading3"></a>A Plethora of Challenges</h4>
+  <h4 align="left" id="Heading3">A Plethora of Challenges</h4>
 
   <p>In its simplest terms, computer animation consists of rapidly redrawing similar images at slightly differing locations, so that the eye interprets the successive images as a single object in motion over time. The fact that the world is an analog realm and the images displayed on a computer screen consist of discrete pixels updated at a maximum rate of about 70 Hz is irrelevant; your eye can interpret both real-world images and pixel patterns on the screen as objects in motion, and that&rsquo;s that.</p>
 
@@ -58,7 +51,7 @@
 
   <p>Another problem of animation is that the screen must update often enough so that motion appears continuous. A moving object that moves just once every second, shifting by hundreds of pixels each time it does move, will appear to jump, not to move smoothly. Therefore, there are two overriding requirements for smooth animation: 1) the bitmap must be updated quickly (once per frame&mdash;60 to 70 Hz&mdash;is ideal, although 30 Hz will do fine), and, 2) the process of redrawing the screen must be invisible to the user; only the end result should ever be seen. Both of these requirements are met by the program presented in Listings 44.1 and 44.2.</p>
 
-  <h4 align="left"><a id="Heading4"></a>A Page Flipping Animation Demonstration</h4>
+  <h4 align="left" id="Heading4">A Page Flipping Animation Demonstration</h4>
 
   <p>The listings taken together form a sample animation program, in which a single object bounces endlessly off other objects, with instructions and a count of bounces displayed at the bottom of the screen. I&rsquo;ll discuss various aspects of Listings 44.1 and 44.2 during the balance of this article. The listings are too complex and involve too much VGA and animation knowledge for for me to discuss it all in exhaustive detail (and I&rsquo;ve covered a lot of this stuff earlier in the book); instead, I&rsquo;ll cover the major elements, leaving it to you to explore the finer points&mdash;and, hope, to experiment with and expand on the code I&rsquo;ll provide.</p>
 
@@ -79,10 +72,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Aiming the 486</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Aiming the 486</title>
   <meta name="chapter" content="13" />
   <meta name="pages" content="254-256" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -39,7 +32,7 @@
 
   <p>On the 386, <b>ROR</b> was the only way to split a 32-bit register into two 16-bit registers. On the 486, however, <b>BSWAP</b> can not only do the job, but can do it better, because <b>BSWAP</b> executes in just one cycle. <b>BSWAP</b> has the added benefit of not affecting any flags, unlike <b>ROR</b>. With <b>BSWAP</b>-based code like that in Listing 13.6, the upper 16 bits of a register can be accessed with only 2 cycles of overhead and without altering any flags, making the technique of packing two 16-bit registers into one 32-bit register much more useful.</p>
 
-  <p><b>LISTING 13.6 L13-6.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 13.6 L13-6.ASM</b></p>
   <pre>
       mov    cx,[initialskip]
       bswap  ecx        ;put skip value in upper half of ECX
@@ -52,20 +45,20 @@ looptop:
       bswap  ecx        ;put loop count in CX
       dec    cx         ;count down loop
       jnz    looptop
-</pre><!-- END CODE //-->
+</pre>
 
-  <h3><a id="Heading5"></a>Pushing and Popping Memory</h3>
+  <h3 id="Heading5">Pushing and Popping Memory</h3>
 
-  <p>Pushing or popping a memory location, as in <b>PUSH WORD PTR [BX]</b> or <b>POP [MemVar]</b>, is a compact, easy way to get a value onto or off of the stack, especially when pushing parameters for calling a C-compatible function. However, on a 486, these are unattractive instructions from a performance perspective. Pushing a memory location takes four cycles; by contrast, loading a memory location into a register takes only one cycle, and pushing a register takes just 1 more cycle, for a total of two cycles. Therefore,</p><!-- CODE SNIP //-->
+  <p>Pushing or popping a memory location, as in <b>PUSH WORD PTR [BX]</b> or <b>POP [MemVar]</b>, is a compact, easy way to get a value onto or off of the stack, especially when pushing parameters for calling a C-compatible function. However, on a 486, these are unattractive instructions from a performance perspective. Pushing a memory location takes four cycles; by contrast, loading a memory location into a register takes only one cycle, and pushing a register takes just 1 more cycle, for a total of two cycles. Therefore,</p>
   <pre>
 mov   ax,[bx]
 push  ax
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>is twice as fast as</p><!-- CODE SNIP //-->
+  <p>is twice as fast as</p>
   <pre>
 push   word ptr [bx]
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>and the only cost is that the previous contents of AX are destroyed.</p>
 
@@ -81,16 +74,16 @@ push   word ptr [bx]
     </tr>
   </table>
 
-  <h3><a id="Heading6"></a>Optimal 1-Bit Shifts and Rotates</h3>
+  <h3 id="Heading6">Optimal 1-Bit Shifts and Rotates</h3>
 
   <p>On a 486, the n-bit forms of the shift and rotate instructions&mdash;as in <b>ROR AX,2</b> and <b>SHL BX,9</b>&mdash;are 2-cycle instructions, but the 1-bit forms&mdash;as in <b>ROR AX,1</b> and <b>SHL BX,1&mdash;</b>are <i>3-cycle</i> instructions. Go figure.</p>
 
-  <p>Assemblers default to the 1-bit instruction for 1-bit shifts and rotates. That&rsquo;s not unreasonable since the 1-bit form is a byte shorter and is just as fast as the n-bit forms on a 386 and faster on a 286, and the n-bit form doesn&rsquo;t even exist on an 8088. In a really critical loop, however, it might be worth hand-assembling the n-bit form of a single-bit shift or rotate in order to save that cycle. The easiest way to do this is to assemble a 2-bit form of the desired instruction, as in <b>SHL AX,2,</b> then look at the hex codes that the assembler generates and use <b>DB</b> to insert them in your program code, with the value two replaced with the value one. For example, you could determine that <b>SHL AX,2</b> assembles to the bytes 0C1H 0E0H 002H, either by looking at the disassembly in a debugger or by having the assembler generate a listing file. You could then insert the n-bit version of <b>SHL AX,1</b> in your code as follows:</p><!-- CODE SNIP //-->
+  <p>Assemblers default to the 1-bit instruction for 1-bit shifts and rotates. That&rsquo;s not unreasonable since the 1-bit form is a byte shorter and is just as fast as the n-bit forms on a 386 and faster on a 286, and the n-bit form doesn&rsquo;t even exist on an 8088. In a really critical loop, however, it might be worth hand-assembling the n-bit form of a single-bit shift or rotate in order to save that cycle. The easiest way to do this is to assemble a 2-bit form of the desired instruction, as in <b>SHL AX,2,</b> then look at the hex codes that the assembler generates and use <b>DB</b> to insert them in your program code, with the value two replaced with the value one. For example, you could determine that <b>SHL AX,2</b> assembles to the bytes 0C1H 0E0H 002H, either by looking at the disassembly in a debugger or by having the assembler generate a listing file. You could then insert the n-bit version of <b>SHL AX,1</b> in your code as follows:</p>
   <pre>
 mov   ax,1
 db    0c1h, 0e0h, 001h
 mov   dx,ax
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>At the end of this sequence, DX will contain 2, and the fast n-bit version of <b>SHL AX,1</b> will have executed. If you use this approach, I&rsquo;d recommend using a macro, rather than sticking DBs in the middle of your code.</p>
 
@@ -113,10 +106,6 @@ mov   dx,ax
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

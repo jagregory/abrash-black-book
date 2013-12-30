@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Unleashing the Pentium's</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Unleashing the Pentium's</title>
   <meta name="chapter" content="21" />
   <meta name="pages" content="409-411" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p><b>LISTING 21.4 L21-4.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 21.4 L21-4.ASM</b></p>
   <pre>
 ; Calculates TCP/IP (16-bit carry-wrapping) checksum for buffer
 ;  starting at ESI, of length ECX words.
@@ -69,11 +62,11 @@ ckloopend:
         shr     edx,16          ; into a 16-bit checksum
         add     ax,dx
         adc     eax,0
-</pre><!-- END CODE //-->
+</pre>
 
   <p>Listing 21.5 improves upon Listing 21.4 by processing 2 dwords per loop, thereby bringing the time per checksummed word down to exactly 1 cycle. Listing 21.5 basically does nothing but unroll Listing 21.4&rsquo;s loop one time, demonstrating that the venerable optimization technique of loop unrolling still has some life left in it on the Pentium. The cost for this is, as usual, increased code size and complexity, and the use of more registers.</p>
 
-  <p><b>LISTING 21.5 L21-5.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 21.5 L21-5.ASM</b></p>
   <pre>
 ; Calculates TCP/IP (16-bit carry-wrapping) checksum for buffer
 ;  starting at ESI, of length ECX words.
@@ -115,13 +108,13 @@ ckloopdone:
         shr     edx,16          ; into a 16-bit checksum
         add     ax,dx
         adc     eax,0
-</pre><!-- END CODE //-->
+</pre>
 
   <p>Listing 21.5 is undeniably intricate code, and not the sort of thing one would choose to write as a matter of course. On the other hand, it&rsquo;s five times as fast as the tight, seemingly-speedy loop in Listing 21.1 (and six times as fast as Listing 21.1 would have been if the prefix byte had behaved as expected). That&rsquo;s an awful lot of speed to wring out of a five-instruction loop, and the TCP/IP checksum is, in fact, used by network software, an area in which a five-times speedup might make a significant difference in overall system performance.</p>
 
   <p>I don&rsquo;t claim that Listing 21.5 is the fastest possible way to do a TCP/IP checksum on a Pentium; in fact, it isn&rsquo;t. Unrolling the loop one more time, together with a trick of Terje&rsquo;s that uses <b>LEA</b> to advance ESI (neither <b>LEA</b> nor <b>DEC</b> affects the carry flag, allowing Terje to add the carry from the previous loop iteration into the next iteration&rsquo;s checksum via <b>ADC</b>), produces a version that&rsquo;s a full 33 percent faster. Nonetheless, Listings 21.1 through 21.5 illustrate many of the techniques and considerations in Pentium optimization. Hand-optimization for the Pentium isn&rsquo;t simple, and requires careful measurement to check the efficacy of your optimizations, so reserve it for when you really, really need it&mdash;but when you need it, you need it <i>bad</i>.</p>
 
-  <h4 align="left"><a id="Heading8"></a>A Quick Note on the 386 and 486</h4>
+  <h4 align="left" id="Heading8">A Quick Note on the 386 and 486</h4>
 
   <p>I&rsquo;ve mentioned that Pentium-optimized code does fine on the 486, but not always so well on the 386. On a 486, Listing 21.1 runs at 9 cycles per checksummed word, and Listing 21.5 runs at 2.5 cycles per checksummed word, a healthy 3.6-times speedup. On a 386, Listing 21.1 runs at 22 cycles per word; Listing 21.5 runs at 7 cycles per word, a 3.1-times speedup. As is often the case, Pentium optimization helped the other processors, but not as much as it helped the Pentium, and less on the 386 than on the 486.</p>
 
@@ -142,10 +135,6 @@ ckloopdone:
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pentium Rules</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pentium Rules</title>
   <meta name="chapter" content="20" />
   <meta name="pages" content="390-393" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h3><a id="Heading5"></a>Lockstep Execution</h3>
+  <h3 id="Heading5">Lockstep Execution</h3>
 
   <p>You may wonder why anyone would bother breaking <b>ADD [MemVar],EAX</b> into three instructions, given that this instruction can go through either pipe with equal ease. The answer is that while the memory-accessing instructions other than <b>MOV, PUSH</b>, and <b>POP</b> listed in Table 20.1 (that is, <b>INC/DEC [<i>mem</i>], ADD/SUB/XOR/AND/OR/CMP/ADC/SBB <i>reg</i>,[<i>mem</i>]</b>, and <b>ADD/SUB/XOR/AND/OR/CMP/ADC/SBB [<i>mem</i>],<i>reg/immed</i></b>) can be paired, they do not provide the 100 percent overlap that we seek. If you look at Tables 20.1 and 20.2, you will see that instructions taking from 1 to 3 cycles can pair. However, any pair of instructions goes through the two pipes in lockstep. This means, for example, that if <b>ADD [EBX],EDX</b> is going through the U-pipe, and <b>INC EAX</b> is going through the V-pipe, the V-pipe will be idle for 2 of the 3 cycles that the U-pipe takes to execute its instruction, as shown in Figure 20.4. Out of the theoretical 6 cycles of work that can be done during this time, we actually get only 4 cycles of work, or 67 percent utilization. Even though these instructions pair, then, this sequence fails to make maximum use of the Pentium&rsquo;s horsepower.</p>
 
@@ -51,9 +44,8 @@
     </tr>
   </table>
 
-  <p><a id="Fig4"><!-- </A><A HREF="javascript:displayWindow('images/20-04.jpg',411,224 )"> --><img src="images/20-04.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/20-04.jpg',411,224)"> --><b>Figure 20.4</b></a>&nbsp;&nbsp;<i>Lockstep execution and idle time in the V-pipe.</i></p>
+  <p><a id="Fig4"><img src="images/20-04.jpg" /><br />
+  <b>Figure 20.4</b></a>&nbsp;&nbsp;<i>Lockstep execution and idle time in the V-pipe.</i></p>
 
   <p>Here&rsquo;s why. The Pentium is fully capable of handling instructions that use memory operands in either pipe, or, if necessary, in both pipes at once. Each pipe has its own write FIFO, which buffers the last few writes and takes care of writing the data out while the Pentium continues processing. The Pentium also has a write-back internal data cache, so data that is frequently changed doesn&rsquo;t have to be written to external memory (which is much slower than the cache) very often. This combination means that unless you write large blocks of data at a high speed, the Pentium should be able to keep up with both pipes&rsquo; memory writes without stalling execution.</p>
 
@@ -61,35 +53,34 @@
 
   <p>Normally, you won&rsquo;t pay close attention to which of the eight dword banks your paired memory accesses fall in&mdash;that&rsquo;s just too much work&mdash;but you might want to watch out for simultaneously read addresses that have the same values for address</p>
 
-  <p><a id="Fig5"><!-- </A><A HREF="javascript:displayWindow('images/20-05.jpg',409,162 )"> --><img src="images/20-05.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/20-05.jpg',409,162)"> --><b>Figure 20.5</b></a>&nbsp;&nbsp;<i>The Pentium&rsquo;s eight bank data cache.</i></p>
+  <p><a id="Fig5"><img src="images/20-05.jpg" /><br />
+  <b>Figure 20.5</b></a>&nbsp;&nbsp;<i>The Pentium&rsquo;s eight bank data cache.</i></p>
 
-  <p>bits 2, 3, and 4 (fall in the same bank) in tight loops, and you should also avoid sequences like</p><!-- CODE SNIP //-->
+  <p>bits 2, 3, and 4 (fall in the same bank) in tight loops, and you should also avoid sequences like</p>
   <pre>
 mov  bl,[esi]
 mov  bh,[esi+1]
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>because both operands will generally be in the same bank. An alternative is to place another instruction between the two instructions that access the same bank, as in this sequence:</p><!-- CODE SNIP //-->
+  <p>because both operands will generally be in the same bank. An alternative is to place another instruction between the two instructions that access the same bank, as in this sequence:</p>
   <pre>
 mov  bl,[esi]
 mov  edi,edx
 mov  bh,[esi+1]
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>By the way, the reason a code sequence that takes two instructions to load a single word is attractive in a 32-bit segment is because it takes only one cycle when the two instructions can be paired with other instructions; by contrast, the obvious way of loading BX</p><!-- CODE SNIP //-->
+  <p>By the way, the reason a code sequence that takes two instructions to load a single word is attractive in a 32-bit segment is because it takes only one cycle when the two instructions can be paired with other instructions; by contrast, the obvious way of loading BX</p>
   <pre>
 mov bx,[esi]
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>takes 1.5 to two cycles because the size prefix can&rsquo;t pair, as described below. This is yet another example of how different Pentium optimization can be from everything we&rsquo;ve learned about its predecessors.</p>
 
-  <p>The problem with pairing non-single-cycle instructions arises when a pipe executes an instruction other than <b>MOV</b> that has an explicit memory operand. (I&rsquo;ll call these <i>complex memory instructions</i>. They&rsquo;re the only pairable instructions, other than branches, that take more than one cycle.) We&rsquo;ve already seen that, because instructions go through the pipes in lockstep, if one pipe executes a complex memory instruction such as <b>ADD EAX,[EBX]</b> while the other pipe executes a single-cycle instruction, the pipe with the faster instruction will sit idle for part of the time, wasting cycles. You might think that if both pipes execute complex instructions of the same length, then neither would lie idle, but that turns out to not always be the case. Two two-cycle instructions (instructions with register destination operands) can indeed pair and execute in two cycles, so it&rsquo;s okay to pair two instructions such as these:</p><!-- CODE SNIP //-->
+  <p>The problem with pairing non-single-cycle instructions arises when a pipe executes an instruction other than <b>MOV</b> that has an explicit memory operand. (I&rsquo;ll call these <i>complex memory instructions</i>. They&rsquo;re the only pairable instructions, other than branches, that take more than one cycle.) We&rsquo;ve already seen that, because instructions go through the pipes in lockstep, if one pipe executes a complex memory instruction such as <b>ADD EAX,[EBX]</b> while the other pipe executes a single-cycle instruction, the pipe with the faster instruction will sit idle for part of the time, wasting cycles. You might think that if both pipes execute complex instructions of the same length, then neither would lie idle, but that turns out to not always be the case. Two two-cycle instructions (instructions with register destination operands) can indeed pair and execute in two cycles, so it&rsquo;s okay to pair two instructions such as these:</p>
   <pre>
 add esi,[SourceSkip]        ;U-pipe cycles 1 and 2
 add edi,[DestinationSkip]   ;V-pipe cycles 1 and 2
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p><br /></p>
 
@@ -108,10 +99,6 @@ add edi,[DestinationSkip]   ;V-pipe cycles 1 and 2
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

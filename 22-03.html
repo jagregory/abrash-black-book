@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Zenning and the Flexible Mind</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Zenning and the Flexible Mind</title>
   <meta name="chapter" content="22" />
   <meta name="pages" content="419-420" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p><b>LISTING 22.5 L22-5.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 22.5 L22-5.ASM</b></p>
   <pre>
 ClearS         proc near
       push     bp                       ;save caller&rsquo;s BP
@@ -56,13 +49,13 @@ Bye:
       pop      bp                       ;restore caller&rsquo;s BP
       ret      EndMrk-RetAddr-2         ;return, clearing the parms from the stack
 ClearS         endp
-</pre><!-- END CODE //-->
+</pre>
 
   <p>(We could get rid of yet another instruction by having the calling code pack both the attribute and the fill value into the same word, but that&rsquo;s not part of the specification for this particular routine.)</p>
 
   <p>Another nifty instruction-rearrangement trick saves 6 more bytes. <b>ClearS</b> checks to see whether the far pointer is null (zero) at the start of the routine...then loads and uses that same far pointer later on. Let&rsquo;s get that pointer into registers and keep it there; that way we can check to see whether it&rsquo;s null with a single comparison, and can use it later without having to reload it from memory. This technique is shown in Listing 22.6.</p>
 
-  <p><b>LISTING 22.6 L22-6.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 22.6 L22-6.ASM</b></p>
   <pre>
 ClearS         proc near
       push     bp                       ;save caller&rsquo;s BP
@@ -80,7 +73,7 @@ Bye:
       pop      bp                       ;restore caller&rsquo;s BP
       ret      EndMrk-RetAddr-2         ;return, clearing the parms from the stack
 ClearS         endp
-</pre><!-- END CODE //-->
+</pre>
 
   <p>Well. Now we&rsquo;re down to 28 bytes, having reduced the size of this subroutine by nearly 50 percent. Only 13 instructions remain. Realistically, how much smaller can we make this code?</p>
 
@@ -96,7 +89,7 @@ ClearS         endp
 
   <p>With that problem dealt with, Listing 22.7 shows the Zenned version of <b>ClearS</b>.</p>
 
-  <p><b>LISTING 22.7 L22-7.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 22.7 L22-7.ASM</b></p>
   <pre>
 ClearS         procnear
       pop      dx                  ;get the return address
@@ -114,7 +107,7 @@ ClearS         procnear
 Bye:
       jmp      dx                  ;return to the calling code
 ClearS         endp
-</pre><!-- END CODE //-->
+</pre>
 
   <p>At long last, we&rsquo;re down to the bare metal. This version of <b>ClearS</b> is just 19 bytes long. That&rsquo;s just 37 percent as long as the original version, <i>without any change whatsoever in the functionality that <b>ClearS</b> makes available to the calling code</i>. The code is bound to run a bit faster too, given that there are far fewer instruction bytes and fewer memory accesses.</p>
 
@@ -137,10 +130,6 @@ ClearS         endp
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

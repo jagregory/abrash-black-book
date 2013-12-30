@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Assume Nothing</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Assume Nothing</title>
   <meta name="chapter" content="03" />
   <meta name="pages" content="048-050" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h3><a id="Heading10"></a>Notes on the Zen Timer</h3>
+  <h3 id="Heading10">Notes on the Zen Timer</h3>
 
   <p>The Zen timer subroutines are designed to be near-called from assembly language code running in the public segment <b>Code</b>. The Zen timer subroutines can, however, be called from any assembly or high-level language code that generates OBJ files that are compatible with the Microsoft linker, simply by modifying the segment that the timer code runs in to match the segment used by the code being timed, or by changing the Zen timer routines to far procedures and making far calls to the Zen timer code from the code being timed, as discussed at the end of this chapter. All three subroutines preserve all registers and all flags except the interrupt flag, so calls to these routines are transparent to the calling code.</p>
 
@@ -51,11 +44,11 @@
 
   <p>Not that this variation between models makes the Zen timer one whit less useful&mdash;quite the contrary. The Zen timer is an excellent tool for evaluating code performance over the entire spectrum of PC-compatible computers.</p>
 
-  <h3><a id="Heading11"></a>A Sample Use of the Zen Timer</h3>
+  <h3 id="Heading11">A Sample Use of the Zen Timer</h3>
 
   <p>Listing 3.2 shows a test-bed program for measuring code performance with the Zen timer. This program sets DS equal to CS (for reasons we&rsquo;ll discuss shortly), includes the code to be measured from the file TESTCODE, and calls <b>ZTimerReport</b> to display the timing results. Consequently, the code being measured should be in the file TESTCODE, and should contain calls to <b>ZTimerOn</b> and <b>ZTimerOff</b> .</p>
 
-  <p><b>LISTING 3.2 PZTEST.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 3.2 PZTEST.ASM</b></p>
   <pre>
 ; Program to measure performance of code that takes less than
 ; 54 ms to execute. (PZTEST.ASM)
@@ -94,11 +87,11 @@ Start proc near
 Start endp
 Code  ends
       end  Start
-</pre><!-- END CODE //-->
+</pre>
 
   <p>Listing 3.3 shows some sample code to be timed. This listing measures the time required to execute 1,000 loads of AL from the memory variable <b>MemVar</b> . Note that Listing 3.3 calls <b>ZTimerOn</b> to start timing, performs 1,000 <b>MOV</b> instructions in a row, and calls <b>ZTimerOff</b> to end timing. When Listing 3.2 is named TESTCODE and included by Listing 3.3, Listing 3.2 calls <b>ZTimerReport</b> to display the execution time after the code in Listing 3.3 has been run.</p>
 
-  <p><b>LISTING 3.3 LST3-3.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 3.3 LST3-3.ASM</b></p>
   <pre>
 ; Test file;
 ; Measures the performance of 1,000 loads of AL from
@@ -124,7 +117,7 @@ Skip:
 ; Stop timing.
 ;
     call  ZTimerOff
-</pre><!-- END CODE //-->
+</pre>
 
   <p>It&rsquo;s worth noting that Listing 3.3 begins by jumping around the memory variable <b>MemVar</b>. This approach lets us avoid reproducing Listing 3.2 in its entirety for each code fragment we want to measure; by defining any needed data right in the code segment and jumping around that data, each listing becomes self-contained and can be plugged directly into Listing 3.2 as TESTCODE. Listing 3.2 sets DS equal to CS before doing anything else precisely so that data can be embedded in code fragments being timed. Note that only after the initial jump is performed in Listing 3.3 is the Zen timer started, since we don&rsquo;t want to include the execution time of start-up code in the timing interval. That&rsquo;s why the calls to <b>ZTimerOn</b> and <b>ZTimerOff</b> are in TESTCODE, not in PZTEST.ASM; this way, we have full control over which portion of TESTCODE is timed, and we can keep set-up code and the like out of the timing interval.</p>
 
@@ -145,10 +138,6 @@ Skip:
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

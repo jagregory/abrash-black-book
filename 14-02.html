@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Boyer-Moore String Searching</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Boyer-Moore String Searching</title>
   <meta name="chapter" content="14" />
   <meta name="pages" content="263-267" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h3><a id="Heading4"></a>The Boyer-Moore Algorithm</h3>
+  <h3 id="Heading4">The Boyer-Moore Algorithm</h3>
 
   <p>All our <i>a priori</i> knowledge of string searching is stated above, but there&rsquo;s another sort of knowledge&mdash;knowledge that&rsquo;s generated dynamically. As we search through the buffer, we acquire information each time we check for a match. One sort of information that we acquire is based on partial matches; we can often skip ahead after partial matches because (take a deep breath!) by partially matching, we have already implicitly done a comparison of the partially matched buffer characters with all possible pattern start locations that overlap those partially-matched bytes.</p>
 
@@ -59,25 +52,22 @@
 
   <p>Figure 14.1 illustrates the operation of a Boyer-Moore search when the rightcharacter of the search pattern (which is the first character that&rsquo;s compared at each location because we&rsquo;re comparing backwards) mismatches with a buffer character that appears nowhere in the pattern. Figure 14.2 illustrates the operation of a partial match when the mismatch occurs with a character that&rsquo;s not a pattern member. In this case, we can only skip ahead past the mismatch location, resulting in an advance of fewer bytes than the pattern length, and potentially as little as the same single byte distance by which the standard search approach advances.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/14-01.jpg',413,306 )"> --><img src="images/14-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/14-01.jpg',413,306)"> --><b>Figure 14.1</b></a>&nbsp;&nbsp;<i>Mismatch on first character checked.</i></p>
+  <p><a id="Fig1"><img src="images/14-01.jpg" /><br />
+  <b>Figure 14.1</b></a>&nbsp;&nbsp;<i>Mismatch on first character checked.</i></p>
 
   <p>What if the mismatch occurs with a buffer character that <i>does</i> occur in the pattern? Then we can&rsquo;t skip past the mismatch location, but we can skip to whatever location aligns the rightmost occurrence of that character in the pattern with the mismatch location, as shown in Figure 14.3.</p>
 
   <p>Basically, we exercise our right as members of a free society to compare strings in whichever direction we choose, and we choose to do so right to left, rather than the more intuitive left to right. Whenever we find a mismatch, we see what we can learn from the buffer character that failed to match the pattern. Imagine that we move the pattern to the right across the mismatch location until we find a start location that the mismatch does not eliminate as a possible match for the pattern. If the mismatch character doesn&rsquo;t appear in the pattern, the pattern can move clear past the mismatch location. Otherwise, the pattern moves until a matching pattern byte lies atop the mismatch. That&rsquo;s all there is to it!</p>
 
-  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/14-02.jpg',406,306 )"> --><img src="images/14-02.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/14-02.jpg',406,306)"> --><b>Figure 14.2</b></a>&nbsp;&nbsp;<i>Mismatch on third character checked.</i></p>
+  <p><a id="Fig2"><img src="images/14-02.jpg" /><br />
+  <b>Figure 14.2</b></a>&nbsp;&nbsp;<i>Mismatch on third character checked.</i></p>
 
-  <h3><a id="Heading5"></a>Boyer-Moore: The Good and the Bad</h3>
+  <h3 id="Heading5">Boyer-Moore: The Good and the Bad</h3>
 
   <p>The worst case for this version of Boyer-Moore is that the pattern mismatches on the leftmost character&mdash;the last character compared&mdash;every time. Again, not very likely, but it is true that this version of Boyer-Moore performs better as there are fewer and shorter partial matches; ideally, the rightmost character would never match until the full match location was reached. Longer patterns, which make for longer skips, help Boyer-Moore, as does a long distance to the match location, which helps diffuse the overhead of building the table of distances to skip ahead on all the possible mismatch values.</p>
 
-  <p><a id="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/14-03.jpg',407,304 )"> --><img src="images/14-03.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/14-03.jpg',407,304)"> --><b>Figure 14.3</b></a>&nbsp;&nbsp;<i>Mismatch on character that appears in pattern.</i></p>
+  <p><a id="Fig3"><img src="images/14-03.jpg" /><br />
+  <b>Figure 14.3</b></a>&nbsp;&nbsp;<i>Mismatch on character that appears in pattern.</i></p>
 
   <p>The best case for Boyer-Moore is good indeed: About N/M comparisons are required, where N is the buffer length and M is the pattern length. This reflects the ability of Boyer-Moore to skip ahead by a full pattern length on a complete mismatch.</p>
 
@@ -98,10 +88,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

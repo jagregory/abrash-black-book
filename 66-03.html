@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Quake's Hidden-Surface Removal</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Quake's Hidden-Surface Removal</title>
   <meta name="chapter" content="66" />
   <meta name="pages" content="1217-1220" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -45,19 +38,17 @@
 
   <p>Both span-sorting and edge-sorting work well, and both have been employed successfully in commercial projects. We&rsquo;ve chosen to use edge-sorting in Quake partly because it seems inherently more efficient, with excellent horizontal coherence that makes for minimal time spent sorting, in contrast with the potentially costly sorting into linked lists that span-sorting can involve. A more important reason, though, is that with edge-sorting we&rsquo;re able to share edges between adjacent polygons, and that cuts the work involved in sorting, clipping, and rasterizing edges nearly in half, while also shrinking the world database quite a bit due to the sharing.</p>
 
-  <p><a id="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/66-03.jpg',404,432 )"> --><img src="images/66-03.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/66-03.jpg',404,432)"> --><b>Figure 66.3</b></a>&nbsp;&nbsp;<i>Activating a polygon when a leading edge is encountered in the AEL.</i></p>
+  <p><a id="Fig3"><img src="images/66-03.jpg" /><br />
+  <b>Figure 66.3</b></a>&nbsp;&nbsp;<i>Activating a polygon when a leading edge is encountered in the AEL.</i></p>
 
   <p>One final advantage of edge-sorting is that it makes no distinction between convex and concave polygons. That&rsquo;s not an important consideration for most graphics engines, but in Quake, edge clipping, transformation, projection, and sorting have become a major bottleneck, so we&rsquo;re doing everything we can to get the polygon and edge counts down, and concave polygons help a lot in that regard. While it&rsquo;s possible to handle concave polygons with span-sorting, that can involve significant performance penalties.</p>
 
-  <p><a id="Fig4"><!-- </A><A HREF="javascript:displayWindow('images/66-04.jpg',407,395 )"> --><img src="images/66-04.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/66-04.jpg',407,395)"> --><b>Figure 66.4</b></a>&nbsp;&nbsp;<i>Deactivating a polygon when a trailing edge is encountered in the AEL.</i></p>
+  <p><a id="Fig4"><img src="images/66-04.jpg" /><br />
+  <b>Figure 66.4</b></a>&nbsp;&nbsp;<i>Deactivating a polygon when a trailing edge is encountered in the AEL.</i></p>
 
   <p>Nonetheless, there&rsquo;s no cut-and-dried answer as to which approach is better. In the end, span-sorting and edge-sorting amount to the same functionality, and the choice between them is a matter of whatever you feel most comfortable with. In Chapter 67, I&rsquo;ll go into considerable detail about edge-sorting, complete with a full implementation. I&rsquo;m going the spend the rest of this chapter laying the foundation for Chapter 67 by discussing sorting keys and 1/z calculation. In the process, I&rsquo;m going to have to make a few forward references to aspects of edge-sorting that I haven&rsquo;t yet covered in detail; my apologies, but it&rsquo;s unavoidable, and all should become clear by the end of Chapter 67.</p>
 
-  <h3><a id="Heading9"></a>Edge-Sorting Keys</h3>
+  <h3 id="Heading9">Edge-Sorting Keys</h3>
 
   <p>Now that we know we&rsquo;re going to sort edges, using them to emit spans for the polygons nearest the viewer, the question becomes: How can we tell which polygons are nearest? Ideally, we&rsquo;d just store a sorting key in each polygon, and whenever a new edge came along, we&rsquo;d compare its surface&rsquo;s key to the keys of other currently active polygons, and could easily tell which polygon was nearest.</p>
 
@@ -86,10 +77,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Assume Nothing</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Assume Nothing</title>
   <meta name="chapter" content="03" />
   <meta name="pages" content="045-048" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -49,7 +42,7 @@
 
   <p>Nonetheless, it&rsquo;s a good idea to reboot your computer at the end of each session with the Zen timer in order to make sure that the system clock is correct.</p>
 
-  <h3><a id="Heading8"></a>Stopping the Zen Timer</h3>
+  <h3 id="Heading8">Stopping the Zen Timer</h3>
 
   <p>At some point after <b>ZTimerOn</b> is called, <b>ZTimerOff</b> must always be called to mark the end of the timing interval. <b>ZTimerOff</b> saves the context of the calling program, latches and reads the timer 0 count, converts that count from the countdown value that the timer maintains to the number of counts elapsed since <b>ZTimerOn</b> was called, and stores the result. Immediately after latching the timer 0 count&mdash;and before enabling interrupts&mdash;<b>ZTimerOff</b> checks the 8259 interrupt controller to see if there is a pending timer interrupt, setting a flag to mark that the timer overflowed if there is indeed a pending timer interrupt.</p>
 
@@ -59,7 +52,7 @@
 
   <p>One interesting aspect of <b>ZTimerOff</b> is the manner in which timer 0 is stopped in order to read the timer count. We don&rsquo;t actually have to stop timer 0 to read the count; the 8253 provides a special latched read feature for the specific purpose of reading the count while a time is running. (That&rsquo;s a good thing, too; we&rsquo;ve no documented way to stop timer 0 if we wanted to, since its gate input isn&rsquo;t connected. Later in this chapter, though, we&rsquo;ll see that timer 0 can be stopped after all.) We simply tell the 8253 to latch the current count, and the 8253 does so without breaking stride.</p>
 
-  <h3><a id="Heading9"></a>Reporting Timing Results</h3>
+  <h3 id="Heading9">Reporting Timing Results</h3>
 
   <p><b>ZTimerReport</b> may be called to display timing results at any time after both <b>ZTimerOn</b> and <b>ZTimerOff</b> have been called. <b>ZTimerReport</b> first checks to see whether the timer overflowed (counted down to 0 and turned over) before <b>ZTimerOff</b> was called; if overflow did occur, <b>ZTimerOff</b> prints a message to that effect and returns. Otherwise, <b>ZTimerReport</b> subtracts the reference count (representing the overhead of the Zen timer) from the count measured between the calls to <b>ZTimerOn</b> and <b>ZTimerOff</b>, converts the result from timer counts to microseconds, and prints the resulting time in microseconds to the standard output.</p>
 
@@ -94,10 +87,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

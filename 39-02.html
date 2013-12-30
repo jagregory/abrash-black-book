@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Fast Convex Polygons</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Fast Convex Polygons</title>
   <meta name="chapter" content="39" />
   <meta name="pages" content="727-730" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -201,7 +194,7 @@
     </tr>
   </table>
 
-  <p><b>LISTING 39.1 L39-1.C</b></p><!-- CODE //-->
+  <p><b>LISTING 39.1 L39-1.C</b></p>
   <pre>
 /* Draws all pixels in the list of horizontal lines passed in, in
    mode 13h, the VGA&rsquo;s 320x200 256-color mode. Uses memset to fill
@@ -242,13 +235,13 @@ void DrawHorizontalLineList(struct HLineList * HLineListPtr,
       ScreenPtr += SCREEN_WIDTH; /* point to next scan line start */
    }
 }
-</pre><!-- END CODE //-->
+</pre>
 
   <p>At this point, I&rsquo;d like to mention that benchmarks are notoriously unreliable; the results in Table 39.1 are accurate <i>only</i> for the test program, and only when running on a particular system. Results could be vastly different if smaller, larger, or more complex polygons were drawn, or if a faster or slower computer/VGA combination were used. These factors notwithstanding, the test program does fill a variety of polygons of varying complexity sized from large to small and in between, and certainly the order of magnitude difference between Listing 39.1 and the old version of <b>DrawHorizontalLineList</b> is a clear indication of which code is superior.</p>
 
   <p>Anyway, Listing 39.1 has the desired effect of vastly improving drawing time. There are cycles yet to be had in the drawing code, but as tracing polygon edges now takes 92 percent of the polygon filling time, it&rsquo;s logical to optimize the tracing code next.</p>
 
-  <h4 align="left"><a id="Heading5"></a>Fast Edge Tracing</h4>
+  <h4 align="left" id="Heading5">Fast Edge Tracing</h4>
 
   <p>There&rsquo;s no secret as to why last chapter&rsquo;s <b>ScanEdge</b> was so slow: It used floating point calculations. One secret of fast graphics is using integer or fixed-point calculations, instead. (Sure, the floating point code would run faster if a math coprocessor were installed, but it would still be slower than the alternatives; besides, why require a math coprocessor when you don&rsquo;t have to?) Both integer and fixed-point calculations are fast. In many cases, fixed-point is faster, but integer calculations have one tremendous virtue: They&rsquo;re completely accurate. The tiny imprecision inherent in either fixed or floating-point calculations can result in occasional pixels being one position off from their proper location. This is no great tragedy, but after going to so much trouble to ensure that polygons don&rsquo;t overlap at common edges, why not get it exactly right?</p>
 
@@ -279,10 +272,6 @@ void DrawHorizontalLineList(struct HLineList * HLineListPtr,
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

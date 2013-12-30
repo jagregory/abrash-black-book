@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: VGA Write Mode</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: VGA Write Mode</title>
   <meta name="chapter" content="26" />
   <meta name="pages" content="481-484" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,16 +30,16 @@
 
   <p><br /></p>
 
-  <h2><a id="Heading1"></a>Chapter 26<br />
+  <h2 id="Heading1">Chapter 26<br />
   VGA Write Mode 3</h2>
 
-  <h3><a id="Heading2"></a>The Write Mode That Grows on You</h3>
+  <h3 id="Heading2">The Write Mode That Grows on You</h3>
 
   <p>Over the last three chapters, we&rsquo;ve covered the VGA&rsquo;s write path from stem to stern&mdash;with one exception. Thus far, we&rsquo;ve only looked at how writes work in write mode 0, the straightforward, workhorse mode in which each byte that the CPU writes to display memory fans out across the four planes. (Actually, we also took a quick look at write mode 1, in which the latches are always copied unmodified, but since exactly the same result can be achieved by setting the Bit Mask register to 0 in write mode 0, write mode 1 is of little real significance.)</p>
 
   <p>Write mode 0 is a very useful mode, but some of VGA&rsquo;s most interesting capabilities involve the two write modes that we have yet to examine: write mode 1, and, especially, write mode 3. We&rsquo;ll get to write mode 1 in the next chapter, but right now I want to focus on write mode 3, which can be confusing at first, but turns out to be quite a bit more powerful than one might initially think.</p>
 
-  <h3><a id="Heading3"></a>A Mode Born in Strangeness</h3>
+  <h3 id="Heading3">A Mode Born in Strangeness</h3>
 
   <p>Write mode 3 is strange indeed, and its use is not immediately obvious. The first time I encountered write mode 3, I understood immediately how it functioned, but could think of very few useful applications for it. As time passed, and as I came to understand the atrocious performance characteristics of <b>OUT</b> instructions, and the importance of text and pattern drawing as well, write mode 3 grew considerably in my estimation. In fact, my esteem for this mode ultimately reached the point where in the last major chunk of 16-color graphics code I wrote, write mode 3 was used more than write mode 0 overall, excluding simple pixel copying. So write mode 3 is well worth using, but to use it you must first understand it. Here&rsquo;s how it works.</p>
 
@@ -73,10 +66,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

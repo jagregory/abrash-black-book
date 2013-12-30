@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Reading VGA Memory</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Reading VGA Memory</title>
   <meta name="chapter" content="28" />
   <meta name="pages" content="530-531" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -49,7 +42,7 @@
     </tr>
   </table>
 
-  <h3><a id="Heading4"></a>Read Mode 1</h3>
+  <h3 id="Heading4">Read Mode 1</h3>
 
   <p>Read mode 0 is the workhorse read mode, but it&rsquo;s got an annoying limitation: Whenever you want to determine the color of a given pixel in read mode 0, you have to perform four VGA memory reads, one for each plane, and then interpret the four bytes you&rsquo;ve read as eight 16-color pixels. That&rsquo;s a lot of programming. The code is also likely to run slowly, all the more so because a standard IBM VGA takes an average of 1.1 microseconds to complete each memory read, and read mode 0 requires four reads in order to read the four planes, not to mention the even greater amount of time taken by the <b>OUT</b>s required to switch between the planes. (1.1 microseconds may not sound like much, but on a 66-MHz 486, it&rsquo;s 73 clock cycles! Local-bus VGAs can be a good deal faster, but a read from the fastest local-bus adapter I&rsquo;ve yet seen would still cost in the neighborhood of 10 486/66 cycles.)</p>
 
@@ -76,10 +69,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

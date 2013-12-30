@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Crossing the Border</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Crossing the Border</title>
   <meta name="chapter" content="05" />
   <meta name="pages" content="115-118" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -47,33 +40,31 @@
     </tr>
   </table>
 
-  <h3><a id="Heading5"></a>Brute-Force Techniques</h3>
+  <h3 id="Heading5">Brute-Force Techniques</h3>
 
   <p>Given that no C/C<small>++</small> library function meets our needs precisely, an obvious alternative approach is the brute-force technique that uses <b>memcmp()</b> to compare <i>every</i> potential matching location in the buffer to the string we&rsquo;re searching for, as illustrated in Figure 5.1.</p>
 
   <p>By the way, we could, of course, use our own code, working with pointers in a loop, to perform the comparison in place of <b>memcmp()</b>. But <b>memcmp()</b> will almost certainly use the very fast <b>REPZ CMPS</b> instruction. However, <i>never assume!</i> It wouldn&rsquo;t hurt to use a debugger to check out the actual machine-code implementation of <b>memcmp()</b> from your compiler. If necessary, you could always write your own assembly language implementation of <b>memcmp()</b>.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/05-01.jpg',415,211 )"> --><img src="images/05-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/05-01.jpg',415,211)"> --><b>Figure 5.1</b></a>&nbsp;&nbsp;<i>The brute-force searching technique.</i></p>
+  <p><a id="Fig1"><img src="images/05-01.jpg" /><br />
+  <b>Figure 5.1</b></a>&nbsp;&nbsp;<i>The brute-force searching technique.</i></p>
 
   <p>Invoking <b>memcmp()</b> for each potential match location works, but entails considerable overhead. Each comparison requires that parameters be pushed and that a call to and return from <b>memcmp()</b> be performed, along with a pass through the comparison loop. Surely there&rsquo;s a better way!</p>
 
   <p>Indeed there is. We can eliminate most calls to <b>memcmp()</b> by performing a simple test on each potential match location that will reject most such locations right off the bat. We&rsquo;ll just check whether the first character of the potentially matching buffer location matches the first character of the string we&rsquo;re searching for. We could make this check by using a pointer in a loop to scan the buffer for the next match for the first character, stopping to check for a match with the rest of the string <i>only</i> when the first character matches, as shown in Figure 5.2.</p>
 
-  <h3><a id="Heading6"></a>Using memchr()</h3>
+  <h3 id="Heading6">Using memchr()</h3>
 
   <p>There&rsquo;s yet a better way to implement this approach, however. Use the <b>memchr()</b> function, which does nothing more or less than find the next occurrence of a specified character in a fixed-length buffer (presumably by using the extremely efficient <b>REPNZ SCASB</b> instruction, although again it wouldn&rsquo;t hurt to check). By using <b>memchr()</b> to scan for potential matches that can then be fully tested with <b>memcmp()</b>, we can build a highly efficient search engine that takes good advantage of the information we have about the buffer being searched and the string we&rsquo;re searching for. Our engine also relies heavily on repeated string instructions, assuming that the <b>memchr()</b> and <b>memcmp()</b> library functions are properly coded.</p>
 
-  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/05-02.jpg',409,241 )"> --><img src="images/05-02.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/05-02.jpg',409,241)"> --><b>Figure 5.2</b></a>&nbsp;&nbsp;<i>The faster string-searching technique.</i></p>
+  <p><a id="Fig2"><img src="images/05-02.jpg" /><br />
+  <b>Figure 5.2</b></a>&nbsp;&nbsp;<i>The faster string-searching technique.</i></p>
 
   <p>We&rsquo;re going to go with the this approach in our file-searching program; the only trick lies in deciding how to integrate this approach with restartable blocks in order to search through files larger than our buffer. This certainly isn&rsquo;t the fastest-possible searching algorithm; as one example, the Boyer-Moore algorithm, which cleverly eliminates many buffer locations as potential matches in the process of checking preceding locations, can be considerably faster. However, the Boyer-Moore algorithm is quite complex to understand and implement, and would distract us from our main focus, restartable blocks, so we&rsquo;ll save it for a later chapter (Chapter 14, to be precise). Besides, I suspect you&rsquo;ll find the approach we&rsquo;ll use to be fast enough for most purposes.</p>
 
   <p>Now that we&rsquo;ve selected a searching approach, let&rsquo;s integrate it with file handling and searching through multiple blocks. In other words, let&rsquo;s make it restartable.</p>
 
-  <h4 align="left"><a id="Heading7"></a>Making a Search Restartable</h4>
+  <h4 align="left" id="Heading7">Making a Search Restartable</h4>
 
   <p>As it happens, there&rsquo;s no great trick to putting the pieces of this search program together. Basically, we&rsquo;ll read in a buffer of data (we&rsquo;ll work with 16K at a time to avoid signed overflow problems with integers), search it for a match with the <b>memchr()/memcmp()</b> engine described, and exit with a &ldquo;string found&rdquo; response if the desired string is found.</p>
 
@@ -102,10 +93,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

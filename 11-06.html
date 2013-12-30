@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pushing the 286 and 386</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Pushing the 286 and 386</title>
   <meta name="chapter" content="11" />
   <meta name="pages" content="222-224" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -47,7 +40,7 @@
     </tr>
   </table>
 
-  <h4 align="center"><a id="Heading15"></a>Optimization Rules: The More Things Change...</h4>
+  <h4 align="center" id="Heading15">Optimization Rules: The More Things Change...</h4>
 
   <p>Let&rsquo;s see what we&rsquo;ve learned about 286/386 optimization. Mostly what we&rsquo;ve learned is that our familiar PC cycle-eaters still apply, although in somewhat different forms, and that the major optimization rules for the PC hold true on ATs and 386-based computers. You won&rsquo;t go wrong on any of these computers if you keep your instructions short, use the registers heavily and avoid memory, don&rsquo;t branch, and avoid accessing display memory like the plague.</p>
 
@@ -55,7 +48,7 @@
 
   <p>There&rsquo;s one cycle-eater with new implications on the 286 and 386, and that&rsquo;s the data alignment cycle-eater. From the data alignment cycle-eater we get a new rule: Word-align your word-sized variables, and start your subroutines at even addresses.</p>
 
-  <h4 align="center"><a id="Heading16"></a>Detailed Optimization</h4>
+  <h4 align="center" id="Heading16">Detailed Optimization</h4>
 
   <p>While the major 8088 optimization rules hold true on computers built around the 286 and 386, many of the instruction-specific optimizations no longer hold, for the execution times of most instructions are quite different on the 286 and 386 than on the 8088. We have already seen one such example of the sometimes vast difference between 8088 and 286/386 instruction execution times: <b>MOV [WordVar],0</b>, which has an Execution Unit execution time of 20 cycles on the 8088, has an EU execution time of just 3 cycles on the 286 and 2 cycles on the 386.</p>
 
@@ -71,7 +64,7 @@
 
   <p>Theory confirmed.</p>
 
-  <p><b>LISTING 11.4 L11-4.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 11.4 L11-4.ASM</b></p>
   <pre>
 ;
 ; *** Listing 11.4 ***
@@ -85,7 +78,7 @@
         add     dx,100h
         endm
         call    ZTimerOff
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -104,10 +97,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

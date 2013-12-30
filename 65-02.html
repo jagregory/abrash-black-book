@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: 3-D Clipping and Other Thoughts</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: 3-D Clipping and Other Thoughts</title>
   <meta name="chapter" content="65" />
   <meta name="pages" content="1195-1199" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,13 +30,13 @@
 
   <p><br /></p>
 
-  <h4 align="left"><a id="Heading4"></a>Intersecting a Line Segment with a Plane</h4>
+  <h4 align="left" id="Heading4">Intersecting a Line Segment with a Plane</h4>
 
   <p>The fundamental 3-D clipping operation is clipping a line segment to a plane. There are two parts to this operation: determining if the line is clipped by (intersects) the plane at all and, if it is clipped, calculating the point of intersection.</p>
 
   <p>Before we can intersect a line segment with a plane, we must first define how we&rsquo;ll represent the line segment and the plane. The segment will be represented in the obvious way by the (x,y,z) coordinates of its two endpoints; this extends well to polygons, where each vertex is an (x,y,z) point. Planes can be described in many ways, among them are three points on the plane, a point on the plane and a unit normal, or a unit normal and a distance from the origin along the normal; we&rsquo;ll use the latter definition. Further, we&rsquo;ll define the normal to point to the inside (unclipped side) of the plane. The structures for points, polygons, and planes are shown in Listing 65.1.</p>
 
-  <p><b>LISTING 65.1 L65_1.h</b></p><!-- CODE //-->
+  <p><b>LISTING 65.1 L65_1.h</b></p>
   <pre>
 typedef struct {
     double v[3];
@@ -77,7 +70,7 @@ typedef struct {
     double  distance;
     point_t normal;
 } plane_t;
-</pre><!-- END CODE //-->
+</pre>
 
   <p>Given a line segment, and a plane to which to clip the segment, the first question is whether the segment is entirely on the inside or the outside of the plane, or intersects the plane. If the segment is on the inside, then the segment is not clipped by the plane, and we&rsquo;re done. If it&rsquo;s on the outside, then it&rsquo;s entirely clipped, and we&rsquo;re likewise done. If it intersects the plane, then we have to remove the clipped portion of the line by replacing the endpoint on the outside of the plane with the point of intersection between the line and the plane.</p>
 
@@ -89,19 +82,17 @@ typedef struct {
 
   <p>From our earlier tests, we already know the length from the plane, measured along the normal, to the inside endpoint; that&rsquo;s just the distance, along the normal, of the inside endpoint from the origin (the dot product of the endpoint with the normal), minus the plane distance, as shown in Figure 65.1. We also know the length of the line segment, again measured as projected onto the normal; that&rsquo;s the difference between the distances along the normal of the inside and outside endpoints from the origin. The ratio of these two lengths is the fraction of the segment that remains after clipping. If we scale the x, y, and z lengths of the line segment by that fraction, and add the results to the inside endpoint, we get a new, clipped endpoint at the point of intersection.</p>
 
-  <h3><a id="Heading5"></a>Polygon Clipping</h3>
+  <h3 id="Heading5">Polygon Clipping</h3>
 
   <p>Line clipping is fine for wireframe rendering, but what we really want to do is polygon rendering of solid models, which requires polygon clipping. As with line segments, the clipping process with polygons is to determine if they&rsquo;re inside, outside, or partially inside the clip volume, lopping off any vertices that are outside the clip volume and substituting vertices at the intersection between the polygon and the clip plane, as shown in Figure 65.2.</p>
 
   <p>An easy way to clip a polygon is to decompose it into a set of edges, and clip each edge separately as a line segment. Let&rsquo;s define a polygon as a set of vertices that wind clockwise around the outside of the polygonal area, as viewed from the front side of the polygon; the edges are implicitly defined by the order of the vertices. Thus, an edge is the line segment described by the two adjacent vertices that form its endpoints. We&rsquo;ll clip a polygon by clipping each edge individually, emitting vertices for the resulting polygon as appropriate, depending on the clipping state of the edge. If the start point of the edge is inside, that point is added to the output polygon. Then, if the start and end points are in different states (one inside and one outside), we clip the edge to the plane, as described above, and add the point at which the line intersects the clip plane as the next polygon vertex, as shown in Figure 65.3. Listing 65.2 shows a polygon-clipping function.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/65-01.jpg',407,277 )"> --><img src="images/65-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/65-01.jpg',407,277)"> --><b>Figure 65.1</b></a>&nbsp;&nbsp;<i>The distance from the plane to the inside endpoint, measured along the normal.</i></p>
+  <p><a id="Fig1"><img src="images/65-01.jpg" /><br />
+  <b>Figure 65.1</b></a>&nbsp;&nbsp;<i>The distance from the plane to the inside endpoint, measured along the normal.</i></p>
 
-  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/65-02.jpg',409,193 )"> --><img src="images/65-02.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/65-02.jpg',409,193)"> --><b>Figure 65.2</b></a>&nbsp;&nbsp;<i>Clipping a polygon.</i></p>
+  <p><a id="Fig2"><img src="images/65-02.jpg" /><br />
+  <b>Figure 65.2</b></a>&nbsp;&nbsp;<i>Clipping a polygon.</i></p>
 
   <p><br /></p>
 
@@ -120,10 +111,6 @@ typedef struct {
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

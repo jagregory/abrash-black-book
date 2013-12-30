@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: The Game of Life</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: The Game of Life</title>
   <meta name="chapter" content="17" />
   <meta name="pages" content="329-331" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h3><a id="Heading5"></a>Where Does the Time Go?</h3>
+  <h3 id="Heading5">Where Does the Time Go?</h3>
 
   <p>How slow is Listing 17.1? Table 17.1 shows that even on a 486, Listing 17.1 does fewer than three 96x96 generations per second. (The times in Table 17.1 are for 1,000 generations of a 96x96 cell map with <b>seed=1, LIMIT_18_HZ=0, WRAP_EDGES=1,</b> and <b>magnifier=2,</b> running on a 33 MHz 486.) Since my target is 18 generations per second with a 200x200 cellmap on a 20 MHz 386, Listing 17.1 is too slow by a rather wide margin&mdash;75 times too slow, in fact. You might say we have a little optimizing to do.</p>
 
@@ -173,7 +166,7 @@
     </tr>
   </table>
 
-  <h3><a id="Heading6"></a>The Hazards and Advantages of Abstraction</h3>
+  <h3 id="Heading6">The Hazards and Advantages of Abstraction</h3>
 
   <p>How can we speed up <b>cell_state()</b> and <b>next_generation()</b>? I&rsquo;ll tell you how <i>not</i> to do it: By writing those member functions in assembly. It&rsquo;s tempting to say that <b>cell_state()</b> is taking all the time, so we need to speed it up with assembly, but what we really need to do is figure out <i>why</i> <b>cell_state()</b> is taking all the time, then address that aspect of the program directly.</p>
 
@@ -206,10 +199,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

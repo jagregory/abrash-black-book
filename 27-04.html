@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Yet Another VGA Write Mode</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Yet Another VGA Write Mode</title>
   <meta name="chapter" content="27" />
   <meta name="pages" content="515-517" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <h3><a id="Heading7"></a>When to Use Write Mode 2 and When to Use Set/Reset</h3>
+  <h3 id="Heading7">When to Use Write Mode 2 and When to Use Set/Reset</h3>
 
   <p>As indicated earlier, write mode 2 and set/reset are functionally interchangeable. Write mode 2 lends itself to more efficient implementations when the drawing color changes frequently, as in Listing 27.2.</p>
 
@@ -45,11 +38,11 @@
 
   <p>Set/reset is also the mode of choice whenever it is necessary to force the value written to some planes to a fixed value while allowing the CPU byte to modify other planes. This is the mode of operation when set/reset is enabled for some but not all planes.</p>
 
-  <h3><a id="Heading8"></a>Mode 13H&mdash;320x200 with 256 Colors</h3>
+  <h3 id="Heading8">Mode 13H&mdash;320x200 with 256 Colors</h3>
 
   <p>I&rsquo;m going to take a minute&mdash;and I do mean a minute&mdash;to discuss the programming model for mode 13H, the VGA&rsquo;s 320x200 256-color mode. Frankly, there&rsquo;s just not much to it, especially compared to the convoluted 16-color model that we&rsquo;ve explored over the last five chapters. Mode 13H offers the simplest programming model in the history of PC graphics: A linear bitmap starting at A000:0000, consisting of 64,000 bytes, each controlling one pixel. The byte at offset 0 controls the upper left pixel on the screen, the byte at offset 319 controls the upper right pixel on the screen, the byte at offset 320 controls the second pixel down at the left of the screen, and the byte at offset 63,999 controls the lower right pixel on the screen. That&rsquo;s all there is to it; it&rsquo;s so simple that I&rsquo;m not going to spend any time on a demo program, especially given that some of the listings later in this book, such as the antialiasing code in Chapter F on the companion CD-ROM, use mode 13H.</p>
 
-  <h3><a id="Heading9"></a>Flipping Pages from Text to Graphics and Back</h3>
+  <h3 id="Heading9">Flipping Pages from Text to Graphics and Back</h3>
 
   <p>A while back, I got an interesting letter from Phil Coleman, of La Jolla, who wrote:</p>
 
@@ -86,10 +79,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

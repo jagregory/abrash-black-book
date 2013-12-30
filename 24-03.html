@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Parallel Processing</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Parallel Processing</title>
   <meta name="chapter" content="24" />
   <meta name="pages" content="458-460" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -41,7 +34,7 @@
 
   <p>Logical functions 1 through 3 cause the CPU data to be ANDed, ORed, and XORed with the latched data, respectively. Of these, XOR is the most useful, since exclusive-ORing is a traditional way to perform animation. The uses of the AND and OR logical functions are less obvious. AND can be used to mask a blank area into display memory, or to mask off those portions of a drawing operation that don&rsquo;t overlap an existing display memory image. OR could conceivably be used to force an image into display memory over an existing image. To be honest, I haven&rsquo;t encountered any particularly valuable applications for AND and OR, but they&rsquo;re the sort of building-block features that could come in handy in just the right context, so keep them in mind.</p>
 
-  <h3><a id="Heading4"></a>Notes on the ALU/Latch Demo Program</h3>
+  <h3 id="Heading4">Notes on the ALU/Latch Demo Program</h3>
 
   <p>VGA settings such as the logical function select should be restored to their default condition before the BIOS is called to output text or draw pixels. The VGA BIOS does not guarantee that it will set most VGA registers except on mode sets, and there are so many compatible BIOSes around that the code of the IBM BIOS is not a reliable guide. For instance, when the BIOS is called to draw text, it&rsquo;s likely that the result will be illegible if the Bit Mask register is not in its default state. Similarly, a mode set should generally be performed before exiting a program that tinkers with VGA settings.</p>
 
@@ -53,16 +46,16 @@
 
   <p>All text in the sample program is drawn by VGA BIOS function 13H, the write string function. This function is also present in the AT&rsquo;s BIOS, but not in the XT&rsquo;s or PC&rsquo;s, and as a result is rarely used; the function is always available if a VGA is installed, however. Text drawn with this function is relatively slow. If speed is important, a program can draw text directly into display memory much faster in any given display mode. The great virtue of the BIOS write string function in the case of the VGA is that it provides an uncomplicated way to get text on the screen reliably in any mode and color, over any background.</p>
 
-  <p>The expression used to load DX in the <b>TEXT_UP</b> macro in the sample program may seem strange, but it&rsquo;s a convenient way to save a byte of program code and a few cycles of execution time. DX is being loaded with a word value that&rsquo;s composed of two independent immediate byte values. The obvious way to implement this would be with</p><!-- CODE SNIP //-->
+  <p>The expression used to load DX in the <b>TEXT_UP</b> macro in the sample program may seem strange, but it&rsquo;s a convenient way to save a byte of program code and a few cycles of execution time. DX is being loaded with a word value that&rsquo;s composed of two independent immediate byte values. The obvious way to implement this would be with</p>
   <pre>
 MOV DL,VALUE1
 MOV DH,VALUE2
-</pre><!-- END CODE SNIP //-->
+</pre>
 
-  <p>which requires four instruction bytes. By shifting the value destined for the high byte into the high byte with MASM&rsquo;s shift-left operator, <b>SHL</b> (*100H would work also), and then logically combining the values with MASM&rsquo;s <b>OR</b> operator (or the <b>ADD</b> operator), both halves of DX can be loaded with a single instruction, as in</p><!-- CODE SNIP //-->
+  <p>which requires four instruction bytes. By shifting the value destined for the high byte into the high byte with MASM&rsquo;s shift-left operator, <b>SHL</b> (*100H would work also), and then logically combining the values with MASM&rsquo;s <b>OR</b> operator (or the <b>ADD</b> operator), both halves of DX can be loaded with a single instruction, as in</p>
   <pre>
 MOV DX,(VALUE2 SHL 8) OR VALUE1
-</pre><!-- END CODE SNIP //-->
+</pre>
 
   <p>which takes only three bytes and is faster, being a single instruction. (Note, though, that in 32-bit protected mode, there&rsquo;s a size and performance penalty for 16-bit instructions such as the <b>MOV</b> above; see the first part of this book for details.) As shown, a macro is an ideal place to use this technique; the macro invocation can refer to two separate byte values, making matters easier for the programmer, while the macro itself can combine the values into a single word-sized constant.</p>
 
@@ -93,10 +86,6 @@ MOV DX,(VALUE2 SHL 8) OR VALUE1
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bresenham Is Fast, and Fast Is Good</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bresenham Is Fast, and Fast Is Good</title>
   <meta name="chapter" content="35" />
   <meta name="pages" content="667-670" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -43,11 +36,10 @@
 
   <p>After calling the appropriate function to draw the line (more on those functions shortly), <b>EVGALine</b> restores the state of the Enable Set/Reset register to its default of zero. In this state, the Set/Reset register has no effect, so it is not necessary to restore the state of the Set/Reset register as well. <b>EVGALine</b> also restores the state of the Bit Mask register (which, as we will see, is modified by <b>EVGADot</b>, the pixel-drawing routine actually used to draw each pixel of the lines produced by <b>EVGALine</b>) to its default of 0FFH. While it would be more modular to have <b>EVGADot</b> restore the state of the Bit Mask register after drawing each pixel, it would also be considerably slower to do so. The same could be said of having <b>EVGADot</b> set the Enable Set/Reset and Set/Reset registers for each pixel: While modularity would improve, speed would suffer markedly.</p>
 
-  <p><a id="Fig5"><!-- </A><A HREF="javascript:displayWindow('images/35-05.jpg',408,250 )"> --><img src="images/35-05.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/35-05.jpg',408,250)"> --><b>Figure 35.5</b></a>&nbsp;&nbsp;<i>EVGALine&rsquo;s decision logic.</i></p>
+  <p><a id="Fig5"><img src="images/35-05.jpg" /><br />
+  <b>Figure 35.5</b></a>&nbsp;&nbsp;<i>EVGALine&rsquo;s decision logic.</i></p>
 
-  <h4 align="left"><a id="Heading8"></a>Drawing Each Line</h4>
+  <h4 align="left" id="Heading8">Drawing Each Line</h4>
 
   <p>The <b>Octant0</b> and <b>Octant1</b> functions draw lines for which |<b>DeltaX</b>| is greater than <b>DeltaY</b> and lines for which |<b>DeltaX</b>| is less than or equal to <b>DeltaY</b>, respectively. The parameters to <b>Octant0</b> and <b>Octant1</b> are the starting point of the line, the length of the line in each dimension, and <b>XDirection</b>, the amount by which the X coordinate should be changed when it moves. <b>XDirection</b> must be either 1 (to draw toward the right edge of the screen) or -1 (to draw toward the left edge of the screen). No value is required for the amount by which the Y coordinate should be changed; since <b>DeltaY</b> is guaranteed to be positive, the Y coordinate always changes by 1 pixel.</p>
 
@@ -55,7 +47,7 @@
 
   <p><b>Octant1</b> draws lines for which |<b>DeltaX</b>| is less than or equal to DeltaY. For these lines, the Y coordinate of each pixel drawn is 1 greater than the Y coordinate of the previous pixel. Whenever <b>ErrorTerm</b> becomes non-negative, indicating that the next X coordinate is a better approximation of the line being drawn, the X coordinate is advanced by either 1 or -1, depending on the value of <b>XDirection</b>. (This makes it possible for <b>Octant1</b> to draw lines in both octant 1 and octant 2.)</p>
 
-  <h4 align="left"><a id="Heading9"></a>Drawing Each Pixel</h4>
+  <h4 align="left" id="Heading9">Drawing Each Pixel</h4>
 
   <p>At the core of <b>Octant0</b> and <b>Octant1</b> is a pixel-drawing function, <b>EVGADot</b>. <b>EVGADot</b> draws a pixel at the specified coordinates in whatever color the hardware of the VGA happens to be set up for. As described earlier, since the entire line drawn by <b>EVGALine</b> is of the same color, line-drawing performance is improved by setting the VGA&rsquo;s hardware up once in <b>EVGALine</b> before the line is drawn, and then drawing all the pixels in the line in the same color via <b>EVGADot</b>.</p>
 
@@ -84,10 +76,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

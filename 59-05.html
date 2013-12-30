@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: The Idea of BSP Trees</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: The Idea of BSP Trees</title>
   <meta name="chapter" content="59" />
   <meta name="pages" content="1110-1112" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -55,11 +48,11 @@
     </tr>
   </table>
 
-  <h4 align="left"><a id="Heading10"></a>Measure and Learn</h4>
+  <h4 align="left" id="Heading10">Measure and Learn</h4>
 
   <p>How much difference does all this fuss make, anyway? Listing 59.5 is a sample program that builds a tree, then calls <b>WalkTree</b> () to walk it 1,000 times, and times how long this takes. Using 32-bit Visual C<small>++</small> 1.10 running on Windows NT, with default optimization selected, Listing 59.5 reports that Listing 59.4 is about 20 percent faster than Listing 59.2 on a 486/33, a reasonable return for a little code rearrangement, especially when you consider that the speedup is diluted by calling the <b>Visit()</b> function and by the cache miss that happens on virtually every node access. (Listing 59.5 builds a rather unique tree, one in which every node has exactly two children. Different sorts of trees can and do produce different performance results. Always know what you&rsquo;re measuring!)</p>
 
-  <p><b>Listing 59.5 L59_5.C</b></p><!-- CODE //-->
+  <p><b>Listing 59.5 L59_5.C</b></p>
   <pre>
 // Sample program to exercise and time the performance of
 // implementations of WalkTree().
@@ -128,7 +121,7 @@ void Visit(NODE *pNode)
    VisitCount++;
 }
 
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -147,10 +140,6 @@ void Visit(NODE *pNode)
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

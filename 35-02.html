@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bresenham Is Fast, and Fast Is Good</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bresenham Is Fast, and Fast Is Good</title>
   <meta name="chapter" content="35" />
   <meta name="pages" content="658-661" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -43,9 +36,8 @@
 
   <p>In Figure 35.2, the X dimension is the major dimension. This means that 6 dots, one at each of X coordinates 0, 1, 2, 3, 4, and 5, will be drawn. The trick, then, is to decide on the correct Y coordinates to accompany those X coordinates.</p>
 
-  <p><a id="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/35-02.jpg',412,180 )"> --><img src="images/35-02.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/35-02.jpg',412,180)"> --><b>Figure 35.2</b></a>&nbsp;&nbsp;<i>Drawing between two pixel endpoints.</i></p>
+  <p><a id="Fig2"><img src="images/35-02.jpg" /><br />
+  <b>Figure 35.2</b></a>&nbsp;&nbsp;<i>Drawing between two pixel endpoints.</i></p>
 
   <p>It&rsquo;s easy enough to select the Y coordinates by eye in Figure 35.2. The appropriate Y coordinates are 0, 0, 1, 1, 2, 2, based on the Y coordinate closest to the line for each X coordinate. Bresenham&rsquo;s algorithm makes the same selections, based on the same criterion. The manner in which it does this is by keeping a running record of the error of the line&mdash;that is, how far from the true line the current Y coordinate is&mdash;at each X coordinate, as shown in Figure 35.3. When the running error of the line indicates that the current Y coordinate deviates from the true line to the extent that the adjacent Y coordinate would be closer to the line, then the current Y coordinate is changed to that adjacent Y coordinate.</p>
 
@@ -55,9 +47,8 @@
 
   <p>The third pixel has an X coordinate of 2. The running error at this point is C minus A, which is greater than 1/2 and therefore closer to the next than to the current Y coordinate. The third pixel is drawn at (2,1), and 1 is subtracted from the running error to compensate for the adjustment of one pixel in the current Y coordinate. The running error of the pixel actually drawn at this point is C minus D.</p>
 
-  <p><a id="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/35-03.jpg',410,179 )"> --><img src="images/35-03.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/35-03.jpg',410,179)"> --><b>Figure 35.3</b></a>&nbsp;&nbsp;<i>The error term in Bresenham&rsquo;s algorithm.</i></p>
+  <p><a id="Fig3"><img src="images/35-03.jpg" /><br />
+  <b>Figure 35.3</b></a>&nbsp;&nbsp;<i>The error term in Bresenham&rsquo;s algorithm.</i></p>
 
   <p>The fourth pixel has an X coordinate of 3. The running error at this point is E minus D; since this is less than 1/2, the current Y coordinate doesn&rsquo;t change. The fourth pixel is drawn at (3,1).</p>
 
@@ -69,7 +60,7 @@
 
   <p>The above discussion summarizes the nature rather than the exact mechanism of Bresenham&rsquo;s line-drawing algorithm. I&rsquo;ll provide a brief seat-of-the-pants discussion of the algorithm in action when we get to the C implementation of the algorithm; for a full mathematical treatment, I refer you to pages 433-436 of Foley and Van Dam&rsquo;s <i>Fundamentals of Interactive Computer Graphics</i> (Addison-Wesley, 1982), or pages 72-78 of the second edition of that book, which was published under the name <i>Computer Graphics: Principles and Practice</i> (Addison-Wesley, 1990). These sources provide the derivation of the integer-only, divide-free version of the algorithm, as well as Pascal code for drawing lines in one of the eight possible octants.</p>
 
-  <h4 align="left"><a id="Heading5"></a>Strengths and Weaknesses</h4>
+  <h4 align="left" id="Heading5">Strengths and Weaknesses</h4>
 
   <p>The overwhelming strength of Bresenham&rsquo;s line-drawing algorithm is speed. With no divides, no floating-point operations, and no need for variables that won&rsquo;t fit in 16 bits, it is perfectly suited for PCs.</p>
 
@@ -94,10 +85,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: 3-D Clipping and Other Thoughts</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: 3-D Clipping and Other Thoughts</title>
   <meta name="chapter" content="65" />
   <meta name="pages" content="1199-1206" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -37,7 +30,7 @@
 
   <p><br /></p>
 
-  <p><b>LISTING 65.2 L65_2.c</b></p><!-- CODE //-->
+  <p><b>LISTING 65.2 L65_2.c</b></p>
   <pre>
 int ClipToPlane(polygon_t *pin, plane_t *pplane, polygon_t *pout)
 {
@@ -89,21 +82,20 @@ int ClipToPlane(polygon_t *pin, plane_t *pplane, polygon_t *pout)
     pout-&gt;color = pin-&gt;color;
     return 1;
 }
-</pre><!-- END CODE //-->
+</pre>
 
   <p>Believe it or not, this technique, applied in turn to each edge, is all that&rsquo;s needed to clip a polygon to a plane. Better yet, a polygon can be clipped to multiple planes by repeating the above process once for each clip plane, with each interation trimming away any part of the polygon that&rsquo;s clipped by that particular plane.</p>
 
   <p>One particularly useful aspect of 3-D clipping is that if you&rsquo;re drawing texture mapped polygons, texture coordinates can be clipped in exactly the same way as (x,y,z) coordinates. In fact, the very same fraction that&rsquo;s used to advance x, y, and z from the inside point to the point of intersection with the clip plane can be used to advance the texture coordinates as well, so only one extra multiply and one extra add are required for each texture coordinate.</p>
 
-  <h4 align="left"><a id="Heading6"></a>Clipping to the Frustum</h4>
+  <h4 align="left" id="Heading6">Clipping to the Frustum</h4>
 
   <p>Given a polygon-clipping function, it&rsquo;s easy to clip to the frustum: set up the four planes for the sides of the frustum, with another one or two planes for near and far clipping, if desired; next, clip each potentially visible polygon to each plane in turn; then draw whatever polygons emerge from the clipping process. Listing 65.3 is the core code for a simple 3-D clipping example that allows you to move around and look at polygonal models from any angle. The full code for this program is available on the CD-ROM in the file DDJCLIP.ZIP.</p>
 
-  <p><a id="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/65-03.jpg',408,197 )"> --><img src="images/65-03.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/65-03.jpg',408,197)"> --><b>Figure 65.3</b></a>&nbsp;&nbsp;<i>Clipping a polygon edge.</i></p>
+  <p><a id="Fig3"><img src="images/65-03.jpg" /><br />
+  <b>Figure 65.3</b></a>&nbsp;&nbsp;<i>Clipping a polygon edge.</i></p>
 
-  <p><b>LISTING 65.3 L65_3.c</b></p><!-- CODE //-->
+  <p><b>LISTING 65.3 L65_3.c</b></p>
   <pre>
 int DIBWidth, DIBHeight;
 int DIBPitch;
@@ -411,7 +403,7 @@ void UpdateWorld()
     SelectObject(hdcDIBSection, holdbitmap);
     ReleaseDC(hwndOutput, hdcDIBSection);
 }
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -430,10 +422,6 @@ void UpdateWorld()
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

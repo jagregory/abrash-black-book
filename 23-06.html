@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bones and Sinew</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Bones and Sinew</title>
   <meta name="chapter" content="23" />
   <meta name="pages" content="445-448" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -53,17 +46,17 @@
 
   <p>To see the program run in 640x200 16-color mode, comment out the <b>EQU</b> line for <b>MEDRES_VIDEO_MODE</b>.</p>
 
-  <h3><a id="Heading10"></a>The Hazards of VGA Clones</h3>
+  <h3 id="Heading10">The Hazards of VGA Clones</h3>
 
   <p>Earlier, I said that any VGA that doesn&rsquo;t support the features and functionality covered in this book can&rsquo;t properly be called VGA compatible. I also noted that there are some exceptions, however, and we&rsquo;ve just come to the most prominent one. You see, all VGAs really <i>are</i> compatible with the IBM VGA&rsquo;s functionality when it comes to drawing pixels into display memory; all the write modes and read modes and set/reset capabilities and everything else involved with manipulating display memory really does work in the same way on all VGAs and VGA clones. That compatibility isn&rsquo;t as airtight when it comes to scanning pixels out of display memory and onto the screen in certain infrequently-used ways, however.</p>
 
   <p>The areas of incompatibility of which I&rsquo;m aware are illustrated by the sample program, and may in fact have caused you to see some glitches when you ran Listing 23.1. The problem, which arises only on certain VGAs, is that some settings of the Row Offset register cause some pixels to be dropped or displaced to the wrong place on the screen; often, this happens only in conjunction with certain start address settings. (In my experience, only VRAM (Video RAM)-based VGAs exhibit this problem, no doubt due to the way that pixel data is fetched from VRAM in large blocks.) Panning and large virtual bitmaps can be made to work reliably, by careful selection of virtual bitmap sizes and start addresses, but it&rsquo;s difficult; that&rsquo;s one of the reasons that most commercial software does not use these features, although a number of games do. The upshot is that if you&rsquo;re going to use oversized virtual bitmaps and pan around them, you should take great care to test your software on a wide variety of VRAM- and DRAM-based VGAs.</p>
 
-  <h3><a id="Heading11"></a>Just the Beginning</h3>
+  <h3 id="Heading11">Just the Beginning</h3>
 
   <p>That pretty well covers the important points of the sample VGA program in Listing 23.1. There are many VGA features we didn&rsquo;t even touch on, but the object was to give you a feel for the variety of features available on the VGA, to convey the flexibility and complexity of the VGA&rsquo;s resources, and in general to give you an initial sense of what VGA programming is like. Starting with the next chapter, we&rsquo;ll begin to explore the VGA systematically, on a more detailed basis.</p>
 
-  <h3><a id="Heading12"></a>The Macro Assembler</h3>
+  <h3 id="Heading12">The Macro Assembler</h3>
 
   <p>The code in this book is written in both C and assembly. I think C is a good development environment, but I believe that often the best code (although not necessarily the easiest to write or the most reliable) is written in assembly. This is especially true of graphics code for the x86 family, given segments, the string instructions, and the asymmetric and limited register set, and for real-time programming of a complex board like the VGA, there&rsquo;s really no other choice for the lowest-level code.</p>
 
@@ -88,10 +81,6 @@
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>

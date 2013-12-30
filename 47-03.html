@@ -10,16 +10,9 @@
   <meta name="vspubdate" content="07/01/97" />
   <meta name="vscategory" content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development" />
 
-  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X: 256-color VGA Magic</title><!-- HEADER -->
-  <!-- Empty Reference Subhead -->
-  <!--ISBN=1576101746//-->
-  <!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
-  <!--AUTHOR=Michael Abrash//-->
-  <!--PUBLISHER=The Coriolis Group, Inc.//-->
+  <title>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X: 256-color VGA Magic</title>
   <meta name="chapter" content="47" />
   <meta name="pages" content="882-885" />
-  <!--UNASSIGNED1//-->
-  <!--UNASSIGNED2//-->
 </head>
 
 <body>
@@ -45,11 +38,10 @@
 
   <p>That&rsquo;s all right, though, because most graphics software spends little time drawing individual pixels. I&rsquo;ve provided the write and read pixel routines as basic primitives, and so you&rsquo;ll understand how the bitmap is organized, but the building blocks of high-performance graphics software are fills, copies, and bitblts, and it&rsquo;s there that Mode X shines.</p>
 
-  <p><a id="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/47-01.jpg',408,263 )"> --><img src="images/47-01.jpg" /><br />
-  <!-- </A>
-<BR><A HREF="javascript:displayWindow('images/47-01.jpg',408,263)"> --><b>Figure 47.1</b></a>&nbsp;&nbsp;<i>Mode X display memory organization.</i></p>
+  <p><a id="Fig1"><img src="images/47-01.jpg" /><br />
+  <b>Figure 47.1</b></a>&nbsp;&nbsp;<i>Mode X display memory organization.</i></p>
 
-  <p><b>LISTING 47.2 L47-2.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 47.2 L47-2.ASM</b></p>
   <pre>
 ; Mode X (320x240, 256 colors) write pixel routine. Works on all VGAs.
 ; No clipping is performed.
@@ -103,9 +95,9 @@ _WritePixelX    proc    near
         ret
 _WritePixelX    endp
         end
-</pre><!-- END CODE //-->
+</pre>
 
-  <p><b>LISTING 47.3 L47-3.ASM</b></p><!-- CODE //-->
+  <p><b>LISTING 47.3 L47-3.ASM</b></p>
   <pre>
 ; Mode X (320x240, 256 colors) read pixel routine. Works on all VGAs.
 ; No clipping is performed.
@@ -156,7 +148,7 @@ _ReadPixelX     proc    near
         ret
 _ReadPixelX     endp
         end
-</pre><!-- END CODE //-->
+</pre>
 
   <p><br /></p>
 
@@ -175,10 +167,6 @@ _ReadPixelX     endp
 
   <div align="center">
     Graphics Programming Black Book &copy; 2001 Michael Abrash
-  </div><!-- all of the reference materials (books) have the footer and subfoot reveresed -->
-  <!-- reference_subfoot = footer -->
-  <!-- reference_footer = subfoot -->
-  <!-- BEGIN SUB FOOTER -->
-  <!-- END FOOTER -->
+  </div>
 </body>
 </html>
