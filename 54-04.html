@@ -1,0 +1,195 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: 3-D Shading</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=54//-->
+<!--PAGES=1025-1027//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="54-03.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="54-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P><B>LISTING 54.2  DRAWPOBJ.C</B></P>
+<!-- CODE //-->
+<PRE>
+/* Draws all visible faces in the specified polygon-based object. The object
+   must have previously been transformed and projected, so that all vertex
+   arrays are filled in. Ambient and diffuse shading are supported. */
+#include "polygon.h"
+
+void DrawPObject(PObject * ObjectToXform)
+{
+   int i, j, NumFaces = ObjectToXform-&gt;NumFaces, NumVertices;
+   int * VertNumsPtr, Spot;
+   Face * FacePtr = ObjectToXform-&gt;FaceList;
+   Point * ScreenPoints = ObjectToXform-&gt;ScreenVertexList;
+   PointListHeader Polygon;
+   Fixedpoint Diffusion;
+   ModelColor ColorTemp;
+   ModelIntensity IntensityTemp;
+   Point3 UnitNormal, *NormalStartpoint, *NormalEndpoint;
+   long v1, v2, w1, w2;
+   Point Vertices[MAX-POLY-LENGTH];
+
+   /* Draw each visible face (polygon) of the object in turn */
+   for (i=0; i&lt;NumFaces; i++, FacePtr++) {
+      /* Remember where we can find the start and end of the polygon's
+         unit normal in view space, and skip over the unit normal endpoint
+         entry. The end and start points of the unit normal to the polygon
+         must be the first and second entries in the polgyon's vertex list.
+         Note that the second point is also an active polygon vertex */
+      VertNumsPtr = FacePtr-&gt;VertNums;
+      NormalEndpoint = &ampObjectToXform-&gt;XformedVertexList[*VertNumsPtr++];
+      NormalStartpoint = &ampObjectToXform-&gt;XformedVertexList[*VertNumsPtr];
+      /* Copy over the face's vertices from the vertex list */
+      NumVertices = FacePtr-&gt;NumVerts;
+      for (j=0; j&lt;NumVertices; j++)
+         Vertices[j] = ScreenPoints[*VertNumsPtr++];
+      /* Draw only if outside face showing (if the normal to the polygon
+         in screen coordinates points toward the viewer; that is, has a
+         positive Z component) */
+      v1 = Vertices[1].X - Vertices[0].X;
+      w1 = Vertices[NumVertices-1].X - Vertices[0].X;
+      v2 = Vertices[1].Y - Vertices[0].Y;
+      w2 = Vertices[NumVertices-1].Y - Vertices[0].Y;
+      if ((v1*w2 - v2*w1) &gt; 0) {
+         /* It is facing the screen, so draw */
+         /* Appropriately adjust the extent of the rectangle used to
+            erase this object later */
+         for (j=0; j&lt;NumVertices; j++) {
+            if (Vertices[j].X &gt;
+                  ObjectToXform-&gt;EraseRect[NonDisplayedPage].Right)
+               if (Vertices[j].X &lt; SCREEN-WIDTH)
+                  ObjectToXform-&gt;EraseRect[NonDisplayedPage].Right =
+                        Vertices[j].X;
+               else ObjectToXform-&gt;EraseRect[NonDisplayedPage].Right =
+                     SCREEN-WIDTH;
+            if (Vertices[j].Y &gt;
+                  ObjectToXform-&gt;EraseRect[NonDisplayedPage].Bottom)
+               if (Vertices[j].Y &lt; SCREEN-HEIGHT)
+                  ObjectToXform-&gt;EraseRect[NonDisplayedPage].Bottom =
+                        Vertices[j].Y;
+               else ObjectToXform-&gt;EraseRect[NonDisplayedPage].Bottom=
+                     SCREEN-HEIGHT;
+            if (Vertices[j].X &lt;
+                  ObjectToXform-&gt;EraseRect[NonDisplayedPage].Left)
+               if (Vertices[j].X &gt; 0)
+                  ObjectToXform-&gt;EraseRect[NonDisplayedPage].Left =
+                        Vertices[j].X;
+               else ObjectToXform-&gt;EraseRect[NonDisplayedPage].Left=0;
+            if (Vertices[j].Y &lt;
+                  ObjectToXform-&gt;EraseRect[NonDisplayedPage].Top)
+               if (Vertices[j].Y &gt; 0)
+                  ObjectToXform-&gt;EraseRect[NonDisplayedPage].Top =
+                        Vertices[j].Y;
+               else ObjectToXform-&gt;EraseRect[NonDisplayedPage].Top=0;
+         }
+         /* See if there's any shading */
+            if (FacePtr-&gt;ShadingType == 0) {
+            /* No shading in effect, so just draw */
+            DRAW-POLYGON(Vertices, NumVertices, FacePtr-&gt;ColorIndex, 0, 0);
+         } else {
+            /* Handle shading */
+            /* Do ambient shading, if enabled */
+            if (AmbientOn &amp&amp (FacePtr-&gt;ShadingType &amp AMBIENT-SHADING)) {
+               /* Use the ambient shading component */
+               IntensityTemp = AmbientIntensity;
+            } else {
+               SET-INTENSITY(IntensityTemp, 0, 0, 0);
+            }
+            /* Do diffuse shading, if enabled */
+            if (FacePtr-&gt;ShadingType &amp DIFFUSE-SHADING) {
+               /* Calculate the unit normal for this polygon, for use in dot
+                  products */
+               UnitNormal.X = NormalEndpoint-&gt;X - NormalStartpoint-&gt;X;
+               UnitNormal.Y = NormalEndpoint-&gt;Y - NormalStartpoint-&gt;Y;
+               UnitNormal.Z = NormalEndpoint-&gt;Z - NormalStartpoint-&gt;Z;
+               /* Calculate the diffuse shading component for each active
+                  spotlight */
+               for (Spot=0; Spot&lt;MAX-SPOTS; Spot++) {
+                  if (SpotOn[Spot] != 0) {
+                     /* Spot is on, so sum, for each color component, the
+                        intensity, accounting for the angle of the light rays
+                        relative to the orientation of the polygon */
+                     /* Calculate cosine of angle between the light and the
+                        polygon normal; skip if spot is shining from behind
+                        the polygon */
+                     if ((Diffusion = DOT-PRODUCT(SpotDirectionView[Spot],
+                           UnitNormal)) &gt; 0) {
+                        IntensityTemp.Red +=
+                              FixedMul(SpotIntensity[Spot].Red, Diffusion);
+                        IntensityTemp.Green +=
+                              FixedMul(SpotIntensity[Spot].Green, Diffusion);
+                        IntensityTemp.Blue +=
+                              FixedMul(SpotIntensity[Spot].Blue, Diffusion);
+                     }
+                  }
+               }
+            }
+            /* Convert the drawing color to the desired fraction of the
+               brightest possible color */
+            IntensityAdjustColor(&ampColorTemp, &ampFacePtr-&gt;FullColor,
+                  &ampIntensityTemp);
+            /* Draw with the cumulative shading, converting from the general
+               color representation to the best-match color index */
+            DRAW-POLYGON(Vertices, NumVertices,
+                  ModelColorToColorIndex(&ampColorTemp), 0, 0);
+         }
+      }
+   }
+}
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="54-03.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="54-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

@@ -1,0 +1,138 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Bit-Plane Animation</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=43//-->
+<!--PAGES=811-813//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="43-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="43-06.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>Another limitation of bit-plane animation is that it&#146;s best if images stored in the same plane never cross each other. Why? Because when images do cross, the blank fringe
+</P>
+<TABLE><TR>
+<TH COLSPAN="2"><HR>
+<TR>
+<TH VALIGN="TOP" ALIGN="LEFT" WIDTH="40%">Palette Register
+<TH VALIGN="TOP" ALIGN="LEFT" WIDTH="60%">Register Setting
+<TR>
+<TH COLSPAN="2"><HR>
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT">0
+<TD VALIGN="TOP" ALIGN="LEFT">00H (black)
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT">1
+<TD VALIGN="TOP" ALIGN="LEFT">01H (blue)
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT">2
+<TD VALIGN="TOP" ALIGN="LEFT">02H (green)
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT">3
+<TD VALIGN="TOP" ALIGN="LEFT">03H (cyan)
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT">4
+<TD VALIGN="TOP" ALIGN="LEFT">04H (red)
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT">5
+<TD VALIGN="TOP" ALIGN="LEFT">05H (magenta)
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT">6
+<TD VALIGN="TOP" ALIGN="LEFT">14H (brown)
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT">7
+<TD VALIGN="TOP" ALIGN="LEFT">07H (light gray)
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT">8
+<TD VALIGN="TOP" ALIGN="LEFT">3EH (yellow)
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT">9
+<TD VALIGN="TOP" ALIGN="LEFT">3EH (yellow)
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT">10
+<TD VALIGN="TOP" ALIGN="LEFT">3EH (yellow)
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT">1
+<TD VALIGN="TOP" ALIGN="LEFT">13EH (yellow)
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT">12
+<TD VALIGN="TOP" ALIGN="LEFT">3EH (yellow)
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT">13
+<TD VALIGN="TOP" ALIGN="LEFT">3EH (yellow)
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT">14
+<TD VALIGN="TOP" ALIGN="LEFT">3EH (yellow)
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT">15
+<TD VALIGN="TOP" ALIGN="LEFT">3EH (yellow)
+<TR>
+<TH COLSPAN="2"><HR>
+<TR>
+<TH CAPTION ALIGN="LEFT" COLSPAN="2">Table 43.2 Palette RAM settings for two-plane animation.
+<TR>
+<TH COLSPAN="2"><HR>
+</TABLE>
+<P>around each image can temporarily erase the overlapped parts of the other image or images, resulting in momentary flicker. While that&#146;s not fatal, it certainly detracts from the rock-solid animation effect of bit-plane animation.
+</P>
+<P>Not allowing images in the same plane to overlap is actually less of a limitation than it seems. Run Listing 43.1 again. Unless you were looking for it, you&#146;d never notice that images of the same color almost never overlap&#151;there&#146;s plenty of action to distract the eye, and the trajectories of images of the same color are arranged so that they have a full range of motion without running into each other. The only exception is the chain of green images, which occasionally doubles back on itself when it bounces directly into a corner and reverses direction. Here, however, the images are moving so quickly that the brief moment during which one image&#146;s fringe blanks a portion of another image is noticeable only upon close inspection, and not particularly unaesthetic even then.</P>
+<P><A NAME="Fig5"><!-- </A><A HREF="javascript:displayWindow('images/43-05.jpg',410,203 )"> --><IMG SRC="images/43-05.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/43-05.jpg',410,203)"> --><FONT COLOR="#000077"><B>Figure 43.5</B></FONT></A>&nbsp;&nbsp;<I>Pixel precedence for plane 3 only.</I>
+</P>
+<P>When a technique has such tremendous visual and performance advantages as does bit-plane animation, it behooves you to design your animation software so that the limitations of the animation technique don&#146;t get in the way. For example, you might design a shooting gallery game with all the images in a given plane marching along in step in a continuous band. The images could never overlap, so bit-plane animation would produce very high image quality.
+</P>
+<H3><A NAME="Heading7"></A><FONT COLOR="#000077">Shearing and Page Flipping</FONT></H3>
+<P>As Listing 43.1 runs, you may occasionally see an image shear, with the top and bottom parts of the image briefly offset. This is a consequence of drawing an image directly into memory as that memory is being scanned for video data. Occasionally the CRT controller scans a given area of display memory for pixel data just as the program is changing that same memory. If the CRT controller scans memory faster than the CPU can modify that memory, then the CRT controller can scan out the bytes of display memory that have been already been changed, pass the point in the image that the CPU is currently drawing, and start scanning out bytes that haven&#146;t yet been changed. The result: Mismatched upper and lower portions of the image.
+</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="43-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="43-06.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

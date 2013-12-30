@@ -1,0 +1,102 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Looking Past Face Value</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=06//-->
+<!--PAGES=125-129//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="05-05.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="06-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 6<BR>Looking Past Face Value
+</FONT></H2>
+<H3><A NAME="Heading2"></A><FONT COLOR="#000077">How Machine Instructions May Do More Than You Think</FONT></H3>
+<P>I first met Jeff Duntemann at an authors&#146; dinner hosted by <I>PC Tech Journal</I> at Fall Comdex, back in 1985. Jeff was already reasonably well-known as a computer editor and writer, although not as famous as <I>Complete Turbo Pascal</I>, editions 1 through 672 (or thereabouts), <I>TURBO TECHNIX</I>, and <I>PC TECHNIQUES</I> would soon make him. I was fortunate enough to be seated next to Jeff at the dinner table, and, not surprisingly, our often animated conversation revolved around computers, computer writing, and more computers (not necessarily in that order).</P>
+<P>Although I was making a living at computer work and enjoying it at the time, I nonetheless harbored vague ambitions of being a science-fiction writer when I grew up. (I have since realized that this hardly puts me in elite company, especially in the computer world, where it seems that every other person has told me they plan to write science fiction &#147;someday.&#148; Given that probably fewer than 500&#151;I&#146;m guessing here&#151;original science fiction and fantasy short stories, and perhaps a few more novels than that, are published each year in this country, I see a few mid-life crises coming.)</P>
+<P>At any rate, I had accumulated a small collection of rejection slips, and fancied myself something of an old hand in the field. At the end of the dinner, as the other writers complained half-seriously about how little they were paid for writing for <I>Tech Journal</I>, I leaned over to Jeff and whispered, &#147;You know, the pay isn&#146;t so bad here. You should see what they pay for science fiction&#151;even to the guys who win awards!&#148;</P>
+<P>To which Jeff replied, &#147;I know. I&#146;ve been nominated for two Hugos.&#148;</P>
+<P>Oh.</P>
+<P>Had I known I was seated next to a real, live science-fiction writer&#151;an <I>award-nominated</I> writer, by God!&#151;I would have pumped him for all I was worth, but the possibility had never occurred to me. I was at a dinner put on by a computer magazine, seated next to an editor who had just finished a book about Turbo Pascal, and, gosh, it was <I>obvious</I> that the appropriate topic was computers.</P>
+<P>For once, the moral is <I>not</I> &#147;don&#146;t judge a book by its cover.&#148; Jeff is in fact what he appeared to be at face value: a computer writer and editor. However, he is more, too; face value wasn&#146;t full value. You&#146;ll similarly find that face value isn&#146;t always full value in computer programming, and especially so when working in assembly language, where many instructions have talents above and beyond their obvious abilities.</P>
+<P>On the other hand, there are also a number of instructions, such as <B>LOOP</B>, that are designed to perform specific functions but aren&#146;t always the best instructions for those functions. So don&#146;t judge a book by its cover, either.</P>
+<P>Assembly language for the x86 family isn&#146;t like any other language (for which we should, without hesitation, offer our profuse thanks). Assembly language reflects the design of the processor rather than the way we think, so it&#146;s full of multiple instructions that perform similar functions, instructions with odd and often confusing side effects, and endless ways to string together different instructions to do much the same things, often with seemingly minuscule differences that can turn out to be surprisingly important.</P>
+<P>To produce the best code, you must decide precisely what you need to accomplish, then put together the sequence of instructions that accomplishes that end most efficiently, regardless of what the instructions are usually used for. That&#146;s why optimization for the PC is an art, and it&#146;s why the best assembly language for the x86 family will almost always handily outperform compiled code. With that in mind, let&#146;s look past face value&#151;and while we&#146;re at it, I&#146;ll toss in a few examples of not judging a book by its cover.</P>
+<P>The point to all this: You must come to regard the x86 family instructions for what they do, not what you&#146;re used to thinking they do. Yes, <B>SHL</B> shifts a pattern left&#151;but a look-up table can do the same thing, and can often do it faster. <B>ADD</B> can indeed add two operands, but it can&#146;t put the result in a third register; <B>LEA</B> can. The instruction set is your raw material for writing high-performance code. By limiting yourself to thinking only in certain well-established ways about the various instructions, you&#146;re putting yourself at a substantial disadvantage every time you sit down to program.</P>
+<P>In short, the x86 family can do much more than you think&#151;if you&#146;ll use everything it has to offer. Give it a shot!</P>
+<H4 ALIGN="LEFT"><A NAME="Heading3"></A><FONT COLOR="#000077">Memory Addressing and Arithmetic</FONT></H4>
+<P>Years ago, I saw a clip on the David Letterman show in which Letterman walked into a store by the name of &#147;Just Lamps&#148; and asked, &#147;So what do you sell here?&#148;
+</P>
+<P>&#147;Lamps,&#148; he was told. &#147;Just lamps. Can&#146;t you read?&#148;</P>
+<P>&#147;Lamps,&#148; he said. &#147;I see. And what else?&#148;</P>
+<P>From that bit of sublime idiocy we can learn much about divining the full value of an instruction. To wit:</P>
+<P>Quick, what do the x86&#146;s memory addressing modes do?</P>
+<P>&#147;Calculate memory addresses,&#148; you no doubt replied. And you&#146;re right, of course. But what <I>else</I> do they do?</P>
+<P>They perform arithmetic, that&#146;s what they do, and that&#146;s a distinctly different and often useful perspective on memory address calculations.</P>
+<P>For example, suppose you have an array base address in BX and an index into the array in SI. You could add the two registers together to address memory, like this:</P>
+<!-- CODE SNIP //-->
+<PRE>
+add  bx,si
+mov  al,[bx]
+</PRE>
+<!-- END CODE SNIP //-->
+<P>Or you could let the processor do the arithmetic for you in a single instruction:
+</P>
+<!-- CODE SNIP //-->
+<PRE>
+mov  al,[bx&#43;si]
+</PRE>
+<!-- END CODE SNIP //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="05-05.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="06-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

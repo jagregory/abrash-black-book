@@ -1,0 +1,121 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X 256-Color Animation</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=49//-->
+<!--PAGES=929-930//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="49-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="50-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>Here&#146;s something worth noting: The animation is extremely smooth on a 20 MHz 386. It is somewhat more jerky on an 8 MHz 286, because only 30 frames a second can be processed. If animation looks jerky on your PC, try reducing the number of kites.
+</P>
+<P>The kites draw perfectly into the background, with no interference or fringe, thanks to masked copying. In fact, the kites also cross with no interference (the last-drawn kite is always in front), although that&#146;s not readily apparent because they all look the same anyway and are moving fast. Listing 49.5 isn&#146;t inherently limited to kites; create your own images and initialize the object list to display a mix of those images and see the full power of Mode X animation.</P>
+<P>The external functions called by Listing 49.5 can be found in Listings 49.1, 49.2, 49.3, and 49.6, and in the listings for the previous two chapters.</P>
+<P><B>LISTING 49.6 L49-6.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+; Shows the page at the specified offset in the bitmap. Page is displayed when
+; this routine returns.
+; C near-callable as: void ShowPage(unsigned int StartOffset);
+INPUT_STATUS_1     equ     03dah   ;Input Status 1 register
+CRTC_INDEX         equ     03d4h   ;CRT Controller Index reg
+START_ADDRESS_HIGH equ     0ch     ;bitmap start address high byte
+START_ADDRESS_LOW  equ     0dh     ;bitmap start address low byte
+
+ShowPageParms   struc
+                 dw      2 dup (?) ;pushed BP and return address
+StartOffset dw   ?                 ;offset in bitmap of page to display
+ShowPageParms   ends
+        .model  small
+        .code
+        public  _ShowPage
+_ShowPage       proc    near
+        push    bp                 ;preserve caller&#146;s stack frame
+        mov     bp,sp              ;point to local stack frame
+; Wait for display enable to be active (status is active low), to be
+; sure both halves of the start address will take in the same frame.
+        mov     bl,START_ADDRESS_LOW        ;preload for fastest
+        mov     bh,byte ptr StartOffset[bp] ; flipping once display
+        mov     cl,START_ADDRESS_HIGH       ; enable is detected
+        mov     ch,byte ptr StartOffset&#43;1[bp]
+        mov     dx,INPUT_STATUS_1
+WaitDE:
+        in      al,dx
+        test    al,01h
+        jnz     WaitDE  ;display enable is active low (0 = active)
+; Set the start offset in display memory of the page to display.
+        mov     dx,CRTC_INDEX
+        mov     ax,bx
+        out     dx,ax   ;start address low
+        mov     ax,cx
+        out     dx,ax   ;start address high
+; Now wait for vertical sync, so the other page will be invisible when
+; we start drawing to it.
+        mov     dx,INPUT_STATUS_1
+WaitVS:
+        in      al,dx
+        test    al,08h
+        jz      WaitVS  ;vertical sync is active high (1 = active)
+        pop     bp      ;restore caller&#146;s stack frame
+        ret
+_ShowPage       endp
+        end
+</PRE>
+<!-- END CODE //-->
+<H3><A NAME="Heading8"></A><FONT COLOR="#000077">Works Fast, Looks Great</FONT></H3>
+<P>We now end our exploration of Mode X, although we&#146;ll use it again shortly for 3-D animation. Mode X admittedly has its complexities; that&#146;s why I&#146;ve provided a broad and flexible primitive set. Still, so what if it <I>is</I> complex? Take a look at Listing 49.5 in action. That sort of colorful, high-performance animation is worth jumping through a few hoops for; drawing 20, or even 10, fair-sized objects at a rate of 60 Hz, with no flicker, interference, or fringe, is no mean accomplishment, even on a 386.</P>
+<P>There&#146;s much more we could do with animation in general and with Mode X in particular, but it&#146;s time to move on to new challenges. In closing, I&#146;d like to point out that all of the VGA&#146;s hardware features, including the built-in AND, OR, and XOR functions, are available in Mode X, just as they are in the standard VGA modes. If you understand the VGA&#146;s hardware in mode 12H, try applying that knowledge to Mode X; you might be surprised at what you find you can do.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="49-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="50-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

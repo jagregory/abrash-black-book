@@ -1,0 +1,180 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: There Ain't No Such Thing as the Fastest Code</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=16//-->
+<!--PAGES=313-316//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="16-06.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="16-08.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P><B>Listing 16.6 OPT2.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+ ;
+ ;          Opt2         Final optimization word count
+ ;          Written by   Michael Abrash
+ ;          Modified by  Willem Clements
+ ;                       C/ Moncayo 5,  Laurel de la Reina
+ ;                       18140 La Zubia
+ ;                       Granada, Spain
+ ;                       Tel 34-58-890398
+ ;                       Fax 34-58-224102
+ ;
+ parms          struc
+                dw         2 dup(?)
+ buffer         dw         ?
+ bufferlength   dw         ?
+ charflag       dw         ?
+ wordcount      dw         ?
+ parms          ends
+                .model     small
+                .data
+ charstatustable label byte
+                rept       2
+                db         39 dup(0)
+                db         1
+                db         8 dup(0)
+                db         10 dup(1)
+                db         7 dup(0)
+                db         26 dup(1)
+                db         6 dup(0)
+                db         26 dup(1)
+                db         5 dup(0)
+                endm
+                .code
+                public     _ScanBuffer
+ _ScanBuffer    proc       near
+                push       bp
+                mov        bp,sp
+                push       si
+                push       di
+                mov        si,[bp&#43;buffer]
+                mov        bx,[bp&#43;charflag]
+                mov        al,[bx]
+                mov        cx,[bp&#43;bufferlength]
+                mov        bx,offset charstatustable
+                xor        di,di      ; set wordcount to zero
+                shr        cx,1       ; change count to wordcount
+                jc         oddentry   ; odd number of bytes to process
+                cmp        al,01h     ; check if last one is char
+                jne        scanloop4  ; if not so, search for char
+                jmp        scanloop1  ; if so, search for zero
+ oddentry:      xchg       al,ah      ; last one in ah
+                lodsb                 ; get first byte
+                inc        cx
+                cmp        ah,01h     ; check if last one was char
+                jne        scanloop5  ; if not so, search for char
+                jmp        scanloop2  ; if so, search for zero
+ ;
+ ;              locate the end of a word
+ scanloop1:     lodsw                  ; get two chars
+                xlat                   ; translate first
+                xchg       al,ah       ; first in ah
+ scanloop2:     xlat                   ; translate second
+                dec        cx          ; count down
+                jz         done1       ; no more bytes left
+                cmp        ax,0101h    ; check if two chars
+                je         scanloop1   ; go for next two bytes
+                inc        di          ; increase wordcount
+                cmp        al,01h      ; check if new word started
+                je         scanloop1   ; locate end of word
+ ;
+ ;              locate the begin of a word
+ scanloop4:     lodsw                     ; get two chars
+                xlat                      ; translate first
+                xchg       al,ah          ; first in ah
+ scanloop5:     xlat                      ; translate second
+                dec        cx             ; count down
+                jz         done2          ; no more bytes left
+                cmp        ax,0           ; check if word started
+                je         scanloop4      ; if not, locate begin
+                cmp        al,01h         ; check one-letter word
+                je         scanloop1      ; if not, locate end of word
+                inc        di             ; increase wordcount
+                jmp        scanloop4      ; locate begin of next word
+ done1:         cmp        ax,0101h       ; check if end-of-word
+                je         done           ; if not, we have finished
+                inc        di             ; increase wordcount
+                jmp        done
+ done2:         cmp        ax,0100h       ; check for one-letter word
+                jne        done           ; if not, we have finished
+                inc        di             ; increase wordcount
+ done:          mov        si,[bp&#43;charflag]
+                mov        [si],al
+                mov        bx,[bp&#43;wordcount]
+                mov        ax,[bx]
+                mov        dx,[bx&#43;2]
+                add        di,ax
+                adc        dx,0
+                mov        [bx],di
+                mov        [bx&#43;2],dx
+                pop        di
+                pop        si
+                pop        bp
+                ret
+ _ScanBuffer    endp
+                end
+</PRE>
+<!-- END CODE //-->
+<H3><A NAME="Heading11"></A><FONT COLOR="#000077">Level 2: A New Perspective</FONT></H3>
+<P>The second level of optimization is one of breaking out of the mode of thinking established by my original code. Some entrants clearly did exactly that. They stepped back, thought about what the code actually needed to do, rather than just improving how it already worked, and implemented code that sprang from that new perspective.
+</P>
+<P>You can see one example of this in Listing 16.6, where Willem uses <B>CMP AX,0101H</B> to check two bytes at once. While you might think of this as nothing more than a doubling up of tests, it&#146;s a little more than that, especially when taken together with the use of two loops. This is a break with the serial nature of the C code, a recognition that word counting is really nothing more than a state machine that transitions from the &#147;in word&#148; state to the &#147;not in word&#148; state and back, counting a word on one but not both of those transitions. Willem says, in effect, &#147;We&#146;re in a word; if the next two bytes are non-separators, then we&#146;re still in a word, else we&#146;re not in a word, so count and change to the appropriate state.&#148; That&#146;s really quite different from saying, as I originally did, &#147;If the last byte was a non-separator, then if the current byte is a separator, then count a word.&#148; Willem has moved away from the all-in-one approach, splitting the code up into state-specific chunks that are more efficient because each does only the work required in a particular state.</P>
+<P>Another example of coming at the code from a new perspective is counting a word as soon as a non-separator follows a separator (at the start of the word), rather than waiting for a separator following a non-separator (at the end of the word). My friend Dan Illowsky describes the thought process leading to this approach thusly:</P>
+<P><I>&#147;I try to code as closely as possible to the real world nature of those things my program models. It seems somehow wrong to me to count the end of a word as you do when you look for a transition from a word to a non-word. A word is not a transition, it is the presence of a group of characters. Thought of this way, the code would have counted the word when it first detected the group. Had you done this, your main program would not have needed to look for the possible last transition or deal with the semantics of the value in <B>CharValue</B>.&#148;</I></P>
+<P>John Richardson, of New York, contributed a good example of the benefits of a different perspective (in this case, a hardware perspective). John eliminated all branches used for detecting word edges; the inner loop of his code is shown in Listing 16.7. As John explains it:</P>
+<P><I>&#147;My next shot was to get rid of all the branches in the loop. To do that, I reached back to my college hardware courses. I noticed that we were really looking at an edge triggered device we want to count each time the I&#146;m a character state goes from one to zero. Remembering that XOR on two single-bit values will always return whether the bits are different or the same, I implemented a transition counter. The counter triggers every time a word begins or ends.&#148;</I></P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="16-06.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="16-08.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

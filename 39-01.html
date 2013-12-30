@@ -1,0 +1,87 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Fast Convex Polygons</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=39//-->
+<!--PAGES=723-727//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="38-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="39-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 39<BR>Fast Convex Polygons
+</FONT></H2>
+<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Filling Polygons in a Hurry</FONT></H3>
+<P>In the previous chapter, we explored the surprisingly intricate process of filling convex polygons. Now we&#146;re going to fill them an order of magnitude or so faster.
+</P>
+<P>Two thoughts may occur to some of you at this point: &#147;Oh, no, he&#146;s not going to get into assembly language and device-dependent code, is he?&#148; and, &#147;Why bother with polygon filling&#151;or, indeed, any drawing primitives&#151;anyway? Isn&#146;t that what GUIs and third-party libraries are for?&#148;</P>
+<P>To which I answer, &#147;Well, yes, I am,&#148; and, &#147;If you have to ask, you&#146;ve missed the magic of microcomputer programming.&#148; Actually, both questions ask the same thing, and that is: &#147;Why should I, as a programmer, have any idea how my program actually works?&#148; <P>Put that way, it sounds a little different, doesn&#146;t it?</P>
+<P>GUIs, reusable code, portable code written entirely in high-level languages, and object-oriented programming are all the rage now, and promise to remain so for the foreseeable future. The thrust of this technology is to enhance the software development process by offloading as much responsibility as possible to other programmers, and by writing all remaining code in modular, generic form. This modular code then becomes a black box to be reused endlessly without another thought about what actually lies inside. GUIs also reduce development time by making many interface choices for you. That, in turn, makes it possible to create quickly and reliably programs that will be easy for new users to pick up, so software becomes easier to both produce and learn. This is, without question, a Good Thing.</P>
+<P>The &#147;black box&#148; approach does not, however, necessarily cause the software itself to become faster, smaller, or more innovative; quite the opposite, I suspect. I&#146;ll reserve judgement on whether that is a good thing or not, but I&#146;ll make a prediction: In the short run, the aforementioned techniques will lead to noticeably larger, slower programs, as programmers understand less and less of what the key parts of their programs do and rely increasingly on general-purpose code written by other people. (In the long run, programs will be bigger and slower yet, but computers will be so fast and will have so much memory that no one will care.) Over time, PC programs will also come to be more similar to one another&#151;and to programs running on other platforms, such as the Mac&#151;as regards both user interface and performance.</P>
+<P>Again, I am not saying that this is bad. It does, however, have major implications for the future nature of PC graphics programming, in ways that will directly affect the means by which many of you earn your livings. Not so very long from now, graphics programming&#151;all programming, for that matter&#151;will become mostly a matter of assembling in various ways components written by other people, and will cease to be the all-inclusively creative, mindbendingly complex pursuit it is today. (Using legally certified black boxes is, by the way, one direction in which the patent lawyers are leading us; legal considerations may be the final nail in the coffin of homegrown code.) For now, though, it&#146;s still within your power, as a PC programmer, to understand and even control every single thing that happens on a computer if you so desire, to realize any vision you may have. Take advantage of this unique window of opportunity to create some magic!</P>
+<P>Neither does it hurt to understand what&#146;s involved in drawing, say, a filled polygon, even if you are using a GUI. You will better understand the performance implications of the available GUI functions, and you will be able to fill in any gaps in the functions provided. You may even find that you can outperform the GUI on occasion by doing your own drawing into a system memory bitmap, then copying the result to the screen; for instance, you can do this under Windows by using the WinG library available from Microsoft. You will also be able to understand why various quirks exist, and will be able to put them to good use. For example, the X Window System follows the polygon drawing rules described in the previous chapter (although it&#146;s not obvious from the X Window System documentation); if you understood the previous chapter&#146;s discussion, you&#146;re in good shape to use polygons under X. <P>In short, even though doing so runs counter to current trends, it helps to understand how things work, especially when they&#146;re very visible parts of the software you develop. That said, let&#146;s learn more about filling convex polygons.</P>
+<H3><A NAME="Heading3"></A><FONT COLOR="#000077">Fast Convex Polygon Filling</FONT></H3>
+<P>In addressing the topic of filling convex polygons in the previous chapter, the implementation we came up with met all of our functional requirements. In particular, it met stringent rules that guaranteed that polygons would never overlap or have gaps at shared edges, an important consideration when building polygon-based images. Unfortunately, the implementation was also slow as molasses. In this chapter we&#146;ll work up polygon-filling code that&#146;s fast enough to be truly usable.
+</P>
+<P>Our original polygon filling code involved three major tasks, each performed by a separate function:</P>
+<DL>
+<DD><B>&#149;</B>&nbsp;&nbsp;Tracing each polygon edge to generate a coordinate list (performed by the function <B>ScanEdge);</B>
+<DD><B>&#149;</B>&nbsp;&nbsp;Drawing the scanned-out horizontal lines that constitute the filled polygon (<B>DrawHorizontalLineList</B> ); and
+<DD><B>&#149;</B>&nbsp;&nbsp;Characterizing the polygon and coordinating the tracing and drawing (<B>FillConvexPolygon</B> ).
+</DL>
+<P>The amount of time that the previous chapter&#146;s sample program spent in each of these areas is shown in Table 39.1. As you can see, half the time was spent drawing and the other half was spent tracing the polygon edges (the time spent in <B>FillConvexPolygon</B> was relatively minuscule), so we have our choice of where to begin optimizing.</P>
+<H4 ALIGN="LEFT"><A NAME="Heading4"></A><FONT COLOR="#000077">Fast Drawing</FONT></H4>
+<P>Let&#146;s start with drawing, which is easily sped up. The previous chapter&#146;s code used a double-nested loop that called a draw-pixel function to plot each pixel in the polygon individually. That&#146;s a ridiculous approach in a graphics mode that offers linearly mapped memory, as does VGA mode 13H, the mode in which we&#146;re working. At the very least, we could point a far pointer to the left edge of each polygon scan line, then draw each pixel in that scan line in quick succession, using something along the lines of <B>*ScrPtr<SMALL>&#43;&#43;</SMALL> = FillColor;</B> inside a loop.</P>
+<P>However, it seems silly to use a loop when the x86 has an instruction, <B>REP STOS</B>, that&#146;s uniquely suited to filling linear memory buffers. There&#146;s no way to use <B>REP STOS</B> directly in C code, but it&#146;s a good bet that the <B>memset</B> library function uses <B>REP STOS</B>, so you could greatly enhance performance by using <B>memset</B> to draw each scan line of the polygon in a single shot. That, however, is easier said than done. The <B>memset</B> function linked in from the library is tied to the memory model in use; in small (which includes Tiny, Small, or Medium) data models <B>memset</B> accepts only near pointers, so it can&#146;t be used to access screen memory. Consequently, a large (which includes Compact, Large, or Huge) data model must be used to allow <B>memset</B> to draw to display memory&#151;a clear case of the tail wagging the dog. This is an excellent example of why, although it is possible to use C to do virtually anything, it&#146;s sometimes much simpler just to use a little assembly code and be done with it.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="38-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="39-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

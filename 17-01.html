@@ -1,0 +1,81 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: The Game of Life</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=17//-->
+<!--PAGES=322-325//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="16-08.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="17-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 17<BR>The Game of Life
+</FONT></H2>
+<H3><A NAME="Heading2"></A><FONT COLOR="#000077">The Triumph of Algorithmic Optimization in a Cellular Automata Game</FONT></H3>
+<P>I&#146;ve spent a lot of my life discussing assembly language optimization, which I consider to be an important and underappreciated topic. However, I&#146;d like to take this opportunity to point out that there is much, much more to optimization than assembly language. Assembly is essential for absolute maximum performance, but it&#146;s not the only ingredient; necessary but not sufficient, if you catch my drift&#151;and not even necessary, if you&#146;re looking for improved but not maximum performance. You&#146;ve heard it a thousand times: Optimize your algorithm first. Devise new approaches. Or, as Knuth said, <I>Premature optimization is the root of all evil.</I></P>
+<P>This is, of course, old hat, stuff you know like the back of your hand. Or is it? As Jeff Duntemann pointed out to me the other day, performance programmers are made, not born. While I&#146;m merrily gallivanting around in this book optimizing 486 pipelining and turning simple tasks into horribly complicated and terrifyingly fast state machines, many of you are still developing your basic optimization skills. I don&#146;t want to shortchange those of you in the latter category, so in this chapter, we&#146;ll discuss some high-level language optimizations that can be applied by mere mortals within a reasonable period of time. We&#146;re going to examine a complete optimization process, from start to finish, and what we will find is that it&#146;s possible to get a 50-times speed-up without using <I>one byte of assembly!</I> It&#146;s all a matter of perspective&#151;how you look at your code and data.</P>
+<H3><A NAME="Heading3"></A><FONT COLOR="#000077">Conway&#146;s Game</FONT></H3>
+<P>The program that we&#146;re going to optimize is Conway&#146;s famous Game of Life, long-ago favorite of the hackers at MIT&#146;s AI Lab. If you&#146;ve never seen it, let me assure you: Life is <I>neat,</I> and more than a little hypnotic. Fractals have been the hot graphics topic in recent years, but for eye-catching dazzle, Life is hard to beat.</P>
+<P>Of course, eye-catching dazzle requires real-time performance&#151;lots of pixels help too&#151;and there&#146;s the rub. When there are, say, 40,000 cells to process and display, a simple, straightforward implementation just doesn&#146;t cut it, even on a 33 MHz 486. Happily, though, there are many, many ways to speed up Life, and they illustrate a variety of important optimization principles, as this chapter will show.</P>
+<P>First, I&#146;ll describe the ground rules of Life, implement a very straightforward version in C<SMALL>&#43;&#43;</SMALL>, and then speed that version up by about eight times without using any drastically different approaches or any assembly. This may be a little tame for some of you, but be patient; for after that, we&#146;ll haul out the big guns and move into the 30 to 40 times speed-up range. Then in the next chapter, I&#146;ll show you how several programmers <I>really</I> floored it in taking me up on my second Optimization Challenge, which involved the Game of Life.</P>
+<H4 ALIGN="LEFT"><A NAME="Heading4"></A><FONT COLOR="#000077">The Rules of the Game</FONT></H4>
+<P>The Game of Life is ridiculously simple. There is a cellmap, consisting of a rectangular matrix of cells, each of which may initially be either on or off. Each cell has eight neighbors: two horizontally, two vertically, and four diagonally. For each succeeding generation of cells, the game logic determines whether each cell will be on or off according to the following rules:
+</P>
+<DL>
+<DD><B>&#149;</B>&nbsp;&nbsp;If a cell is on and has either two or three neighbors that are on in the current generation, it stays on; otherwise, the cell turns off.
+<DD><B>&#149;</B>&nbsp;&nbsp;If a cell is off and has exactly three &#147;on&#148; neighbors in the current generation, it turns on; otherwise, it stays off. That&#146;s all the rules there are&#151;but they give rise to an astonishing variety of forms, including patterns that spin, march across the screen, and explode.
+</DL>
+<P>It&#146;s only a little more complicated to implement the Game of Life than it is to describe it. Listing 17.1, together with the display functions in Listing 17.2, is a C<SMALL>&#43;&#43;</SMALL> implementation of the Game of Life, and it&#146;s very straightforward. A cellmap is an object that&#146;s accessible through member functions to set, clear, and test cell states, and through a member function to calculate the next generation. Calculating the next generation involves nothing more than using the other member functions to set each cell to the appropriate state, given the number of neighboring on-cells and the cell&#146;s current state. The only complication is that it&#146;s necessary to place the next generation&#146;s cells in another cellmap, and then copy the final result back to the original cellmap. This keeps us from corrupting the current generation&#146;s cellmap before we&#146;re done using it to calculate the next generation.</P>
+<P>All in all, Listing 17.1 is a clean, compact, and elegant implementation of the Game of Life. Were it not that the code is as slow as molasses, we could stop right here.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="16-08.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="17-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

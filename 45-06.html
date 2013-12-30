@@ -1,0 +1,93 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Dog Hair and Dirty Rectangles</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=45//-->
+<!--PAGES=855-857//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="45-05.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="46-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>The 640&#215;400 mode I&#146;ve described here isn&#146;t exactly earthshaking, but it can come in handy for page flipping and CGA emulation, and I&#146;m sure that some of you will find it useful at one time or another.
+</P>
+<H3><A NAME="Heading9"></A><FONT COLOR="#000077">Another Interesting Twist on Page Flipping</FONT></H3>
+<P>I&#146;ve spent a fair amount of time exploring various ways to do animation. I thought I had pegged all the possible ways to do animation: exclusive-ORing; simply drawing and erasing objects; drawing objects with a blank fringe to erase them at their old locations as they&#146;re drawn; page flipping; and, finally, drawing to local memory and copying the dirty (modified) rectangles to the screen, as I&#146;ve discussed in this chapter.
+</P>
+<P>To my surprise, someone threw me an interesting and useful twist on animation not long ago, which turned out to be a cross between page flipping and dirty-rectangle animation. That someone was Serge Mathieu of Concepteva Inc., in Rosemere, Quebec, who informed me that he designs everything &#147;from a game <I>point de vue</I>.&#148;</P>
+<P>In normal page flipping, you display one page while you update the other page. Then you display the new page while you update the other. This works fine, but the need to keep two pages current can make for a lot of bookkeeping and possibly extra drawing, especially in applications where only some of the objects are redrawn each time.</P>
+<P>Serge didn&#146;t care to do all that bookkeeping in his animation applications, so he came up with the following approach, which I&#146;ve reworded, amplified, and slightly modified in the summary here:</P>
+<DL>
+<DD><B>1.</B>&nbsp;&nbsp;Set the start address to display page 0.
+<DD><B>2.</B>&nbsp;&nbsp;Draw to page 1.
+<DD><B>3.</B>&nbsp;&nbsp;Set the start address to display page 1 (the newly drawn page), then wait for the leading edge of vertical sync, at which point the page has flipped and it&#146;s safe to modify page 0.
+<DD><B>4.</B>&nbsp;&nbsp;Copy, via the latches, from page 1 to page 0 the areas that changed from the previous screen to the current one.
+<DD><B>5.</B>&nbsp;&nbsp;Set the start address to display page 0, which is now identical to page 1, then wait for the leading edge of vertical sync, at which point the page has flipped and it&#146;s safe to modify page 1.
+<DD><B>6.</B>&nbsp;&nbsp;Go to step 2.
+</DL>
+<P>The great benefit of Serge&#146;s approach is that the only page that is ever actually drawn to (as opposed to being block-copied to) is page 1. Only one page needs to be maintained, and the complications of maintaining two separate pages vanish entirely. The performance of Serge&#146;s approach may be better or worse than standard page flipping, depending on whether a lot of extra work is required to maintain two pages or not. My guess is that Serge&#146;s approach will usually be slower, owing to the considerable amount of display-memory copying involved, and also to the double page-flip per frame. There&#146;s no doubt, however, that Serge&#146;s approach is simpler, and the resultant display quality is every bit as good as standard page flipping. Given page flipping&#146;s fair degree of complication, this approach is a valuable tool, especially for less-experienced animation programmers.
+</P>
+<P>An interesting variation on Serge&#146;s approach doesn&#146;t page flip nor wait for vertical sync:</P>
+<DL>
+<DD><B>1.</B>&nbsp;&nbsp;Set the start address to display page 0.
+<DD><B>2.</B>&nbsp;&nbsp;Draw to page 1.
+<DD><B>3.</B>&nbsp;&nbsp;Copy, via the latches, the areas that changed from the last screen to the current one from page 1 to page 0.
+<DD><B>4.</B>&nbsp;&nbsp;Go to step 2.
+</DL>
+<P>This approach totally eliminates page flipping, which can consume a great deal of time. The downside is that images may shear for one frame if they&#146;re only partially copied when the raster beam reaches them. This approach is basically a standard dirty-rectangle approach, except that the drawing buffer is stored in display memory, rather than in system memory. Whether this technique is faster than drawing to system memory depends on whether the benefit you get from the VGA&#146;s hardware, such as the Bit Mask, the ALUs, and especially the latches (for copying the dirty rectangles) is sufficient to outweigh the extra display-memory accesses involved in drawing and copying, since display memory is notoriously slow.
+</P>
+<P>Finally, I&#146;d like to point out that in any scheme that involves changing the display-memory start address, a clever trick can potentially reduce the time spent waiting for pages to flip. Normally, it&#146;s necessary to wait for display enable to be active, then set the two start address registers, and finally wait for vertical sync to be active, so that you know the new start address has taken effect. The start-address registers must never be set around the time vertical sync is active (the new start address is accepted at either the start or end of vertical sync on the EGAs and VGAs I&#146;m familiar with), because it would then be possible to load a half-changed start address (one register loaded, the other not yet loaded), and the screen would jump for a frame. Avoiding this condition is the motivation for waiting for display enable, because display enable is active only when vertical sync is not active and will not become active for a long while.</P>
+<P>Suppose, however, that you arrange your page start addresses so that they both have a low-byte value of 0 (page 0 starts at 0000H, and page 1 starts at 8000H, for example). Page flipping can then be done simply by setting the new high byte of the start address, then waiting for the leading edge of vertical sync. This eliminates the need to wait for display enable (the two bytes of the start address can never be mismatched); page flipping will often involve less waiting, because display enable becomes inactive long before vertical sync becomes active. Using the above approach reclaims all the time between the end of display enable and the start of vertical sync for doing useful work. (The steps I&#146;ve given for Serge&#146;s animation approach assume that the single-byte approach is in use; that&#146;s why display enable is never waited for.)</P>
+<P>In the next chapter, I&#146;ll return to the original dirty-rectangle algorithm presented in this chapter, and goose it a little with some assembly, so that we can see what dirty-rectangle animation is really made of. (Probably not dog hair....)</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="45-05.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="46-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

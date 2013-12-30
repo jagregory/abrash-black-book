@@ -1,0 +1,229 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Boyer-Moore String Searching</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=14//-->
+<!--PAGES=271-274//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="14-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="14-06.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P><B>LISTING 14.3 L14-3.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+; Searches a buffer for a specified pattern. In case of a mismatch,
+; uses the value of the mismatched byte to skip across as many
+; potential match locations as possible (partial Boyer-Moore).
+; Returns start offset of first match searching forward, or NULL if
+; no match is found.
+; Tested with TASM.
+; C near-callable as:
+;       unsigned char * FindString(unsigned char * BufferPtr,
+;          unsigned int BufferLength, unsigned char * PatternPtr,
+;          unsigned int PatternLength);
+
+parms   struc
+        dw      2 dup(?)   ;pushed BP &amp return address
+BufferPtr dw    ?          ;pointer to buffer to be searched
+BufferLength dw ?          ;# of bytes in buffer to be searched
+PatternPtr dw   ?          ;pointer to pattern for which to search
+PatternLength dw ?         ;length of pattern for which to search
+parms   ends
+
+        .model small
+        .code
+        public _FindString
+_FindString     proc    near
+        cld
+        push    bp         ;preserve caller&#146;s stack frame
+        mov     bp,sp      ;point to our stack frame
+        push    si         ;preserve caller&#146;s register variables
+        push    di
+        sub     sp,256*2   ;allocate space for SkipTable
+; Create the table of distances by which to skip ahead on mismatches
+; for every possible byte value. First, initialize all skips to the
+; pattern length; this is the skip distance for bytes that don&#146;t
+; appear in the pattern.
+        mov     ax,[bp&#43;PatternLength]
+        and     ax,ax      ;return an instant match if the pattern is
+        jz      InstantMatch ;0-length
+        mov     di,ds
+        mov     es,di      ;ES=DS=SS
+        mov     di,sp      ;point to SkipBuffer
+        mov     cx,256
+        rep     stosw
+        dec     ax                      ;from now on, we only need
+        mov     [bp&#43;PatternLength],ax   ; PatternLength - 1
+; Point to last (rightmost) byte of first potential pattern match
+; location in buffer.
+        add     [bp&#43;BufferPtr],ax
+; Reject if buffer is too small, and set the count of the number of
+; potential pattern match locations in the buffer.
+        sub     [bp&#43;BufferLength],ax
+        jbe     NoMatch
+; Set the skip values for the bytes that do appear in the pattern to
+; the distance from the byte location to the end of the pattern.
+; When there are multiple instances of the same byte, the rightmost
+; instance&#146;s skip value is used. Note that the rightmost byte of the
+; pattern isn&#146;t entered in the skip table; if we get that value for
+; a mismatch, we know for sure that the right end of the pattern has
+; already passed the mismatch location, so this is not a relevant byte
+; for skipping purposes.
+        mov     si,[bp&#43;PatternPtr] ;point to start of pattern
+        and     ax,ax              ;are there any skips to set?
+        jz      SetSkipDone        ;no
+        mov     di,sp              ;point to SkipBuffer
+SetSkipLoop:
+        sub     bx,bx      ;prepare for word addressing off byte value
+        mov     bl,[si]    ;get the next pattern byte
+        inc     si         ;advance the pattern pointer
+        shl     bx,1       ;prepare for word lookup
+        mov     [di&#43;bx],ax ;set the skip value when this byte value is
+                           ; the mismatch value in the buffer
+        dec     ax
+        jnz     SetSkipLoop
+SetSkipDone:
+        mov     dl,[si]            ;DL=rightmost pattern byte from now on
+        dec     si                 ;point to next-to-rightmost byte of pattern
+        mov     [bp&#43;PatternPtr],si ; from now on
+; Search the buffer.
+        std                        ;for backward REPZ CMPSB
+        mov     di,[bp&#43;BufferPtr]  ;point to first search location
+        mov     cx,[bp&#43;BufferLength]   ;# of match locations to check
+SearchLoop:
+        mov     si,sp                  ;point SI to SkipTable
+; Skip through until there&#146;s a match for the rightmost pattern byte.
+QuickSearchLoop:
+        mov     bl,[di]         ;rightmost buffer byte at this location
+        cmp     dl,bl           ;does it match the rightmost pattern byte?
+        jz      FullCompare     ;yes, so keep going
+        sub     bh,bh           ;convert to a word
+        add     bx,bx           ;prepare for look-up in SkipTable
+        mov     ax,[si&#43;bx]      ;get skip value from skip table for this
+                                ; mismatch value
+        add     di,ax           ;BufferPtr &#43;= Skip;
+        sub     cx,ax           ;BufferLength -= Skip;
+        ja      QuickSearchLoop ;continue if any buffer left
+        jmp     short NoMatch
+; Return a pointer to the start of the buffer (for 0-length pattern).
+        align   2
+InstantMatch:
+        mov     ax,[bp&#43;BufferPtr]
+        jmp     short Done
+; Compare the pattern and the buffer location, searching from high
+; memory toward low (right to left).
+        align   2
+FullCompare:
+        mov     [bp&#43;BufferPtr],di       ;save the current state of
+        mov     [bp&#43;BufferLength],cx    ; the search
+        mov     cx,[bp&#43;PatternLength]   ;# of bytes yet to compare
+        jcxz    Match                   ;done if only one character
+        mov     si,[bp&#43;PatternPtr]      ;point to next-to-rightmost bytes
+        dec     di                      ; of buffer location and pattern
+        repz    cmpsb                   ;compare the rest of the pattern
+        jz      Match                   ;that&#146;s it; we&#146;ve found a match
+; It&#146;s a mismatch; let&#146;s see what we can learn from it.
+        inc     di      ;compensate for 1-byte overrun of REPZ CMPSB;
+                        ; point to mismatch location in buffer
+; # of bytes that did match.
+        mov     si,[bp&#43;BufferPtr]
+        sub     si,di
+; If, based on the mismatch character, we can&#146;t even skip ahead as far
+; as where we started this particular comparison, then just advance by
+; 1 to the next potential match; otherwise, skip ahead from this
+; comparison location by the skip distance for the mismatch character,
+; less the distance covered by the partial match.
+        sub     bx,bx     ;prepare for word addressing off byte value
+        mov     bl,[di]   ;get the value of the mismatch byte in buffer
+        add     bx,bx     ;prepare for word look-up
+        add     bx,sp     ;SP points to SkipTable
+        mov     cx,[bx]   ;get the skip value for this mismatch
+        mov     ax,1      ;assume we&#146;ll just advance to the next
+                          ; potential match location
+        sub     cx,si     ;is the skip far enough to be worth taking?
+        jna     MoveAhead ;no, go with the default advance of 1
+        mov     ax,cx     ;yes; this is the distance to skip ahead from
+                          ; the last potential match location checked
+MoveAhead:
+; Skip ahead and perform the next comparison, if there&#146;s any buffer
+; left to check.
+        mov     di,[bp&#43;BufferPtr]
+        add     di,ax                   ;BufferPtr &#43;= Skip;
+        mov     cx,[bp&#43;BufferLength]
+        sub     cx,ax                   ;BufferLength -= Skip;
+        ja      SearchLoop              ;continue if any buffer left
+; Return a NULL pointer for no match.
+        align   2
+NoMatch:
+        sub     ax,ax
+        jmp     short Done
+; Return start of match in buffer (BufferPtr - (PatternLength - 1)).
+        align   2
+Match:
+        mov     ax,[bp&#43;BufferPtr]
+        sub     ax,[bp&#43;PatternLength]
+Done:
+        cld              ;restore default direction flag
+        add     sp,256*2 ;deallocate space for SkipTable
+        pop     di       ;restore caller&#146;s register variables
+        pop     si
+        pop     bp       ;restore caller&#146;s stack frame
+        ret
+_FindString     endp
+        end
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="14-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="14-06.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

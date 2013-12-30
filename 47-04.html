@@ -1,0 +1,163 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X: 256-color VGA Magic</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=47//-->
+<!--PAGES=885-887//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="47-03.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="47-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H3><A NAME="Heading5"></A><FONT COLOR="#000077">Designing from a Mode X Perspective</FONT></H3>
+<P>Listing 47.4 shows Mode X rectangle fill code. The plane is selected for each pixel in turn, with drawing cycling from plane 0 to plane 3, then wrapping back to plane 0. This is the sort of code that stems from a write-pixel line of thinking; it reflects not a whit of the unique perspective that Mode X demands, and although it looks reasonably efficient, it is in fact some of the slowest graphics code you will ever see. I&#146;ve provided Listing 47.4 partly for illustrative purposes, but mostly so we&#146;ll have a point of reference for the substantial speed-up that&#146;s possible with code that&#146;s designed from a Mode X perspective.
+</P>
+<P><B>LISTING 47.4 L47-4.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+; Mode X (320x240, 256 colors) rectangle fill routine. Works on all
+; VGAs. Uses slow approach that selects the plane explicitly for each
+; pixel. Fills up to but not including the column at EndX and the row
+; at EndY. No clipping is performed.
+; C near-callable as:
+;
+;    void FillRectangleX(int StartX, int StartY, int EndX, int EndY,
+;       unsigned int PageBase, int Color);
+
+SC_INDEX      equ    03c4h              ;Sequence Controller Index
+MAP_MASK      equ    02h                ;index in SC of Map Mask register
+SCREEN_SEG    equ    0a000h             ;segment of display memory in mode X
+SCREEN_WIDTH  equ    80                 ;width of screen in bytes from one scan line
+                                        ; to the next
+parms   struc
+        dw      2 dup (?)               ;pushed BP and return address
+StartX  dw      ?                  ;X coordinate of upper left corner of rect
+StartY  dw      ?                  ;Y coordinate of upper left corner of rect
+EndX    dw      ?                  ;X coordinate of lower right corner of rect
+                                   ; (the row at EndX is not filled)
+EndY    dw      ?                       ;Y coordinate of lower right corner of rect
+                                        ; (the column at EndY is not filled)
+PageBase dw     ?                       ;base offset in display memory of page in
+                                        ; which to fill rectangle
+Color   dw      ?                       ;color in which to draw pixel
+parms   ends
+
+        .model  small
+        .code
+        public  _FillRectangleX
+_FillRectangleX proc    near
+        push    bp                      ;preserve caller&#146;s stack frame
+        mov     bp,sp                   ;point to local stack frame
+        push    si                      ;preserve caller&#146;s register variables
+        push    di
+
+        mov     ax,SCREEN_WIDTH
+        mul     [bp&#43;StartY]             ;offset in page of top rectangle scan line
+        mov     di,[bp&#43;StartX]
+        shr     di,1
+        shr     di,1                    ;X/4 = offset of first rectangle pixel in scan
+                                        ; line
+        add     di,ax                   ;offset of first rectangle pixel in page
+        add     di,[bp&#43;PageBase]        ;offset of first rectangle pixel in
+                                        ; display memory
+        mov     ax,SCREEN_SEG
+        mov     es,ax                   ;point ES:DI to the first rectangle pixel&#146;s
+                                        ; address
+        mov     dx,SC_INDEX             ;set the Sequence Controller Index to
+        mov     al,MAP_MASK             ; point to the Map Mask register
+        out     dx,al
+        inc     dx                      ;point DX to the SC Data register
+        mov     cl,byte ptr [bp&#43;StartX]
+        and     cl,011b                 ;CL = first rectangle pixel&#146;s plane
+        mov     al,01h
+        shl     al,cl                   ;set only the bit for the pixel&#146;s plane to 1
+        mov     ah,byte ptr [bp&#43;Color]  ;color with which to fill
+        mov     bx,[bp&#43;EndY]
+        sub     bx,[bp&#43;StartY]          ;BX = height of rectangle
+        jle     FillDone                ;skip if 0 or negative height
+        mov     si,[bp&#43;EndX]
+        sub     si,[bp&#43;StartX]          ;CX = width of rectangle
+        jle     FillDone                ;skip if 0 or negative width
+FillRowsLoop:
+        push    ax                      ;remember the plane mask for the left edge
+        push    di                      ;remember the start offset of the scan line
+        mov     cx,si                   ;set count of pixels in this scan line
+FillScanLineLoop:
+        out     dx,al                   ;set the plane for this pixel
+        mov     es:[di],ah              ;draw the pixel
+        shl     al,1                    ;adjust the plane mask for the next pixel&#146;s
+        and     al,01111b               ; bit, modulo 4
+        jnz     AddressSet              ;advance address if we turned over from
+        inc     di                      ; plane 3 to plane 0
+        mov     al,00001b               ;set plane mask bit for plane 0
+AddressSet:
+        loop    FillScanLineLoop
+        pop     di                      ;retrieve the start offset of the scan line
+        add     di,SCREEN_WIDTH         ;point to the start of the next scan
+                                        ; line of the rectangle
+        pop     ax                      ;retrieve the plane mask for the left edge
+        dec     bx                      ;count down scan lines
+        jnz     FillRowsLoop
+FillDone:
+        pop     di                      ;restore caller&#146;s register variables
+        pop     si
+        pop     bp                      ;restore caller&#146;s stack frame
+        ret
+_FillRectangleX endp
+        end
+</PRE>
+<!-- END CODE //-->
+<P>The two major weaknesses of Listing 47.4 both result from selecting the plane on a pixel by pixel basis. First, endless <B>OUT</B>s (which are particularly slow on 386s, 486s, and Pentiums, much slower than accesses to display memory) must be performed, and, second, <B>REP STOS</B> can&#146;t be used. Listing 47.5 overcomes both these problems by tailoring the fill technique to the organization of display memory. Each plane is filled in its entirety in one burst before the next plane is processed, so only five <B>OUT</B>s are required in all, and <B>REP STOS</B> can indeed be used; I&#146;ve used <B>REP STOSB</B> in Listings 47.5 and 47.6. <B>REP STOSW</B> could be used and would improve performance on most VGAs; however, <B>REP STOSW</B> requires extra overhead to set up, so it can be slower for small rectangles, especially on 8-bit VGAs. Note that doing an entire plane at a time can produce a &#147;fading-in&#148; effect for large images, because all columns for one plane are drawn before any columns for the next. If this is a problem, the four planes can be cycled through once for each scan line, rather than once for the entire rectangle.</P>
+<P>Listing 47.5 is 2.5 times faster than Listing 47.4 at clearing the screen on a 20-MHz cached 386 with a Paradise VGA. Although Listing 47.5 is slightly slower than an equivalent mode 13H fill routine would be, it&#146;s not grievously so.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="47-03.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="47-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

@@ -1,0 +1,121 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Floating-Point for Real-Time 3-D</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=63//-->
+<!--PAGES=1173-1175//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="63-03.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="64-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>When it comes to implementation, however, transformation is quite different from three separate dot products and additions, because once again the magic number <I>three</I> is involved. Three separate dot products and additions would take 60 cycles if each were calculated using the unoptimized dot-product code of Listing 63.2, and would take 54 cycles if done one after the other using the faster dot-product code of Listing 63.3, in each case followed by the a final addition per dot product.</P>
+<P>When fully interleaved, however, only a single cycle is lost (again to the extra cycle of FST latency), and the cycle count drops to 34, as shown in Listing 63.6. This means that on a 100 MHz Pentium, it&#146;s theoretically possible to do nearly 3,000,000 transforms per second, although that&#146;s a purely hypothetical number, due to cache effects and set-up costs. Still, more than 1,000,000 transforms per second is certainly feasible; at a frame rate of 30 Hz, that&#146;s an impressive 30,000 transforms per frame.</P>
+<P><B>Listing 63.6 L63-6.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+;optimized transformation: 34 cycles
+      fld      [vec0&#43;0]           ;starts &amp ends on cycle 0
+      fmul     [matrix&#43;0]         ;starts on cycle 1
+      fld      [vec0&#43;0]           ;starts &amp ends on cycle 2
+      fmul     [matrix&#43;16]        ;starts on cycle 3
+      fld      [vec0&#43;0]           ;starts &amp ends on cycle 4
+      fmul     [matrix&#43;32]        ;starts on cycle 5
+      fld      [vec0&#43;4]           ;starts &amp ends on cycle 6
+      fmul     [matrix&#43;4]         ;starts on cycle 7
+      fld      [vec0&#43;4]           ;starts &amp ends on cycle 8
+      fmul     [matrix&#43;20]        ;starts on cycle 9
+      fld      [vec0&#43;4]           ;starts &amp ends on cycle 10
+      fmul     [matrix&#43;36]        ;starts on cycle 11
+      fxch     st(2)              ;no cost
+      faddp    st(5),st(0)        ;starts on cycle 12
+      faddp    st(3),st(0)        ;starts on cycle 13
+      faddp    st(1),st(0)        ;starts on cycle 14
+      fld      [vec0&#43;8]           ;starts &amp ends on cycle 15
+      fmul     [matrix&#43;8]         ;starts on cycle 16
+      fld      [vec0&#43;8]           ;starts &amp ends on cycle 17
+      fmul     [matrix&#43;24]        ;starts on cycle 18
+      fld      [vec0&#43;8]           ;starts &amp ends on cycle 19
+      fmul     [matrix&#43;40]        ;starts on cycle 20
+      fxch     st(2)              ;no cost
+      faddp    st(5),st(0)        ;starts on cycle 21
+      faddp    st(3),st(0)        ;starts on cycle 22
+      faddp    st(1),st(0)        ;starts on cycle 23
+      fxch     st(2)              ;no cost
+      fadd     [matrix&#43;12]        ;starts on cycle 24
+      fxch     st(1)              ;starts on cycle 25
+      fadd     [matrix&#43;28]        ;starts on cycle 26
+      fxch     st(2)              ;no cost
+      fadd     [matrix&#43;44]        ;starts on cycle 27
+      fxch     st(1)              ;no cost
+      fstp     [vec1&#43;0]           ;starts on cycle 28,
+                                  ; ends on cycle 29
+      fstp     [vec1&#43;8]           ;starts on cycle 30,
+                                  ; ends on cycle 31
+      fstp     [vec1&#43;4]           ;starts on cycle 32,
+                                  ; ends on cycle 33
+</PRE>
+<!-- END CODE //-->
+<H3><A NAME="Heading10"></A><FONT COLOR="#000077">Projection</FONT></H3>
+<P>The final optimization we&#146;ll look at is projection to screenspace. Projection itself is basically nothing more than a divide (to get 1/z), followed by two multiplies (to get x/z and y/z), so there wouldn&#146;t seem to be much in the way of FP optimization possibilities there. However, remember that although FDIV has a latency of up to 39 cycles, it can overlap with integer instructions for all but one of those cycles. That means that if we can find enough independent integer work to do before we need the 1/z result, we can effectively reduce the cost of the FDIV to one cycle. Projection by itself doesn&#146;t offer much with which to overlap, but other work such as clamping, window-relative adjustments, or 2-D clipping could be interleaved with the FDIV for the next point.
+</P>
+<P>Another dramatic speed-up is possible by setting the precision of the FPU down to single precision via FLDCW, thereby cutting the time FDIV takes to a mere 19 cycles. I don&#146;t have the space to discuss reduced precision in detail in this book, but be aware that along with potentially greater performance, it carries certain risks, as well. The reduced precision, which affects FADD, FSUB, FMUL, FDIV, and FSQRT, can cause subtle differences from the results you&#146;d get using compiler defaults. If you use reduced precision, you should be on the alert for precision-related problems, such as clipped values that vary more than you&#146;d expect from the precise clip point, or the need for using larger epsilons in comparisons for point-on-plane tests.</P>
+<H3><A NAME="Heading11"></A><FONT COLOR="#000077">Rounding Control</FONT></H3>
+<P>Another useful area that I can note only in passing here is that of leaving the FPU in a particular rounding mode while performing bulk operations of some sort. For example, conversion to int via the FIST instruction requires that the FPU be in chop mode. Unfortunately, the FLDCW instruction must be used to get the FPU into and out of chop mode, and each FLDCW takes 7 cycles, meaning that compilers often take at least 14 cycles for each float-&gt;int conversion. In assembly, you can just set the rounding state (or, likewise, the precision, for faster FDIVs) once at the start of the loop, and save all those FLDCW cycles each time through the loop. This is even more true for <B>ceil()</B>, which many compilers implement as horrendously inefficient subroutines, even though there are rounding modes for both <B>ceil()</B> and <B>floor()</B>. Again, though, be aware that results of FP calculations will be subtly different from compiler default behavior while chop, ceil, or floor mode is in effect.</P>
+<P>A final note: There are some speed-ups to be had by manipulating FP variables with integer instructions. Check out Chris Hecker&#146;s column in the February/March 1996 issue of <I>Game Developer</I> for details.</P>
+<H3><A NAME="Heading12"></A><FONT COLOR="#000077">A Farewell to 3-D Fixed-Point</FONT></H3>
+<P>As with most optimizations, there are both benefits and hazards to floating-point acceleration, especially pedal-to-the-metal optimizations such as the last few I&#146;ve mentioned. Nonetheless, I&#146;ve found floating-point to be generally both more robust and easier to use than fixed-point even with those maximum optimizations. Now that floating-point is fast enough for real time, I don&#146;t expect to be doing a whole lot of fixed-point 3-D math from here on out.
+</P>
+<P>And I won&#146;t miss it a bit.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="63-03.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="64-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

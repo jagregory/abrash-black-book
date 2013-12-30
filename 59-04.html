@@ -1,0 +1,195 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: The Idea of BSP Trees</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=59//-->
+<!--PAGES=1107-1110//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="59-03.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="59-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H3><A NAME="Heading8"></A><FONT COLOR="#000077">Inorder Walks of BSP Trees</FONT></H3>
+<P>It was implementing BSP trees that got me to thinking about inorder tree traversal. In inorder traversal, the left subtree of each node gets visited first, then the node, and then the right subtree. You apply this sequence recursively to each node and its children until the entire tree has been visited, as shown in Figure 59.9. Walking a BSP tree is basically an inorder tree walk; the only difference is that with a BSP tree a decision is made before each descent as to which subtree to visit first, rather than simply visiting whatever&#146;s pointed to by the left-subtree pointer. Conceptually, however, an inorder walk is what&#146;s used to traverse a BSP tree; from now on I&#146;ll discuss normal inorder walking, with the understanding that the same principles apply to BSP trees.
+</P>
+<P>As I&#146;ve said again and again in my printed works over the years, you have to dig deep below the surface to <I>really</I> understand something if you want to get it right, and inorder walking turns out to be an excellent example of this. In fact, it&#146;s such a good example that I routinely use it as an interview question for programmer candidates, and, to my astonishment, not one interviewee has done a good job with this one yet. I ask the question in two stages, and I get remarkably consistent results.</P>
+<P>First, I ask for an implementation of a function <B>WalkTree()</B> that visits each node in a passed-in tree in inorder sequence. Each candidate unhesitatingly writes something like the perfectly good code in Listings 59.2 and 59.3 shown next.</P>
+<P><A NAME="Fig9"><!-- </A><A HREF="javascript:displayWindow('images/59-09.jpg',112,194 )"> --><IMG SRC="images/59-09.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/59-09.jpg',112,194)"> --><FONT COLOR="#000077"><B>Figure 59.9</B></FONT></A>&nbsp;&nbsp;<I>An inorder walk of a BSP tree.</I>
+</P>
+<P><B>Listing 59.2 L59_2.C</B></P>
+<!-- CODE //-->
+<PRE>
+// Function to inorder walk a tree, using code recursion.
+// Tested with 32-bit Visual C&#43;&#43; 1.10.
+#include &ltstdlib.h&gt
+#include &#147;tree.h&#148;
+extern void Visit(NODE *pNode);
+void WalkTree(NODE *pNode)
+{
+   // Make sure the tree isn&#146;t empty
+   if (pNode != NULL)
+   {
+      // Traverse the left subtree, if there is one
+      if (pNode-&gtpLeftChild != NULL)
+      {
+         WalkTree(pNode-&gtpLeftChild);
+      }
+      // Visit this node
+      Visit(pNode);
+      // Traverse the right subtree, if there is one
+      if (pNode-&gtpRightChild != NULL)
+      {
+         WalkTree(pNode-&gtpRightChild);
+      }
+   }
+}
+</PRE>
+<!-- END CODE //-->
+<P><B>Listing 59.3 L59_3.H</B></P>
+<!-- CODE SNIP //-->
+<PRE>
+// Header file TREE.H for tree-walking code.
+typedef struct _NODE {
+struct _NODE *pLeftChild;
+struct _NODE *pRightChild;
+} NODE;
+
+</PRE>
+<!-- END CODE SNIP //-->
+<P>Then I ask if they have any idea how to make the code faster; some don&#146;t, but most point out that function calls are pretty expensive. Either way, I then ask them to rewrite the function without code recursion.
+</P>
+<P>And then I sit back and squirm for a minimum of 15 minutes.</P>
+<P>I have never had <I>anyone</I> write a functional data-recursion inorder walk function in less time than that, and several people have simply never gotten the code to work at all. Even the best of them have fumbled their way through the code, sticking in a push here or a pop there, then working through sample scenarios in their head to see what&#146;s broken, programming by trial and error until the errors seem to be gone. No one is ever sure they have it right; instead, when they can&#146;t find any more bugs, they look at me hopefully to see if it&#146;s thumbs-up or thumbs-down.</P>
+<P>And yet, a data-recursive inorder walk implementation has exactly the same flowchart and <I>exactly</I> the same functionality as the code-recursive version they&#146;ve already written. They already have a fully functional model to follow, with all the problems solved, but they can&#146;t make the connection between that model and the code they&#146;re trying to implement. Why is this?</P>
+<H4 ALIGN="LEFT"><A NAME="Heading9"></A><FONT COLOR="#000077">Know It <I>Cold</I>
+</FONT></H4>
+<P>The problem is that these people don&#146;t understand inorder walking through and through. They understand the concepts of visiting left and right subtrees, and they have a general picture of how traversal moves about the tree, but they do not understand exactly what the code-recursive version does. If they really comprehended everything that happens in each iteration of <B>WalkTree()</B>&#151;how each call saves the state, and what that implies for the order in which operations are performed&#151;they would simply and without fuss implement code like that in Listing 59.4, working with the code-recursive version as a model.</P>
+<P><B>Listing 59.4 L59_4.C</B></P>
+<!-- CODE //-->
+<PRE>
+// Function to inorder walk a tree, using data recursion.
+// No stack overflow testing is performed.
+// Tested with 32-bit Visual C&#43;&#43; 1.10.
+#include &ltstdlib.h&gt
+#include &#147;tree.h&#148;
+#define MAX_PUSHED_NODES   100
+extern void Visit(NODE *pNode);
+void WalkTree(NODE *pNode)
+{
+   NODE *NodeStack[MAX_PUSHED_NODES];
+   NODE **pNodeStack;
+   // Make sure the tree isn&#146;t empty
+   if (pNode != NULL)
+   {
+      NodeStack[0] = NULL;  // push &#147;stack empty&#148; value
+      pNodeStack = NodeStack &#43; 1;
+      for (;;)
+      {
+         // If the current node has a left child, push
+         // the current node and descend to the left
+         // child to start traversing the left subtree.
+         // Keep doing this until we come to a node
+         // with no left child; that&#146;s the next node to
+         // visit in inorder sequence
+         while (pNode-&gtpLeftChild != NULL)
+         {
+            *pNodeStack&#43;&#43; = pNode;
+            pNode = pNode-&gtpLeftChild;
+         }
+         // We&#146;re at a node that has no left child, so
+         // visit the node, then visit the right
+         // subtree if there is one, or the last-
+         // pushed node otherwise; repeat for each
+         // popped node until one with a right
+         // subtree is found or we run out of pushed
+         // nodes (note that the left subtrees of
+         // pushed nodes have already been visited, so
+         // they&#146;re equivalent at this point to nodes
+         // with no left children)
+         for (;;)
+         {
+            Visit(pNode);
+            // If the node has a right child, make
+            // the child the current node and start
+            // traversing that subtree; otherwise, pop
+            // back up the tree, visiting nodes we
+            // passed on the way down, until we find a
+            // node with a right subtree to traverse
+            // or run out of pushed nodes and are done
+            if (pNode-&gtpRightChild != NULL)
+            {
+               // Current node has a right child;
+               // traverse the right subtree
+               pNode = pNode-&gtpRightChild;
+               break;
+            }
+            // Pop the next node from the stack so
+            // we can visit it and see if it has a
+            // right subtree to be traversed
+            if ((pNode = *&#151;pNodeStack) == NULL)
+            {
+               // Stack is empty and the current node
+               // has no right child; we&#146;re done
+               return;
+            }
+         }
+      }
+   }
+}
+
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="59-03.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="59-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

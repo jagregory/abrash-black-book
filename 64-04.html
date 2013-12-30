@@ -1,0 +1,87 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Quake's Visible-Surface Determination</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=64//-->
+<!--PAGES=1188-1190//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="64-03.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="65-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>When I came in on Monday, John had the look of a man who had broken through to the other side&#151;and also the look of a man who hadn&#146;t had much sleep. He had worked all weekend on the direct-BSP approach, and had gotten it working reasonably well, with insights into how to finish it off. At 3:30 Monday morning, as he lay in bed, thinking about portals, he thought of precalculating and storing in each leaf a list of all leaves visible from that leaf, and then at runtime just drawing the visible leaves back-to-front for whatever leaf the viewpoint happens to be in, ignoring all other leaves entirely.
+</P>
+<P>Size was a concern; initially, a raw, uncompressed potentially visible set (PVS) was several megabytes in size. However, the PVS could be stored as a bit vector, with 1 bit per leaf, a structure that shrunk a great deal with simple zero-byte compression. Those steps, along with changing the BSP heuristic to generate fewer leaves (choosing as the next splitter the polygon that splits the fewest other polygons appears to be the best heuristic) and sealing the outside of the levels so the BSPer can remove the outside surfaces, which can never be seen, eventually brought the PVS down to about 20 Kb for a good-size level.</P>
+<P>In exchange for that 20 Kb, culling leaves outside the frustum is speeded up (because only leaves in the PVS are considered), and culling inside the frustum costs nothing more than a little overdraw (the PVS for a leaf includes all leaves visible from anywhere in the leaf, so some overdraw, typically on the order of 50 percent but ranging up to 150 percent, generally occurs). Better yet, precalculating the PVS results in a leveling of performance; worst case is no longer much worse than best case, because there&#146;s no longer extra VSD processing&#151;just more polygons and perhaps some extra overdraw&#151;associated with complex scenes. The first time John showed me his working prototype, I went to the most complex scene I knew of, a place where the frame rate used to grind down into the single digits, and spun around smoothly, with no perceptible slowdown.</P>
+<P>John says precalculating the PVS was a logical evolution of the approaches he had been considering, that there was no moment when he said &#147;Eureka!&#148; Nonetheless, it was clearly a breakthrough to a brand-new, superior design, a design that, together with a still-in-development sorted-edge rasterizer that completely eliminates overdraw, comes remarkably close to meeting the &#147;perfect-world&#148; specifications we laid out at the start.</P>
+<H3><A NAME="Heading16"></A><FONT COLOR="#000077">Simplify, and Keep on Trying New Things</FONT></H3>
+<P>What does it all mean? Exactly what I said up front: Simplify, and keep trying new things. The precalculated PVS is simpler than any of the other schemes that had been considered (although precalculating the PVS is an interesting task that I&#146;ll discuss another time). In fact, at runtime the precalculated PVS is just a constrained version of the painter&#146;s algorithm. Does that mean it&#146;s not particularly profound?
+</P>
+<P>Not at all. All really great designs seem simple and even obvious&#151;once they&#146;ve been designed. But the process of getting there requires incredible persistence and a willingness to try lots of different ideas until the right one falls into place, as happened here.</P>
+<TABLE WIDTH="100%"><TR>
+<TD WIDTH="5%" ALIGN="LEFT" VALIGN="TOP"><IMG SRC="images/64-02i.jpg"><TD WIDTH="90%" VALIGN="TOP" ALIGN="LEFT"><SMALL><I>My friend Chris Hecker has a theory that all approaches work out to the same thing in the end, since they all reflect the same underlying state and functionality. In terms of underlying theory, I&#146;ve found that to be true; whether you do perspective texture mapping with a divide or with incremental hyperbolic calculations, the numbers do exactly the same thing. When it comes to implementation, however, my experience is that simply time-shifting an approach, or matching hardware capabilities better, or caching can make an astonishing difference.</I></SMALL>
+</TABLE>
+<P>My friend Terje Mathisen likes to say that &#147;almost all programming can be viewed as an exercise in caching,&#148; and that&#146;s exactly what John did. No matter how fast he made his VSD calculations, they could never be as fast as precalculating and looking up the visibility, and his most inspired move was to yank himself out of the &#147;faster code&#148; mindset and realize that it was in fact possible to precalculate (in effect, cache) and look up the PVS.
+</P>
+<P>The hardest thing in the world is to step outside a familiar, pretty good solution to a difficult problem and look for a different, better solution. The best ways I know to do that are to keep trying new, wacky things, and always, always, always try to simplify. One of John&#146;s goals is to have fewer lines of code in each 3-D game than in the previous game, on the assumption that as he learns more, he should be able to do things better with less code.</P>
+<P>So far, it seems to have worked out pretty well for him.</P>
+<H3><A NAME="Heading17"></A><FONT COLOR="#000077">Learn Now, Pay Forward</FONT></H3>
+<P>There&#146;s one other thing I&#146;d like to mention before I close this chapter. Much of what I&#146;ve learned, and a great deal of what I&#146;ve written, has been in the pages of <I>Dr. Dobb&#146;s Journal.</I> As far back as I can remember, <I>DDJ</I> has epitomized the attitude that sharing programming information is A Good Thing. I know a lot of programmers who were able to leap ahead in their development because of Hendrix&#146;s Tiny C, or Stevens&#146; D-Flat, or simply by browsing through <I>DDJ</I>&#146;s annual collections. (Me, for one.) Understandably, most companies understandably view sharing information in a very different way, as potential profit lost&#151;but that&#146;s what makes <I>DDJ</I> so valuable to the programming community.</P>
+<P>It is in that spirit that id Software is allowing me to describe in these pages (which also appeared in one of the <I>DDJ</I> special issues) how Quake works, even before Quake has shipped. That&#146;s also why id has placed the full source code for Wolfenstein 3-D on <A HREF="ftp://ftp.idsoftware.com/idstuff/source">ftp.idsoftware.com/idstuff/source</A>; and although you can&#146;t just recompile the code and sell it, you can learn how a full-blown, successful game works. Check wolfsrc.txt in the above-mentioned directory for details on how the code may be used.</P>
+<P>So remember, when it&#146;s legally possible, sharing information benefits us all in the long run. You can pay forward the debt for the information you gain here and elsewhere by sharing what you know whenever you can, by writing an article or book or posting on the Net. None of us learns in a vacuum; we all stand on the shoulders of giants such as Wirth and Knuth and thousands of others. Lend your shoulders to building the future!</P>
+<H3><A NAME="Heading18"></A><FONT COLOR="#000077">References</FONT></H3>
+<P>Foley, James D., <I>et al.</I>, <I>Computer Graphics: Principles and Practice</I>, Addison Wesley, 1990, ISBN 0-201-12110-7 (beams, BSP trees, VSD).</P>
+<P>Teller, Seth, <I>Visibility Computations in Densely Occluded Polyhedral Environments</I> (dissertation), available on <A HREF="http://theory.lcs.mit.edu/~seth/">http://theory.lcs.mit.edu/~seth/</A> along with several other papers relevant to visibility determination.</P>
+<P>Teller, Seth, <I>Visibility Preprocessing for Interactive Walkthroughs</I>, SIGGRAPH 91 proceedings, pp. 61-69.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="64-03.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="65-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

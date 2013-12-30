@@ -1,0 +1,97 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Pushing the 286 and 386</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=11//-->
+<!--PAGES=222-224//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="11-05.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="11-07.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>Finally, it&#146;s possible in real mode to use the 386&#146;s new addressing modes, in which <I>any</I> 32-bit general-purpose register or pair of registers can be used to address memory. What&#146;s more, multiplication of memory-addressing registers by 2, 4, or 8 for look-ups in word, doubleword, or quadword tables can be built right into the memory addressing mode. (The 32-bit addressing modes are discussed further in later chapters.) In protected mode, these new addressing modes allow you to address a full 4 gigabytes per segment, but in real mode you&#146;re still limited to 64K, even with 32-bit registers and the new addressing modes, unless you play some unorthodox tricks with the segment registers.</P>
+<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP" ALIGN="LEFT"><IMG SRC="images/11-06i.jpg"><TD WIDTH="95%" ALIGN="LEFT" VALIGN="TOP"><SMALL><I>Note well: Those tricks don&#146;t necessarily work with system software such as Windows, so I&#146;d recommend against using them. If you want 4-gigabyte segments, use a 32-bit environment such as Win32.</I></SMALL>
+</TABLE>
+<H4 ALIGN="CENTER"><A NAME="Heading15"></A><FONT COLOR="#000077">Optimization Rules: The More Things Change...</FONT></H4>
+<P>Let&#146;s see what we&#146;ve learned about 286/386 optimization. Mostly what we&#146;ve learned is that our familiar PC cycle-eaters still apply, although in somewhat different forms, and that the major optimization rules for the PC hold true on ATs and 386-based computers. You won&#146;t go wrong on any of these computers if you keep your instructions short, use the registers heavily and avoid memory, don&#146;t branch, and avoid accessing display memory like the plague.
+</P>
+<P>Although we haven&#146;t touched on them, repeated string instructions are still desirable on the 286 and 386 since they provide a great deal of functionality per instruction byte and eliminate both the prefetch queue cycle-eater and branching. However, string instructions are not quite so spectacularly superior on the 286 and 386 as they are on the 8088 since non-string memory-accessing instructions have been speeded up considerably on the newer processors.</P>
+<P>There&#146;s one cycle-eater with new implications on the 286 and 386, and that&#146;s the data alignment cycle-eater. From the data alignment cycle-eater we get a new rule: Word-align your word-sized variables, and start your subroutines at even addresses.</P>
+<H4 ALIGN="CENTER"><A NAME="Heading16"></A><FONT COLOR="#000077">Detailed Optimization</FONT></H4>
+<P>While the major 8088 optimization rules hold true on computers built around the 286 and 386, many of the instruction-specific optimizations no longer hold, for the execution times of most instructions are quite different on the 286 and 386 than on the 8088. We have already seen one such example of the sometimes vast difference between 8088 and 286/386 instruction execution times: <B>MOV [WordVar],0</B>, which has an Execution Unit execution time of 20 cycles on the 8088, has an EU execution time of just 3 cycles on the 286 and 2 cycles on the 386.</P>
+<P>In fact, the performance of virtually all memory-accessing instructions has been improved enormously on the 286 and 386. The key to this improvement is the near elimination of effective address (EA) calculation time. Where an 8088 takes from 5 to 12 cycles to calculate an EA, a 286 or 386 usually takes no time whatsoever to perform the calculation. If a base&#43;index&#43;displacement addressing mode, such as <B>MOV AX,[WordArray&#43;bx&#43;si]</B>, is used on a 286 or 386, 1 cycle is taken to perform the EA calculation, but that&#146;s both the worst case and the only case in which there&#146;s any EA overhead at all.</P>
+<P>The elimination of EA calculation time means that the EU execution time of memory-addressing instructions is much closer to the EU execution time of register-only instructions. For instance, on the 8088 <B>ADD [WordVar],100H</B> is a 31-cycle instruction, while <B>ADD DX,100H</B> is a 4-cycle instruction&#151;a ratio of nearly 8 to 1. By contrast, on the 286 <B>ADD [WordVar],100H</B> is a 7-cycle instruction, while <B>ADD DX,100H</B> is a 3-cycle instruction&#151;a ratio of just 2.3 to 1.</P>
+<P>It would seem, then, that it&#146;s less necessary to use the registers on the 286 than it was on the 8088, but that&#146;s simply not the case, for reasons we&#146;ve already seen. The key is this: The 286 can execute memory-addressing instructions so fast that there&#146;s no spare instruction prefetching time during those instructions, so the prefetch queue runs dry, especially on the AT, with its one-wait-state memory. On the AT, the 6-byte instruction <B>ADD [WordVar],100H</B> is effectively at least a 15-cycle instruction, because 3 cycles are needed to fetch each of the three instruction words and 6 more cycles are needed to read <B>WordVar</B> and write the result back to memory.</P>
+<P>Granted, the register-only instruction <B>ADD DX,100H</B> also slows down&#151;to 6 cycles&#151;because of instruction prefetching, leaving a ratio of 2.5 to 1. Now, however, let&#146;s look at the performance of the same code on an 8088. The register-only code would run in 16 cycles (4 instruction bytes at 4 cycles per byte), while the memory-accessing code would run in 40 cycles (6 instruction bytes at 4 cycles per byte, plus 2 word-sized memory accesses at 8 cycles per word). That&#146;s a ratio of 2.5 to 1, <I>exactly the same as on the 286</I>.</P>
+<P>This is all theoretical. We put our trust not in theory but in actual performance, so let&#146;s run this code through the Zen timer. On a PC, Listing 11.4, which performs register-only addition, runs in 3.62 ms, while Listing 11.5, which performs addition to a memory variable, runs in 10.05 ms. On a 10 MHz AT clone, Listing 11.4 runs in 0.64 ms, while Listing 11.5 runs in 1.80 ms. Obviously, the AT is much faster...but the ratio of Listing 11.5 to Listing 11.4 is virtually identical on both computers, at 2.78 for the PC and 2.81 for the AT. If anything, the register-only form of <B>ADD</B> has a slightly <I>larger</I> advantage on the AT than it does on the PC in this case.</P>
+<P>Theory confirmed.</P>
+<P><B>LISTING 11.4 L11-4.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+;
+; *** Listing 11.4 ***
+;
+; Measures the performance of adding an immediate value
+; to a register, for comparison with Listing 11.5, which
+; adds an immediate value to a memory variable.
+;
+        call    ZTimerOn
+        rept    1000
+        add     dx,100h
+        endm
+        call    ZTimerOff
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="11-05.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="11-07.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

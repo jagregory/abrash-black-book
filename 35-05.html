@@ -1,0 +1,80 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Bresenham Is Fast, and Fast Is Good</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=35//-->
+<!--PAGES=667-670//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="35-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="35-06.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+</P>
+<P>There is one line-drawing function for octants 0 and 3, <B>Octant0</B>, and one line-drawing function for octants 1 and 2, <B>Octant1</B>. A single function with <B>if</B> statements could certainly be used to handle all four octants, but at a significant performance cost. There is, on the other hand, very little performance cost to grouping octants 0 and 3 together and octants 1 and 2 together, since the two octants in each pair differ only in the direction of change of the X coordinate.</P>
+<P><B>EVGALine</B> determines which line-drawing function to call and with what value for the direction of change of the X coordinate based on two criteria: whether <B>DeltaX</B> is negative or not, and whether the absolute value of <B>DeltaX</B> (|<B>DeltaX</B>|) is less than <B>DeltaY</B> or not, as shown in Figure 35.5. Recall that the value of <B>DeltaY</B>, and hence the direction of change of the Y coordinate, is guaranteed to be non-negative as a result of the earlier elimination of four of the line orientations.</P>
+<P>After calling the appropriate function to draw the line (more on those functions shortly), <B>EVGALine</B> restores the state of the Enable Set/Reset register to its default of zero. In this state, the Set/Reset register has no effect, so it is not necessary to restore the state of the Set/Reset register as well. <B>EVGALine</B> also restores the state of the Bit Mask register (which, as we will see, is modified by <B>EVGADot</B>, the pixel-drawing routine actually used to draw each pixel of the lines produced by <B>EVGALine</B>) to its default of 0FFH. While it would be more modular to have <B>EVGADot</B> restore the state of the Bit Mask register after drawing each pixel, it would also be considerably slower to do so. The same could be said of having <B>EVGADot</B> set the Enable Set/Reset and Set/Reset registers for each pixel: While modularity would improve, speed would suffer markedly.</P>
+<P><A NAME="Fig5"><!-- </A><A HREF="javascript:displayWindow('images/35-05.jpg',408,250 )"> --><IMG SRC="images/35-05.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/35-05.jpg',408,250)"> --><FONT COLOR="#000077"><B>Figure 35.5</B></FONT></A>&nbsp;&nbsp;<I>EVGALine&#146;s decision logic.</I>
+</P>
+<H4 ALIGN="LEFT"><A NAME="Heading8"></A><FONT COLOR="#000077">Drawing Each Line</FONT></H4>
+<P>The <B>Octant0</B> and <B>Octant1</B> functions draw lines for which |<B>DeltaX</B>| is greater than <B>DeltaY</B> and lines for which |<B>DeltaX</B>| is less than or equal to <B>DeltaY</B>, respectively. The parameters to <B>Octant0</B> and <B>Octant1</B> are the starting point of the line, the length of the line in each dimension, and <B>XDirection</B>, the amount by which the X coordinate should be changed when it moves. <B>XDirection</B> must be either 1 (to draw toward the right edge of the screen) or &#150;1 (to draw toward the left edge of the screen). No value is required for the amount by which the Y coordinate should be changed; since <B>DeltaY</B> is guaranteed to be positive, the Y coordinate always changes by 1 pixel.</P>
+<P><B>Octant0</B> draws lines for which |<B>DeltaX</B>| is greater than <B>DeltaY</B>. For such lines, the X coordinate of each pixel drawn differs from the previous pixel by either 1 or &#150;1, depending on the value of <B>XDirection</B>. (This makes it possible for <B>Octant0</B> to draw lines in both octant 0 and octant 3.) Whenever <B>ErrorTerm</B> becomes non-negative, indicating that the next Y coordinate is a better approximation of the line being drawn, the Y coordinate is increased by 1.</P>
+<P><B>Octant1</B> draws lines for which |<B>DeltaX</B>| is less than or equal to DeltaY. For these lines, the Y coordinate of each pixel drawn is 1 greater than the Y coordinate of the previous pixel. Whenever <B>ErrorTerm</B> becomes non-negative, indicating that the next X coordinate is a better approximation of the line being drawn, the X coordinate is advanced by either 1 or &#150;1, depending on the value of <B>XDirection</B>. (This makes it possible for <B>Octant1</B> to draw lines in both octant 1 and octant 2.)</P>
+<H4 ALIGN="LEFT"><A NAME="Heading9"></A><FONT COLOR="#000077">Drawing Each Pixel</FONT></H4>
+<P>At the core of <B>Octant0</B> and <B>Octant1</B> is a pixel-drawing function, <B>EVGADot</B>. <B>EVGADot</B> draws a pixel at the specified coordinates in whatever color the hardware of the VGA happens to be set up for. As described earlier, since the entire line drawn by <B>EVGALine</B> is of the same color, line-drawing performance is improved by setting the VGA&#146;s hardware up once in <B>EVGALine</B> before the line is drawn, and then drawing all the pixels in the line in the same color via <B>EVGADot</B>.</P>
+<P><B>EVGADot</B> makes certain assumptions about the screen. First, it assumes that the address of the byte controlling the pixels at the start of a given row on the screen is 80 bytes after the start of the row immediately above it. In other words, this implementation of <B>EVGADot</B> only works for screens configured to be 80 bytes wide. Since this is the standard configuration of all of the modes <B>EVGALine</B> is designed to work in, the assumption of 80 bytes per row should be no problem. If it is a problem, however, <B>EVGADot</B> could easily be modified to retrieve the BIOS integer variable at address 0040:004A, which contains the number of bytes per row for the current video mode.</P>
+<P>Second, <B>EVGADot</B> assumes that screen memory is organized as a linear bitmap starting at address A000:0000, with the pixel at the upper left of the screen controlled by bit 7 of the byte at offset 0, the next pixel to the right controlled by bit 6, the ninth pixel controlled by bit 7 of the byte at offset 1, and so on. Further, it assumes that the graphics adapter&#146;s hardware is configured such that setting the Bit Mask register to allow modification of only the bit controlling the pixel of interest and then ORing a value of 0FEH with display memory will draw that pixel correctly without affecting any other dots. (Note that 0FEH is used rather than 0FFH or 0 because some optimizing compilers turn ORs with the latter values into simpler operations or optimize them away entirely. As explained later, however, it&#146;s not the value that&#146;s ORed that matters, given the way we&#146;ve set up the VGA&#146;s hardware; it&#146;s the act of ORing itself, and the value 0FEH forces the compiler to perform the OR operation.) Again, this is the normal way in which modes 0EH, 0FH, 10H, and 12H operate. As described earlier, <B>EVGADot</B> also assumes that the VGA is set up so that each pixel drawn in the above-mentioned manner will be drawn in the correct color.</P>
+<P>Given those assumptions, <B>EVGADot</B> becomes a surprisingly simple function. First, <B>EVGADot</B> builds a far pointer that points to the byte of display memory controlling the pixel to be drawn. Second, a mask is generated consisting of zeros for all bits except the bit controlling the pixel to be drawn. Third, the Bit Mask register is set to that mask, so that when display memory is read and then written, all bits except the one that controls the pixel to be drawn will be left unmodified.</P>
+<P>Finally, 0FEH is ORed with the display memory byte controlling the pixel to be drawn. ORing with 0FEH first reads display memory, thereby loading the VGA&#146;s internal latches with the contents of the display memory byte controlling the pixel to be drawn, and then writes to display memory with the value 0FEH. Because of the unusual way in which the VGA&#146;s data paths work and the way in which <B>EVGALine</B> sets up the VGA&#146;s Enable Set/Reset and Set/Reset registers, the value that is written by the <B>OR</B> instruction is ignored. Instead, the value that actually gets placed in display memory is the color that was passed to <B>EVGALine</B> and placed in the Set/Reset register. The Bit Mask register, which was set up in step three above, allows only the single bit controlling the pixel to be drawn to be set to this color value. For more on the various machineries the VGA brings to bear on graphics data, look back to Chapter 25.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="35-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="35-06.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

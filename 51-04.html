@@ -1,0 +1,172 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Sneakers in Space</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=51//-->
+<!--PAGES=960-963//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="51-03.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="51-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P><B>LISTING 51.2  L51-2.C</B></P>
+<!-- CODE //-->
+<PRE>
+/* Transforms all vertices in the specified object into view spa ce, then
+   perspective projects them to screen space and maps them to screen coordinates,
+   storing the results in the object. */
+#include &ltmath.h&gt
+#include &#147;polygon.h&#148;/
+
+void XformAndProjectPoints(double Xform[4][4],
+   struct Object * ObjectToXform)
+{
+   int i, NumPoints = ObjectToXform-&gtNumVerts;
+   struct Point3 * Points = ObjectToXform-&gtVertexList;
+   struct Point3 * XformedPoints = ObjectToXform-&gtXformedVertexList;
+   struct Point3 * ProjectedPoints = ObjectToXform-&gtProjectedVertexList;
+   struct Point * ScreenPoints = ObjectToXform-&gtScreenVertexList;
+
+   for (i=0; i&ltNumPoints; i&#43;&#43;, Points&#43;&#43;, XformedPoints&#43;&#43;,
+         ProjectedPoints&#43;&#43;, ScreenPoints&#43;&#43;) {
+      /* Transform to view space */
+      XformVec(Xform, (double *)Points, (double *)XformedPoints);
+      /* Perspective-project to screen space */
+      ProjectedPoints-&gtX = XformedPoints-&gtX / XformedPoints-&gtZ *
+            PROJECTION_RATIO * (SCREEN_WIDTH / 2.0);
+      ProjectedPoints-&gtY = XformedPoints-&gtY / XformedPoints-&gtZ *
+            PROJECTION_RATIO * (SCREEN_WIDTH / 2.0);
+      ProjectedPoints-&gtZ = XformedPoints-&gtZ;
+      /* Convert to screen coordinates. The Y coord is negated to
+         flip from increasing Y being up to increasing Y being down,
+         as expected by the polygon filler. Add in half the screen
+         width and height to center on the screen. */
+      ScreenPoints-&gtX = ((int) floor(ProjectedPoints-&gtX &#43; 0.5)) &#43; SCREEN_WIDTH/2;
+      ScreenPoints-&gtY = (-((int) floor(ProjectedPoints-&gtY &#43; 0.5))) &#43;
+               SCREEN_HEIGHT/2;
+   }
+}
+</PRE>
+<!-- END CODE //-->
+<P><B>LISTING 51.3  L51-3.C</B></P>
+<!-- CODE //-->
+<PRE>
+/* Draws all visible faces (faces pointing toward the viewer) in the specified
+   object. The object must have previously been transformed and projected, so
+   that the ScreenVertexList array is filled in. */
+#include &#147;polygon.h&#148;
+
+void DrawVisibleFaces(struct Object * ObjectToXform)
+{
+   int i, j, NumFaces = ObjectToXform-&gtNumFaces, NumVertices;
+   int * VertNumsPtr;
+   struct Face * FacePtr = ObjectToXform-&gtFaceList;
+   struct Point * ScreenPoints = ObjectToXform-&gtScreenVertexList;
+   long v1,v2,w1,w2;
+   struct Point Vertices[MAX_POLY_LENGTH];
+   struct PointListHeader Polygon;
+
+   /* Draw each visible face (polygon) of the object in turn */
+   for (i=0; i&ltNumFaces; i&#43;&#43;, FacePtr&#43;&#43;) {
+      NumVertices = FacePtr-&gtNumVerts;
+      /* Copy over the face&#146;s vertices from the vertex list */
+      for (j=0, VertNumsPtr=FacePtr-&gtVertNums; j&ltNumVertices; j&#43;&#43;)
+         Vertices[j] = ScreenPoints[*VertNumsPtr&#43;&#43;];
+      /* Draw only if outside face showing (if the normal to the
+         polygon points toward the viewer; that is, has a positive
+         Z component) */
+      v1 = Vertices[1].X - Vertices[0].X;
+      w1 = Vertices[NumVertices-1].X - Vertices[0].X;
+      v2 = Vertices[1].Y - Vertices[0].Y;
+      w2 = Vertices[NumVertices-1].Y - Vertices[0].Y;
+      if ((v1*w2 - v2*w1) &gt 0) {
+         /* It is facing the screen, so draw */
+         /* Appropriately adjust the extent of the rectangle used to
+            erase this page later */
+         for (j=0; j&ltNumVertices; j&#43;&#43;) {
+            if (Vertices[j].X &gt EraseRect[NonDisplayedPage].Right)
+               if (Vertices[j].X &lt SCREEN_WIDTH)
+                  EraseRect[NonDisplayedPage].Right = Vertices[j].X;
+               else EraseRect[NonDisplayedPage].Right = SCREEN_WIDTH;
+            if (Vertices[j].Y &gt EraseRect[NonDisplayedPage].Bottom)
+               if (Vertices[j].Y &lt SCREEN_HEIGHT)
+                  EraseRect[NonDisplayedPage].Bottom = Vertices[j].Y;
+               else EraseRect[NonDisplayedPage].Bottom=SCREEN_HEIGHT;
+            if (Vertices[j].X &lt EraseRect[NonDisplayedPage].Left)
+               if (Vertices[j].X &gt 0)
+                  EraseRect[NonDisplayedPage].Left = Vertices[j].X;
+               else EraseRect[NonDisplayedPage].Left = 0;
+            if (Vertices[j].Y &lt EraseRect[NonDisplayedPage].Top)
+               if (Vertices[j].Y &gt 0)
+                  EraseRect[NonDisplayedPage].Top = Vertices[j].Y;
+               else EraseRect[NonDisplayedPage].Top = 0;
+         }
+         /* Draw the polygon */
+         DRAW_POLYGON(Vertices, NumVertices, FacePtr-&gtColor, 0, 0);
+      }
+   }
+}
+
+</PRE>
+<!-- END CODE //-->
+<P>The sample program, as shown in Figure 51.3, places a cube, floating in three-space, under the complete control of the user. The arrow keys may be used to move the cube left, right, up, and down, and the A and T keys may be used to move the cube away from or toward the viewer. The F1 and F2 keys perform rotation around the Z axis, the axis running from the viewer straight into the screen. The 4 and 6 keys perform rotation around the Y (vertical) axis, and the 2 and 8 keys perform rotation around the X axis, which runs horizontally across the screen; the latter four keys are most conveniently used by flipping the keypad to the numeric state.
+</P>
+<P><A NAME="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/51-03.jpg',405,203 )"> --><IMG SRC="images/51-03.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/51-03.jpg',405,203)"> --><FONT COLOR="#000077"><B>Figure 51.3</B></FONT></A>&nbsp;&nbsp;<I>Sample screens from the 3-D cube program.</I>
+</P>
+<P>The demo involves six polygons, one for each side of the cube. Each of the polygons must be transformed and projected, so it would seem that 24 vertices (four for each polygon) must be handled, but some steps have been taken to improve performance. All vertices for the object have been stored in a single list; the definition of each face contains not the vertices for that face themselves, but rather indexes into the object&#146;s vertex list, as shown in Figure 51.4. This reduces the number of vertices to be manipulated from 24 to 8, for there are, after all, only eight vertices in a cube, with three faces sharing each vertex. In this way, the transformation burden is lightened by two-thirds. Also, as mentioned earlier, backface removal is performed with integers, in screen coordinates, rather than with floating-point values in screen space. Finally, the <B>RecalcXForm</B> flag is set whenever the user changes the object-to-world transformation. Only when this flag is set is the full object-to-view transformation recalculated and the object&#146;s vertices transformed and projected again; otherwise, the values already stored within the object are reused. In the sample application, this brings no visual improvement, because there&#146;s only the one object, but the underlying mechanism is sound: In a full-blown 3-D animation application, with multiple objects moving about the screen, it would help a great deal to flag which of the objects had moved with respect to the viewer, performing a new transformation and projection only for those that had.</P>
+<P><A NAME="Fig4"><!-- </A><A HREF="javascript:displayWindow('images/51-04.jpg',407,308 )"> --><IMG SRC="images/51-04.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/51-04.jpg',407,308)"> --><FONT COLOR="#000077"><B>Figure 51.4</B></FONT></A>&nbsp;&nbsp;<I>The object data structure</I>
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="51-03.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="51-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

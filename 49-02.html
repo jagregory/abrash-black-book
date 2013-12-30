@@ -1,0 +1,235 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X 256-Color Animation</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=49//-->
+<!--PAGES=918-922//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="49-01.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="49-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H4 ALIGN="LEFT"><A NAME="Heading4"></A><FONT COLOR="#000077">Faster Masked Copying</FONT></H4>
+<P>In the previous chapter we saw how the VGA&#146;s latches can be used to copy four pixels at a time from one area of display memory to another in Mode X. We&#146;ve further seen that in Mode X the Map Mask register can be used to select which planes are copied. That&#146;s all we need to know to be able to perform fast masked copies; we can store an image in off-screen display memory, and set the Map Mask to the appropriate mask value as up to four pixels at a time are copied.
+</P>
+<P>There&#146;s a slight hitch, though. The latches can only be used when the source and destination left edge coordinates, modulo four, are the same, as explained in the previous chapter. The solution is to copy all four possible alignments of each image to display memory, each properly positioned for one of the four possible destination-left-edge-modulo-four cases. These aligned images must be accompanied by the four possible alignments of the image mask, stored in system memory. Given all four image and mask alignments, masked copying is a simple matter of selecting the alignment that&#146;s appropriate for the destination&#146;s left edge, then setting the Map Mask with the 4-bit mask corresponding to each four-pixel set as we copy four pixels at a time via the latches.</P>
+<P>Listing 49.2 performs fast masked copying. This code expects to receive a pointer to a <B>MaskedImage</B> structure, which in turn points to four <B>AlignedMaskedImage</B> structures that describe the four possible image and mask alignments. The aligned images are already stored in display memory, and the aligned masks are already stored in system memory; further, the masks are predigested into Map Mask register-compatible form. Given all that ready-to-use data, Listing 49.2 selects and works with the appropriate image-mask pair for the destination&#146;s left edge alignment.</P>
+<P><B>LISTING 49.2 L49-2.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+; Mode X (320x240, 256 colors) display memory to display memory masked copy
+; routine. Works on all VGAs. Uses approach of reading 4 pixels at a time from
+; source into latches, then writing latches to destination, using Map Mask
+; register to perform masking. Copies up to but not including column at
+; SourceEndX and row at SourceEndY. No clipping is performed. Results are not
+; guaranteed if source and destination overlap. C near-callable as:
+;
+;    void CopyScreenToScreenMaskedX(int SourceStartX,
+;       int SourceStartY, int SourceEndX, int SourceEndY,
+;       int DestStartX, int DestStartY, MaskedImage * Source,
+;       unsigned int DestPageBase, int DestBitmapWidth);
+
+SC_INDEX equ    03c4h   ;Sequence Controller Index register port
+MAP_MASK equ    02h     ;index in SC of Map Mask register
+GC_INDEX equ    03ceh   ;Graphics Controller Index register port
+BIT_MASK equ    08h     ;index in GC of Bit Mask register
+SCREEN_SEG equ  0a000h  ;segment of display memory in mode X
+
+parms   struc
+                dw 2 dup (?) ;pushed BP and return address
+SourceStartX    dw ?         ;X coordinate of upper left corner of source
+SourceStartY    dw ?         ;Y coordinate of upper left corner of source
+SourceEndX      dw ?         ;X coordinate of lower right corner of source
+                             ; (the column at SourceEndX is not copied)
+SourceEndY      dw ?         ;Y coordinate of lower right corner of source
+                             ; (the row at SourceEndY is not copied)
+DestStartX      dw ?         ;X coordinate of upper left corner of dest
+DestStartY      dw ?         ;Y coordinate of upper left corner of dest
+Source          dw ?         ;pointer to MaskedImage struct for source
+                             ; which source resides
+DestPageBase    dw ?         ;base offset in display memory of page in
+                             ; which dest resides
+DestBitmapWidth dw ?        ;# of pixels across dest bitmap (must be multiple of 4)
+parms   ends
+
+SourceNextScanOffset equ -2   ;local storage for distance from end of
+                              ; one source scan line to start of next
+DestNextScanOffset  equ -4    ;local storage for distance from end of
+                              ; one dest scan line to start of next
+RectAddrWidth       equ -6    ;local storage for address width of rectangle
+RectHeight          equ -8    ;local storage for height of rectangle
+SourceBitmapWidth   equ -10   ;local storage for width of source bitmap
+                              ; (in addresses)
+STACK_FRAME_SIZE    equ 10
+MaskedImage         struc
+ Alignments         dw  4 dup(?) ;pointers to AlignedMaskedImages for the
+                                 ; 4 possible destination image alignments
+MaskedImage     ends
+AlignedMaskedImage      struc
+ ImageWidth     dw      ?   ;image width in addresses (also mask width in bytes)
+ ImagePtr       dw      ?   ;offset of image bitmap in display memory
+ MaskPtr        dw      ?   ;pointer to mask bitmap in DS
+AlignedMaskedImage      ends
+        .model  small
+        .code
+        public  _CopyScreenToScreenMaskedX
+_CopyScreenToScreenMaskedX proc    near
+        push    bp      ;preserve caller&#146;s stack frame
+        mov     bp,sp   ;point to local stack frame
+        sub     sp,STACK_FRAME_SIZE ;allocate space for local vars
+        push    si      ;preserve caller&#146;s register variables
+        push    di
+
+        cld
+        mov     dx,GC_INDEX     ;set the bit mask to select all bits
+        mov     ax,00000h&#43;BIT_MASK ; from the latches and none from
+        out     dx,ax           ; the CPU, so that we can write the
+                                ; latch contents directly to memory
+        mov     ax,SCREEN_SEG   ;point ES to display memory
+        mov     es,ax
+        mov     ax,[bp&#43;DestBitmapWidth]
+        shr     ax,1            ;convert to width in addresses
+        shr     ax,1
+        mul     [bp&#43;DestStartY] ;top dest rect scan line
+        mov     di,[bp&#43;DestStartX]
+        mov     si,di
+        shr     di,1             ;X/4 = offset of first dest rect pixel in
+        shr     di,1             ; scan line
+        add     di,ax            ;offset of first dest rect pixel in page
+        add     di,[bp&#43;DestPageBase] ;offset of first dest rect pixel in display
+                                 ; memory. now look up the image that&#146;s
+                                 ; aligned to match left-edge alignment
+                                 ; of destination
+        and     si,3             ;DestStartX modulo 4
+        mov     cx,si            ;set aside alignment for later
+        shl     si,1             ;prepare for word look-up
+        mov     bx,[bp&#43;Source] ;point to source MaskedImage structure
+        mov     bx,[bx&#43;Alignments&#43;si] ;point to AlignedMaskedImage
+                                 ; struc for current left edge alignment
+        mov     ax,[bx&#43;ImageWidth] ;image width in addresses
+        mov     [bp&#43;SourceBitmapWidth],ax ;remember image width in addresses
+        mul     [bp&#43;SourceStartY] ;top source rect scan line
+        mov     si,[bp&#43;SourceStartX]
+        shr     si,1             ;X/4 = address of first source rect pixel in
+        shr     si,1             ; scan line
+        add     si,ax            ;offset of first source rect pixel in image
+        mov     ax,si
+        add     si,[bx&#43;MaskPtr] ;point to mask offset of first mask pixel in DS
+        mov     bx,[bx&#43;ImagePtr] ;offset of first source rect pixel
+        add     bx,ax            ; in display memory
+
+        mov     ax,[bp&#43;SourceStartX] ;calculate # of addresses across
+        add     ax,cx            ; rect, shifting if necessary to
+        add     cx,[bp&#43;SourceEndX]   ; account for alignment
+        cmp     cx,ax
+        jle     CopyDone         ;skip if 0 or negative width
+        add     cx,3
+        and     ax,not 011b
+        sub     cx,ax
+        shr     cx,1
+        shr     cx,1             ;# of addresses across rectangle to copy
+        mov     ax,[bp&#43;SourceEndY]
+        sub     ax,[bp&#43;SourceStartY]  ;AX = height of rectangle
+        jle     CopyDone        ;skip if 0 or negative height
+        mov     [bp&#43;RectHeight],ax
+        mov     ax,[bp&#43;DestBitmapWidth]
+        shr     ax,1            ;convert to width in addresses
+        shr     ax,1
+        sub     ax,cx ;distance from end of one dest scan line to start of next
+        mov     [bp&#43;DestNextScanOffset],ax
+        mov     ax,[bp&#43;SourceBitmapWidth] ;width in addresses
+        sub     ax,cx ;distance from end of source scan line to start of next
+        mov     [bp&#43;SourceNextScanOffset],ax
+        mov     [bp&#43;RectAddrWidth],cx ;remember width in addresses
+
+        mov     dx,SC_INDEX
+        mov     al,MAP_MASK
+        out     dx,al           ;point SC Index register to Map Mask
+        inc     dx              ;point to SC Data register
+CopyRowsLoop:
+        mov     cx,[bp&#43;RectAddrWidth] ;width across
+CopyScanLineLoop:
+        lodsb                   ;get the mask for this four-pixel set
+                                ; and advance the mask pointer
+        out     dx,al           ;set the mask
+        mov     al,es:[bx]      ;load the latches with four-pixel set from source
+        mov     es:[di],al      ;copy the four-pixel set to the dest
+        inc     bx              ;advance the source pointer
+        inc     di              ;advance the destination pointer
+        dec     cx              ;count off four-pixel sets
+        jnz     CopyScanLineLoop
+
+        mov     ax,[bp&#43;SourceNextScanOffset]
+        add     si,ax           ;point to the start of
+        add     bx,ax           ; the next source, mask,
+        add     di,[bp&#43;DestNextScanOffset] ; and dest lines
+        dec     word ptr [bp&#43;RectHeight] ;count down scan lines
+        jnz     CopyRowsLoop
+CopyDone:
+        mov     dx,GC_INDEX&#43;1   ;restore the bit mask to its default,
+        mov     al,0ffh         ; which selects all bits from the CPU
+        out     dx,al           ; and none from the latches (the GC
+                                ; Index still points to Bit Mask)
+        pop     di              ;restore caller&#146;s register variables
+        pop     si
+        mov     sp,bp           ;discard storage for local variables
+        pop     bp              ;restore caller&#146;s stack frame
+        ret
+_CopyScreenToScreenMaskedX endp
+        end
+
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="49-01.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="49-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

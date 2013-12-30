@@ -1,0 +1,235 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Fast Convex Polygons</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=39//-->
+<!--PAGES=735-738//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="39-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="40-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P><B>LISTING 39.4 L39-4.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+; Scan converts an edge from (X1,Y1) to (X2,Y2), not including the
+; point at (X2,Y2). If SkipFirst == 1, the point at (X1,Y1) isn&#146;t
+; drawn; if SkipFirst == 0, it is. For each scan line, the pixel
+; closest to the scanned edge without being to the left of the scanned
+; edge is chosen. Uses an all-integer approach for speed &amp precision.
+; C near-callable as:
+;    void ScanEdge(int X1, int Y1, int X2, int Y2, int SetXStart,
+;     int SkipFirst, struct HLine **EdgePointPtr);
+; Edges must not go bottom to top; that is, Y1 must be &lt= Y2.
+; Updates the pointer pointed to by EdgePointPtr to point to the next
+;  free entry in the array of HLine structures.
+
+HLine   struc
+XStart          dw     ?           ;X coordinate of leftmost pixel in scan line
+XEnd            dw     ?           ;X coordinate of rightmost pixel in scan line
+HLine   ends
+
+Parms   struc
+                dw     2 dup(?)    ;return address &amp pushed BP
+X1              dw     ?           ;X start coord of edge
+Y1              dw     ?           ;Y start coord of edge
+X2              dw     ?           ;X end coord of edge
+Y2              dw     ?           ;Y end coord of edge
+SetXStart       dw     ?           ;1 to set the XStart field of each
+                                   ; HLine struc, 0 to set XEnd
+SkipFirst       dw     ?           ;1 to skip scanning the first point
+                                   ; of the edge, 0 to scan first point
+EdgePointPtr     dw    ?           ;pointer to a pointer to the array of
+                                   ; HLine structures in which to store
+                                   ; the scanned X coordinates
+Parms   ends
+
+;Offsets from BP in stack frame of local variables.
+AdvanceAmt      equ     -2
+Height          equ     -4
+LOCAL_SIZE      equ      4         ;total size of local variables
+
+        .model small
+        .code
+        public _ScanEdge
+        align  2
+_ScanEdge   proc
+        push  bp                   ;preserve caller&#146;s stack frame
+        mov   bp,sp                ;point to our stack frame
+        sub   sp,LOCAL_SIZE        ;allocate space for local variables
+        push  si                   ;preserve caller&#146;s register variables
+        push  di
+        mov   di,[bp&#43;EdgePointPtr]
+        mov   di,[di]              ;point to the HLine array
+        cmp   [bp&#43;SetXStart],1     ;set the XStart field of each HLine
+                                   ; struc?
+        jz    HLinePtrSet          ;yes, DI points to the first XStart
+        add   di,XEnd              ;no, point to the XEnd field of the
+                                   ; first HLine struc
+HLinePtrSet:
+        mov   bx,[bp&#43;Y2]
+        sub   bx,[bp&#43;Y1]           ;edge height
+        jle   ToScanEdgeExit       ;guard against 0-length &amp horz edges
+        mov   [bp&#43;Height],bx       ;Height = Y2 - Y1
+        sub   cx,cx                ;assume ErrorTerm starts at 0 (true if
+                                   ; we&#146;re moving right as we draw)
+        mov   dx,1                 ;assume AdvanceAmt = 1 (move right)
+        mov   ax,[bp&#43;X2]
+        sub   ax,[bp&#43;X1]           ;DeltaX = X2 - X1
+        jz    IsVertical           ;it&#146;s a vertical edge--special case it
+        jns   SetAdvanceAmt        ;DeltaX &gt= 0
+        mov   cx,1                 ;DeltaX &lt 0 (move left as we draw)
+        sub   cx,bx                ;ErrorTerm = -Height &#43; 1
+        neg   dx                   ;AdvanceAmt = -1 (move left)
+        neg   ax                   ;Width = abs(DeltaX)
+SetAdvanceAmt:
+        mov   [bp&#43;AdvanceAmt],dx
+; Figure out whether the edge is diagonal, X-major (more horizontal),
+; or Y-major (more vertical) and handle appropriately.
+        cmp   ax,bx                 ;if Width==Height, it&#146;s a diagonal edge
+        jz    IsDiagonal            ;it&#146;s a diagonal edge--special case
+        jb    YMajor                ;it&#146;s a Y-major (more vertical) edge
+                                    ;it&#146;s an X-major (more horz) edge
+        sub   dx,dx                 ;prepare DX:AX (Width) for division
+        div   bx                    ;Width/Height
+                                    ;DX = error term advance per scan line
+        mov   si,ax                 ;SI = minimum # of pixels to advance X
+                                    ; on each scan line
+        test  [bp&#43;AdvanceAmt],8000h ;move left or right?
+        jz    XMajorAdvanceAmtSet   ;right, already set
+        neg   si                    ;left, negate the distance to advance
+                                    ; on each scan line
+XMajorAdvanceAmtSet:                ;
+        mov   ax,[bp&#43;X1]            ;starting X coordinate
+        cmp   [bp&#43;SkipFirst],1      ;skip the first point?
+        jz    XMajorSkipEntry       ;yes
+XMajorLoop:
+        mov   [di],ax               ;store the current X value
+        add   di,size HLine         ;point to the next HLine struc
+XMajorSkipEntry:
+        add   ax,si                 ;set X for the next scan line
+        add   cx,dx                 ;advance error term
+        jle   XMajorNoAdvance       ;not time for X coord to advance one
+                                    ; extra
+        add   ax,[bp&#43;AdvanceAmt]    ;advance X coord one extra
+        sub   cx,[bp&#43;Height]        ;adjust error term back
+XMajorNoAdvance:
+        dec   bx                    ;count off this scan line
+        jnz   XMajorLoop
+        jmp   ScanEdgeDone
+        align 2
+ToScanEdgeExit:
+        jmp   ScanEdgeExit
+        align2
+IsVertical:
+        mov   ax,[bp&#43;X1]            ;starting (and only) X coordinate
+        sub   bx,[bp&#43;SkipFirst]     ;loop count = Height - SkipFirst
+        jz    ScanEdgeExit          ;no scan lines left after skipping 1st
+VerticalLoop:
+        mov   [di],ax               ;store the current X value
+        add   di,size HLine         ;point to the next HLine struc
+        dec   bx                    ;count off this scan line
+        jnz   VerticalLoop
+        jmp   ScanEdgeDone
+        align 2
+IsDiagonal:
+        mov   ax,[bp&#43;X1]            ;starting X coordinate
+        cmp   [bp&#43;SkipFirst],1      ;skip the first point?
+        jz    DiagonalSkipEntry     ;yes
+DiagonalLoop:
+        mov   [di],ax               ;store the current X value
+        add   di,size HLine         ;point to the next HLine struc
+DiagonalSkipEntry:
+        add   ax,dx                 ;advance the X coordinate
+        dec   bx                    ;count off this scan line
+        jnz   DiagonalLoop
+        jmp   ScanEdgeDone
+        align 2
+YMajor:
+        pushbp                      ;preserve stack frame pointer
+        mov   si,[bp&#43;X1]            ;starting X coordinate
+        cmp   [bp&#43;SkipFirst],1      ;skip the first point?
+        mov   bp,bx                 ;put Height in BP for error term calcs
+        jz    YMajorSkipEntry       ;yes, skip the first point
+YMajorLoop:
+        mov   [di],si               ;store the current X value
+        add   di,size HLine         ;point to the next HLine struc
+YMajorSkipEntry:
+        add   cx,ax                 ;advance the error term
+        jle   YMajorNoAdvance       ;not time for X coord to advance
+        add   si,dx                 ;advance the X coordinate
+        sub   cx,bp                 ;adjust error term back
+YMajorNoAdvance:
+        dec   bx                    ;count off this scan line
+        jnz   YMajorLoop
+        popbp                       ;restore stack frame pointer
+ScanEdgeDone:
+        cmp   [bp&#43;SetXStart],1       ;were we working with XStart field?
+        jz    UpdateHLinePtr         ;yes, DI points to the next XStart
+        sub   di,XEnd                ;no, point back to the XStart field
+UpdateHLinePtr:
+        mov   bx,[bp&#43;EdgePointPtr]   ;point to pointer to HLine array
+        mov   [bx],di                ;update caller&#146;s HLine array pointer
+ScanEdgeExit:
+        pop   di                     ;restore caller&#146;s register variables
+        pop   si
+        mov   sp,bp                  ;deallocate local variables
+        pop   bp                     ;restore caller&#146;s stack frame
+        ret
+_ScanEdge   endp
+        end
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="39-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="40-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

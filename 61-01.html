@@ -1,0 +1,86 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Frames of Reference</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=61//-->
+<!--PAGES=1131-1135//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="60-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="61-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 61<BR>Frames of Reference
+</FONT></H2>
+<H3><A NAME="Heading2"></A><FONT COLOR="#000077">The Fundamentals of the Math behind 3-D Graphics</FONT></H3>
+<P>Several years ago, I opened a column in <I>Dr. Dobb&#146;s Journal</I> with a story about singing my daughter to sleep with Beatles&#146; songs. Beatles&#146; songs, at least the earlier ones, tend to be bouncy and pleasant, which makes them suitable goodnight fodder&#151;and there are a <I>lot</I> of them, a useful hedge against terminal boredom. So for many good reasons, &#147;Can&#146;t Buy Me Love&#148; and &#147;A Hard Day&#146;s Night&#148; and &#147;Help!&#148; and the rest were evening staples for years.</P>
+<P>No longer, though. You see, I got my wife some Beatles tapes for Christmas, and we&#146;ve all been listening to them in the car, and now that my daughter has heard the real thing, she can barely stand to be in the same room, much less fall asleep, when I sing those songs.</P>
+<P>What&#146;s noteworthy is that the only variable involved in this change was my daughter&#146;s frame of reference. My singing hasn&#146;t gotten any worse over the last four years. (I&#146;m not sure it&#146;s <I>possible</I> for my singing to get worse.) All that changed was my daughter&#146;s frame of reference for those songs. The rest of the universe stayed the same; the change was in her mind, lock, stock, and barrel.</P>
+<P>Often, the key to solving a problem, or to working on a problem efficiently, is having a proper frame of reference. The model you have of a problem you&#146;re tackling often determines how deeply you can understand the problem, and how flexible and innovative you&#146;ll be able to be in solving it.</P>
+<P>An excellent example of this, and one that I&#146;ll discuss toward the end of this chapter, is that of <I>3-D transformation</I>&#151;the process of converting coordinates from one coordinate space to another, for example from worldspace to viewspace. The way this is traditionally explained is functional, but not particularly intuitive, and fairly hard to visualize. Recently, I&#146;ve come across another way of looking at transforms that seems to me to be far easier to grasp. The two approaches are technically equivalent, so the difference is purely a matter of how we choose to view things&#151;but sometimes that&#146;s the most important sort of difference.</P>
+<P>Before we can talk about transforming between coordinate spaces, however, we need two building blocks: dot products and cross products.</P>
+<H4 ALIGN="LEFT"><A NAME="Heading3"></A><FONT COLOR="#000077">3-D Math</FONT></H4>
+<P>At this point in the book, I was originally going to present a BSP-based renderer, to complement the BSP compiler I presented in the previous chapter. What changed my plans was the considerable amount of mail about 3-D math that I&#146;ve gotten in recent months. In every case, the writer has bemoaned his/her lack of expertise with 3-D math, and has asked what books about 3-D math I&#146;d recommend, and how else he/she could learn more.
+</P>
+<P>That&#146;s a commendable attitude, but the truth is, there&#146;s not all that much to 3-D math, at least not when it comes to the sort of polygon-based, realtime 3-D that&#146;s done on PCs. You really need only two basic math tools beyond simple arithmetic: dot products and cross products, and really mostly just the former. My friend Chris Hecker points out that this is an oversimplification; he notes that lots more math-related stuff, like BSP trees, graphs, discrete math for edge stepping, and affine and perspective texture mappings, goes into a production-quality game. While that&#146;s surely true, dot and cross products, together with matrix math and perspective projection, constitute the bulk of what most people are asking about when they inquire about &#147;3-D math,&#148; and, as we&#146;ll see, are key tools for a lot of useful 3-D operations.</P>
+<P>The other thing the mail made clear was that there are a lot of people out there who don&#146;t understand either type of product, at least insofar as they apply to 3-D. Since much or even most advanced 3-D graphics machinery relies to a greater or lesser extent on dot products and cross products (even the line intersection formula I discussed in the last chapter is actually a quotient of dot products), I&#146;m going to spend this chapter examining these basic tools and some of their 3-D applications. If this is old hat to you, my apologies, and I&#146;ll return to BSP-based rendering in the next chapter.</P>
+<H4 ALIGN="LEFT"><A NAME="Heading4"></A><FONT COLOR="#000077">Foundation Definitions</FONT></H4>
+<P>The dot and cross products themselves are straightforward and require almost no context to understand, but I need to define some terms I&#146;ll use when describing applications of the products, so I&#146;ll do that now, and then get started with dot products.
+</P>
+<P>I&#146;m going to have to assume you have <I>some</I> math background, or we&#146;ll never get to the good stuff. So, I&#146;m just going to quickly define a <I>vector</I> as a direction and a magnitude, represented as a coordinate pair (in 2-D) or triplet (in 3-D), relative to the origin. That&#146;s a pretty sloppy definition, but it&#146;ll do for our purposes; if you want the Real McCoy, I suggest you check out <I>Calculus and Analytic Geometry</I>, by Thomas and Finney (Addison-Wesley: ISBN 0-201-52929-7).</P>
+<P>So, for example, in 3-D, the vector <B>V</B> = [5 0 5] has a length, or magnitude, by the Pythagorean theorem, of</P>
+<P ALIGN="CENTER"><P ALIGN="CENTER"><IMG SRC="images/61-01d.jpg"></P>
+</P>
+<P ALIGN="RIGHT">(eq. 1)</P>
+<P>(where vertical double bars denote vector length), and a direction in the plane of the x and z axes, exactly halfway between those two axes.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="60-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="61-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

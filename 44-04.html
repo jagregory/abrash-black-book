@@ -1,0 +1,110 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Split Screens Save the Page Flipped Day</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=44//-->
+<!--PAGES=830-833//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="44-03.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="44-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>Listing 44.1 is written in C. It could equally well have been written in assembly language, and would then have been somewhat faster. However, wanted to make the point (as I&#146;ve made again and again) that assembly language, and, indeed, optimization in general, is needed only in the most critical portions of any program, and then only when the program would otherwise be too slow. Only in a highly performance-sensitive situation would the performance boost resulting from converting Listing 44.1 to assembly justify the time spent in coding and the bugs that would likely creep in&#151;and the sample program already updates the screen at the maximum possible rate of once per frame even on a 1985-vintage 8-MHz AT. In this case, faster performance would result only in a longer wait for the page to flip.
+</P>
+<H4 ALIGN="CENTER"><A NAME="Heading5"></A><FONT COLOR="#000077">Write Mode 3</FONT></H4>
+<P>It&#146;s possible to update the bitmap very efficiently on the VGA, because the VGA can draw up to 8 pixels at once, and because the VGA provides a number of hardware features to speed up drawing. This article makes considerable use of one particularly unusual hardware feature, write mode 3. We discussed write mode 3 back in Chapter 26, but we&#146;ve covered a lot of ground since then&#151;so I&#146;m going to run through a quick refresher on write mode 3.
+</P>
+<P>Some background: In the standard VGA&#146;s high-resolution mode, mode 12H (640&#215;480 with 16 colors, the mode in which this chapter&#146;s sample program runs), each byte of display memory controls 8 adjacent pixels on the screen. (The color of each pixel is, in turn, controlled by 4 bits spread across the four VGA memory planes, but we need not concern ourselves with that here.) Now, there will often be times when we want to change some but not all of the pixels controlled by a particular byte of display memory. This is not easily done, for there is no way to write half a byte, or two bits, or such to memory; it&#146;s the whole byte or none of it at all.</P>
+<P>You might think that using AND and OR to manipulate individual bits could solve the problem. Alas, not so. ANDing and ORing would work if the VGA had only one plane of memory (like the original monochrome Hercules Graphics Adapter) but the VGA has four planes, and ANDing and ORing would work only if we selected and manipulated each plane separately, a process that would be hideously slow. No, with the VGA you must use the hardware assist features, or you might as well forget about real-time screen updates altogether. Write mode 3 will do the trick for our present needs.</P>
+<P>Write mode 3 is useful when you want to set some but not all of the pixels in a single byte of display memory <I>to the same color.</I> That is, if you want to draw a number of pixels within a byte in a single color, write mode 3 is a good way to do it.</P>
+<P>Write mode 3 works like this. First, set the Graphics Controller Mode register to write mode 3. (Look at Listing 44.2 for code that does everything described here.) Next, set the Set/Reset register to the color with which you wish to draw, in the range 0-15. (It is not necessary to explicitly enable set/reset via the Enable Set/Reset register; write mode 3 does that automatically.) Then, to draw individual pixels within a single byte, simply read display memory, and then write a byte to display memory with 1-bits where you want the color to be drawn and 0-bits where you want the current bitmap contents to be preserved. (Note well that <I>the data actually read by the CPU doesn&#146;t matter;</I> the read operation latches all four planes&#146; data, as described way back in Chapter 24.) So, for example, if write mode 3 is enabled and the Set/Reset register is set to 1 (blue), then the following sequence of operations:</P>
+<!-- CODE SNIP //-->
+<PRE>
+mov   dx,0a000h
+mov   es,dx
+mov   al,es:[0]
+mov   byte ptr es:[0],0f0h
+</PRE>
+<!-- END CODE SNIP //-->
+<P>will change the first 4 pixels on the screen (the left nibble of the byte at offset 0 in display memory) to blue, and will leave the next 4 pixels (the right nibble of the byte at offset 0) unchanged.
+</P>
+<P>Using one <B>MOV</B> to read from display memory and another to write to display memory is not particularly efficient on some processors. In Listing 44.2, I instead use <B>XCHG</B>, which reads and then writes a memory location in a single operation, as in:</P>
+<!-- CODE SNIP //-->
+<PRE>
+mov    dx,0a000h
+mov    es,dx
+mov    al,0f0h
+xchg   es:[0],al
+</PRE>
+<!-- END CODE SNIP //-->
+<P>Again, the actual value that&#146;s read is irrelevant. In general, the <B>XCHG</B> approach is more compact than two <B>MOV</B>s, and is faster on 386 and earlier processors, but slower on 486s and Pentiums.</P>
+<P>If all pixels in a byte of display memory are to be drawn in a single color, it&#146;s not necessary to read before writing, because none of the information in display memory at that byte needs to be preserved; a simple write of 0FFH (to draw all bits) will set all 8 pixels to the set/reset color:</P>
+<!-- CODE SNIP //-->
+<PRE>
+mov   dx,0a000h
+mov   es,dx
+mov   byte ptr es:[di],0ffh
+</PRE>
+<!-- END CODE SNIP //-->
+<TABLE WIDTH="100%">
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/44-01i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><I><SMALL>If you&#146;re familiar with VGA programming, you&#146;re no doubt aware that everything that can be done with write mode 3 can also be accomplished in write mode 0 or write mode 2 by using the Bit Mask register. However, setting the Bit Mask register requires at least one <B>OUT</B> per byte written, in addition to the read and write of display memory, and <B>OUT</B>s are often slower than display memory accesses, especially on 386s and 486s. One of the great virtues of write mode 3 is that it requires virtually no <B>OUT</B>s and is therefore substantially faster for masking than the other write modes.</SMALL></I>
+</TABLE>
+<P>In short, write mode 3 is a good choice for single-color drawing that modifies individual pixels within display memory bytes. Not coincidentally, the sample application draws only single-color objects within the animation area; this allows write mode 3 to be used for all drawing, in keeping with our desire for speedy screen updates.
+</P>
+<H4 ALIGN="CENTER"><A NAME="Heading6"></A><FONT COLOR="#000077">Drawing Text</FONT></H4>
+<P>We&#146;ll need text in the sample application; is that also a good use for write mode 3? Sometimes it is, but not in this particular case.
+</P>
+<P>Each character in a font is represented by a pattern of bits, with 1-bits representing character pixels and 0-bits representing background pixels. Since we&#146;ll be using the 8x8 font stored in the BIOS ROM (a pointer to which can be obtained by calling a BIOS service, as illustrated by Listing 44.2), each character is exactly 8 bits, or 1 byte wide. We&#146;ll further insist that characters be placed on byte boundaries (that is, with their left edges only at pixels with X coordinates that are multiples of 8); this means that the character bytes in the font are automatically aligned with display memory, and no rotation or clipping of characters is needed. Finally, we&#146;ll draw all text in white.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="44-03.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="44-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

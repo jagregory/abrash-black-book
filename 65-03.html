@@ -1,0 +1,440 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: 3-D Clipping and Other Thoughts</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=65//-->
+<!--PAGES=1199-1206//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="65-02.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="65-04.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+</P>
+<P><B>LISTING 65.2 L65_2.c</B></P>
+<!-- CODE //-->
+<PRE>
+int ClipToPlane(polygon_t *pin, plane_t *pplane, polygon_t *pout)
+{
+    int     i, j, nextvert, curin, nextin;
+    double  curdot, nextdot, scale;
+    point_t *pinvert, *poutvert;
+
+    pinvert = pin-&gt;verts;
+    poutvert = pout-&gt;verts;
+
+    curdot = DotProduct(pinvert, &amppplane-&gt;normal);
+    curin = (curdot &gt;= pplane-&gt;distance);
+
+    for (i=0 ; i&lt;pin-&gt;numverts ; i&#43;&#43;)
+    {
+        nextvert = (i &#43; 1) % pin-&gt;numverts;
+
+        // Keep the current vertex if it&#146;s inside the plane
+        if (curin)
+            *poutvert&#43;&#43; = *pinvert;
+
+        nextdot = DotProduct(&amppin-&gt;verts[nextvert], &amppplane-&gt;normal);
+        nextin = (nextdot &gt;= pplane-&gt;distance);
+
+        // Add a clipped vertex if one end of the current edge is
+        // inside the plane and the other is outside
+        if (curin != nextin)
+        {
+            scale = (pplane-&gt;distance - curdot) /
+                    (nextdot - curdot);
+            for (j=0 ; j&lt;3 ; j&#43;&#43;)
+            {
+                poutvert-&gt;v[j] = pinvert-&gt;v[j] &#43;
+                    ((pin-&gt;verts[nextvert].v[j] - pinvert-&gt;v[j]) *
+                     scale);
+            }
+            poutvert&#43;&#43;;
+        }
+
+        curdot = nextdot;
+        curin = nextin;
+        pinvert&#43;&#43;;
+    }
+
+    pout-&gt;numverts = poutvert - pout-&gt;verts;
+    if (pout-&gt;numverts &lt; 3)
+        return 0;
+
+    pout-&gt;color = pin-&gt;color;
+    return 1;
+}
+</PRE>
+<!-- END CODE //-->
+<P>Believe it or not, this technique, applied in turn to each edge, is all that&#146;s needed to clip a polygon to a plane. Better yet, a polygon can be clipped to multiple planes by repeating the above process once for each clip plane, with each interation trimming away any part of the polygon that&#146;s clipped by that particular plane.
+</P>
+<P>One particularly useful aspect of 3-D clipping is that if you&#146;re drawing texture mapped polygons, texture coordinates can be clipped in exactly the same way as (x,y,z) coordinates. In fact, the very same fraction that&#146;s used to advance x, y, and z from the inside point to the point of intersection with the clip plane can be used to advance the texture coordinates as well, so only one extra multiply and one extra add are required for each texture coordinate.</P>
+<H4 ALIGN="LEFT"><A NAME="Heading6"></A><FONT COLOR="#000077">Clipping to the Frustum</FONT></H4>
+<P>Given a polygon-clipping function, it&#146;s easy to clip to the frustum: set up the four planes for the sides of the frustum, with another one or two planes for near and far clipping, if desired; next, clip each potentially visible polygon to each plane in turn; then draw whatever polygons emerge from the clipping process. Listing 65.3 is the core code for a simple 3-D clipping example that allows you to move around and look at polygonal models from any angle. The full code for this program is available on the CD-ROM in the file DDJCLIP.ZIP.
+</P>
+<P><A NAME="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/65-03.jpg',408,197 )"> --><IMG SRC="images/65-03.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/65-03.jpg',408,197)"> --><FONT COLOR="#000077"><B>Figure 65.3</B></FONT></A>&nbsp;&nbsp;<I>Clipping a polygon edge.</I>
+</P>
+<P><B>LISTING 65.3 L65_3.c</B></P>
+<!-- CODE //-->
+<PRE>
+int DIBWidth, DIBHeight;
+int DIBPitch;
+double  roll, pitch, yaw;
+double  currentspeed;
+point_t currentpos;
+double  fieldofview, xcenter, ycenter;
+double  xscreenscale, yscreenscale, maxscale;
+int     numobjects;
+double  speedscale = 1.0;
+plane_t frustumplanes[NUM_FRUSTUM_PLANES];
+double  mroll[3][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
+double  mpitch[3][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
+double  myaw[3][3] =  {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
+point_t vpn, vright, vup;
+point_t xaxis = {1, 0, 0};
+point_t zaxis = {0, 0, 1};
+convexobject_t objecthead = {NULL, {0,0,0}, -999999.0};
+
+// Project viewspace polygon vertices into screen coordinates.
+// Note that the y axis goes up in worldspace and viewspace, but
+// goes down in screenspace.
+void ProjectPolygon (polygon_t *ppoly, polygon2D_t *ppoly2D)
+{
+    int     i;
+    double  zrecip;
+
+    for (i=0 ; i&lt;ppoly-&gt;numverts ; i&#43;&#43;)
+    {
+        zrecip = 1.0 / ppoly-&gt;verts[i].v[2];
+        ppoly2D-&gt;verts[i].x =
+               ppoly-&gt;verts[i].v[0] * zrecip * maxscale &#43; xcenter;
+        ppoly2D-&gt;verts[i].y = DIBHeight -
+             (ppoly-&gt;verts[i].v[1] * zrecip * maxscale &#43; ycenter);
+    }
+    ppoly2D-&gt;color = ppoly-&gt;color;
+    ppoly2D-&gt;numverts = ppoly-&gt;numverts;
+}
+
+// Sort the objects according to z distance from viewpoint.
+void ZSortObjects(void)
+{
+    int             i, j;
+    double          vdist;
+    convexobject_t  *pobject;
+    point_t         dist;
+
+    objecthead.pnext = &ampobjecthead;
+    for (i=0 ; i&lt;numobjects ; i&#43;&#43;)
+    {
+        for (j=0 ; j&lt;3 ; j&#43;&#43;)
+            dist.v[j] = objects[i].center.v[j] - currentpos.v[j];
+        objects[i].vdist = sqrt(dist.v[0] * dist.v[0] &#43;
+                                dist.v[1] * dist.v[1] &#43;
+                                dist.v[2] * dist.v[2]);
+        pobject = &ampobjecthead;
+        vdist = objects[i].vdist;
+        // Viewspace-distance-sort this object into the others.
+        // Guaranteed to terminate because of sentinel
+        while (vdist &lt; pobject-&gt;pnext-&gt;vdist)
+            pobject = pobject-&gt;pnext;
+        objects[i].pnext = pobject-&gt;pnext;
+        pobject-&gt;pnext = &ampobjects[i];
+    }
+}
+
+// Move the view position and set the world-&gt;view transform.
+void UpdateViewPos()
+{
+    int     i;
+    point_t motionvec;
+    double  s, c, mtemp1[3][3], mtemp2[3][3];
+
+    // Move in the view direction, across the x-y plane, as if
+    // walking. This approach moves slower when looking up or
+    // down at more of an angle
+    motionvec.v[0] = DotProduct(&ampvpn, &ampxaxis);
+    motionvec.v[1] = 0.0;
+    motionvec.v[2] = DotProduct(&ampvpn, &ampzaxis);
+    for (i=0 ; i&lt;3 ; i&#43;&#43;)
+    {
+        currentpos.v[i] &#43;= motionvec.v[i] * currentspeed;
+        if (currentpos.v[i] &gt; MAX_COORD)
+            currentpos.v[i] = MAX_COORD;
+        if (currentpos.v[i] &lt; -MAX_COORD)
+            currentpos.v[i] = -MAX_COORD;
+    }
+    // Set up the world-to-view rotation.
+    // Note: much of the work done in concatenating these matrices
+    // can be factored out, since it contributes nothing to the
+    // final result; multiply the three matrices together on paper
+    // to generate a minimum equation for each of the 9 final elements
+    s = sin(roll);
+    c = cos(roll);
+    mroll[0][0] = c;
+    mroll[0][1] = s;
+    mroll[1][0] = -s;
+    mroll[1][1] = c;
+    s = sin(pitch);
+    c = cos(pitch);
+    mpitch[1][1] = c;
+    mpitch[1][2] = s;
+    mpitch[2][1] = -s;
+    mpitch[2][2] = c;
+    s = sin(yaw);
+    c = cos(yaw);
+    myaw[0][0] = c;
+    myaw[0][2] = -s;
+    myaw[2][0] = s;
+    myaw[2][2] = c;
+    MConcat(mroll, myaw, mtemp1);
+    MConcat(mpitch, mtemp1, mtemp2);
+    // Break out the rotation matrix into vright, vup, and vpn.
+    // We could work directly with the matrix; breaking it out
+    // into three vectors is just to make things clearer
+    for (i=0 ; i&lt;3 ; i&#43;&#43;)
+    {
+        vright.v[i] = mtemp2[0][i];
+        vup.v[i] = mtemp2[1][i];
+        vpn.v[i] = mtemp2[2][i];
+    }
+    // Simulate crude friction
+    if (currentspeed &gt; (MOVEMENT_SPEED * speedscale / 2.0))
+        currentspeed -= MOVEMENT_SPEED * speedscale / 2.0;
+    else if (currentspeed &lt; -(MOVEMENT_SPEED * speedscale / 2.0))
+        currentspeed &#43;= MOVEMENT_SPEED * speedscale / 2.0;
+    else
+        currentspeed = 0.0;
+}
+
+// Rotate a vector from viewspace to worldspace.
+void BackRotateVector(point_t *pin, point_t *pout)
+{
+    int     i;
+
+    // Rotate into the world orientation
+    for (i=0 ; i&lt;3 ; i&#43;&#43;)
+        pout-&gt;v[i] = pin-&gt;v[0] * vright.v[i] &#43;
+                     pin-&gt;v[1] * vup.v[i] &#43;
+                     pin-&gt;v[2] * vpn.v[i];
+}
+
+// Transform a point from worldspace to viewspace.
+void TransformPoint(point_t *pin, point_t *pout)
+{
+    int     i;
+    point_t tvert;
+
+    // Translate into a viewpoint-relative coordinate
+    for (i=0 ; i&lt;3 ; i&#43;&#43;)
+        tvert.v[i] = pin-&gt;v[i] - currentpos.v[i];
+    // Rotate into the view orientation
+    pout-&gt;v[0] = DotProduct(&amptvert, &ampvright);
+    pout-&gt;v[1] = DotProduct(&amptvert, &ampvup);
+    pout-&gt;v[2] = DotProduct(&amptvert, &ampvpn);
+}
+
+// Transform a polygon from worldspace to viewspace.
+void TransformPolygon(polygon_t *pinpoly, polygon_t *poutpoly)
+{
+    int         i;
+
+    for (i=0 ; i&lt;pinpoly-&gt;numverts ; i&#43;&#43;)
+        TransformPoint(&amppinpoly-&gt;verts[i], &amppoutpoly-&gt;verts[i]);
+    poutpoly-&gt;color = pinpoly-&gt;color;
+    poutpoly-&gt;numverts = pinpoly-&gt;numverts;
+}
+
+// Returns true if polygon faces the viewpoint, assuming a clockwise
+// winding of vertices as seen from the front.
+int PolyFacesViewer(polygon_t *ppoly)
+{
+    int     i;
+    point_t viewvec, edge1, edge2, normal;
+
+    for (i=0 ; i&lt;3 ; i&#43;&#43;)
+    {
+        viewvec.v[i] = ppoly-&gt;verts[0].v[i] - currentpos.v[i];
+        edge1.v[i] = ppoly-&gt;verts[0].v[i] - ppoly-&gt;verts[1].v[i];
+        edge2.v[i] = ppoly-&gt;verts[2].v[i] - ppoly-&gt;verts[1].v[i];
+    }
+    CrossProduct(&ampedge1, &ampedge2, &ampnormal);
+    if (DotProduct(&ampviewvec, &ampnormal) &gt; 0)
+        return 1;
+    else
+        return 0;
+}
+
+// Set up a clip plane with the specified normal.
+void SetWorldspaceClipPlane(point_t *normal, plane_t *plane)
+{
+
+    // Rotate the plane normal into worldspace
+    BackRotateVector(normal, &ampplane-&gt;normal);
+    plane-&gt;distance = DotProduct(&ampcurrentpos, &ampplane-&gt;normal) &#43;
+            CLIP_PLANE_EPSILON;
+}
+
+// Set up the planes of the frustum, in worldspace coordinates.
+void SetUpFrustum(void)
+{
+    double  angle, s, c;
+    point_t normal;
+
+    angle = atan(2.0 / fieldofview * maxscale / xscreenscale);
+    s = sin(angle);
+    c = cos(angle);
+    // Left clip plane
+    normal.v[0] = s;
+    normal.v[1] = 0;
+    normal.v[2] = c;
+    SetWorldspaceClipPlane(&ampnormal, &ampfrustumplanes[0]);
+    // Right clip plane
+    normal.v[0] = -s;
+    SetWorldspaceClipPlane(&ampnormal, &ampfrustumplanes[1]);
+    angle = atan(2.0 / fieldofview * maxscale / yscreenscale);
+    s = sin(angle);
+    c = cos(angle);
+    // Bottom clip plane
+    normal.v[0] = 0;
+    normal.v[1] = s;
+    normal.v[2] = c;
+    SetWorldspaceClipPlane(&ampnormal, &ampfrustumplanes[2]);
+    // Top clip plane
+    normal.v[1] = -s;
+    SetWorldspaceClipPlane(&ampnormal, &ampfrustumplanes[3]);
+}
+
+// Clip a polygon to the frustum.
+int ClipToFrustum(polygon_t *pin, polygon_t *pout)
+{
+    int         i, curpoly;
+    polygon_t   tpoly[2], *ppoly;
+
+    curpoly = 0;
+    ppoly = pin;
+    for (i=0 ; i&lt;(NUM_FRUSTUM_PLANES-1); i&#43;&#43;)
+    {
+        if (!ClipToPlane(ppoly,
+                         &ampfrustumplanes[i],
+                         &amptpoly[curpoly]))
+            return 0;
+        ppoly = &amptpoly[curpoly];
+        curpoly ^= 1;
+    }
+    return ClipToPlane(ppoly,
+                       &ampfrustumplanes[NUM_FRUSTUM_PLANES-1],
+                       pout);
+}
+
+// Render the current state of the world to the screen.
+void UpdateWorld()
+{
+    HPALETTE        holdpal;
+    HDC             hdcScreen, hdcDIBSection;
+    HBITMAP         holdbitmap;
+    polygon2D_t     screenpoly;
+    polygon_t       *ppoly, tpoly0, tpoly1, tpoly2;
+    convexobject_t  *pobject;
+    int             i, j, k;
+
+    UpdateViewPos();
+    memset(pDIBBase, 0, DIBWidth*DIBHeight);    // clear frame
+    SetUpFrustum();
+    ZSortObjects();
+    // Draw all visible faces in all objects
+    pobject = objecthead.pnext;
+    while (pobject != &ampobjecthead)
+    {
+        ppoly = pobject-&gt;ppoly;
+        for (i=0 ; i&lt;pobject-&gt;numpolys ; i&#43;&#43;)
+        {
+            // Move the polygon relative to the object center
+            tpoly0.color = ppoly-&gt;color;
+            tpoly0.numverts = ppoly-&gt;numverts;
+            for (j=0 ; j&lt;tpoly0.numverts ; j&#43;&#43;)
+            {
+                for (k=0 ; k&lt;3 ; k&#43;&#43;)
+                    tpoly0.verts[j].v[k] = ppoly-&gt;verts[j].v[k] &#43;
+                            pobject-&gt;center.v[k];
+            }
+            if (PolyFacesViewer(&amptpoly0))
+            {
+                if (ClipToFrustum(&amptpoly0, &amptpoly1))
+                {
+                    TransformPolygon (&amptpoly1, &amptpoly2);
+                    ProjectPolygon (&amptpoly2, &ampscreenpoly);
+                    FillPolygon2D (&ampscreenpoly);
+                }
+            }
+            ppoly&#43;&#43;;
+        }
+        pobject = pobject-&gt;pnext;
+    }
+    // We&#146;ve drawn the frame; copy it to the screen
+    hdcScreen = GetDC(hwndOutput);
+    holdpal = SelectPalette(hdcScreen, hpalDIB, FALSE);
+    RealizePalette(hdcScreen);
+    hdcDIBSection = CreateCompatibleDC(hdcScreen);
+    holdbitmap = SelectObject(hdcDIBSection, hDIBSection);
+    BitBlt(hdcScreen, 0, 0, DIBWidth, DIBHeight, hdcDIBSection,
+           0, 0, SRCCOPY);
+    SelectPalette(hdcScreen, holdpal, FALSE);
+    ReleaseDC(hwndOutput, hdcScreen);
+    SelectObject(hdcDIBSection, holdbitmap);
+    ReleaseDC(hwndOutput, hdcDIBSection);
+}
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="65-02.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="65-04.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

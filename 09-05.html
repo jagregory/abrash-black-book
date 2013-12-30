@@ -1,0 +1,113 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Hints My Readers Gave Me</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=09//-->
+<!--PAGES=180-182//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="09-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="09-06.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>You&#146;ll notice that in Listing 9.2 I didn&#146;t use a table of character frequencies in English text to determine the character for which to scan, but rather let the caller make that choice. Each buffer of bytes has unique characteristics, and English-letter frequency could well be inappropriate. What if the buffer is filled with French text? Cyrillic? What if it isn&#146;t text that&#146;s being searched? It might be worthwhile for an application to build a dynamic frequency table for each buffer so that the best scan character could be chosen for each search. Or perhaps not, if the search isn&#146;t time-critical or the buffer is small.
+</P>
+<P>The point is that you can improve performance dramatically by understanding the nature of the data with which you work. (This is equally true for high-level language programming, by the way.) Listing 9.2 is very similar to and only slightly more complex than Listing 9.1; the difference lies not in elbow grease or cycle counting but in the organic integrating optimizer technology we all carry around in our heads.</P>
+<H4 ALIGN="LEFT"><A NAME="Heading7"></A><FONT COLOR="#000077">Short Sorts</FONT></H4>
+<P>David Stafford (recently of Borland and Borland Japan) who happens to be one of the best assembly language programmers I&#146;ve ever met, has written a C-callable routine that sorts an array of integers in ascending order. That wouldn&#146;t be particularly noteworthy, except that David&#146;s routine, shown in Listing 9.4, is exactly <I>25 bytes</I> long. Look at the code; you&#146;ll keep saying to yourself, &#147;But this doesn&#146;t work...oh, yes, I guess it does.&#148; As they say in the Prego spaghetti sauce ads, <I>it&#146;s in there</I>&#151;and what a job of packing. Anyway, David says that a 24-byte sort routine eludes him, and he&#146;d like to know if anyone can come up with one.</P>
+<P><B>LISTING 9.4 L9-4.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+.
+;--------------------------------------------------------------------------
+; Sorts an array of ints.  C callable (small model).  25 bytes.
+; void sort( int num, int a[] );
+;
+; Courtesy of David Stafford.
+;--------------------------------------------------------------------------
+
+      .model small
+      .code
+        public _sort
+
+top:    mov     dx,[bx]         ;swap two adjacent integers
+        xchg    dx,[bx&#43;2]
+        xchg    dx,[bx]
+        cmp     dx,[bx]         ;did we put them in the right order?
+        jl      top             ;no, swap them back
+        inc     bx              ;go to next integer
+        inc     bx
+        loop    top
+_sort:  pop     dx              ;get return address (entry point)
+        pop     cx              ;get count
+        pop     bx              ;get pointer
+        push    bx              ;restore pointer
+        dec     cx              ;decrement count
+        push    cx              ;save count
+        push    dx              ;restore return address
+        jg      top             ;if cx &gt 0
+
+        ret
+
+      end
+</PRE>
+<!-- END CODE //-->
+<H4 ALIGN="LEFT"><A NAME="Heading8"></A><FONT COLOR="#000077">Full 32-Bit Division</FONT></H4>
+<P>One of the most annoying limitations of the x86 is that while the dividend operand to the <B>DIV</B> instruction can be 32 bits in size, both the divisor and the result must be 16 bits. That&#146;s particularly annoying in regards to the result because sometimes you just don&#146;t know whether the ratio of the dividend to the divisor is greater than 64K-1 or not&#151;and if you guess wrong, you get that godawful Divide By Zero interrupt. So, what is one to do when the result might not fit in 16 bits, or when the dividend is larger than 32 bits? Fall back to a software division approach? That will work&#151;but oh so slowly.</P>
+<P>There&#146;s another technique that&#146;s much faster than a pure software approach, albeit not so flexible. This technique allows arbitrarily large dividends and results, but the divisor is still limited to16 bits. That&#146;s not perfect, but it does solve a number of problems, in particular eliminating the possibility of a Divide By Zero interrupt from a too-large result.</P>
+<P>This technique involves nothing more complicated than breaking up the division into word-sized chunks, starting with the most significant word of the dividend. The most significant word is divided by the divisor (with no chance of overflow because there are only 16 bits in each); then the remainder is prepended to the next 16 bits of dividend, and the process is repeated, as shown in Figure 9.3. This process is equivalent to dividing by hand, except that here we stop to carry the remainder manually only after each word of the dividend; the hardware divide takes care of the rest. Listing 9.5 shows a function to divide an arbitrarily large dividend by a 16-bit divisor, and Listing 9.6 shows a sample division of a large dividend. Note that the same principle can be applied to handling arbitrarily large dividends in 386 native mode code, but in that case the operation can proceed a dword, rather than a word, at a time.</P>
+<P><A NAME="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/09-03.jpg',406,231 )"> --><IMG SRC="images/09-03.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/09-03.jpg',406,231)"> --><FONT COLOR="#000077"><B>Figure 9.3</B></FONT></A>&nbsp;&nbsp;<I>Fast multiword division on the 386.</I>
+</P>
+<P>As for handling signed division with arbitrarily large dividends, that can be done easily enough by remembering the signs of the dividend and divisor, dividing the absolute value of the dividend by the absolute value of the divisor, and applying the stored signs to set the proper signs for the quotient and remainder. There may be more clever ways to produce the same result, by using <B>IDIV</B>, for example; if you know of one, drop me a line c/o Coriolis Group Books.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="09-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="09-06.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

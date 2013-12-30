@@ -1,0 +1,215 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: There Ain't No Such Thing as the Fastest Code</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=16//-->
+<!--PAGES=300-303//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="16-01.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="16-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>Listing 16.2 is Listing 16.1 modified to call a function that scans each block for words, and Listing 16.3 contains an assembly function that counts words. Used together, Listings 16.2 and 16.3 are just about twice as fast as Listing 16.1, a good return for a little assembly language. Listing 16.3 is a pretty straightforward translation from C to assembly; the new code makes good use of registers, but the key code&#151;determining whether each byte is a character or not&#151;is still done with the same multiple-sequential-tests approach used by the code that the C compiler generates.
+</P>
+<P><B>LISTING 16.2 L16-2.C</B></P>
+<!-- CODE //-->
+<PRE>
+ /* Word-counting program incorporating assembly language. Tested
+    with Borland C<SMALL>&#43;&#43;</SMALL> in C compilation mode &amp the small model. */
+ 
+ #include &ltstdio.h&gt
+ #include &ltfcntl.h&gt
+ #include &ltsys\stat.h&gt
+ #include &ltstdlib.h&gt
+ #include &ltio.h&gt
+ 
+ #define BUFFER_SIZE  0x8000   /* largest chunk of file worked
+                                  with at any one time */
+ int main(int, char **);
+ void ScanBuffer(char *, unsigned int, char *, unsigned long *);
+ 
+ int main(int argc, char **argv) {
+    int Handle;
+    unsigned int BlockSize;
+    long FileSize;
+    unsigned long WordCount = 0;
+    char *Buffer, CharFlag = 0;
+ 
+    if (argc != 2) {
+       printf(&#147;usage: wc &ltfilename&gt\n&#148;);
+       exit(1);
+    }
+ 
+    if ((Buffer = malloc(BUFFER_SIZE)) == NULL) {
+       printf(&#147;Can&#146;t allocate adequate memory\n&#148;);
+       exit(1);
+    }
+ 
+    if ((Handle = open(argv[1], O_RDONLY | O_BINARY)) == -1) {
+       printf(&#147;Can&#146;t open file %s\n&#148;, argv[1]);
+       exit(1);
+    }
+ 
+    if ((FileSize = filelength(Handle)) == -1) {
+       printf(&#147;Error sizing file %s\n&#148;, argv[1]);
+       exit(1);
+    }
+ 
+    CharFlag = 0;
+    while (FileSize &gt 0) {
+       FileSize -= (BlockSize = min(FileSize, BUFFER_SIZE));
+       if (read(Handle, Buffer, BlockSize) == -1) {
+          printf(&#147;Error reading file %s\n&#148;, argv[1]);
+          exit(1);
+       }
+       ScanBuffer(Buffer, BlockSize, &ampCharFlag, &ampWordCount);
+    }
+ 
+    /* Catch the last word, if any */
+    if (CharFlag) {
+       WordCount&#43;&#43;;
+    }
+    printf(&#147;\nTotal words in file: %lu\n&#148;, WordCount);
+    return(0);
+ }
+</PRE>
+<!-- END CODE //-->
+<P><B>LISTING 16.3  L16-3.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+ ; Assembly subroutine for Listing 16.2. Scans through Buffer, of
+ ; length BufferLength, counting words and updating WordCount as
+ ; appropriate. BufferLength must be &gt 0. *CharFlag and *WordCount
+ ; should equal 0 on the first call. Tested with TASM.
+ ; C near-callable as:
+ ; void ScanBuffer(char *Buffer, unsigned int BufferLength,
+ ; char *CharFlag, unsigned long *WordCount);
+ 
+ parms   struc
+         dw      2 dup(?)        ;pushed return address &amp BP
+ Buffer  dw      ?               ;buffer to scan
+ BufferLength dw ?               ;length of buffer to scan
+ CharFlag dw     ?               ;pointer to flag for state of last
+                                 ; char processed on entry (0 on
+                                 ; initial call). Updated on exit
+ WordCount dw    ?               ;pointer to 32-bit count of words
+                                 ; found (0 on initial call)
+ parms   ends
+ 
+         .model  small
+         .code
+         public  _ScanBuffer
+ _ScanBuffer     proc    near
+         push    bp              ;preserve caller&#146;s stack frame
+         mov     bp,sp           ;set up local stack frame
+         push    si              ;preserve caller&#146;s register vars
+         push    di
+ 
+         mov     si,[bp&#43;Buffer]  ;point to buffer to scan
+         mov     bx,[bp&#43;WordCount]
+         mov     cx,[bx]         ;get current 32-bit word count
+         mov     dx,[bx&#43;2]
+         mov     bx,[bp&#43;CharFlag]
+         mov     bl,[bx]            ;get current CharFlag
+         mov     di,[bp&#43;BufferLength];get # of bytes to scan
+ ScanLoop:
+         mov     bh,bl           ;PredCharFlag = CharFlag;
+         lodsb                   ;Ch = *BufferPtr&#43;&#43; &amp 0x7F;
+         and     al,7fh          ;strip high bit for word processors
+                                 ; that set it as an internal flag
+         mov     bl,1            ;assume this is a char; CharFlag = 1;
+         cmp     al,&#145;a&#146;          ;it is a char if between a and z
+         jb      CheckAZ
+         cmp     al,&#145;z&#146;
+         jna     IsAChar
+ CheckAZ:
+         cmp     al,&#145;A&#146;          ;it is a char if between A and Z
+         jb      Check09
+         cmp     al,&#145;Z&#146;
+         jna     IsAChar
+ Check09:
+         cmp     al,&#145;0&#146;          ;it is a char if between 0 and 9
+         jb      CheckApostrophe
+         cmp     al,&#145;9&#146;
+         jna     IsAChar
+ CheckApostrophe:
+         cmp      al,27h           ;it is a char if an apostrophe 
+         jz      IsAChar
+         sub     bl,bl           ;not a char; CharFlag = 0;
+         and     bh,bh
+         jz      ScanLoopBottom  ;if ((!CharFlag) &amp&amp PredCharFlag) {
+         add     cx,1            ;    (WordCount)&#43;&#43;;
+         adc     dx,0            ;}
+ IsAChar:
+ ScanLoopBottom:
+         dec     di              ;} while (&#151;BufferLength);
+         jnz     ScanLoop
+ 
+         mov     si,[bp&#43;CharFlag]
+         mov     [si],bl         ;set new CharFlag
+         mov     bx,[bp&#43;WordCount]
+         mov     [bx],cx         ;set new word count
+         mov     [bx&#43;2],dx
+ 
+         pop     di              ;restore caller&#146;s register vars
+         pop     si
+         pop     bp              ;restore caller&#146;s stack frame
+         ret
+ _ScanBuffer     endp
+         end
+</PRE>
+<!-- END CODE //-->
+<H4 ALIGN="LEFT"><A NAME="Heading4"></A><FONT COLOR="#000077">Which Way to Go from Here?</FONT></H4>
+<P>We could rearrange the tests in light of the nature of the data being scanned; for example, we could perform the tests more efficiently by taking advantage of the knowledge that if a byte is less than &#145;0,&#146; it&#146;s either an apostrophe or not a character at all. However, that sort of fine-tuning is typically good for speedups of only 10 to 20 percent, and I&#146;ve intentionally refrained from implementing this in Listing 16.3 to avoid pointing you down the wrong path; what we need is a different tack altogether. Ponder this. What we <I>really</I> want to know is nothing more than whether a byte is a character, not what sort of character it is. For each byte value, we want a yes/no status, and nothing else&#151;and that description practically begs for a lookup table. Listing 16.4 uses a lookup table approach to boost performance another 50 percent, to three times the performance of the original C code. On a 20 MHz 386, this represents a change from 4.6 to 1.6 seconds, which could be significant&#151;who likes to wait? On an 8088, the improvement in word-counting a large file could easily be 10 or 20 seconds, which is <I>definitely</I> significant.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="16-01.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="16-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

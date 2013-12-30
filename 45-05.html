@@ -1,0 +1,165 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Dog Hair and Dirty Rectangles</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=45//-->
+<!--PAGES=853-855//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="45-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="45-06.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>In 640&#215;400, 16-color mode, page 0 runs from offset 0 to offset 31,999 (7CFFH), and page 1 runs from offset 32,000 (7D00H) to 63,999 (0F9FFH). Page 1 is selected by programming the Start Address registers (CRTC registers 0CH, the high 8 bits, and 0DH, the low 8 bits) to 7D00H. Actually, because the low byte of the start address is 0 for both pages, you can page flip simply by writing 0 or 7DH to the Start Address High register (CRTC register 0CH); this has the benefit of eliminating a nasty class of potential synchronization bugs that can arise when both registers must be set. Listing 45.3 illustrates simple 640&#215;400 page flipping.
+</P>
+<P><B>LISTING 45.3 L45-3.C</B></P>
+<!-- CODE //-->
+<PRE>
+/* Sample program to exercise VGA 640&#215;400 16-color mode page flipping, by
+   drawing a horizontal line at the top of page 0 and another at bottom of page 1,
+   then flipping between them once every 30 frames. Tested with Borland C&#43;&#43;,
+   in C compilation mode. */
+
+#include &lt;dos.h&gt;
+#include &lt;conio.h&gt;
+
+#define SCREEN_SEGMENT  0&#215;A000
+#define SCREEN_HEIGHT   400
+#define SCREEN_WIDTH_IN_BYTES 80
+#define INPUT_STATUS_1  0&#215;3DA /* color-mode address of Input Status 1
+                                 register */
+/* The page start addresses must be even multiples of 256, because page
+   flipping is performed by changing only the upper start address byte */
+#define PAGE_0_START 0
+#define PAGE_1_START (400*SCREEN_WIDTH_IN_BYTES)
+
+void main(void);
+void Wait30Frames(void);
+extern void Set640&#215;400(void);
+
+void main()
+{
+   int i;
+   unsigned int far *ScreenPtr;
+   union REGS regset;
+
+   Set640&#215;400();  /* set to 640&#215;400 16-color mode */
+
+   /* Point to first line of page 0 and draw a horizontal line across screen */
+   FP_SEG(ScreenPtr) = SCREEN_SEGMENT;
+   FP_OFF(ScreenPtr) = PAGE_0_START;
+   for (i=0; i&lt;(SCREEN_WIDTH_IN_BYTES/2); i&#43;&#43;) *ScreenPtr&#43;&#43; = 0&#215;FFFF;
+
+   /* Point to last line of page 1 and draw a horizontal line across screen */
+   FP_OFF(ScreenPtr) =
+         PAGE_1_START &#43; ((SCREEN_HEIGHT-1)*SCREEN_WIDTH_IN_BYTES);
+   for (i=0; i&lt;(SCREEN_WIDTH_IN_BYTES/2); i&#43;&#43;) *ScreenPtr&#43;&#43; = 0&#215;FFFF;
+
+   /* Now flip pages once every 30 frames until a key is pressed */
+   do {
+      Wait30Frames();
+
+      /* Flip to page 1 */
+      outpw(0&#215;3D4, 0&#215;0C | ((PAGE_1_START &gt;&gt; 8) &lt;&lt; 8));
+
+      Wait30Frames();
+
+      /* Flip to page 0 */
+      outpw(0&#215;3D4, 0&#215;0C | ((PAGE_0_START &gt;&gt; 8) &lt;&lt; 8));
+   } while (kbhit() == 0);
+
+   getch(); /* clear the key press */
+
+   /* Return to text mode and exit */
+   regset.x.ax = 0&#215;0003;   /* AL = 3 selects 80&#215;25 text mode */
+   int86(0&#215;10, &ampregset, &ampregset);
+}
+
+void Wait30Frames()
+{
+   int i;
+
+   for (i=0; i&lt;30; i&#43;&#43;) {
+      /* Wait until we&#146;re not in vertical sync, so we can catch leading edge */
+      while ((inp(INPUT_STATUS_1) &amp 0&#215;08) != 0) ;
+      /* Wait until we are in vertical sync */
+      while ((inp(INPUT_STATUS_1) &amp 0&#215;08) == 0) ;
+   }
+}
+</PRE>
+<!-- END CODE //-->
+<P>After I described 640&#215;400 mode in a magazine article, Bill Lindley, of Mesa, Arizona, wrote me to suggest that when programming the VGA to a nonstandard mode of this sort, it&#146;s a good idea to tell the BIOS about the new screen size, for a couple of reasons. For one thing, pop-up utilities often use the BIOS variables; Bill&#146;s memory-resident screen printer, EGAD Screen Print, determines the number of scan lines to print by multiplying the BIOS &#147;number of text rows&#148; variable times the &#147;character height&#148; variable. For another, the BIOS itself may do a poor job of displaying text if not given proper information; the active text area may not match the screen dimensions, or an inappropriate graphics font may be used. (Of course, the BIOS isn&#146;t going to be able to display text anyway in highly nonstandard modes such as Mode X, but it will do fine in slightly nonstandard modes such as 640&#215;400 16-color mode.) In the case of the 640&#215;400 16-color model described a little earlier, Bill suggests that the code in Listing 45.4 be called immediately after putting the VGA into that mode to tell the BIOS that we&#146;re working with 25 rows of 16-pixel-high text. I think this is an excellent suggestion; it can&#146;t hurt, and may save you from getting aggravating tech support calls down the road.
+</P>
+<P><B>LISTING 45.4 L45-4.C</B></P>
+<!-- CODE //-->
+<PRE>
+/* Function to tell the BIOS to set up properly sized characters for 25 rows of
+   16 pixel high text in 640&#215;400 graphics mode. Call immediately after mode set.
+   Based on a contribution by Bill Lindley. */
+
+#include &lt;dos.h&gt;
+
+void Set640&#215;400()
+{
+   union REGS regs;
+
+   regs.h.ah = 0&#215;11;                    /* character generator function */
+   regs.h.al = 0&#215;24;                    /* use ROM 8&#215;6 character set for graphics */
+   regs.h.bl = 2;                       /* 25 rows */
+   int86(0&#215;10, &ampregs, &ampregs);           /* invoke the BIOS video interrupt
+                                           to set up the text */
+}
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="45-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="45-06.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

@@ -1,0 +1,326 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Compiling BSP Trees</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=60//-->
+<!--PAGES=1123-1127//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="60-02.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="60-04.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P><B>Listing 60.1 L60_1.CPP</B></P>
+<!-- CODE //-->
+<PRE>
+#define MAX_NUM_LINESEGS 1000
+#define MAX_INT          0x7FFFFFFF
+#define MATCH_TOLERANCE  0.00001
+// A vertex
+typedef struct _VERTEX
+{
+   double x;
+   double y;
+} VERTEX;
+// A potentially split piece of a line segment, as processed from the
+// base line in the original list
+typedef struct _LINESEG
+{
+   _LINESEG *pnextlineseg;
+    int startvertex;
+    int endvertex;
+    double walltop;
+    double wallbottom;
+    double tstart;
+    double tend;
+    int color;
+    _LINESEG *pfronttree;
+    _LINESEG *pbacktree;
+} LINESEG, *PLINESEG;
+static VERTEX *pvertexlist;
+static int NumCompiledLinesegs = 0;
+static LINESEG *pCompiledLinesegs;
+// Builds a BSP tree from the specified line list. List must contain
+// at least one entry. If pCurrentTree is NULL, then this is the root
+// node, otherwise pCurrentTree is the tree that&#146;s been build so far.
+// Returns NULL for errors.
+LINESEG * SelectBSPTree(LINESEG * plineseghead,
+    LINESEG * pCurrentTree, LINESEG ** pParentsChildPointer)
+{
+    LINESEG *pminsplit;
+    int minsplits;
+    int tempsplitcount;
+    LINESEG *prootline;
+    LINESEG *pcurrentline;
+    double nx, ny, numer, denom, t;
+    // Pick a line as the root, and remove it from the list of lines
+    // to be categorized. The line we&#146;ll select is the one of those in
+    // the list that splits the fewest of the other lines in the list
+    minsplits = MAX_INT;
+    prootline = plineseghead;
+    while (prootline != NULL) {
+        pcurrentline = plineseghead;
+        tempsplitcount = 0;
+        while (pcurrentline != NULL) {
+            // See how many other lines the current line splits
+            nx = pvertexlist[prootline-&gt;startvertex].y -
+                    pvertexlist[prootline-&gt;endvertex].y;
+            ny = -(pvertexlist[prootline-&gt;startvertex].x -
+                    pvertexlist[prootline-&gt;endvertex].x);
+            // Calculate the dot products we&#146;ll need for line
+            // intersection and spatial relationship
+            numer = (nx * (pvertexlist[pcurrentline-&gt;startvertex].x -
+                    pvertexlist[prootline-&gt;startvertex].x)) +
+                    (ny * (pvertexlist[pcurrentline-&gt;startvertex].y -
+                    pvertexlist[prootline-&gt;startvertex].y));
+            denom = ((-nx) * (pvertexlist[pcurrentline-&gt;endvertex].x -
+                    pvertexlist[pcurrentline-&gt;startvertex].x)) +
+                    ((-ny) * (pvertexlist[pcurrentline-&gt;endvertex].y -
+                    pvertexlist[pcurrentline-&gt;startvertex].y));
+            // Figure out if the infinite lines of the current line
+            // and the root intersect; if so, figure out if the
+            // current line segment is actually split, split if so,
+            // and add front/back polygons as appropriate
+            if (denom == 0.0) {
+                // No intersection, because lines are parallel; no
+                // split, so nothing to do
+            } else {
+                // Infinite lines intersect; figure out whether the
+                // actual line segment intersects the infinite line
+                // of the root, and split if so
+                t =  numer / denom;
+                if ((t &gt; pcurrentline-&gt;tstart) &&
+                        (t &lt; pcurrentline-&gt;tend)) {
+                    // The root splits the current line
+                    tempsplitcount++;
+                } else {
+                    // Intersection outside segment limits, so no
+                    // split, nothing to do
+                }
+            }
+            pcurrentline = pcurrentline-&gt;pnextlineseg;
+        }
+        if (tempsplitcount &lt; minsplits) {
+            pminsplit = prootline;
+            minsplits = tempsplitcount;
+        }
+        prootline = prootline-&gt;pnextlineseg;
+    }
+    // For now, make this a leaf node so we can traverse the tree
+    // as it is at this point. BuildBSPTree() will add children as
+    // appropriate
+    pminsplit-&gt;pfronttree = NULL;
+    pminsplit-&gt;pbacktree = NULL;
+    // Point the parent&#146;s child pointer to this node, so we can
+    // track the currently-build tree
+    *pParentsChildPointer = pminsplit;
+    return BuildBSPTree(plineseghead, pminsplit, pCurrentTree);
+}
+// Builds a BSP tree given the specified root, by creating front and
+// back lists from the remaining lines, and calling itself recursively
+LINESEG * BuildBSPTree(LINESEG * plineseghead, LINESEG * prootline,
+    LINESEG * pCurrentTree)
+{
+    LINESEG *pfrontlines;
+    LINESEG *pbacklines;
+    LINESEG *pcurrentline;
+    LINESEG *pnextlineseg;
+    LINESEG *psplitline;
+    double nx, ny, numer, denom, t;
+    int Done;
+    // Categorize all non-root lines as either in front of the root&#146;s
+    // infinite line, behind the root&#146;s infinite line, or split by the
+    // root&#146;s infinite line, in which case we split it into two lines
+    pfrontlines = NULL;
+    pbacklines = NULL;
+    pcurrentline = plineseghead;
+    while (pcurrentline != NULL)
+    {
+      // Skip the root line when encountered
+      if (pcurrentline == prootline) {
+        pcurrentline = pcurrentline-&gt;pnextlineseg;
+      } else  {
+        nx = pvertexlist[prootline-&gt;startvertex].y -
+                pvertexlist[prootline-&gt;endvertex].y;
+        ny = -(pvertexlist[prootline-&gt;startvertex].x -
+                pvertexlist[prootline-&gt;endvertex].x);
+        // Calculate the dot products we&#146;ll need for line intersection
+        // and spatial relationship
+        numer = (nx * (pvertexlist[pcurrentline-&gt;startvertex].x -
+                 pvertexlist[prootline-&gt;startvertex].x)) +
+                (ny * (pvertexlist[pcurrentline-&gt;startvertex].y -
+                 pvertexlist[prootline-&gt;startvertex].y));
+        denom = ((-nx) * (pvertexlist[pcurrentline-&gt;endvertex].x -
+                 pvertexlist[pcurrentline-&gt;startvertex].x)) +
+                (-(ny) * (pvertexlist[pcurrentline-&gt;endvertex].y -
+                 pvertexlist[pcurrentline-&gt;startvertex].y));
+        // Figure out if the infinite lines of the current line and
+        // the root intersect; if so, figure out if the current line
+        // segment is actually split, split if so, and add front/back
+        // polygons as appropriate
+        if (denom == 0.0) {
+            // No intersection, because lines are parallel; just add
+            // to appropriate list
+            pnextlineseg = pcurrentline-&gt;pnextlineseg;
+            if (numer &lt; 0.0) {
+                // Current line is in front of root line; link into
+                // front list
+                pcurrentline-&gt;pnextlineseg = pfrontlines;
+                pfrontlines = pcurrentline;
+            } else {
+                // Current line behind root line; link into back list
+                pcurrentline-&gt;pnextlineseg = pbacklines;
+                pbacklines = pcurrentline;
+            }
+            pcurrentline = pnextlineseg;
+        } else {
+            // Infinite lines intersect; figure out whether the actual
+            // line segment intersects the infinite line of the root,
+            // and split if so
+            t =  numer / denom;
+            if ((t &gt; pcurrentline-&gt;tstart) &&
+                    (t &lt; pcurrentline-&gt;tend)) {
+                // The line segment must be split; add one split
+                // segment to each list
+                if (NumCompiledLinesegs &gt; (MAX_NUM_LINESEGS - 1)) {
+                    DisplayMessageBox(&#147;Out of space for line segs;&#148;
+                                 &#147;increase MAX_NUM_LINESEGS&#148;);
+                    return NULL;
+                }
+                // Make a new line entry for the split part of line
+                psplitline = &pCompiledLinesegs[NumCompiledLinesegs];
+                NumCompiledLinesegs++;
+                *psplitline = *pcurrentline;
+                psplitline-&gt;tstart = t;
+                pcurrentline-&gt;tend = t;
+
+                pnextlineseg = pcurrentline-&gt;pnextlineseg;
+                if (numer &lt; 0.0) {
+                    // Presplit part is in front of root line; link
+                    // into front list and put postsplit part in back
+                    // list
+                    pcurrentline-&gt;pnextlineseg = pfrontlines;
+                    pfrontlines = pcurrentline;
+                    psplitline-&gt;pnextlineseg = pbacklines;
+                    pbacklines = psplitline;
+                } else {
+                    // Presplit part is in back of root line; link
+                    // into back list and put postsplit part in front
+                    // list
+                    psplitline-&gt;pnextlineseg = pfrontlines;
+                    pfrontlines = psplitline;
+                    pcurrentline-&gt;pnextlineseg = pbacklines;
+                    pbacklines = pcurrentline;
+                }
+                pcurrentline = pnextlineseg;
+            } else {
+                // Intersection outside segment limits, so no need to
+                // split; just add to proper list
+                pnextlineseg = pcurrentline-&gt;pnextlineseg;
+                Done = 0;
+                while (!Done) {
+                    if (numer &lt; -MATCH_TOLERANCE) {
+                        // Current line is in front of root line;
+                        // link into front list
+                        pcurrentline-&gt;pnextlineseg = pfrontlines;
+                        pfrontlines = pcurrentline;
+                        Done = 1;
+                    } else if (numer &gt; MATCH_TOLERANCE) {
+                        // Current line is behind root line; link
+                        // into back list
+                        pcurrentline-&gt;pnextlineseg = pbacklines;
+                        pbacklines = pcurrentline;
+                        Done = 1;
+                    } else {
+                        // The point on the current line we picked to
+                        // do front/back evaluation happens to be
+                        // collinear with the root, so use the other
+                        // end of the current line and try again
+                        numer =
+                            (nx *
+                             (pvertexlist[pcurrentline-&gt;endvertex].x -
+                              pvertexlist[prootline-&gt;startvertex].x))+
+                            (ny *
+                             (pvertexlist[pcurrentline-&gt;endvertex].y -
+                              pvertexlist[prootline-&gt;startvertex].y));
+                    }
+                }
+                pcurrentline = pnextlineseg;
+            }
+        }
+      }
+    }
+    // Make a node out of the root line, with the front and back trees
+    // attached
+    if (pfrontlines == NULL) {
+        prootline-&gt;pfronttree = NULL;
+    } else {
+        if (!SelectBSPTree(pfrontlines, pCurrentTree,
+                          &prootline-&gt;pfronttree)) {
+            return NULL;
+        }
+    }
+    if (pbacklines == NULL) {
+        prootline-&gt;pbacktree = NULL;
+    } else {
+        if (!SelectBSPTree(pbacklines, pCurrentTree,
+                          &prootline-&gt;pbacktree)) {
+            return NULL;
+        }
+    }
+    return(prootline);
+}
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="60-02.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="60-04.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

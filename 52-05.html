@@ -1,0 +1,191 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Fast 3-D Animation: Meet X-Sharp</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=52//-->
+<!--PAGES=979-981//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="52-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="52-06.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P><B>LISTING 52.8 L52-8.C</B></P>
+<!-- CODE //-->
+<PRE>
+/* Initializes the cubes and adds them to the object list. */
+
+#include &ltstdlib.h&gt
+#include &ltmath.h&gt
+#include &#147;polygon.h&#148;
+
+#define ROT_6  (M_PI / 30.0)     /* rotate 6 degrees at a time */
+#define ROT_3  (M_PI / 60.0)     /* rotate 3 degrees at a time */
+#define ROT_2  (M_PI / 90.0)     /* rotate 2 degrees at a time */
+#define NUM_CUBES 12             /* # of cubes */
+
+Point3 CubeVerts[NUM_CUBE_VERTS]; /* set elsewhere, from floats */
+/* vertex indices for individual cube faces */
+static int Face1[] = {1,3,2,0};
+static int Face2[] = {5,7,3,1};
+static int Face3[] = {4,5,1,0};
+static int Face4[] = {3,7,6,2};
+static int Face5[] = {5,4,6,7};
+static int Face6[] = {0,2,6,4};
+static int *VertNumList[]={Face1, Face2, Face3, Face4, Face5, Face6};
+static int VertsInFace[]={ sizeof(Face1)/sizeof(int),
+   sizeof(Face2)/sizeof(int), sizeof(Face3)/sizeof(int),
+   sizeof(Face4)/sizeof(int), sizeof(Face5)/sizeof(int),
+   sizeof(Face6)/sizeof(int) };
+/* X, Y, Z rotations for cubes */
+static RotateControl InitialRotate[NUM_CUBES] = {
+   {0.0,ROT_6,ROT_6},{ROT_3,0.0,ROT_3},{ROT_3,ROT_3,0.0},
+   {ROT_3,-ROT_3,0.0},{-ROT_3,ROT_2,0.0},{-ROT_6,-ROT_3,0.0},
+   {ROT_3,0.0,-ROT_6},{-ROT_2,0.0,ROT_3},{-ROT_3,0.0,-ROT_3},
+   {0.0,ROT_2,-ROT_2},{0.0,-ROT_3,ROT_3},{0.0,-ROT_6,-ROT_6},};
+static MoveControl InitialMove[NUM_CUBES] = {
+   {0,0,80,0,0,0,0,0,-350},{0,0,80,0,0,0,0,0,-350},
+   {0,0,80,0,0,0,0,0,-350},{0,0,80,0,0,0,0,0,-350},
+   {0,0,80,0,0,0,0,0,-350},{0,0,80,0,0,0,0,0,-350},
+   {0,0,80,0,0,0,0,0,-350},{0,0,80,0,0,0,0,0,-350},
+   {0,0,80,0,0,0,0,0,-350},{0,0,80,0,0,0,0,0,-350},
+   {0,0,80,0,0,0,0,0,-350},{0,0,80,0,0,0,0,0,-350}, };
+/* face colors for various cubes */
+static int Colors[NUM_CUBES][NUM_CUBE_FACES] = {
+   {15,14,12,11,10,9},{1,2,3,4,5,6},{35,37,39,41,43,45},
+   {47,49,51,53,55,57},{59,61,63,65,67,69},{71,73,75,77,79,81},
+   {83,85,87,89,91,93},{95,97,99,101,103,105},
+   {107,109,111,113,115,117},{119,121,123,125,127,129},
+   {131,133,135,137,139,141},{143,145,147,149,151,153} };
+/* starting coordinates for cubes in world space */
+static int CubeStartCoords[NUM_CUBES][3] = {
+   {100,0,-6000},  {100,70,-6000}, {100,-70,-6000}, {33,0,-6000},
+   {33,70,-6000},  {33,-70,-6000}, {-33,0,-6000},   {-33,70,-6000},
+   {-33,-70,-6000},{-100,0,-6000}, {-100,70,-6000}, {-100,-70,-6000}};
+/* delay counts (speed control) for cubes */
+static int InitRDelayCounts[NUM_CUBES] = {1,2,1,2,1,1,1,1,1,2,1,1};
+static int BaseRDelayCounts[NUM_CUBES] = {1,2,1,2,2,1,1,1,2,2,2,1};
+static int InitMDelayCounts[NUM_CUBES] = {1,1,1,1,1,1,1,1,1,1,1,1};
+static int BaseMDelayCounts[NUM_CUBES] = {1,1,1,1,1,1,1,1,1,1,1,1};
+
+void InitializeCubes()
+{
+   int i, j, k;
+   PObject *WorkingCube;
+
+   for (i=0; i&ltNUM_CUBES; i++) {
+      if ((WorkingCube = malloc(sizeof(PObject))) == NULL) {
+         printf(&#147;Couldn't get memory\n&#148;); exit(1); }
+      WorkingCube-&gtDrawFunc = DrawPObject;
+      WorkingCube-&gtRecalcFunc = XformAndProjectPObject;
+      WorkingCube-&gtMoveFunc = RotateAndMovePObject;
+      WorkingCube-&gtRecalcXform = 1;
+      for (k=0; k&lt2; k++) {
+         WorkingCube-&gtEraseRect[k].Left =
+            WorkingCube-&gtEraseRect[k].Top = 0x7FFF;
+         WorkingCube-&gtEraseRect[k].Right = 0;
+         WorkingCube-&gtEraseRect[k].Bottom = 0;
+      }
+      WorkingCube-&gtRDelayCount = InitRDelayCounts[i];
+      WorkingCube-&gtRDelayCountBase = BaseRDelayCounts[i];
+      WorkingCube-&gtMDelayCount = InitMDelayCounts[i];
+      WorkingCube-&gtMDelayCountBase = BaseMDelayCounts[i];
+      /* Set the object-&gtworld xform to none */
+      for (j=0; j&lt3; j++)
+         for (k=0; k&lt4; k++)
+            WorkingCube-&gtXformToWorld[j][k] = INT_TO_FIXED(0);
+      WorkingCube-&gtXformToWorld[0][0] =
+         WorkingCube-&gtXformToWorld[1][1] =
+         WorkingCube-&gtXformToWorld[2][2] =
+         WorkingCube-&gtXformToWorld[3][3] = INT_TO_FIXED(1);
+      /* Set the initial location */
+      for (j=0; j&lt3; j++) WorkingCube-&gtXformToWorld[j][3] =
+            INT_TO_FIXED(CubeStartCoords[i][j]);
+      WorkingCube-&gtNumVerts = NUM_CUBE_VERTS;
+      WorkingCube-&gtVertexList = CubeVerts;
+      WorkingCube-&gtNumFaces = NUM_CUBE_FACES;
+      WorkingCube-&gtRotate = InitialRotate[i];
+      WorkingCube-&gtMove.MoveX = INT_TO_FIXED(InitialMove[i].MoveX);
+      WorkingCube-&gtMove.MoveY = INT_TO_FIXED(InitialMove[i].MoveY);
+      WorkingCube-&gtMove.MoveZ = INT_TO_FIXED(InitialMove[i].MoveZ);
+      WorkingCube-&gtMove.MinX = INT_TO_FIXED(InitialMove[i].MinX);
+      WorkingCube-&gtMove.MinY = INT_TO_FIXED(InitialMove[i].MinY);
+      WorkingCube-&gtMove.MinZ = INT_TO_FIXED(InitialMove[i].MinZ);
+      WorkingCube-&gtMove.MaxX = INT_TO_FIXED(InitialMove[i].MaxX);
+      WorkingCube-&gtMove.MaxY = INT_TO_FIXED(InitialMove[i].MaxY);
+      WorkingCube-&gtMove.MaxZ = INT_TO_FIXED(InitialMove[i].MaxZ);
+      if ((WorkingCube-&gtXformedVertexList =
+            malloc(NUM_CUBE_VERTS*sizeof(Point3))) == NULL) {
+         printf(&#147;Couldn't get memory\n&#148;); exit(1); }
+      if ((WorkingCube-&gtProjectedVertexList =
+            malloc(NUM_CUBE_VERTS*sizeof(Point3))) == NULL) {
+         printf(&#147;Couldn't get memory\n&#148;); exit(1); }
+      if ((WorkingCube-&gtScreenVertexList =
+            malloc(NUM_CUBE_VERTS*sizeof(Point))) == NULL) {
+         printf(&#147;Couldn't get memory\n&#148;); exit(1); }
+      if ((WorkingCube-&gtFaceList =
+            malloc(NUM_CUBE_FACES*sizeof(Face))) == NULL) {
+         printf(&#147;Couldn't get memory\n&#148;); exit(1); }
+      /* Initialize the faces */
+      for (j=0; j&ltNUM_CUBE_FACES; j++) {
+         WorkingCube-&gtFaceList[j].VertNums = VertNumList[j];
+         WorkingCube-&gtFaceList[j].NumVerts = VertsInFace[j];
+         WorkingCube-&gtFaceList[j].Color = Colors[i][j];
+      }
+      ObjectList[NumObjects++] = (Object *)WorkingCube;
+   }
+}
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="52-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="52-06.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

@@ -1,0 +1,173 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Linked Lists and Unintended Challenges</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=15//-->
+<!--PAGES=287-290//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="15-02.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="15-04.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+</P>
+<P><B>LISTING 15.5 L15-5.C</B></P>
+<!-- CODE //-->
+<PRE>
+/* Finds the first node in a value-sorted linked list that
+   has a Value field greater than or equal to a key value, and
+   returns a pointer to the node preceding that node (to facilitate
+   insertion and deletion), or a NULL pointer if no such value was
+   found. Assumes the list is terminated with a sentinel tail node
+   containing the largest possible Value field setting and pointing
+   to itself as the next node. */
+#include &ltstdio.h&gt
+#include &#147;llist.h&#148;
+struct LinkNode *FindNodeBeforeValueNotLess(
+   struct LinkNode *HeadOfListNode, int SearchValue)
+{
+   struct LinkNode *NodePtr = HeadOfListNode;
+   while (NodePtr-&gtNextNode-&gtValue &lt SearchValue)
+      NodePtr = NodePtr-&gtNextNode;
+   if (NodePtr-&gtNextNode-&gtNextNode == NodePtr-&gtNextNode)
+      return(NULL);     /* we found the sentinel; failed search */
+   else
+      return(NodePtr);  /* success; return pointer to node preceding
+                           node that was &gt= */
+}
+</PRE>
+<!-- END CODE //-->
+<P><A NAME="Fig4"><!-- </A><A HREF="javascript:displayWindow('images/15-04.jpg',405,105 )"> --><IMG SRC="images/15-04.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/15-04.jpg',405,105)"> --><FONT COLOR="#000077"><B>Figure 15.4</B></FONT></A>&nbsp;&nbsp;<I>List terminated by a sentinel.</I>
+</P>
+<H3><A NAME="Heading5"></A><FONT COLOR="#000077">Circular Lists</FONT></H3>
+<P>One minor but elegant refinement yet remains: Use a single node as both the head <I>and</I> the tail of the list. We can do this by connecting the last node back to the first through the head/tail node in a circular fashion, as shown in Figure 15.5. This head/tail node can also, of course, be a sentinel; when it&#146;s necessary to check for the end of the list explicitly, that can be done by comparing the current node pointer to the head pointer. If they&#146;re equal, you&#146;re at the head/tail node.</P>
+<P>Why am I so fond of this circular list architecture? For one thing, it saves a node, and most of my linked list programming has been done in severely memory-constrained environments. Mostly, though, it&#146;s just so <I>neat;</I> with this setup, there&#146;s not a single node or inner-loop instruction wasted. Perfect economy of programming, if you ask me.</P>
+<P>I must admit that I racked my brains for quite a while to come up with the circular list, simple as it may seem. Shortly after coming up with it, I happened to look in Sedgewick&#146;s book, only to find my nifty optimization described plain as day; and a little while after <I>that,</I> I came across a thread in the algorithms/computer.sci topic on BIX that described it in considerable detail. Folks, the information is out there. Look it up <I>before</I> turning on your optimizer afterburners!</P>
+<P>Listings 15.1 and 15.6 together form a suite of C functions for maintaining a circular linked list sorted by ascending value. (Listing 15.5 requires modification before it will work with circular lists.) Listing 15.7 is an assembly language version of <B>InsertNodeSorted()</B>; note the tremendous efficiency of the scanning loop in <B>InsertNodeSorted()&#151;</B>four instructions per node!&#151;thanks to the dummy head/tail/sentinel node. Listing 15.8 is a simple application that illustrates the use of the linked-list functions in Listings 15.1 and 15.6.</P>
+<P>Contrast Figure 15.5 with Figure 15.1, and Listings 15.1, 15.5, 15.6, and 15.7 with Listings 15.3 and 15.4. Yes, linked lists are simple, but not so simple that a little knowledge doesn&#146;t make a substantial difference. Make it a habit to read Knuth or Sedgewick or the like before you write a single line of code.</P>
+<P><A NAME="Fig5"><!-- </A><A HREF="javascript:displayWindow('images/15-05.jpg',410,112 )"> --><IMG SRC="images/15-05.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/15-05.jpg',410,112)"> --><FONT COLOR="#000077"><B>Figure 15.5</B></FONT></A>&nbsp;&nbsp;<I>Representing a circular list.</I>
+</P>
+<P><B>LISTING 15.6 L15-6.C</B></P>
+<!-- CODE //-->
+<PRE>
+/*  Suite of functions for maintaining a linked list sorted by
+    ascending order of the Value field. The list is circular; that
+    is,it has a dummy node as both the head and the tail of the list.
+    The dummy node is a sentinel, containing the largest possible
+    Value field setting. Tested with Borland C&#43;&#43; in C mode. */
+#include &ltstdlib.h&gt
+#include &ltstdio.h&gt
+#include &ltstring.h&gt
+#include &#147;llist.h&#148;
+/* Initializes an empty linked list of LinkNode structures,
+   consisting of a single head/tail/sentinel node, and returns a
+   pointer to the list. Returns NULL for failure. */
+struct LinkNode *InitLinkedList()
+{
+   struct LinkNode *Sentinel;
+
+   if ((Sentinel = malloc(sizeof(struct LinkNode))) == NULL)
+      return(NULL);
+   Sentinel-&gtNextNode = Sentinel;
+   Sentinel-&gtValue = SENTINEL;
+   strcpy(Sentinel-&gtText, &#147;*** sentinel ***&#148;);
+   return(Sentinel);
+}
+
+/* Finds the first node in a value-sorted linked list with a value
+   field equal to a key value, and returns a pointer to the node
+   preceding that node (to facilitate insertion and deletion), or a
+   NULL pointer if no value was found. Assumes list is terminated
+   with a sentinel node containing the largest possible value. */
+
+struct LinkNode *FindNodeBeforeValue(struct LinkNode *HeadOfListNode,
+int SearchValue)
+{
+   struct LinkNode *NodePtr = HeadOfListNode;
+
+   while (NodePtr-&gtNextNode-&gtValue &lt SearchValue)
+      NodePtr = NodePtr-&gtNextNode;
+   if (NodePtr-&gtNextNode-&gtValue == SearchValue) {
+      /* Found the search value; success unless we found the
+         sentinel (can happen only if SearchValue == SENTINEL) */
+      if (NodePtr-&gtNextNode == HeadOfListNode) {
+         return(NULL);     /* failure; we found the sentinel */
+      } else {
+         return(NodePtr);  /* success; return pointer to node
+                              preceding the node that was equal */
+      }
+   } else {
+       return(NULL);       /* No match; return failure status */
+   }
+}
+
+/* Inserts the specified node into a value-sorted linked list, such
+   that value-sorting is maintained. Returns a pointer to the node
+   after which the new node is inserted. */
+struct LinkNode *InsertNodeSorted(struct LinkNode *HeadOfListNode,
+   struct LinkNode *NodeToInsert)
+{
+   struct LinkNode *NodePtr = HeadOfListNode;
+   int SearchValue = NodeToInsert-&gtValue;
+   while (NodePtr-&gtNextNode-&gtValue &lt SearchValue)
+      NodePtr = NodePtr-&gtNextNode;
+   NodeToInsert-&gtNextNode = NodePtr-&gtNextNode;
+   NodePtr-&gtNextNode = NodeToInsert;
+   return(NodePtr);
+}
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="15-02.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="15-04.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

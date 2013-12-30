@@ -1,0 +1,95 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Adding a Dimension</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=50//-->
+<!--PAGES=935-940//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="50-01.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="50-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>One note: I&#146;ll use a purely <I>right-handed</I> convention for coordinate systems. Right-handed means that if you hold your right hand with your fingers curled and the thumb sticking out, the thumb points along the Z axis and the fingers point in the direction of rotation from the X axis to the Y axis, as shown in Figure 50.2. Rotations about an axis are counter-clockwise, as viewed looking down an axis toward the origin. The handedness of a coordinate system is just a convention, and left-handed would do equally well; however, right-handed is generally used for object and world space. Sometimes, the handedness is flipped for view space, so that increasing Z equals increasing distance from the viewer along the line of sight, but I have chosen not to do that here, to avoid confusion. Therefore, Z decreases as distance along the line of sight increases; a view space coordinate of (0,0,-1000) is directly ahead, twice as far away as a coordinate of (0,0,-500).</P>
+<P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/50-01.jpg',408,318 )"> --><IMG SRC="images/50-01.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/50-01.jpg',408,318)"> --><FONT COLOR="#000077"><B>Figure 50.1</B></FONT></A>&nbsp;&nbsp;<I>The 3-D drawing pipeline.</I>
+</P>
+<P><A NAME="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/50-02.jpg',406,162 )"> --><IMG SRC="images/50-02.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/50-02.jpg',406,162)"> --><FONT COLOR="#000077"><B>Figure 50.2</B></FONT></A>&nbsp;&nbsp;<I>A right-handed coordinate system.</I>
+</P>
+<H4 ALIGN="LEFT"><A NAME="Heading5"></A><FONT COLOR="#000077">Projection</FONT></H4>
+<P>Working backward from the final image, we want to take the vertices of a polygon, as transformed into view space, and project them to 2-D coordinates on the screen, which, for projection purposes, is assumed to be centered on and perpendicular to the Z axis in view space, at some distance from the screen. We&#146;re after visual realism, so we&#146;ll want to do a perspective projection, in order that farther objects look smaller than nearer objects, and so that the field of view will widen with distance. This is done by scaling the X and Y coordinates of each point proportionately to the Z distance of the point from the viewer, a simple matter of similar triangles, as shown in Figure 50.3. It doesn&#146;t really matter how far down the Z axis the screen is assumed to be; what matters is the ratio of the distance of the screen from the viewpoint to the width of the screen. This ratio defines the rate of divergence of the viewing pyramid&#151;the full field of view&#151;and is used for performing all perspective projections. Once perspective projection has been performed, all that remains before calling the polygon filler is to convert the projected X and Y coordinates to integers, appropriately clipped and adjusted as necessary to center the origin on the screen or otherwise map the image into a window, if desired.
+</P>
+<H4 ALIGN="LEFT"><A NAME="Heading6"></A><FONT COLOR="#000077">Translation</FONT></H4>
+<P><I>Translation</I> means adding X, Y, and Z offsets to a coordinate to move it linearly through space. Translation is as simple as it seems; it requires nothing more than an addition for each axis. Translation is, for example, used to move objects from object space, in which the center of the object is typically the origin (0,0,0), into world space, where the object may be located anywhere.</P>
+<P><A NAME="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/50-03.jpg',405,177 )"> --><IMG SRC="images/50-03.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/50-03.jpg',405,177)"> --><FONT COLOR="#000077"><B>Figure 50.3</B></FONT></A>&nbsp;&nbsp;<I>Perspective projection.</I>
+</P>
+<H4 ALIGN="LEFT"><A NAME="Heading7"></A><FONT COLOR="#000077">Rotation</FONT></H4>
+<P><I>Rotation</I> is the process of circularly moving coordinates around the origin. For our present purposes, it&#146;s necessary only to rotate objects about their centers in object space, so as to turn them to the desired attitude before translating them into world space.</P>
+<P>Rotation of a point about an axis is accomplished by transforming it according to the formulas shown in Figure 50.4. These formulas map into the more generally useful matrix-multiplication forms also shown in Figure 50.4. Matrix representation is more useful for two reasons: First, it is possible to concatenate multiple rotations into a single matrix by multiplying them together in the desired order; that single matrix can then be used to perform the rotations more efficiently.</P>
+<P><A NAME="Fig4"><!-- </A><A HREF="javascript:displayWindow('images/50-04.jpg',409,348 )"> --><IMG SRC="images/50-04.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/50-04.jpg',409,348)"> --><FONT COLOR="#000077"><B>Figure 50.4</B></FONT></A>&nbsp;&nbsp;<I>3-D rotation formulas.</I>
+</P>
+<P>Second, 3&#215;3 rotation matrices can become the upper-left-hand portions of 4&#215;4 matrices that also perform translation (and scaling as well, but we won&#146;t need scaling in the near future), as shown in Figure 50.5. A 4&#215;4 matrix of this sort utilizes homogeneous coordinates; that&#146;s a topic way beyond this book, but, basically, homogeneous coordinates allow you to handle both rotations and translations with 4&#215;4 matrices, thereby allowing the same code to work with either, and making it possible to concatenate a long series of rotations and translations into a single matrix that performs the same transformation as the sequence of rotations and transformations.
+</P>
+<P>There&#146;s much more to be said about transformations and the supporting matrix math, but, in the interests of getting to working code in this chapter, I&#146;ll leave that to be discussed as the need arises.</P>
+<H3><A NAME="Heading8"></A><FONT COLOR="#000077">A Simple 3-D Example</FONT></H3>
+<P>At this point, we know enough to be able to put together a simple working 3-D animation example. The example will do nothing more complicated than display a single polygon as it sits in 3-D space, rotating around the Y axis. To make things a little more interesting, we&#146;ll let the user move the polygon around in space with the arrow keys, and with the &#147;A&#148; (away), and &#147;T&#148; (toward) keys. The sample program requires two sorts of functionality: The ability to transform and project the polygon from object space onto the screen (3-D functionality), and the ability to draw the projected polygon (complete with clipping) and handle the other details of animation (2-D functionality).
+</P>
+<P><A NAME="Fig5"><!-- </A><A HREF="javascript:displayWindow('images/50-05.jpg',409,188 )"> --><IMG SRC="images/50-05.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/50-05.jpg',409,188)"> --><FONT COLOR="#000077"><B>Figure 50.5</B></FONT></A>&nbsp;&nbsp;<I>A 4&#215;4 Transformation Matrix.</I>
+</P>
+<P>Happily (and not coincidentally), we put together a nice 2-D animation framework back in Chapters 47, 48, and 49, during our exploratory discussion of Mode X, so we don&#146;t have much to worry about in terms of non-3-D details. Basically, we&#146;ll use Mode X (320&#215;240, 256 colors), and we&#146;ll flip between two display pages, drawing to one while the other is displayed. One new 2-D element that we need is the ability to clip polygons; while we could avoid this for the moment by restricting the range of motion of the polygon so that it stays fully on the screen, certainly in the long run we&#146;ll want to be able to handle partially or fully clipped polygons. Listing 50.1 is the low-level code for a Mode X polygon filler that supports clipping. (The high-level polygon fill code is mode independent, and is the same as that presented in Chapters 38, 39, and 40, as noted further on.) The clipping is implemented at the low level, by trimming the Y extent of the scan line list up front, then clipping the X coordinates of each scan line in turn. This is not a particularly fast approach to clipping&#151;ideally, the polygon would be clipped before it was scanned into a line list, avoiding potentially wasted scanning and eliminating the line-by-line X clipping&#151;but it&#146;s much simpler, and, as we shall see, polygon filling performance is the least of our worries at the moment.
+</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="50-01.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="50-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

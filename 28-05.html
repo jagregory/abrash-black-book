@@ -1,0 +1,177 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Reading VGA Memory</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=28//-->
+<!--PAGES=535-537//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="28-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="29-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>Listing 28.3 illustrates an efficient use of write mode 3 in conjunction with read mode 1 and a Color Don&#146;t Care register setting of 0. The mask in AL is passed directly to the VGA&#146;s bit mask (that&#146;s how write mode 3 works&#151;see Chapter 4 for details). Because the VGA always returns 0FFH, the single <B>AND</B> instruction loads the latches, and writes the value in AL, unmodified, to the VGA, where it is used to generate the bit mask. This is more compact and register-efficient than using separate instructions to read and write, although it is not necessarily faster by cycle count, because on a 486 or a Pentium <B>MOV</B> is a 1-cycle instruction, but <B>AND</B> with memory is a 3-cycle instruction. However, given display memory wait states, it is often the case that the two approaches run at the same speed, and the register that the above approach frees up can frequently be used to save one or more cycles in any case.</P>
+<P>By the way, Listing 28.3 illustrates how write mode 3 can make for excellent pixel- and line-drawing code.</P>
+<P><B>LISTING 28.3 L28-3.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+; Program that draws a diagonal line to illustrate the use of a
+; Color Don't Care register setting of 0FFH to support fast
+; read-modify-write operations to VGA memory in write mode 3 by
+; drawing a diagonal line.
+;
+; Note: Works on VGAs only.
+;
+; By Michael Abrash
+;
+stack segment  word stack 'STACK'
+     db  512 dup (?)
+stackends
+;
+VGA_SEGMENT      EQU  0a000h
+SCREEN_WIDTH     EQU  80           ;in bytes
+GC_INDEX         EQU  3ceh         ;Graphics Controller Index register
+SET_RESET        EQU  0            ;Set/Reset register index in GC
+ENABLE_SET_RESET EQU  1            ;Enable Set/Reset register index in GC
+GRAPHICS_MODE    EQU  5            ;Graphics Mode register index in GC
+COLOR_DONT_CARE  EQU  7            ;Color Don't Care register index in GC
+;
+code  segment  word 'CODE'
+     assume    cs:code
+Startprocnear
+;
+; Select graphics mode 12h.
+;
+     mov  ax,12h
+     int  10h
+;
+; Select write mode 3 and read mode 1.
+;
+     mov  dx,GC_INDEX
+     mov  al,GRAPHICS_MODE
+     out  dx,al
+     inc  dx
+     in   al,dx               ;VGA registers are readable, bless them!
+     or   al,00001011b        ;bit 3=1 selects read mode 1, and
+                              ; bits 1 &amp 0=11 selects write mode 3
+    jmp   $+2                 ;delay between IN and OUT to same port
+    out   dx,al
+    dec   dx
+;
+; Set up set/reset to always draw in white.
+;
+    mov  al,SET_RESET
+    out  dx,al
+    inc  dx
+    mov  al,0fh
+    out  dx,al
+    dec  dx
+    mov  al,ENABLE_SET_RESET
+    out  dx,al
+    inc  dx
+    mov  al,0fh
+    out  dx,al
+    dec  dx
+;
+; Set Color Don't Care to 0, so reads of VGA memory always return 0FFH.
+;
+    mov  al,COLOR_DONT_CARE
+    out  dx,al
+    inc  dx
+    sub  al,al
+    out  dx,al
+;
+; Set up the initial memory pointer and pixel mask.
+;
+    mov  ax,VGA_SEGMENT
+    mov  ds,ax
+    sub  bx,bx
+    mov  al,80h
+;
+; Draw 400 points on a diagonal line sloping down and to the right.
+;
+    mov  cx,400
+DrawDiagonalLoop:
+    and  [bx],al            ;reads display memory, loading the latches,
+                            ; then writes AL to the VGA. AL becomes the
+                            ; bit mask, and set/reset provides the
+                            ; actual data written
+    add  bx,SCREEN_WIDTH
+                            ; point to the next scan line
+    ror  al,1               ;move the pixel mask one pixel to the right
+    adc  bx,0               ;advance to the next byte if the pixel mask wrapped
+loopDrawDiagonalLoop
+;
+; Wait for a key to be pressed to end, then return to text mode and
+; return to DOS.
+;
+WaitKeyLoop:
+    mov  ah,1
+    int  16h
+    jz   WaitKeyLoop
+    sub  ah,ah
+    int  16h                ;clear the key
+    mov  ax,3
+    int  10h                ;return to text mode
+    mov  ah,4ch
+    int  21h                ;done
+Startendp
+code ends
+    end  Start
+</PRE>
+<!-- END CODE //-->
+<P>I hope I&#146;ve given you a good feel for what color compare mode is and what it might be used for. Color compare mode isn&#146;t particularly easy to understand, but it&#146;s not that complicated in actual operation, and it&#146;s certainly useful at times; take some time to study the sample code and perform a few experiments of your own, and you may well find useful applications for color compare mode in your graphics code.
+</P>
+<P>A final note: The Read Map register has no effect in read mode 1, and the Color Compare and Color Don&#146;t Care registers have no effect either in read mode 0 or when writing to VGA memory. And with that, by gosh, we&#146;re actually done with the basics of accessing VGA memory!</P>
+<P>Not to worry&#151;that still leaves us a slew of interesting VGA topics, including smooth panning and scrolling, the split screen, color selection, page flipping, and Mode X. And that&#146;s not to mention actual uses to which the VGA&#146;s hardware can be put, including lines, circles, polygons, and my personal favorite, animation. We&#146;ve covered a lot of challenging and rewarding ground&#151;and we&#146;ve only just begun.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="28-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="29-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

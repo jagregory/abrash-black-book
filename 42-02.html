@@ -1,0 +1,213 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Wu'ed in Haste; Fried, Stewed at Leisure</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=42//-->
+<!--PAGES=778-781//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="42-01.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="42-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H3><A NAME="Heading4"></A><FONT COLOR="#000077">Tracing and Intensity in One</FONT></H3>
+<P>Horizontal, vertical, and diagonal lines do not require Wu antialiasing because they pass through the center of every pixel they meet; such lines can be drawn with fast, special-case code. For all other cases, Wu lines are traced out one step at a time along the major axis by means of a simple, fixed-point algorithm. The move along the minor axis with respect to a one-pixel move along the major axis (the line slope for lines with slopes less than 1, 1/slope for lines with slopes greater than 1) is calculated with a single integer divide. This value, called the &#147;error adjust,&#148; is stored as a fixed-point fraction, in 0.16 format (that is, all bits are fractional, and the decimal point is just to the left of bit 15). An error accumulator, also in 0.16 format, is initialized to 0. Then the first pixel is drawn; no weighting is needed, because the line intersects its endpoints exactly.
+</P>
+<P>Now the error adjust is added to the error accumulator. The error accumulator indicates how far between pixels the line has progressed along the minor axis at any given step; when the error accumulator turns over, it&#146;s time to advance one pixel along the minor axis. At each step along the line, the major-axis coordinate advances by one pixel. The two bracketing pixels to draw are simply the two pixels nearest the line along the minor axis. For instance, if X is the current major-axis coordinate and Y is the current minor-axis coordinate, the two pixels to be drawn are (X,Y) and (X,Y&#43;1). In short, the derivation of the pixels at which to draw involves nothing more complicated than advancing one pixel along the major axis, adding the error adjust to the error accumulator, and advancing one pixel along the minor axis when the error accumulator turns over.</P>
+<P>So far, nothing special; but now we come to the true wonder of Wu antialiasing. We know which pair of pixels to draw at each step along the line, but we also need to generate the two proper intensities, which must be inversely proportional to distance from the ideal line and sum to 1, and that&#146;s a potentially time-consuming operation. Let&#146;s assume, however, that the number of possible intensity levels to be used for weighting is the value NumLevels = 2<SUP>n</SUP> for some integer n, with the minimum weighting (0 percent intensity) being the value 2<SUP>n</SUP> -1, and the maximum weighting (100 percent intensity) being the value 0. Given that, lo and behold, the most significant n bits of the error accumulator select the proper intensity value for one element of the pixel pair, as shown in Figure 42.2. Better yet, 2<SUP>n</SUP>-1 minus the intensity of the first pixel selects the intensity of the other pixel in the pair, because the intensities of the two pixels must sum to 1; as it happens, this result can be obtained simply by flipping the n least-significant bits of the first pixel&#146;s value. All this works because what the error accumulator accumulates is precisely the ideal line&#146;s current distance between the two bracketing pixels.</P>
+<P><A NAME="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/42-02.jpg',406,198 )"> --><IMG SRC="images/42-02.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/42-02.jpg',406,198)"> --><FONT COLOR="#000077"><B>Figure 42.2</B></FONT></A>&nbsp;&nbsp;<I>Wu intensity calculations.</I>
+</P>
+<P>The intensity calculations take longer to describe than they do to perform. All that&#146;s involved is a shift of the error accumulator to right-justify the desired intensity weighting bits, and then an XOR to flip the least-significant n bits of the first pixel&#146;s value in order to generate the second pixel&#146;s value. Listing 42.1 illustrates just how efficient Wu antialiasing is; the intensity calculations take only three statements, and the entire Wu line-drawing loop is only nine statements long. Of course, a single C statement can hide a great deal of complexity, but Listing 42.6, an assembly implementation, shows that only 15 instructions are required per step along the major axis&#151;and the number of instructions could be reduced to ten by special-casing and loop unrolling. Make no mistake about it, Wu antialiasing is fast.
+</P>
+<P><B>LISTING 42.1 L42-1.C</B></P>
+<!-- CODE //-->
+<PRE>
+/* Function to draw an antialiased line from (X0,Y0) to (X1,Y1), using an
+ * antialiasing approach published by Xiaolin Wu in the July 1991 issue of
+ * Computer Graphics. Requires that the palette be set up so that there
+ * are NumLevels intensity levels of the desired drawing color, starting at
+ * color BaseColor (100% intensity) and followed by (NumLevels-1) levels of
+ * evenly decreasing intensity, with color (BaseColor&#43;NumLevels-1) being 0%
+ * intensity of the desired drawing color (black). This code is suitable for
+ * use at screen resolutions, with lines typically no more than 1K long; for
+ * longer lines, 32-bit error arithmetic must be used to avoid problems with
+ * fixed-point inaccuracy. No clipping is performed in DrawWuLine; it must be
+ * performed either at a higher level or in the DrawPixel function.
+ * Tested with Borland C&#43;&#43; in C compilation mode and the small model.
+ */
+extern void DrawPixel(int, int, int);
+
+/* Wu antialiased line drawer.
+ * (X0,Y0),(X1,Y1) = line to draw
+ * BaseColor = color # of first color in block used for antialiasing, the
+ *          100% intensity version of the drawing color
+ * NumLevels = size of color block, with BaseColor&#43;NumLevels-1 being the
+ *          0% intensity version of the drawing color
+ * IntensityBits = log base 2 of NumLevels; the # of bits used to describe
+ *          the intensity of the drawing color. 2**IntensityBits==NumLevels
+ */
+void DrawWuLine(int X0, int Y0, int X1, int Y1, int BaseColor, int NumLevels,
+   unsigned int IntensityBits)
+{
+   unsigned int IntensityShift, ErrorAdj, ErrorAcc;
+   unsigned int ErrorAccTemp, Weighting, WeightingComplementMask;
+   int DeltaX, DeltaY, Temp, XDir;
+
+   /* Make sure the line runs top to bottom */
+   if (Y0 &gt; Y1) {
+      Temp = Y0; Y0 = Y1; Y1 = Temp;
+      Temp = X0; X0 = X1; X1 = Temp;
+   }
+   /* Draw the initial pixel, which is always exactly intersected by
+      the line and so needs no weighting */
+   DrawPixel(X0, Y0, BaseColor);
+
+   if ((DeltaX = X1 - X0) &gt;= 0) {
+      XDir = 1;
+   } else {
+      XDir = -1;
+      DeltaX = -DeltaX; /* make DeltaX positive */
+   }
+   /* Special-case horizontal, vertical, and diagonal lines, which
+      require no weighting because they go right through the center of
+      every pixel */
+   if ((DeltaY = Y1 - Y0) == 0) {
+      /* Horizontal line */
+      while (DeltaX-- != 0) {
+         X0 &#43;= XDir;
+         DrawPixel(X0, Y0, BaseColor);
+      }
+      return;
+   }
+   if (DeltaX == 0) {
+      /* Vertical line */
+      do {
+         Y0&#43;&#43;;
+         DrawPixel(X0, Y0, BaseColor);
+      } while (--DeltaY != 0);
+      return;
+   }
+   if (DeltaX == DeltaY) {
+      /* Diagonal line */
+      do {
+         X0 &#43;= XDir;
+         Y0&#43;&#43;;
+         DrawPixel(X0, Y0, BaseColor);
+      } while (--DeltaY != 0);
+      return;
+   }
+   /* line is not horizontal, diagonal, or vertical */
+   ErrorAcc = 0;  /* initialize the line error accumulator to 0 */
+   /* # of bits by which to shift ErrorAcc to get intensity level */
+   IntensityShift = 16 - IntensityBits;
+   /* Mask used to flip all bits in an intensity weighting, producing the
+      result (1 - intensity weighting) */
+   WeightingComplementMask = NumLevels - 1;
+   /* Is this an X-major or Y-major line? */
+   if (DeltaY &gt; DeltaX) {
+      /* Y-major line; calculate 16-bit fixed-point fractional part of a
+         pixel that X advances each time Y advances 1 pixel, truncating the
+         result so that we won't overrun the endpoint along the X axis */
+      ErrorAdj = ((unsigned long) DeltaX &lt;&lt; 16) / (unsigned long) DeltaY;
+      /* Draw all pixels other than the first and last */
+      while (--DeltaY) {
+         ErrorAccTemp = ErrorAcc;   /* remember currrent accumulated error */
+         ErrorAcc &#43;= ErrorAdj;      /* calculate error for next pixel */
+         if (ErrorAcc &lt;= ErrorAccTemp) {
+            /* The error accumulator turned over, so advance the X coord */
+            X0 &#43;= XDir;
+         }
+         Y0&#43;&#43;; /* Y-major, so always advance Y */
+         /* The IntensityBits most significant bits of ErrorAcc give us the
+            intensity weighting for this pixel, and the complement of the
+            weighting for the paired pixel */
+         Weighting = ErrorAcc &gt;&gt; IntensityShift;
+         DrawPixel(X0, Y0, BaseColor &#43; Weighting);
+         DrawPixel(X0 &#43; XDir, Y0,
+               BaseColor &#43; (Weighting ^ WeightingComplementMask));
+      }
+      /* Draw the final pixel, which is always exactly intersected by the line
+         and so needs no weighting */
+      DrawPixel(X1, Y1, BaseColor);
+      return;
+   }
+   /* It's an X-major line; calculate 16-bit fixed-point fractional part of a
+      pixel that Y advances each time X advances 1 pixel, truncating the
+      result to avoid overrunning the endpoint along the X axis */
+   ErrorAdj = ((unsigned long) DeltaY &lt;&lt; 16) / (unsigned long) DeltaX;
+   /* Draw all pixels other than the first and last */
+   while (--DeltaX) {
+      ErrorAccTemp = ErrorAcc;   /* remember currrent accumulated error */
+      ErrorAcc &#43;= ErrorAdj;      /* calculate error for next pixel */
+      if (ErrorAcc &lt;= ErrorAccTemp) {
+         /* The error accumulator turned over, so advance the Y coord */
+         Y0&#43;&#43;;
+      }
+      X0 &#43;= XDir; /* X-major, so always advance X */
+      /* The IntensityBits most significant bits of ErrorAcc give us the
+         intensity weighting for this pixel, and the complement of the
+         weighting for the paired pixel */
+      Weighting = ErrorAcc &gt;&gt; IntensityShift;
+      DrawPixel(X0, Y0, BaseColor &#43; Weighting);
+      DrawPixel(X0, Y0 &#43; 1,
+            BaseColor &#43; (Weighting ^ WeightingComplementMask));
+   }
+   /* Draw the final pixel, which is always exactly intersected by the line
+      and so needs no weighting */
+   DrawPixel(X1, Y1, BaseColor);
+}
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="42-01.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="42-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

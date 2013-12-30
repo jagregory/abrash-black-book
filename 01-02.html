@@ -1,0 +1,140 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: The Best Optimizer Is between Your Ears</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=01//-->
+<!--PAGES=007-009//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="01-01.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="01-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H3><A NAME="Heading5"></A><FONT COLOR="#000077">Rules for Building High-Performance Code</FONT></H3>
+<P>We&#146;ve got the following rules for creating high-performance software:
+</P>
+<DL>
+<DD><B>&#149;</B>&nbsp;&nbsp;Know where you&#146;re going (understand the objective of the software).
+<DD><B>&#149;</B>&nbsp;&nbsp;Make a big map (have an overall program design firmly in mind, so the various parts of the program and the data structures work well together).
+<DD><B>&#149;</B>&nbsp;&nbsp;Make lots of little maps (design an algorithm for each separate part of the overall design).
+<DD><B>&#149;</B>&nbsp;&nbsp;Know the territory (understand exactly how the computer carries out each task).
+<DD><B>&#149;</B>&nbsp;&nbsp;Know when it matters (identify the portions of your programs where performance matters, and don&#146;t waste your time optimizing the rest).
+<DD><B>&#149;</B>&nbsp;&nbsp;Always consider the alternatives (don&#146;t get stuck on a single approach; odds are there&#146;s a better way, if you&#146;re clever and inventive enough).
+<DD><B>&#149;</B>&nbsp;&nbsp;Know how to turn on the juice (optimize the code as best you know how when it <I>does</I> matter).
+</DL>
+<P>Making rules is easy; the hard part is figuring out how to apply them in the real world. For my money, examining some actual working code is always a good way to get a handle on programming concepts, so let&#146;s look at some of the performance rules in action.
+</P>
+<H4 ALIGN="LEFT"><A NAME="Heading6"></A><FONT COLOR="#000077">Know Where You&#146;re Going</FONT></H4>
+<P>If we&#146;re going to create high-performance code, first we have to know what that code is going to do. As an example, let&#146;s write a program that generates a 16-bit checksum of the bytes in a file. In other words, the program will add each byte in a specified file in turn into a 16-bit value. This checksum value might be used to make sure that a file hasn&#146;t been corrupted, as might occur during transmission over a modem or if a Trojan horse virus rears its ugly head. We&#146;re not going to do anything with the checksum value other than print it out, however; right now we&#146;re only interested in generating that checksum value as rapidly as possible.
+</P>
+<H4 ALIGN="LEFT"><A NAME="Heading7"></A><FONT COLOR="#000077">Make a Big Map</FONT></H4>
+<P>How are we going to generate a checksum value for a specified file? The logical approach is to get the file name, open the file, read the bytes out of the file, add them together, and print the result. Most of those actions are straightforward; the only tricky part lies in reading the bytes and adding them together.
+</P>
+<H4 ALIGN="LEFT"><A NAME="Heading8"></A><FONT COLOR="#000077">Make Lots of Little Maps</FONT></H4>
+<P>Actually, we&#146;re only going to make one little map, because we only have one program section that requires much thought&#151;the section that reads the bytes and adds them up. What&#146;s the best way to do this?
+</P>
+<P>It would be convenient to load the entire file into memory and then sum the bytes in one loop. Unfortunately, there&#146;s no guarantee that any particular file will fit in the available memory; in fact, it&#146;s a sure thing that many files <I>won&#146;t</I> fit into memory, so that approach is out.</P>
+<P>Well, if the whole file won&#146;t fit into memory, one byte surely will. If we read the file one byte at a time, adding each byte to the checksum value before reading the next byte, we&#146;ll minimize memory requirements and be able to handle any size file at all.</P>
+<P>Sounds good, eh? Listing 1.1 shows an implementation of this approach. Listing 1.1 uses C&#146;s <B>read()</B> function to read a single byte, adds the byte into the checksum value, and loops back to handle the next byte until the end of the file is reached. The code is compact, easy to write, and functions perfectly&#151;with one slight hitch:</P>
+<P>It&#146;s <I>slow</I>.</P>
+<P><B>LISTING 1.1 L1-1.C</B></P>
+<!-- CODE //-->
+<PRE>
+/*
+* Program to calculate the 16-bit checksum of all bytes in the
+* specified file. Obtains the bytes one at a time via read(),
+* letting DOS perform all data buffering.
+*/
+#include &lt;stdio.h&gt;
+#include &lt;fcntl.h&gt;
+
+main(int argc, char *argv[]) {
+     int Handle;
+     unsigned char Byte;
+     unsigned int Checksum;
+     int ReadLength;
+
+     if ( argc != 2 ) {
+          printf(&#147;usage: checksum filename\n&#148;);
+          exit(1);
+     }
+     if ( (Handle = open(argv[1], O_RDONLY | O_BINARY)) == -1 ) {
+          printf(&#147;Can&#146;t open file: %s\n&#148;, argv[1]);
+          exit(1);
+     }
+
+     /* Initialize the checksum accumulator */
+     Checksum = 0;
+
+     /* Add each byte in turn into the checksum accumulator */
+     while ( (ReadLength = read(Handle, &Byte, sizeof(Byte))) &gt; 0 ) {
+          Checksum &#43;= (unsigned int) Byte;
+     }
+     if ( ReadLength == -1 ) {
+          printf(&#147;Error reading file %s\n&#148;, argv[1]);
+          exit(1);
+     }
+
+
+     /* Report the result */
+     printf(&#147;The checksum is: %u\n&#148;, Checksum);
+     exit(0);
+}
+</PRE>
+<!-- END CODE //-->
+<P>Table 1.1 shows the time taken for Listing 1.1 to generate a checksum of the WordPerfect version 4.2 thesaurus file, TH.WP (362,293 bytes in size), on a 10 MHz AT machine of no special parentage. Execution times are given for Listing 1.1 compiled with Borland and Microsoft compilers, with optimization both on and off; all four times are pretty much the same, however, and all are much too slow to be acceptable. Listing 1.1 requires over two and one-half minutes to checksum <I>one</I> file!</P>
+<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/01-02i.jpg"><TD WIDTH="95%"><SMALL><I>Listings 1.2 and 1.3 form the C/assembly equivalent to Listing 1.1, and Listings 1.6 and 1.7 form the C/assembly equivalent to Listing 1.5.</I></SMALL>
+</TABLE>
+<P>These results make it clear that it&#146;s folly to rely on your compiler&#146;s optimization to make your programs fast. Listing 1.1 is simply poorly designed, and no amount of compiler optimization will compensate for that failing. To drive home the point, conListings 1.2 and 1.3, which together are equivalent to Listing 1.1 except that the entire checksum loop is written in tight assembly code. The assembly language implementation is indeed faster than any of the C versions, as shown in Table 1.1, but it&#146;s less than 10 percent faster, and it&#146;s still unacceptably slow.
+</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="01-01.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="01-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

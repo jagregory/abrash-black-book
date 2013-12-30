@@ -1,0 +1,129 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Of Songs, Taxes, and the Simplicity of Complex Polygons</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=40//-->
+<!--PAGES=753-755//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="40-03.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="40-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>Listing 40.4 illustrates several interesting aspects of polygon filling. The first and third polygons drawn illustrate the operation of the odd/even fill rule. The second polygon drawn illustrates how holes can be created in seemingly solid objects; an edge runs from the outside of the rectangle to the inside, the edges comprising the hole are defined, and then the same edge is used to move back to the outside; because the edges join seamlessly, the rectangle appears to form a solid boundary around the hole.
+</P>
+<P>The set of V-shaped polygons drawn by Listing 40.4 demonstrate that polygons sharing common edges meet but do not overlap. This characteristic, which I discussed at length in Chapter 38, is not a trivial matter; it allows polygons to fit together without fear of overlapping or missed pixels. In general, Listing 40.1 guarantees that polygons are filled such that common boundaries and vertices are drawn once and only once. This has the side-effect for any individual polygon of not drawing pixels that lie exactly on the bottom or right boundaries or at vertices that terminate bottom or right boundaries.</P>
+<P>By the way, I have not seen polygon boundary filling handled precisely this way elsewhere. The boundary filling approach in Foley and van Dam is similar, but seems to me to not draw all boundary and vertex pixels once and only once.</P>
+<H4 ALIGN="LEFT"><A NAME="Heading6"></A><FONT COLOR="#000077">More on Active Edges</FONT></H4>
+<P>Edges of zero height&#151;horizontal edges and edges defined by two vertices at the same location&#151;never even make it into the GET in Listing 40.1. A polygon edge of zero height can never be an active edge, because it can never intersect a scan line; it can only run along the scan line, and the span it runs along is defined not by that edge but by the edges that connect to its endpoints.
+</P>
+<H4 ALIGN="LEFT"><A NAME="Heading7"></A><FONT COLOR="#000077">Performance Considerations</FONT></H4>
+<P>How fast is Listing 40.1? When drawing triangles on a 20-MHz 386, it&#146;s less than one-fifth the speed of the fast convex polygon fill code. However, most of that time is spent drawing individual pixels; when Listing 40.2 is replaced with the fast assembly line segment drawing code in Listing 40.5, performance improves by two and one-half times, to about half as fast as the fast convex fill code. Even after conversion to assembly in Listing 40.5, <B>DrawHorizontalLineSeg</B> still takes more than half of the total execution time, and the remaining time is spread out fairly evenly over the various subroutines in Listing 40.1. Consequently, there&#146;s no single place in which it&#146;s possible to greatly improve performance, and the maximum additional improvement that&#146;s possible looks to be a good deal less than two times; for that reason, and because of space limitations, I&#146;m not going to convert the rest of the code to assembly. However, when filling a polygon with a great many edges, and especially one with a great many active edges at one time, relatively more time would be spent traversing the linked lists. In such a case, conversion to assembly (which does a very good job with linked list processing) could pay off reasonably well.</P>
+<P><B>LISTING 40.5 L40-5.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+ ; Draws all pixels in the horizontal line segment passed in, from
+ ;  (LeftX,Y) to (RightX,Y), in the specified color in mode 13h, the
+ ;  VGA&#146;s 320x200 256-color mode. No drawing will take place if
+ ;  LeftX &gt; RightX. Tested with TASM
+ ; C near-callable as:
+ ;       void DrawHorizontalLineSeg(Y, LeftX, RightX, Color);
+
+ SCREEN_WIDTH    equ     320
+ SCREEN_SEGMENT  equ     0a000h
+
+ Parms   struc
+         dw      2 dup(?);return address & pushed BP
+ Y       dw      ?       ;Y coordinate of line segment to draw
+ LeftX   dw      ?       ;left endpoint of the line segment
+ RightX  dw      ?       ;right endpoint of the line segment
+ Color   dw      ?       ;color in which to draw the line segment
+ Parms   ends
+
+         .model small
+         .code
+         public _DrawHorizontalLineSeg
+         align   2
+ _DrawHorizontalLineSeg  proc
+         push    bp              ;preserve caller&#146;s stack frame
+         mov     bp,sp           ;point to our stack frame
+         push    di              ;preserve caller&#146;s register variable
+         cld                     ;make string instructions inc pointers
+         mov     ax,SCREEN_SEGMENT
+         mov     es,ax           ;point ES to display memory
+         mov     di,[bp&#43;LeftX]
+         mov     cx,[bp&#43;RightX]
+         sub     cx,di           ;width of line
+         jl      DrawDone        ;RightX &lt; LeftX; no drawing to do
+         inc     cx              ;include both endpoints
+         mov     ax,SCREEN_WIDTH
+         mul     [bp&#43;Y]          ;offset of scan line on which to draw
+         add     di,ax           ;ES:DI points to start of line seg
+         mov     al,byte ptr [bp&#43;Color] ;color in which to draw
+         mov     ah,al           ;put color in AH for STOSW
+         shr     cx,1            ;# of words to fill
+         rep     stosw           ;fill a word at a time
+         adc     cx,cx
+         rep     stosb           ;draw the odd byte, if any
+ DrawDone:
+         pop     di              ;restore caller&#146;s register variable
+         pop     bp              ;restore caller&#146;s stack frame
+         ret
+ _DrawHorizontalLineSeg  endp
+         end
+
+</PRE>
+<!-- END CODE //-->
+<P>The algorithm used to X-sort the AET is an interesting performance consideration. Listing 40.1 uses a bubble sort, usually a poor choice for performance. However, bubble sorts perform well when the data are already almost sorted, and because of the X coherence of edges from one scan line to the next, that&#146;s generally the case with the AET. An insertion sort might be somewhat faster, depending on the state of the AET when any particular sort occurs, but a bubble sort will generally do just fine.
+</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="40-03.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="40-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

@@ -1,0 +1,273 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Speeding Up C with Assembly Language</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=08//-->
+<!--PAGES=160-163//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="08-03.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="08-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>It&#146;s hard to squeeze much more performance from this code by tweaking it, as exemplified by Listing 8.3, a fine-tuned assembly version of <B>FindIDAverage</B> that was produced by looking at the assembly output of MS C/C<SMALL>&#43;&#43;</SMALL> and tightening it. Listing 8.3 eliminates all stack frame access in the inner loop, but that&#146;s about all the tightening there is to do. The result, as shown in Table 8.1, is that Listing 8.3 runs a modest 11 percent faster than Listing 8.1 on a 386. The results could vary considerably, depending on the nature of the data set searched through (average block size and frequency of matches). But, then, understanding the typical and worst case conditions is part of optimization, isn&#146;t it?</P>
+<P><B>LISTING 8.3  L8-3.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+; Typically optimized assembly language version of FindIDAverage.
+SearchedForID   equ     4      ;Passed parameter offsets in the
+BlockPointer    equ     6      ; stack frame (skip over pushed BP
+; and the return address)
+NextBlock       equ     0      ;Field offsets in struct BlockHeader
+BlockCount      equ     2
+BLOCK_HEADER_SIZE equ   4      ;Number of bytes in struct BlockHeader
+ID              equ     0      ;struct DataElement field offsets
+Value           equ     2
+DATA_ELEMENT_SIZE equ   4      ;Number of bytes in struct DataElement
+        .model  small
+        .code
+        public  _FindIDAverage
+</PRE>
+<!-- END CODE //-->
+<TABLE WIDTH="100%">
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP" COLSPAN="3"><HR>
+<TR>
+<TH ALIGN="LEFT" VALIGN="TOP">
+<TH ALIGN="LEFT" VALIGN="TOP">On 20 MHz 386
+<TH ALIGN="LEFT" VALIGN="TOP">On 10 MHz 286
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP" COLSPAN="3"><HR>
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP"><B>Listing 8.1</B>
+<TD ALIGN="LEFT" VALIGN="TOP">294 microseconds
+<TD ALIGN="LEFT" VALIGN="TOP">768 microseconds
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP">(MSC with maximum optimization)
+<TD ALIGN="LEFT" VALIGN="TOP">
+<TD ALIGN="LEFT" VALIGN="TOP">
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP"><B>Listing 8.3</B>
+<TD ALIGN="LEFT" VALIGN="TOP">265
+<TD ALIGN="LEFT" VALIGN="TOP">644
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP">(Assembly)
+<TD ALIGN="LEFT" VALIGN="TOP">
+<TD ALIGN="LEFT" VALIGN="TOP">
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP"><B>Listing 8.4</B>
+<TD ALIGN="LEFT" VALIGN="TOP">212
+<TD ALIGN="LEFT" VALIGN="TOP">486
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP">(Optimized assembly)
+<TD ALIGN="LEFT" VALIGN="TOP">
+<TD ALIGN="LEFT" VALIGN="TOP">
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP"><B>Listing 8.6</B>
+<TD ALIGN="LEFT" VALIGN="TOP">100
+<TD ALIGN="LEFT" VALIGN="TOP">207
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP">(Optimized assembly with reorganized data)
+<TD ALIGN="LEFT" VALIGN="TOP">
+<TD ALIGN="LEFT" VALIGN="TOP">
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP" COLSPAN="3"><HR>
+<TR>
+<TH ALIGN="LEFT" VALIGN="TOP">Table 8.1  Execution Times of FindIDAverage.
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP" COLSPAN="3"><HR>
+<TR>
+</TABLE>
+<!-- CODE //-->
+<PRE>
+_FindIDAverage  proc    near
+        push    bp              ;Save caller&#146;s stack frame
+        mov     bp,sp           ;Point to our stack frame
+        push    di              ;Preserve C register variables
+        push    si
+        sub     dx,dx           ;IDMatchSum = 0
+        mov     bx,dx           ;IDMatchCount = 0
+        mov     si,[bp&#43;BlockPointer]    ;Pointer to first block
+        mov     ax,[bp&#43;SearchedForID]   ;ID we&#146;re looking for
+; Search through all the linked blocks until the last block
+; (marked with a NULL pointer to the next block) has been searched.
+BlockLoop:
+; Point to the first DataElement entry within this block.
+        lea     di,[si&#43;BLOCK_HEADER_SIZE]
+; Search through all the DataElement entries within this block
+; and accumulate data from all that match the desired ID.
+        mov     cx,[si&#43;BlockCount]
+        jcxz    DoNextBlock     ;No data in this block
+IntraBlockLoop:
+        cmp     [di&#43;ID],ax      ;Do we have an ID match?
+        jnz     NoMatch         ;No match
+        inc     bx              ;We have a match; IDMatchCount&#43;&#43;;
+        add     dx,[di&#43;Value]   ;IDMatchSum &#43;= DataPointer-&gtValue;
+NoMatch:
+        add     di,DATA_ELEMENT_SIZE ;point to the next element
+        loop    IntraBlockLoop
+; Point to the next block and continue if that pointer isn&#146;t NULL.
+DoNextBlock:
+        mov     si,[si&#43;NextBlock] ;Get pointer to the next block
+        and     si,si           ;Is it a NULL pointer?
+        jnz     BlockLoop       ;No, continue
+; Calculate the average of all matches.
+        sub     ax,ax           ;Assume we found no matches
+        and     bx,bx
+        jz      Done            ;We didn&#146;t find any matches, return 0
+        xchg    ax,dx           ;Prepare for division
+        div     bx              ;Return IDMatchSum / IDMatchCount
+Done:   pop     si              ;Restore C register variables
+        pop     di
+        pop     bp              ;Restore caller&#146;s stack frame
+        ret
+_FindIDAverage  ENDP
+        end
+</PRE>
+<!-- END CODE //-->
+<P>Listing 8.4 tosses some sophisticated optimization techniques into the mix. The loop is unrolled eight times, eliminating a good deal of branching, and <B>SCASW</B> is used instead of <B>CMP [DI],AX.</B> (Note, however, that <B>SCASW</B> is in fact slower than <B>CMP [DI],AX</B> on the 386 and 486, and is sometimes faster on the 286 and 8088 only because it&#146;s shorter and therefore may prefetch faster.) This advanced tweaking produces a 39 percent improvement over the original C code&#151;substantial, but not a tremendous return for the optimization effort invested.</P>
+<P><B>LISTING 8.4  L8-4.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+; Heavily optimized assembly language version of FindIDAverage.
+; Features an unrolled loop and more efficient pointer use.
+SearchedForID   equ     4       ;Passed parameter offsets in the
+BlockPointer    equ     6       ; stack frame (skip over pushed BP
+                                ; and the return address)
+NextBlock       equ     0       ;Field offsets in struct BlockHeader
+BlockCount      equ     2
+BLOCK_HEADER_SIZE equ   4       ;Number of bytes in struct BlockHeader
+ID              equ     0       ;struct DataElement field offsets
+Value           equ     2
+DATA_ELEMENT_SIZE equ   4       ;Number of bytes in struct DataElement
+        .model  small
+        .code
+        public  _FindIDAverage
+_FindIDAverage  proc    near
+        push    bp              ;Save caller&#146;s stack frame
+        mov     bp,sp           ;Point to our stack frame
+        push    di              ;Preserve C register variables
+        push    si
+        mov     di,ds           ;Prepare for SCASW
+        mov     es,di
+        cld
+        sub     dx,dx           ;IDMatchSum = 0
+        mov     bx,dx           ;IDMatchCount = 0
+        mov     si,[bp&#43;BlockPointer]    ;Pointer to first block
+        mov     ax,[bp&#43;SearchedForID]   ;ID we&#146;re looking for
+; Search through all of the linked blocks until the last block
+; (marked with a NULL pointer to the next block) has been searched.
+BlockLoop:
+; Point to the first DataElement entry within this block.
+        lea     di,[si&#43;BLOCK_HEADER_SIZE]
+; Search through all the DataElement entries within this block
+; and accumulate data from all that match the desired ID.
+        mov     cx,[si&#43;BlockCount] ;Number of elements in this block
+        jcxz    DoNextBlock     ;Skip this block if it&#146;s empty
+        mov     bp,cx           ;***stack frame no longer available***
+        add     cx,7
+        shr     cx,1            ;Number of repetitions of the unrolled
+        shr     cx,1            ; loop = (BlockCount &#43; 7) / 8
+        shr     cx,1
+        and     bp,7            ;Generate the entry point for the
+        shl     bp,1            ; first, possibly partial pass through
+        jmp     cs:[LoopEntryTable&#43;bp] ; the unrolled loop and
+                                ; vector to that entry point
+        align   2
+LoopEntryTable  label   word
+        dw      LoopEntry8,LoopEntry1,LoopEntry2,LoopEntry3
+        dw      LoopEntry4,LoopEntry5,LoopEntry6,LoopEntry7
+M_IBL   macro   P1
+        local   NoMatch
+LoopEntry&ampP1&amp:
+        scasw                   ;Do we have an ID match?
+        jnz     NoMatch         ;No match
+                                ;We have a match
+        inc     bx              ;IDMatchCount&#43;&#43;;
+        add     dx,[di]         ;IDMatchSum &#43;= DataPointer-&gtValue;
+NoMatch:
+        add     di,DATA_ELEMENT_SIZE-2 ;point to the next element
+                                ; (SCASW advanced 2 bytes already)
+        endm
+        align   2
+IntraBlockLoop:
+        M_IBL   8
+        M_IBL   7
+        M_IBL   6
+        M_IBL   5
+        M_IBL   4
+        M_IBL   3
+        M_IBL   2
+        M_IBL   1
+        loop    IntraBlockLoop
+; Point to the next block and continue if that pointer isn&#146;t NULL.
+DoNextBlock:
+        mov     si,[si&#43;NextBlock] ;Get pointer to the next block
+        and     si,si           ;Is it a NULL pointer?
+        jnz     BlockLoop       ;No, continue
+; Calculate the average of all matches.
+        sub     ax,ax           ;Assume we found no matches
+        and     bx,bx
+        jz      Done            ;We didn&#146;t find any matches, return 0
+        xchg    ax,dx           ;Prepare for division
+        div     bx              ;Return IDMatchSum / IDMatchCount
+Done:   pop     si              ;Restore C register variables
+        pop     di
+        pop     bp              ;Restore caller&#146;s stack frame
+        ret
+_FindIDAverage  ENDP
+        end
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="08-03.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="08-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

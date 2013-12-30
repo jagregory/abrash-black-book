@@ -1,0 +1,167 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Hints My Readers Gave Me</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=09//-->
+<!--PAGES=175-178//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="09-02.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="09-04.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>Listing 9.1 implements the scan-on-first-character approach. Listing 9.2 scans for whatever character the caller specifies. Listing 9.3 is a test program used to compare the two approaches. How much difference does Rob&#146;s revelation make? Plenty. Even when the entire C function call to <B>FindString</B> is timed&#151;<B>strlen</B> calls, parameter pushing, calling, setup, and all&#151;the version of <B>FindString</B> in Listing 9.2, which is directed by Listing 9.3 to scan for the infrequently-occurring &#147;Q,&#148; is about 40 percent faster on a 20 MHz cached 386 for the test search of Listing 9.3 than is the version of <B>FindString</B> in Listing 9.1, which always scans for the first character, in this case &#147;E.&#148; However, when only the search loops (the code that actually does the searching) in the two versions of <B>FindString</B> are compared, Listing 9.2 is more than <I>twice</I> as fast as Listing 9.1&#151;a remarkable improvement over code that already uses <B>REPNZ SCASB</B> and <B>REPZ CMPS</B>.</P>
+<P>What I like so much about Rob&#146;s approach is that it demonstrates that optimization involves much more than instruction selection and cycle counting. Listings 9.1 and 9.2 use pretty much the same instructions, and even use the same approach of scanning with <B>REPNZ SCASB</B> and using <B>REPZ CMPS</B> to check scanning matches.</P>
+<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP" ALIGN="LEFT"><IMG SRC="images/09-04i.jpg"><TD WIDTH="95%" VALIGN="TOP" ALIGN="LEFT"><SMALL><I>The difference between Listings 9.1 and 9.2 (which gives you more than a doubling of performance) is due entirely to understanding the nature of the data being handled, and biasing the code to reflect that knowledge.</I></SMALL>
+</TABLE>
+<P><A NAME="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/09-02.jpg',409,306 )"> --><IMG SRC="images/09-02.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/09-02.jpg',409,306)"> --><FONT COLOR="#000077"><B>Figure 9.2</B></FONT></A>&nbsp;&nbsp;<I>Faster searching method for locating a text string.</I>
+</P>
+<P><B>LISTING 9.1 L9-1.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+; Searches a text buffer for a text string. Uses REPNZ SCASB to sca"n
+; the buffer for locations that match the first character of the
+; searched-for string, then uses REPZ CMPS to check fully only those
+; locations that REPNZ SCASB has identified as potential matches.
+;
+; Adapted from Zen of Assembly Language, by Michael Abrash
+;
+; C small model-callable as:
+;    unsigned char * FindString(unsigned char * Buffer,
+;     unsigned int BufferLength, unsigned char * SearchString,
+;     unsigned int SearchStringLength);
+;
+; Returns a pointer to the first match for SearchString in Buffer,or
+; a NULL pointer if no match is found. Buffer should not start at
+; offset 0 in the data segment to avoid confusing a match at 0 with
+; no match found.
+Parmsstruc
+                        dw    2 dup(?) ;pushed BP/return address
+Buffer                  dw      ?      ;pointer to buffer to search
+BufferLength            dw      ?      ;length of buffer to search
+SearchString            dw      ?      ;pointer to string for which to search
+SearchStringLength      dw      ?      ;length of string for which to search
+Parmsends
+      .model      small
+      .code
+      public _FindString
+_FindStringprocnear
+      push     bp      ;preserve caller&#146;s stack frame
+      mov      bp,sp   ;point to our stack frame
+      push     si      ;preserve caller&#146;s register variables
+      push     di
+      cld              ;make string instructions increment pointers
+      mov      si,[bp&#43;SearchString]       ;pointer to string to search for
+      mov      bx,[bp&#43;SearchStringLength] ;length of string
+      and bx,bx
+      jz       FindStringNotFound         ;no match if string is 0 length
+      movd      x,[bp&#43;BufferLength]       ;length of buffer
+      sub      dx,bx                      ;difference between buffer and string lengths
+      jc      FindStringNotFound          ;no match if search string is
+                                          ; longer than buffer
+      inc      dx      ;difference between buffer and search string
+                       ; lengths, plus 1 (# of possible string start
+                       ; locations to check in the buffer)
+      mov      di,ds
+      mov      es,di
+      mov      di,[bp&#43;Buffer]       ;point ES:DI to buffer to search thru
+      lodsb                         ;put the first byte of the search string in AL
+      mov      bp,si                ;set aside pointer to the second search byte
+      dec      bx                   ;don&#146;t need to compare the first byte of the
+                                    ; string with CMPS; we&#146;ll do it with SCAS
+FindStringLoop:
+      mov    cx,dx ;put remaining buffer search length in CX
+      repnz  scasb ;scan for the first byte of the string
+      jnz    FindStringNotFound ;not found, so there&#146;s no match
+                                ;found, so we have a potential match-check the
+                                ; rest of this candidate location
+      push   di                 ;remember the address of the next byte to scan
+      mov    dx,cx              ;set aside the remaining length to search in
+                                ; the buffer
+      mov    si,bp              ;point to the rest of the search string
+      mov    cx,bx              ;string length (minus first byte)
+      shr    cx,1               ;convert to word for faster search
+      jnc    FindStringWord     ;do word search if no odd byte
+      cmpsb                     ;compare the odd byte
+      jnz    FindStringNoMatch  ;odd byte doesn&#146;t match, so we
+                                ; haven&#146;t found the search string here
+FindStringWord:
+      jcxz   FindStringFound    ;test whether we&#146;ve already checked
+                                ; the whole string; if so, this is a match
+                                ; bytes long; if so, we&#146;ve found a match
+      repz   cmpsw              ;check the rest of the string a word at a time
+      jz     FindStringFound    ;it&#146;s a match
+FindStringNoMatch:
+      pop    di                 ;get back pointer to the next byte to scan
+      and    dx,dx              ;is there anything left to check?
+      jnz    FindStringLoop     ;yes-check next byte
+FindStringNotFound:
+      sub    ax,ax              ;return a NULL pointer indicating that the
+      jmp    FindStringDone     ; string was not found
+FindStringFound:
+      pop    ax                 ;point to the buffer location at which the
+      dec    ax                 ; string was found (earlier we pushed the
+                                ; address of the byte after the start of the
+                                ; potential match)
+FindStringDone:
+      pop    di                 ;restore caller&#146;s register variables
+      pop    si
+      pop    bp                 ;restore caller&#146;s stack frame
+ret
+_FindStringendp
+      end
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="09-02.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="09-04.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

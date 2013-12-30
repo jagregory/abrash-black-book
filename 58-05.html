@@ -1,0 +1,127 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Heinlein's Crystal Ball, Spock's Brain, and the 9-Cycle Dare</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=58//-->
+<!--PAGES=1091-1093//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="58-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="59-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P><B>LISTING 58.4 L58-4.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+; Inner loop to draw a single texture-mapped vertical column,
+; rather than a horizontal scanline. Maxed-out 32-bit version.
+;
+; At this point:
+;       EAX = sum of integral X &amp Y source pointer advances
+;       ECX = source pointer increment to advance one in Y
+;       EDX = fractional source texture Y coordinate in lower
+;             15 bits of DX, fractional source texture X coord
+;             in high word of EDX, bit 15 set to 0
+;       ESI = initial source texture pointer
+;       EDI = initial destination pointer
+;       EBP = fractional Y advance in lower 15 bits of BP,
+;             fractional X advance in high word of EBP, bit
+;             15 set to 0
+
+SCANOFFSET=0
+
+     REPT LOOP_UNROLL
+
+     mov   bl,[esi]                    ;get image pixel
+     add   edx,ebp                     ;advance frac Y in DX,
+                                       ; frac X in high word of EDX
+     adc   esi,eax                     ;advance source pointer by integral
+                                       ; X &amp Y amount, also accounting for
+                                       ; carry from X fractional addition
+     mov   [edi&#43;SCANOFFSET],bl         ;set screen pixel
+                                       ; (located here to avoid 486
+                                       ; AGI from previous byte op)
+     test  dh,80h                      ;carry from Y fractional addition?
+     jz    short @F                    ;no
+     add   esi,ecx                     ;yes, advance Y by one
+                                       ; (produces Pentium AGI for MOV BL,[ESI])
+     and   dh,not 80h                  ;reset the Y fractional carry bit
+@@:
+
+SCANOFFSET = SCANOFFSET &#43; SCANWIDTH
+
+     ENDM
+
+</PRE>
+<!-- END CODE //-->
+<P>And there you have it: A five to 10-times speedup of a decent assembly language texture mapper. All it took was some help from my friends, a good, stiff jolt of right-brain thinking, and some solid left-brain polishing&#151;plus the knowledge that such a speedup was possible. Treat every optimization task as if John Miles has just written to inform you that he&#146;s made it faster than your wildest dreams, and you&#146;ll be amazed at what you can do!
+</P>
+<H3><A NAME="Heading8"></A><FONT COLOR="#000077">Texture Mapping Notes</FONT></H3>
+<P>Listing 58.3 contains no 486 pipeline stalls; it has Pentium stalls, but not much can be done for them because of the size prefix on <B>ADD EDX,ECX</B>, which takes 1 cycle to go through the U-pipe, and shuts down the V-pipe for that cycle. Listing 58.4, on the other hand, has been rearranged to eliminate all Pentium stalls save one. When the Y coordinate fractional part carries and ESI advances, the code executes as follows:</P>
+<!-- CODE SNIP //-->
+<PRE>
+
+ADD ESI,ECX     ;cycle 1 U-pipe
+AND DH,NOT 80H  ;cycle 1 V-pipe
+                ;cycle 2 idle AGI on ESI
+MOV BL,[ESI]    ;cycle 3 U-pipe
+ADD EDX,EBP     ;cycle 3 V-pipe
+
+</PRE>
+<!-- END CODE SNIP //-->
+<P>However, I don&#146;t see any way to eliminate this last AGI, which happens about half the time; even with it, the Pentium execution time for Listing 58.4 is 5.5 cycles. That&#146;s 61 nanoseconds&#151;a highly respectable 16 million texture-mapped pixels per second&#151;on a 90 MHz Pentium.
+</P>
+<P>The type of texture mapping discussed in both this and earlier chapters doesn&#146;t do perspective correction when mapping textures. Why that is and how to handle perspective correction is a topic for a whole separate book, but be aware that the textures on some large polygons (not the polygon edges themselves) drawn with the code in this chapter will appear to be unnaturally bowed, although small polygons should look fine.</P>
+<P>Finally, we never did get rid of the last jump in the texture mapper, yet John Miles claimed no jumps at all. How did he do it? I&#146;m not sure, but I&#146;d guess that he used a two-entry look-up table, based on the Y carry, to decide how much to advance the source pointer in Y. However, I couldn&#146;t come up with any implementation of this approach that didn&#146;t take 0.5 to 1 cycle more than the test-and-jump approach, so either I didn&#146;t come up with an adequately efficient implementation of the table, John saved a cycle somewhere else, or perhaps John implemented his code in a 32-bit segment, but used the less-efficient table in his fervor to get rid of the final jump. The knowledge that I apparently came up with a different solution than John highlights that the technical aspects of John&#146;s implementation were, in truth, totally irrelevant to my optimization efforts; the only actual effect John&#146;s code had on me was to make me <I>believe</I> a texture mapper could run that fast.</P>
+<P>Believe it! And while you&#146;re at it, give both halves of your brain equal time&#151;and watch out for aliens in short skirts, 60&#146;s bouffant hairdos, and an undue interest in either half.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="58-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="59-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

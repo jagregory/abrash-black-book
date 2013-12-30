@@ -1,0 +1,202 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Hints My Readers Gave Me</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=09//-->
+<!--PAGES=178-180//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="09-03.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="09-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P><B>LISTING 9.2 L9-2.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+; Searches a text buffer for a text string. Uses REPNZ SCASB to scan
+; the buffer for locations that match a specified character of the
+; searched-for string, then uses REPZ CMPS to check fully only those
+; locations that REPNZ SCASB has identified as potential matches.
+;
+; C small model-callable as:
+;    unsigned char * FindString(unsigned char * Buffer,
+;     unsigned int BufferLength, unsigned char * SearchString,
+;     unsigned int SearchStringLength,
+;     unsigned int ScanCharOffset);
+;
+; Returns a pointer to the first match for SearchString in Buffer,or
+; a NULL pointer if no match is found. Buffer should not start at
+; offset 0 in the data segment to avoid confusing a match at 0 with
+; no match found.
+Parms  struc
+                        dw      2 dup(?)      ;pushed BP/return address
+Buffer                  dw      ?             ;pointer to buffer to search
+BufferLength            dw      ?             ;length of buffer to search
+SearchString            dw      ?             ;pointer to string for which to search
+SearchStringLength      dw      ?             ;length of string for which to search
+ScanCharOffset          dw      ?             ;offset in string of character for
+                                              ; which to scan
+Parmsends
+      .model      small
+      .code
+      public _FindString
+_FindStringprocnear
+      push     bp      ;preserve caller&#146;s stack frame
+      mov      bp,sp   ;point to our stack frame
+      push     si      ;preserve caller&#146;s register variables
+      push     di
+      cld              ;make string instructions increment pointers
+      mov      si,[bp&#43;SearchString]       ;pointer to string to search for
+      mov      cx,[bp&#43;SearchStringLength] ;length of string
+      jcxz     FindStringNotFound         ;no match if string is 0 length
+      mov      dx,[bp&#43;BufferLength]       ;length of buffer
+      sub      dx,cx                      ;difference between buffer and search
+                                          ; lengths
+      jc        FindStringNotFound ;no match if search string is
+                    ; longer than buffer
+      inc       dx  ; difference between buffer and search string
+                    ; lengths, plus 1 (# of possible string start
+                    ; locations to check in the buffer)
+      mov       di,ds
+      mov       es,di
+      mov       di,[bp&#43;Buffer]         ;point ES:DI to buffer to search thru
+      mov       bx,[bp&#43;ScanCharOffset] ;offset in string of character
+                                       ; on which to scan
+      add       di,bx         ;point ES:DI to first buffer byte to scan
+      mov       al,[si&#43;bx]    ;put the scan character in AL
+      inc       bx            ;set BX to the offset back to the start of the
+                              ; potential full match after a scan match,
+                              ; accounting for the 1-byte overrun of
+                              ; REPNZ SCASB
+FindStringLoop:
+      mov       cx,dx              ;put remaining buffer search length in CX
+      repnz     scasb              ;scan for the scan byte
+      jnz       FindStringNotFound ;not found, so there&#146;s no match
+                                   ;found, so we have a potential match-check the
+                                   ; rest of this candidate location
+      push       di                ;remember the address of the next byte to scan
+      mov        dx,cx             ;set aside the remaining length to search in
+                                   ; the buffer
+      sub        di,bx             ;point back to the potential start of the
+                                   ; match in the buffer
+      mov        si,[bp&#43;SearchString]       ;point to the start of the string
+      mov        cx,[bp&#43;SearchStringLength] ;string length
+      shr        cx,1                       ;convert to word for faster search
+      jnc        FindStringWord             ;do word search if no odd byte
+      cmpsb                                 ;compare the odd byte
+      jnz        FindStringNoMatch          ;odd byte doesn&#146;t match, so we
+                                            ; haven&#146;t found the search string here
+FindStringWord:
+      jcxz       FindStringFound        ;if the string is only 1 byte long,
+                                        ; we&#146;ve found a match
+      repz       cmpsw                  ;check the rest of the string a word at a time
+      jz         FindStringFound        ;it&#146;s a match
+FindStringNoMatch:
+      pop        di                     ;get back pointer to the next byte to scan
+      and        dx,dx                  ;is there anything left to check?
+      jnz        FindStringLoop         ;yes-check next byte
+FindStringNotFound:
+      sub        ax,ax                  ;return a NULL pointer indicating that the
+      jmp        FindStringDone         ; string was not found
+FindStringFound:
+      pop         ax         ;point to the buffer location at which the
+      sub         ax,bx      ; string was found (earlier we pushed the
+                             ; address of the byte after the scan match)
+FindStringDone:
+      pop         di         ;restore caller&#146;s register variables
+      pop         si
+      pop         bp         ;restore caller&#146;s stack frame
+      ret
+_FindStringendp
+      end
+</PRE>
+<!-- END CODE //-->
+<P><B>LISTING 9.3 L9-3.C</B></P>
+<!-- CODE //-->
+<PRE>
+/* Program to exercise buffer-search routines in Listings 9.1 &amp 9.2 */
+#include &ltstdio.h&gt
+#include &ltstring.h&gt
+
+#define DISPLAY_LENGTH  40
+extern unsigned char * FindString(unsigned char *, unsigned int,
+      unsigned char *, unsigned int, unsigned int);
+void main(void);
+static unsigned char TestBuffer[] = &#147;When, in the course of human \
+events, it becomes necessary for one people to dissolve the \
+political bands which have connected them with another, and to \
+assume among the powers of the earth the separate and equal station \
+to which the laws of nature and of nature&#146;s God entitle them...&#148;;
+void main() {
+   static unsigned char TestString[] = &#147;equal&#148;;
+   unsigned char TempBuffer[DISPLAY_LENGTH&#43;1];
+   unsigned char *MatchPtr;
+   /* Search for TestString and report the results */
+   if ((MatchPtr = FindString(TestBuffer,
+         (unsigned int) strlen(TestBuffer), TestString,
+         (unsigned int) strlen(TestString), 1)) == NULL) {
+      /* TestString wasn&#146;t found */
+      printf(&#147;\&#148;%s\&#147; not found\n&#148;, TestString);
+   } else {
+      /* TestString was found. Zero-terminate TempBuffer; strncpy
+         won&#146;t do it if DISPLAY_LENGTH characters are copied */
+      TempBuffer[DISPLAY_LENGTH] = 0;
+      printf(&#147;\&#148;%s\&#147; found. Next %d characters at match:\n\&#148;%s\&#147;\n&#148;,
+            TestString, DISPLAY_LENGTH,
+            strncpy(TempBuffer, MatchPtr, DISPLAY_LENGTH));
+   }
+}
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="09-03.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="09-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

@@ -1,0 +1,85 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Crossing the Border</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=05//-->
+<!--PAGES=111-115//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="04-10.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="05-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 5<BR>Crossing the Border
+</FONT></H2>
+<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Searching Files with Restartable Blocks</FONT></H3>
+<P><I>We just moved.</I> Those three little words should strike terror into the heart of anyone who owns more than a sleeping bag and a toothbrush. Our last move was the usual zoo&#151;and then some. Because the distance from the old house to the new was only five miles, we used cars to move everything smaller than a washing machine. We have a sizable household&#151;cats, dogs, kids, com, you name it&#151;so the moving process took a number of car trips. A <I>large</I> number&#151;33, to be exact. I personally spent about 15 hours just driving back and forth between the two houses. The move took days to complete.</P>
+<P><I>Never again</I>.</P>
+<P>You&#146;re probably wondering two things: What does this have to do with high-performance programming, and why on earth didn&#146;t I rent a truck and get the move over in one or two trips, saving hours of driving? As it happens, the second question answers the first. I didn&#146;t rent a truck because it <I>seemed</I> easier and cheaper to use cars&#151;no big truck to drive, no rentals, spread the work out more manageably, and so on.</P>
+<P>It wasn&#146;t easier, and wasn&#146;t even much cheaper. (It costs quite a bit to drive a car 330 miles, to say nothing of the value of 15 hours of my time.) But, at the time, it seemed as though my approach would be easier and cheaper. In fact, I didn&#146;t realize just how much time I had wasted driving back and forth until I sat down to write this chapter.</P>
+<P>In Chapter 1, I briefly discussed using <I>restartable blocks</I>. This, you might remember, is the process of handling in chunks data sets too large to fit in memory so that they can be processed just about as fast as if they did fit in memory. The restartable block approach is very fast but is relatively difficult to program.</P>
+<P>At the opposite end of the spectrum lies byte-by-byte processing, whereby DOS (or, in less extreme cases, a group of library functions) is allowed to do all the hard work, so that you only have to deal with one byte at a time. Byte-by-byte processing is easy to program but can be extremely slow, due to the vast overhead that results from invoking DOS each time a byte must be processed.</P>
+<P>Sound familiar? It should. I moved via the byte-by-byte approach, and the overhead of driving back and forth made for miserable performance. Renting a truck (the restartable block approach) would have required more effort and forethought, but would have paid off handsomely.</P>
+<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/05-01i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>The easy, familiar approach often has nothing in its favor except that it requires less thinking; not a great virtue when writing high-performance code&#151;or when moving.</I></SMALL>
+</TABLE>
+<P>And with that, let&#146;s look at a fairly complex application of restartable blocks.
+</P>
+<H4 ALIGN="LEFT"><A NAME="Heading3"></A><FONT COLOR="#000077">Searching for Text</FONT></H4>
+<P>The application we&#146;re going to examine searches a file for a specified string. We&#146;ll develop a program that will search the file specified on the command line for a string (also specified on the comline), then report whether the string was found or not. (Because the searched-for string is obtained via <B>argv</B>, it can&#146;t contain any whitespace characters.)</P>
+<P>This is a <I>very</I> limited subset of what search utilities such as grep can do, and isn&#146;t really intended to be a generally useful application; the purpose is to provide insight into restartable blocks in particular and optimization in general in the course of developing a search engine. That search engine will, however, be easy to plug into any program, and there&#146;s nothing preventing you from using it in a more fruitful context, like searching through a user-selectable file set.</P>
+<P>The first point to address in designing our program involves the appropriate text-search approach to use. Literally dozens of workable ways exist to search a file. We can immediately discard all approaches that involve reading any byte of the file more than once, because disk access time is orders of magnitude slower than any data handling performed by our own code. Based on our experience in Chapter 1, we can also discard all approaches that get bytes either one at a time or in small sets from DOS. We want to read big &#147;buffers-full&#148; of bytes at a pop from the searched file, and the bigger the buffer the better&#151;in order to minimize DOS&#146;s overhead. A good rough cut is a buffer that will be between 16K and 64K, depending on the exact search approach, 64K being the maximum size because near pointers make for superior performance.</P>
+<P>So we know we want to work with a large buffer, filling it as infrequently as possible. Now we have to figure out how to search through a file by loading it into that large buffer in chunks. To accomplish this, we have to know how we want to do our searching, and that&#146;s not immediately obvious. Where do we begin?</P>
+<P>Well, it might be instructive to consider how we would search if our search involved only one buffer, already resident in memory. In other words, suppose we don&#146;t have to bother with file handling at all, and further suppose that we don&#146;t have to deal with searching through multiple blocks. After all, that&#146;s a good description of the all-important inner loop of our searching program, where the program will spend virtually all of its time (aside from the unavoidable disk access overhead).</P>
+<H3><A NAME="Heading4"></A><FONT COLOR="#000077">Avoiding the String Trap</FONT></H3>
+<P>The easiest approach would be to use a C/C<SMALL>&#43;&#43;</SMALL> library function. The closest match to what we need is <B>strstr()</B>, which searches one string for the first occurrence of a second string. However, while <B>strstr()</B> would work, it isn&#146;t ideal for our purposes. The problem is this: Where we want to search a fixed-length buffer for the first occurrence of a string, <B>strstr()</B> searches a <I>string</I> for the first occurrence of another string.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="04-10.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="05-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

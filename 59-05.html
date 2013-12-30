@@ -1,0 +1,147 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: The Idea of BSP Trees</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=59//-->
+<!--PAGES=1110-1112//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="59-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="59-06.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>Take a few minutes to look over Listing 59.4 and relate it to Listing 59.2. The structure is different, but upon examination it becomes clear that both listings reflect the same underlying model: For each node, visit the left subtree, visit the node, visit the right subtree. And although Listing 59.4 is longer, that&#146;s mostly because I commented it heavily to make sure its workings are understood; there are only 13 lines that actually do anything in Listing 59.4.
+</P>
+<P>Let&#146;s look at it another way. All the code in Listing 59.2 does is say: &#147;Here I am at a node. First I&#146;ll visit the left subtree if there is one, then I&#146;ll visit this node, then I&#146;ll visit the right subtree if there is one. While I&#146;m visiting the left subtree, I&#146;ll just push a marker on a stack that tells me to come back here when the left subtree is done. If, after visiting a node, there are no right children to visit and nothing left on the stack, I&#146;m finished. The code does this at each node&#151;and that&#146;s <I>all</I> it does. That&#146;s all Listing 59.4 does, too, but people tend to get tangled up in pushes and pops and <B>while</B> loops when they use data recursion. When the implementation model changes to one with which they are unfamiliar, they abandon the perfectly good model they used before and try to rederive it in the new context by the seat of their pants.</P>
+<TABLE WIDTH="100%"><TR>
+<TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/59-02i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><SMALL><I>Here&#146;s a secret when you&#146;re faced with a situation like this: Step back and get a clear picture of what your code has to do. Omit no steps. You should build a model that is so consistent and solid that you can instantly answer any question about how the code should behave in any situation. For example, my interviewees often decide, by trial and error, that there are two distinct types of right children: Right children visited after popping back to visit a node after the left subtree has been visited, and right children visited after descending to a node that has no left child. This makes the traversal code a mass of special cases, each of which has to be detected by the programmer by trying out scenarios. Worse, you can never be sure with this approach that you&#146;ve caught all the special cases.</I></SMALL>
+<TR>
+<TD>
+<TD><SMALL><I>The alternative is to develop and apply a unifying model. There aren&#146;t really two types of right children; the rule is that all right children are visited after their parents are visited, period. The presence or absence of a left child is irrelevant. The possibility that a right child may be reached via different code paths depending on the presence of a left child does not affect the overall model. While this distinction may seem trivial it is in fact crucial, because if you have the model down cold, you can always tell if the implementation is correct by comparing it with the model.</I></SMALL>
+</TABLE>
+<H4 ALIGN="LEFT"><A NAME="Heading10"></A><FONT COLOR="#000077">Measure and Learn</FONT></H4>
+<P>How much difference does all this fuss make, anyway? Listing 59.5 is a sample program that builds a tree, then calls <B>WalkTree</B> () to walk it 1,000 times, and times how long this takes. Using 32-bit Visual C<SMALL>&#43;&#43;</SMALL> 1.10 running on Windows NT, with default optimization selected, Listing 59.5 reports that Listing 59.4 is about 20 percent faster than Listing 59.2 on a 486/33, a reasonable return for a little code rearrangement, especially when you consider that the speedup is diluted by calling the <B>Visit()</B> function and by the cache miss that happens on virtually every node access. (Listing 59.5 builds a rather unique tree, one in which every node has exactly two children. Different sorts of trees can and do produce different performance results. Always know what you&#146;re measuring!)</P>
+<P><B>Listing 59.5 L59_5.C</B></P>
+<!-- CODE //-->
+<PRE>
+// Sample program to exercise and time the performance of
+// implementations of WalkTree().
+// Tested with 32-bit Visual C&#43;&#43; 1.10 under Windows NT.
+#include &ltstdio.h&gt
+#include &ltconio.h&gt
+#include &ltstdlib.h&gt
+#include &lttime.h&gt
+#include &#147;tree.h&#148;
+long VisitCount = 0;
+void main(void);
+void BuildTree(NODE *pNode, int RemainingDepth);
+extern void WalkTree(NODE *pRootNode);
+void main()
+{
+   NODE RootNode;
+   int i;
+   long StartTime;
+   // Build a sample tree
+   BuildTree(&ampRootNode, 14);
+   // Walk the tree 1000 times and see how long it takes
+   StartTime = time(NULL);
+   for (i=0; i&lt1000; i&#43;&#43;)
+   {
+      WalkTree(&ampRootNode);
+   }
+   printf(&#147;Seconds elapsed: %ld\n&#148;,
+           time(NULL) - StartTime);
+   getch();
+}
+//
+// Function to add right and left subtrees of the
+// specified depth off the passed-in node.
+//
+void BuildTree(NODE *pNode, int RemainingDepth)
+{
+   if (RemainingDepth == 0)
+   {
+      pNode-&gtpLeftChild = NULL;
+      pNode-&gtpRightChild = NULL;
+   }
+   else
+   {
+      pNode-&gtpLeftChild = malloc(sizeof(NODE));
+      if (pNode-&gtpLeftChild == NULL)
+      {
+         printf(&#147;Out of memory\n&#148;);
+         exit(1);
+      }
+      pNode-&gtpRightChild = malloc(sizeof(NODE));
+      if (pNode-&gtpRightChild == NULL)
+      {
+         printf(&#147;Out of memory\n&#148;);
+         exit(1);
+      }
+      BuildTree(pNode-&gtpLeftChild, RemainingDepth - 1);
+      BuildTree(pNode-&gtpRightChild, RemainingDepth - 1);
+   }
+}
+//
+// Node-visiting function so WalkTree() has something to
+// call.
+//
+void Visit(NODE *pNode)
+{
+   VisitCount&#43;&#43;;
+}
+
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="59-04.html">Previous</A></TD>
+<TD><A HREF="index.html">Table of Contents</A></TD>
+<TD><A HREF="59-06.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+
