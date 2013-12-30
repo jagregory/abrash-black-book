@@ -142,7 +142,7 @@ void main()
    }
    /* Set 320x200 256-color graphics mode */
    regs.x.ax = 0x0013;
-   int86(0x10, &ampregs, &ampregs);
+   int86(0x10, &amp;regs, &amp;regs);
 
    /* Loop and draw until a key is pressed */
    do {
@@ -181,7 +181,7 @@ void main()
    getch();    /* clear the keypress */
    /* Back to text mode */
    regs.x.ax = 0x0003;
-   int86(0x10, &ampregs, &ampregs);
+   int86(0x10, &amp;regs, &amp;regs);
 }
 /* Draw entities at current locations, updating dirty rectangle list. */
 void DrawEntities()

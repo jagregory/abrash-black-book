@@ -49,7 +49,7 @@
    scanned edge is chosen. Uses an all-integer approach for speed and
    precision. */
 
-#include &ltmath.h&gt
+#include &lt;math.h&gt;
 #include &ldquo;polygon.h&rdquo;
 
 void ScanEdge(int X1, int Y1, int X2, int Y2, int SetXStart,
@@ -60,11 +60,11 @@ void ScanEdge(int X1, int Y1, int X2, int Y2, int SetXStart,
    struct HLine *WorkingEdgePointPtr;
 
    WorkingEdgePointPtr = *EdgePointPtr; /* avoid double dereference */
-   AdvanceAmt = ((DeltaX = X2 - X1) &gt 0) ? 1 : -1;
+   AdvanceAmt = ((DeltaX = X2 - X1) &gt; 0) ? 1 : -1;
                             /* direction in which X moves (Y2 is
-                               always &gt Y1, so Y always counts up) */
+                               always &gt; Y1, so Y always counts up) */
 
-   if ((Height = Y2 - Y1) &lt= 0)  /* Y length of the edge */
+   if ((Height = Y2 - Y1) &lt;= 0)  /* Y length of the edge */
       return;     /* guard against 0-length and horizontal edges */
 
    /* Figure out whether the edge is vertical, diagonal, X-major
@@ -74,12 +74,12 @@ void ScanEdge(int X1, int Y1, int X2, int Y2, int SetXStart,
       /* The edge is vertical; special-case by just storing the same
          X coordinate for every scan line */
       /* Scan the edge for each scan line in turn */
-      for (i = Height - SkipFirst; i-- &gt 0; WorkingEdgePointPtr++) {
+      for (i = Height - SkipFirst; i-- &gt; 0; WorkingEdgePointPtr++) {
          /* Store the X coordinate in the appropriate edge list */
          if (SetXStart == 1)
-            WorkingEdgePointPtr-&gtXStart = X1;
+            WorkingEdgePointPtr-&gt;XStart = X1;
          else
-            WorkingEdgePointPtr-&gtXEnd = X1;
+            WorkingEdgePointPtr-&gt;XEnd = X1;
       }
    } else if (Width == Height) {
       /* The edge is diagonal; special-case by advancing the X
@@ -87,36 +87,36 @@ void ScanEdge(int X1, int Y1, int X2, int Y2, int SetXStart,
       if (SkipFirst) /* skip the first point if so indicated */
          X1 += AdvanceAmt; /* move 1 pixel to the left or right */
       /* Scan the edge for each scan line in turn */
-      for (i = Height - SkipFirst; i-- &gt 0; WorkingEdgePointPtr++) {
+      for (i = Height - SkipFirst; i-- &gt; 0; WorkingEdgePointPtr++) {
          /* Store the X coordinate in the appropriate edge list */
          if (SetXStart == 1)
-            WorkingEdgePointPtr-&gtXStart = X1;
+            WorkingEdgePointPtr-&gt;XStart = X1;
          else
-            WorkingEdgePointPtr-&gtXEnd = X1;
+            WorkingEdgePointPtr-&gt;XEnd = X1;
          X1 += AdvanceAmt; /* move 1 pixel to the left or right */
       }
-   } else if (Height &gt Width) {
+   } else if (Height &gt; Width) {
       /* Edge is closer to vertical than horizontal (Y-major) */
-      if (DeltaX &gt= 0)
-         ErrorTerm = 0; /* initial error term going left-&gtright */
+      if (DeltaX &gt;= 0)
+         ErrorTerm = 0; /* initial error term going left-&gt;right */
       else
-         ErrorTerm = -Height + 1;   /* going right-&gtleft */
+         ErrorTerm = -Height + 1;   /* going right-&gt;left */
       if (SkipFirst) {   /* skip the first point if so indicated */
          /* Determine whether it&rsquo;s time for the X coord to advance */
-         if ((ErrorTerm += Width) &gt 0) {
+         if ((ErrorTerm += Width) &gt; 0) {
             X1 += AdvanceAmt; /* move 1 pixel to the left or right */
             ErrorTerm -= Height; /* advance ErrorTerm to next point */
          }
       }
       /* Scan the edge for each scan line in turn */
-      for (i = Height - SkipFirst; i-- &gt 0; WorkingEdgePointPtr++) {
+      for (i = Height - SkipFirst; i-- &gt; 0; WorkingEdgePointPtr++) {
          /* Store the X coordinate in the appropriate edge list */
          if (SetXStart == 1)
-            WorkingEdgePointPtr-&gtXStart = X1;
+            WorkingEdgePointPtr-&gt;XStart = X1;
          else
-            WorkingEdgePointPtr-&gtXEnd = X1;
+            WorkingEdgePointPtr-&gt;XEnd = X1;
          /* Determine whether it&rsquo;s time for the X coord to advance */
-         if ((ErrorTerm += Width) &gt 0) {
+         if ((ErrorTerm += Width) &gt; 0) {
             X1 += AdvanceAmt; /* move 1 pixel to the left or right */
             ErrorTerm -= Height; /* advance ErrorTerm to correspond */
          }
@@ -127,28 +127,28 @@ void ScanEdge(int X1, int Y1, int X2, int Y2, int SetXStart,
       XMajorAdvanceAmt = (Width / Height) * AdvanceAmt;
       /* Error term advance for deciding when to advance X 1 extra */
       ErrorTermAdvance = Width % Height;
-      if (DeltaX &gt= 0)
-         ErrorTerm = 0; /* initial error term going left-&gtright */
+      if (DeltaX &gt;= 0)
+         ErrorTerm = 0; /* initial error term going left-&gt;right */
       else
-         ErrorTerm = -Height + 1;   /* going right-&gtleft */
+         ErrorTerm = -Height + 1;   /* going right-&gt;left */
       if (SkipFirst) {   /* skip the first point if so indicated */
          X1 += XMajorAdvanceAmt;    /* move X minimum distance */
          /* Determine whether it&rsquo;s time for X to advance one extra */
-         if ((ErrorTerm += ErrorTermAdvance) &gt 0) {
+         if ((ErrorTerm += ErrorTermAdvance) &gt; 0) {
             X1 += AdvanceAmt;       /* move X one more */
             ErrorTerm -= Height; /* advance ErrorTerm to correspond */
          }
       }
       /* Scan the edge for each scan line in turn */
-      for (i = Height - SkipFirst; i-- &gt 0; WorkingEdgePointPtr++) {
+      for (i = Height - SkipFirst; i-- &gt; 0; WorkingEdgePointPtr++) {
          /* Store the X coordinate in the appropriate edge list */
          if (SetXStart == 1)
-            WorkingEdgePointPtr-&gtXStart = X1;
+            WorkingEdgePointPtr-&gt;XStart = X1;
          else
-            WorkingEdgePointPtr-&gtXEnd = X1;
+            WorkingEdgePointPtr-&gt;XEnd = X1;
          X1 += XMajorAdvanceAmt;    /* move X minimum distance */
          /* Determine whether it&rsquo;s time for X to advance one extra */
-         if ((ErrorTerm += ErrorTermAdvance) &gt 0) {
+         if ((ErrorTerm += ErrorTermAdvance) &gt; 0) {
             X1 += AdvanceAmt;       /* move X one more */
             ErrorTerm -= Height; /* advance ErrorTerm to correspond */
          }

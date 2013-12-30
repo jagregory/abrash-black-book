@@ -63,7 +63,7 @@ LinkNode ends
 ; struct LinkNode *InsertNodeSorted(struct LinkNode *HeadOfListNode,
 ;      struct LinkNode *NodeToInsert)
 parms   struc
-        dw      2 dup (?)       ;pushed return address &amp BP
+        dw      2 dup (?)       ;pushed return address &amp; BP
 HeadOfListNode dw       ?       ;pointer to head node of list
 NodeToInsert dw         ?       ;pointer to node to insert
 parms   ends
@@ -104,11 +104,11 @@ _InsertNodeSorted endp
 <!-- CODE //-->
 <PRE>
 /* Sample linked list program. Tested with Borland C++. */
-#include &ltstdlib.h&gt
-#include &ltstdio.h&gt
-#include &ltconio.h&gt
-#include &ltctype.h&gt
-#include &ltstring.h&gt
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;conio.h&gt;
+#include &lt;ctype.h&gt;
+#include &lt;string.h&gt;
 #include &ldquo;llist.h&rdquo;
 
 void main()
@@ -121,7 +121,7 @@ void main()
        exit(1);
    }
    while (!Done) {
-      printf(&ldquo;\nA=add; D=delete; F=find; L=list all; Q=quit\n&gt&rdquo;);
+      printf(&ldquo;\nA=add; D=delete; F=find; L=list all; Q=quit\n&gt;&rdquo;);
       Char = toupper(getche());
       printf(&ldquo;\n&rdquo;);
       switch (Char) {
@@ -132,24 +132,24 @@ void main()
                exit(1);
              }
             printf(&ldquo;Node value: &rdquo;);
-            scanf(&ldquo;%d&rdquo;, &ampTempPtr-&gtValue);
-            if ((FindNodeBeforeValue(ListPtr,TempPtr-&gtValue))!=NULL)
+            scanf(&ldquo;%d&rdquo;, &amp;TempPtr-&gt;Value);
+            if ((FindNodeBeforeValue(ListPtr,TempPtr-&gt;Value))!=NULL)
             {  printf(&ldquo;*** value already in list; try again ***\n&rdquo;);
                free(TempPtr);
             } else {printf(&ldquo;Node text: &rdquo;);
                TempBuffer[0] = MAX_TEXT_LENGTH;
                cgets(TempBuffer);
-               strcpy(TempPtr-&gtText, &ampTempBuffer[2]);
+               strcpy(TempPtr-&gt;Text, &amp;TempBuffer[2]);
                InsertNodeSorted(ListPtr, TempPtr);
                printf(&ldquo;\n&rdquo;);
             }
             break;
          case 'D':               /* delete a node */
             printf(&ldquo;Value field of node to delete: &rdquo;);
-            scanf(&ldquo;%d&rdquo;, &ampTempValue);
+            scanf(&ldquo;%d&rdquo;, &amp;TempValue);
             if ((TempPtr = FindNodeBeforeValue(ListPtr, TempValue))
                  != NULL) {
-               TempPtr2 = TempPtr-&gtNextNode; /* -&gt node to delete */
+               TempPtr2 = TempPtr-&gt;NextNode; /* -&gt; node to delete */
                DeleteNodeAfter(TempPtr);     /* delete it */
                free(TempPtr2);               /* free its memory */
             } else {
@@ -157,22 +157,22 @@ void main()
             break;
          case 'F':               /* find a node */
             printf(&ldquo;Value field of node to find: &rdquo;);
-            scanf(&ldquo;%d&rdquo;, &ampTempValue);
+            scanf(&ldquo;%d&rdquo;, &amp;TempValue);
             if ((TempPtr = FindNodeBeforeValue(ListPtr, TempValue))
                   != NULL)
                printf(&ldquo;Value: %d\nText: %s\n&rdquo;,
-                 TempPtr-&gtNextNode-&gtValue, TempPtr-&gtNextNode-&gtText);
+                 TempPtr-&gt;NextNode-&gt;Value, TempPtr-&gt;NextNode-&gt;Text);
             else
                printf(&ldquo;*** no such value field in list ***\n&rdquo;);
             break;
          case 'L':               /* list all nodes */
-            TempPtr = ListPtr-&gtNextNode;  /* point to first node */
+            TempPtr = ListPtr-&gt;NextNode;  /* point to first node */
             if (TempPtr == ListPtr) {     /* empty if at sentinel */
                printf(&ldquo;*** List is empty ***\n&rdquo;);
             } else {
-               do {printf(&ldquo;Value: %d\n  Text: %s\n&rdquo;, TempPtr-&gtValue,
-                        TempPtr-&gtText);
-                  TempPtr = TempPtr-&gtNextNode;
+               do {printf(&ldquo;Value: %d\n  Text: %s\n&rdquo;, TempPtr-&gt;Value,
+                        TempPtr-&gt;Text);
+                  TempPtr = TempPtr-&gt;NextNode;
                } while (TempPtr != ListPtr);
             }
             break;

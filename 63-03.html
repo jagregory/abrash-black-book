@@ -40,11 +40,11 @@
 <!-- CODE //-->
 <PRE>
 ; unoptimized dot product; 17 cycles
-        fld     [vec0+0]        ;starts &amp ends on cycle 0
+        fld     [vec0+0]        ;starts &amp; ends on cycle 0
         fmul    [vec1+0]        ;starts on cycle 1
-        fld     [vec0+4]        ;starts &amp ends on cycle 2
+        fld     [vec0+4]        ;starts &amp; ends on cycle 2
         fmul    [vec1+4]        ;starts on cycle 3
-        fld     [vec0+8]        ;starts &amp ends on cycle 4
+        fld     [vec0+8]        ;starts &amp; ends on cycle 4
         fmul    [vec1+8]        ;starts on cycle 5
                                 ;stalls for cycles 6-7
         faddp   st(1),st(0)     ;starts on cycle 8
@@ -59,11 +59,11 @@
 <!-- CODE //-->
 <PRE>
 ;optimized dot product; 15 cycles
-        fld     [vec0+0]        ;starts &amp ends on cycle 0
+        fld     [vec0+0]        ;starts &amp; ends on cycle 0
         fmul    [vec1+0]        ;starts on cycle 1
-        fld     [vec0+4]        ;starts &amp ends on cycle 2
+        fld     [vec0+4]        ;starts &amp; ends on cycle 2
         fmul    [vec1+4]        ;starts on cycle 3
-        fld     [vec0+8]        ;starts &amp ends on cycle 4
+        fld     [vec0+8]        ;starts &amp; ends on cycle 4
         fmul    [vec1+8]        ;starts on cycle 5
         fxch    st(1)           ;no cost
         faddp   st(2),st(0)     ;starts on cycle 6
@@ -80,18 +80,18 @@
 <!-- CODE //-->
 <PRE>
 ;unoptimized cross product; 36 cycles
-        fld     [vec0+4]         ;starts &amp ends on cycle 0
+        fld     [vec0+4]         ;starts &amp; ends on cycle 0
         fmul    [vec1+8]         ;starts on cycle 1
-        fld     [vec0+8]         ;starts &amp ends on cycle 2
+        fld     [vec0+8]         ;starts &amp; ends on cycle 2
         fmul    [vec1+4]         ;starts on cycle 3
                                  ;stalls for cycles 4-5
         fsubrp  st(1),st(0)      ;starts on cycle 6
                                  ;stalls for cycles 7-9
         fstp    [vec2+0]         ;starts on cycle 10,
                                  ; ends on cycle 11
-        fld     [vec0+8]         ;starts &amp ends on cycle 12
+        fld     [vec0+8]         ;starts &amp; ends on cycle 12
         fmul    [vec1+0]         ;starts on cycle 13
-        fld     [vec0+0]         ;starts &amp ends on cycle 14
+        fld     [vec0+0]         ;starts &amp; ends on cycle 14
         fmul    [vec1+8]         ;starts on cycle 15
                                  ;stalls for cycles 16-17
         fsubrp  st(1),st(0)      ;starts on cycle 18
@@ -99,9 +99,9 @@
         fstp    [vec2+4]         ;starts on cycle 22,
                                  ; ends on cycle 23
 
-        fld     [vec0+0]         ;starts &amp ends on cycle 24
+        fld     [vec0+0]         ;starts &amp; ends on cycle 24
         fmul    [vec1+4]         ;starts on cycle 25
-        fld     [vec0+4]         ;starts &amp ends on cycle 26
+        fld     [vec0+4]         ;starts &amp; ends on cycle 26
         fmul    [vec1+0]         ;starts on cycle 27
                                  ;stalls for cycles 28-29
         fsubrp  st(1),st(0)      ;starts on cycle 30
@@ -116,17 +116,17 @@
 <!-- CODE //-->
 <PRE>
 ;optimized cross product; 22 cycles
-        fld       [vec0+4]        ;starts &amp ends on cycle 0
+        fld       [vec0+4]        ;starts &amp; ends on cycle 0
         fmul      [vec1+8]        ;starts on cycle 1
-        fld       [vec0+8]        ;starts &amp ends on cycle 2
+        fld       [vec0+8]        ;starts &amp; ends on cycle 2
         fmul      [vec1+0]        ;starts on cycle 3
-        fld       [vec0+0]        ;starts &amp ends on cycle 4
+        fld       [vec0+0]        ;starts &amp; ends on cycle 4
         fmul      [vec1+4]        ;starts on cycle 5
-        fld       [vec0+8]        ;starts &amp ends on cycle 6
+        fld       [vec0+8]        ;starts &amp; ends on cycle 6
         fmul      [vec1+4]        ;starts on cycle 7
-        fld       [vec0+0]        ;starts &amp ends on cycle 8
+        fld       [vec0+0]        ;starts &amp; ends on cycle 8
         fmul      [vec1+8]        ;starts on cycle 9
-        fld       [vec0+4]        ;starts &amp ends on cycle 10
+        fld       [vec0+4]        ;starts &amp; ends on cycle 10
         fmul      [vec1+0]        ;starts on cycle 11
         fxch      st(2)           ;no cost
         fsubrp    st(5),st(0)     ;starts on cycle 12

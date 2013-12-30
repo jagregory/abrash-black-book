@@ -43,11 +43,11 @@
    featuring internal animation, masked images (sprites), and nonoverlapping dirty
    rectangle copying. Tested with Borland C++ in the small model. */
 
-#include &ltstdlib.h&gt
-#include &ltconio.h&gt
-#include &ltalloc.h&gt
-#include &ltmemory.h&gt
-#include &ltdos.h&gt
+#include &lt;stdlib.h&gt;
+#include &lt;conio.h&gt;
+#include &lt;alloc.h&gt;
+#include &lt;memory.h&gt;
+#include &lt;dos.h&gt;
 
 /* Comment out to disable overlap elimination in the dirty rectangle list. */
 #define CHECK-OVERLAP 1
@@ -176,25 +176,25 @@ void main()
    ScreenPtr = MK-FP(SCREEN-SEGMENT, 0);
    /* Set up the entities we&rsquo;ll animate, at random locations */
    randomize();
-   for (= 0; &lt NUM-ENTITIES; i++) {
+   for (= 0; &lt; NUM-ENTITIES; i++) {
       Entities[i].X = random(SCREEN-WIDTH - IMAGE-WIDTH);
       Entities[i].Y = random(SCREEN-HEIGHT - IMAGE-HEIGHT);
       Entities[i].XDirection = 1;
       Entities[i].YDirection = -1;
-      Entities[i].InternalAnimateCount = &amp 1;
+      Entities[i].InternalAnimateCount = &amp; 1;
       Entities[i].InternalAnimateMax = 2;
    }
    /* Set the dirty rectangle list to empty, and set up the head/tail node
       as a sentinel */
    NumDirtyRectangles = 0;
-   DirtyHead.Next = &ampDirtyHead;
+   DirtyHead.Next = &amp;DirtyHead;
    DirtyHead.Top = 0x7FFF;
    DirtyHead.Left= 0x7FFF;
    DirtyHead.Bottom = 0x7FFF;
    DirtyHead.Right = 0x7FFF;
    /* Set 320x200 256-color graphics mode */
    regs.x.ax = 0x0013;
-   int86(0x10, &ampregs, &ampregs);
+   int86(0x10, &amp;regs, &amp;regs);
    /* Loop and draw until a key is pressed */
    do {
       /* Draw the entities to the system buffer at their current locations,
@@ -205,19 +205,19 @@ void main()
       CopyDirtyRectanglesToScreen();
       /* Reset the dirty rectangle list to empty */
       NumDirtyRectangles = 0;
-      DirtyHead.Next = &ampDirtyHead;
+      DirtyHead.Next = &amp;DirtyHead;
       /* Erase the entities in the system buffer at their old locations,
          updating the dirty rectangle list */
       EraseEntities();
       /* Move the entities, bouncing off the edges of the screen */
-      for (= 0; &lt NUM-ENTITIES; i++) {
+      for (= 0; &lt; NUM-ENTITIES; i++) {
          XTemp = Entities[i].X + Entities[i].XDirection;
          YTemp = Entities[i].Y + Entities[i].YDirection;
-         if ((XTemp &lt 0) || ((XTemp + IMAGE-WIDTH) &gt SCREEN-WIDTH)) {
+         if ((XTemp &lt; 0) || ((XTemp + IMAGE-WIDTH) &gt; SCREEN-WIDTH)) {
             Entities[i].XDirection = -Entities[i].XDirection;
             XTemp = Entities[i].X + Entities[i].XDirection;
          }
-         if ((YTemp &lt 0) || ((YTemp + IMAGE-HEIGHT) &gt SCREEN-HEIGHT)) {
+         if ((YTemp &lt; 0) || ((YTemp + IMAGE-HEIGHT) &gt; SCREEN-HEIGHT)) {
             Entities[i].YDirection = -Entities[i].YDirection;
             YTemp = Entities[i].Y + Entities[i].YDirection;
          }
@@ -229,7 +229,7 @@ void main()
 
    /* Return back to text mode */
    regs.x.ax = 0x0003;
-   int86(0x10, &ampregs, &ampregs);
+   int86(0x10, &amp;regs, &amp;regs);
 }
 /* Draw entities at their current locations, updating dirty rectangle list. */
 void DrawEntities()
@@ -240,20 +240,20 @@ void DrawEntities()
    char *TempPtrMask;
    Entity *EntityPtr;
 
-   for (= 0, EntityPtr = Entities; &lt NUM-ENTITIES; i++, EntityPtr++) {
+   for (= 0, EntityPtr = Entities; &lt; NUM-ENTITIES; i++, EntityPtr++) {
       /* Remember the dirty rectangle info for this entity */
       AddDirtyRect(EntityPtr, IMAGE-HEIGHT, IMAGE-WIDTH);
       /* Point to the destination in the system buffer */
-      RowPtrBuffer = SystemBufferPtr + (EntityPtr-&gtY * SCREEN-WIDTH) +
-            EntityPtr-&gtX;
+      RowPtrBuffer = SystemBufferPtr + (EntityPtr-&gt;Y * SCREEN-WIDTH) +
+            EntityPtr-&gt;X;
       /* Advance the image animation pointer */
-      if (++EntityPtr-&gtInternalAnimateCount &gt=
-            EntityPtr-&gtInternalAnimateMax) {
-         EntityPtr-&gtInternalAnimateCount = 0;
+      if (++EntityPtr-&gt;InternalAnimateCount &gt;=
+            EntityPtr-&gt;InternalAnimateMax) {
+         EntityPtr-&gt;InternalAnimateCount = 0;
       }
       /* Point to the image and mask to draw */
-      TempPtrImage = ImagePixelArray[EntityPtr-&gtInternalAnimateCount];
-      TempPtrMask = ImageMaskArray[EntityPtr-&gtInternalAnimateCount];
+      TempPtrImage = ImagePixelArray[EntityPtr-&gt;InternalAnimateCount];
+      TempPtrMask = ImageMaskArray[EntityPtr-&gt;InternalAnimateCount];
       DrawMasked(RowPtrBuffer, TempPtrImage, TempPtrMask, IMAGE-HEIGHT,
                IMAGE-WIDTH, SCREEN-WIDTH);
    }
@@ -274,18 +274,18 @@ void CopyDirtyRectanglesToScreen()
       /* Copy only the dirty rectangles, in the YX-sorted order in which
          they&rsquo;re linked */
       DirtyPtr = DirtyHead.Next;
-      for (= 0; &lt NumDirtyRectangles; i++) {
+      for (= 0; &lt; NumDirtyRectangles; i++) {
          /* Offset in both system buffer and screen of image */
-         Offset = (unsigned int) (DirtyPtr-&gtTop * SCREEN-WIDTH) +
-               DirtyPtr-&gtLeft;
+         Offset = (unsigned int) (DirtyPtr-&gt;Top * SCREEN-WIDTH) +
+               DirtyPtr-&gt;Left;
          /* Dimensions of dirty rectangle */
-         RectWidth = DirtyPtr-&gtRight - DirtyPtr-&gtLeft;
-         RectHeight = DirtyPtr-&gtBottom - DirtyPtr-&gtTop;
+         RectWidth = DirtyPtr-&gt;Right - DirtyPtr-&gt;Left;
+         RectHeight = DirtyPtr-&gt;Bottom - DirtyPtr-&gt;Top;
          /* Copy a dirty rectangle */
          CopyRect(ScreenPtr + Offset, SystemBufferPtr + Offset,
                RectHeight, RectWidth, SCREEN-WIDTH, SCREEN-WIDTH);
          /* Point to the next dirty rectangle */
-         DirtyPtr = DirtyPtr-&gtNext;
+         DirtyPtr = DirtyPtr-&gt;Next;
       }
    }
 }
@@ -296,9 +296,9 @@ void EraseEntities()
    int i;
    char far *RowPtr;
    
-   for (= 0; &lt NUM-ENTITIES; i++) {
+   for (= 0; &lt; NUM-ENTITIES; i++) {
       /* Remember the dirty rectangle info for this entity */
-      AddDirtyRect(&ampEntities[i], IMAGE-HEIGHT, IMAGE-WIDTH);
+      AddDirtyRect(&amp;Entities[i], IMAGE-HEIGHT, IMAGE-WIDTH);
       /* Point to the destination in the system buffer */
       RowPtr = SystemBufferPtr + (Entities[i].Y * SCREEN-WIDTH) +
             Entities[i].X;
@@ -321,7 +321,7 @@ void EraseEntities()
    DirtyRectangle * TempPtr;
    Entity TempEntity;
    int i;
-   if (NumDirtyRectangles &gt= MAX-DIRTY-RECTANGLES) {
+   if (NumDirtyRectangles &gt;= MAX-DIRTY-RECTANGLES) {
       /* Too many dirty rectangles; just redraw the whole screen */
       DrawWholeScreen = 1;
       return;
@@ -332,53 +332,53 @@ void EraseEntities()
 #ifdef CHECK-OVERLAP
    /* Check for overlap with existing rectangles */
    TempPtr = DirtyHead.Next;
-   for (= 0; &lt NumDirtyRectangles; i++, TempPtr = TempPtr-&gtNext) {
-      if ((TempPtr-&gtLeft &lt (pEntity-&gtX + ImageWidth)) &amp&amp
-          (TempPtr-&gtRight &gt pEntity-&gtX) &amp&amp
-          (TempPtr-&gtTop &lt (pEntity-&gtY + ImageHeight)) &amp&amp
-          (TempPtr-&gtBottom &gt pEntity-&gtY)) {
+   for (= 0; &lt; NumDirtyRectangles; i++, TempPtr = TempPtr-&gt;Next) {
+      if ((TempPtr-&gt;Left &lt; (pEntity-&gt;X + ImageWidth)) &amp;&amp;
+          (TempPtr-&gt;Right &gt; pEntity-&gt;X) &amp;&amp;
+          (TempPtr-&gt;Top &lt; (pEntity-&gt;Y + ImageHeight)) &amp;&amp;
+          (TempPtr-&gt;Bottom &gt; pEntity-&gt;Y)) {
 
          /* We&rsquo;ve found an overlapping rectangle. Calculate the
             rectangles, if any, remaining after subtracting out the
             overlapped areas, and add them to the dirty list */
          /* Check for a nonoverlapped left portion */
-         if (TempPtr-&gtLeft &gt pEntity-&gtX) {
+         if (TempPtr-&gt;Left &gt; pEntity-&gt;X) {
             /* There&rsquo;s definitely a nonoverlapped portion at the left; add
                it, but only to at most the top and bottom of the overlapping
                rect; top and bottom strips are taken care of below */
-            TempEntity.X = pEntity-&gtX;
-            TempEntity.Y = max(pEntity-&gtY, TempPtr-&gtTop);
-            AddDirtyRect(&ampTempEntity,
-                  min(pEntity-&gtY + ImageHeight, TempPtr-&gtBottom) -
+            TempEntity.X = pEntity-&gt;X;
+            TempEntity.Y = max(pEntity-&gt;Y, TempPtr-&gt;Top);
+            AddDirtyRect(&amp;TempEntity,
+                  min(pEntity-&gt;Y + ImageHeight, TempPtr-&gt;Bottom) -
                   TempEntity.Y,
-                        TempPtr-&gtLeft - pEntity-&gtX);
+                        TempPtr-&gt;Left - pEntity-&gt;X);
          }
          /* Check for a nonoverlapped right portion */
-         if (TempPtr-&gtRight &lt (pEntity-&gtX + ImageWidth)) {
+         if (TempPtr-&gt;Right &lt; (pEntity-&gt;X + ImageWidth)) {
             /* There&rsquo;s definitely a nonoverlapped portion at the right; add
                it, but only to at most the top and bottom of the overlapping
                rect; top and bottom strips are taken care of below */
-            TempEntity.X = TempPtr-&gtRight;
-            TempEntity.Y = max(pEntity-&gtY, TempPtr-&gtTop);
-            AddDirtyRect(&ampTempEntity,
-                  min(pEntity-&gtY + ImageHeight, TempPtr-&gtBottom) -
+            TempEntity.X = TempPtr-&gt;Right;
+            TempEntity.Y = max(pEntity-&gt;Y, TempPtr-&gt;Top);
+            AddDirtyRect(&amp;TempEntity,
+                  min(pEntity-&gt;Y + ImageHeight, TempPtr-&gt;Bottom) -
                   TempEntity.Y,
-                  (pEntity-&gtX + ImageWidth) - TempPtr-&gtRight);
+                  (pEntity-&gt;X + ImageWidth) - TempPtr-&gt;Right);
          }
          /* Check for a nonoverlapped top portion */
-         if (TempPtr-&gtTop &gt pEntity-&gtY) {
+         if (TempPtr-&gt;Top &gt; pEntity-&gt;Y) {
             /* There&rsquo;s a top portion that&rsquo;s not overlapped */
-            TempEntity.X = pEntity-&gtX;
-            TempEntity.Y = pEntity-&gtY;
-            AddDirtyRect(&ampTempEntity, TempPtr-&gtTop - pEntity-&gtY, ImageWidth);
+            TempEntity.X = pEntity-&gt;X;
+            TempEntity.Y = pEntity-&gt;Y;
+            AddDirtyRect(&amp;TempEntity, TempPtr-&gt;Top - pEntity-&gt;Y, ImageWidth);
          }
          /* Check for a nonoverlapped bottom portion */
-         if (TempPtr-&gtBottom &lt (pEntity-&gtY + ImageHeight)) {
+         if (TempPtr-&gt;Bottom &lt; (pEntity-&gt;Y + ImageHeight)) {
             /* There&rsquo;s a bottom portion that&rsquo;s not overlapped */
-            TempEntity.X = pEntity-&gtX;
-            TempEntity.Y = TempPtr-&gtBottom;
-            AddDirtyRect(&ampTempEntity,
-                  (pEntity-&gtY + ImageHeight) - TempPtr-&gtBottom, ImageWidth);
+            TempEntity.X = pEntity-&gt;X;
+            TempEntity.Y = TempPtr-&gt;Bottom;
+            AddDirtyRect(&amp;TempEntity,
+                  (pEntity-&gt;Y + ImageHeight) - TempPtr-&gt;Bottom, ImageWidth);
          }
          /* We&rsquo;ve added all non-overlapped portions to the dirty list */
          return;
@@ -389,22 +389,22 @@ void EraseEntities()
       add this rectangle as-is */
    /* Find the YX-sorted insertion point. Searches will always terminate,
       because the head/tail rectangle is set to the maximum values */
-   TempPtr = &ampDirtyHead;
-   while (((DirtyRectangle *)TempPtr-&gtNext)-&gtTop &lt pEntity-&gtY) {
-      TempPtr = TempPtr-&gtNext;
+   TempPtr = &amp;DirtyHead;
+   while (((DirtyRectangle *)TempPtr-&gt;Next)-&gt;Top &lt; pEntity-&gt;Y) {
+      TempPtr = TempPtr-&gt;Next;
    }
-   while ((((DirtyRectangle *)TempPtr-&gtNext)-&gtTop == pEntity-&gtY) &amp&amp
-           (((DirtyRectangle *)TempPtr-&gtNext)-&gtLeft &lt pEntity-&gtX)) {
-      TempPtr = TempPtr-&gtNext;
+   while ((((DirtyRectangle *)TempPtr-&gt;Next)-&gt;Top == pEntity-&gt;Y) &amp;&amp;
+           (((DirtyRectangle *)TempPtr-&gt;Next)-&gt;Left &lt; pEntity-&gt;X)) {
+      TempPtr = TempPtr-&gt;Next;
    }
    /* Set the rectangle and actually add it to the dirty list */
-   DirtyPtr = &ampDirtyRectangles[NumDirtyRectangles++];
-   DirtyPtr-&gtLeft = pEntity-&gtX;
-   DirtyPtr-&gtTop = pEntity-&gtY;
-   DirtyPtr-&gtRight = pEntity-&gtX + ImageWidth;
-   DirtyPtr-&gtBottom = pEntity-&gtY + ImageHeight;
-   DirtyPtr-&gtNext = TempPtr-&gtNext;
-   TempPtr-&gtNext = DirtyPtr;
+   DirtyPtr = &amp;DirtyRectangles[NumDirtyRectangles++];
+   DirtyPtr-&gt;Left = pEntity-&gt;X;
+   DirtyPtr-&gt;Top = pEntity-&gt;Y;
+   DirtyPtr-&gt;Right = pEntity-&gt;X + ImageWidth;
+   DirtyPtr-&gt;Bottom = pEntity-&gt;Y + ImageHeight;
+   DirtyPtr-&gt;Next = TempPtr-&gt;Next;
+   TempPtr-&gt;Next = DirtyPtr;
 }
 </PRE>
 <!-- END CODE //-->

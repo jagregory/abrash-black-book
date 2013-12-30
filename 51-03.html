@@ -43,9 +43,9 @@
    is fixed at the origin (0,0,0) of world space, looking in the direction of
    increasingly negative Z. A right-handed coordinate system is used throughout.
    All C code tested with Borland C++ in C compilation mode. */
-#include &ltconio.h&gt
-#include &ltdos.h&gt
-#include &ltmath.h&gt
+#include &lt;conio.h&gt;
+#include &lt;dos.h&gt;
+#include &lt;math.h&gt;
 #include &ldquo;polygon.h&rdquo;
 
 #define ROTATION  (M_PI / 30.0)  /* rotate by 6 degrees at a time */
@@ -121,12 +121,12 @@ void main() {
    /* Keep transforming the cube, drawing it to the undisplayed page,
       and flipping the page to show it */
    do {
-      /* Regenerate the object-&gtview transformation and
+      /* Regenerate the object-&gt;view transformation and
          retransform/project if necessary */
       if (RecalcXform) {
          ConcatXforms(WorldViewXform, CubeWorldXform, WorkingXform);
          /* Transform and project all the vertices in the cube */
-         XformAndProjectPoints(WorkingXform, &ampCube);
+         XformAndProjectPoints(WorkingXform, &amp;Cube);
          RecalcXform = 0;
       }
       CurrentPageBase =    /* select other page for drawing to */
@@ -142,7 +142,7 @@ void main() {
       EraseRect[NonDisplayedPage].Right =
             EraseRect[NonDisplayedPage].Bottom = 0;
       /* Draw all visible faces of the cube */
-      DrawVisibleFaces(&ampCube);
+      DrawVisibleFaces(&amp;Cube);
       /* Flip to display the page into which we just drew */
       ShowPage(PageStartOffsets[DisplayedPage = NonDisplayedPage]);
       while (kbhit()) {
@@ -153,7 +153,7 @@ void main() {
                CubeWorldXform[2][3] -= 3.0; RecalcXform = 1; break;
             case &lsquo;T&rsquo;:      /* towards (+Z). Don&rsquo;t allow to get too */
             case &lsquo;t&rsquo;:      /* close, so Z clipping isn&rsquo;t needed */
-               if (CubeWorldXform[2][3] &lt -40.0) {
+               if (CubeWorldXform[2][3] &lt; -40.0) {
                      CubeWorldXform[2][3] += 3.0;
                      RecalcXform = 1;
                }
@@ -197,7 +197,7 @@ void main() {
    } while (!Done);
    /* Return to text mode and exit */
    regset.x.ax = 0x0003;   /* AL = 3 selects 80x25 text mode */
-   int86(0x10, &ampregset, &ampregset);
+   int86(0x10, &amp;regset, &amp;regset);
 }
 </PRE>
 <!-- END CODE //-->

@@ -85,7 +85,7 @@ int Color;                    /* color in which to draw line */
    while ( DeltaX-- ) {
       /* See if it&rsquo;s time to advance the Y coordinate */
       if ( ErrorTerm &gt;= 0 ) {
-         /* Advance the Y coordinate &amp adjust the error term
+         /* Advance the Y coordinate &amp; adjust the error term
             back down */
          Y0++;
          ErrorTerm += DeltaYx2MinusDeltaXx2;
@@ -122,7 +122,7 @@ int Color;                    /* color in which to draw line */
    while ( DeltaY-- ) {
       /* See if it&rsquo;s time to advance the X coordinate */
       if ( ErrorTerm &gt;= 0 ) {
-         /* Advance the X coordinate &amp adjust the error term
+         /* Advance the X coordinate &amp; adjust the error term
             back down */
          X0 += XDirection;
          ErrorTerm += DeltaXx2MinusDeltaYx2;
@@ -233,7 +233,7 @@ void main()
    VectorsUp(X_MAX * 3 / 4, Y_MAX * 3 / 4, X_MAX / 4, Y_MAX / 4, 4);
 
    /* Wait for the enter key to be pressed */
-   scanf(&ldquo;%c&rdquo;, &amptemp);
+   scanf(&ldquo;%c&rdquo;, &amp;temp);
 
    /* Back to text mode */
    _AX = TEXT_MODE;

@@ -102,7 +102,7 @@ int PolyFacesViewer(polygon_t *ppoly, plane_t *pplane)
         viewvec.v[i] = ppoly-&gt;verts[0].v[i] - currentpos.v[i];
     // Use an epsilon here so we don&rsquo;t get polygons tilted so
     // sharply that the gradients are unusable or invalid
-    if (DotProduct (&ampviewvec, &amppplane-&gt;normal) &lt; -0.01)
+    if (DotProduct (&amp;viewvec, &amp;pplane-&gt;normal) &lt; -0.01)
         return 1;
     return 0;
 }
@@ -173,7 +173,7 @@ void AddPolygonEdges (plane_t *plane, polygon2D_t *screenpoly)
         }
 
         // Put the edge on the list to be added on top scan
-        pedge = &ampnewedges[topy];
+        pedge = &amp;newedges[topy];
         while (pedge-&gt;pnext-&gt;x &lt; pavailedge-&gt;x)
             pedge = pedge-&gt;pnext;
         pavailedge-&gt;pnext = pedge-&gt;pnext;
@@ -188,7 +188,7 @@ void AddPolygonEdges (plane_t *plane, polygon2D_t *screenpoly)
         pavailedge-&gt;psurf = pavailsurf;
 
         // Make sure we don&rsquo;t overflow the edge array
-        if (pavailedge &lt; &ampedges[MAX_EDGES])
+        if (pavailedge &lt; &amp;edges[MAX_EDGES])
             pavailedge++;
     }
 
@@ -210,7 +210,7 @@ void AddPolygonEdges (plane_t *plane, polygon2D_t *screenpoly)
             ycenter * pavailsurf-&gt;zinvstepy;
 
     // Make sure we don&rsquo;t overflow the surface array
-    if (pavailsurf &lt; &ampsurfs[MAX_SURFS])
+    if (pavailsurf &lt; &amp;surfs[MAX_SURFS])
         pavailsurf++;
 }
 
@@ -229,21 +229,21 @@ void ScanEdges (void)
     // Set up the active edge list as initially empty, containing
     // only the sentinels (which are also the background fill). Most
     // of these fields could be set up just once at start-up
-    edgehead.pnext = &ampedgetail;
+    edgehead.pnext = &amp;edgetail;
     edgehead.pprev = NULL;
     edgehead.x = -0xFFFF;           // left edge of screen
     edgehead.leading = 1;
-    edgehead.psurf = &ampsurfstack;
+    edgehead.psurf = &amp;surfstack;
     edgetail.pnext = NULL;          // mark edge of list
-    edgetail.pprev = &ampedgehead;
+    edgetail.pprev = &amp;edgehead;
     edgetail.x = DIBWidth &lt;&lt; 16;    // right edge of screen
     edgetail.leading = 0;
-    edgetail.psurf = &ampsurfstack;
+    edgetail.psurf = &amp;surfstack;
 
     // The background surface is the entire stack initially, and
     // is infinitely far away, so everything sorts in front of it.
     // This could be set just once at start-up
-    surfstack.pnext = surfstack.pprev = &ampsurfstack;
+    surfstack.pnext = surfstack.pprev = &amp;surfstack;
     surfstack.color = 0;
     surfstack.zinv00 = -999999.0;
     surfstack.zinvstepx = surfstack.zinvstepy = 0.0;
@@ -251,8 +251,8 @@ void ScanEdges (void)
         fy = (double)y;
         // Sort in any edges that start on this scan
         pedge = newedges[y].pnext;
-        pedge2 = &ampedgehead;
-        while (pedge != &ampmaxedge) {
+        pedge2 = &amp;edgehead;
+        while (pedge != &amp;maxedge) {
             while (pedge-&gt;x &gt; pedge2-&gt;pnext-&gt;x)
                 pedge2 = pedge2-&gt;pnext;
             ptemp = pedge-&gt;pnext;
@@ -297,7 +297,7 @@ void ScanEdges (void)
                             pspan-&gt;color = psurf2-&gt;color;
                             // Make sure we don&rsquo;t overflow
                             // the span array
-                            if (pspan &lt; &ampspans[MAX_SPANS])
+                            if (pspan &lt; &amp;spans[MAX_SPANS])
                                 pspan++;
                         }
                         psurf-&gt;visxstart = x;
@@ -305,7 +305,7 @@ void ScanEdges (void)
                         psurf-&gt;pnext = psurf2;
                         psurf2-&gt;pprev = psurf;
                         surfstack.pnext = psurf;
-                        psurf-&gt;pprev = &ampsurfstack;
+                        psurf-&gt;pprev = &amp;surfstack;
                     } else {
                         // Not a new top; sort into the surface stack.
                         // Guaranteed to terminate due to sentinel
@@ -338,7 +338,7 @@ void ScanEdges (void)
                             pspan-&gt;color = psurf-&gt;color;
                             // Make sure we don&rsquo;t overflow
                             // the span array
-                            if (pspan &lt; &ampspans[MAX_SPANS])
+                            if (pspan &lt; &amp;spans[MAX_SPANS])
                                 pspan++;
                         }
                         psurf-&gt;pnext-&gt;visxstart = x;
@@ -359,7 +359,7 @@ void ScanEdges (void)
         }
 
         // Step the remaining edges one scan line, and re-sort
-        for (pedge=edgehead.pnext ; pedge != &ampedgetail ; ) {
+        for (pedge=edgehead.pnext ; pedge != &amp;edgetail ; ) {
             ptemp = pedge-&gt;pnext;
             // Step the edge
             pedge-&gt;x += pedge-&gt;xstep;
@@ -396,7 +396,7 @@ void ClearEdgeLists(void)
 {
     int i;
     for (i=0 ; i&lt;DIBHeight ; i++) {
-        newedges[i].pnext = &ampmaxedge;
+        newedges[i].pnext = &amp;maxedge;
         removeedges[i] = NULL;
     }
 }
@@ -422,7 +422,7 @@ void UpdateWorld()
 
     // Draw all visible faces in all objects
     pobject = objecthead.pnext;
-    while (pobject != &ampobjecthead) {
+    while (pobject != &amp;objecthead) {
         ppoly = pobject-&gt;ppoly;
         for (i=0 ; i&lt;pobject-&gt;numpolys ; i++) {
             // Move the polygon relative to the object center
@@ -432,31 +432,31 @@ void UpdateWorld()
                     tpoly0.verts[j].v[k] = ppoly[i].verts[j].v[k] +
                             pobject-&gt;center.v[k];
             }
-            if (PolyFacesViewer(&amptpoly0, &ampppoly[i].plane)) {
-                if (ClipToFrustum(&amptpoly0, &amptpoly1)) {
+            if (PolyFacesViewer(&amp;tpoly0, &amp;ppoly[i].plane)) {
+                if (ClipToFrustum(&amp;tpoly0, &amp;tpoly1)) {
                     currentcolor = ppoly[i].color;
-                    TransformPolygon (&amptpoly1, &amptpoly2);
-                    ProjectPolygon (&amptpoly2, &ampscreenpoly);
+                    TransformPolygon (&amp;tpoly1, &amp;tpoly2);
+                    ProjectPolygon (&amp;tpoly2, &amp;screenpoly);
 
                     // Move the polygon&rsquo;s plane into viewspace
                     // First move it into worldspace (object relative)
                     tnormal = ppoly[i].plane.normal;
                     plane.distance = ppoly[i].plane.distance +
-                        DotProduct (&amppobject-&gt;center, &amptnormal);
+                        DotProduct (&amp;pobject-&gt;center, &amp;tnormal);
 
                     // Now transform it into viewspace
                     // Determine the distance from the viewpont
                     plane.distance -=
-                          DotProduct (&ampcurrentpos, &amptnormal);
+                          DotProduct (&amp;currentpos, &amp;tnormal);
 
                     // Rotate the normal into view orientation
                     plane.normal.v[0] =
-                            DotProduct (&amptnormal, &ampvright);
+                            DotProduct (&amp;tnormal, &amp;vright);
                     plane.normal.v[1] =
-                            DotProduct (&amptnormal, &ampvup);
+                            DotProduct (&amp;tnormal, &amp;vup);
                     plane.normal.v[2] =
-                            DotProduct (&amptnormal, &ampvpn);
-                    AddPolygonEdges (&ampplane, &ampscreenpoly);
+                            DotProduct (&amp;tnormal, &amp;vpn);
+                    AddPolygonEdges (&amp;plane, &amp;screenpoly);
                 }
             }
         }

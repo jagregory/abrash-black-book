@@ -46,26 +46,26 @@
 
 void RotateAndMovePObject(PObject * ObjectToMove)
 {
-   if (--ObjectToMove-&gtRDelayCount == 0) {   /* rotate */
-      ObjectToMove-&gtRDelayCount = ObjectToMove-&gtRDelayCountBase;
-      if (ObjectToMove-&gtRotate.RotateX != 0.0)
-         AppendRotationX(ObjectToMove-&gtXformToWorld,
-               ObjectToMove-&gtRotate.RotateX);
-      if (ObjectToMove-&gtRotate.RotateY != 0.0)
-         AppendRotationY(ObjectToMove-&gtXformToWorld,
-               ObjectToMove-&gtRotate.RotateY);
-      if (ObjectToMove-&gtRotate.RotateZ != 0.0)
-         AppendRotationZ(ObjectToMove-&gtXformToWorld,
-               ObjectToMove-&gtRotate.RotateZ);
-      ObjectToMove-&gtRecalcXform = 1;
+   if (--ObjectToMove-&gt;RDelayCount == 0) {   /* rotate */
+      ObjectToMove-&gt;RDelayCount = ObjectToMove-&gt;RDelayCountBase;
+      if (ObjectToMove-&gt;Rotate.RotateX != 0.0)
+         AppendRotationX(ObjectToMove-&gt;XformToWorld,
+               ObjectToMove-&gt;Rotate.RotateX);
+      if (ObjectToMove-&gt;Rotate.RotateY != 0.0)
+         AppendRotationY(ObjectToMove-&gt;XformToWorld,
+               ObjectToMove-&gt;Rotate.RotateY);
+      if (ObjectToMove-&gt;Rotate.RotateZ != 0.0)
+         AppendRotationZ(ObjectToMove-&gt;XformToWorld,
+               ObjectToMove-&gt;Rotate.RotateZ);
+      ObjectToMove-&gt;RecalcXform = 1;
    }
    /* Move in Z, checking for bouncing and stopping */
-   if (--ObjectToMove-&gtMDelayCount == 0) {
-      ObjectToMove-&gtMDelayCount = ObjectToMove-&gtMDelayCountBase;
-      ObjectToMove-&gtXformToWorld[2][3] += ObjectToMove-&gtMove.MoveZ;
-      if (ObjectToMove-&gtXformToWorld[2][3]&gtObjectToMove-&gtMove.MaxZ)
-         ObjectToMove-&gtMove.MoveZ = 0; /* stop if close enough */
-      ObjectToMove-&gtRecalcXform = 1;
+   if (--ObjectToMove-&gt;MDelayCount == 0) {
+      ObjectToMove-&gt;MDelayCount = ObjectToMove-&gt;MDelayCountBase;
+      ObjectToMove-&gt;XformToWorld[2][3] += ObjectToMove-&gt;Move.MoveZ;
+      if (ObjectToMove-&gt;XformToWorld[2][3]&gt;ObjectToMove-&gt;Move.MaxZ)
+         ObjectToMove-&gt;Move.MoveZ = 0; /* stop if close enough */
+      ObjectToMove-&gt;RecalcXform = 1;
    }
 }
 </PRE>
@@ -81,19 +81,19 @@ void RotateAndMovePObject(PObject * ObjectToMove)
 
 void DrawPObject(PObject * ObjectToXform)
 {
-   int i, j, NumFaces = ObjectToXform-&gtNumFaces, NumVertices;
+   int i, j, NumFaces = ObjectToXform-&gt;NumFaces, NumVertices;
    int * VertNumsPtr;
-   Face * FacePtr = ObjectToXform-&gtFaceList;
-   Point * ScreenPoints = ObjectToXform-&gtScreenVertexList;
+   Face * FacePtr = ObjectToXform-&gt;FaceList;
+   Point * ScreenPoints = ObjectToXform-&gt;ScreenVertexList;
    long v1, v2, w1, w2;
    Point Vertices[MAX_POLY_LENGTH];
    PointListHeader Polygon;
 
    /* Draw each visible face (polygon) of the object in turn */
-   for (i=0; i&ltNumFaces; i++, FacePtr++) {
-      NumVertices = FacePtr-&gtNumVerts;
+   for (i=0; i&lt;NumFaces; i++, FacePtr++) {
+      NumVertices = FacePtr-&gt;NumVerts;
       /* Copy over the face's vertices from the vertex list */
-      for (j=0, VertNumsPtr=FacePtr-&gtVertNums; j&ltNumVertices; j++)
+      for (j=0, VertNumsPtr=FacePtr-&gt;VertNums; j&lt;NumVertices; j++)
          Vertices[j] = ScreenPoints[*VertNumsPtr++];
       /* Draw only if outside face showing (if the normal to the
          polygon points toward viewer; that is, has a positive Z component) */
@@ -101,40 +101,40 @@ void DrawPObject(PObject * ObjectToXform)
       w1 = Vertices[NumVertices-1].X - Vertices[0].X;
       v2 = Vertices[1].Y - Vertices[0].Y;
       w2 = Vertices[NumVertices-1].Y - Vertices[0].Y;
-      if ((v1*w2 - v2*w1) &gt 0) {
+      if ((v1*w2 - v2*w1) &gt; 0) {
          /* It is facing the screen, so draw */
          /* Appropriately adjust the extent of the rectangle used to
             erase this object later */
-         for (j=0; j&ltNumVertices; j++) {
-            if (Vertices[j].X &gt
-                  ObjectToXform-&gtEraseRect[NonDisplayedPage].Right)
-               if (Vertices[j].X &lt SCREEN_WIDTH)
-                  ObjectToXform-&gtEraseRect[NonDisplayedPage].Right =
+         for (j=0; j&lt;NumVertices; j++) {
+            if (Vertices[j].X &gt;
+                  ObjectToXform-&gt;EraseRect[NonDisplayedPage].Right)
+               if (Vertices[j].X &lt; SCREEN_WIDTH)
+                  ObjectToXform-&gt;EraseRect[NonDisplayedPage].Right =
                         Vertices[j].X;
-               else ObjectToXform-&gtEraseRect[NonDisplayedPage].Right =
+               else ObjectToXform-&gt;EraseRect[NonDisplayedPage].Right =
                      SCREEN_WIDTH;
-            if (Vertices[j].Y &gt
-                  ObjectToXform-&gtEraseRect[NonDisplayedPage].Bottom)
-               if (Vertices[j].Y &lt SCREEN_HEIGHT)
-                  ObjectToXform-&gtEraseRect[NonDisplayedPage].Bottom =
+            if (Vertices[j].Y &gt;
+                  ObjectToXform-&gt;EraseRect[NonDisplayedPage].Bottom)
+               if (Vertices[j].Y &lt; SCREEN_HEIGHT)
+                  ObjectToXform-&gt;EraseRect[NonDisplayedPage].Bottom =
                         Vertices[j].Y;
-               else ObjectToXform-&gtEraseRect[NonDisplayedPage].Bottom=
+               else ObjectToXform-&gt;EraseRect[NonDisplayedPage].Bottom=
                      SCREEN_HEIGHT;
-            if (Vertices[j].X &lt
-                  ObjectToXform-&gtEraseRect[NonDisplayedPage].Left)
-               if (Vertices[j].X &gt 0)
-                  ObjectToXform-&gtEraseRect[NonDisplayedPage].Left =
+            if (Vertices[j].X &lt;
+                  ObjectToXform-&gt;EraseRect[NonDisplayedPage].Left)
+               if (Vertices[j].X &gt; 0)
+                  ObjectToXform-&gt;EraseRect[NonDisplayedPage].Left =
                         Vertices[j].X;
-               else ObjectToXform-&gtEraseRect[NonDisplayedPage].Left=0;
-            if (Vertices[j].Y &lt
-                  ObjectToXform-&gtEraseRect[NonDisplayedPage].Top)
-               if (Vertices[j].Y &gt 0)
-                  ObjectToXform-&gtEraseRect[NonDisplayedPage].Top =
+               else ObjectToXform-&gt;EraseRect[NonDisplayedPage].Left=0;
+            if (Vertices[j].Y &lt;
+                  ObjectToXform-&gt;EraseRect[NonDisplayedPage].Top)
+               if (Vertices[j].Y &gt; 0)
+                  ObjectToXform-&gt;EraseRect[NonDisplayedPage].Top =
                         Vertices[j].Y;
-               else ObjectToXform-&gtEraseRect[NonDisplayedPage].Top=0;
+               else ObjectToXform-&gt;EraseRect[NonDisplayedPage].Top=0;
          }
          /* Draw the polygon */
-         DRAW_POLYGON(Vertices, NumVertices, FacePtr-&gtColor, 0, 0);
+         DRAW_POLYGON(Vertices, NumVertices, FacePtr-&gt;Color, 0, 0);
       }
    }
 }

@@ -59,9 +59,9 @@ void XformVec(double Xform[4][4], double * SourceVec,
 {
    int i,j;
 
-   for (i=0; i&lt4; i++) {
+   for (i=0; i&lt;4; i++) {
       DestVec[i] = 0;
-      for (j=0; j&lt4; j++)
+      for (j=0; j&lt;4; j++)
          DestVec[i] += Xform[i][j] * SourceVec[j];
    }
 }
@@ -79,10 +79,10 @@ void ConcatXforms(double SourceXform1[4][4], double SourceXform2[4][4],
 {
    int i,j,k;
 
-   for (i=0; i&lt4; i++) {
-      for (j=0; j&lt4; j++) {
+   for (i=0; i&lt;4; i++) {
+      for (j=0; j&lt;4; j++) {
          DestXform[i][j] = 0;
-         for (k=0; k&lt4; k++)
+         for (k=0; k&lt;4; k++)
             DestXform[i][j] += SourceXform1[i][k] * SourceXform2[k][j];
       }
    }
@@ -110,10 +110,10 @@ void XformAndProjectPoly(double Xform[4][4], struct Point3 * Poly,
    struct PointListHeader Polygon;
 
    /* Transform to view space, then project to the screen */
-   for (i=0; i&ltPolyLength; i++) {
+   for (i=0; i&lt;PolyLength; i++) {
       /* Transform to view space */
-      XformVec(Xform, (double *)&ampPoly[i], (double *)&ampXformedPoly[i]);
-      /* Project the X &amp Y coordinates to the screen, rounding to the
+      XformVec(Xform, (double *)&amp;Poly[i], (double *)&amp;XformedPoly[i]);
+      /* Project the X &amp; Y coordinates to the screen, rounding to the
          nearest integral coordinates. The Y coordinate is negated to
          flip from view space, where increasing Y is up, to screen
          space, where increasing Y is down. Add in half the screen
@@ -125,20 +125,20 @@ void XformAndProjectPoly(double Xform[4][4], struct Point3 * Poly,
             SCREEN_HEIGHT/2;
       /* Appropriately adjust the extent of the rectangle used to
          erase this page later */
-         if (ProjectedPoly[i].X &gt EraseRect[NonDisplayedPage].Right)
-          if (ProjectedPoly[i].X &lt SCREEN_WIDTH)
+         if (ProjectedPoly[i].X &gt; EraseRect[NonDisplayedPage].Right)
+          if (ProjectedPoly[i].X &lt; SCREEN_WIDTH)
             EraseRect[NonDisplayedPage].Right = ProjectedPoly[i].X;
           else EraseRect[NonDisplayedPage].Right = SCREEN_WIDTH;
-         if (ProjectedPoly[i].Y &gt EraseRect[NonDisplayedPage].Bottom)
-          if (ProjectedPoly[i].Y &lt SCREEN_HEIGHT)
+         if (ProjectedPoly[i].Y &gt; EraseRect[NonDisplayedPage].Bottom)
+          if (ProjectedPoly[i].Y &lt; SCREEN_HEIGHT)
             EraseRect[NonDisplayedPage].Bottom = ProjectedPoly[i].Y;
           else EraseRect[NonDisplayedPage].Bottom = SCREEN_HEIGHT;
-         if (ProjectedPoly[i].X &lt EraseRect[NonDisplayedPage].Left)
-          if (ProjectedPoly[i].X &gt 0)
+         if (ProjectedPoly[i].X &lt; EraseRect[NonDisplayedPage].Left)
+          if (ProjectedPoly[i].X &gt; 0)
             EraseRect[NonDisplayedPage].Left = ProjectedPoly[i].X;
           else EraseRect[NonDisplayedPage].Left = 0;
-         if (ProjectedPoly[i].Y &lt EraseRect[NonDisplayedPage].Top)
-          if (ProjectedPoly[i].Y &gt 0)
+         if (ProjectedPoly[i].Y &lt; EraseRect[NonDisplayedPage].Top)
+          if (ProjectedPoly[i].Y &gt; 0)
             EraseRect[NonDisplayedPage].Top = ProjectedPoly[i].Y;
           else EraseRect[NonDisplayedPage].Top = 0;
    }

@@ -41,8 +41,8 @@
 <PRE>
 /* Initializes the cubes and adds them to the object list. */
 
-#include &ltstdlib.h&gt
-#include &ltmath.h&gt
+#include &lt;stdlib.h&gt;
+#include &lt;math.h&gt;
 #include &ldquo;polygon.h&rdquo;
 
 #define ROT_6  (M_PI / 30.0)     /* rotate 6 degrees at a time */
@@ -99,64 +99,64 @@ void InitializeCubes()
    int i, j, k;
    PObject *WorkingCube;
 
-   for (i=0; i&ltNUM_CUBES; i++) {
+   for (i=0; i&lt;NUM_CUBES; i++) {
       if ((WorkingCube = malloc(sizeof(PObject))) == NULL) {
          printf(&ldquo;Couldn't get memory\n&rdquo;); exit(1); }
-      WorkingCube-&gtDrawFunc = DrawPObject;
-      WorkingCube-&gtRecalcFunc = XformAndProjectPObject;
-      WorkingCube-&gtMoveFunc = RotateAndMovePObject;
-      WorkingCube-&gtRecalcXform = 1;
-      for (k=0; k&lt2; k++) {
-         WorkingCube-&gtEraseRect[k].Left =
-            WorkingCube-&gtEraseRect[k].Top = 0x7FFF;
-         WorkingCube-&gtEraseRect[k].Right = 0;
-         WorkingCube-&gtEraseRect[k].Bottom = 0;
+      WorkingCube-&gt;DrawFunc = DrawPObject;
+      WorkingCube-&gt;RecalcFunc = XformAndProjectPObject;
+      WorkingCube-&gt;MoveFunc = RotateAndMovePObject;
+      WorkingCube-&gt;RecalcXform = 1;
+      for (k=0; k&lt;2; k++) {
+         WorkingCube-&gt;EraseRect[k].Left =
+            WorkingCube-&gt;EraseRect[k].Top = 0x7FFF;
+         WorkingCube-&gt;EraseRect[k].Right = 0;
+         WorkingCube-&gt;EraseRect[k].Bottom = 0;
       }
-      WorkingCube-&gtRDelayCount = InitRDelayCounts[i];
-      WorkingCube-&gtRDelayCountBase = BaseRDelayCounts[i];
-      WorkingCube-&gtMDelayCount = InitMDelayCounts[i];
-      WorkingCube-&gtMDelayCountBase = BaseMDelayCounts[i];
-      /* Set the object-&gtworld xform to none */
-      for (j=0; j&lt3; j++)
-         for (k=0; k&lt4; k++)
-            WorkingCube-&gtXformToWorld[j][k] = INT_TO_FIXED(0);
-      WorkingCube-&gtXformToWorld[0][0] =
-         WorkingCube-&gtXformToWorld[1][1] =
-         WorkingCube-&gtXformToWorld[2][2] =
-         WorkingCube-&gtXformToWorld[3][3] = INT_TO_FIXED(1);
+      WorkingCube-&gt;RDelayCount = InitRDelayCounts[i];
+      WorkingCube-&gt;RDelayCountBase = BaseRDelayCounts[i];
+      WorkingCube-&gt;MDelayCount = InitMDelayCounts[i];
+      WorkingCube-&gt;MDelayCountBase = BaseMDelayCounts[i];
+      /* Set the object-&gt;world xform to none */
+      for (j=0; j&lt;3; j++)
+         for (k=0; k&lt;4; k++)
+            WorkingCube-&gt;XformToWorld[j][k] = INT_TO_FIXED(0);
+      WorkingCube-&gt;XformToWorld[0][0] =
+         WorkingCube-&gt;XformToWorld[1][1] =
+         WorkingCube-&gt;XformToWorld[2][2] =
+         WorkingCube-&gt;XformToWorld[3][3] = INT_TO_FIXED(1);
       /* Set the initial location */
-      for (j=0; j&lt3; j++) WorkingCube-&gtXformToWorld[j][3] =
+      for (j=0; j&lt;3; j++) WorkingCube-&gt;XformToWorld[j][3] =
             INT_TO_FIXED(CubeStartCoords[i][j]);
-      WorkingCube-&gtNumVerts = NUM_CUBE_VERTS;
-      WorkingCube-&gtVertexList = CubeVerts;
-      WorkingCube-&gtNumFaces = NUM_CUBE_FACES;
-      WorkingCube-&gtRotate = InitialRotate[i];
-      WorkingCube-&gtMove.MoveX = INT_TO_FIXED(InitialMove[i].MoveX);
-      WorkingCube-&gtMove.MoveY = INT_TO_FIXED(InitialMove[i].MoveY);
-      WorkingCube-&gtMove.MoveZ = INT_TO_FIXED(InitialMove[i].MoveZ);
-      WorkingCube-&gtMove.MinX = INT_TO_FIXED(InitialMove[i].MinX);
-      WorkingCube-&gtMove.MinY = INT_TO_FIXED(InitialMove[i].MinY);
-      WorkingCube-&gtMove.MinZ = INT_TO_FIXED(InitialMove[i].MinZ);
-      WorkingCube-&gtMove.MaxX = INT_TO_FIXED(InitialMove[i].MaxX);
-      WorkingCube-&gtMove.MaxY = INT_TO_FIXED(InitialMove[i].MaxY);
-      WorkingCube-&gtMove.MaxZ = INT_TO_FIXED(InitialMove[i].MaxZ);
-      if ((WorkingCube-&gtXformedVertexList =
+      WorkingCube-&gt;NumVerts = NUM_CUBE_VERTS;
+      WorkingCube-&gt;VertexList = CubeVerts;
+      WorkingCube-&gt;NumFaces = NUM_CUBE_FACES;
+      WorkingCube-&gt;Rotate = InitialRotate[i];
+      WorkingCube-&gt;Move.MoveX = INT_TO_FIXED(InitialMove[i].MoveX);
+      WorkingCube-&gt;Move.MoveY = INT_TO_FIXED(InitialMove[i].MoveY);
+      WorkingCube-&gt;Move.MoveZ = INT_TO_FIXED(InitialMove[i].MoveZ);
+      WorkingCube-&gt;Move.MinX = INT_TO_FIXED(InitialMove[i].MinX);
+      WorkingCube-&gt;Move.MinY = INT_TO_FIXED(InitialMove[i].MinY);
+      WorkingCube-&gt;Move.MinZ = INT_TO_FIXED(InitialMove[i].MinZ);
+      WorkingCube-&gt;Move.MaxX = INT_TO_FIXED(InitialMove[i].MaxX);
+      WorkingCube-&gt;Move.MaxY = INT_TO_FIXED(InitialMove[i].MaxY);
+      WorkingCube-&gt;Move.MaxZ = INT_TO_FIXED(InitialMove[i].MaxZ);
+      if ((WorkingCube-&gt;XformedVertexList =
             malloc(NUM_CUBE_VERTS*sizeof(Point3))) == NULL) {
          printf(&ldquo;Couldn't get memory\n&rdquo;); exit(1); }
-      if ((WorkingCube-&gtProjectedVertexList =
+      if ((WorkingCube-&gt;ProjectedVertexList =
             malloc(NUM_CUBE_VERTS*sizeof(Point3))) == NULL) {
          printf(&ldquo;Couldn't get memory\n&rdquo;); exit(1); }
-      if ((WorkingCube-&gtScreenVertexList =
+      if ((WorkingCube-&gt;ScreenVertexList =
             malloc(NUM_CUBE_VERTS*sizeof(Point))) == NULL) {
          printf(&ldquo;Couldn't get memory\n&rdquo;); exit(1); }
-      if ((WorkingCube-&gtFaceList =
+      if ((WorkingCube-&gt;FaceList =
             malloc(NUM_CUBE_FACES*sizeof(Face))) == NULL) {
          printf(&ldquo;Couldn't get memory\n&rdquo;); exit(1); }
       /* Initialize the faces */
-      for (j=0; j&ltNUM_CUBE_FACES; j++) {
-         WorkingCube-&gtFaceList[j].VertNums = VertNumList[j];
-         WorkingCube-&gtFaceList[j].NumVerts = VertsInFace[j];
-         WorkingCube-&gtFaceList[j].Color = Colors[i][j];
+      for (j=0; j&lt;NUM_CUBE_FACES; j++) {
+         WorkingCube-&gt;FaceList[j].VertNums = VertNumList[j];
+         WorkingCube-&gt;FaceList[j].NumVerts = VertsInFace[j];
+         WorkingCube-&gt;FaceList[j].Color = Colors[i][j];
       }
       ObjectList[NumObjects++] = (Object *)WorkingCube;
    }

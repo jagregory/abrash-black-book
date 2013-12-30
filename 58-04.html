@@ -59,7 +59,7 @@
 ;       EDX = fractional source texture Y coordinate in lower
 ;             15 bits of CX, fractional source texture X coord
 ;             in high word of ECX, bit 15 set to 0
-;       SI = sum of integral X &amp Y source pointer advances
+;       SI = sum of integral X &amp; Y source pointer advances
 ;       DS:DI = initial destination pointer
 ;       SS:BP = initial source texture pointer
 
@@ -73,7 +73,7 @@ SCANOFFSET=0
      add   edx,ecx                        ;advance frac Y in DX,
                                           ; frac X in high word of EDX
      adc   bp,si                          ;advance source pointer by integral
-                                          ; X &amp Y amount, also accounting for
+                                          ; X &amp; Y amount, also accounting for
                                           ; carry from X fractional addition
      test  dh,80h                         ;carry from Y fractional addition?
      jz    @F                             ;no

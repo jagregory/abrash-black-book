@@ -98,7 +98,7 @@ void main()
 
    /* Return to text mode and exit */
    regset.x.ax = 0x0003;   /* AL = 3 selects 80x25 text mode */
-   int86(0x10, &ampregset, &ampregset);
+   int86(0x10, &amp;regset, &amp;regset);
 }
 
 void Wait30Frames()
@@ -107,9 +107,9 @@ void Wait30Frames()
 
    for (i=0; i&lt;30; i++) {
       /* Wait until we&rsquo;re not in vertical sync, so we can catch leading edge */
-      while ((inp(INPUT_STATUS_1) &amp 0x08) != 0) ;
+      while ((inp(INPUT_STATUS_1) &amp; 0x08) != 0) ;
       /* Wait until we are in vertical sync */
-      while ((inp(INPUT_STATUS_1) &amp 0x08) == 0) ;
+      while ((inp(INPUT_STATUS_1) &amp; 0x08) == 0) ;
    }
 }
 </PRE>
@@ -132,7 +132,7 @@ void Set640x400()
    regs.h.ah = 0x11;                    /* character generator function */
    regs.h.al = 0x24;                    /* use ROM 8x6 character set for graphics */
    regs.h.bl = 2;                       /* 25 rows */
-   int86(0x10, &ampregs, &ampregs);           /* invoke the BIOS video interrupt
+   int86(0x10, &amp;regs, &amp;regs);           /* invoke the BIOS video interrupt
                                            to set up the text */
 }
 </PRE>

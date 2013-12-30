@@ -44,22 +44,22 @@
     special-cased, and everything else is handled by a 2-2-2 model. */
  int ModelColorToColorIndex(ModelColor * Color)
  {
-    if (Color-&gtRed == 0) {
-       if (Color-&gtGreen == 0) {
+    if (Color-&gt;Red == 0) {
+       if (Color-&gt;Green == 0) {
           /* Pure blue */
-          return(192+(Color-&gtBlue &gt&gt 2));
-       } else if (Color-&gtBlue == 0) {
+          return(192+(Color-&gt;Blue &gt;&gt; 2));
+       } else if (Color-&gt;Blue == 0) {
           /* Pure green */
-          return(128+(Color-&gtGreen &gt&gt 2));
+          return(128+(Color-&gt;Green &gt;&gt; 2));
        }
-    } else if ((Color-&gtGreen == 0) &amp&amp (Color-&gtBlue == 0)) {
+    } else if ((Color-&gt;Green == 0) &amp;&amp; (Color-&gt;Blue == 0)) {
        /* Pure red */
-       return(64+(Color-&gtRed &gt&gt 2));
+       return(64+(Color-&gt;Red &gt;&gt; 2));
     }
     /* Multi-color mix; look up the index with the two most significant bits
        of each color component */
-    return(((Color-&gtRed &amp 0xC0) &gt&gt 2) | ((Color-&gtGreen &amp 0xC0) &gt&gt 4) |
-          ((Color-&gtBlue &amp 0xC0) &gt&gt 6));
+    return(((Color-&gt;Red &amp; 0xC0) &gt;&gt; 2) | ((Color-&gt;Green &amp; 0xC0) &gt;&gt; 4) |
+          ((Color-&gt;Blue &amp; 0xC0) &gt;&gt; 6));
  }
 
 </PRE>

@@ -59,14 +59,14 @@
 ; unsigned int PatternLength);
 
 parms   struc
-        dw      2 dup(?)    ;pushed BP &amp return address
+        dw      2 dup(?)    ;pushed BP &amp; return address
 BufferPtr dw    ?           ;pointer to buffer to be searched
 BufferLength dw ?           ;# of bytes in buffer to be searched
                             ; (not used, actually)
 PatternPtr dw   ?           ;pointer to pattern for which to search
                             ; (pattern *MUST* exist in the buffer)
 PatternLength dw ?          ;length of pattern for which to search (must
-                            ; be &lt= 255)
+                            ; be &lt;= 255)
 parms   ends
 
         .model small

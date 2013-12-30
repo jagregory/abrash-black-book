@@ -128,7 +128,7 @@ IntraBlockLoop:
         cmp     [di+ID],ax      ;Do we have an ID match?
         jnz     NoMatch         ;No match
         inc     bx              ;We have a match; IDMatchCount++;
-        add     dx,[di+Value]   ;IDMatchSum += DataPointer-&gtValue;
+        add     dx,[di+Value]   ;IDMatchSum += DataPointer-&gt;Value;
 NoMatch:
         add     di,DATA_ELEMENT_SIZE ;point to the next element
         loop    IntraBlockLoop
@@ -205,12 +205,12 @@ LoopEntryTable  label   word
         dw      LoopEntry4,LoopEntry5,LoopEntry6,LoopEntry7
 M_IBL   macro   P1
         local   NoMatch
-LoopEntry&ampP1&amp:
+LoopEntry&amp;P1&amp;:
         scasw                   ;Do we have an ID match?
         jnz     NoMatch         ;No match
                                 ;We have a match
         inc     bx              ;IDMatchCount++;
-        add     dx,[di]         ;IDMatchSum += DataPointer-&gtValue;
+        add     dx,[di]         ;IDMatchSum += DataPointer-&gt;Value;
 NoMatch:
         add     di,DATA_ELEMENT_SIZE-2 ;point to the next element
                                 ; (SCASW advanced 2 bytes already)

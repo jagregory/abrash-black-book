@@ -134,26 +134,26 @@ typedef struct {
    MaskedImage *Image;
 } AnimatedObject;
 AnimatedObject AnimatedObjects[] = {
-   {  0,  0,KITE_WIDTH,KITE_HEIGHT, 1, 1,  0,  0,&ampKiteImage},
-   { 10, 10,KITE_WIDTH,KITE_HEIGHT, 0, 1, 10, 10,&ampKiteImage},
-   { 20, 20,KITE_WIDTH,KITE_HEIGHT,-1, 1, 20, 20,&ampKiteImage},
-   { 30, 30,KITE_WIDTH,KITE_HEIGHT,-1,-1, 30, 30,&ampKiteImage},
-   { 40, 40,KITE_WIDTH,KITE_HEIGHT, 1,-1, 40, 40,&ampKiteImage},
-   { 50, 50,KITE_WIDTH,KITE_HEIGHT, 0,-1, 50, 50,&ampKiteImage},
-   { 60, 60,KITE_WIDTH,KITE_HEIGHT, 1, 0, 60, 60,&ampKiteImage},
-   { 70, 70,KITE_WIDTH,KITE_HEIGHT,-1, 0, 70, 70,&ampKiteImage},
-   { 80, 80,KITE_WIDTH,KITE_HEIGHT, 1, 2, 80, 80,&ampKiteImage},
-   { 90, 90,KITE_WIDTH,KITE_HEIGHT, 0, 2, 90, 90,&ampKiteImage},
-   {100,100,KITE_WIDTH,KITE_HEIGHT,-1, 2,100,100,&ampKiteImage},
-   {110,110,KITE_WIDTH,KITE_HEIGHT,-1,-2,110,110,&ampKiteImage},
-   {120,120,KITE_WIDTH,KITE_HEIGHT, 1,-2,120,120,&ampKiteImage},
-   {130,130,KITE_WIDTH,KITE_HEIGHT, 0,-2,130,130,&ampKiteImage},
-   {140,140,KITE_WIDTH,KITE_HEIGHT, 2, 0,140,140,&ampKiteImage},
-   {150,150,KITE_WIDTH,KITE_HEIGHT,-2, 0,150,150,&ampKiteImage},
-   {160,160,KITE_WIDTH,KITE_HEIGHT, 2, 2,160,160,&ampKiteImage},
-   {170,170,KITE_WIDTH,KITE_HEIGHT,-2, 2,170,170,&ampKiteImage},
-   {180,180,KITE_WIDTH,KITE_HEIGHT,-2,-2,180,180,&ampKiteImage},
-   {190,190,KITE_WIDTH,KITE_HEIGHT, 2,-2,190,190,&ampKiteImage},
+   {  0,  0,KITE_WIDTH,KITE_HEIGHT, 1, 1,  0,  0,&amp;KiteImage},
+   { 10, 10,KITE_WIDTH,KITE_HEIGHT, 0, 1, 10, 10,&amp;KiteImage},
+   { 20, 20,KITE_WIDTH,KITE_HEIGHT,-1, 1, 20, 20,&amp;KiteImage},
+   { 30, 30,KITE_WIDTH,KITE_HEIGHT,-1,-1, 30, 30,&amp;KiteImage},
+   { 40, 40,KITE_WIDTH,KITE_HEIGHT, 1,-1, 40, 40,&amp;KiteImage},
+   { 50, 50,KITE_WIDTH,KITE_HEIGHT, 0,-1, 50, 50,&amp;KiteImage},
+   { 60, 60,KITE_WIDTH,KITE_HEIGHT, 1, 0, 60, 60,&amp;KiteImage},
+   { 70, 70,KITE_WIDTH,KITE_HEIGHT,-1, 0, 70, 70,&amp;KiteImage},
+   { 80, 80,KITE_WIDTH,KITE_HEIGHT, 1, 2, 80, 80,&amp;KiteImage},
+   { 90, 90,KITE_WIDTH,KITE_HEIGHT, 0, 2, 90, 90,&amp;KiteImage},
+   {100,100,KITE_WIDTH,KITE_HEIGHT,-1, 2,100,100,&amp;KiteImage},
+   {110,110,KITE_WIDTH,KITE_HEIGHT,-1,-2,110,110,&amp;KiteImage},
+   {120,120,KITE_WIDTH,KITE_HEIGHT, 1,-2,120,120,&amp;KiteImage},
+   {130,130,KITE_WIDTH,KITE_HEIGHT, 0,-2,130,130,&amp;KiteImage},
+   {140,140,KITE_WIDTH,KITE_HEIGHT, 2, 0,140,140,&amp;KiteImage},
+   {150,150,KITE_WIDTH,KITE_HEIGHT,-2, 0,150,150,&amp;KiteImage},
+   {160,160,KITE_WIDTH,KITE_HEIGHT, 2, 2,160,160,&amp;KiteImage},
+   {170,170,KITE_WIDTH,KITE_HEIGHT,-2, 2,170,170,&amp;KiteImage},
+   {180,180,KITE_WIDTH,KITE_HEIGHT,-2,-2,180,180,&amp;KiteImage},
+   {190,190,KITE_WIDTH,KITE_HEIGHT, 2,-2,190,190,&amp;KiteImage},
 };
 void main(void);
 void DrawBackground(unsigned int);
@@ -177,9 +177,9 @@ void main()
    union REGS regset;
    Set320x240Mode();
    /* Download the kite image for fast copying later. */
-   if (CreateAlignedMaskedImage(&ampKiteImage, DOWNLOAD_START_OFFSET,
+   if (CreateAlignedMaskedImage(&amp;KiteImage, DOWNLOAD_START_OFFSET,
          KitePixels, KITE_WIDTH, KITE_HEIGHT, KiteMask) == 0) {
-      regset.x.ax = 0x0003; int86(0x10, &ampregset, &ampregset);
+      regset.x.ax = 0x0003; int86(0x10, &amp;regset, &amp;regset);
       printf(&ldquo;Couldn&rsquo;t get memory\n&rdquo;); exit();
    }
    /* Draw the background to the background page. */
@@ -209,7 +209,7 @@ void main()
       }
       /* Move and draw each object in the nondisplayed page. */
       for (i=0; i&lt;NUM_OBJECTS; i++) {
-         MoveObject(&ampAnimatedObjects[i]);
+         MoveObject(&amp;AnimatedObjects[i]);
          /* Draw object into nondisplayed page at new location */
          CopyScreenToScreenMaskedX(0, 0, AnimatedObjects[i].Width,
                AnimatedObjects[i].Height, AnimatedObjects[i].X,
@@ -224,7 +224,7 @@ void main()
       }
    } while (!Done);
    /* Restore text mode and done. */
-   regset.x.ax = 0x0003; int86(0x10, &ampregset, &ampregset);
+   regset.x.ax = 0x0003; int86(0x10, &amp;regset, &amp;regset);
 }
 void DrawBackground(unsigned int PageStart)
 {

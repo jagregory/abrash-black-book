@@ -182,7 +182,7 @@ void main() {
    }
    getch();
    regset.x.ax = 0x0003;   /* switch back to text mode and done */
-   int86(0x10, &ampregset, &ampregset);
+   int86(0x10, &amp;regset, &amp;regset);
 }
 </PRE>
 <!-- END CODE //-->

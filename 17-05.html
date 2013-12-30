@@ -50,10 +50,10 @@
 
 /* Calculates the next generation of current_map and stores it in
    next_map. */
-void cellmap::next_generation(cellmap&amp next_map)
+void cellmap::next_generation(cellmap&amp; next_map)
 {
    unsigned int x, y, neighbor_count;
-   unsigned int width_in_bytesX2 = width_in_bytes &lt&lt 1;
+   unsigned int width_in_bytesX2 = width_in_bytes &lt;&lt; 1;
    unsigned char *cell_ptr, *current_cell_ptr, mask, current_mask;
    unsigned char *base_cell_ptr, *row_cell_ptr, base_mask;
    unsigned char *dest_cell_ptr = next_map.cells;
@@ -61,24 +61,24 @@ void cellmap::next_generation(cellmap&amp next_map)
    // Process all cells in the current cellmap
    row_cell_ptr = cells;      // point to upper left neighbor of
                               // first cell in cell map
-   for (y=0; y&ltheight; y++) { // repeat for each row of cells
+   for (y=0; y&lt;height; y++) { // repeat for each row of cells
       // Cell pointer and cell bit mask for first cell in row
       base_cell_ptr = row_cell_ptr; // to access upper left neighbor
       base_mask = 0x01;             // of first cell in row
-      for (x=0; x&ltwidth; x++) {     // repeat for each cell in row
+      for (x=0; x&lt;width; x++) {     // repeat for each cell in row
          // First, count neighbors
          // Point to upper left neighbor of current cell
          cell_ptr = base_cell_ptr;  // pointer and bit mask for
          mask = base_mask;          // upper left neighbor
          // Count upper left neighbor
-         neighbor_count = (*cell_ptr &amp mask) ? 1 : 0;
+         neighbor_count = (*cell_ptr &amp; mask) ? 1 : 0;
          // Count left neighbor
-         if ((*(cell_ptr + width_in_bytes) &amp mask)) neighbor_count++;
+         if ((*(cell_ptr + width_in_bytes) &amp; mask)) neighbor_count++;
          // Count lower left neighbor
-         if ((*(cell_ptr + width_in_bytesX2) &amp mask))
+         if ((*(cell_ptr + width_in_bytesX2) &amp; mask))
 neighbor_count++;
          // Point to upper neighbor
-         if ((mask &gt&gt= 1) == 0) {
+         if ((mask &gt;&gt;= 1) == 0) {
             mask = 0x80;
             cell_ptr++;
          }
@@ -86,25 +86,25 @@ neighbor_count++;
          current_cell_ptr = cell_ptr + width_in_bytes;
          current_mask = mask;
          // Count upper neighbor
-         if ((*cell_ptr &amp mask)) neighbor_count++;
+         if ((*cell_ptr &amp; mask)) neighbor_count++;
          // Count lower neighbor
-         if ((*(cell_ptr + width_in_bytesX2) &amp mask))
+         if ((*(cell_ptr + width_in_bytesX2) &amp; mask))
                neighbor_count++;
          // Point to upper right neighbor
-         if ((mask &gt&gt= 1) == 0) {
+         if ((mask &gt;&gt;= 1) == 0) {
             mask = 0x80;
             cell_ptr++;
          }
          // Count upper right neighbor
-         if ((*cell_ptr &amp mask)) neighbor_count++;
+         if ((*cell_ptr &amp; mask)) neighbor_count++;
          // Count right neighbor
-         if ((*(cell_ptr + width_in_bytes) &amp mask))  neighbor_count++;
+         if ((*(cell_ptr + width_in_bytes) &amp; mask))  neighbor_count++;
          // Count lower right neighbor
-         if ((*(cell_ptr + width_in_bytesX2) &amp mask))
+         if ((*(cell_ptr + width_in_bytesX2) &amp; mask))
                neighbor_count++;
-         if (*current_cell_ptr &amp current_mask) {
-            if ((neighbor_count != 2) &amp&amp (neighbor_count != 3)) {
-               *(dest_cell_ptr + (current_cell_ptr - cells)) &amp=
+         if (*current_cell_ptr &amp; current_mask) {
+            if ((neighbor_count != 2) &amp;&amp; (neighbor_count != 3)) {
+               *(dest_cell_ptr + (current_cell_ptr - cells)) &amp;=
                      ~current_mask;    // turn off cell
                draw_pixel(x, y, OFF_COLOR);
             }
@@ -116,7 +116,7 @@ neighbor_count++;
             }
          }
          // Advance to the next cell on row
-         if ((base_mask &gt&gt= 1) == 0) {
+         if ((base_mask &gt;&gt;= 1) == 0) {
             base_mask = 0x80;
             base_cell_ptr++;  // advance to the next cell byte
          }

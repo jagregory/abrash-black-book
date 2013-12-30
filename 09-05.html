@@ -71,7 +71,7 @@ _sort:  pop     dx              ;get return address (entry point)
         dec     cx              ;decrement count
         push    cx              ;save count
         push    dx              ;restore return address
-        jg      top             ;if cx &gt 0
+        jg      top             ;if cx &gt; 0
 
         ret
 

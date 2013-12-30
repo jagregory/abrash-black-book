@@ -41,7 +41,7 @@
 <PRE>
 /* Routines to perform incremental rotations around the three axes. */
 
-#include &ltmath.h&gt
+#include &lt;math.h&gt;
 #include &ldquo;polygon.h&rdquo;
 
 /* Concatenate a rotation by Angle around the X axis to transformation in
@@ -141,7 +141,7 @@ void XformVec(Xform WorkingXform, Fixedpoint *SourceVec,
 {
    int i;
 
-   for (i=0; i&lt3; i++)
+   for (i=0; i&lt;3; i++)
       DestVec[i] = FixedMul(WorkingXform[i][0], SourceVec[0]) +
             FixedMul(WorkingXform[i][1], SourceVec[1]) +
             FixedMul(WorkingXform[i][2], SourceVec[2]) +
@@ -157,8 +157,8 @@ void ConcatXforms(Xform SourceXform1, Xform SourceXform2,
 {
    int i, j;
 
-   for (i=0; i&lt3; i++) {
-      for (j=0; j&lt4; j++)
+   for (i=0; i&lt;3; i++) {
+      for (j=0; j&lt;4; j++)
          DestXform[i][j] =
                FixedMul(SourceXform1[i][0], SourceXform2[0][j]) +
                FixedMul(SourceXform1[i][1], SourceXform2[1][j]) +
@@ -189,10 +189,10 @@ void InitializeFixedPoint()
 {
    int i, j;
 
-   for (i=0; i&lt3; i++)
-      for (j=0; j&lt4; j++)
+   for (i=0; i&lt;3; i++)
+      for (j=0; j&lt;4; j++)
          WorldViewXform[i][j] = INT_TO_FIXED(IntWorldViewXform[i][j]);
-   for (i=0; i&ltNUM_CUBE_VERTS; i++) {
+   for (i=0; i&lt;NUM_CUBE_VERTS; i++) {
       CubeVerts[i].X = INT_TO_FIXED(IntCubeVerts[i].X);
       CubeVerts[i].Y = INT_TO_FIXED(IntCubeVerts[i].Y);
       CubeVerts[i].Z = INT_TO_FIXED(IntCubeVerts[i].Z);

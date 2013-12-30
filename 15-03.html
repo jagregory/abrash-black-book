@@ -47,19 +47,19 @@
    found. Assumes the list is terminated with a sentinel tail node
    containing the largest possible Value field setting and pointing
    to itself as the next node. */
-#include &ltstdio.h&gt
+#include &lt;stdio.h&gt;
 #include &ldquo;llist.h&rdquo;
 struct LinkNode *FindNodeBeforeValueNotLess(
    struct LinkNode *HeadOfListNode, int SearchValue)
 {
    struct LinkNode *NodePtr = HeadOfListNode;
-   while (NodePtr-&gtNextNode-&gtValue &lt SearchValue)
-      NodePtr = NodePtr-&gtNextNode;
-   if (NodePtr-&gtNextNode-&gtNextNode == NodePtr-&gtNextNode)
+   while (NodePtr-&gt;NextNode-&gt;Value &lt; SearchValue)
+      NodePtr = NodePtr-&gt;NextNode;
+   if (NodePtr-&gt;NextNode-&gt;NextNode == NodePtr-&gt;NextNode)
       return(NULL);     /* we found the sentinel; failed search */
    else
       return(NodePtr);  /* success; return pointer to node preceding
-                           node that was &gt= */
+                           node that was &gt;= */
 }
 </PRE>
 <!-- END CODE //-->
@@ -83,9 +83,9 @@ struct LinkNode *FindNodeBeforeValueNotLess(
     is,it has a dummy node as both the head and the tail of the list.
     The dummy node is a sentinel, containing the largest possible
     Value field setting. Tested with Borland C++ in C mode. */
-#include &ltstdlib.h&gt
-#include &ltstdio.h&gt
-#include &ltstring.h&gt
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
 #include &ldquo;llist.h&rdquo;
 /* Initializes an empty linked list of LinkNode structures,
    consisting of a single head/tail/sentinel node, and returns a
@@ -96,9 +96,9 @@ struct LinkNode *InitLinkedList()
 
    if ((Sentinel = malloc(sizeof(struct LinkNode))) == NULL)
       return(NULL);
-   Sentinel-&gtNextNode = Sentinel;
-   Sentinel-&gtValue = SENTINEL;
-   strcpy(Sentinel-&gtText, &ldquo;*** sentinel ***&rdquo;);
+   Sentinel-&gt;NextNode = Sentinel;
+   Sentinel-&gt;Value = SENTINEL;
+   strcpy(Sentinel-&gt;Text, &ldquo;*** sentinel ***&rdquo;);
    return(Sentinel);
 }
 
@@ -113,12 +113,12 @@ int SearchValue)
 {
    struct LinkNode *NodePtr = HeadOfListNode;
 
-   while (NodePtr-&gtNextNode-&gtValue &lt SearchValue)
-      NodePtr = NodePtr-&gtNextNode;
-   if (NodePtr-&gtNextNode-&gtValue == SearchValue) {
+   while (NodePtr-&gt;NextNode-&gt;Value &lt; SearchValue)
+      NodePtr = NodePtr-&gt;NextNode;
+   if (NodePtr-&gt;NextNode-&gt;Value == SearchValue) {
       /* Found the search value; success unless we found the
          sentinel (can happen only if SearchValue == SENTINEL) */
-      if (NodePtr-&gtNextNode == HeadOfListNode) {
+      if (NodePtr-&gt;NextNode == HeadOfListNode) {
          return(NULL);     /* failure; we found the sentinel */
       } else {
          return(NodePtr);  /* success; return pointer to node
@@ -136,11 +136,11 @@ struct LinkNode *InsertNodeSorted(struct LinkNode *HeadOfListNode,
    struct LinkNode *NodeToInsert)
 {
    struct LinkNode *NodePtr = HeadOfListNode;
-   int SearchValue = NodeToInsert-&gtValue;
-   while (NodePtr-&gtNextNode-&gtValue &lt SearchValue)
-      NodePtr = NodePtr-&gtNextNode;
-   NodeToInsert-&gtNextNode = NodePtr-&gtNextNode;
-   NodePtr-&gtNextNode = NodeToInsert;
+   int SearchValue = NodeToInsert-&gt;Value;
+   while (NodePtr-&gt;NextNode-&gt;Value &lt; SearchValue)
+      NodePtr = NodePtr-&gt;NextNode;
+   NodeToInsert-&gt;NextNode = NodePtr-&gt;NextNode;
+   NodePtr-&gt;NextNode = NodeToInsert;
    return(NodePtr);
 }
 </PRE>

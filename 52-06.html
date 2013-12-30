@@ -52,7 +52,7 @@
         public  _FixedMul,_FixedDiv
 ; Multiplies two fixed-point values together.
 FMparms struc
-        dw      2 dup(?)          ;return address &amp pushed BP
+        dw      2 dup(?)          ;return address &amp; pushed BP
 M1      dd      ?
 M2      dd      ?
 FMparms ends
@@ -70,7 +70,7 @@ _FixedMul       proc    near
 _FixedMul       endp
 ; Divides one fixed-point value by another.
 FDparms struc
-         dw     2 dup(?)          ;return address &amp pushed BP
+         dw     2 dup(?)          ;return address &amp; pushed BP
 Dividend dd     ?
 Divisor  dd     ?
 FDparms ends
@@ -137,8 +137,8 @@ _FixedDiv       endp
    Color with all vertices offset by (X,Y) */
 #define DRAW_POLYGON(PointList,NumPoints,Color,X,Y)          \
    Polygon.Length = NumPoints; Polygon.PointPtr = PointList; \
-   FillConvexPolygon(&ampPolygon, Color, X, Y);
-#define INT_TO_FIXED(x) (((long)(int)x) &lt&lt 16)
+   FillConvexPolygon(&amp;Polygon, Color, X, Y);
+#define INT_TO_FIXED(x) (((long)(int)x) &lt;&lt; 16)
 #define DOUBLE_TO_FIXED(x) ((long) (x * 65536.0 + 0.5))
 
 typedef long Fixedpoint;
@@ -181,8 +181,8 @@ typedef struct {
    BASE_OBJECT
    int RDelayCount, RDelayCountBase; /* controls rotation speed */
    int MDelayCount, MDelayCountBase; /* controls movement speed */
-   Xform XformToWorld;        /* transform from object-&gtworld space */
-   Xform XformToView;         /* transform from object-&gtview space */
+   Xform XformToWorld;        /* transform from object-&gt;world space */
+   Xform XformToView;         /* transform from object-&gt;view space */
    RotateControl Rotate;      /* controls rotation change over time */
    MoveControl Move;          /* controls object movement over time */
    int NumVerts;              /* # vertices in VertexList */

@@ -50,7 +50,7 @@
 ; Tested with TASM 2.
 
 parms struc
-          dw     2 dup (?)     ;pushed BP &amp return address
+          dw     2 dup (?)     ;pushed BP &amp; return address
 Dividend  dw     ?             ;pointer to value to divide, stored in Intel
                                ; order, with lsb at lowest address, msb at
                                ; highest. Must be composed of an integral
@@ -113,7 +113,7 @@ _Divendp
 /* Sample use of Div function to perform division when the result
    doesn&rsquo;t fit in 16 bits */
 
-#include &ltstdio.h&gt
+#include &lt;stdio.h&gt;
 
 extern unsigned int Div(unsigned int * Dividend,
           int DividendLength, unsigned int Divisor,
@@ -123,7 +123,7 @@ main() {
    unsigned long m, i = 0x20000001;
    unsigned int k, j = 0x10;
 
-   k = Div((unsigned int *)&ampi, sizeof(i), j, (unsigned int *)&ampm);
+   k = Div((unsigned int *)&amp;i, sizeof(i), j, (unsigned int *)&amp;m);
    printf(&ldquo;%lu / %u = %lu r %u\n&rdquo;, i, j, m, k);
 }
 </PRE>

@@ -53,7 +53,7 @@
 320x200 256-color mode. Not optimized! Tested with Borland C++ in
 the small model. */
 
-#include &ltdos.h&gt
+#include &lt;dos.h&gt;
 
 #define SCREEN_WIDTH    320
 #define SCREEN_SEGMENT  0xA000
@@ -71,7 +71,7 @@ void LineDraw(int XStart, int YStart, int XEnd, int YEnd, int Color)
 
    /* We&rsquo;ll always draw top to bottom, to reduce the number of cases we have to
    handle, and to make lines between the same endpoints draw the same pixels */
-   if (YStart &gt YEnd) {
+   if (YStart &gt; YEnd) {
       Temp = YStart;
       YStart = YEnd;
       YEnd = Temp;
@@ -84,7 +84,7 @@ void LineDraw(int XStart, int YStart, int XEnd, int YEnd, int Color)
 
    /* Figure out whether we&rsquo;re going left or right, and how far we&rsquo;re
       going horizontally */
-   if ((XDelta = XEnd - XStart) &lt 0)
+   if ((XDelta = XEnd - XStart) &lt; 0)
    {
       XAdvance = -1;
       XDelta = -XDelta;
@@ -101,7 +101,7 @@ void LineDraw(int XStart, int YStart, int XEnd, int YEnd, int Color)
    if (XDelta == 0)
    {
       /* Vertical line */
-      for (i=0; i&lt=YDelta; i++)
+      for (i=0; i&lt;=YDelta; i++)
       {
          *ScreenPtr = Color;
          ScreenPtr += SCREEN_WIDTH;
@@ -111,7 +111,7 @@ void LineDraw(int XStart, int YStart, int XEnd, int YEnd, int Color)
    if (YDelta == 0)
    {
       /* Horizontal line */
-      for (i=0; i&lt=XDelta; i++)
+      for (i=0; i&lt;=XDelta; i++)
       {
          *ScreenPtr = Color;
          ScreenPtr += XAdvance;
@@ -121,7 +121,7 @@ void LineDraw(int XStart, int YStart, int XEnd, int YEnd, int Color)
    if (XDelta == YDelta)
    {
       /* Diagonal line */
-      for (i=0; i&lt=XDelta; i++)
+      for (i=0; i&lt;=XDelta; i++)
       {
          *ScreenPtr = Color;
          ScreenPtr += XAdvance + SCREEN_WIDTH;
@@ -130,7 +130,7 @@ void LineDraw(int XStart, int YStart, int XEnd, int YEnd, int Color)
    }
 
    /* Determine whether the line is X or Y major, and handle accordingly */
-   if (XDelta &gt= YDelta)
+   if (XDelta &gt;= YDelta)
    {
       /* X major line */
       /* Minimum # of pixels in a run in this line */
@@ -159,35 +159,35 @@ void LineDraw(int XStart, int YStart, int XEnd, int YEnd, int Color)
          advance, we have one pixel that could go to either the initial
          or last partial run, which we&rsquo;ll arbitrarily allocate to the
          last run */
-      if ((AdjUp == 0) &amp&amp ((WholeStep &amp 0x01) == 0))
+      if ((AdjUp == 0) &amp;&amp; ((WholeStep &amp; 0x01) == 0))
       {
          InitialPixelCount--;
       }
       /* If there&rsquo;re an odd number of pixels per run, we have 1 pixel that can&rsquo;t
          be allocated to either the initial or last partial run, so we&rsquo;ll add 0.5
          to error term so this pixel will be handled by the normal full-run loop */
-         if ((WholeStep &amp 0x01) != 0)
+         if ((WholeStep &amp; 0x01) != 0)
       {
          ErrorTerm += YDelta;
       }
       /* Draw the first, partial run of pixels */
-      DrawHorizontalRun(&ampScreenPtr, XAdvance, InitialPixelCount, Color);
+      DrawHorizontalRun(&amp;ScreenPtr, XAdvance, InitialPixelCount, Color);
       /* Draw all full runs */
-      for (i=0; i&lt(YDelta-1); i++)
+      for (i=0; i&lt;(YDelta-1); i++)
       {
          RunLength = WholeStep;  /* run is at least this long */
          /* Advance the error term and add an extra pixel if the error
             term so indicates */
-         if ((ErrorTerm += AdjUp) &gt 0)
+         if ((ErrorTerm += AdjUp) &gt; 0)
          {
             RunLength++;
             ErrorTerm -= AdjDown;   /* reset the error term */
          }
          /* Draw this scan line&rsquo;s run */
-         DrawHorizontalRun(&ampScreenPtr, XAdvance, RunLength, Color);
+         DrawHorizontalRun(&amp;ScreenPtr, XAdvance, RunLength, Color);
       }
       /* Draw the final run of pixels */
-      DrawHorizontalRun(&ampScreenPtr, XAdvance, FinalPixelCount, Color);
+      DrawHorizontalRun(&amp;ScreenPtr, XAdvance, FinalPixelCount, Color);
       return;
    }
    else
@@ -218,7 +218,7 @@ void LineDraw(int XStart, int YStart, int XEnd, int YEnd, int Color)
       /* If the basic run length is even and there&rsquo;s no fractional advance, we
          have 1 pixel that could go to either the initial or last partial run,
          which we&rsquo;ll arbitrarily allocate to the last run */
-      if ((AdjUp == 0) &amp&amp ((WholeStep &amp 0x01) == 0))
+      if ((AdjUp == 0) &amp;&amp; ((WholeStep &amp; 0x01) == 0))
       {
          InitialPixelCount--;
       }
@@ -226,29 +226,29 @@ void LineDraw(int XStart, int YStart, int XEnd, int YEnd, int Color)
          that can&rsquo;t be allocated to either the initial or last partial
          run, so we&rsquo;ll add 0.5 to the error term so this pixel will be
          handled by the normal full-run loop */
-      if ((WholeStep &amp 0x01) != 0)
+      if ((WholeStep &amp; 0x01) != 0)
       {
          ErrorTerm += XDelta;
       }
       /* Draw the first, partial run of pixels */
-      DrawVerticalRun(&ampScreenPtr, XAdvance, InitialPixelCount, Color);
+      DrawVerticalRun(&amp;ScreenPtr, XAdvance, InitialPixelCount, Color);
 
       /* Draw all full runs */
-      for (i=0; i&lt(XDelta-1); i++)
+      for (i=0; i&lt;(XDelta-1); i++)
       {
          RunLength = WholeStep;  /* run is at least this long */
          /* Advance the error term and add an extra pixel if the error
             term so indicates */
-         if ((ErrorTerm += AdjUp) &gt 0)
+         if ((ErrorTerm += AdjUp) &gt; 0)
          {
             RunLength++;
             ErrorTerm -= AdjDown;   /* reset the error term */
          }
          /* Draw this scan line&rsquo;s run */
-         DrawVerticalRun(&ampScreenPtr, XAdvance, RunLength, Color);
+         DrawVerticalRun(&amp;ScreenPtr, XAdvance, RunLength, Color);
       }
       /* Draw the final run of pixels */
-      DrawVerticalRun(&ampScreenPtr, XAdvance, FinalPixelCount, Color);
+      DrawVerticalRun(&amp;ScreenPtr, XAdvance, FinalPixelCount, Color);
       return;
    }
 }
@@ -260,7 +260,7 @@ void DrawHorizontalRun(char far **ScreenPtr, int XAdvance,
    int i;
    char far *WorkingScreenPtr = *ScreenPtr;
 
-   for (i=0; i&ltRunLength; i++)
+   for (i=0; i&lt;RunLength; i++)
    {
       *WorkingScreenPtr = Color;
       WorkingScreenPtr += XAdvance;
@@ -277,7 +277,7 @@ void DrawVerticalRun(char far **ScreenPtr, int XAdvance,
    int i;
    char far *WorkingScreenPtr = *ScreenPtr;
 
-   for (i=0; i&ltRunLength; i++)
+   for (i=0; i&lt;RunLength; i++)
    {
       *WorkingScreenPtr = Color;
       WorkingScreenPtr += SCREEN_WIDTH;

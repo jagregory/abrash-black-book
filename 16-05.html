@@ -139,14 +139,14 @@ jumping.
                  .code
   
  Test1           macro   x,y             ;9 or 10 bytes
- Addr&ampx:         mov     di,[bp+y]       ;3 or 4 bytes
+ Addr&amp;x:         mov     di,[bp+y]       ;3 or 4 bytes
                  adc     di,di
                  or      ax,si
                  add     al,[di]
                  endm
   
  Test2           macro   x,y              ;7 or 8 bytes
- Addr&ampx:         mov     di,[bp+y]        ;3 or 4 bytes
+ Addr&amp;x:         mov     di,[bp+y]        ;3 or 4 bytes
                  adc     di,di
                  add     ah,[di]
                  endm
@@ -264,7 +264,7 @@ jumping.
   
                  .data
  Address         macro   X
-                 dw      Addr&ampX
+                 dw      Addr&amp;X
                  endm
   
  LoopEntry       label word

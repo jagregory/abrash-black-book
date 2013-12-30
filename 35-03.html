@@ -86,7 +86,7 @@ unsigned int Y0;     /* (0,0) at the upper left of the screen */
 
    /* Generate a mask with a 1 bit in the pixel&rsquo;s position within the
       screen byte */
-   PixelMask = 0x80 &gt;&gt; ( X0 &amp 0x07 );
+   PixelMask = 0x80 &gt;&gt; ( X0 &amp; 0x07 );
 
    /* Set up the Graphics Controller&rsquo;s Bit Mask register to allow
       only the bit corresponding to the pixel being drawn to
@@ -124,7 +124,7 @@ int XDirection;               /* 1 if line is drawn left to right,
    while ( DeltaX&mdash; ) {
       /* See if it&rsquo;s time to advance the Y coordinate */
       if ( ErrorTerm &gt;= 0 ) {
-         /* Advance the Y coordinate &amp adjust the error term
+         /* Advance the Y coordinate &amp; adjust the error term
             back down */
          Y0++;
          ErrorTerm += DeltaYx2MinusDeltaXx2;
@@ -159,7 +159,7 @@ int XDirection;               /* 1 if line is drawn left to right,
    while ( DeltaY&mdash; ) {
       /* See if it&rsquo;s time to advance the X coordinate */
       if ( ErrorTerm &gt;= 0 ) {
-         /* Advance the X coordinate &amp adjust the error term
+         /* Advance the X coordinate &amp; adjust the error term
             back down */
          X0 += XDirection;
          ErrorTerm += DeltaXx2MinusDeltaYx2;

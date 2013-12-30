@@ -66,8 +66,8 @@ void DrawPObject(PObject * ObjectToXform)
          must be the first and second entries in the polgyon's vertex list.
          Note that the second point is also an active polygon vertex */
       VertNumsPtr = FacePtr-&gt;VertNums;
-      NormalEndpoint = &ampObjectToXform-&gt;XformedVertexList[*VertNumsPtr++];
-      NormalStartpoint = &ampObjectToXform-&gt;XformedVertexList[*VertNumsPtr];
+      NormalEndpoint = &amp;ObjectToXform-&gt;XformedVertexList[*VertNumsPtr++];
+      NormalStartpoint = &amp;ObjectToXform-&gt;XformedVertexList[*VertNumsPtr];
       /* Copy over the face's vertices from the vertex list */
       NumVertices = FacePtr-&gt;NumVerts;
       for (j=0; j&lt;NumVertices; j++)
@@ -118,14 +118,14 @@ void DrawPObject(PObject * ObjectToXform)
          } else {
             /* Handle shading */
             /* Do ambient shading, if enabled */
-            if (AmbientOn &amp&amp (FacePtr-&gt;ShadingType &amp AMBIENT-SHADING)) {
+            if (AmbientOn &amp;&amp; (FacePtr-&gt;ShadingType &amp; AMBIENT-SHADING)) {
                /* Use the ambient shading component */
                IntensityTemp = AmbientIntensity;
             } else {
                SET-INTENSITY(IntensityTemp, 0, 0, 0);
             }
             /* Do diffuse shading, if enabled */
-            if (FacePtr-&gt;ShadingType &amp DIFFUSE-SHADING) {
+            if (FacePtr-&gt;ShadingType &amp; DIFFUSE-SHADING) {
                /* Calculate the unit normal for this polygon, for use in dot
                   products */
                UnitNormal.X = NormalEndpoint-&gt;X - NormalStartpoint-&gt;X;
@@ -155,12 +155,12 @@ void DrawPObject(PObject * ObjectToXform)
             }
             /* Convert the drawing color to the desired fraction of the
                brightest possible color */
-            IntensityAdjustColor(&ampColorTemp, &ampFacePtr-&gt;FullColor,
-                  &ampIntensityTemp);
+            IntensityAdjustColor(&amp;ColorTemp, &amp;FacePtr-&gt;FullColor,
+                  &amp;IntensityTemp);
             /* Draw with the cumulative shading, converting from the general
                color representation to the best-match color index */
             DRAW-POLYGON(Vertices, NumVertices,
-                  ModelColorToColorIndex(&ampColorTemp), 0, 0);
+                  ModelColorToColorIndex(&amp;ColorTemp), 0, 0);
          }
       }
    }

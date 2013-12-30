@@ -48,8 +48,8 @@
 #include &ldquo;llist.h&rdquo;
 struct LinkNode *DeleteNodeAfter(struct LinkNode *NodeToDeleteAfter)
 {
-   NodeToDeleteAfter-&gtNextNode =
-         NodeToDeleteAfter-&gtNextNode-&gtNextNode;
+   NodeToDeleteAfter-&gt;NextNode =
+         NodeToDeleteAfter-&gt;NextNode-&gt;NextNode;
    return(NodeToDeleteAfter);
 }
 </PRE>
@@ -88,10 +88,10 @@ struct LinkNode *DeleteNodeAfter(struct LinkNode **HeadOfListPtr,
    /* Handle specially if the node to delete after is actually the
       head of the list (delete the first element in the list) */
    if (NodeToDeleteAfter == (struct LinkNode *)HeadOfListPtr) {
-      *HeadOfListPtr = (*HeadOfListPtr)-&gtNextNode;
+      *HeadOfListPtr = (*HeadOfListPtr)-&gt;NextNode;
    } else {
-      NodeToDeleteAfter-&gtNextNode =
-            NodeToDeleteAfter-&gtNextNode-&gtNextNode;
+      NodeToDeleteAfter-&gt;NextNode =
+            NodeToDeleteAfter-&gt;NextNode-&gt;NextNode;
    }
    return(NodeToDeleteAfter);
 }
@@ -118,22 +118,22 @@ struct LinkNode *DeleteNodeAfter(struct LinkNode **HeadOfListPtr,
     preceding that node (to facilitate insertion and deletion), or a
     NULL pointer if no such value was found. Assumes the list is
     terminated with a tail node pointing to itself as the next node. */
-#include &ltstdio.h&gt
+#include &lt;stdio.h&gt;
 #include &ldquo;llist.h&rdquo;
 struct LinkNode *FindNodeBeforeValueNotLess(
    struct LinkNode *HeadOfListNode, int SearchValue)
 {
    struct LinkNode *NodePtr = HeadOfListNode;
 
-   while ( (NodePtr-&gtNextNode-&gtNextNode != NodePtr-&gtNextNode) &amp&amp
-         (NodePtr-&gtNextNode-&gtValue &lt SearchValue) )
-      NodePtr = NodePtr-&gtNextNode;
+   while ( (NodePtr-&gt;NextNode-&gt;NextNode != NodePtr-&gt;NextNode) &amp;&amp;
+         (NodePtr-&gt;NextNode-&gt;Value &lt; SearchValue) )
+      NodePtr = NodePtr-&gt;NextNode;
 
-   if (NodePtr-&gtNextNode-&gtNextNode == NodePtr-&gtNextNode)
+   if (NodePtr-&gt;NextNode-&gt;NextNode == NodePtr-&gt;NextNode)
       return(NULL);     /* we found the sentinel; failed search */
    else
       return(NodePtr);  /* success; return pointer to node preceding
-                           node that was &gt= */
+                           node that was &gt;= */
 }
 </PRE>
 <!-- END CODE //-->

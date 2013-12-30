@@ -48,10 +48,10 @@
 <P>Second, when performance matters, never have your code perform the same calculation more than once. This sounds obvious, but it&rsquo;s astonishing how often it&rsquo;s ignored. For example, consider this snippet of code:</P>
 <!-- CODE //-->
 <PRE>
-for (i=0; i&ltRunLength; i++)
+for (i=0; i&lt;RunLength; i++)
 {
    *WorkingScreenPtr = Color;
-   if (XDelta &gt 0)
+   if (XDelta &gt; 0)
    {
       WorkingScreenPtr++;
    }
@@ -67,16 +67,16 @@ for (i=0; i&ltRunLength; i++)
 </P>
 <!-- CODE //-->
 <PRE>
-if (XDelta &gt 0)
+if (XDelta &gt; 0)
 {
-   for (i=0; i&ltRunLength; i++)
+   for (i=0; i&lt;RunLength; i++)
    {
       *WorkingScreenPtr++ = Color;
    }
 }
 else
 {
-   for (i=0; i&ltRunLength; i++)
+   for (i=0; i&lt;RunLength; i++)
    {
       *WorkingScreenPtr-- = Color;
    }

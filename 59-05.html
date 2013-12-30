@@ -53,10 +53,10 @@
 // Sample program to exercise and time the performance of
 // implementations of WalkTree().
 // Tested with 32-bit Visual C++ 1.10 under Windows NT.
-#include &ltstdio.h&gt
-#include &ltconio.h&gt
-#include &ltstdlib.h&gt
-#include &lttime.h&gt
+#include &lt;stdio.h&gt;
+#include &lt;conio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
 #include &ldquo;tree.h&rdquo;
 long VisitCount = 0;
 void main(void);
@@ -68,12 +68,12 @@ void main()
    int i;
    long StartTime;
    // Build a sample tree
-   BuildTree(&ampRootNode, 14);
+   BuildTree(&amp;RootNode, 14);
    // Walk the tree 1000 times and see how long it takes
    StartTime = time(NULL);
-   for (i=0; i&lt1000; i++)
+   for (i=0; i&lt;1000; i++)
    {
-      WalkTree(&ampRootNode);
+      WalkTree(&amp;RootNode);
    }
    printf(&ldquo;Seconds elapsed: %ld\n&rdquo;,
            time(NULL) - StartTime);
@@ -87,25 +87,25 @@ void BuildTree(NODE *pNode, int RemainingDepth)
 {
    if (RemainingDepth == 0)
    {
-      pNode-&gtpLeftChild = NULL;
-      pNode-&gtpRightChild = NULL;
+      pNode-&gt;pLeftChild = NULL;
+      pNode-&gt;pRightChild = NULL;
    }
    else
    {
-      pNode-&gtpLeftChild = malloc(sizeof(NODE));
-      if (pNode-&gtpLeftChild == NULL)
+      pNode-&gt;pLeftChild = malloc(sizeof(NODE));
+      if (pNode-&gt;pLeftChild == NULL)
       {
          printf(&ldquo;Out of memory\n&rdquo;);
          exit(1);
       }
-      pNode-&gtpRightChild = malloc(sizeof(NODE));
-      if (pNode-&gtpRightChild == NULL)
+      pNode-&gt;pRightChild = malloc(sizeof(NODE));
+      if (pNode-&gt;pRightChild == NULL)
       {
          printf(&ldquo;Out of memory\n&rdquo;);
          exit(1);
       }
-      BuildTree(pNode-&gtpLeftChild, RemainingDepth - 1);
-      BuildTree(pNode-&gtpRightChild, RemainingDepth - 1);
+      BuildTree(pNode-&gt;pLeftChild, RemainingDepth - 1);
+      BuildTree(pNode-&gt;pRightChild, RemainingDepth - 1);
    }
 }
 //

@@ -44,10 +44,10 @@ top portion of the screen while displaying non-page flipped
 information in the split screen at the bottom of the screen.
 Compiled with Borland C++ in C compilation mode. */
 
-#include &ltstdio.h&gt
-#include &ltconio.h&gt
-#include &ltdos.h&gt
-#include &ltmath.h&gt
+#include &lt;stdio.h&gt;
+#include &lt;conio.h&gt;
+#include &lt;dos.h&gt;
+#include &lt;math.h&gt;
 
 #define SCREEN-SEG         0xA000
 #define SCREEN-PIXWIDTH    640   /* in pixels */
@@ -141,7 +141,7 @@ image BouncerRotation4 = {3, 20, -BouncerRotation4};
 /* Initial settings for bouncing object. Only 2 rotations are needed
    because the object moves 4 pixels horizontally at a time */
 bouncer Bouncer = {156,60,20,20,4,4,156,156,60,60,BOUNCER-COLOR,
-   &ampBouncerRotation0,NULL,NULL,NULL,&ampBouncerRotation4,NULL,NULL,NULL};
+   &amp;BouncerRotation0,NULL,NULL,NULL,&amp;BouncerRotation4,NULL,NULL,NULL};
 unsigned int PageStartOffsets[2] =
    {PAGE0-START-OFFSET,PAGE1-START-OFFSET};
 unsigned int BounceCount;
@@ -151,7 +151,7 @@ void main() {
    union REGS regset;
 
    regset.x.ax = 0x0012; /* set display to 640x480 16-color mode */
-   int86(0x10, &ampregset, &ampregset);
+   int86(0x10, &amp;regset, &amp;regset);
    SetBIOS8x8Font();    /* set the pointer to the BIOS 8x8 font */
    EnableSplitScreen(); /* turn on the split screen */
 
@@ -159,7 +159,7 @@ void main() {
    ShowPage(PageStartOffsets[DisplayedPage = 0]);
 
    /* Clear both pages to background and draw bumpers in each page */
-   for (i=0; i&lt2; i++) {
+   for (i=0; i&lt;2; i++) {
       DrawRect(0,0,SCREEN-PIXWIDTH-1,NONSPLIT-LINES-1,BACK-COLOR,
             PageStartOffsets[i],SCREEN-SEG);
       DrawBumperList(Bumpers,NUM-BUMPERS,PageStartOffsets[i]);
@@ -170,7 +170,7 @@ void main() {
    ShowBounceCount();   /* put up the initial zero count */
 
    /* Draw the bouncing object at its initial location */
-   DrawImage(Bouncer.LeftX,Bouncer.TopY,&ampBouncer.Rotation0,
+   DrawImage(Bouncer.LeftX,Bouncer.TopY,&amp;Bouncer.Rotation0,
          Bouncer.Color,PageStartOffsets[DisplayedPage],SCREEN-SEG);
 
    /* Move the object, draw it in the nondisplayed page, and flip the
@@ -185,9 +185,9 @@ void main() {
             Bouncer.CurrentY[NonDisplayedPage]+Bouncer.Height-1,
             BACK-COLOR,PageStartOffsets[NonDisplayedPage],SCREEN-SEG);
       /* Move the bouncer */
-      MoveBouncer(&ampBouncer, Bumpers, NUM-BUMPERS);
+      MoveBouncer(&amp;Bouncer, Bumpers, NUM-BUMPERS);
       /* Draw at the new location in the nondisplayed page */
-      DrawImage(Bouncer.LeftX,Bouncer.TopY,&ampBouncer.Rotation0,
+      DrawImage(Bouncer.LeftX,Bouncer.TopY,&amp;Bouncer.Rotation0,
             Bouncer.Color,PageStartOffsets[NonDisplayedPage],
             SCREEN-SEG);
       /* Remember where the bouncer is in the nondisplayed page */
@@ -220,7 +220,7 @@ void main() {
 
    /* Restore text mode and done */
    regset.x.ax = 0x0003;
-   int86(0x10, &ampregset, &ampregset);
+   int86(0x10, &amp;regset, &amp;regset);
 }
 
 /* Draws the specified list of bumpers into the specified page */
@@ -229,9 +229,9 @@ void DrawBumperList(bumper * Bumpers, int NumBumpers,
 {
    int i;
 
-   for (i=0; i&ltNumBumpers; i++,Bumpers++) {
-      DrawRect(Bumpers-&gtLeftX,Bumpers-&gtTopY,Bumpers-&gtRightX,
-            Bumpers-&gtBottomY,Bumpers-&gtColor,PageStartOffset,
+   for (i=0; i&lt;NumBumpers; i++,Bumpers++) {
+      DrawRect(Bumpers-&gt;LeftX,Bumpers-&gt;TopY,Bumpers-&gt;RightX,
+            Bumpers-&gt;BottomY,Bumpers-&gt;Color,PageStartOffset,
             SCREEN-SEG);
    }
 }
@@ -271,13 +271,13 @@ void DrawSplitScreen() {
    Overflow register, and bit 9 is in the Maximum Scan Line reg) */
 void EnableSplitScreen() {
    outp(CRTC-INDEX, LINE-COMPARE);
-   outp(CRTC-DATA, (SPLIT-START-LINE - 1) &amp 0xFF);
+   outp(CRTC-DATA, (SPLIT-START-LINE - 1) &amp; 0xFF);
    outp(CRTC-INDEX, OVERFLOW);
-   outp(CRTC-DATA, (((((SPLIT-START-LINE - 1) &amp 0x100) &gt&gt 8) &lt&lt 4) |
-         (inp(CRTC-DATA) &amp ~0x10)));
+   outp(CRTC-DATA, (((((SPLIT-START-LINE - 1) &amp; 0x100) &gt;&gt; 8) &lt;&lt; 4) |
+         (inp(CRTC-DATA) &amp; ~0x10)));
    outp(CRTC-INDEX, MAX-SCAN);
-   outp(CRTC-DATA, (((((SPLIT-START-LINE - 1) &amp 0x200) &gt&gt 9) &lt&lt 6) |
-         (inp(CRTC-DATA) &amp ~0x40)));
+   outp(CRTC-DATA, (((((SPLIT-START-LINE - 1) &amp; 0x200) &gt;&gt; 9) &lt;&lt; 6) |
+         (inp(CRTC-DATA) &amp; ~0x40)));
 }
 
 /* Moves the bouncer, bouncing if bumpers are hit */
@@ -285,37 +285,37 @@ void MoveBouncer(bouncer *Bouncer, bumper *BumperPtr, int NumBumpers) {
    int NewLeftX, NewTopY, NewRightX, NewBottomY, i;
 
    /* Move to new location, bouncing if necessary */
-   NewLeftX = Bouncer-&gtLeftX + Bouncer-&gtDirX;   /* new coords */
-   NewTopY = Bouncer-&gtTopY + Bouncer-&gtDirY;
-   NewRightX = NewLeftX + Bouncer-&gtWidth - 1;
-   NewBottomY = NewTopY + Bouncer-&gtHeight - 1;
+   NewLeftX = Bouncer-&gt;LeftX + Bouncer-&gt;DirX;   /* new coords */
+   NewTopY = Bouncer-&gt;TopY + Bouncer-&gt;DirY;
+   NewRightX = NewLeftX + Bouncer-&gt;Width - 1;
+   NewBottomY = NewTopY + Bouncer-&gt;Height - 1;
    /* Compare the new location to all bumpers, checking for bounce */
-   for (i=0; i&ltNumBumpers; i++,BumperPtr++) {
+   for (i=0; i&lt;NumBumpers; i++,BumperPtr++) {
       /* If moving puts the bouncer inside this bumper, bounce */
-      if (  (NewLeftX &lt= BumperPtr-&gtRightX) &amp&amp
-            (NewRightX &gt= BumperPtr-&gtLeftX) &amp&amp
-            (NewTopY &lt= BumperPtr-&gtBottomY) &amp&amp
-            (NewBottomY &gt= BumperPtr-&gtTopY) ) {
+      if (  (NewLeftX &lt;= BumperPtr-&gt;RightX) &amp;&amp;
+            (NewRightX &gt;= BumperPtr-&gt;LeftX) &amp;&amp;
+            (NewTopY &lt;= BumperPtr-&gt;BottomY) &amp;&amp;
+            (NewBottomY &gt;= BumperPtr-&gt;TopY) ) {
          /* The bouncer has tried to move into this bumper; figure
             out which edge(s) it crossed, and bounce accordingly */
-         if (((Bouncer-&gtLeftX &gt BumperPtr-&gtRightX) &amp&amp
-               (NewLeftX &lt= BumperPtr-&gtRightX)) ||
-               (((Bouncer-&gtLeftX + Bouncer-&gtWidth - 1) &lt
-               BumperPtr-&gtLeftX) &amp&amp
-               (NewRightX &gt= BumperPtr-&gtLeftX))) {
-            Bouncer-&gtDirX = -Bouncer-&gtDirX;  /* bounce horizontally */
-            NewLeftX = Bouncer-&gtLeftX + Bouncer-&gtDirX;
+         if (((Bouncer-&gt;LeftX &gt; BumperPtr-&gt;RightX) &amp;&amp;
+               (NewLeftX &lt;= BumperPtr-&gt;RightX)) ||
+               (((Bouncer-&gt;LeftX + Bouncer-&gt;Width - 1) &lt;
+               BumperPtr-&gt;LeftX) &amp;&amp;
+               (NewRightX &gt;= BumperPtr-&gt;LeftX))) {
+            Bouncer-&gt;DirX = -Bouncer-&gt;DirX;  /* bounce horizontally */
+            NewLeftX = Bouncer-&gt;LeftX + Bouncer-&gt;DirX;
          }
-         if (((Bouncer-&gtTopY &gt BumperPtr-&gtBottomY) &amp&amp
-               (NewTopY &lt= BumperPtr-&gtBottomY)) ||
-               (((Bouncer-&gtTopY + Bouncer-&gtHeight - 1) &lt
-               BumperPtr-&gtTopY) &amp&amp
-               (NewBottomY &gt= BumperPtr-&gtTopY))) {
-            Bouncer-&gtDirY = -Bouncer-&gtDirY; /* bounce vertically */
-            NewTopY = Bouncer-&gtTopY + Bouncer-&gtDirY;
+         if (((Bouncer-&gt;TopY &gt; BumperPtr-&gt;BottomY) &amp;&amp;
+               (NewTopY &lt;= BumperPtr-&gt;BottomY)) ||
+               (((Bouncer-&gt;TopY + Bouncer-&gt;Height - 1) &lt;
+               BumperPtr-&gt;TopY) &amp;&amp;
+               (NewBottomY &gt;= BumperPtr-&gt;TopY))) {
+            Bouncer-&gt;DirY = -Bouncer-&gt;DirY; /* bounce vertically */
+            NewTopY = Bouncer-&gt;TopY + Bouncer-&gt;DirY;
          }
          /* Update the bounce count display; turn over at 10000 */
-         if (++BounceCount &gt= 10000) {
+         if (++BounceCount &gt;= 10000) {
             TextUp(&ldquo;0    &rdquo;,344,64,SPLIT-START-OFFSET,SCREEN-SEG);
             BounceCount = 0;
          } else {
@@ -323,8 +323,8 @@ void MoveBouncer(bouncer *Bouncer, bumper *BumperPtr, int NumBumpers) {
          }
       }
    }
-   Bouncer-&gtLeftX = NewLeftX; /* set the final new coordinates */
-   Bouncer-&gtTopY = NewTopY;
+   Bouncer-&gt;LeftX = NewLeftX; /* set the final new coordinates */
+   Bouncer-&gt;TopY = NewTopY;
 }
 </PRE>
 <!-- END CODE //-->

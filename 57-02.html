@@ -57,21 +57,21 @@ void ScanOutLine(EdgeScan * LeftEdge, EdgeScan * RightEdge)
 {
    Fixedpoint SourceX;
    Fixedpoint SourceY;
-   int DestX = LeftEdge-&gtDestX;
-   int DestXMax = RightEdge-&gtDestX;
+   int DestX = LeftEdge-&gt;DestX;
+   int DestXMax = RightEdge-&gt;DestX;
    Fixedpoint DestWidth;
    Fixedpoint SourceStepX, SourceStepY;
 
    /* Nothing to do if fully X clipped */
-   if ((DestXMax &lt= ClipMinX) || (DestX &gt= ClipMaxX)) {
+   if ((DestXMax &lt;= ClipMinX) || (DestX &gt;= ClipMaxX)) {
       return;
    }
 
-   if ((DestXMax - DestX) &lt= 0) {
+   if ((DestXMax - DestX) &lt;= 0) {
       return;  /* nothing to draw */
    }
-   SourceX = LeftEdge-&gtSourceX;
-   SourceY = LeftEdge-&gtSourceY;
+   SourceX = LeftEdge-&gt;SourceX;
+   SourceY = LeftEdge-&gt;SourceY;
 
    /* Width of destination scan line, for scaling. Note: because this is an
       integer-based scaling, it can have a total error of as much as nearly
@@ -84,30 +84,30 @@ void ScanOutLine(EdgeScan * LeftEdge, EdgeScan * RightEdge)
 
    /* Calculate source steps that correspond to each dest X step (across
       the scan line) */
-   SourceStepX = FixedDiv(RightEdge-&gtSourceX - SourceX, DestWidth);
-   SourceStepY = FixedDiv(RightEdge-&gtSourceY - SourceY, DestWidth);
+   SourceStepX = FixedDiv(RightEdge-&gt;SourceX - SourceX, DestWidth);
+   SourceStepY = FixedDiv(RightEdge-&gt;SourceY - SourceY, DestWidth);
 
    /* Advance 1/2 step in the stepping direction, to space scanned pixels
       evenly between the left and right edges. (There&rsquo;s a slight inaccuracy
       in dividing negative numbers by 2 by shifting rather than dividing,
       but the inaccuracy is in the least significant bit, and we&rsquo;ll just
       live with it.) */
-   SourceX += SourceStepX &gt&gt 1;
-   SourceY += SourceStepY &gt&gt 1;
+   SourceX += SourceStepX &gt;&gt; 1;
+   SourceY += SourceStepY &gt;&gt; 1;
 
    /* Clip right edge if necssary */
-   if (DestXMax &gt ClipMaxX)
+   if (DestXMax &gt; ClipMaxX)
       DestXMax = ClipMaxX;
 
    /* Clip left edge if necssary */
-   if (DestX &lt ClipMinX) {
+   if (DestX &lt; ClipMinX) {
       SourceX += FixedMul(SourceStepX, INT-TO-FIXED(ClipMinX - DestX));
       SourceY += FixedMul(SourceStepY, INT-TO-FIXED(ClipMinX - DestX));
       DestX = ClipMinX;
    }
    /* Scan across the destination scan line, updating the source image
       position accordingly */
-   for (; DestX&ltDestXMax; DestX++) {
+   for (; DestX&lt;DestXMax; DestX++) {
       /* Get the currently mapped pixel out of the image and draw it to
          the screen */
       WritePixelX(DestX, DestY,

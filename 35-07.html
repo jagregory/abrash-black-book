@@ -156,7 +156,7 @@ endif
 ; in this byte when pixel mask wraps.
 ;
 MoveXCoord:
-        add     bp,bx                   ;increment error term &amp keep same
+        add     bp,bx                   ;increment error term &amp; keep same
 if MOVE_LEFT
         rol     ah,1                    ;move pixel mask 1 pixel to the left
 else
@@ -218,7 +218,7 @@ LINE2   macro   MOVE_LEFT
         sub     bx,si                  ;DeltaX * 2 - DeltaY * 2 (used in loop)
         add     si,bx                  ;DeltaX * 2 (used in loop)
 ;
-; Set up initial bit mask &amp write initial pixel.
+; Set up initial bit mask &amp; write initial pixel.
 ;
         out     dx,al
         xchg    byte ptr [di],ah
@@ -232,7 +232,7 @@ LineLoop:
 ;
         and     bp,bp                  ;see if error term is negative
         jns     ETermAction            ;no, advance X coordinate
-        add     bp,si                  ;increment error term &amp keep same
+        add     bp,si                  ;increment error term &amp; keep same
         jmp     short MoveYCoord       ; X coordinate
 ETermAction:
 ;

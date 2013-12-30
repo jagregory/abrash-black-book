@@ -45,10 +45,10 @@
    the direction of increasingly negative Z. A right-handed
    coordinate system is used throughout.
    Tested with Borland C++ in the small model. */
-#include &ltconio.h&gt
-#include &ltstdio.h&gt
-#include &ltdos.h&gt
-#include &ltmath.h&gt
+#include &lt;conio.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;dos.h&gt;
+#include &lt;math.h&gt;
 #include &ldquo;polygon.h&rdquo;
 void main(void);
 
@@ -125,7 +125,7 @@ void main() {
       /* Flip to display the page into which we just drew */
       ShowPage(PageStartOffsets[DisplayedPage = NonDisplayedPage]);
       /* Rotate 6 degrees farther around the Y axis */
-      if ((Rotation += (M_PI/30.0)) &gt= (M_PI*2)) Rotation -= M_PI*2;
+      if ((Rotation += (M_PI/30.0)) &gt;= (M_PI*2)) Rotation -= M_PI*2;
       if (kbhit()) {
          switch (getch()) {
             case 0x1B:     /* Esc to exit */
@@ -134,7 +134,7 @@ void main() {
                PolyWorldXform[2][3] -= 3.0; break;
             case &lsquo;T&rsquo;:      /* towards (+Z). Don&rsquo;t allow to get too */
             case &lsquo;t&rsquo;:      /* close, so Z clipping isn&rsquo;t needed */
-               if (PolyWorldXform[2][3] &lt -40.0)
+               if (PolyWorldXform[2][3] &lt; -40.0)
                      PolyWorldXform[2][3] += 3.0; break;
             case 0:     /* extended code */
                switch (getch()) {
@@ -157,7 +157,7 @@ void main() {
    } while (!Done);
    /* Return to text mode and exit */
    regset.x.ax = 0x0003;   /* AL = 3 selects 80x25 text mode */
-   int86(0x10, &ampregset, &ampregset);
+   int86(0x10, &amp;regset, &amp;regset);
 }
 </PRE>
 <!-- END CODE //-->

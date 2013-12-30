@@ -45,7 +45,7 @@
 ; High word of EAX, ECX, EDX, and ESI destroyed.
 ; All cycle counts assume 32-bit protected mode.
 ; Assumes buffer starts on a dword boundary, is a dword multiple
-; in length, and length &gt 0.
+; in length, and length &gt; 0.
 
         sub     eax,eax         ;initialize the checksum
         shr     ecx,1           ;we&rsquo;ll do two words per loop
@@ -82,7 +82,7 @@ ckloopend:
 ; High word of EAX, EBX, ECX, EDX, and ESI destroyed.
 ; All cycle counts assume 32-bit protected mode.
 ; Assumes buffer starts on a dword boundary, is a dword multiple
-;  in length, and length &gt 0.
+;  in length, and length &gt; 0.
 
         sub     eax,eax          ;initialize the checksum
         shr     ecx,2            ;we&rsquo;ll do two dwords per loop

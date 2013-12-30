@@ -46,7 +46,7 @@
    no match is found.
    Tested with Borland C++ in C mode and the small model. */
 
-#include &ltstdio.h&gt
+#include &lt;stdio.h&gt;
 
 unsigned char * FindString(unsigned char * BufferPtr,
    unsigned int BufferLength, unsigned char * PatternPtr,
@@ -57,7 +57,7 @@ unsigned char * FindString(unsigned char * BufferPtr,
    int i;
 
    /* Reject if the buffer is too small */
-   if (BufferLength &lt PatternLength) return(NULL);
+   if (BufferLength &lt; PatternLength) return(NULL);
 
    /* Return an instant match if the pattern is 0-length */
    if (PatternLength == 0) return(BufferPtr);
@@ -66,7 +66,7 @@ unsigned char * FindString(unsigned char * BufferPtr,
       mismatches for every possible byte value */
    /* Initialize all skips to the pattern length; this is the skip
       distance for bytes that don&rsquo;t appear in the pattern */
-   for (i = 0; i &lt 256; i++) SkipTable[i] = PatternLength;
+   for (i = 0; i &lt; 256; i++) SkipTable[i] = PatternLength;
    /*Set the skip values for the bytes that do appear in the pattern
      to the distance from the byte location to the end of the
      pattern. When there are multiple instances of the same byte,
@@ -75,7 +75,7 @@ unsigned char * FindString(unsigned char * BufferPtr,
      if we get that value for a mismatch, we know for sure that the
      right end of the pattern has already passed the mismatch
      location, so this is not a relevant byte for skipping purposes */
-   for (i = 0; i &lt (PatternLength - 1); i++)
+   for (i = 0; i &lt; (PatternLength - 1); i++)
       SkipTable[PatternPtr[i]] = PatternLength - i - 1;
 
    /* Point to rightmost byte of the pattern */
@@ -110,7 +110,7 @@ unsigned char * FindString(unsigned char * BufferPtr,
             just advance by 1 to the next potential match; otherwise,
             skip ahead from the mismatch location by the skip distance
             for the mismatch character */
-      if (SkipTable[*WorkingBufferPtr] &lt= DistanceMatched)
+      if (SkipTable[*WorkingBufferPtr] &lt;= DistanceMatched)
       Skip = 1;   /* skip doesn&rsquo;t do any good, advance by 1 */
       else
          /* Use skip value, accounting for distance covered by the
@@ -118,7 +118,7 @@ unsigned char * FindString(unsigned char * BufferPtr,
          Skip = SkipTable[*WorkingBufferPtr] - DistanceMatched;
       /* If skipping ahead would exhaust the buffer, we&rsquo;re done
          without a match */
-      if (Skip &gt= BufferLength) return(NULL);
+      if (Skip &gt;= BufferLength) return(NULL);
       /* Skip ahead and perform the next comparison */
       BufferLength -= Skip;
       BufferPtr += Skip;
@@ -129,13 +129,13 @@ unsigned char * FindString(unsigned char * BufferPtr,
 <P><B>LISTING 14.2 L14-2.C</B></P>
 <!-- CODE //-->
 <PRE>
-/* Program to exercise buffer-search routines in Listings 14.1 &amp 14.3.
+/* Program to exercise buffer-search routines in Listings 14.1 &amp; 14.3.
    (Must be modified to put copy of pattern as sentinel at end of the
    search buffer in order to be used with Listing 14.4.) */
 
-#include &ltstdio.h&gt
-#include &ltstring.h&gt
-#include &ltfcntl.h&gt
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;fcntl.h&gt;
 
 #define DISPLAY_LENGTH  40
 #define BUFFER_SIZE     0x8000

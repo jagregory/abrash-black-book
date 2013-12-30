@@ -62,12 +62,12 @@ void Set640x400()
 
    /* First, set to standard 640x350 mode (mode 10h) */
    regset.x.ax = 0x0010;
-   int86(0x10, &ampregset, &ampregset);
+   int86(0x10, &amp;regset, &amp;regset);
 
-   /* Modify the sync polarity bits (bits 7 &amp 6) of the
+   /* Modify the sync polarity bits (bits 7 &amp; 6) of the
       Miscellaneous Output register (readable at 0x3CC, writable at
       0x3C2) to select the 400-scan-line vertical scanning rate */
-   outp(0x3C2, ((inp(0x3CC) &amp 0x3F) | 0x40));
+   outp(0x3C2, ((inp(0x3CC) &amp; 0x3F) | 0x40));
 
    /* Now, tweak the registers needed to convert the vertical
       timings from 350 to 400 scan lines */

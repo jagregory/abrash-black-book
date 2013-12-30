@@ -118,7 +118,7 @@ new[5] = (lp1[5] + lp2[5]) &gt;&gt; 1;        // split z
 // draw the point if splitting a leading edge
 if (lp2[1] &gt; lp1[1])
 goto nodraw;
-if ((lp2[1] == lp1[1]) &amp&amp (lp2[0] &lt; lp1[0]))
+if ((lp2[1] == lp1[1]) &amp;&amp; (lp2[0] &lt; lp1[0]))
 goto nodraw;
 
 

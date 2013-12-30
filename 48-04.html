@@ -196,7 +196,7 @@ DoRightEdge:
                                    ; latches)
 CopyLoopBottom:
         add     si,[bp+SourceNextScanOffset] ;point to the start of
-        add     di,[bp+DestNextScanOffset]   ; next source &amp dest lines
+        add     di,[bp+DestNextScanOffset]   ; next source &amp; dest lines
         dec     word ptr [bp+Height]         ;count down scan lines
         jnz     CopyRowsLoop
 CopyDone:

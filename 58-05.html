@@ -43,7 +43,7 @@
 ; rather than a horizontal scanline. Maxed-out 32-bit version.
 ;
 ; At this point:
-;       EAX = sum of integral X &amp Y source pointer advances
+;       EAX = sum of integral X &amp; Y source pointer advances
 ;       ECX = source pointer increment to advance one in Y
 ;       EDX = fractional source texture Y coordinate in lower
 ;             15 bits of DX, fractional source texture X coord
@@ -62,7 +62,7 @@ SCANOFFSET=0
      add   edx,ebp                     ;advance frac Y in DX,
                                        ; frac X in high word of EDX
      adc   esi,eax                     ;advance source pointer by integral
-                                       ; X &amp Y amount, also accounting for
+                                       ; X &amp; Y amount, also accounting for
                                        ; carry from X fractional addition
      mov   [edi+SCANOFFSET],bl         ;set screen pixel
                                        ; (located here to avoid 486

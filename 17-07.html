@@ -46,14 +46,14 @@
    in this implementation.
    Tested with Borland C++. To run, link with Listing 17.2
    in the large model. */
-#include &ltstdlib.h&gt
-#include &ltstdio.h&gt
-#include &ltiostream.h&gt
-#include &ltconio.h&gt
-#include &lttime.h&gt
-#include &ltdos.h&gt
-#include &ltbios.h&gt
-#include &ltmem.h&gt
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;iostream.h&gt;
+#include &lt;conio.h&gt;
+#include &lt;time.h&gt;
+#include &lt;dos.h&gt;
+#include &lt;bios.h&gt;
+#include &lt;mem.h&gt;
 
 #define ON_COLOR  15       // on-cell pixel color
 #define OFF_COLOR 0        // off-cell pixel color
@@ -91,7 +91,7 @@ extern void show_text(int x, int y, char *text);
 unsigned int cellmap_width = 96;
 unsigned int cellmap_height = 96;
 
-/* Width &amp height in pixels of each cell. */
+/* Width &amp; height in pixels of each cell. */
 unsigned int magnifier = 2;
 
 /* Randomizing seed */
@@ -112,7 +112,7 @@ void main()
    // Keep recalculating and redisplaying generations until any key
    // is pressed
    show_text(0, MSG_LINE, &ldquo;Generation: &rdquo;);
-   start_bios_time = _bios_timeofday(_TIME_GETCLOCK, &ampbios_time);
+   start_bios_time = _bios_timeofday(_TIME_GETCLOCK, &amp;bios_time);
    do {
       generation++;
       sprintf(gen_text, &ldquo;%10lu&rdquo;, generation);
@@ -122,7 +122,7 @@ void main()
 #if LIMIT_18_HZ
       // Limit to a maximum of 18.2 frames per second, for visibility
       do {
-         _bios_timeofday(_TIME_GETCLOCK, &ampbios_time);
+         _bios_timeofday(_TIME_GETCLOCK, &amp;bios_time);
       } while (start_bios_time == bios_time);
       start_bios_time = bios_time;
 #endif
@@ -130,8 +130,8 @@ void main()
 
    getch();    // clear keypress
    exit_display_mode();
-   cout &lt&lt &ldquo;Total generations: &rdquo; &lt&lt generation &lt&lt &ldquo;\nSeed: &rdquo; &lt&lt
-         seed &lt&lt &ldquo;\n&rdquo;;
+   cout &lt;&lt; &ldquo;Total generations: &rdquo; &lt;&lt; generation &lt;&lt; &ldquo;\nSeed: &rdquo; &lt;&lt;
+         seed &lt;&lt; &ldquo;\n&rdquo;;
 }
 
 /* cellmap constructor. */
@@ -221,7 +221,7 @@ void cellmap::clear_cell(unsigned int x, unsigned int y)
    else
       yobelow = w;
 
-   *(cell_ptr) &amp= ~0x01;
+   *(cell_ptr) &amp;= ~0x01;
    *(cell_ptr + yoabove + xoleft) -= 2;
    *(cell_ptr + yoabove ) -= 2;
    *(cell_ptr + yoabove + xoright) -= 2;
@@ -238,7 +238,7 @@ int cellmap::cell_state(int x, int y)
    unsigned char *cell_ptr;
 
    cell_ptr = cells + (y * width) + x;
-   return *cell_ptr &amp 0x01;
+   return *cell_ptr &amp; 0x01;
 }
 
 /* Calculates and displays the next generation of current_map */
@@ -254,7 +254,7 @@ void cellmap::next_generation()
 
    // Process all cells in the current cell map
    cell_ptr = temp_cells;     // first cell in cell map
-   for (y=0; y&lth; y++) {      // repeat for each row of cells
+   for (y=0; y&lt;h; y++) {      // repeat for each row of cells
    // Process all cells in the current row of the cell map
       x = 0;
       do {        // repeat for each cell in row
@@ -262,15 +262,15 @@ void cellmap::next_generation()
                   // neighbors as possible
          while (*cell_ptr == 0) {
             cell_ptr++; // advance to the next cell
-            if (++x &gt= w) goto RowDone;
+            if (++x &gt;= w) goto RowDone;
          }
          // Found a cell that&rsquo;s either on or has on-neighbors,
          // so see if its state needs to be changed
-         count = *cell_ptr &gt&gt 1; // # of neighboring on-cells
-         if (*cell_ptr &amp 0x01) {
+         count = *cell_ptr &gt;&gt; 1; // # of neighboring on-cells
+         if (*cell_ptr &amp; 0x01) {
             // Cell is on; turn it off if it doesn&rsquo;t have
             // 2 or 3 neighbors
-            if ((count != 2) &amp&amp (count != 3)) {
+            if ((count != 2) &amp;&amp; (count != 3)) {
                clear_cell(x, y);
                draw_pixel(x, y, OFF_COLOR);
             }
@@ -283,7 +283,7 @@ void cellmap::next_generation()
          }
          // Advance to the next cell
          cell_ptr++; // advance to the next cell byte
-      } while (++x &lt w);
+      } while (++x &lt; w);
 RowDone:
    }
 }
@@ -294,14 +294,14 @@ void cellmap::init()
    unsigned int x, y, init_length;
 
    // Get the seed; seed randomly if 0 entered
-   cout &lt&lt &ldquo;Seed (0 for random seed): &rdquo;;
-   cin &gt&gt seed;
+   cout &lt;&lt; &ldquo;Seed (0 for random seed): &rdquo;;
+   cin &gt;&gt; seed;
    if (seed == 0) seed = (unsigned) time(NULL);
 
    // Randomly initialize the initial cell map to 50% on-pixels
    // (actually generally fewer, because some coordinates will be
    // randomly selected more than once)
-   cout &lt&lt &ldquo;Initializing...&rdquo;;
+   cout &lt;&lt; &ldquo;Initializing...&rdquo;;
    srand(seed);
    init_length = (height * width) / 2;
    do {

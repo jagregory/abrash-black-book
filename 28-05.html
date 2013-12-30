@@ -79,7 +79,7 @@ Startprocnear
      inc  dx
      in   al,dx               ;VGA registers are readable, bless them!
      or   al,00001011b        ;bit 3=1 selects read mode 1, and
-                              ; bits 1 &amp 0=11 selects write mode 3
+                              ; bits 1 &amp; 0=11 selects write mode 3
     jmp   $+2                 ;delay between IN and OUT to same port
     out   dx,al
     dec   dx

@@ -76,20 +76,20 @@
 void WalkBSPTree(NODE *pNode)
 {
    if (WallFacingForward(pNode) {
-      if (pNode-&gtBackChild) {
-         WalkBSPTree(pNode-&gtBackChild);
+      if (pNode-&gt;BackChild) {
+         WalkBSPTree(pNode-&gt;BackChild);
       }
       Draw(pNode);
-      if (pNode-&gtFrontChild) {
-         WalkBSPTree(pNode-&gtFrontChild);
+      if (pNode-&gt;FrontChild) {
+         WalkBSPTree(pNode-&gt;FrontChild);
       }
    } else {
-      if (pNode-&gtFrontChild) {
-         WalkBSPTree(pNode-&gtFrontChild);
+      if (pNode-&gt;FrontChild) {
+         WalkBSPTree(pNode-&gt;FrontChild);
       }
       Draw(pNode);
-      if (pNode-&gtBackChild) {
-         WalkBSPTree(pNode-&gtBackChild);
+      if (pNode-&gt;BackChild) {
+         WalkBSPTree(pNode-&gt;BackChild);
       }
    }
 }

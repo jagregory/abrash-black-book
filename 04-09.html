@@ -59,8 +59,8 @@
 ;
      mov  ax,0a000h
      mov  ds,ax
-     mov  es,ax       ;move to &amp from same segment
-     sub  si,si       ;move to &amp from same offset
+     mov  es,ax       ;move to &amp; from same segment
+     sub  si,si       ;move to &amp; from same offset
      mov  di,si
      mov  cx,800h     ;move 2K words
      cld
@@ -86,8 +86,8 @@
 ; memory.
 ;
      mov  ax,ds
-     mov  es,ax       ;move to &amp from same segment
-     sub  si,si       ;move to &amp from same offset
+     mov  es,ax       ;move to &amp; from same segment
+     sub  si,si       ;move to &amp; from same offset
      mov  di,si
      mov  cx,800h     ;move 2K words
      cld

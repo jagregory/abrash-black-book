@@ -176,7 +176,7 @@ TIMER_COUNT           equ46ch
 MPOPF macro
       local p1, p2
       jmp short p2
-p1:   iret        ;jump to pushed address &amp pop flags
+p1:   iret        ;jump to pushed address &amp; pop flags
 p2:   pushcs      ;construct far return address to
       call p1     ; the next instruction
 endm

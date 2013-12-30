@@ -70,9 +70,9 @@ void InitCellmap( void )
 
   for( i = j = 0; i &lt; WIDTH * HEIGHT; i++ )
     {
-    if( CellMap[ i ] &amp 0x7000 )
+    if( CellMap[ i ] &amp; 0x7000 )
       {
-      ChangeList1[ j++ ] = (short)&ampCellMap[ i ];
+      ChangeList1[ j++ ] = (short)&amp;CellMap[ i ];
       }
     }
 
@@ -87,7 +87,7 @@ void main( void )
   unsigned int seed;
 
   printf( &ldquo;Seed (0 for random seed): &rdquo; );
-  scanf( &ldquo;%d&rdquo;, &ampseed );
+  scanf( &ldquo;%d&rdquo;, &amp;seed );
   if( seed == 0 )  seed = (unsigned) time(NULL);
   srand( seed );
 
@@ -98,7 +98,7 @@ void main( void )
 
   InitCellmap();       // randomly initialize cell map
 
-  _bios_timeofday( _TIME_GETCLOCK, &ampstart_time );
+  _bios_timeofday( _TIME_GETCLOCK, &amp;start_time );
 
   do
     {
@@ -116,7 +116,7 @@ void main( void )
   while( !kbhit() );
   #endif
 
-  _bios_timeofday( _TIME_GETCLOCK, &ampend_time );
+  _bios_timeofday( _TIME_GETCLOCK, &amp;end_time );
   end_time -= start_time;
 
   #ifndef NODRAW
@@ -151,7 +151,7 @@ void enter_display_mode()
    union REGS regset;
 
    regset.x.ax = 0x0013;
-   int86(0x10, &ampregset, &ampregset);
+   int86(0x10, &amp;regset, &amp;regset);
 }
 
 /* Text mode mode-set function. */
@@ -160,7 +160,7 @@ void exit_display_mode()
    union REGS regset;
 
    regset.x.ax = 0x0003;
-   int86(0x10, &ampregset, &ampregset);
+   int86(0x10, &amp;regset, &amp;regset);
 }
 
 /* Text display function. Offsets text to non-graphics area of

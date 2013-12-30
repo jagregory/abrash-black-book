@@ -67,7 +67,7 @@ HLinePtr        dw      ?          ;pointer to list of horz lines
 HLineList ends
 
 Parms   struc
-                dw      2 dup(?)   ;return address &amp pushed BP
+                dw      2 dup(?)   ;return address &amp; pushed BP
 HLineListPtr    dw      ?          ;pointer to HLineList structure
 Color           dw      ?          ;color with which to fill
 Parms   ends
@@ -149,10 +149,10 @@ MaxXNotClipped:
         add     di,dx   ;offset of first rect pixel in display mem
         mov     dx,si   ;XStart
         and     si,0003h    ;look up left-edge plane mask
-        mov     bh,LeftClipPlaneMask[si] ; to clip &amp put in BH
+        mov     bh,LeftClipPlaneMask[si] ; to clip &amp; put in BH
         mov     si,cx
         and     si,0003h           ;look up right-edge plane
-        mov     bl,RightClipPlaneMask[si] ; mask to clip &amp put in BL
+        mov     bl,RightClipPlaneMask[si] ; mask to clip &amp; put in BL
         and     dx,not 011b        ;calculate # of addresses across rect
         sub     cx,dx
         shr     cx,1

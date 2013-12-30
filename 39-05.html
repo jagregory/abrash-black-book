@@ -43,11 +43,11 @@
 ; point at (X2,Y2). If SkipFirst == 1, the point at (X1,Y1) isn&rsquo;t
 ; drawn; if SkipFirst == 0, it is. For each scan line, the pixel
 ; closest to the scanned edge without being to the left of the scanned
-; edge is chosen. Uses an all-integer approach for speed &amp precision.
+; edge is chosen. Uses an all-integer approach for speed &amp; precision.
 ; C near-callable as:
 ;    void ScanEdge(int X1, int Y1, int X2, int Y2, int SetXStart,
 ;     int SkipFirst, struct HLine **EdgePointPtr);
-; Edges must not go bottom to top; that is, Y1 must be &lt= Y2.
+; Edges must not go bottom to top; that is, Y1 must be &lt;= Y2.
 ; Updates the pointer pointed to by EdgePointPtr to point to the next
 ;  free entry in the array of HLine structures.
 
@@ -57,7 +57,7 @@ XEnd            dw     ?           ;X coordinate of rightmost pixel in scan line
 HLine   ends
 
 Parms   struc
-                dw     2 dup(?)    ;return address &amp pushed BP
+                dw     2 dup(?)    ;return address &amp; pushed BP
 X1              dw     ?           ;X start coord of edge
 Y1              dw     ?           ;Y start coord of edge
 X2              dw     ?           ;X end coord of edge
@@ -96,7 +96,7 @@ _ScanEdge   proc
 HLinePtrSet:
         mov   bx,[bp+Y2]
         sub   bx,[bp+Y1]           ;edge height
-        jle   ToScanEdgeExit       ;guard against 0-length &amp horz edges
+        jle   ToScanEdgeExit       ;guard against 0-length &amp; horz edges
         mov   [bp+Height],bx       ;Height = Y2 - Y1
         sub   cx,cx                ;assume ErrorTerm starts at 0 (true if
                                    ; we&rsquo;re moving right as we draw)
@@ -104,8 +104,8 @@ HLinePtrSet:
         mov   ax,[bp+X2]
         sub   ax,[bp+X1]           ;DeltaX = X2 - X1
         jz    IsVertical           ;it&rsquo;s a vertical edge--special case it
-        jns   SetAdvanceAmt        ;DeltaX &gt= 0
-        mov   cx,1                 ;DeltaX &lt 0 (move left as we draw)
+        jns   SetAdvanceAmt        ;DeltaX &gt;= 0
+        mov   cx,1                 ;DeltaX &lt; 0 (move left as we draw)
         sub   cx,bx                ;ErrorTerm = -Height + 1
         neg   dx                   ;AdvanceAmt = -1 (move left)
         neg   ax                   ;Width = abs(DeltaX)

@@ -42,13 +42,13 @@
 <!-- CODE //-->
 <PRE>
  /* Word-counting program incorporating assembly language. Tested
-    with Borland C<SMALL>++</SMALL> in C compilation mode &amp the small model. */
+    with Borland C<SMALL>++</SMALL> in C compilation mode &amp; the small model. */
  
- #include &ltstdio.h&gt
- #include &ltfcntl.h&gt
- #include &ltsys\stat.h&gt
- #include &ltstdlib.h&gt
- #include &ltio.h&gt
+ #include &lt;stdio.h&gt;
+ #include &lt;fcntl.h&gt;
+ #include &lt;sys\stat.h&gt;
+ #include &lt;stdlib.h&gt;
+ #include &lt;io.h&gt;
  
  #define BUFFER_SIZE  0x8000   /* largest chunk of file worked
                                   with at any one time */
@@ -63,7 +63,7 @@
     char *Buffer, CharFlag = 0;
  
     if (argc != 2) {
-       printf(&ldquo;usage: wc &ltfilename&gt\n&rdquo;);
+       printf(&ldquo;usage: wc &lt;filename&gt;\n&rdquo;);
        exit(1);
     }
  
@@ -83,13 +83,13 @@
     }
  
     CharFlag = 0;
-    while (FileSize &gt 0) {
+    while (FileSize &gt; 0) {
        FileSize -= (BlockSize = min(FileSize, BUFFER_SIZE));
        if (read(Handle, Buffer, BlockSize) == -1) {
           printf(&ldquo;Error reading file %s\n&rdquo;, argv[1]);
           exit(1);
        }
-       ScanBuffer(Buffer, BlockSize, &ampCharFlag, &ampWordCount);
+       ScanBuffer(Buffer, BlockSize, &amp;CharFlag, &amp;WordCount);
     }
  
     /* Catch the last word, if any */
@@ -106,14 +106,14 @@
 <PRE>
  ; Assembly subroutine for Listing 16.2. Scans through Buffer, of
  ; length BufferLength, counting words and updating WordCount as
- ; appropriate. BufferLength must be &gt 0. *CharFlag and *WordCount
+ ; appropriate. BufferLength must be &gt; 0. *CharFlag and *WordCount
  ; should equal 0 on the first call. Tested with TASM.
  ; C near-callable as:
  ; void ScanBuffer(char *Buffer, unsigned int BufferLength,
  ; char *CharFlag, unsigned long *WordCount);
  
  parms   struc
-         dw      2 dup(?)        ;pushed return address &amp BP
+         dw      2 dup(?)        ;pushed return address &amp; BP
  Buffer  dw      ?               ;buffer to scan
  BufferLength dw ?               ;length of buffer to scan
  CharFlag dw     ?               ;pointer to flag for state of last
@@ -141,7 +141,7 @@
          mov     di,[bp+BufferLength];get # of bytes to scan
  ScanLoop:
          mov     bh,bl           ;PredCharFlag = CharFlag;
-         lodsb                   ;Ch = *BufferPtr++ &amp 0x7F;
+         lodsb                   ;Ch = *BufferPtr++ &amp; 0x7F;
          and     al,7fh          ;strip high bit for word processors
                                  ; that set it as an internal flag
          mov     bl,1            ;assume this is a char; CharFlag = 1;
@@ -164,7 +164,7 @@
          jz      IsAChar
          sub     bl,bl           ;not a char; CharFlag = 0;
          and     bh,bh
-         jz      ScanLoopBottom  ;if ((!CharFlag) &amp&amp PredCharFlag) {
+         jz      ScanLoopBottom  ;if ((!CharFlag) &amp;&amp; PredCharFlag) {
          add     cx,1            ;    (WordCount)++;
          adc     dx,0            ;}
  IsAChar:

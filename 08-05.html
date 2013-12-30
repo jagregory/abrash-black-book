@@ -47,11 +47,11 @@
    stored in the form of two separate arrays, one for ID numbers and
    one for values. */
 
-#include &ltstdio.h&gt
+#include &lt;stdio.h&gt;
 #ifdef __TURBOC__
-#include &ltalloc.h&gt
+#include &lt;alloc.h&gt;
 #else
-#include &ltmalloc.h&gt
+#include &lt;malloc.h&gt;
 #endif
 
 void main(void);
@@ -82,13 +82,13 @@ void main(void) {
    struct BlockHeader **LastBlockPointer;
 
    printf(&rdquo;ID # for which to find average: &ldquo;);
-   scanf(&rdquo;%d&rdquo;,&ampIDToFind);
+   scanf(&rdquo;%d&rdquo;,&amp;IDToFind);
 
    /* Build an array across 5 blocks, for testing */
    /* Anchor the linked list to BaseArrayBlockPointer */
-   LastBlockPointer = &ampBaseArrayBlockPointer;
+   LastBlockPointer = &amp;BaseArrayBlockPointer;
    /* Create 5 blocks of varying sizes */
-   for (i = 1; i &lt 6; i++) {
+   for (i = 1; i &lt; 6; i++) {
       /* Try to get memory for the next block */
       if ((WorkingBlockPointer =
           (struct BlockHeader *) malloc(sizeof(struct BlockHeader) +
@@ -96,23 +96,23 @@ void main(void) {
          exit(1);
       }
       /* Set the number of data elements in this block */
-      WorkingBlockPointer-&gtBlockCount = i * 10;
+      WorkingBlockPointer-&gt;BlockCount = i * 10;
       /* Link the new block into the chain */
       *LastBlockPointer = WorkingBlockPointer;
       /* Point to the first data field */
       WorkingDataPointer = (int *) ((char *)WorkingBlockPointer +
             sizeof(struct BlockHeader));
       /* Fill the data fields with ID numbers and values */
-      for (j = 0; j &lt (i * 10); j++, WorkingDataPointer++) {
+      for (j = 0; j &lt; (i * 10); j++, WorkingDataPointer++) {
          *WorkingDataPointer = j;
          *(WorkingDataPointer + i * 10) = i * 1000 + j;
       }
       /* Remember where to set link from this block to the next */
-      LastBlockPointer = &ampWorkingBlockPointer-&gtNextBlock;
+      LastBlockPointer = &amp;WorkingBlockPointer-&gt;NextBlock;
    }
    /* Set the last block&rsquo;s &ldquo;next block&rdquo; pointer to NULL to indicate
       that there are no more blocks */
-   WorkingBlockPointer-&gtNextBlock = NULL;
+   WorkingBlockPointer-&gt;NextBlock = NULL;
    printf(&rdquo;Average of all elements with ID %d: %u\n&rdquo;,
          IDToFind, FindIDAverage2(IDToFind, BaseArrayBlockPointer));
    exit(0);
@@ -168,7 +168,7 @@ IntraBlockLoop:
         repnz   scasw              ;Search for the ID
         jnz     DoNextBlock        ;No match, the block is done
         inc     bp                 ;We have a match; IDMatchCount++;
-        add     dx,[di+bx-2];IDMatchSum += DataPointer-&gtValue;
+        add     dx,[di+bx-2];IDMatchSum += DataPointer-&gt;Value;
 ; (SCASW has advanced DI 2 bytes)
         and     cx,cx              ;Is there more data to search through?
         jnz     IntraBlockLoop     ;yes

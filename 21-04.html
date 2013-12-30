@@ -46,7 +46,7 @@
 ; Returns checksum in AX.
 ; High word of EAX, DX, ECX and ESI destroyed.
 ; All cycle counts assume 32-bit protected mode.
-; Assumes buffer length &gt 0.
+; Assumes buffer length &gt; 0.
 
         sub     eax,eax         ;initialize the checksum
         mov     dx,[esi]        ;first word to checksum
@@ -78,7 +78,7 @@ ckloopend:
 ; Returns checksum in AX.
 ; High word of EAX, BX, EDX, ECX and ESI destroyed.
 ; All cycle counts assume 32-bit protected mode.
-; Assumes buffer length &gt 0.
+; Assumes buffer length &gt; 0.
 
         sub     eax,eax            ;initialize the checksum
         sub     edx,edx            ;prepare for later ORing

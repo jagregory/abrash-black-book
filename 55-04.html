@@ -50,7 +50,7 @@
  ; Demonstrates drawing solid text on the VGA, using the BitMan&rsquo;s write mode
  ; 3-based, one-pass technique.
 
- CHAR_HEIGHT     equ 8                ;# of scan lines per character (must be &lt256)
+ CHAR_HEIGHT     equ 8                ;# of scan lines per character (must be &lt;256)
  SCREEN_HEIGHT   equ 480              ;# of scan lines per screen
  SCREEN_SEGMENT  equ 0a000h           ;where screen memory is
  FG_COLOR        equ 14               ;text color
@@ -64,14 +64,14 @@
        .stack    200h
        .data
  Line            dw ?                ;current line #
- CharHeight      dw ?                ;# of scan lines in each character (must be &lt256)
+ CharHeight      dw ?                ;# of scan lines in each character (must be &lt;256)
  MaxLines        dw ?                ;max # of scan lines of text that will fit on screen
  LineWidthBytes  dw ?                ;offset from one scan line to the next
  FontPtr         dd ?                ;pointer to font with which to draw
  SampleString    label              byte
        db  &lsquo;ABCDEFGHIJKLMNOPQRSTUVWXYZ&rsquo;
        db  &lsquo;abcdefghijklmnopqrstuvwxyz&rsquo;
-       db  &lsquo;0123456789!@#$%^&amp*(),&lt.&gt/?;:&rsquo;,0
+       db  &lsquo;0123456789!@#$%^&amp;*(),&lt;.&gt;/?;:&rsquo;,0
 
       .code
  start:

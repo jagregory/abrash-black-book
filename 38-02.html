@@ -63,7 +63,7 @@
     the polygon at any point would cross exactly two active edges
     (neither horizontal lines nor zero-length edges count as active
     edges; both are acceptable anywhere in the polygon), and that the
-    right &amp left edges never cross. (It&rsquo;s OK for them to touch, though,
+    right &amp; left edges never cross. (It&rsquo;s OK for them to touch, though,
     so long as the right edge never crosses over to the left of the
     left edge.) Nonconvex polygons won&rsquo;t be drawn properly. Returns 1
     for success, 0 if memory allocation failed. */
@@ -201,7 +201,7 @@
        ScanEdge(VertexPtr[PreviousIndex].X + XOffset,
              VertexPtr[PreviousIndex].Y,
              VertexPtr[CurrentIndex].X + XOffset,
-             VertexPtr[CurrentIndex].Y, 1, SkipFirst, &ampEdgePointPtr);
+             VertexPtr[CurrentIndex].Y, 1, SkipFirst, &amp;EdgePointPtr);
        PreviousIndex = CurrentIndex;
        SkipFirst = 0; /* scan convert the first point from now on */
     } while (CurrentIndex != MaxIndex);
@@ -218,13 +218,13 @@
        ScanEdge(VertexPtr[PreviousIndex].X + XOffset - 1,
              VertexPtr[PreviousIndex].Y,
              VertexPtr[CurrentIndex].X + XOffset - 1,
-             VertexPtr[CurrentIndex].Y, 0, SkipFirst, &ampEdgePointPtr);
+             VertexPtr[CurrentIndex].Y, 0, SkipFirst, &amp;EdgePointPtr);
        PreviousIndex = CurrentIndex;
        SkipFirst = 0; /* scan convert the first point from now on */
     } while (CurrentIndex != MaxIndex);
 
     /* Draw the line list representing the scan converted polygon */
-    DrawHorizontalLineList(&ampWorkingHLineList, Color);
+    DrawHorizontalLineList(&amp;WorkingHLineList, Color);
 
     /* Release the line list&rsquo;s memory and we&rsquo;re successfully done */
     free(WorkingHLineList.HLinePtr);

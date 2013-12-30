@@ -48,11 +48,11 @@
   terminate searches */
 void InitializeObjectList()
 {
-   ObjectListStart.NextObject = &ampObjectListEnd;
+   ObjectListStart.NextObject = &amp;ObjectListEnd;
    ObjectListStart.PreviousObject = NULL;
    ObjectListStart.CenterInView.Z = INT-TO-FIXED(-32768);
    ObjectListEnd.NextObject = NULL;
-   ObjectListEnd.PreviousObject = &ampObjectListStart;
+   ObjectListEnd.PreviousObject = &amp;ObjectListStart;
    ObjectListEnd.CenterInView.Z = 0x7FFFFFFFL;
    NumObjects = 0;
 }

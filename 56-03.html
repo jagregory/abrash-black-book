@@ -50,10 +50,10 @@
    texture mapped onto it */
 #define DRAW_TEXTURED_POLYGON(PointList,NumPoints,TexVerts,TexMap) \
    Polygon.Length = NumPoints; Polygon.PointPtr = PointList;       \
-   DrawTexturedPolygon(&ampPolygon, TexVerts, TexMap);
-#define FIXED_TO_INT(FixedVal) ((int) (FixedVal &gt&gt 16))
+   DrawTexturedPolygon(&amp;Polygon, TexVerts, TexMap);
+#define FIXED_TO_INT(FixedVal) ((int) (FixedVal &gt;&gt; 16))
 #define ROUND_FIXED_TO_INT(FixedVal) \
-   ((int) ((FixedVal + DOUBLE_TO_FIXED(0.5)) &gt&gt 16))
+   ((int) ((FixedVal + DOUBLE_TO_FIXED(0.5)) &gt;&gt; 16))
 /* Retrieves specified pixel from specified image bitmap of specified width. */
 #define GET_IMAGE_PIXEL(TexMapBits, TexMapWidth, X, Y) \
    TexMapBits[(Y * TexMapWidth) + X]
@@ -97,10 +97,10 @@ extern void DrawTexturedPolygon(PointListHeader *, Point *, TextureMap *);
    &ldquo;Convex&rdquo; means that every horizontal line drawn through the polygon at any
    point would cross exactly two active edges (neither horizontal lines nor 
    zero-length edges count as active edges; both are acceptable anywhere in 
-   the polygon), and that the right &amp left edges never cross. Nonconvex 
+   the polygon), and that the right &amp; left edges never cross. Nonconvex 
    polygons won&rsquo;t be drawn properly. Can&rsquo;t fail. */
-#include &ltstdio.h&gt
-#include &ltmath.h&gt
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
 #include &ldquo;polygon.h&rdquo;
 /* Describes the current location and stepping, in both the source and
    the destination, of an edge */
@@ -143,13 +143,13 @@ void DrawTexturedPolygon(PointListHeader * Polygon, Point * TexVerts,
 {
    int MinY, MaxY, MinVert, i;
    EdgeScan LeftEdge, RightEdge;
-   NumVerts = Polygon-&gtLength;
-   VertexPtr = Polygon-&gtPointPtr;
+   NumVerts = Polygon-&gt;Length;
+   VertexPtr = Polygon-&gt;PointPtr;
    TexVertsPtr = TexVerts;
-   TexMapBits = TexMap-&gtTexMapBits;
-   TexMapWidth = TexMap-&gtTexMapWidth;
+   TexMapBits = TexMap-&gt;TexMapBits;
+   TexMapWidth = TexMap-&gt;TexMapWidth;
    /* Nothing to draw if less than 3 vertices */
-   if (NumVerts &lt 3) {
+   if (NumVerts &lt; 3) {
       return;
    }
    /* Scan through the destination polygon vertices and find the top of the
@@ -158,18 +158,18 @@ void DrawTexturedPolygon(PointListHeader * Polygon, Point * TexVerts,
       backface removal) */
    MinY = 32767;
    MaxY = -32768;
-   for (i=0; i&ltNumVerts; i++) {
-      if (VertexPtr[i].Y &lt MinY) {
+   for (i=0; i&lt;NumVerts; i++) {
+      if (VertexPtr[i].Y &lt; MinY) {
          MinY = VertexPtr[i].Y;
          MinVert = i;
       }
-      if (VertexPtr[i].Y &gt MaxY) {
+      if (VertexPtr[i].Y &gt; MaxY) {
          MaxY = VertexPtr[i].Y;
          MaxVert = i;
       }
    }
    /* Reject flat (0-pixel-high) polygons */
-   if (MinY &gt= MaxY) {
+   if (MinY &gt;= MaxY) {
       return;
    }
    /* The destination Y coordinate is not edge specific; it applies to
@@ -180,9 +180,9 @@ void DrawTexturedPolygon(PointListHeader * Polygon, Point * TexVerts,
       by one in Y, so calculate the corresponding destination X step for
       each edge, and then the corresponding source image X and Y steps */
    LeftEdge.Direction = -1;   /* set up left edge first */
-   SetUpEdge(&ampLeftEdge, MinVert);
+   SetUpEdge(&amp;LeftEdge, MinVert);
    RightEdge.Direction = 1;   /* set up right edge */
-   SetUpEdge(&ampRightEdge, MinVert);
+   SetUpEdge(&amp;RightEdge, MinVert);
    /* Step down destination edges one scan line at a time. At each scan
       line, find the corresponding edge points in the source image. Scan
       between the edge points in the source, drawing the corresponding
@@ -192,20 +192,20 @@ void DrawTexturedPolygon(PointListHeader * Polygon, Point * TexVerts,
       in clockwise order as seen from the viewpoint) */
    for (;;) {
       /* Done if off bottom of clip rectangle */
-      if (DestY &gt= ClipMaxY) {
+      if (DestY &gt;= ClipMaxY) {
          return;
       }
       /* Draw only if inside Y bounds of clip rectangle */
-      if (DestY &gt= ClipMinY) {
+      if (DestY &gt;= ClipMinY) {
          /* Draw the scan line between the two current edges */
-         ScanOutLine(&ampLeftEdge, &ampRightEdge);
+         ScanOutLine(&amp;LeftEdge, &amp;RightEdge);
       }
       /* Advance the source and destination polygon edges, ending if we&rsquo;ve
          scanned all the way to the bottom of the polygon */
-      if (!StepEdge(&ampLeftEdge)) {
+      if (!StepEdge(&amp;LeftEdge)) {
          break;
       }
-      if (!StepEdge(&ampRightEdge)) {
+      if (!StepEdge(&amp;RightEdge)) {
          break;
       }
       DestY++;
@@ -218,28 +218,28 @@ int StepEdge(EdgeScan * Edge)
 {
    /* Count off the scan line we stepped last time; if this edge is
       finished, try to start another one */
-   if (--Edge-&gtRemainingScans == 0) {
+   if (--Edge-&gt;RemainingScans == 0) {
       /* Set up the next edge; done if there is no next edge */
-      if (SetUpEdge(Edge, Edge-&gtCurrentEnd) == 0) {
+      if (SetUpEdge(Edge, Edge-&gt;CurrentEnd) == 0) {
          return(0);  /* no more edges; done drawing polygon */
       }
       return(1);     /* all set to draw the new edge */
    }
    /* Step the current source edge */
-   Edge-&gtSourceX += Edge-&gtSourceStepX;
-   Edge-&gtSourceY += Edge-&gtSourceStepY;
+   Edge-&gt;SourceX += Edge-&gt;SourceStepX;
+   Edge-&gt;SourceY += Edge-&gt;SourceStepY;
    /* Step dest X with Bresenham-style variables, to get precise dest pixel
       placement and avoid gaps */
-   Edge-&gtDestX += Edge-&gtDestXIntStep;  /* whole pixel step */
+   Edge-&gt;DestX += Edge-&gt;DestXIntStep;  /* whole pixel step */
    /* Do error term stuff for fractional pixel X step handling */
-   if ((Edge-&gtDestXErrTerm += Edge-&gtDestXAdjUp) &gt 0) {
-      Edge-&gtDestX += Edge-&gtDestXDirection;
-      Edge-&gtDestXErrTerm -= Edge-&gtDestXAdjDown;
+   if ((Edge-&gt;DestXErrTerm += Edge-&gt;DestXAdjUp) &gt; 0) {
+      Edge-&gt;DestX += Edge-&gt;DestXDirection;
+      Edge-&gt;DestXErrTerm -= Edge-&gt;DestXAdjDown;
    }
    return(1);
 }
 /* Sets up an edge to be scanned; the edge starts at StartVert and proceeds
-   in direction Edge-&gtDirection through the vertex list. Edge-&gtDirection must
+   in direction Edge-&gt;Direction through the vertex list. Edge-&gt;Direction must
    be set prior to call; -1 to scan a left edge (backward through the vertex
    list), 1 to scan a right edge (forward through the vertex list).
    Automatically skips over 0-height edges. Returns 1 for success, or 0 if
@@ -255,41 +255,41 @@ int SetUpEdge(EdgeScan * Edge, int StartVert)
       }
       /* Advance to the next vertex, wrapping if we run off the start or end
          of the vertex list */
-      NextVert = StartVert + Edge-&gtDirection;
-      if (NextVert &gt= NumVerts) {
+      NextVert = StartVert + Edge-&gt;Direction;
+      if (NextVert &gt;= NumVerts) {
          NextVert = 0;
-      } else if (NextVert &lt 0) {
+      } else if (NextVert &lt; 0) {
          NextVert = NumVerts - 1;
       }
       /* Calculate the variables for this edge and done if this is not a
          zero-height edge */
-      if ((Edge-&gtRemainingScans =
+      if ((Edge-&gt;RemainingScans =
             VertexPtr[NextVert].Y - VertexPtr[StartVert].Y) != 0) {
-         DestYHeight = INT_TO_FIXED(Edge-&gtRemainingScans);
-         Edge-&gtCurrentEnd = NextVert;
-         Edge-&gtSourceX = INT_TO_FIXED(TexVertsPtr[StartVert].X);
-         Edge-&gtSourceY = INT_TO_FIXED(TexVertsPtr[StartVert].Y);
-         Edge-&gtSourceStepX = FixedDiv(INT_TO_FIXED(TexVertsPtr[NextVert].X) -
-               Edge-&gtSourceX, DestYHeight);
-         Edge-&gtSourceStepY = FixedDiv(INT_TO_FIXED(TexVertsPtr[NextVert].Y) -
-               Edge-&gtSourceY, DestYHeight);
+         DestYHeight = INT_TO_FIXED(Edge-&gt;RemainingScans);
+         Edge-&gt;CurrentEnd = NextVert;
+         Edge-&gt;SourceX = INT_TO_FIXED(TexVertsPtr[StartVert].X);
+         Edge-&gt;SourceY = INT_TO_FIXED(TexVertsPtr[StartVert].Y);
+         Edge-&gt;SourceStepX = FixedDiv(INT_TO_FIXED(TexVertsPtr[NextVert].X) -
+               Edge-&gt;SourceX, DestYHeight);
+         Edge-&gt;SourceStepY = FixedDiv(INT_TO_FIXED(TexVertsPtr[NextVert].Y) -
+               Edge-&gt;SourceY, DestYHeight);
          /* Set up Bresenham-style variables for dest X stepping */
-         Edge-&gtDestX = VertexPtr[StartVert].X;
+         Edge-&gt;DestX = VertexPtr[StartVert].X;
          if ((DestXWidth =
-               (VertexPtr[NextVert].X - VertexPtr[StartVert].X)) &lt 0) {
+               (VertexPtr[NextVert].X - VertexPtr[StartVert].X)) &lt; 0) {
             /* Set up for drawing right to left */
-            Edge-&gtDestXDirection = -1;
+            Edge-&gt;DestXDirection = -1;
             DestXWidth = -DestXWidth;
-            Edge-&gtDestXErrTerm = 1 - Edge-&gtRemainingScans;
-            Edge-&gtDestXIntStep = -(DestXWidth / Edge-&gtRemainingScans);
+            Edge-&gt;DestXErrTerm = 1 - Edge-&gt;RemainingScans;
+            Edge-&gt;DestXIntStep = -(DestXWidth / Edge-&gt;RemainingScans);
          } else {
             /* Set up for drawing left to right */
-            Edge-&gtDestXDirection = 1;
-            Edge-&gtDestXErrTerm = 0;
-            Edge-&gtDestXIntStep = DestXWidth / Edge-&gtRemainingScans;
+            Edge-&gt;DestXDirection = 1;
+            Edge-&gt;DestXErrTerm = 0;
+            Edge-&gt;DestXIntStep = DestXWidth / Edge-&gt;RemainingScans;
          }
-         Edge-&gtDestXAdjUp = DestXWidth % Edge-&gtRemainingScans;
-         Edge-&gtDestXAdjDown = Edge-&gtRemainingScans;
+         Edge-&gt;DestXAdjUp = DestXWidth % Edge-&gt;RemainingScans;
+         Edge-&gt;DestXAdjDown = Edge-&gt;RemainingScans;
          return(1);  /* success */
       }
       StartVert = NextVert;   /* keep looking for a non-0-height edge */
@@ -298,17 +298,17 @@ int SetUpEdge(EdgeScan * Edge, int StartVert)
 /* Texture-map-draw the scan line between two edges. */
 void ScanOutLine(EdgeScan * LeftEdge, EdgeScan * RightEdge)
 {
-   Fixedpoint SourceX = LeftEdge-&gtSourceX;
-   Fixedpoint SourceY = LeftEdge-&gtSourceY;
-   int DestX = LeftEdge-&gtDestX;
-   int DestXMax = RightEdge-&gtDestX;
+   Fixedpoint SourceX = LeftEdge-&gt;SourceX;
+   Fixedpoint SourceY = LeftEdge-&gt;SourceY;
+   int DestX = LeftEdge-&gt;DestX;
+   int DestXMax = RightEdge-&gt;DestX;
    Fixedpoint DestWidth;
    Fixedpoint SourceXStep, SourceYStep;
    /* Nothing to do if fully X clipped */
-   if ((DestXMax &lt= ClipMinX) || (DestX &gt= ClipMaxX)) {
+   if ((DestXMax &lt;= ClipMinX) || (DestX &gt;= ClipMaxX)) {
       return;
    }
-   if ((DestXMax - DestX) &lt= 0) {
+   if ((DestXMax - DestX) &lt;= 0) {
       return;  /* nothing to draw */
    }
    /* Width of destination scan line, for scaling. Note: because this is an
@@ -321,21 +321,21 @@ void ScanOutLine(EdgeScan * LeftEdge, EdgeScan * RightEdge)
    DestWidth = INT_TO_FIXED(DestXMax - DestX);
    /* Calculate source steps that correspond to each dest X step (across
       the scan line) */
-   SourceXStep = FixedDiv(RightEdge-&gtSourceX - SourceX, DestWidth);
-   SourceYStep = FixedDiv(RightEdge-&gtSourceY - SourceY, DestWidth);
+   SourceXStep = FixedDiv(RightEdge-&gt;SourceX - SourceX, DestWidth);
+   SourceYStep = FixedDiv(RightEdge-&gt;SourceY - SourceY, DestWidth);
    /* Clip right edge if necessary */
-   if (DestXMax &gt ClipMaxX) {
+   if (DestXMax &gt; ClipMaxX) {
       DestXMax = ClipMaxX;
    }
    /* Clip left edge if necssary */
-   if (DestX &lt ClipMinX) {
+   if (DestX &lt; ClipMinX) {
       SourceX += SourceXStep * (ClipMinX - DestX);
       SourceY += SourceYStep * (ClipMinX - DestX);
       DestX = ClipMinX;
    }
    /* Scan across the destination scan line, updating the source image
       position accordingly */
-   for (; DestX&ltDestXMax; DestX++) {
+   for (; DestX&lt;DestXMax; DestX++) {
       /* Get currently mapped pixel out of image and draw it to screen */
       WritePixelX(DestX, DestY,
             GET_IMAGE_PIXEL(TexMapBits, TexMapWidth,

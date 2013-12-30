@@ -146,43 +146,43 @@ void BuildMaps( void )
   do
     {
     // Current cell states
-    C1 = (x &amp 0x0800) &gt;&gt; 11;
-    C2 = (x &amp 0x0400) &gt;&gt; 10;
-    C3 = (x &amp 0x0200) &gt;&gt; 9;
+    C1 = (x &amp; 0x0800) &gt;&gt; 11;
+    C2 = (x &amp; 0x0400) &gt;&gt; 10;
+    C3 = (x &amp; 0x0200) &gt;&gt; 9;
 
     // Neighbor counts
-    N1 = (x &amp 0x01C0) &gt;&gt; 6;
-    N2 = (x &amp 0x0038) &gt;&gt; 3;
-    N3 = (x &amp 0x0007);
+    N1 = (x &amp; 0x01C0) &gt;&gt; 6;
+    N2 = (x &amp; 0x0038) &gt;&gt; 3;
+    N3 = (x &amp; 0x0007);
 
-    y = x &amp 0x8FFF;  // Preserve all but the next generation states
+    y = x &amp; 0x8FFF;  // Preserve all but the next generation states
 
-    if(  C1 &amp&amp ((N1 + C2 == 2) || (N1 + C2 == 3)) )
+    if(  C1 &amp;&amp; ((N1 + C2 == 2) || (N1 + C2 == 3)) )
       {
       y |= 0x4000;
       }
 
-    if( !C1 &amp&amp  (N1 + C2 == 3) )
+    if( !C1 &amp;&amp;  (N1 + C2 == 3) )
       {
       y |= 0x4000;
       }
 
-    if(  C2 &amp&amp ((N2 + C1 + C3 == 2) || (N2 + C1 + C3 == 3)) )
+    if(  C2 &amp;&amp; ((N2 + C1 + C3 == 2) || (N2 + C1 + C3 == 3)) )
       {
       y |= 0x2000;
       }
 
-    if( !C2 &amp&amp  (N2 + C1 + C3 == 3) )
+    if( !C2 &amp;&amp;  (N2 + C1 + C3 == 3) )
       {
       y |= 0x2000;
       }
 
-    if(  C3 &amp&amp ((N3 + C2 == 2) || (N3 + C2 == 3)) )
+    if(  C3 &amp;&amp; ((N3 + C2 == 2) || (N3 + C2 == 3)) )
       {
       y |= 0x1000;
       }
 
-    if( !C3 &amp&amp  (N3 + C2 == 3) )
+    if( !C3 &amp;&amp;  (N3 + C2 == 3) )
       {
       y |= 0x1000;
       }
@@ -227,58 +227,58 @@ void FirstPass( void )
   printf( &ldquo;mov  bh,0\n&rdquo; );
   printf( &ldquo;add  bx,ax\n&rdquo; );    // bx = screen offset
 
-  if( ((New ^ Old) &amp 6) == 6 )
+  if( ((New ^ Old) &amp; 6) == 6 )
     {
     printf( &ldquo;mov  word ptr fs:[bx],0%02x%02xh\n&rdquo;,
-            (New &amp 2) ? 15 : 0,
-            (New &amp 4) ? 15 : 0 );
+            (New &amp; 2) ? 15 : 0,
+            (New &amp; 4) ? 15 : 0 );
 
-    if( (New ^ Old) &amp 1 )
+    if( (New ^ Old) &amp; 1 )
       {
       printf( &ldquo;mov  byte ptr fs:[bx+2],%s\n&rdquo;,
-              (New &amp 1) ? &ldquo;15&rdquo; : &ldquo;dl&rdquo; );
+              (New &amp; 1) ? &ldquo;15&rdquo; : &ldquo;dl&rdquo; );
       }
     }
   else
     {
-    if( ((New ^ Old) &amp 3) == 3 )
+    if( ((New ^ Old) &amp; 3) == 3 )
       {
       printf( &ldquo;mov  word ptr fs:[bx+1],0%02x%02xh\n&rdquo;,
-              (New &amp 1) ? 15 : 0,
-              (New &amp 2) ? 15 : 0 );
+              (New &amp; 1) ? 15 : 0,
+              (New &amp; 2) ? 15 : 0 );
       }
     else
       {
-      if( (New ^ Old) &amp 2 )
+      if( (New ^ Old) &amp; 2 )
         {
         printf( &ldquo;mov  byte ptr fs:[bx+1],%s\n&rdquo;,
-                (New &amp 2) ? &ldquo;15&rdquo; : &ldquo;dl&rdquo; );
+                (New &amp; 2) ? &ldquo;15&rdquo; : &ldquo;dl&rdquo; );
         }
 
-      if( (New ^ Old) &amp 1 )
+      if( (New ^ Old) &amp; 1 )
         {
         printf( &ldquo;mov  byte ptr fs:[bx+2],%s\n&rdquo;,
-                (New &amp 1) ? &ldquo;15&rdquo; : &ldquo;dl&rdquo; );
+                (New &amp; 1) ? &ldquo;15&rdquo; : &ldquo;dl&rdquo; );
         }
       }
 
-    if( (New ^ Old) &amp 4 )
+    if( (New ^ Old) &amp; 4 )
       {
       printf( &ldquo;mov  byte ptr fs:[bx],%s\n&rdquo;,
-              (New &amp 4) ? &ldquo;15&rdquo; : &ldquo;dl&rdquo; );
+              (New &amp; 4) ? &ldquo;15&rdquo; : &ldquo;dl&rdquo; );
       }
     }
   #endif
 
-  if( (New ^ Old) &amp 4 )  UpDown += (New &amp 4) ? 0x48 : -0x48;
-  if( (New ^ Old) &amp 2 )  UpDown += (New &amp 2) ? 0x49 : -0x49;
-  if( (New ^ Old) &amp 1 )  UpDown += (New &amp 1) ? 0x09 : -0x09;
+  if( (New ^ Old) &amp; 4 )  UpDown += (New &amp; 4) ? 0x48 : -0x48;
+  if( (New ^ Old) &amp; 2 )  UpDown += (New &amp; 2) ? 0x49 : -0x49;
+  if( (New ^ Old) &amp; 1 )  UpDown += (New &amp; 1) ? 0x09 : -0x09;
 
   if( Edge )
     {
     GetUpAndDown();  // ah = row, al = col, cx = up, dx = down
 
-    if( (New ^ Old) &amp 4 )
+    if( (New ^ Old) &amp; 4 )
       {
       printf( &ldquo;mov  di,%d\n&rdquo;, WRAPLEFT );      // di = left
       printf( &ldquo;cmp  al,0\n&rdquo; );
@@ -286,7 +286,7 @@ void FirstPass( void )
       printf( &ldquo;mov  di,%d\n&rdquo;, LEFT );
       printf( &ldquo;L%d:\n&rdquo;, Label );
 
-      if( New &amp 4 )  Op = &ldquo;inc&rdquo;;
+      if( New &amp; 4 )  Op = &ldquo;inc&rdquo;;
       else           Op = &ldquo;dec&rdquo;;
 
       printf( &ldquo;%s  word ptr [bp+di]\n&rdquo;, Op );
@@ -297,7 +297,7 @@ void FirstPass( void )
       printf( &ldquo;%s  word ptr [bp+di]\n&rdquo;, Op );
       }
 
-    if( (New ^ Old) &amp 1 )
+    if( (New ^ Old) &amp; 1 )
       {
       printf( &ldquo;mov  di,%d\n&rdquo;, WRAPRIGHT );      // di = right
       printf( &ldquo;cmp  al,%d\n&rdquo;, (WIDTH - 1) * 3 );
@@ -305,7 +305,7 @@ void FirstPass( void )
       printf( &ldquo;mov  di,%d\n&rdquo;, RIGHT );
       printf( &ldquo;R%d:\n&rdquo;, Label );
 
-      if( New &amp 1 )  Op = &ldquo;add&rdquo;;
+      if( New &amp; 1 )  Op = &ldquo;add&rdquo;;
       else           Op = &ldquo;sub&rdquo;;
 
       printf( &ldquo;%s   word ptr [bp+di],40h\n&rdquo;, Op );
@@ -325,9 +325,9 @@ void FirstPass( void )
     }
   else
     {
-    if( (New ^ Old) &amp 4 )
+    if( (New ^ Old) &amp; 4 )
       {
-      if( New &amp 4 )  Op = &ldquo;inc&rdquo;;
+      if( New &amp; 4 )  Op = &ldquo;inc&rdquo;;
       else           Op = &ldquo;dec&rdquo;;
 
       printf( &ldquo;%s  byte ptr [bp+%d]\n&rdquo;, Op, LEFT );
@@ -335,9 +335,9 @@ void FirstPass( void )
       printf( &ldquo;%s  byte ptr [bp+%d]\n&rdquo;, Op, LOWERLEFT );
       }
 
-    if( (New ^ Old) &amp 1 )
+    if( (New ^ Old) &amp; 1 )
       {
-      if( New &amp 1 )  Op = &ldquo;add&rdquo;;
+      if( New &amp; 1 )  Op = &ldquo;add&rdquo;;
       else           Op = &ldquo;sub&rdquo;;
 
       printf( &ldquo;%s  word ptr [bp+%d],40h\n&rdquo;, Op, RIGHT );
@@ -393,7 +393,7 @@ void SecondPass( void )
   if( Edge )
     {
     // finished with second pass
-    if( New == 7 &amp&amp Old == 0 )
+    if( New == 7 &amp;&amp; Old == 0 )
       {
       printf( &ldquo;cmp  bp,offset DGROUP:ChangeCell\n&rdquo; );
       printf( &ldquo;jne  short NotEnd\n&rdquo; );

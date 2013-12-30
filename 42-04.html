@@ -79,10 +79,10 @@ void DrawLine(int X0, int Y0, int X1, int Y1, int Color)
       /* Draw all pixels between the first and last */
       do {
          ErrorAcc += ErrorAdj;      /* calculate error for this pixel */
-         if (ErrorAcc &amp ~0xFFFFL) {
+         if (ErrorAcc &amp; ~0xFFFFL) {
             /* The error accumulator turned over, so advance the X coord */
             X0 += XDir;
-            ErrorAcc &amp= 0xFFFFL;    /* clear integer part of result */
+            ErrorAcc &amp;= 0xFFFFL;    /* clear integer part of result */
          }
          Y0++;                      /* Y-major, so always advance Y */
          DrawPixel(X0, Y0, Color);
@@ -96,10 +96,10 @@ void DrawLine(int X0, int Y0, int X1, int Y1, int Color)
    /* Draw all remaining pixels */
    do {
       ErrorAcc += ErrorAdj;      /* calculate error for this pixel */
-      if (ErrorAcc &amp ~0xFFFFL) {
+      if (ErrorAcc &amp; ~0xFFFFL) {
          /* The error accumulator turned over, so advance the Y coord */
          Y0++;
-         ErrorAcc &amp= 0xFFFFL;    /* clear integer part of result */
+         ErrorAcc &amp;= 0xFFFFL;    /* clear integer part of result */
       }
       X0 += XDir;                /* X-major, so always advance X */
       DrawPixel(X0, Y0, Color);
@@ -149,7 +149,7 @@ void SetMode()
 
    /* Set to 640x480 256-color graphics mode */
    regset.x.ax = 0x002E;
-   int86(0x10, &ampregset, &ampregset);
+   int86(0x10, &amp;regset, &amp;regset);
 }
 </PRE>
 <!-- END CODE //-->

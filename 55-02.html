@@ -70,7 +70,7 @@
     even intensity steps on the screen.
  */
 
- #include &ltdos.h&gt
+ #include &lt;dos.h&gt;
  #include "polygon.h"
 
  static unsigned char Gamma4Levels[] = { 0, 39, 53, 63 };
@@ -89,10 +89,10 @@
     union REGS regset;
     struct SREGS sregset;
 
-    for (Red=0; Red&lt4; Red++) {
-       for (Green=0; Green&lt4; Green++) {
-          for (Blue=0; Blue&lt4; Blue++) {
-             Index = (Red&lt&lt4)+(Green&lt&lt2)+Blue;
+    for (Red=0; Red&lt;4; Red++) {
+       for (Green=0; Green&lt;4; Green++) {
+          for (Blue=0; Blue&lt;4; Blue++) {
+             Index = (Red&lt;&lt;4)+(Green&lt;&lt;2)+Blue;
              PaletteBlock[Index][0] = Gamma4Levels[Red];
              PaletteBlock[Index][1] = Gamma4Levels[Green];
              PaletteBlock[Index][2] = Gamma4Levels[Blue];
@@ -100,19 +100,19 @@
        }
     }
 
-    for (Red=0; Red&lt64; Red++) {
+    for (Red=0; Red&lt;64; Red++) {
        PaletteBlock[64+Red][0] = Gamma64Levels[Red];
        PaletteBlock[64+Red][1] = 0;
        PaletteBlock[64+Red][2] = 0;
     }
 
-    for (Green=0; Green&lt64; Green++) {
+    for (Green=0; Green&lt;64; Green++) {
        PaletteBlock[128+Green][0] = 0;
        PaletteBlock[128+Green][1] = Gamma64Levels[Green];
        PaletteBlock[128+Green][2] = 0;
     }
 
-    for (Blue=0; Blue&lt64; Blue++) {
+    for (Blue=0; Blue&lt;64; Blue++) {
        PaletteBlock[192+Blue][0] = 0;
        PaletteBlock[192+Blue][1] = 0;
        PaletteBlock[192+Blue][2] = Gamma64Levels[Blue];
@@ -125,7 +125,7 @@
     regset.x.dx = (unsigned int)PaletteBlock; /* offset of array from which
                                                  to load RGB settings */
     sregset.es = DS; /* segment of array from which to load settings */
-    int86x(0x10, &ampregset, &ampregset, &ampsregset); /* load the palette block */
+    int86x(0x10, &amp;regset, &amp;regset, &amp;sregset); /* load the palette block */
  }
 </PRE>
 <!-- END CODE //-->

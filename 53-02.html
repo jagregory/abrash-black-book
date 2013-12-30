@@ -54,7 +54,7 @@ ALIGNMENT        equ    2
 ;     Fixedpoint FixedMul(Fixedpoint M1, Fixedpoint M2);
 ;     Fixedpoint FixedDiv(Fixedpoint Dividend, Fixedpoint Divisor);
 FMparms struc
-            dw   2 dup(?)      ;return address &amp pushed BP
+            dw   2 dup(?)      ;return address &amp; pushed BP
 M1          dd   ?
 M2          dd   ?
 FMparms     ends
@@ -78,7 +78,7 @@ endif ;ROUNDING-ON
 ; C near-callable as:
 ;     Fixedpoint FixedDiv(Fixedpoint Dividend, Fixedpoint Divisor);
 FDparms struc
-           dw    2 dup(?)       ;return address &amp pushed BP
+           dw    2 dup(?)       ;return address &amp; pushed BP
 Dividend   dd    ?
 Divisor    dd    ?
 FDparms    ends
@@ -140,8 +140,8 @@ CosTable label dword
 include costable.inc
 
 SCparms struc
-            dw    2 dup(?)    ;return address &amp pushed BP
-Angle       dw    ?           ;angle to calculate sine &amp cosine for
+            dw    2 dup(?)    ;return address &amp; pushed BP
+Angle       dw    ?           ;angle to calculate sine &amp; cosine for
 Cos         dw    ?           ;pointer to cos destination
 Sin         dw    ?           ;pointer to sin destination
 SCparms ends
@@ -242,7 +242,7 @@ ret
 ;     WorkingXform[i][3];   /* no need to multiply by W = 1 */
 
 XVparms struc
-               dw    2 dup(?)   ;return address &amp pushed BP
+               dw    2 dup(?)   ;return address &amp; pushed BP
 WorkingXform   dw    ?          ;pointer to transform matrix
 SourceVec      dw    ?          ;pointer to source vector
 DestVec        dw    ?          ;pointer to destination vector
@@ -328,7 +328,7 @@ ret
 ;   }
 
 CXparms struc
-             dw     2 dup(?)         ;return address &amp pushed BP
+             dw     2 dup(?)         ;return address &amp; pushed BP
 SourceXform1 dw     ?                ;pointer to first source xform matrix
 SourceXform2  dw    ?                ;pointer to second source xform matrix
 DestXform     dw    ?                ;pointer to destination xform matrix
@@ -380,7 +380,7 @@ endif ;ROUNDING-ON
        add    ecx,eax           ;running total
 
        mov[di+coff+roff],ecx    ;save the result in dest matrix
-coff=coff+4                     ;point to next col in xform2 &amp dest
+coff=coff+4                     ;point to next col in xform2 &amp; dest
 ENDM
                                ;now do the fourth column, assuming
                                ; 1 as the bottom entry, causing
@@ -415,9 +415,9 @@ addecx,eax;running total
 addecx,[si+roff+12];add in translation
 
 mov[di+coff+roff],ecx;save the result in dest matrix
-coff=coff+4                ;point to next col in xform2 &amp dest
+coff=coff+4                ;point to next col in xform2 &amp; dest
 
-roff=roff+16                ;point to next col in xform2 &amp dest
+roff=roff+16                ;point to next col in xform2 &amp; dest
 ENDM
 
 popdi;restore register variables

@@ -44,7 +44,7 @@
 line-drawing functions coded in LListing L36.1.C.
 Tested with Borland C++ in the small model. */
 
-#include &ltdos.h&gt
+#include &lt;dos.h&gt;
 
 #define GRAPHICS_MODE   0x13
 #define TEXT_MODE       0x03
@@ -66,28 +66,28 @@ int Color;              /* color to draw lines in */
    /* lines from center to top of rectangle */
    WorkingX = XCenter - XLength;
    WorkingY = YCenter - YLength;
-   for ( ; WorkingX &lt ( XCenter + XLength ); WorkingX++ )
+   for ( ; WorkingX &lt; ( XCenter + XLength ); WorkingX++ )
    {
       LineDraw(XCenter, YCenter, WorkingX, WorkingY, Color);
    }
    /* lines from center to right of rectangle */
    WorkingX = XCenter + XLength - 1;
    WorkingY = YCenter - YLength;
-   for ( ; WorkingY &lt ( YCenter + YLength ); WorkingY++ )
+   for ( ; WorkingY &lt; ( YCenter + YLength ); WorkingY++ )
    {
       LineDraw(XCenter, YCenter, WorkingX, WorkingY, Color);
    }
    /* lines from center to bottom of rectangle */
    WorkingX = XCenter + XLength - 1;
    WorkingY = YCenter + YLength - 1;
-   for ( ; WorkingX &gt= ( XCenter - XLength ); WorkingX-- )
+   for ( ; WorkingX &gt;= ( XCenter - XLength ); WorkingX-- )
    {
       LineDraw(XCenter, YCenter, WorkingX, WorkingY, Color);
    }
    /* lines from center to left of rectangle */
    WorkingX = XCenter - XLength;
    WorkingY = YCenter + YLength - 1;
-   for ( ; WorkingY &gt= ( YCenter - YLength ); WorkingY-- )
+   for ( ; WorkingY &gt;= ( YCenter - YLength ); WorkingY-- )
    {
       LineDraw(XCenter, YCenter, WorkingX, WorkingY, Color);
    }
@@ -99,7 +99,7 @@ int main()
 
    /* Set graphics mode */
    regs.x.ax = GRAPHICS_MODE;
-   int86(BIOS_VIDEO_INT, &ampregs, &ampregs);
+   int86(BIOS_VIDEO_INT, &amp;regs, &amp;regs);
 
    /* Draw each of four rectangles full of vectors */
    VectorsUp(X_MAX / 4, Y_MAX / 4, X_MAX / 4, Y_MAX / 4, 1);
@@ -112,7 +112,7 @@ int main()
 
    /* Return back to text mode */
    regs.x.ax = TEXT_MODE;
-   int86(BIOS_VIDEO_INT, &ampregs, &ampregs);
+   int86(BIOS_VIDEO_INT, &amp;regs, &amp;regs);
 }
 </PRE>
 <!-- END CODE //-->

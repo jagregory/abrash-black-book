@@ -65,12 +65,12 @@ private:
 public:
    cellmap(unsigned int h, unsigned int v);
    ~cellmap(void);
-   void copy_cells(cellmap &ampsourcemap);
+   void copy_cells(cellmap &amp;sourcemap);
    void set_cell(unsigned int x, unsigned int y);
    void clear_cell(unsigned int x, unsigned int y);
    int cell_state(int x, int y);
    int count_neighbors(int x, int y);
-   void next_generation(cellmap&amp dest_map);
+   void next_generation(cellmap&amp; dest_map);
 };
 
 /* cellmap constructor. Pads around cell storage area with 1 extra
@@ -92,7 +92,7 @@ cellmap::cellmap(unsigned int h, unsigned int w)
    source first, so that the padding bytes off each edge have the
    same values as would be found by wrapping around to the opposite
    edge. Both cellmaps are assumed to be the same size. */
-void cellmap::copy_cells(cellmap &ampsourcemap)
+void cellmap::copy_cells(cellmap &amp;sourcemap)
 {
    unsigned char *cell_ptr;
    int i;
@@ -100,7 +100,7 @@ void cellmap::copy_cells(cellmap &ampsourcemap)
 #if WRAP_EDGES
 // Copy left and right edges into padding bytes on right and left
    cell_ptr = sourcemap.cells + width_in_bytes;
-   for (i=0; i&ltheight; i++) {
+   for (i=0; i&lt;height; i++) {
       *cell_ptr = *(cell_ptr + width_in_bytes - 2);
       *(cell_ptr + width_in_bytes - 1) = *(cell_ptr + 1);
       cell_ptr += width_in_bytes;
@@ -122,7 +122,7 @@ void cellmap::set_cell(unsigned int x, unsigned int y)
    unsigned char *cell_ptr =
          cells + ((y + 1) * width_in_bytes) + ((x / 8) + 1);
 
-   *(cell_ptr) |= 0x80 &gt&gt (x &amp 0x07);
+   *(cell_ptr) |= 0x80 &gt;&gt; (x &amp; 0x07);
 }
 
 /* Turns cell off. x and y are offset by 1 byte down and to the right,
@@ -132,7 +132,7 @@ void cellmap::clear_cell(unsigned int x, unsigned int y)
    unsigned char *cell_ptr =
          cells + ((y + 1) * width_in_bytes) + ((x / 8) + 1);
 
-   *(cell_ptr) &amp= ~(0x80 &gt&gt (x &amp 0x07));
+   *(cell_ptr) &amp;= ~(0x80 &gt;&gt; (x &amp; 0x07));
 }
 
 /* Returns cell state (1=on or 0=off). x and y are offset by 1 byte
@@ -144,7 +144,7 @@ int cellmap::cell_state(int x, int y)
    unsigned char *cell_ptr =
          cells + ((y + 1) * width_in_bytes) + ((x / 8) + 1);
 
-   return (*cell_ptr &amp (0x80 &gt&gt (x &amp 0x07))) ? 1 : 0;
+   return (*cell_ptr &amp; (0x80 &gt;&gt; (x &amp; 0x07))) ? 1 : 0;
 }
 
 /* Counts the number of neighboring on-cells for specified cell. */
@@ -155,50 +155,50 @@ int cellmap::count_neighbors(int x, int y)
 
    // Point to upper left neighbor
    cell_ptr = cells + ((y * width_in_bytes) + ((x + 7) / 8));
-   mask = 0x80 &gt&gt ((x - 1) &amp 0x07);
+   mask = 0x80 &gt;&gt; ((x - 1) &amp; 0x07);
    // Count upper left neighbor
-   neighbor_count = (*cell_ptr &amp mask) ? 1 : 0;
+   neighbor_count = (*cell_ptr &amp; mask) ? 1 : 0;
    // Count left neighbor
-   if ((*(cell_ptr + width_in_bytes) &amp mask)) neighbor_count++;
+   if ((*(cell_ptr + width_in_bytes) &amp; mask)) neighbor_count++;
    // Count lower left neighbor
-   if ((*(cell_ptr + (width_in_bytes * 2)) &amp mask)) neighbor_count++;
+   if ((*(cell_ptr + (width_in_bytes * 2)) &amp; mask)) neighbor_count++;
 
    // Point to upper neighbor
-   if ((mask &gt&gt= 1) == 0) {
+   if ((mask &gt;&gt;= 1) == 0) {
       mask = 0x80;
       cell_ptr++;
    }
    // Count upper neighbor
-   if ((*cell_ptr &amp mask)) neighbor_count++;
+   if ((*cell_ptr &amp; mask)) neighbor_count++;
    // Count lower neighbor
-   if ((*(cell_ptr + (width_in_bytes * 2)) &amp mask))  neighbor_count++;
+   if ((*(cell_ptr + (width_in_bytes * 2)) &amp; mask))  neighbor_count++;
 
    // Point to upper right neighbor
-   if ((mask &gt&gt= 1) == 0) {
+   if ((mask &gt;&gt;= 1) == 0) {
       mask = 0x80;
       cell_ptr++;
    }
    // Count upper right neighbor
-   if ((*cell_ptr &amp mask)) neighbor_count++;
+   if ((*cell_ptr &amp; mask)) neighbor_count++;
    // Count right neighbor
-   if ((*(cell_ptr + width_in_bytes) &amp mask)) neighbor_count++;
+   if ((*(cell_ptr + width_in_bytes) &amp; mask)) neighbor_count++;
    // Count lower right neighbor
-   if ((*(cell_ptr + (width_in_bytes * 2)) &amp mask))  neighbor_count++;
+   if ((*(cell_ptr + (width_in_bytes * 2)) &amp; mask))  neighbor_count++;
 
    return neighbor_count;
 }
 
 /* Calculates the next generation of current_map and stores it in
    next_map. */
-void cellmap::next_generation(cellmap&amp next_map)
+void cellmap::next_generation(cellmap&amp; next_map)
 {
    unsigned int x, y, neighbor_count;
 
-   for (y=0; y&ltheight; y++) {
-      for (x=0; x&ltwidth; x++) {
+   for (y=0; y&lt;height; y++) {
+      for (x=0; x&lt;width; x++) {
          neighbor_count = count_neighbors(x, y);
          if (cell_state(x, y) == 1) {
-            if ((neighbor_count != 2) &amp&amp (neighbor_count != 3)) {
+            if ((neighbor_count != 2) &amp;&amp; (neighbor_count != 3)) {
                next_map.clear_cell(x, y);    // turn it off
                draw_pixel(x, y, OFF_COLOR);
             }

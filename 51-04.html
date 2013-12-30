@@ -42,34 +42,34 @@
 /* Transforms all vertices in the specified object into view spa ce, then
    perspective projects them to screen space and maps them to screen coordinates,
    storing the results in the object. */
-#include &ltmath.h&gt
+#include &lt;math.h&gt;
 #include &ldquo;polygon.h&rdquo;/
 
 void XformAndProjectPoints(double Xform[4][4],
    struct Object * ObjectToXform)
 {
-   int i, NumPoints = ObjectToXform-&gtNumVerts;
-   struct Point3 * Points = ObjectToXform-&gtVertexList;
-   struct Point3 * XformedPoints = ObjectToXform-&gtXformedVertexList;
-   struct Point3 * ProjectedPoints = ObjectToXform-&gtProjectedVertexList;
-   struct Point * ScreenPoints = ObjectToXform-&gtScreenVertexList;
+   int i, NumPoints = ObjectToXform-&gt;NumVerts;
+   struct Point3 * Points = ObjectToXform-&gt;VertexList;
+   struct Point3 * XformedPoints = ObjectToXform-&gt;XformedVertexList;
+   struct Point3 * ProjectedPoints = ObjectToXform-&gt;ProjectedVertexList;
+   struct Point * ScreenPoints = ObjectToXform-&gt;ScreenVertexList;
 
-   for (i=0; i&ltNumPoints; i++, Points++, XformedPoints++,
+   for (i=0; i&lt;NumPoints; i++, Points++, XformedPoints++,
          ProjectedPoints++, ScreenPoints++) {
       /* Transform to view space */
       XformVec(Xform, (double *)Points, (double *)XformedPoints);
       /* Perspective-project to screen space */
-      ProjectedPoints-&gtX = XformedPoints-&gtX / XformedPoints-&gtZ *
+      ProjectedPoints-&gt;X = XformedPoints-&gt;X / XformedPoints-&gt;Z *
             PROJECTION_RATIO * (SCREEN_WIDTH / 2.0);
-      ProjectedPoints-&gtY = XformedPoints-&gtY / XformedPoints-&gtZ *
+      ProjectedPoints-&gt;Y = XformedPoints-&gt;Y / XformedPoints-&gt;Z *
             PROJECTION_RATIO * (SCREEN_WIDTH / 2.0);
-      ProjectedPoints-&gtZ = XformedPoints-&gtZ;
+      ProjectedPoints-&gt;Z = XformedPoints-&gt;Z;
       /* Convert to screen coordinates. The Y coord is negated to
          flip from increasing Y being up to increasing Y being down,
          as expected by the polygon filler. Add in half the screen
          width and height to center on the screen. */
-      ScreenPoints-&gtX = ((int) floor(ProjectedPoints-&gtX + 0.5)) + SCREEN_WIDTH/2;
-      ScreenPoints-&gtY = (-((int) floor(ProjectedPoints-&gtY + 0.5))) +
+      ScreenPoints-&gt;X = ((int) floor(ProjectedPoints-&gt;X + 0.5)) + SCREEN_WIDTH/2;
+      ScreenPoints-&gt;Y = (-((int) floor(ProjectedPoints-&gt;Y + 0.5))) +
                SCREEN_HEIGHT/2;
    }
 }
@@ -85,19 +85,19 @@ void XformAndProjectPoints(double Xform[4][4],
 
 void DrawVisibleFaces(struct Object * ObjectToXform)
 {
-   int i, j, NumFaces = ObjectToXform-&gtNumFaces, NumVertices;
+   int i, j, NumFaces = ObjectToXform-&gt;NumFaces, NumVertices;
    int * VertNumsPtr;
-   struct Face * FacePtr = ObjectToXform-&gtFaceList;
-   struct Point * ScreenPoints = ObjectToXform-&gtScreenVertexList;
+   struct Face * FacePtr = ObjectToXform-&gt;FaceList;
+   struct Point * ScreenPoints = ObjectToXform-&gt;ScreenVertexList;
    long v1,v2,w1,w2;
    struct Point Vertices[MAX_POLY_LENGTH];
    struct PointListHeader Polygon;
 
    /* Draw each visible face (polygon) of the object in turn */
-   for (i=0; i&ltNumFaces; i++, FacePtr++) {
-      NumVertices = FacePtr-&gtNumVerts;
+   for (i=0; i&lt;NumFaces; i++, FacePtr++) {
+      NumVertices = FacePtr-&gt;NumVerts;
       /* Copy over the face&rsquo;s vertices from the vertex list */
-      for (j=0, VertNumsPtr=FacePtr-&gtVertNums; j&ltNumVertices; j++)
+      for (j=0, VertNumsPtr=FacePtr-&gt;VertNums; j&lt;NumVertices; j++)
          Vertices[j] = ScreenPoints[*VertNumsPtr++];
       /* Draw only if outside face showing (if the normal to the
          polygon points toward the viewer; that is, has a positive
@@ -106,30 +106,30 @@ void DrawVisibleFaces(struct Object * ObjectToXform)
       w1 = Vertices[NumVertices-1].X - Vertices[0].X;
       v2 = Vertices[1].Y - Vertices[0].Y;
       w2 = Vertices[NumVertices-1].Y - Vertices[0].Y;
-      if ((v1*w2 - v2*w1) &gt 0) {
+      if ((v1*w2 - v2*w1) &gt; 0) {
          /* It is facing the screen, so draw */
          /* Appropriately adjust the extent of the rectangle used to
             erase this page later */
-         for (j=0; j&ltNumVertices; j++) {
-            if (Vertices[j].X &gt EraseRect[NonDisplayedPage].Right)
-               if (Vertices[j].X &lt SCREEN_WIDTH)
+         for (j=0; j&lt;NumVertices; j++) {
+            if (Vertices[j].X &gt; EraseRect[NonDisplayedPage].Right)
+               if (Vertices[j].X &lt; SCREEN_WIDTH)
                   EraseRect[NonDisplayedPage].Right = Vertices[j].X;
                else EraseRect[NonDisplayedPage].Right = SCREEN_WIDTH;
-            if (Vertices[j].Y &gt EraseRect[NonDisplayedPage].Bottom)
-               if (Vertices[j].Y &lt SCREEN_HEIGHT)
+            if (Vertices[j].Y &gt; EraseRect[NonDisplayedPage].Bottom)
+               if (Vertices[j].Y &lt; SCREEN_HEIGHT)
                   EraseRect[NonDisplayedPage].Bottom = Vertices[j].Y;
                else EraseRect[NonDisplayedPage].Bottom=SCREEN_HEIGHT;
-            if (Vertices[j].X &lt EraseRect[NonDisplayedPage].Left)
-               if (Vertices[j].X &gt 0)
+            if (Vertices[j].X &lt; EraseRect[NonDisplayedPage].Left)
+               if (Vertices[j].X &gt; 0)
                   EraseRect[NonDisplayedPage].Left = Vertices[j].X;
                else EraseRect[NonDisplayedPage].Left = 0;
-            if (Vertices[j].Y &lt EraseRect[NonDisplayedPage].Top)
-               if (Vertices[j].Y &gt 0)
+            if (Vertices[j].Y &lt; EraseRect[NonDisplayedPage].Top)
+               if (Vertices[j].Y &gt; 0)
                   EraseRect[NonDisplayedPage].Top = Vertices[j].Y;
                else EraseRect[NonDisplayedPage].Top = 0;
          }
          /* Draw the polygon */
-         DRAW_POLYGON(Vertices, NumVertices, FacePtr-&gtColor, 0, 0);
+         DRAW_POLYGON(Vertices, NumVertices, FacePtr-&gt;Color, 0, 0);
       }
    }
 }

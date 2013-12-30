@@ -262,8 +262,8 @@ void ClipWalls()
          // perform a quick test for trivial rejection by seeing if
          // the end point is outside the view triangle on the same
          // side as the start point
-         if (((tempstartx&gt;tempstartz) &amp&amp (tempendx&gt;tempendz)) ||
-            ((tempstartx&lt;-tempstartz) &amp&amp (tempendx&lt;-tempendz)))
+         if (((tempstartx&gt;tempstartz) &amp;&amp; (tempendx&gt;tempendz)) ||
+            ((tempstartx&lt;-tempstartz) &amp;&amp; (tempendx&lt;-tempendz)))
             // Fully clipped&mdash;trivially reject
             goto NextWall;
          // Clip the start point
@@ -327,9 +327,9 @@ void ClipWalls()
          (tempendwalltop &gt; tempendz) ||
          (tempendwallbottom &lt; -tempendz)) {
          // Not trivially unclipped; check for fully clipped
-         if ((tempstartwallbottom &gt; tempstartz) &amp&amp
-            (tempstartwalltop &lt; -tempstartz) &amp&amp
-            (tempendwallbottom &gt; tempendz) &amp&amp
+         if ((tempstartwallbottom &gt; tempstartz) &amp;&amp;
+            (tempstartwalltop &lt; -tempstartz) &amp;&amp;
+            (tempendwallbottom &gt; tempendz) &amp;&amp;
             (tempendwalltop &lt; -tempendz)) {
             // Outside view triangle, trivially clipped
             goto NextWall;

@@ -49,7 +49,7 @@
 <PRE>
 // Function to inorder walk a tree, using code recursion.
 // Tested with 32-bit Visual C++ 1.10.
-#include &ltstdlib.h&gt
+#include &lt;stdlib.h&gt;
 #include &ldquo;tree.h&rdquo;
 extern void Visit(NODE *pNode);
 void WalkTree(NODE *pNode)
@@ -58,16 +58,16 @@ void WalkTree(NODE *pNode)
    if (pNode != NULL)
    {
       // Traverse the left subtree, if there is one
-      if (pNode-&gtpLeftChild != NULL)
+      if (pNode-&gt;pLeftChild != NULL)
       {
-         WalkTree(pNode-&gtpLeftChild);
+         WalkTree(pNode-&gt;pLeftChild);
       }
       // Visit this node
       Visit(pNode);
       // Traverse the right subtree, if there is one
-      if (pNode-&gtpRightChild != NULL)
+      if (pNode-&gt;pRightChild != NULL)
       {
-         WalkTree(pNode-&gtpRightChild);
+         WalkTree(pNode-&gt;pRightChild);
       }
    }
 }
@@ -97,7 +97,7 @@ struct _NODE *pRightChild;
 // Function to inorder walk a tree, using data recursion.
 // No stack overflow testing is performed.
 // Tested with 32-bit Visual C++ 1.10.
-#include &ltstdlib.h&gt
+#include &lt;stdlib.h&gt;
 #include &ldquo;tree.h&rdquo;
 #define MAX_PUSHED_NODES   100
 extern void Visit(NODE *pNode);
@@ -118,10 +118,10 @@ void WalkTree(NODE *pNode)
          // Keep doing this until we come to a node
          // with no left child; that&rsquo;s the next node to
          // visit in inorder sequence
-         while (pNode-&gtpLeftChild != NULL)
+         while (pNode-&gt;pLeftChild != NULL)
          {
             *pNodeStack++ = pNode;
-            pNode = pNode-&gtpLeftChild;
+            pNode = pNode-&gt;pLeftChild;
          }
          // We&rsquo;re at a node that has no left child, so
          // visit the node, then visit the right
@@ -143,11 +143,11 @@ void WalkTree(NODE *pNode)
             // passed on the way down, until we find a
             // node with a right subtree to traverse
             // or run out of pushed nodes and are done
-            if (pNode-&gtpRightChild != NULL)
+            if (pNode-&gt;pRightChild != NULL)
             {
                // Current node has a right child;
                // traverse the right subtree
-               pNode = pNode-&gtpRightChild;
+               pNode = pNode-&gt;pRightChild;
                break;
             }
             // Pop the next node from the stack so

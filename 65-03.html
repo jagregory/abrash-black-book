@@ -49,7 +49,7 @@ int ClipToPlane(polygon_t *pin, plane_t *pplane, polygon_t *pout)
     pinvert = pin-&gt;verts;
     poutvert = pout-&gt;verts;
 
-    curdot = DotProduct(pinvert, &amppplane-&gt;normal);
+    curdot = DotProduct(pinvert, &amp;pplane-&gt;normal);
     curin = (curdot &gt;= pplane-&gt;distance);
 
     for (i=0 ; i&lt;pin-&gt;numverts ; i++)
@@ -60,7 +60,7 @@ int ClipToPlane(polygon_t *pin, plane_t *pplane, polygon_t *pout)
         if (curin)
             *poutvert++ = *pinvert;
 
-        nextdot = DotProduct(&amppin-&gt;verts[nextvert], &amppplane-&gt;normal);
+        nextdot = DotProduct(&amp;pin-&gt;verts[nextvert], &amp;pplane-&gt;normal);
         nextin = (nextdot &gt;= pplane-&gt;distance);
 
         // Add a clipped vertex if one end of the current edge is
@@ -150,7 +150,7 @@ void ZSortObjects(void)
     convexobject_t  *pobject;
     point_t         dist;
 
-    objecthead.pnext = &ampobjecthead;
+    objecthead.pnext = &amp;objecthead;
     for (i=0 ; i&lt;numobjects ; i++)
     {
         for (j=0 ; j&lt;3 ; j++)
@@ -158,14 +158,14 @@ void ZSortObjects(void)
         objects[i].vdist = sqrt(dist.v[0] * dist.v[0] +
                                 dist.v[1] * dist.v[1] +
                                 dist.v[2] * dist.v[2]);
-        pobject = &ampobjecthead;
+        pobject = &amp;objecthead;
         vdist = objects[i].vdist;
         // Viewspace-distance-sort this object into the others.
         // Guaranteed to terminate because of sentinel
         while (vdist &lt; pobject-&gt;pnext-&gt;vdist)
             pobject = pobject-&gt;pnext;
         objects[i].pnext = pobject-&gt;pnext;
-        pobject-&gt;pnext = &ampobjects[i];
+        pobject-&gt;pnext = &amp;objects[i];
     }
 }
 
@@ -179,9 +179,9 @@ void UpdateViewPos()
     // Move in the view direction, across the x-y plane, as if
     // walking. This approach moves slower when looking up or
     // down at more of an angle
-    motionvec.v[0] = DotProduct(&ampvpn, &ampxaxis);
+    motionvec.v[0] = DotProduct(&amp;vpn, &amp;xaxis);
     motionvec.v[1] = 0.0;
-    motionvec.v[2] = DotProduct(&ampvpn, &ampzaxis);
+    motionvec.v[2] = DotProduct(&amp;vpn, &amp;zaxis);
     for (i=0 ; i&lt;3 ; i++)
     {
         currentpos.v[i] += motionvec.v[i] * currentspeed;
@@ -255,9 +255,9 @@ void TransformPoint(point_t *pin, point_t *pout)
     for (i=0 ; i&lt;3 ; i++)
         tvert.v[i] = pin-&gt;v[i] - currentpos.v[i];
     // Rotate into the view orientation
-    pout-&gt;v[0] = DotProduct(&amptvert, &ampvright);
-    pout-&gt;v[1] = DotProduct(&amptvert, &ampvup);
-    pout-&gt;v[2] = DotProduct(&amptvert, &ampvpn);
+    pout-&gt;v[0] = DotProduct(&amp;tvert, &amp;vright);
+    pout-&gt;v[1] = DotProduct(&amp;tvert, &amp;vup);
+    pout-&gt;v[2] = DotProduct(&amp;tvert, &amp;vpn);
 }
 
 // Transform a polygon from worldspace to viewspace.
@@ -266,7 +266,7 @@ void TransformPolygon(polygon_t *pinpoly, polygon_t *poutpoly)
     int         i;
 
     for (i=0 ; i&lt;pinpoly-&gt;numverts ; i++)
-        TransformPoint(&amppinpoly-&gt;verts[i], &amppoutpoly-&gt;verts[i]);
+        TransformPoint(&amp;pinpoly-&gt;verts[i], &amp;poutpoly-&gt;verts[i]);
     poutpoly-&gt;color = pinpoly-&gt;color;
     poutpoly-&gt;numverts = pinpoly-&gt;numverts;
 }
@@ -284,8 +284,8 @@ int PolyFacesViewer(polygon_t *ppoly)
         edge1.v[i] = ppoly-&gt;verts[0].v[i] - ppoly-&gt;verts[1].v[i];
         edge2.v[i] = ppoly-&gt;verts[2].v[i] - ppoly-&gt;verts[1].v[i];
     }
-    CrossProduct(&ampedge1, &ampedge2, &ampnormal);
-    if (DotProduct(&ampviewvec, &ampnormal) &gt; 0)
+    CrossProduct(&amp;edge1, &amp;edge2, &amp;normal);
+    if (DotProduct(&amp;viewvec, &amp;normal) &gt; 0)
         return 1;
     else
         return 0;
@@ -296,8 +296,8 @@ void SetWorldspaceClipPlane(point_t *normal, plane_t *plane)
 {
 
     // Rotate the plane normal into worldspace
-    BackRotateVector(normal, &ampplane-&gt;normal);
-    plane-&gt;distance = DotProduct(&ampcurrentpos, &ampplane-&gt;normal) +
+    BackRotateVector(normal, &amp;plane-&gt;normal);
+    plane-&gt;distance = DotProduct(&amp;currentpos, &amp;plane-&gt;normal) +
             CLIP_PLANE_EPSILON;
 }
 
@@ -314,10 +314,10 @@ void SetUpFrustum(void)
     normal.v[0] = s;
     normal.v[1] = 0;
     normal.v[2] = c;
-    SetWorldspaceClipPlane(&ampnormal, &ampfrustumplanes[0]);
+    SetWorldspaceClipPlane(&amp;normal, &amp;frustumplanes[0]);
     // Right clip plane
     normal.v[0] = -s;
-    SetWorldspaceClipPlane(&ampnormal, &ampfrustumplanes[1]);
+    SetWorldspaceClipPlane(&amp;normal, &amp;frustumplanes[1]);
     angle = atan(2.0 / fieldofview * maxscale / yscreenscale);
     s = sin(angle);
     c = cos(angle);
@@ -325,10 +325,10 @@ void SetUpFrustum(void)
     normal.v[0] = 0;
     normal.v[1] = s;
     normal.v[2] = c;
-    SetWorldspaceClipPlane(&ampnormal, &ampfrustumplanes[2]);
+    SetWorldspaceClipPlane(&amp;normal, &amp;frustumplanes[2]);
     // Top clip plane
     normal.v[1] = -s;
-    SetWorldspaceClipPlane(&ampnormal, &ampfrustumplanes[3]);
+    SetWorldspaceClipPlane(&amp;normal, &amp;frustumplanes[3]);
 }
 
 // Clip a polygon to the frustum.
@@ -342,14 +342,14 @@ int ClipToFrustum(polygon_t *pin, polygon_t *pout)
     for (i=0 ; i&lt;(NUM_FRUSTUM_PLANES-1); i++)
     {
         if (!ClipToPlane(ppoly,
-                         &ampfrustumplanes[i],
-                         &amptpoly[curpoly]))
+                         &amp;frustumplanes[i],
+                         &amp;tpoly[curpoly]))
             return 0;
-        ppoly = &amptpoly[curpoly];
+        ppoly = &amp;tpoly[curpoly];
         curpoly ^= 1;
     }
     return ClipToPlane(ppoly,
-                       &ampfrustumplanes[NUM_FRUSTUM_PLANES-1],
+                       &amp;frustumplanes[NUM_FRUSTUM_PLANES-1],
                        pout);
 }
 
@@ -370,7 +370,7 @@ void UpdateWorld()
     ZSortObjects();
     // Draw all visible faces in all objects
     pobject = objecthead.pnext;
-    while (pobject != &ampobjecthead)
+    while (pobject != &amp;objecthead)
     {
         ppoly = pobject-&gt;ppoly;
         for (i=0 ; i&lt;pobject-&gt;numpolys ; i++)
@@ -384,13 +384,13 @@ void UpdateWorld()
                     tpoly0.verts[j].v[k] = ppoly-&gt;verts[j].v[k] +
                             pobject-&gt;center.v[k];
             }
-            if (PolyFacesViewer(&amptpoly0))
+            if (PolyFacesViewer(&amp;tpoly0))
             {
-                if (ClipToFrustum(&amptpoly0, &amptpoly1))
+                if (ClipToFrustum(&amp;tpoly0, &amp;tpoly1))
                 {
-                    TransformPolygon (&amptpoly1, &amptpoly2);
-                    ProjectPolygon (&amptpoly2, &ampscreenpoly);
-                    FillPolygon2D (&ampscreenpoly);
+                    TransformPolygon (&amp;tpoly1, &amp;tpoly2);
+                    ProjectPolygon (&amp;tpoly2, &amp;screenpoly);
+                    FillPolygon2D (&amp;screenpoly);
                 }
             }
             ppoly++;

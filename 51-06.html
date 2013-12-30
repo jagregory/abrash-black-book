@@ -54,7 +54,7 @@
    all vertices offset by (X,Y) */
 #define DRAW_POLYGON(PointList,NumPoints,Color,X,Y)          \
    Polygon.Length = NumPoints; Polygon.PointPtr = PointList; \
-   FillConvexPolygon(&ampPolygon, Color, X, Y);
+   FillConvexPolygon(&amp;Polygon, Color, X, Y);
 /* Describes a single 2D point */
 struct Point {
    int X;   /* X coordinate */

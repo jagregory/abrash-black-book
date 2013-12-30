@@ -67,10 +67,10 @@
 <PRE>
  //  MAKETAB.C &mdash; Build QSCAN3.INC for QSCAN3.ASM
   
- #include &ltstdio.h&gt
- #include &ltctype.h&gt
+ #include &lt;stdio.h&gt;
+ #include &lt;ctype.h&gt;
   
- #define ChType( c )  (((c) &amp 0x7f) == &lsquo;\&rsquo;&rsquo; || isalnum((c) &amp 0x7f))
+ #define ChType( c )  (((c) &amp; 0x7f) == &lsquo;\&rsquo;&rsquo; || isalnum((c) &amp; 0x7f))
   
  int NoCarry[ 4 ] = { 0, 0x80, 1, 0x80 };
  int Carry[ 4 ]   = { 1, 0x81, 1, 0x80 };
@@ -82,9 +82,9 @@
   
    printf( &ldquo;Building table.  Please wait...&rdquo; );
   
-   for( ahChar = 0; ahChar &lt 128; ahChar++ )
+   for( ahChar = 0; ahChar &lt; 128; ahChar++ )
      {
-     for( alChar = 0; alChar &lt 256; alChar++ )
+     for( alChar = 0; alChar &lt; 256; alChar++ )
        {
        i = ChType( alChar ) * 2 + ChType( ahChar );
   

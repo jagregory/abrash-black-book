@@ -58,8 +58,8 @@
    rectangle fills by filling the screen with adjacent 80x60
    rectangles in a variety of patterns. Tested with Borland C++
    in C compilation mode and the small model */
-#include &ltconio.h&gt
-#include &ltdos.h&gt
+#include &lt;conio.h&gt;
+#include &lt;dos.h&gt;
 
 void Set320x240Mode(void);
 void FillPatternX(int, int, int, int, unsigned int, char*);
@@ -89,14 +89,14 @@ void main() {
    union REGS regset;
 
    Set320x240Mode();
-   for (j = 0; j &lt 4; j++) {
-      for (i = 0; i &lt 4; i++) {
+   for (j = 0; j &lt; 4; j++) {
+      for (i = 0; i &lt; 4; i++) {
          FillPatternX(i*80,j*60,i*80+80,j*60+60,0,PattTable[j*4+i]);
       }
    }
    getch();
    regset.x.ax = 0x0003;   /* switch back to text mode and done */
-   int86(0x10, &ampregset, &ampregset);
+   int86(0x10, &amp;regset, &amp;regset);
 }
 </PRE>
 <!-- END CODE //-->

@@ -42,14 +42,14 @@
  ; Assembly subroutine for Listing 16.2. Scans through Buffer, of
  ; length BufferLength, counting words and updating WordCount as
  ; appropriate, using a lookup table-based approach. BufferLength
- ; must be &gt 0. *CharFlag and *WordCount should equal 0 on the
+ ; must be &gt; 0. *CharFlag and *WordCount should equal 0 on the
  ; first call. Tested with TASM.
  ; C near-callable as:
  ; void ScanBuffer(char *Buffer, unsigned int BufferLength,
  ; char *CharFlag, unsigned long *WordCount);
  
  parms   struc
-         dw      2 dup(?)        ;pushed return address &amp BP
+         dw      2 dup(?)        ;pushed return address &amp; BP
  Buffer  dw      ?               ;buffer to scan
  BufferLength dw ?               ;length of buffer to scan
  CharFlag dw     ?               ;pointer to flag for state of last

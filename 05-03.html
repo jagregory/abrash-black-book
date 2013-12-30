@@ -44,10 +44,10 @@
  * argument. Performs the search by reading and searching blocks
  * of size BLOCK_SIZE. */
 
-#include &ltstdio.h&gt
-#include &ltfcntl.h&gt
-#include &ltstring.h&gt
-#include &ltalloc.h&gt   /* alloc.h for Borland compilers,
+#include &lt;stdio.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;string.h&gt;
+#include &lt;alloc.h&gt;   /* alloc.h for Borland compilers,
                         malloc.h for Microsoft compilers */
 
 #define BLOCK_SIZE  0x4000   /* we&rsquo;ll process the file in 16K blocks */
@@ -164,7 +164,7 @@ main(int argc, char *argv[]) {
          when that block is searched)
       */
       if ( (BlockSearchLength =
-               WorkingLength - SearchStringLength + 1) &lt= 0 ) {
+               WorkingLength - SearchStringLength + 1) &lt;= 0 ) {
             Done = 1;  /* Too few characters in this block for
                           there to be any possible matches, so this
                           is the final block and we&rsquo;re done without
@@ -182,7 +182,7 @@ main(int argc, char *argv[]) {
             /* Copy any bytes from the end of the block that start
                potentially-matching sequences that would run off
                the end of the block over to the next block */
-            if ( SearchStringLength &gt 1 ) {
+            if ( SearchStringLength &gt; 1 ) {
                memcpy(WorkingBlock,
                   WorkingBlock+BLOCK_SIZE - SearchStringLength + 1,
                   SearchStringLength - 1);
