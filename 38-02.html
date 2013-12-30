@@ -38,14 +38,14 @@
 <P><BR></P>
 <H4 ALIGN="LEFT"><A NAME="Heading5"></A><FONT COLOR="#000077">How Do You Fit Polygons Together?</FONT></H4>
 <P>How, then, do you fit polygons together? <I>Very</I> carefully. First, the line-tracing algorithm must be adjusted so that it selects only those pixels that are truly inside the polygon. This basically requires shifting a standard line-drawing algorithm horizontally by one half-pixel toward the polygon&rsquo;s interior. That leaves the issue of how to handle points that are exactly on the boundary, and points that lie at vertices, so that those points are drawn once and only once. To deal with that, we&rsquo;re going to adopt the following rules:</P>
-<DL>
-<DD><B>&#149;</B>&nbsp;&nbsp;Points located exactly on nonhorizontal edges are drawn only if the interior of the polygon is directly to the right (left edges are drawn, right edges aren&rsquo;t).
-<P><A NAME="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/38-03.jpg',408,194 )"> --><IMG SRC="images/38-03.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/38-03.jpg',408,194)"> --><FONT COLOR="#000077"><B>Figure 38.3</B></FONT></A>&nbsp;&nbsp;<I>The adjacent polygons problem.</I>
-</P>
-<DD><B>&#149;</B>&nbsp;&nbsp;Points located exactly on horizontal edges are drawn only if the interior of the polygon is directly below them (horizontal top edges are drawn, horizontal bottom edges aren&rsquo;t).
-<DD><B>&#149;</B>&nbsp;&nbsp;A vertex is drawn only if all lines ending at that point meet the above conditions (no right or bottom edges end at that point).
-</DL>
+<ul>
+  <li>
+    Points located exactly on nonhorizontal edges are drawn only if the interior of the polygon is directly to the right (left edges are drawn, right edges aren&rsquo;t).
+    <P><A NAME="Fig3"><IMG SRC="images/38-03.jpg"><BR><FONT COLOR="#000077"><B>Figure 38.3</B></FONT></A>&nbsp;&nbsp;<I>The adjacent polygons problem.</I></P>
+  </li>
+  <li>Points located exactly on horizontal edges are drawn only if the interior of the polygon is directly below them (horizontal top edges are drawn, horizontal bottom edges aren&rsquo;t).
+  <li>A vertex is drawn only if all lines ending at that point meet the above conditions (no right or bottom edges end at that point).
+</ul>
 <P>All edges of a polygon except those that are flat tops or flat bottoms will be considered either right edges or left edges, regardless of slope. The left edge is the one that starts with the leftmost line down from the top of the polygon.
 </P>
 <P>These rules ensure that no pixel is drawn more than once when adjacent polygons are filled, and that if polygons cover the full 360-degree range around a pixel, then that pixel will be drawn once and only once&mdash;just what we need in order to be able to fit filled polygons together seamlessly.</P>

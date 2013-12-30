@@ -48,10 +48,10 @@
 <H4 ALIGN="LEFT"><A NAME="Heading4"></A><FONT COLOR="#000077">The Rules of the Game</FONT></H4>
 <P>The Game of Life is ridiculously simple. There is a cellmap, consisting of a rectangular matrix of cells, each of which may initially be either on or off. Each cell has eight neighbors: two horizontally, two vertically, and four diagonally. For each succeeding generation of cells, the game logic determines whether each cell will be on or off according to the following rules:
 </P>
-<DL>
-<DD><B>&#149;</B>&nbsp;&nbsp;If a cell is on and has either two or three neighbors that are on in the current generation, it stays on; otherwise, the cell turns off.
-<DD><B>&#149;</B>&nbsp;&nbsp;If a cell is off and has exactly three &ldquo;on&rdquo; neighbors in the current generation, it turns on; otherwise, it stays off. That&rsquo;s all the rules there are&mdash;but they give rise to an astonishing variety of forms, including patterns that spin, march across the screen, and explode.
-</DL>
+<ul>
+	<li>If a cell is on and has either two or three neighbors that are on in the current generation, it stays on; otherwise, the cell turns off.</li>
+	<li>If a cell is off and has exactly three &ldquo;on&rdquo; neighbors in the current generation, it turns on; otherwise, it stays off. That&rsquo;s all the rules there are&mdash;but they give rise to an astonishing variety of forms, including patterns that spin, march across the screen, and explode.</li>
+</ul>
 <P>It&rsquo;s only a little more complicated to implement the Game of Life than it is to describe it. Listing 17.1, together with the display functions in Listing 17.2, is a C<SMALL>++</SMALL> implementation of the Game of Life, and it&rsquo;s very straightforward. A cellmap is an object that&rsquo;s accessible through member functions to set, clear, and test cell states, and through a member function to calculate the next generation. Calculating the next generation involves nothing more than using the other member functions to set each cell to the appropriate state, given the number of neighboring on-cells and the cell&rsquo;s current state. The only complication is that it&rsquo;s necessary to place the next generation&rsquo;s cells in another cellmap, and then copy the final result back to the original cellmap. This keeps us from corrupting the current generation&rsquo;s cellmap before we&rsquo;re done using it to calculate the next generation.</P>
 <P>All in all, Listing 17.1 is a clean, compact, and elegant implementation of the Game of Life. Were it not that the code is as slow as molasses, we could stop right here.</P><P><BR></P>
 <CENTER>

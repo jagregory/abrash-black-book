@@ -53,12 +53,12 @@
 <H4 ALIGN="LEFT"><A NAME="Heading5"></A><FONT COLOR="#000077">The 8088&rsquo;s Ancestral Cycle-Eaters</FONT></H4>
 <P>Internally, the 8088 is a 16-bit processor, capable of running at full speed at all times&mdash;unless external data is required. External data must traverse the 8088&rsquo;s external data bus and the PC&rsquo;s data bus one byte at a time to and from peripherals, with cycle-eaters lurking along every step of the way. What&rsquo;s more, external data includes not only memory operands <I>but also instruction bytes,</I> so even instructions with no memory operands can suffer from cycle-eaters. Since some of the 8088&rsquo;s fastest instructions are register-only instructions, that&rsquo;s important indeed.</P>
 <P>The major cycle-eaters are:</P>
-<DL>
-<DD><B>&#149;</B>&nbsp;&nbsp;The 8088&rsquo;s 8-bit external data bus.
-<DD><B>&#149;</B>&nbsp;&nbsp;The prefetch queue.
-<DD><B>&#149;</B>&nbsp;&nbsp;Dynamic RAM refresh.
-<DD><B>&#149;</B>&nbsp;&nbsp;Wait states, notably display memory wait states and, in the AT and 80386 computers, system memory wait states.
-</DL>
+<ul>
+	<li>The 8088&rsquo;s 8-bit external data bus.</li>
+	<li>The prefetch queue.</li>
+	<li>Dynamic RAM refresh.</li>
+	<li>Wait states, notably display memory wait states and, in the AT and 80386 computers, system memory wait states.</li>
+</ul>
 <P>The locations of these cycle-eaters in the primordial 8088-based PC are shown in Figure 4.1. We&rsquo;ll cover each of the cycle-eaters in turn in this chapter. The material won&rsquo;t be easy since cycle-eaters are among the most subtle aspects of assembly programming. By the same token, however, this will be one of the most important and rewarding chapters in this book. Don&rsquo;t worry if you don&rsquo;t catch everything in this chapter, but do read it all even if the going gets a bit tough. Cycle-eaters play a key role in later chapters, so some familiarity with them is highly desirable.
 </P>
 <H3><A NAME="Heading6"></A><FONT COLOR="#000077">The 8-Bit Bus Cycle-Eater</FONT></H3>

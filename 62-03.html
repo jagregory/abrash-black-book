@@ -38,13 +38,13 @@
 <P><BR></P>
 <H4 ALIGN="LEFT"><A NAME="Heading4"></A><FONT COLOR="#000077">The Rendering Pipeline</FONT></H4>
 <P>Conceptually rendering from a BSP tree really is that simple, but the implementation is a bit more complicated. The full rendering pipeline, as coordinated by <B>UpdateWorld()</B>, is this:</P>
-<DL>
-<DD><B>&#149;</B>&nbsp;&nbsp;Update the current location.
-<DD><B>&#149;</B>&nbsp;&nbsp;Transform all wall endpoints into viewspace (the world as seen from the current location with the current viewing angle).
-<DD><B>&#149;</B>&nbsp;&nbsp;Clip all walls to the view pyramid.
-<DD><B>&#149;</B>&nbsp;&nbsp;Project wall vertices to screen coordinates.
-<DD><B>&#149;</B>&nbsp;&nbsp;Walk the walls back to front, and for each wall that lies at least partially in the view pyramid, perform backface culling (skip walls facing away from the viewer), and draw the wall if it&rsquo;s not culled.
-</DL>
+<ul>
+	<li>Update the current location.</li>
+	<li>Transform all wall endpoints into viewspace (the world as seen from the current location with the current viewing angle).</li>
+	<li>Clip all walls to the view pyramid.</li>
+	<li>Project wall vertices to screen coordinates.</li>
+	<li>Walk the walls back to front, and for each wall that lies at least partially in the view pyramid, perform backface culling (skip walls facing away from the viewer), and draw the wall if it&rsquo;s not culled.</li>
+</ul>
 <P>Next, we&rsquo;ll look at each part of the pipeline more closely. The pipeline is too complex for me to be able to discuss each part in complete detail. Some sources for further reading are <I>Computer Graphics</I>, by Foley and van Dam (ISBN 0-201-12110-7), and the <I>DDJ Essential Books on Graphics Programming</I> CD.</P>
 <H3><A NAME="Heading5"></A><FONT COLOR="#000077">Moving the Viewer</FONT></H3>
 <P>The sample BSP program performs first-person rendering; that is, it renders the world as seen from your eyes as you move about. The rate of movement is controlled by key-handling code that&rsquo;s not shown in Listing 62.1; however, the variables set by the key-handling code are used in <B>UpdateViewPos()</B> to bring the current location up to date.</P>

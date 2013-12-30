@@ -40,19 +40,19 @@
 </P>
 <P>The picture is less clear in the 386 world since there are so many different memory architectures, but similar problems can occur in any computer built around a 286 or 386. The prefetch queue cycle-eater is even a factor&mdash;albeit a lesser one&mdash;on zero-wait-state machines, both because branching empties the queue and because some instructions can outrun even zero&mdash;5 cycles longer than the official execution time.)</P>
 <P>To summarize:</P>
-<DL>
-<DD><B>&#149;</B>&nbsp;&nbsp;Memory-accessing instructions don&rsquo;t run at their official speeds on non-zero-wait-state 286/386 computers.
-<DD><B>&#149;</B>&nbsp;&nbsp;The prefetch queue cycle-eater reduces performance on 286/386 computers, particularly when non-zero-wait-state memory is used.
-<DD><B>&#149;</B>&nbsp;&nbsp;Branches often execute at less than their rated speeds on the 286 and 386 since the prefetch queue is emptied.
-<DD><B>&#149;</B>&nbsp;&nbsp;The extent to which the prefetch queue and wait states affect performance varies from one 286/386 computer to another, making precise optimization impossible.
-</DL>
+<ul>
+    <li>Memory-accessing instructions don&rsquo;t run at their official speeds on non-zero-wait-state 286/386 computers.</li>
+    <li>The prefetch queue cycle-eater reduces performance on 286/386 computers, particularly when non-zero-wait-state memory is used.</li>
+    <li>Branches often execute at less than their rated speeds on the 286 and 386 since the prefetch queue is emptied.</li>
+    <li>The extent to which the prefetch queue and wait states affect performance varies from one 286/386 computer to another, making precise optimization impossible.</li>
+</ul>
 <P>What&rsquo;s to be learned from all this? Several things:
 </P>
-<DL>
-<DD><B>&#149;</B>&nbsp;&nbsp;Keep your instructions short.
-<DD><B>&#149;</B>&nbsp;&nbsp;Keep it in the registers; avoid memory, since memory generally can&rsquo;t keep up with the processor.
-<DD><B>&#149;</B>&nbsp;&nbsp;Don&rsquo;t jump.
-</DL>
+<ul>
+    <li>Keep your instructions short.</li>
+    <li>Keep it in the registers; avoid memory, since memory generally can&rsquo;t keep up with the processor.</li>
+    <li>Don&rsquo;t jump.</li>
+</ul>
 <P>Of course, those are exactly the rules that apply to 8088 optimization as well. Isn&rsquo;t it convenient that the same general rules apply across the board?
 </P>
 <H4 ALIGN="CENTER"><A NAME="Heading7"></A><FONT COLOR="#000077">Data Alignment</FONT></H4>

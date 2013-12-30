@@ -77,13 +77,13 @@ jz    Match
 <P>More on this shortly.
 </P>
 <P>To recap, here are some things to look for when striving to convert C code into optimized assembly language:</P>
-<DL>
-<DD><B>&#149;</B>&nbsp;&nbsp;Move the entire performance-critical section into a single assembly language function.
-<DD><B>&#149;</B>&nbsp;&nbsp;Don&rsquo;t use calls or stack frame accesses inside the critical code, if possible, and avoid unnecessary memory accesses of any kind.
-<DD><B>&#149;</B>&nbsp;&nbsp;Change segments as infrequently as possible.
-<DD><B>&#149;</B>&nbsp;&nbsp;Optimize in terms of what assembly does well, <I>not</I> in terms of fine-tuning compiled C code.
-<DD><B>&#149;</B>&nbsp;&nbsp;Change the rules to the benefit of assembly, if necessary; for example, reorganize data structto allow efficient assembly language processing.
-</DL>
+<ul>
+	<li>Move the entire performance-critical section into a single assembly language function.</li>
+	<li>Don&rsquo;t use calls or stack frame accesses inside the critical code, if possible, and avoid unnecessary memory accesses of any kind.</li>
+	<li>Change segments as infrequently as possible.</li>
+	<li>Optimize in terms of what assembly does well, <I>not</I> in terms of fine-tuning compiled C code.</li>
+	<li>Change the rules to the benefit of assembly, if necessary; for example, reorganize data structto allow efficient assembly language processing.</li>
+</ul>
 <P>That said, let me show some of these precepts in action.
 </P>
 <H4 ALIGN="LEFT"><A NAME="Heading9"></A><FONT COLOR="#000077">A C-to-Assembly Case Study</FONT></H4>

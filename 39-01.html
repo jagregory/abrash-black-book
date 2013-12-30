@@ -51,11 +51,11 @@
 <P>In addressing the topic of filling convex polygons in the previous chapter, the implementation we came up with met all of our functional requirements. In particular, it met stringent rules that guaranteed that polygons would never overlap or have gaps at shared edges, an important consideration when building polygon-based images. Unfortunately, the implementation was also slow as molasses. In this chapter we&rsquo;ll work up polygon-filling code that&rsquo;s fast enough to be truly usable.
 </P>
 <P>Our original polygon filling code involved three major tasks, each performed by a separate function:</P>
-<DL>
-<DD><B>&#149;</B>&nbsp;&nbsp;Tracing each polygon edge to generate a coordinate list (performed by the function <B>ScanEdge);</B>
-<DD><B>&#149;</B>&nbsp;&nbsp;Drawing the scanned-out horizontal lines that constitute the filled polygon (<B>DrawHorizontalLineList</B> ); and
-<DD><B>&#149;</B>&nbsp;&nbsp;Characterizing the polygon and coordinating the tracing and drawing (<B>FillConvexPolygon</B> ).
-</DL>
+<ul>
+	<li>Tracing each polygon edge to generate a coordinate list (performed by the function <B>ScanEdge);</B></li>
+	<li>Drawing the scanned-out horizontal lines that constitute the filled polygon (<B>DrawHorizontalLineList</B> ); and</li>
+	<li>Characterizing the polygon and coordinating the tracing and drawing (<B>FillConvexPolygon</B> ).</li>
+</ul>
 <P>The amount of time that the previous chapter&rsquo;s sample program spent in each of these areas is shown in Table 39.1. As you can see, half the time was spent drawing and the other half was spent tracing the polygon edges (the time spent in <B>FillConvexPolygon</B> was relatively minuscule), so we have our choice of where to begin optimizing.</P>
 <H4 ALIGN="LEFT"><A NAME="Heading4"></A><FONT COLOR="#000077">Fast Drawing</FONT></H4>
 <P>Let&rsquo;s start with drawing, which is easily sped up. The previous chapter&rsquo;s code used a double-nested loop that called a draw-pixel function to plot each pixel in the polygon individually. That&rsquo;s a ridiculous approach in a graphics mode that offers linearly mapped memory, as does VGA mode 13H, the mode in which we&rsquo;re working. At the very least, we could point a far pointer to the left edge of each polygon scan line, then draw each pixel in that scan line in quick succession, using something along the lines of <B>*ScrPtr<SMALL>++</SMALL> = FillColor;</B> inside a loop.</P>

@@ -54,12 +54,12 @@
 <H4 ALIGN="LEFT"><A NAME="Heading23"></A><FONT COLOR="#000077">Cycle-Eaters: A Summary</FONT></H4>
 <P>We&rsquo;ve covered a great deal of sophisticated material in this chapter, so don&rsquo;t feel bad if you haven&rsquo;t understood everything you&rsquo;ve read; it will all become clear from further reading, especially once you study, time, and tune code that you have written yourself. What&rsquo;s really important is that you come away from this chapter understanding that on the 8088:
 </P>
-<DL>
-<DD><B>&#149;</B>&nbsp;&nbsp;The 8-bit bus cycle-eater causes each access to a word-sized operand to be 4 cycles longer than an equivalent access to a byte-sized operand.
-<DD><B>&#149;</B>&nbsp;&nbsp;The prefetch queue cycle-eater can cause instruction execution times to be as much as four times longer than the officially documented cycle times.
-<DD><B>&#149;</B>&nbsp;&nbsp;The DRAM refresh cycle-eater slows most PC code, with performance reductions ranging as high as 8.33 percent.
-<DD><B>&#149;</B>&nbsp;&nbsp;The display adapter cycle-eater typically doubles and can more than triple the length of the standard 4-cycle access to display memory, with intensive display memory access suffering most.
-</DL>
+<ul>
+	<li>The 8-bit bus cycle-eater causes each access to a word-sized operand to be 4 cycles longer than an equivalent access to a byte-sized operand.</li>
+	<li>The prefetch queue cycle-eater can cause instruction execution times to be as much as four times longer than the officially documented cycle times.</li>
+	<li>The DRAM refresh cycle-eater slows most PC code, with performance reductions ranging as high as 8.33 percent.</li>
+	<li>The display adapter cycle-eater typically doubles and can more than triple the length of the standard 4-cycle access to display memory, with intensive display memory access suffering most.</li>
+</ul>
 <P>This basic knowledge about cycle-eaters puts you in a good position to understand the results reported by the Zen timer, and that means that you&rsquo;re well on your way to writing high-performance assembler code.
 </P>
 <H4 ALIGN="LEFT"><A NAME="Heading24"></A><FONT COLOR="#000077">What Does It All Mean?</FONT></H4>
