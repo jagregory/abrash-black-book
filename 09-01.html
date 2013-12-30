@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="08-05.html">Previous</a></td>
+        <td>
+          <a href="08-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="09-02.html">Next</a></td>
+        <td>
+          <a href="09-02.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <h2 id="Heading1">Chapter 9<br />
   Hints My Readers Gave Me</h2>
@@ -64,7 +67,7 @@ X - 1 = 0
 
   <p>I like to think I know more about performance programming than Barry knew about math. Nonetheless, I always welcome good ideas and comments, and many readers have sent me a slew of those over the years. So in this chapter, I think I&rsquo;ll return the favor by devoting a chapter to reader feedback.</p>
 
-  <h4 align="left" id="Heading3">Another Look at LEA</h4>
+  <h4 id="Heading3">Another Look at LEA</h4>
 
   <p>Several people have pointed out that while <b>LEA</b> is great for performing certain additions (see Chapter 6), it isn&rsquo;t a perfect replacement for <b>ADD</b>. What&rsquo;s the difference? <b>LEA</b>, an addressing instruction by trade, doesn&rsquo;t affect the flags, while the arithmetic <b>ADD</b> instruction most certainly does. This is no problem when performing additions that involve only quantities that fit in one machine word (32 bits in 386 protected mode, 16 bits otherwise), but it renders <b>LEA</b> useless for multiword operations, which use the Carry flag to tie together partial results. For example, these instructions</p>
   <pre>
@@ -100,7 +103,7 @@ ADDLOOP:
 
   <p>But there sure are a lot of interesting options, aren&rsquo;t there?</p>
 
-  <h4 align="left" id="Heading4">The Kennedy Portfolio</h4>
+  <h4 id="Heading4">The Kennedy Portfolio</h4>
 
   <p>Reader John Kennedy regularly passes along intriguing assembly programming tricks, many of which I&rsquo;ve never seen mentioned anywhere else. John likes to optimize for size, whereas I lean more toward speed, but many of his optimizations are good for both purposes. Here are a few of my favorites:</p>
 
@@ -140,16 +143,20 @@ REP   MOVSB     ;copy any odd byte
 CopyDone:
 </pre>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="08-05.html">Previous</a></td>
+        <td>
+          <a href="08-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="09-02.html">Next</a></td>
+        <td>
+          <a href="09-02.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

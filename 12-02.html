@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="12-01.html">Previous</a></td>
+        <td>
+          <a href="12-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="12-03.html">Next</a></td>
+        <td>
+          <a href="12-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>which calculates the same sum and leaves the registers in the same state as the first example, but avoids indexed addressing.</p>
 
@@ -40,7 +43,7 @@
 
   <p>In a key loop on the 486, 1 cycle can indeed matter.</p>
 
-  <h4 align="left" id="Heading6">Calculate Memory Pointers Ahead of Time</h4>
+  <h4 id="Heading6">Calculate Memory Pointers Ahead of Time</h4>
 
   <p>Rule #2: Don&rsquo;t use a register as a memory pointer during the next two cycles after loading it.</p>
 
@@ -125,16 +128,20 @@ jnz    LoopTop
 
   <p>A caution: I&rsquo;m quite certain that the 2-cycle-ahead addressing pipeline interruption penalty I&rsquo;ve described exists in the two 486s I&rsquo;ve tested. However, there&rsquo;s no guarantee that Intel won&rsquo;t change this aspect of the 486 in the future, especially given that the documentation indicates otherwise. Perhaps the 2-cycle penalty is the result of a bug in the initial steps of the 486, and will revert to the documented 1-cycle penalty someday; likewise for the undocumented optimizations I&rsquo;ll describe below. Nonetheless, none of the optimizations I suggest would hurt performance even if the undocumented performance characteristics of the 486 were to vanish, and they certainly will help performance on at least some 486s right now, so I feel they&rsquo;re well worth using.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="12-01.html">Previous</a></td>
+        <td>
+          <a href="12-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="12-03.html">Next</a></td>
+        <td>
+          <a href="12-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="61-01.html">Previous</a></td>
+        <td>
+          <a href="61-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="61-03.html">Next</a></td>
+        <td>
+          <a href="61-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>I&rsquo;ll be working in a left-handed coordinate system, whereby if you wrap the fingers of your left hand around the z axis with your thumb pointing in the positive z direction, your fingers will curl from the positive x axis to the positive y axis. The positive x axis runs left to right across the screen, the positive y axis runs bottom to top across the screen, and the positive z axis runs into the screen.</p>
 
@@ -42,8 +45,6 @@
 
   <p>Now we&rsquo;re ready to move on to the dot product. Given two vectors <b>U</b> = [u<sub>1</sub> u<sub>2</sub> u<sub>3</sub>] and <b>V</b> = [v<sub>1</sub> v<sub>2</sub> v<sub>3</sub>], their dot product, denoted by the symbol &bull;, is calculated as:</p>
 
-  <p align="left"></p>
-
   <p align="center"><img src="images/61-02d.jpg" /></p>
 
   <p align="right">(eq. 2)</p>
@@ -52,19 +53,15 @@
 
   <p>Now that we know how to calculate a dot product, what does that get us? Not much. The dot product isn&rsquo;t of much use for graphics until you start thinking of it this way</p>
 
-  <p align="left"></p>
-
   <p align="center"><img src="images/61-03d.jpg" /></p>
 
   <p align="right">(eq. 3)</p>
 
   <p>where q is the angle between the two vectors, and the other two terms are the lengths of the vectors, as shown in Figure 61.1. Although it&rsquo;s not immediately obvious, equation 3 has a wide variety of applications in 3-D graphics.</p>
 
-  <h4 align="left" id="Heading6">Dot Products of Unit Vectors</h4>
+  <h4 id="Heading6">Dot Products of Unit Vectors</h4>
 
   <p>The simplest case of the dot product is when both vectors are <i>unit vectors</i>; that is, when their lengths are both one, as calculated as in Equation 1. In this case, equation 3 simplifies to:</p>
-
-  <p align="left"></p>
 
   <p align="center"><img src="images/61-04d.jpg" /></p>
 
@@ -74,8 +71,6 @@
 
   <p>One obvious use of this is to find angles between unit vectors, in conjunction with an inverse cosine function or lookup table. A more useful application in 3-D graphics lies in lighting surfaces, where the cosine of the angle between incident light and the normal (perpendicular vector) of a surface determines the fraction of the light&rsquo;s full intensity at which the surface is illuminated, as in</p>
 
-  <p align="right"></p>
-
   <p align="center"><img src="images/61-05d.jpg" /></p>
 
   <p align="right">(eq. 5)</p>
@@ -84,8 +79,6 @@
   <b>Figure 61.1</b></a>&nbsp;&nbsp;<i>The dot product.</i></p>
 
   <p>where <b>I</b><sub>s</sub> is the intensity of illumination of the surface, <b>I</b><sub>l</sub> is the intensity of the light, and q is the angle between <b>-D</b><sub>l</sub> (where <b>D</b><sub>l</sub> is the light direction vector) and the surface normal. If the inverse light vector and the surface normal are both unit vectors, then this calculation can be performed with four multiplies and three additions&mdash;and no explicit cosine calculations&mdash;as</p>
-
-  <p align="left"></p>
 
   <p align="center"><img src="images/61-06d.jpg" /></p>
 
@@ -102,16 +95,20 @@
   <p><a id="Fig2"><img src="images/61-02.jpg" /><br />
   <b>Figure 61.2</b></a>&nbsp;&nbsp;<i>The dot product as used in calculating lighting intensity.</i></p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="61-01.html">Previous</a></td>
+        <td>
+          <a href="61-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="61-03.html">Next</a></td>
+        <td>
+          <a href="61-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

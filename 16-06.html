@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="16-05.html">Previous</a></td>
+        <td>
+          <a href="16-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="16-07.html">Next</a></td>
+        <td>
+          <a href="16-07.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <h3 id="Heading9">Levels of Optimization</h3>
 
@@ -42,7 +45,7 @@
     </tr>
   </table>
 
-  <h4 align="left" id="Heading10">Optimization Level 1: Good Code</h4>
+  <h4 id="Heading10">Optimization Level 1: Good Code</h4>
 
   <p>The first level of optimization involves fine-tuning and clever use of the instruction set. The basic framework is still the same as my code (which in turn is basically the same as that of the original C code), but that framework is implemented more efficiently.</p>
 
@@ -56,16 +59,20 @@
 
   <p>Listing 16.6, contributed by Willem Clements, of Granada, Spain, illustrates a variety of level 1 optimizations: the two-loop approach, the use of a 16- rather than 32-bit counter, and the use of <b>LODSW</b> . Together, these optimizations made Willem&rsquo;s code nearly twice as fast as mine in Listing 16.4. A few details could stand improvement; for example, <b>AND AX,AX</b> is a shorter way to test for zero than <b>CMP AX,0</b> , and <b>ALIGN 2</b> could be used. Nonetheless, this is good code, and it&rsquo;s also fairly compact and reasonably easy to understand. In short, this is an excellent example of how an hour or so of hand-optimization might accomplish significantly improved performance at a reasonable cost in complexity and time. This level of optimization is adequate for most purposes (and, in truth, is beyond the abilities of most programmers).</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="16-05.html">Previous</a></td>
+        <td>
+          <a href="16-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="16-07.html">Next</a></td>
+        <td>
+          <a href="16-07.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="39-03.html">Previous</a></td>
+        <td>
+          <a href="39-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="39-05.html">Next</a></td>
+        <td>
+          <a href="39-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>And indeed it does. When the test program is modified to draw to a local buffer, both the C and assembly language versions get 0.29 seconds faster, that being a measure of the time taken by display memory wait states. With those wait states factored out, the assembly language version of <b>DrawHorizontalLineList</b> becomes almost three times as fast as the C code.</p>
 
@@ -135,7 +138,7 @@ _DrawHorizontalLineList   endp
    end
 </pre>
 
-  <h4 align="left" id="Heading7">Maximizing REP STOS</h4>
+  <h4 id="Heading7">Maximizing REP STOS</h4>
 
   <p>Listing 39.3 doesn&rsquo;t take the easy way out and use <b>REP STOSB</b> to fill each scan line; instead, it uses <b>REP STOSW</b> to fill as many pixel pairs as possible via word-sized accesses, using <b>STOSB</b> only to do odd bytes. Word accesses to odd addresses are always split by the processor into 2-byte accesses. Such word accesses take twice as long as word accesses to even addresses, so Listing 39.3 makes sure that all word accesses occur at even addresses, by performing a leading <b>STOSB</b> first if necessary.</p>
 
@@ -151,16 +154,20 @@ _DrawHorizontalLineList   endp
 
   <p>By the way, note that all the versions of <b>ScanEdge</b> and <b>FillConvexPolygon</b> that we&rsquo;ve looked at are adapter-independent, and that the C code is also machine-independent; all adapter-specific code is isolated in <b>DrawHorizontalLineList</b>. This makes it easy to add support for other graphics systems, such as the 8514/A, the XGA, or, for that matter, a completely non-PC system.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="39-03.html">Previous</a></td>
+        <td>
+          <a href="39-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="39-05.html">Next</a></td>
+        <td>
+          <a href="39-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

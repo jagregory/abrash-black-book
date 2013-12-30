@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="27-02.html">Previous</a></td>
+        <td>
+          <a href="27-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="27-04.html">Next</a></td>
+        <td>
+          <a href="27-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>&ldquo;That&rsquo;s an interesting application of write mode 2,&rdquo; you may well say, &ldquo;but is it really useful?&rdquo; While the ability to convert chunky bitmaps into VGA bitmaps does have its uses, Listing 27.1 is primarily intended to illustrate the mechanics of write mode 2.</p>
 
@@ -40,7 +43,7 @@
     </tr>
   </table>
 
-  <h4 align="left" id="Heading6">Drawing Color-Patterned Lines Using Write Mode 2</h4>
+  <h4 id="Heading6">Drawing Color-Patterned Lines Using Write Mode 2</h4>
 
   <p>A more serviceable use of write mode 2 is shown in the program presented in Listing 27.2. The program draws multicolored horizontal, vertical, and diagonal lines, basing the color patterns on passed color tables. Write mode 2 is ideal because in this application color can vary from one pixel to the next, and in write mode 2 all that&rsquo;s required to set pixel color is a change of the lower nibble of the byte written by the CPU. Set/reset could be used to achieve the same result, but an index/data pair of <b>OUT</b>s would be required to set the Set/Reset register to each new color. Similarly, the Map Mask register could be used in write mode 0 to set pixel color, but in this case not only would an index/data pair of <b>OUT</b>s be required but there would also be no guarantee that data already in display memory wouldn&rsquo;t interfere with the color of the pixel being drawn, since the Map Mask register allows only selected planes to be drawn to.</p>
 
@@ -376,16 +379,20 @@ Code    ends
         end     Start
 </pre>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="27-02.html">Previous</a></td>
+        <td>
+          <a href="27-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="27-04.html">Next</a></td>
+        <td>
+          <a href="27-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

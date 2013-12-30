@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="70-03.html">Previous</a></td>
+        <td>
+          <a href="70-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="70-05.html">Next</a></td>
+        <td>
+          <a href="70-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>The edge list is an atypical technology for John; it&rsquo;s an extra stage in the engine, it&rsquo;s complex, and it doesn&rsquo;t scale well. A Quake level might have a maximum of 500 potentially drawable polygons that get placed into the edge list, and that runs fine, but if you were to try to put 5,000 polygons into the edge list, it would quickly bog down due to edge sorting, link following, and dataset size. Different data structures (like using a tree to store the edges rather than a linear linked list) would help to some degree, but basically the edge list has a relatively small window of applicability; it was appropriate technology for the degree of complexity possible in a Pentium-based game (and even then, only with the reduction in polygons made possible by the PVS), but will probably be poorly suited to more complex scenes. It served well in the Quake engine, but remains an inelegant solution, and, in the end, it feels like there&rsquo;s something better we didn&rsquo;t hit on. However, as John says, &ldquo;I&rsquo;m pragmatic above all else&rdquo;&mdash;and the edge list did the job.</p>
 
@@ -36,13 +39,13 @@
 
   <p>Once the visible spans are scanned out of the edge list, they must still be drawn, with perspective-correct texture mapping and lighting. This involves hundreds of lines of heavily optimized assembly language, but is fundamentally pretty simple. In order to draw the spans for a given surface, the screenspace equations for 1/z, s/z, and t/z (where s and t are the texture coordinates and z is distance) are calculated for the surface. Then for each span, these values are calculated for the points at each end of the span, the reciprocal of 1/z is calculated with a divide, and s and t are then calculated as (s/z)*z and (t/z)*z. If the span is longer than 16 pixels, s and t are likewise calculated every 16 pixels along the span. Then each stretch of up to 16 pixels is drawn by linearly interpolating between these correctly calculated points. This introduces some slight error, but this is almost never visible, and even then is only a small ripple, well worth the performance improvement gained by doing the perspective-correct math only once every 16 pixels. To speed things up a little more, the FDIV to calculate the reciprocal of 1/z is overlapped with drawing 16 pixels, taking advantage of the Pentium&rsquo;s ability to perform floating-point in parallel with integer instructions, so the FDIV effectively takes only one cycle.</p>
 
-  <h4 align="left" id="Heading7">Lighting</h4>
+  <h4 id="Heading7">Lighting</h4>
 
   <p>Lighting is less simple to explain. The traditional way of doing polygon lighting is to calculate the correct light at the vertices and linearly interpolate between those points (Gouraud shading), but this has several disadvantages; in particular, it makes it hard to get detailed lighting without creating a lot of extra polygons, the lighting isn&rsquo;t perspective correct, and the lighting varies with viewing angle for polygons other than triangles. To address these problems, Quake uses surface-based lighting instead. In this approach, when it&rsquo;s time to draw a surface (a world polygon), that polygon&rsquo;s texture is tiled into a memory buffer. At the same time, the texture is lit according to the surface&rsquo;s light map, as calculated during preprocessing. Lighting values are linearly interpolated between the light map&rsquo;s 16-texel grid points, so the lighting effects are smooth, but slightly blurry. Then, the polygon is drawn to the screen using the perspective-correct texture mapping described above, with the prelit surface buffer being the source texture, rather than the original texture tile. No additional lighting is performed during texture mapping; all lighting is done when the surface buffer is created.</p>
 
   <p>Certainly it takes longer to build a surface buffer and then texture map from it than it does to do lighting and texture mapping in a single pass. However, surface buffers are cached for reuse, so only the texture mapping stage is usually needed. Quake surfaces tend to be big, so texture mapping is slowed by cache misses; however, the Quake approach doesn&rsquo;t need to interpolate lighting on a pixel-by-pixel basis, which helps speed things up, and it doesn&rsquo;t require additional polygons to provide sophisticated lighting. On balance, the performance of surface-based drawing is roughly comparable to tiled, Gouraud-shaded texture mapping&mdash;and it looks much better, being perspective correct, rotationally invariant, and highly detailed. Surface-based drawing also has the potential to support some interesting effects, because anything that can be drawn into the surface buffer can be cached as well, and is automatically drawn in correct perspective. For instance, paint splattered on a wall could be handled by drawing the splatter image as a sprite into the appropriate surface buffer, so that drawing the surface would draw the splatter as well.</p>
 
-  <h4 align="left" id="Heading8">Dynamic Lighting</h4>
+  <h4 id="Heading8">Dynamic Lighting</h4>
 
   <p>Here we come to a feature added to Quake after last year&rsquo;s Computer Game Developer&rsquo;s Conference (CGDC). At that time, Quake did not support dynamic lighting; that is, explosions and such didn&rsquo;t produce temporary lighting effects. We hadn&rsquo;t thought dynamic lighting would add enough to the game to be worth the trouble; however, at CGDC Billy Zelsnack showed us a demo of his latest 3-D engine, which was far from finished at the time, but did have impressive dynamic lighting effects. This caused us to move dynamic lighting up the priority list, and when I got back to id, I spent several days making the surface-building code as fast as possible (winding up at 2.25 cycles per texel in the inner loop) in anticipation of adding dynamic lighting, which would of course cause dynamically lit surfaces to constantly be rebuilt as the lighting changed. (A significant drawback of dynamic lighting is that it makes surface caching worthless for dynamically lit surfaces, but if most of the surfaces in a scene are not dynamically lit at any one time, it works out fine.) There things stayed for several weeks, while more critical work was done, and it was uncertain whether dynamic lighting would, in fact, make it into Quake.</p>
 
@@ -52,16 +55,20 @@
 
   <p>It&rsquo;s well worth pointing out that because Quake&rsquo;s lighting is perspective correct and independent of vertices, and because the rasterizer is both subpixel and subtexel correct, Quake worlds are visually very solid and stable. This was an important design goal from the start, both as a point of technical pride and because it greatly improves the player&rsquo;s sense of immersion.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="70-03.html">Previous</a></td>
+        <td>
+          <a href="70-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="70-05.html">Next</a></td>
+        <td>
+          <a href="70-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,18 +18,22 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="70-06.html">Previous</a></td>
+        <td>
+          <a href="70-06.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="70-08.html">Next</a></td>
+        <td>
+          <a href="70-08.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
 
-  <p><br /></p>
-
-  <h4 align="left" id="Heading17">GLQuake</h4>
+  <h4 id="Heading17">GLQuake</h4>
 
   <p>The second (and, according to current plans, last) port of Quake to a hardware accelerator was an OpenGL version, GLQuake, a native Win32 application. I have no intention of getting into the 3-D API wars currently raging; the observation I want to make here is that GLQuake uses two-pass alpha lighting, and runs very well on fast chips such as the 3Dfx, but rather slowly on most of the current group of accelerators. The accelerators coming out this year should all run GLQuake fine, however. It&rsquo;s also worth noting that we&rsquo;ll be using two-pass alpha lighting in the N64 port of Quake; in fact, it looks like the N64&rsquo;s hardware is capable of performing both texture-tiling and alpha-lighting in a single pass, which is pretty much an ideal hardware-acceleration architecture: It&rsquo;s as good looking and generally faster than surface caching, without the need to build, download, and cache surfaces, and much better looking and about as fast as Gouraud shading. We hope to see similar capabilities implemented in PC accelerators and exposed by 3-D APIs in the near future.</p>
 
@@ -46,26 +49,30 @@
 
   <p>Both alpha-blending and z-buffering are relatively new to PC games, but are standard equipment on accelerators, and it&rsquo;s a lot of fun seeing what sorts of previously very difficult effects can now be up and working in a matter of hours.</p>
 
-  <h4 align="left" id="Heading18">WinQuake</h4>
+  <h4 id="Heading18">WinQuake</h4>
 
   <p>I&rsquo;m not going to spend much time on the Win32 port of Quake; most of what I learned doing this consists of tedious details that are doubtless well covered elsewhere, and frankly it wasn&rsquo;t a particularly interesting task and was harder than I expected, and I&rsquo;m pretty much tired of the whole thing. However, I will say that Win32 is clearly the future, especially now that NT is coming on strong, and like it or not, you had best learn to write games for Win32. Also, Internet gaming is becoming ever more important, and Win32&rsquo;s built-in TCP/IP support is a big advantage over DOS; that alone was enough to convince us we had to port Quake. As a last comment, I&rsquo;d say that it is nice to have Windows take care of device configuration and interfacing&mdash;now if only we could get manufacturers to write drivers for those devices that actually worked reliably! This will come as no surprise to veteran Windows programmers, who have suffered through years of buggy 2-D Windows drivers, but if you&rsquo;re new to Windows programming, be prepared to run into and learn to work around&mdash;or at least document in your readme files&mdash;driver bugs on a regular basis.</p>
 
   <p>Still, when you get down to it, the future of gaming is a networked Win32 world, and that&rsquo;s that, so if you haven&rsquo;t already moved to Win32, I&rsquo;d say it&rsquo;s time.</p>
 
-  <h4 align="left" id="Heading19">QuakeWorld</h4>
+  <h4 id="Heading19">QuakeWorld</h4>
 
   <p>QuakeWorld is a native Win32 multiplayer-only version of Quake, and was done as a learning experience; it is not a commercial product, but is freely distributed on the Internet. The idea behind it was to try to improve the multiplayer experience, especially for people linked by modem, by reducing actual and perceived latency. Before I discuss QuakeWorld, however, I should discuss the evolution of Quake&rsquo;s multiplayer code.</p>
-
-  <p><br /></p>
 
   <center>
     <table border="1">
       <tr>
-        <td><a href="70-06.html">Previous</a></td>
+        <td>
+          <a href="70-06.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="70-08.html">Next</a></td>
+        <td>
+          <a href="70-08.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

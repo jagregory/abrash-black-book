@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,22 +18,26 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="60-01.html">Previous</a></td>
+        <td>
+          <a href="60-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="60-03.html">Next</a></td>
+        <td>
+          <a href="60-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>If you find any of the above confusing (and it would be understandable if that were the case; BSP trees are not easy to get the hang of), you might want to refer back to the previous chapter. It would also be a good idea to get hold of the visual BSP compiler I&rsquo;ll discuss shortly; when it comes to understanding BSP trees, there&rsquo;s nothing quite like seeing one being built.</p>
 
   <p>So there are really only two interesting operations in building a BSP tree: choosing a root node for the current subspace (a &ldquo;splitter&rdquo;) and assigning surfaces to one side or another of the current root node, splitting any that straddle the splitter. We&rsquo;ll get to the issue of choosing splitters shortly, but first let&rsquo;s look at the process of splitting and assigning. To do that, we need to understand parametric lines.</p>
 
-  <h4 align="left" id="Heading4">Parametric Lines</h4>
+  <h4 id="Heading4">Parametric Lines</h4>
 
   <p>We&rsquo;re all familiar with lines described in slope-intercept form, with y as a function of x</p>
 
@@ -63,7 +66,7 @@
   <p><a id="Fig2"><img src="images/60-02.jpg" /><br />
   <b>Figure 60.2</b></a>&nbsp;&nbsp;<i>Line segment storage in the BSP compiler.</i></p>
 
-  <h4 align="left" id="Heading5">Parametric Line Clipping</h4>
+  <h4 id="Heading5">Parametric Line Clipping</h4>
 
   <p>In order to assign a line segment to one subspace or the other of a splitter, we must somehow figure out whether the line segment straddles the splitter or falls on one side or the other. In order to determine that, we first plug the line segment and splitter into the following parametric line intersection equation</p>
 
@@ -80,20 +83,24 @@
 
   <p>One interesting point about Listing 60.1 is that it generates normals to splitting surfaces simply by exchanging the x and y lengths of the splitting line segment and negating the resultant y value, thereby rotating the line 90 degrees. In 3-D, it&rsquo;s not that simple to come by a normal; you could calculate the normal as the cross-product of two of the polygon&rsquo;s edges, or precalculate it when you build the world database.</p>
 
-  <h4 align="left" id="Heading6">The BSP Compiler</h4>
+  <h4 id="Heading6">The BSP Compiler</h4>
 
   <p>Listing 60.1 shows the core of a BSP compiler&mdash;the code that actually builds the BSP tree. (Note that Listing 60.1 is excerpted from a C<small>++</small> .CPP file, but in fact what I show here is very close to straight C. It may even compile as a .C file, though I haven&rsquo;t checked.) The compiler begins by setting up an empty tree, then passes that tree and the complete set of line segments from which a BSP tree is to be generated to <b>SelectBSPTree()</b>, which chooses a root node and calls <b>BuildBSPTree()</b> to add that node to the tree and generate child trees for each of the node&rsquo;s two subspaces. <b>BuildBSPTree()</b> calls <b>SelectBSPTree()</b> recursively to select a root node for each of those child trees, and this continues until all lines have been assigned nodes. <b>SelectBSP()</b> uses parametric clipping to decide on the splitter, as described below, and <b>BuildBSPTree()</b> uses parametric clipping to decide which subspace of the splitter each line belongs in, and to split lines, if necessary.</p>
-
-  <p><br /></p>
 
   <center>
     <table border="1">
       <tr>
-        <td><a href="60-01.html">Previous</a></td>
+        <td>
+          <a href="60-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="60-03.html">Next</a></td>
+        <td>
+          <a href="60-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

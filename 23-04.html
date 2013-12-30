@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,18 +18,22 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="23-03.html">Previous</a></td>
+        <td>
+          <a href="23-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="23-05.html">Next</a></td>
+        <td>
+          <a href="23-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
 
-  <p><br /></p>
-
-  <h4 align="left" id="Heading7">Smooth Panning</h4>
+  <h4 id="Heading7">Smooth Panning</h4>
 
   <p>The first thing you&rsquo;ll notice upon running the sample program is the remarkable smoothness with which the display pans from side-to-side and up-and-down. That the display can pan at all is made possible by two VGA features: 256K of display memory and the virtual screen capability. Even the most memory-hungry of the VGA modes, mode 12H (640x480), uses only 37.5K per plane, for a total of 150K out of the total 256K of VGA memory. The medium-resolution mode, mode 10H (640x350), requires only 28K per plane, for a total of 112K. Consequently, there is room in VGA memory to store more than two full screens of video data in mode 10H (which the sample program uses), and there is room in all modes to store a larger virtual screen than is actually displayed. In the sample program, memory is organized as two virtual screens, each with a resolution of 672x384, as shown in Figure 23.2. The area of the virtual screen actually displayed at any given time is selected by setting the display memory address at which to begin fetching video data; this is set by way of the start address registers (Start Address High, CRTC register 0CH, and Start Address Low, CRTC register 0DH). Together these registers make up a 16-bit display memory address at which the CRTC begins fetching data at the beginning of each video frame. Increasing the start address causes higher-memory areas of the virtual screen to be displayed. For example, the Start Address High register could be set to 80H and the Start Address Low register could be set to 00H in order to cause the display screen to reflect memory starting at offset 8000H in each plane, rather than at the default offset of 0.</p>
 
@@ -57,16 +60,20 @@
     </tr>
   </table>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="23-03.html">Previous</a></td>
+        <td>
+          <a href="23-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="23-05.html">Next</a></td>
+        <td>
+          <a href="23-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

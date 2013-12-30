@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="59-04.html">Previous</a></td>
+        <td>
+          <a href="59-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="59-06.html">Next</a></td>
+        <td>
+          <a href="59-06.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>Take a few minutes to look over Listing 59.4 and relate it to Listing 59.2. The structure is different, but upon examination it becomes clear that both listings reflect the same underlying model: For each node, visit the left subtree, visit the node, visit the right subtree. And although Listing 59.4 is longer, that&rsquo;s mostly because I commented it heavily to make sure its workings are understood; there are only 13 lines that actually do anything in Listing 59.4.</p>
 
@@ -48,7 +51,7 @@
     </tr>
   </table>
 
-  <h4 align="left" id="Heading10">Measure and Learn</h4>
+  <h4 id="Heading10">Measure and Learn</h4>
 
   <p>How much difference does all this fuss make, anyway? Listing 59.5 is a sample program that builds a tree, then calls <b>WalkTree</b> () to walk it 1,000 times, and times how long this takes. Using 32-bit Visual C<small>++</small> 1.10 running on Windows NT, with default optimization selected, Listing 59.5 reports that Listing 59.4 is about 20 percent faster than Listing 59.2 on a 486/33, a reasonable return for a little code rearrangement, especially when you consider that the speedup is diluted by calling the <b>Visit()</b> function and by the cache miss that happens on virtually every node access. (Listing 59.5 builds a rather unique tree, one in which every node has exactly two children. Different sorts of trees can and do produce different performance results. Always know what you&rsquo;re measuring!)</p>
 
@@ -123,16 +126,20 @@ void Visit(NODE *pNode)
 
 </pre>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="59-04.html">Previous</a></td>
+        <td>
+          <a href="59-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="59-06.html">Next</a></td>
+        <td>
+          <a href="59-06.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

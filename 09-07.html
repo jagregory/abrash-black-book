@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,18 +18,22 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="09-06.html">Previous</a></td>
+        <td>
+          <a href="09-06.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="10-01.html">Next</a></td>
+        <td>
+          <a href="10-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
 
-  <p><br /></p>
-
-  <h4 align="left" id="Heading10">Hard-Core Cycle Counting</h4>
+  <h4 id="Heading10">Hard-Core Cycle Counting</h4>
 
   <p>Next, we come to an item that cycle counters will love, especially since it involves apparently incorrect documentation on Intel&rsquo;s part. According to Intel&rsquo;s documents, all <b>RCR</b> and <b>RCL</b> instructions, which perform rotations through the Carry flag, as shown in Figure 9.4, take 9 cycles on the 386 when working with a register operand. My measurements indicate that the 9-cycle execution time almost holds true for <i>multibit</i> rotate-through-carries, which I&rsquo;ve timed at 8 cycles apiece; for example, <b>RCR AX,CL</b> takes 8 cycles on <i>my</i> 386, as does <b>RCL DX,2</b>. Contrast that with <b>ROR</b> and <b>ROL</b>, which can rotate the contents of a register any number of bits in just 3 cycles.</p>
 
@@ -43,7 +46,7 @@
 
   <p>No great lesson here, just a caution to be leery of multibit <b>RCR</b> and <b>RCL</b> when performance matters&mdash;and to take cycle-time documentation with a grain of salt.</p>
 
-  <h4 align="left" id="Heading11">Hardwired Far Jumps</h4>
+  <h4 id="Heading11">Hardwired Far Jumps</h4>
 
   <p>Did you ever wonder how to code a far jump to an absolute address in assembly language? Probably not, but if you ever do, you&rsquo;re going to be glad for this next item, because the obvious solution doesn&rsquo;t work. You might think all it would take to jump to, say, 1000:5 would be <b>JMP FAR PTR 1000:5</b>, but you&rsquo;d be wrong. That won&rsquo;t even assemble. You might then think to construct in memory a far pointer containing 1000:5, as in the following:</p>
   <pre>
@@ -84,7 +87,7 @@ start:
 
   <p>If the obvious doesn&rsquo;t work (and it usually doesn&rsquo;t), just try everything you can think of, no matter how ridiculous, until you find something that does&mdash;a rule with plenty of history on its side.</p>
 
-  <h4 align="left" id="Heading12">Setting 32-Bit Registers: Time versus Space</h4>
+  <h4 id="Heading12">Setting 32-Bit Registers: Time versus Space</h4>
 
   <p>To finish up this chapter, consider these two items. First, in 32-bit protected mode,</p>
   <pre>
@@ -111,16 +114,20 @@ move  bx,-1
 
   <p>Be warned, though, that I&rsquo;ve found <b>OR, AND, ADD</b>, and the like to be a cycle slower than <b>MOV</b> when working with immediate operands on the 386 under some circumstances, for reasons that thus far escape me. This just reinforces the first rule of optimization: Measure your code in action, and place not your trust in documented cycle times.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="09-06.html">Previous</a></td>
+        <td>
+          <a href="09-06.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="10-01.html">Next</a></td>
+        <td>
+          <a href="10-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

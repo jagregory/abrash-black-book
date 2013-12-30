@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="37-02.html">Previous</a></td>
+        <td>
+          <a href="37-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="38-02.html">Next</a></td>
+        <td>
+          <a href="38-02.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <h2 id="Heading1">Chapter 38<br />
   The Polygon Primeval</h2>
@@ -55,7 +58,7 @@
 
   <p>Why bother to distinguish between convex, nonconvex, and complex polygons? Easy: performance, especially when it comes to filling convex polygons. We&rsquo;re going to start with filled convex polygons; they&rsquo;re widely useful and will serve well to introduce some of the subtler complexities of polygon drawing, not the least of which is the slippery concept of &ldquo;inside.&rdquo;</p>
 
-  <h4 align="left" id="Heading4">Which Side Is Inside?</h4>
+  <h4 id="Heading4">Which Side Is Inside?</h4>
 
   <p>The basic principle of polygon filling is decomposing each polygon into a series of horizontal lines, one for each horizontal row of pixels, or scan line, within the polygon (a process I&rsquo;ll call <i>scan conversion</i>), and drawing the horizontal lines. I&rsquo;ll refer to the entire process as rasterization. Rasterization of convex polygons is easily done by starting at the top of the polygon and tracing down the left and right sides, one scan line (one vertical pixel) at a time, filling the extent between the two edges on each scan line, until the bottom of the polygon is reached. At first glance, rasterization does not seem to be particularly complicated, although it should be apparent that this simple approach is inadequate for nonconvex polygons.</p>
 
@@ -73,16 +76,20 @@
 
   <p>There&rsquo;s one great drawback to tracing polygons with standard lines, however: Adjacent polygons won&rsquo;t fit together properly, as shown in Figure 38.3. If you use six equilateral triangles to make a hexagon, for example, the edges of the triangles will overlap when traced with standard lines, and more recently drawn triangles will wipe out portions of their predecessors. Worse still, odd color effects will show up along the polygon boundaries if XOR drawing is used. Consequently, filling out to the boundary lines just won&rsquo;t do for drawing images composed of fitted-together polygons. And because fitting polygons together is exactly what I have in mind, we need a different approach.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="37-02.html">Previous</a></td>
+        <td>
+          <a href="37-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="38-02.html">Next</a></td>
+        <td>
+          <a href="38-02.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

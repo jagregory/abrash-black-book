@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,22 +18,26 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="69-01.html">Previous</a></td>
+        <td>
+          <a href="69-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="69-03.html">Next</a></td>
+        <td>
+          <a href="69-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
 
-  <p><br /></p>
-
-  <h4 align="left" id="Heading4">Letting the Graphics Card Build the Textures</h4>
+  <h4 id="Heading4">Letting the Graphics Card Build the Textures</h4>
 
   <p>One obvious solution is to have the accelerator card build the textures, rather than having the CPU build and then download them. This eliminates downloading completely, and lets the accelerator, which should be faster at such things, do the texel manipulation. Whether this is actually faster depends on whether the CPU or the accelerator is doing more of the work overall, but it eliminates download time, which is a big help. This approach retains the ability to composite other effects, such as splatters and dents, onto surfaces, but by the same token retains the high memory requirements and dynamic lighting performance impact of the surface cache. It also requires that the 3-D API and accelerator being used allow drawing into a texture, which is not universally true. Neither do all APIs or accelerators allow applications enough control over the texture heap so that an efficient surface cache can be implemented, a point that favors non-caching approaches. (A similar option that wasn&rsquo;t open to us due to time limitations is downloading 8-bpp surfaces and having the accelerator expand them to 16-bpp surfaces as it stores them in texture memory. Better yet, some accelerators support 8-bpp palettized hardware textures that are expanded to 16-bpp on the fly during texturing.)</p>
 
-  <h4 align="left" id="Heading5">The Light Map as Alpha Texture</h4>
+  <h4 id="Heading5">The Light Map as Alpha Texture</h4>
 
   <p>Another appealing non-caching approach is doing unlit texture-mapping in one pass, then lighting from the light map as a second pass, using the light map as an alpha texture. In other words, the textured polygon is drawn first, with no lighting, then the light map is textured on top of the polygon, with the light map intensity used as an alpha value to determine how brightly to light each texel. The hardware&rsquo;s texture-mapping circuitry is used for both passes, so the lighting comes out perspective-correct and consistent under all viewing conditions, just as with the surface cache. The lighting polygons don&rsquo;t even have to match the texture polygons, so they can represent dynamically changing lighting.</p>
 
@@ -46,22 +49,26 @@
 
   <p>Most of the last group of chapters in this book discuss how Quake works. If you look closely, though, you&rsquo;ll see that almost all of the information is about drawing the world&mdash;the static walls, floors, ceilings, and such. There are several reasons for this, in particular that it&rsquo;s hard to get a world renderer working well, and that the world is the base on which everything else is drawn. However, moving entities, such as monsters, are essential to a useful game engine. Traditionally, these have been done with sprites, but when we set out to build Quake, we knew that it was time to move on to polygon-based models. (In the case of Quake, the models are composed of triangles.) We didn&rsquo;t know exactly how we were going to make the drawing of these models fast enough, though, and went through quite a bit of experimentation and learning in the process of doing so. For the rest of this chapter I&rsquo;ll discuss some interesting aspects of our triangle-model architecture, and present code for one useful approach for the rapid drawing of triangle models.</p>
 
-  <h4 align="left" id="Heading7">Drawing Triangle Models Fast</h4>
+  <h4 id="Heading7">Drawing Triangle Models Fast</h4>
 
   <p>We would have liked one rendering model, and hence one graphics pipeline, for all drawing in Quake; this would have simplified the code and tools, and would have made it much easier to focus our optimization efforts. However, when we tried adding polygon models to Quake&rsquo;s global edge table, edge processing slowed down unacceptably. This isn&rsquo;t that surprising, because the edge table was designed to handle 200 to 300 large polygons, not the 2,000 to 3,000 tiny triangles that a dozen triangle models in a scene can add. Restructuring the edge list to use trees rather than linked lists would have helped with the larger data sets, but the basic problem is that the edge table requires a considerable amount of overhead per edge per scan line, and triangle models have too few pixels per edge to justify that overhead. Also, the much larger edge table generated by adding triangle models doesn&rsquo;t fit well in the CPU cache.</p>
 
   <p>Consequently, we implemented a separate drawing pipeline for triangle models, as shown in Figure 69.1. Unlike the world pipeline, the triangle-model pipeline is in most respects a traditional one, with a few exceptions, noted below. The entire world is drawn first, and then the triangle models are drawn, using z-buffering for proper visibility. For each triangle model, all vertices are transformed and projected first, and then each triangle is drawn separately.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="69-01.html">Previous</a></td>
+        <td>
+          <a href="69-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="69-03.html">Next</a></td>
+        <td>
+          <a href="69-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

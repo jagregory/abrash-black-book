@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="10-02.html">Previous</a></td>
+        <td>
+          <a href="10-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="10-04.html">Next</a></td>
+        <td>
+          <a href="10-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>Listing 10.2 repeatedly subtracts iS from iL until iL becomes less than or equal to iS. If iL becomes equal to iS, then that&rsquo;s the GCD; alternatively, if iL becomes <i>less</i> than iS, iL and iS switch values, and the process is repeated, as shown in Figure 10.2. The number of iterations this approach requires relative to Listing 10.1 depends heavily on the values of iL and iS, so it&rsquo;s not always faster, but, as Table 10.1 indicates, Listing 10.2 is generally much better code.</p>
 
@@ -141,20 +144,24 @@ unsigned int gcd(unsigned int int1, unsigned int int2) {
 }
 </pre>
 
-  <h4 align="left" id="Heading7">Patient Optimization</h4>
+  <h4 id="Heading7">Patient Optimization</h4>
 
   <p>At long last, we&rsquo;re ready to optimize GCD determination in the classic sense. Table 10.1 shows the performance of Listing 10.4 with and without Microsoft C/C<small>++</small>&rsquo;s maximum optimization, and also shows the performance of Listing 10.5, an assembly language version of Listing 10.4. Sure, the optimized versions are faster than the unoptimized version of Listing 10.4&mdash;but the gains are small compared to those realized from the higher-level optimizations in Listings 10.2 through 10.4.</p>
-
-  <p><br /></p>
 
   <center>
     <table border="1">
       <tr>
-        <td><a href="10-02.html">Previous</a></td>
+        <td>
+          <a href="10-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="10-04.html">Next</a></td>
+        <td>
+          <a href="10-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

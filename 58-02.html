@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="58-01.html">Previous</a></td>
+        <td>
+          <a href="58-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="58-03.html">Next</a></td>
+        <td>
+          <a href="58-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p><b>LISTING 58.1 L58-1.ASM</b></p>
   <pre>
@@ -94,7 +97,7 @@ NoExtraYAdvance:
 
   <p>Why indeed?</p>
 
-  <h4 align="left" id="Heading5">A 90-Degree Shift in Perspective</h4>
+  <h4 id="Heading5">A 90-Degree Shift in Perspective</h4>
 
   <p>As I said earlier, how you look at an optimization problem defines how you&rsquo;ll be able to solve it. In order to boost performance, sometimes it&rsquo;s necessary to look at things from a different angle&mdash;and for texture mapping this was literally as well as figuratively true. Chris suggested nothing more nor less than scanning out polygons at a 90-degree angle to normal, starting, say, at the left edge of the polygon, and texture-mapping vertically along each column of pixels, as shown in Figure 58.3. That way, all the pixels in each texture-mapped column would be in the same plane, and I would need to change planes only between columns&mdash;outside the inner loop. A trivial change, not fundamental in any sense&mdash;and yet just that one change, plus unrolling the loop, reduced the inner loop to the 22-cycles-per-pixel version shown in Listing 58.2. That&rsquo;s exactly twice as fast as Listing 58.1&mdash;and given how incredibly slow most VGAs are at completing <b>OUT</b>s, the real-world speedup should be considerably greater still. (The fastest byte <b>OUT</b> I&rsquo;ve ever measured for a VGA is 29 cycles, the slowest more than 60 cycles; in the latter case, Listing 58.2 would be on the order of <i>four</i> times faster than Listing 58.1.)</p>
 
@@ -144,16 +147,20 @@ ENDM
 
 </pre>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="58-01.html">Previous</a></td>
+        <td>
+          <a href="58-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="58-03.html">Next</a></td>
+        <td>
+          <a href="58-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="35-04.html">Previous</a></td>
+        <td>
+          <a href="35-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="35-06.html">Next</a></td>
+        <td>
+          <a href="35-06.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>There is one line-drawing function for octants 0 and 3, <b>Octant0</b>, and one line-drawing function for octants 1 and 2, <b>Octant1</b>. A single function with <b>if</b> statements could certainly be used to handle all four octants, but at a significant performance cost. There is, on the other hand, very little performance cost to grouping octants 0 and 3 together and octants 1 and 2 together, since the two octants in each pair differ only in the direction of change of the X coordinate.</p>
 
@@ -39,7 +42,7 @@
   <p><a id="Fig5"><img src="images/35-05.jpg" /><br />
   <b>Figure 35.5</b></a>&nbsp;&nbsp;<i>EVGALine&rsquo;s decision logic.</i></p>
 
-  <h4 align="left" id="Heading8">Drawing Each Line</h4>
+  <h4 id="Heading8">Drawing Each Line</h4>
 
   <p>The <b>Octant0</b> and <b>Octant1</b> functions draw lines for which |<b>DeltaX</b>| is greater than <b>DeltaY</b> and lines for which |<b>DeltaX</b>| is less than or equal to <b>DeltaY</b>, respectively. The parameters to <b>Octant0</b> and <b>Octant1</b> are the starting point of the line, the length of the line in each dimension, and <b>XDirection</b>, the amount by which the X coordinate should be changed when it moves. <b>XDirection</b> must be either 1 (to draw toward the right edge of the screen) or -1 (to draw toward the left edge of the screen). No value is required for the amount by which the Y coordinate should be changed; since <b>DeltaY</b> is guaranteed to be positive, the Y coordinate always changes by 1 pixel.</p>
 
@@ -47,7 +50,7 @@
 
   <p><b>Octant1</b> draws lines for which |<b>DeltaX</b>| is less than or equal to DeltaY. For these lines, the Y coordinate of each pixel drawn is 1 greater than the Y coordinate of the previous pixel. Whenever <b>ErrorTerm</b> becomes non-negative, indicating that the next X coordinate is a better approximation of the line being drawn, the X coordinate is advanced by either 1 or -1, depending on the value of <b>XDirection</b>. (This makes it possible for <b>Octant1</b> to draw lines in both octant 1 and octant 2.)</p>
 
-  <h4 align="left" id="Heading9">Drawing Each Pixel</h4>
+  <h4 id="Heading9">Drawing Each Pixel</h4>
 
   <p>At the core of <b>Octant0</b> and <b>Octant1</b> is a pixel-drawing function, <b>EVGADot</b>. <b>EVGADot</b> draws a pixel at the specified coordinates in whatever color the hardware of the VGA happens to be set up for. As described earlier, since the entire line drawn by <b>EVGALine</b> is of the same color, line-drawing performance is improved by setting the VGA&rsquo;s hardware up once in <b>EVGALine</b> before the line is drawn, and then drawing all the pixels in the line in the same color via <b>EVGADot</b>.</p>
 
@@ -59,16 +62,20 @@
 
   <p>Finally, 0FEH is ORed with the display memory byte controlling the pixel to be drawn. ORing with 0FEH first reads display memory, thereby loading the VGA&rsquo;s internal latches with the contents of the display memory byte controlling the pixel to be drawn, and then writes to display memory with the value 0FEH. Because of the unusual way in which the VGA&rsquo;s data paths work and the way in which <b>EVGALine</b> sets up the VGA&rsquo;s Enable Set/Reset and Set/Reset registers, the value that is written by the <b>OR</b> instruction is ignored. Instead, the value that actually gets placed in display memory is the color that was passed to <b>EVGALine</b> and placed in the Set/Reset register. The Bit Mask register, which was set up in step three above, allows only the single bit controlling the pixel to be drawn to be set to this color value. For more on the various machineries the VGA brings to bear on graphics data, look back to Chapter 25.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="35-04.html">Previous</a></td>
+        <td>
+          <a href="35-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="35-06.html">Next</a></td>
+        <td>
+          <a href="35-06.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

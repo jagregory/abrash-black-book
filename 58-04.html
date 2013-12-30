@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="58-03.html">Previous</a></td>
+        <td>
+          <a href="58-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="58-05.html">Next</a></td>
+        <td>
+          <a href="58-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>All of the above optimizations together get us to 10 cycles&mdash;<i>very</i> close to John Miles, but not there yet. We have one more trick up our sleeve, though: Suppose we point SS to the segment containing our textures, and point DS to the screen? (This requires either setting up a stack in the texture segment or ensuring that interrupts and other stack activity can&rsquo;t happen while SS points to that segment.) Then, we could swap the functions of SI and BP; that would let us use BP, which accesses SS by default, to get at the textures, and DI to access the screen&mdash;all with no segment prefixes at all. By gosh, that would get us exactly one more cycle, and would bring us down to the same 9 cycles John Miles attained; Listing 58.3 shows that code. At long last, the Holy Grail attained and our honor defended, we can rest.</p>
 
@@ -79,22 +82,26 @@ SCANOFFSET = SCANOFFSET + SCANWIDTH
      ENDM
 </pre>
 
-  <h4 align="left" id="Heading7">Don&rsquo;t Stop Thinking about Those Cycles</h4>
+  <h4 id="Heading7">Don&rsquo;t Stop Thinking about Those Cycles</h4>
 
   <p>Remember what I said at the outset, that knowing something has been done makes it much easier to do? A corollary is that pushing past that point, once attained, is very difficult. It&rsquo;s only natural to want to relax in the satisfaction of a job well done; then, too, the very nature of the work changes. Getting from 44 cycles down to John&rsquo;s 9 cycles was a huge leap, but we knew it could be done&mdash;therefore the nature of the problem was to figure out <i>how</i> it was done; in cases like this, if we&rsquo;re sharp enough (and of course we are!), we&rsquo;re guaranteed eventual gratification. Now that we&rsquo;ve reached John&rsquo;s level of performance, the problem becomes <i>whether</i> the code can be made faster yet, and that&rsquo;s a different kettle of fish altogether, for it may well be that after thinking about it for a while, we&rsquo;ll conclude that it can&rsquo;t. Not only will we have wasted time, but we&rsquo;ll also never be sure we were right; we&rsquo;ll know only that <i>we</i> couldn&rsquo;t find a solution. That way lies madness.</p>
 
   <p>And yet&mdash;<i>someone</i> has to blaze the trail to higher performance, and that someone might as well be us. Let&rsquo;s look for weaknesses in Listing 58.3. None are readily apparent; the only cycle that looks even slightly wasted is the size prefix on <b>ADD EDX,ECX</b>. As it turns out, that cycle really <i>is</i> wasted, for there&rsquo;s a way to make the size prefix vanish without losing the benefits of 32-bit instructions: Move the code into a 32-bit segment and make <i>all</i> the instructions 32-bit. That&rsquo;s what Listing 58.4 does; this code is similar to Listing 58.3, but runs in 8 cycles per pixel, a 12.5 percent speedup over Listing 58.3. Whether Listing 58.4 actually draws more pixels per second than Listing 58.3 depends on whether display memory is fast enough to handle pixels as rapidly as Listing 58.4 can deliver them. That speed, one pixel every 122 nanoseconds on a 486/66, is one that ISA adapters can&rsquo;t hope to match, but fast VLB and PCI adapters can handle with ease. Be aware, too, that cache misses when reading the source texture will generally reduce performance below the calculated 8-cycles-per-pixel level, especially because textures, which can be scanned across at any angle, are rarely accessed at consecutive addresses, which is the arrangement that would make for the fewest cache misses.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="58-03.html">Previous</a></td>
+        <td>
+          <a href="58-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="58-05.html">Next</a></td>
+        <td>
+          <a href="58-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

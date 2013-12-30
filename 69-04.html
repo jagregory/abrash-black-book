@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="69-03.html">Previous</a></td>
+        <td>
+          <a href="69-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="70-01.html">Next</a></td>
+        <td>
+          <a href="70-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>Once the vertices are drawn, the triangles are processed one at a time. Each triangle that makes it through backface culling is then drawn with recursive subdivision. If any of the triangle&rsquo;s sides is more than one pixel long in either x or y&mdash;that is, if the triangle contains any pixels that aren&rsquo;t at vertices&mdash;then that side is split in half as nearly as possible at given integer coordinates, and a new vertex is created at the split, with texture and screen coordinates that are halfway between those of the vertices at the endpoints. (The same splitting could be done for lighting, but we found that for small triangles&mdash;the sort that subdivision works well on&mdash;it was adequate to flat-shade each triangle at the light level of the first vertex, so we didn&rsquo;t bother with Gouraud shading.) The halfway values can be calculated very quickly with shifts. This vertex is drawn, and then each of the two resulting triangles is then processed recursively in the same way, as shown in Figure 69.2. There are some additional details, such as the fill rule that ensures that each pixel is drawn only once (except for backside vertices, as noted above), but basically subdivision rasterization boils down to taking a triangle, splitting a side that has at least one undrawn pixel and drawing the vertex at the split, and repeating the process for each of the two new triangles. The code to do this, shown in Listing 69.1, is very simple and easily optimized, especially by comparison with a generalized triangle rasterizer.</p>
 
@@ -155,7 +158,7 @@ D_PolysetRecursiveTriangle (lp3, new, lp2);
   <p><a id="Fig2"><img src="images/69-02.jpg" /><br />
   <b>Figure 69.2</b></a>&nbsp;&nbsp;<i>One recursive subdivision triangle-drawing step.</i></p>
 
-  <h4 align="left" id="Heading11">More Ideas that Might Work</h4>
+  <h4 id="Heading11">More Ideas that Might Work</h4>
 
   <p>Useful as subdivision rasterization proved to be, we by no means think that we&rsquo;ve maxed out triangle-model drawing, if only because we spent far less design and development time on subdivision than on the affine rasterizer, so it&rsquo;s likely that there&rsquo;s quite a bit more performance to be found for drawing small triangles. For example, it could be faster to precalculate drawing masks or even precompile drawing code for all possible small triangles (say, up to 4x4 or 5x5), and the memory footprint looks reasonable. (It&rsquo;s worth noting that both precalculated drawing and subdivision rasterization are only possible because we snap to integer coordinates; none of this stuff works with fixed-point vertices.)</p>
 
@@ -163,16 +166,20 @@ D_PolysetRecursiveTriangle (lp3, new, lp2);
 
   <p>As with so many aspects of 3-D, there is no one best approach to drawing triangle models, and no such thing as the fastest code. In a way, that&rsquo;s frustrating, but the truth is, it&rsquo;s these nearly infinite possibilities that make 3-D so interesting; not only is it an endless, varied challenge, but there&rsquo;s almost always a better solution waiting to be found.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="69-03.html">Previous</a></td>
+        <td>
+          <a href="69-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="70-01.html">Next</a></td>
+        <td>
+          <a href="70-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

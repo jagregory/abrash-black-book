@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="16-07.html">Previous</a></td>
+        <td>
+          <a href="16-07.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="17-01.html">Next</a></td>
+        <td>
+          <a href="17-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p><b>Listing 16.7 L16-7.ASM</b></p>
   <pre>
@@ -52,7 +55,7 @@
 
   <p>John&rsquo;s approach makes it clear that word-counting is nothing more than a fairly simple state machine. The interesting part, of course, is building the fastest state machine.</p>
 
-  <h4 align="left" id="Heading12">Level 3: Breakthrough</h4>
+  <h4 id="Heading12">Level 3: Breakthrough</h4>
 
   <p>The boundaries between the levels of optimization are not sharply defined. In a sense, level 3 optimization is just like levels 1 and 2, but more so. At level 3, one takes whatever level 2 perspective seems most promising, and implements it as efficiently as possible on the x86. Even more than at level 2, at level 3 this means breaking out of familiar patterns of thinking.</p>
 
@@ -113,22 +116,26 @@
 
   <p>Enough said, I trust.</p>
 
-  <h4 align="left" id="Heading13">Enough Word Counting Already!</h4>
+  <h4 id="Heading13">Enough Word Counting Already!</h4>
 
   <p>Before I finish up this chapter, I&rsquo;d like to mention that Terje Mathisen&rsquo;s WC word-counting program, which I&rsquo;ve mentioned previously and which is available, with source, on Bix, is in the ballpark with David&rsquo;s code for performance. What&rsquo;s more, Terje&rsquo;s program handles 8-bit ASCII, counts lines as well as words, and supports user-definable separator sets. It&rsquo;s wonderful code, well worth a look; it also happens to be a great word-counting utility. By the way, Terje builds his 64K table on the fly, at program initialization; this allows for customized tables, shrinks the size of the EXE, and, according to Terje&rsquo;s calculations, takes less time than loading the table off disk as part of the EXE.</p>
 
   <p>So, has David written the fastest possible word-counting code? Well, maybe&mdash;but I have a letter from Terry Holmes, of San Rafael, California, that calculates the theoretical maximum performance of native 386 word-counting code at 5.5 cycles/byte, which would be significantly faster than David&rsquo;s code. Terry, alas, didn&rsquo;t bother to implement his design, but maybe I&rsquo;ll take a shot at it someday. It&rsquo;d be fun, for sure&mdash;but jeez, I&rsquo;ve got <i>real</i> work to do!</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="16-07.html">Previous</a></td>
+        <td>
+          <a href="16-07.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="17-01.html">Next</a></td>
+        <td>
+          <a href="17-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

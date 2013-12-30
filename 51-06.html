@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="51-05.html">Previous</a></td>
+        <td>
+          <a href="51-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="52-01.html">Next</a></td>
+        <td>
+          <a href="52-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p><b>LISTING 51.5 POLYGON.H</b></p>
   <pre>
@@ -126,16 +129,20 @@ extern struct Rect EraseRect[];
 
   <p>The screen space vertices are useful for some sorts of hidden surface removal. For example, to determine whether two polygons overlap as seen by the viewer, you must first know how they look to the viewer, accounting for perspective; screen space provides that information. (So do the final screen coordinates, but with less accuracy, and without any Z information.) The view space vertices are useful for collision and proximity detection; screen space can&rsquo;t be used here, because objects are distorted by the perspective projection into screen space. World space would serve as well as view space for collision detection, but because it&rsquo;s possible to transform directly from object space to view space with a single matrix, it&rsquo;s often preferable to skip over world space. It&rsquo;s not mandatory that vertices be stored for all these different spaces, but the coordinates in all those spaces have to be calculated as intermediate steps anyway, so we might as well keep them around for those occasions when they&rsquo;re needed.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="51-05.html">Previous</a></td>
+        <td>
+          <a href="51-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="52-01.html">Next</a></td>
+        <td>
+          <a href="52-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="11-04.html">Previous</a></td>
+        <td>
+          <a href="11-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="11-06.html">Next</a></td>
+        <td>
+          <a href="11-06.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>Under ideal conditions, a 286 can access memory much, much faster than an 8088. A 10 MHz 286 is capable of accessing a word of system memory every 0.20 ms with <b>REP MOVSW</b>, dwarfing the 1 byte every 1.31 &micro;s that the 8088 in a PC can manage. However, access to display memory is anything but ideal for a 286. For one thing, most display adapters are 8-bit devices, although newer adapters are 16-bit in nature. One consequence of that is that only 1 byte can be read or written per access to display memory; word-sized accesses to 8-bit devices are automatically split into 2 separate byte-sized accesses by the AT&rsquo;s bus. Another consequence is that accesses are simply slower; the AT&rsquo;s bus inserts additional wait states on accesses to 8-bit devices since it must assume that such devices were designed for PCs and may not run reliably at AT speeds.</p>
 
@@ -54,7 +57,7 @@
 
   <p>What can we do about this new, more virulent form of the display adapter cycle-eater? The workaround is the same as it was on the PC: Access display memory as little as you possibly can.</p>
 
-  <h4 align="left" id="Heading13">New Instructions and Features: The 286</h4>
+  <h4 id="Heading13">New Instructions and Features: The 286</h4>
 
   <p>The 286 and 386 offer a number of new instructions. The 286 has a relatively small number of instructions that the 8088 lacks, while the 386 has those instructions and quite a few more, along with new addressing modes and data sizes. We&rsquo;ll discuss the 286 and the 386 separately in this regard.</p>
 
@@ -64,7 +67,7 @@
 
   <p>A couple of old instructions gain new features on the 286. For one, the 286 version of <b>PUSH</b> is capable of pushing a constant on the stack. For another, the 286 allows all shifts and rotates to be performed for not just 1 bit or the number of bits specified by CL, but for <i>any</i> constant number of bits.</p>
 
-  <h4 align="left" id="Heading14">New Instructions and Features: The 386</h4>
+  <h4 id="Heading14">New Instructions and Features: The 386</h4>
 
   <p>The 386 is somewhat more complex than the 286 regarding new features. Once again, we won&rsquo;t discuss protected mode, which on the 386 comes with the ability to address up to 4 gigabytes per segment and 64 terabytes in all. In real mode (and in virtual-86 mode, which allows the 386 to multitask MS-DOS applications, and which is identical to real mode so far as MS-DOS programs are concerned), programs running on the 386 are still limited to 1 MB of addressable memory and 64K per segment.</p>
 
@@ -74,16 +77,20 @@
 
   <p>The 386 also comes with a slew of new real-mode instructions beyond those supported by the 8088 and 286. These instructions can scan data on a bit-by-bit basis, set the Carry flag to the value of a specified bit, sign-extend or zero-extend data as it&rsquo;s moved, set a register or memory variable to 1 or 0 on the basis of any of the conditions that can be tested with conditional jumps, and more. (Again, beware: Many of these complex 386-specific instructions are slower than equivalent sequences of simple instructions on the 486 and especially on the Pentium.) What&rsquo;s more, both old and new instructions support 32-bit operations on the 386. For example, it&rsquo;s relatively simple to copy data in chunks of 4 bytes on a 386, even in real mode, by using the <b>MOVSD</b> (&ldquo;move string double&rdquo;) instruction, or to negate a 32-bit value with <b>NEG eax</b>.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="11-04.html">Previous</a></td>
+        <td>
+          <a href="11-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="11-06.html">Next</a></td>
+        <td>
+          <a href="11-06.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

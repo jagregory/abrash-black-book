@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,18 +18,22 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="04-03.html">Previous</a></td>
+        <td>
+          <a href="04-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="04-05.html">Next</a></td>
+        <td>
+          <a href="04-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
 
-  <p><br /></p>
-
-  <h4 align="left" id="Heading10">Official Execution Times Are Only Part of the Story</h4>
+  <h4 id="Heading10">Official Execution Times Are Only Part of the Story</h4>
 
   <p>The sequence of 5 <b>SHR</b> instructions in the last example is 10 bytes long. That means that it can never execute in less than 24 cycles even if the 4-byte prefetch queue is full when it starts, since 6 instruction bytes would still remain to be fetched, at 4 cycles per fetch. If the prefetch queue is empty at the start, the sequence <i>could</i> take 40 cycles. In short, thanks to instruction fetching, the code won&rsquo;t run at its documented speed, and could take up to four times longer than it is supposed to.</p>
 
@@ -48,7 +51,7 @@
 
   <p>So now you know why the official instruction execution times are often wrong, and why Intel can&rsquo;t provide better specifications. You also know now why it is that you must time your code if you want to know how fast it really is.</p>
 
-  <h4 align="left" id="Heading11">There Is No Such Beast as a True Instruction Execution Time</h4>
+  <h4 id="Heading11">There Is No Such Beast as a True Instruction Execution Time</h4>
 
   <p>The effect of the code preceding an instruction on the execution time of that instruction makes the Zen timer trickier to use than you might expect, and complicates the interpretation of the results reported by the Zen timer. For one thing, the Zen timer is best used to time code sequences that are more than a few instructions long; below 10&micro;s or so, prefetch queue effects and the limited resolution of the clock driving the timer can cause problems.</p>
 
@@ -96,16 +99,20 @@
 
   <p>The key point is this: We&rsquo;ve seen one code sequence in which <b>SHR</b> took 8-plus cycles to execute, and another in which it took only 2 cycles. Are we talking about two different forms of <b>SHR</b> here? Of course not&mdash;the difference is purely a reflection of the differing states in which the preceding code left the prefetch queue. In Listing 4.5, each <b>SHR</b> after the first few follows a slew of other <b>SHR</b> instructions which have sucked the prefetch queue dry, so overall performance reflects instruction fetch time. By contrast, each <b>SHR</b> in Listing 4.6 follows a <b>MUL</b> instruction which leaves the prefetch queue full, so overall performance reflects Execution Unit execution time.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="04-03.html">Previous</a></td>
+        <td>
+          <a href="04-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="04-05.html">Next</a></td>
+        <td>
+          <a href="04-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

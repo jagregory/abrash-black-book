@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="28-03.html">Previous</a></td>
+        <td>
+          <a href="28-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="28-05.html">Next</a></td>
+        <td>
+          <a href="28-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p><b>LISTING 28.2 L28-2.ASM</b></p>
   <pre>
@@ -209,16 +212,20 @@ end  Start
 
   <p>Why? Well, as I&rsquo;ve said, when all planes are &ldquo;don&rsquo;t care&rdquo; planes, read mode 1 reads always return 0FFH. Now, when you AND any value with 0FFH, the value remains unchanged, and that can be awfully handy when you&rsquo;re using the bit mask to modify selected pixels in VGA memory. Recall that you must always read VGA memory to load the latches before writing to VGA memory when you&rsquo;re using the bit mask. Traditionally, two separate instructions&mdash;a read followed by a write&mdash;are used to perform this task. The code in Listing 28.2 uses this approach. Suppose, however, that you&rsquo;ve set the VGA to read mode 1, with the Color Don&rsquo;t Care register set to 0 (meaning all reads of VGA memory will return 0FFH). Under these circumstances, you can use a single <b>AND</b> instruction to both read and write VGA memory, since ANDing any value with 0FFH leaves that value unchanged.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="28-03.html">Previous</a></td>
+        <td>
+          <a href="28-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="28-05.html">Next</a></td>
+        <td>
+          <a href="28-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

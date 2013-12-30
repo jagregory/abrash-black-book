@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="05-03.html">Previous</a></td>
+        <td>
+          <a href="05-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="05-05.html">Next</a></td>
+        <td>
+          <a href="05-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <h3 id="Heading8">Interpreting Where the Cycles Go</h3>
 
@@ -46,7 +49,7 @@
 
   <p>Not likely.</p>
 
-  <h4 align="left" id="Heading9">Knowing When Assembly Is Pointless</h4>
+  <h4 id="Heading9">Knowing When Assembly Is Pointless</h4>
 
   <p>So that&rsquo;s why we&rsquo;re not going to go to assembly language in this example&mdash;which is not to say it would never be worth converting the search engine in Listing 5.1 to assembly.</p>
 
@@ -54,16 +57,20 @@
 
   <p>In contrast, Listing 5.1 must return from <b>memchr()</b>, set up parameters, and call <b>memcmp()</b> in order to do the same thing. Likewise, assembly can switch back to <b>REPNZ SCASB</b> after a non-match much more quickly than Listing 5.1. The switching overhead is high; when searching a file completely filled with the character z for the string &ldquo;zy,&rdquo; Listing 5.1 takes almost 1/2 minute, or nearly an order of magnitude longer than when searching a file filled with normal text.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="05-03.html">Previous</a></td>
+        <td>
+          <a href="05-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="05-05.html">Next</a></td>
+        <td>
+          <a href="05-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

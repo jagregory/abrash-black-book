@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="13-01.html">Previous</a></td>
+        <td>
+          <a href="13-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="13-03.html">Next</a></td>
+        <td>
+          <a href="13-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>&ldquo;When I looked closely as this, I realized that the two cycles for the final <b>ADD</b> is just the sum of 1 cycle to load the data from memory, and 1 cycle to add it to DX, so the code could just as well have been written as shown in Listing 13.3. The final breakthrough came when I realized that by initializing AX to zero outside the loop, I could rearrange it as shown in Listing 13.4 and do the final <b>ADD DX,AX</b> after the loop. This way there are two single-cycle instructions between the first and the fourth line, avoiding all pipeline stalls, for a total throughput of two cycles/char.&rdquo;</p>
 
@@ -88,16 +91,20 @@ looptop:
 
   <p>Not necessarily. Shifts and rotates are among the worst performing instructions of the 486, taking 2 to 3 cycles to execute. Thus, it takes 2 cycles to rotate the skip value into CX in Listing 13.5, and 2 more cycles to rotate it back to the upper half of ECX. I&rsquo;d say four cycles is a pretty steep price to pay, especially considering that a <b>MOV</b> to or from memory takes only one cycle. Basically, using <b>ROR</b> to access a 16-bit value in the upper half of a 16-bit register is a pretty marginal technique, unless for some reason you can&rsquo;t access memory at all (for example, if you&rsquo;re using BP as a working register, temporarily making the stack frame inaccessible).</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="13-01.html">Previous</a></td>
+        <td>
+          <a href="13-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="13-03.html">Next</a></td>
+        <td>
+          <a href="13-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

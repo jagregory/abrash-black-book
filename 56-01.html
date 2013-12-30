@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="55-04.html">Previous</a></td>
+        <td>
+          <a href="55-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="56-02.html">Next</a></td>
+        <td>
+          <a href="56-02.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <h2 id="Heading1">Chapter 56<br />
   Pooh and the Space Station</h2>
@@ -54,7 +57,7 @@
   <p><a id="Fig1"><img src="images/56-01.jpg" /><br />
   <b>Figure 56.1</b></a>&nbsp;&nbsp;<i>Using reverse transformation to find the source pixel color.</i></p>
 
-  <h4 align="left" id="Heading4">Mapping Textures Made Easy</h4>
+  <h4 id="Heading4">Mapping Textures Made Easy</h4>
 
   <p>To understand how we&rsquo;re going to map textures, consider Figure 56.2, which maps a bitmapped image directly onto an untransformed polygon. Here, we simply map the origin of the polygon&rsquo;s untransformed coordinate system somewhere within the image, then map the vertices to the corresponding image pixels. (For simplicity, I&rsquo;ll assume in this discussion that the polygon&rsquo;s coordinate system is in units of pixels, but scaling images to polygons is eminently doable. This will become clearer when we look at mapping images onto transformed polygons, next.) Mapping the image to the polygon is then a simple matter of stepping one scan line at a time in both the image and the polygon, each time advancing the X coordinates of the edges according to the slopes of the lines, just as is normally done when filling a polygon. Since the polygon is untransformed, the stepping is identical in both the image and the polygon, and the pixel mapping is one-to-one, so the appropriate part of each scan line of the image can simply be block copied to the destination.</p>
 
@@ -65,16 +68,20 @@
 
   <p>The solution is remarkably simple. We&rsquo;ll just map each transformed vertex to the corresponding vertex in the bitmap; this is easy, because the vertices are at the same indices in the original and transformed vertex lists. Each time we select a new edge to scan for the destination polygon, we&rsquo;ll select the corresponding edge in the source bitmap, as well. Then&mdash;and this is crucial&mdash;each time we step a destination edge one scan line, we&rsquo;ll step the corresponding source image edge an equivalent amount.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="55-04.html">Previous</a></td>
+        <td>
+          <a href="55-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="56-02.html">Next</a></td>
+        <td>
+          <a href="56-02.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

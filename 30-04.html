@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="30-03.html">Previous</a></td>
+        <td>
+          <a href="30-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="30-05.html">Next</a></td>
+        <td>
+          <a href="30-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <h3 id="Heading8">Split Screen and Panning</h3>
 
@@ -48,22 +51,26 @@
 
   <p>On the VGA, there is recourse. A VGA-only bit, bit 5 of the AC Mode Control register (AC register 10H), turns off pel panning in the split screen. In other words, when this bit is set to 1, pel panning is reset to zero before the first line of the split screen, and remains zero until the end of the frame. This doesn&rsquo;t allow you to pan the split screen horizontally, mind you&mdash;there&rsquo;s no way to do that&mdash;but it does let you pan the normal screen while the split screen stays rock-solid. This can be used to produce an attractive &ldquo;streaming tape&rdquo; effect in the normal screen while the split screen is used to display non-moving information.</p>
 
-  <h4 align="left" id="Heading9">The Split Screen and Horizontal Panning: An Example</h4>
+  <h4 id="Heading9">The Split Screen and Horizontal Panning: An Example</h4>
 
   <p>Listing 30.2 illustrates the interaction of horizontal smooth panning with the split screen, as well as the suppression of pel panning in the split screen. Listing 30.2 creates a virtual screen 1024 pixels across by setting the Offset register (CRTC register 13H) to 64, sets the normal screen to scan video data beginning far enough up in display memory to leave room for the split screen starting at offset zero, turns on the split screen, and fills in the normal screen and split screen with distinctive patterns. Next, Listing 30.2 pans the normal screen horizontally without setting bit 5 of the AC Mode Control register to 1. As you&rsquo;d expect, the split screen jerks about quite horribly. After a key press, Listing 30.2 sets bit 5 of the Mode Control register and pans the normal screen again. This time, the split screen doesn&rsquo;t budge an inch&mdash;<i>if</i> the code is running on a VGA.</p>
 
   <p>By the way, if <b>IS_VGA</b> is set to 0 in Listing 30.2, the program will assemble in a form that will run on the EGA and <i>only</i> the EGA. Pel panning suppression in the split screen won&rsquo;t work in this version, however, because the EGA lacks the capability to support that feature. When the EGA version runs, the split screen simply jerks back and forth during both panning sessions.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="30-03.html">Previous</a></td>
+        <td>
+          <a href="30-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="30-05.html">Next</a></td>
+        <td>
+          <a href="30-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

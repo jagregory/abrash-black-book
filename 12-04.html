@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,20 +18,24 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="12-03.html">Previous</a></td>
+        <td>
+          <a href="12-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="13-01.html">Next</a></td>
+        <td>
+          <a href="13-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
 
-  <p><br /></p>
-
   <p>You don&rsquo;t need to understand every corner of the 486 universe unless you&rsquo;re a diehard ASMhead who does this stuff for fun. Just learn enough to be able to speed up the key portions of your programs, and spend the rest of your time on a fast design and overall implementation.</p>
 
-  <h4 align="left" id="Heading10">More Fun with Byte Registers</h4>
+  <h4 id="Heading10">More Fun with Byte Registers</h4>
 
   <p>Rule #4: Don&rsquo;t load <i>any</i> byte register exactly 2 cycles before using <i>any</i> register to address memory.</p>
 
@@ -78,7 +81,7 @@ mov    ax,[bx]
     </tr>
   </table>
 
-  <h4 align="left" id="Heading11">Timing Your Own 486 Code</h4>
+  <h4 id="Heading11">Timing Your Own 486 Code</h4>
 
   <p>In case you want to do some 486 performance analysis of your own, let me show you how I arrived at one of the above conclusions; at the same time, I can warn you of the timing hazards of the cache. Listings 12.1 and 12.2 show the code I ran through the Zen timer in order to establish the effects of loading a byte register before using a register to address memory. Listing 12.1 ran in 120 &micro;s on a 33 MHz 486, or 4 cycles per repetition (120 &micro;s/1000 repetitions = 120 ns per repetition; 120 ns per repetition/30 ns per cycle = 4 cycles per repetition); Listing 12.2 ran in 90 &micro;s, or 3 cycles, establishing that loading a byte register costs a cycle only when it&rsquo;s performed exactly 2 cycles before addressing memory.</p>
 
@@ -140,16 +143,20 @@ Done:
 
   <p>Sometimes it <i>is</i> hard to believe we&rsquo;re still in Kansas!</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="12-03.html">Previous</a></td>
+        <td>
+          <a href="12-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="13-01.html">Next</a></td>
+        <td>
+          <a href="13-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

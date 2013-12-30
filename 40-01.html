@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="39-05.html">Previous</a></td>
+        <td>
+          <a href="39-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="40-02.html">Next</a></td>
+        <td>
+          <a href="40-02.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <h2 id="Heading1">Chapter 40<br />
   Of Songs, Taxes, and the Simplicity of Complex Polygons</h2>
@@ -51,7 +54,7 @@
 
   <p>Before we dive into complex polygon filling, I&rsquo;d like to point out that the code in this chapter, like all polygon filling code I&rsquo;ve ever seen, requires that the caller describe the type of the polygon to be filled. Often, however, the caller doesn&rsquo;t know what type of polygon it&rsquo;s passing, or specifies complex for simplicity, because that will work for all polygons; in such a case, the polygon filler will use the slow complex-fill code even if the polygon is, in fact, a convex polygon. In Chapter 41, I&rsquo;ll discuss one way to improve this situation.</p>
 
-  <h4 align="left" id="Heading4">Active Edges</h4>
+  <h4 id="Heading4">Active Edges</h4>
 
   <p>The basic premise of filling a complex polygon is that for a given scan line, we determine all intersections between the polygon&rsquo;s edges and that scan line and then fill the spans between the intersections, as shown in Figure 40.1. (Section 3.6 of Foley and van Dam&rsquo;s <i>Computer Graphics</i>, Second Edition provides an overview of this and other aspects of polygon filling.) There are several rules that might be used to determine which spans are drawn and which aren&rsquo;t; we&rsquo;ll use the odd/even rule, which specifies that drawing turns on after odd-numbered intersections (first, third, and so on) and off after even-numbered intersections.</p>
 
@@ -67,16 +70,20 @@
 
   <p>Maintaining the AET from one scan line to the next involves three steps: First, we must add to the AET any edges that start on the current scan line, making sure to keep the AET X-sorted for efficient odd/even scanning. Second, we must remove edges that end on the current scan line. Third, we must advance the X coordinates of active edges with the same sort of error term-based, Bresenham&rsquo;s-like approach we used for convex polygons, again ensuring that the AET is X-sorted after advancing the edges.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="39-05.html">Previous</a></td>
+        <td>
+          <a href="39-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="40-02.html">Next</a></td>
+        <td>
+          <a href="40-02.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

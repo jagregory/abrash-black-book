@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="25-05.html">Previous</a></td>
+        <td>
+          <a href="25-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="26-01.html">Next</a></td>
+        <td>
+          <a href="26-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>There is no clearly defined role for the set/reset circuitry, as there is for, say, the bit mask. In many cases, set/reset is largely interchangeable with CPU data, particularly with CPU data written in write mode 2 (write mode 2 operates similarly to the set/reset circuitry, as we&rsquo;ll see in Chapter 27). The most powerful use of set/reset, in my experience, is in applications such as the example of Listing 25.4, where it is used to force the value written to certain planes while the CPU data is written to other planes. In general, though, think of set/reset as one more tool you have at your disposal in getting the VGA to do what you need done, in this case a tool that lets you force all bits in each plane to either zero or one, or pass CPU data through unchanged, on each write to display memory. As tools go, set/reset is a handy one, and it&rsquo;ll pop up often in this book.</p>
 
@@ -48,16 +51,20 @@
 
   <p>In the early days of the EGA and VGA, there was considerable debate about whether it was safe to do word <b>OUT</b>s (<b>OUT DX,AX</b>) to set Index/Data register pairs in a single instruction. Long ago, there were a few computers with buses that weren&rsquo;t quite PC-compatatible, in that the two bytes in each word <b>OUT</b> went to the VGA in the wrong order: Data register first, then Index register, with predictably disastrous results. Consequently, I generally wrote my code in those days to use two 8-bit <b>OUT</b>s to set indexed registers. Later on, I made it a habit to use macros that could do either one 16-bit <b>OUT</b> or two 8-bit <b>OUT</b>s, depending on how I chose to assemble the code, and in fact you&rsquo;ll find both ways of dealing with <b>OUT</b>s sprinkled through the code in this part of the book. Using macros for word OUTs is still not a bad idea in that it does no harm, but in my opinion it&rsquo;s no longer necessary. Word <b>OUT</b>s are standard now, and it&rsquo;s been a long time since I&rsquo;ve heard of them causing any problems.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="25-05.html">Previous</a></td>
+        <td>
+          <a href="25-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="26-01.html">Next</a></td>
+        <td>
+          <a href="26-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

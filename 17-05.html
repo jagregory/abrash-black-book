@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="17-04.html">Previous</a></td>
+        <td>
+          <a href="17-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="17-06.html">Next</a></td>
+        <td>
+          <a href="17-06.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>In Listing 17.3, note the padded cellmap edges, and the alteration of the member functions to compensate for the padding. Also note that the width now has to be a multiple of eight, to facilitate the process of copying the edges to the opposite padding bytes. We have decreased the generality of our Game of Life implementation in exchange for better performance. That&rsquo;s a very common trade-off, as common as trading memory for performance. As a rule, the more general a program is, the slower it is. A corollary is that often (not always, but often), the more heavily optimized a program is, the more complex and the more difficult to implement it is. You can often improve performance a good deal by implementing only the level of generality you need, but at the same time decreased generality makes it more difficult to change or port the program at some later date. A Game of Life implementation, such as Listing 17.1, that&rsquo;s built on <b>set_cell()</b>, <b>clear_cell()</b>, and <b>get_cell()</b> is completely general; you can change the cell storage format simply by changing the constructor and those three functions. Listing 17.3 is harder to change because <b>count_neighbors()</b> would also have to be altered, and it&rsquo;s more complex than any of the other functions.</p>
 
@@ -140,16 +143,20 @@ neighbor_count++;
     </tr>
   </table>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="17-04.html">Previous</a></td>
+        <td>
+          <a href="17-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="17-06.html">Next</a></td>
+        <td>
+          <a href="17-06.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

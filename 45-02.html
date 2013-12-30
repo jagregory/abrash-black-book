@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="45-01.html">Previous</a></td>
+        <td>
+          <a href="45-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="45-03.html">Next</a></td>
+        <td>
+          <a href="45-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>Of course, VGA display memory has its own performance problems. The fastest ISA bus VGA can, at best, support sustained write times of about 10 cycles per word-sized write on a 486/33; 15 or 20 cycles is more common, even for relatively fast SuperVGAs; the worst case I&rsquo;ve seen is 65 cycles per byte. However, intermittent writes, mixed with a lot of register and cache-only code, can effectively execute in one cycle, thanks to the caching design of many VGAs and the 486&rsquo;s 4-deep write buffer, which stores pending writes while the CPU continues executing instructions. Display memory reads tend to take longer, because coprocessing isn&rsquo;t possible&mdash;one microsecond is a reasonable rule of thumb for VGA reads, although there&rsquo;s considerable variation. So VGA memory tends not to be as bad as VGA I/O, but lord knows it isn&rsquo;t <i>good</i>.</p>
 
@@ -170,22 +173,26 @@
   <p><a id="Fig2"><img src="images/45-02.jpg" /><br />
   <b>Figure 45.2</b></a>&nbsp;&nbsp;<i>Dirty rectangle animation.</i></p>
 
-  <h4 align="left" id="Heading6">So Why Not Use Page Flipping?</h4>
+  <h4 id="Heading6">So Why Not Use Page Flipping?</h4>
 
   <p>Well, then, if we want good visual quality, why not use page flipping? For one thing, not all adapters and all modes support page flipping. The CGA and MCGA don&rsquo;t, and neither do the VGA&rsquo;s 640x480 16-color or 320x200 256-color modes, or many SuperVGA modes. In contrast, <i>all</i> adapters support dirty-rectangle animation. Another advantage of dirty-rectangle animation is that it&rsquo;s generally faster. While it may seem strange that it would be faster to draw off-screen and then copy the result to the screen, that is often the case, because dirty-rectangle animation usually reduces the number of times the VGA&rsquo;s hardware needs to be touched, especially in 256-color modes.</p>
 
   <p>This reduction comes about because when dirty rectangles are erased, it&rsquo;s done in system memory, not in display memory, and since most objects move a good deal less than their full width (that is, the new and old positions overlap), display memory is written to fewer times than with page flipping. (In 16-color modes, this is not necessarily the case, because of the parallelism obtained from the VGA&rsquo;s planar hardware.) Also, read/modify/write operations are performed in fast system memory rather than slow display memory, so display memory rarely needs to be read. This is particularly good because display memory is generally even slower for reads than for writes.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="45-01.html">Previous</a></td>
+        <td>
+          <a href="45-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="45-03.html">Next</a></td>
+        <td>
+          <a href="45-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

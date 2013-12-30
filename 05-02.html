@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="05-01.html">Previous</a></td>
+        <td>
+          <a href="05-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="05-03.html">Next</a></td>
+        <td>
+          <a href="05-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>We could put a zero byte at the end of our buffer to allow <b>strstr()</b> to work, but why bother? The <b>strstr()</b> function must spend time either checking for the end of the string being searched or determining the length of that string&mdash;wasted effort given that we already know exactly how long our search buffer is. Even if a given <b>strstr()</b> implementation is well-written, its performance will suffer, at least for our application, from unnecessary overhead.</p>
 
@@ -64,7 +67,7 @@
 
   <p>Now that we&rsquo;ve selected a searching approach, let&rsquo;s integrate it with file handling and searching through multiple blocks. In other words, let&rsquo;s make it restartable.</p>
 
-  <h4 align="left" id="Heading7">Making a Search Restartable</h4>
+  <h4 id="Heading7">Making a Search Restartable</h4>
 
   <p>As it happens, there&rsquo;s no great trick to putting the pieces of this search program together. Basically, we&rsquo;ll read in a buffer of data (we&rsquo;ll work with 16K at a time to avoid signed overflow problems with integers), search it for a match with the <b>memchr()/memcmp()</b> engine described, and exit with a &ldquo;string found&rdquo; response if the desired string is found.</p>
 
@@ -76,16 +79,20 @@
 
   <p>Listing 5.1 nicely illustrates the core concept of restartable blocks: Organize your program so that you can do your processing within each block as fast as you could if there were only one block&mdash;which is to say at top speed&mdash;and make your blocks as large as possible in order to minimize the overhead associated with going from one block to the next.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="05-01.html">Previous</a></td>
+        <td>
+          <a href="05-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="05-03.html">Next</a></td>
+        <td>
+          <a href="05-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="17-05.html">Previous</a></td>
+        <td>
+          <a href="17-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="17-07.html">Next</a></td>
+        <td>
+          <a href="17-07.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>We&rsquo;re still not ready for assembly, though; what we need is a new perspective that lends itself to vastly better performance in C<small>++</small>. The Life program in the next section is <i>three to seven times</i> faster than Listing 17.4&mdash;and it&rsquo;s still in C<small>++</small>.</p>
 
@@ -50,7 +53,7 @@
 
   <p>I have two objectives to achieve in the remainder of this chapter. First, I want to show that optimization consists of many levels, from assembly language up to conceptual design, and that assembly language kicks in pretty late in the optimization process. Second, I want to encourage you to saturate your brain with everything you know about any particular optimization problem, then make space for your right brain to solve the problem.</p>
 
-  <h4 align="left" id="Heading9">Re-Examining the Task</h4>
+  <h4 id="Heading9">Re-Examining the Task</h4>
 
   <p>Earlier in this chapter, we looked at a straightforward Game of Life implementation, then increased performance considerably by making the implementation a little less abstract and a little less general. We made a small change to the cellmap format, adding padding bytes off the edges so that pointer arithmetic would always work, but the major optimizations were moving the critical code into a single loop and using pointers rather than member functions whenever possible. In other words, we took what we already knew and made it more efficient.</p>
 
@@ -75,22 +78,26 @@
   <p><a id="Fig3"><img src="images/17-03.jpg" /><br />
   <b>Figure 17.3</b></a>&nbsp;&nbsp;<i>New cell format.</i></p>
 
-  <h4 align="left" id="Heading10">Acting on What We Know</h4>
+  <h4 id="Heading10">Acting on What We Know</h4>
 
   <p>Once we&rsquo;ve changed the cellmap format to store neighbor counts as well as states, with a byte for each cell, we can get another performance boost by again examining what we know about our data. I said earlier that most cells are off during any given generation. This means that most cells have no neighbors that are on. Since the cell map representation for an off-cell that has no neighbors is a zero byte, we can skip over scads of unchanged cells at a pop simply by scanning for non-zero bytes. This is much faster than explicitly testing cell states and neighbor counts, and lends itself beautifully to assembly language implementation as <b>REPZ SCASB</b> or (with a little cleverness) <b>REPZ SCASW.</b> (Unfortunately, there&rsquo;s no C library function that can scan memory for the next byte that&rsquo;s non-zero.)</p>
 
   <p>Listing 17.5 is a Game of Life implementation that uses the neighbor-count cell map format and scans for non-zero bytes. On a 20 MHz 386, Listing 17.5 is about 4.5 times faster at calculating generations (that is, the generation engine is 4.5 times faster; I&rsquo;m ignoring the time consumed by drawing and text display) than Listing 17.4, which is no slouch. On a 33 MHz 486, Listing 17.5 is about 3.5 times faster than Listing 17.4. This is true even though Listing 17.5 must be compiled using the large model. Imagine that&mdash;getting a four times speed-up while switching from the small model to the large model!</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="17-05.html">Previous</a></td>
+        <td>
+          <a href="17-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="17-07.html">Next</a></td>
+        <td>
+          <a href="17-07.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

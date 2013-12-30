@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,18 +18,22 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="50-06.html">Previous</a></td>
+        <td>
+          <a href="50-06.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="51-01.html">Next</a></td>
+        <td>
+          <a href="51-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
 
-  <p><br /></p>
-
-  <h4 align="left" id="Heading9">Notes on the 3-D Animation Example</h4>
+  <h4 id="Heading9">Notes on the 3-D Animation Example</h4>
 
   <p>The sample program transforms the polygon&rsquo;s vertices from object space to world space to view space to the screen, as described earlier. In this case, world space and view space are congruent&mdash;we&rsquo;re looking right down the negative Z axis of world space&mdash;so the transformation matrix from world to view is the identity matrix; you might want to experiment with changing this matrix to change the viewpoint. The sample program uses 4x4 homogeneous coordinate matrices to perform transformations, as described above. Floating-point arithmetic is used for all 3-D calculations. Setting the translation from object space to world space is a simple matter of changing the appropriate entry in the fourth column of the object-to-world transformation matrix. Setting the rotation around the Y axis is almost as simple, requiring only the setting of the four matrix entries that control the Y rotation to the sines and cosines of the desired rotation. However, rotations involving more than one axis require multiple rotation matrices, one for each axis rotated around; those matrices are then concatenated together to produce the object-to-world transformation. This area is trickier than it might initially appear to be; more in the near future.</p>
 
@@ -46,16 +49,20 @@
 
   <p>In the next chapter, we&rsquo;ll assign fronts and backs to polygons, and start drawing only those that are facing the viewer. That will enable us to handle convex polyhedrons, such as tetrahedrons and cubes. We&rsquo;ll also look at interactively controllable rotation, and at more complex rotations than the simple rotation around the Y axis that we did this time. In time, we&rsquo;ll use fixed-point arithmetic to speed things up, and do some shading and texture mapping. The journey has only begun; we&rsquo;ll get to all that and more soon.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="50-06.html">Previous</a></td>
+        <td>
+          <a href="50-06.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="51-01.html">Next</a></td>
+        <td>
+          <a href="51-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

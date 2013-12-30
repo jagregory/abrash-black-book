@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,20 +18,24 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="12-02.html">Previous</a></td>
+        <td>
+          <a href="12-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="12-04.html">Next</a></td>
+        <td>
+          <a href="12-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
 
-  <p><br /></p>
-
   <p>There is, of course, no guarantee that I&rsquo;m entirely correct about the optimizations discussed in this chapter. Without knowing the internals of the 486, all I can do is time code and make inferences from the results; I invite you to deduce your own rules and cross-check them against mine. Also, most likely there are other optimizations that I&rsquo;m unaware of. If you have further information on these or any other undocumented optimizations, please write and let me know. And, of course, if anyone from Intel is reading this and wants to give us the gospel truth, please do!</p>
 
-  <h4 align="left" id="Heading8">Stack Addressing and Address Pipelining</h4>
+  <h4 id="Heading8">Stack Addressing and Address Pipelining</h4>
 
   <p>Rule #2A: Rule #2 sometimes, but not always, applies to the stack pointer when it is implicitly used to point to memory.</p>
 
@@ -74,7 +77,7 @@ pop    ax
 
   <p>I certainly haven&rsquo;t tried all possible combinations, but the results so far indicate that the stack pointer incurs the addressing pipeline penalty only if (E)SP is the <i>explicit</i> destination of one instruction and is then used by one of the two following instructions to address memory. So, for instance, SP isn&rsquo;t the explicit operand of <b>POP AX&mdash;</b>AX is&mdash;and no cycles are lost if <b>POP AX</b> is followed by <b>POP</b> or <b>RET</b>. Happily, then, we need not worry about the sequence in which we use <b>PUSH</b> and <b>POP</b>. However, adding to, moving to, or subtracting from the stack pointer should ideally be done at least two cycles before <b>PUSH</b>, <b>POP</b>, <b>RET</b>, or any other instruction that uses the stack pointer to address memory.</p>
 
-  <h4 align="left" id="Heading9">Problems with Byte Registers</h4>
+  <h4 id="Heading9">Problems with Byte Registers</h4>
 
   <p>There are two ways to lose cycles by using byte registers, and neither of them is documented by Intel, so far as I know. Let&rsquo;s start with the lesser and simpler of the two.</p>
 
@@ -120,16 +123,20 @@ xlat
 
   <p>In general, penalties for interrupting the 486&rsquo;s pipeline apply primarily to the fast core instructions of the 486, most notably register-only instructions and <b>MOV</b>, although arithmetic and logical operations that access memory are also often affected. I don&rsquo;t know all the performance dependencies, and I don&rsquo;t plan to; figuring all of them out would be a big, boring job of little value. Basically, on the 486 you should concentrate on using those fast core instructions when performance matters, and all the rules I&rsquo;ll discuss do indeed apply to those instructions.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="12-02.html">Previous</a></td>
+        <td>
+          <a href="12-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="12-04.html">Next</a></td>
+        <td>
+          <a href="12-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

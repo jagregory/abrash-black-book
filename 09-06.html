@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="09-05.html">Previous</a></td>
+        <td>
+          <a href="09-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="09-07.html">Next</a></td>
+        <td>
+          <a href="09-07.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p><b>LISTING 9.5 L9-5.ASM</b></p>
   <pre>
@@ -120,7 +123,7 @@ main() {
 }
 </pre>
 
-  <h4 align="left" id="Heading9">Sweet Spot Revisited</h4>
+  <h4 id="Heading9">Sweet Spot Revisited</h4>
 
   <p>Way back in Volume 1, Number 1 of <i>PC TECHNIQUES</i>, (April/May 1990) I wrote the very first of that magazine&rsquo;s HAX (#1), which extolled the virtues of placing your most commonly-used automatic (stack-based) variables within the stack&rsquo;s &ldquo;sweet spot,&rdquo; the area between +127 to -128 bytes away from BP, the stack frame pointer. The reason was that the 8088 can store addressing displacements that fall within that range in a single byte; larger displacements require a full word of storage, increasing code size by a byte per instruction, and thereby slowing down performance due to increased instruction fetching time.</p>
 
@@ -138,16 +141,20 @@ main() {
 
   <p>In assembly, it&rsquo;s easy to control the organization of your stack frame. In C, however, you&rsquo;ll have to figure out the allocation scheme your compiler uses to allocate automatic variables, and declare automatics appropriately to produce the desired effect. It can be done: I did it in Turbo C some years back, and trimmed the size of a program (admittedly, a large one) by several K&mdash;not bad, when you consider that the &ldquo;sweet spot&rdquo; optimization is essentially free, with no code reorganization, change in logic, or heavy thinking involved.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="09-05.html">Previous</a></td>
+        <td>
+          <a href="09-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="09-07.html">Next</a></td>
+        <td>
+          <a href="09-07.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

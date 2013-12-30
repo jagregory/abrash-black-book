@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="65-04.html">Previous</a></td>
+        <td>
+          <a href="65-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="66-02.html">Next</a></td>
+        <td>
+          <a href="66-02.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <h2 id="Heading1">Chapter 66<br />
   Quake&rsquo;s Hidden-Surface Removal</h2>
@@ -51,30 +54,34 @@
 
   <p>Back in Chapter 64, I described the creative flux that led to John Carmack&rsquo;s decision to use a precalculated potentially visible set (PVS) of polygons for each possible viewpoint in Quake, the game we&rsquo;re developing here at id Software. The precalculated PVS meant that instead of having to spend a lot of time searching through the world database to find out which polygons were visible from the current viewpoint, we could simply draw all the polygons in the PVS from back-to-front (getting the ordering courtesy of the world BSP tree) and get the correct scene drawn with no searching at all; letting the back-to-front drawing perform the final stage of hidden-surface removal (HSR). This was a terrific idea, but it was far from the end of the road for Quake&rsquo;s design.</p>
 
-  <h4 align="left" id="Heading4">Drawing Moving Objects</h4>
+  <h4 id="Heading4">Drawing Moving Objects</h4>
 
   <p>For one thing, there was still the question of how to sort and draw moving objects properly; in fact, this is the single technical question I&rsquo;ve been asked most often in recent months, so I&rsquo;ll take a moment to address it here. The primary problem is that a moving model can span multiple BSP leaves, with the leaves that are touched varying as the model moves; that, together with the possibility of multiple models in one leaf, means there&rsquo;s no easy way to use BSP order to draw the models in correctly sorted order. When I wrote Chapter 64, we were drawing sprites (such as explosions), moveable BSP models (such as doors), and polygon models (such as monsters) by clipping each into all the leaves it touched, then drawing the appropriate parts as each BSP leaf was reached in back-to-front traversal. However, this didn&rsquo;t solve the issue of sorting multiple moving models in a single leaf against each other, and also left some ugly sorting problems with complex polygon models.</p>
 
   <p>John solved the sorting issue for sprites and polygon models in a startlingly low-tech way: We now z-buffer them. (That is, before we draw each pixel, we compare its distance, or z, value with the z value of the pixel currently on the screen, drawing only if the new pixel is nearer than the current one.) First, we draw the basic world, walls, ceilings, and the like. No z-buffer <i>testing</i> is involved at this point (the world visible surface determination is done in a different way, as we&rsquo;ll see soon); however, we do <i>fill</i> the z-buffer with the z values (actually, 1/z values, as discussed below) for all the world pixels. Z-filling is a much faster process than z-buffering the entire world would be, because no reads or compares are involved, just writes of z values. Once the drawing and z-filling of the world is done, we can simply draw the sprites and polygon models with z-buffering and get perfect sorting all around.</p>
 
-  <h4 align="left" id="Heading5">Performance Impact</h4>
+  <h4 id="Heading5">Performance Impact</h4>
 
   <p>Whenever a z-buffer is involved, the questions inevitably are: What&rsquo;s the memory footprint and what&rsquo;s the performance impact? Well, the memory footprint at 320x200 is 128K, not trivial but not a big deal for a game that requires 8 MB to run. The performance impact is about 10 percent for z-filling the world, and roughly 20 percent (with lots of variation) for drawing sprites and polygon models. In return, we get a perfectly sorted world, and also the ability to do additional effects, such as particle explosions and smoke, because the z-buffer lets us flawlessly sort such effects into the world. All in all, the use of the z-buffer vastly improved the visual quality and flexibility of the Quake engine, and also simplified the code quite a bit, at an acceptable memory and performance cost.</p>
 
-  <h4 align="left" id="Heading6">Leveling and Improving Performance</h4>
+  <h4 id="Heading6">Leveling and Improving Performance</h4>
 
   <p>As I said above, in the Quake architecture, the world itself is drawn first, without z-buffer reads or compares, but filling the z-buffer with the world polygons&rsquo; z values, and then the moving objects are drawn atop the world, using full z-buffering. Thus far, I&rsquo;ve discussed how to draw moving objects. For the rest of this chapter, I&rsquo;m going to talk about the other part of the drawing equation; that is, how to draw the world itself, where the entire world is stored as a single BSP tree and never moves.</p>
-
-  <p><br /></p>
 
   <center>
     <table border="1">
       <tr>
-        <td><a href="65-04.html">Previous</a></td>
+        <td>
+          <a href="65-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="66-02.html">Next</a></td>
+        <td>
+          <a href="66-02.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

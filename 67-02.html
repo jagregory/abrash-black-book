@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="67-01.html">Previous</a></td>
+        <td>
+          <a href="67-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="67-03.html">Next</a></td>
+        <td>
+          <a href="67-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>And then yet another crop of sorting errors popped up.</p>
 
@@ -44,7 +47,7 @@
 
   <p>There are three types of 1/z span sorting, each requiring a different implementation. In order of increasing speed and decreasing complexity, they are: intersecting, abutting, and independent. (These are names of my own devising; I haven&rsquo;t come across any standard nomenclature in the literature.)</p>
 
-  <h4 align="left" id="Heading5">Intersecting Span Sorting</h4>
+  <h4 id="Heading5">Intersecting Span Sorting</h4>
 
   <p>Intersecting span sorting occurs when polygons can interpenetrate. Thus, two spans may cross such that part of each span is visible, in which case the spans have to be split and drawn appropriately, as shown in Figure 67.1.</p>
 
@@ -53,7 +56,7 @@
 
   <p>Intersecting is the slowest and most complicated type of span sorting, because it is necessary to compare 1/z values at two points in order to detect interpenetration, and additional work must be done to split the spans as necessary. Thus, although intersecting span sorting certainly works, it&rsquo;s not the first choice for performance.</p>
 
-  <h4 align="left" id="Heading6">Abutting Span Sorting</h4>
+  <h4 id="Heading6">Abutting Span Sorting</h4>
 
   <p>Abutting span sorting occurs when polygons that are not part of a continuous surface can butt up against one another, but don&rsquo;t interpenetrate, as shown in Figure 67.2. This is the sorting used in Quake, where objects like doors often abut walls and floors, and turns out to be more complicated than you might think. The problem is that when an abutting polygon starts on a given scan line, as with polygon B in Figure 67.2, it starts at exactly the same 1/z value as the polygon it abuts, in this case, polygon A, so additional sorting is needed when these ties happen. Of course, the two-point sorting used for intersecting polygons would work, but we&rsquo;d like to find something faster.</p>
 
@@ -66,16 +69,20 @@
 
   <p>Many caching schemes are possible with abutting span sorting, because any given pair of polygons, being noninterpenetrating, will sort in the same order throughout a scene. However, in Quake at least, the benefits of caching sort results were outweighed by the additional overhead of maintaining the caching information, and every caching variant we tried actually slowed Quake down.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="67-01.html">Previous</a></td>
+        <td>
+          <a href="67-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="67-03.html">Next</a></td>
+        <td>
+          <a href="67-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

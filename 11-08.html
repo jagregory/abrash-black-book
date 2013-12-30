@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="11-07.html">Previous</a></td>
+        <td>
+          <a href="11-07.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="12-01.html">Next</a></td>
+        <td>
+          <a href="12-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>Well, there&rsquo;s only one instruction other than <b>POPF</b> that loads the FLAGS register directly from the stack, and that&rsquo;s <b>IRET</b>, which loads the FLAGS register from the stack as it branches, as shown in Figure 11.5. iret has no known bugs of the sort that plague <b>POPF</b>, so it&rsquo;s certainly a candidate to replace popf in non-interruptible applications. Unfortunately, <b>IRET</b> loads the FLAGS register with the <i>third</i> word down on the stack, not the word on top of the stack, as is the case with <b>POPF</b>; the far return address that <b>IRET</b> pops into CS:IP lies between the top of the stack and the word popped into the FLAGS register.</p>
 
@@ -103,16 +106,20 @@ EMULATE_POPFmacro
 
   <p>And now you know the nature of and the workaround for the <b>POPF</b> bug. Whether you ever need the workaround or not, it&rsquo;s a neatly packaged example of the tremendous flexibility of the x86 instruction set.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="11-07.html">Previous</a></td>
+        <td>
+          <a href="11-07.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="12-01.html">Next</a></td>
+        <td>
+          <a href="12-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

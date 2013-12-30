@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,20 +18,24 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="16-03.html">Previous</a></td>
+        <td>
+          <a href="16-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="16-05.html">Next</a></td>
+        <td>
+          <a href="16-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
 
-  <p><br /></p>
-
   <p>Truth to tell, I didn&rsquo;t expect a three-times speedup; around two times was what I had in mind. Which just goes to show that any code can be made faster than you&rsquo;d expect, if you think about it long enough and from many different perspectives. (The most potent word-counting technique seems to be a 64K lookup table that allows handling two bytes simultaneously. This is not the sort of technique one comes up with by brute-force optimization.) Thinking (or, worse yet, boasting) that your code is the fastest possible is rollescating on a tightrope in a hurricane; you&rsquo;re due for a fall, if you catch my drift. Case in point: Terje Mathisen&rsquo;s word-counting program.</p>
 
-  <h4 align="left" id="Heading6">Blinding Yourself to a Better Approach</h4>
+  <h4 id="Heading6">Blinding Yourself to a Better Approach</h4>
 
   <p>Not so long ago, Terje Mathisen, who I introduced earlier in this book, wrote a very fast word-counting program, and posted it on Bix. When I say it was fast, I mean <i>fast;</i> this code was optimized like nobody&rsquo;s business. We&rsquo;re talking top-quality code here.</p>
 
@@ -57,7 +60,7 @@
 
   <p>(Granted, <b>CMP [<i>mem</i>],<i>reg</i></b> is 1 cycle slower than <b>CMP <i>reg</i>,[<i>mem</i>]</b> on the 286, and they&rsquo;re both the same on the 8088; in this case, though, the code was specific to the 386. In case you&rsquo;re curious, both forms take 2 cycles on the 486; quite a lot faster, eh?)</p>
 
-  <h4 align="left" id="Heading7">Watch Out for Luggable Assumptions!</h4>
+  <h4 id="Heading7">Watch Out for Luggable Assumptions!</h4>
 
   <p>The first lesson to be learned here is not to lug assumptions that may no longer be valid from the 8088/286 world into the wonderful new world of 386 native-mode programming. The second lesson is that after you&rsquo;ve slaved over your code for a while, you&rsquo;re in no shape to see its flaws, or to be able to get the new perspectives needed to speed it up. I&rsquo;ll bet Terje looked at that <b>[EBX+EAX]</b> addressing a hundred times while trying to speed up his code, but he didn&rsquo;t really see what it did; instead, he saw what it was supposed to do. Mental shortcuts like this are what enable us to deal with the complexities of assembly language without overloading after about 20 instructions, but they can be a major problem when looking over familiar code.</p>
 
@@ -81,16 +84,20 @@
 
   <p>The winner was David Stafford, who at the time was working for Borland International; his entry is shown in Listing 16.5. Dave Methvin, whom some of you may recall as a tech editor of the late, lamented <i>PC Tech Journal,</i> was a close second, and Mick Brown, about whom I know nothing more than that he is obviously an extremely good assembly language programmer, was a close third, as shown in Table 16.2, which precedes Listing 16.5. Those three were out ahead of the pack; the fourth-place entry, good as it was (twice as fast as my original code), was twice as slow as David&rsquo;s winning entry, so you can see that David, Dave, and Mick attained a rarefied level of optimization indeed.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="16-03.html">Previous</a></td>
+        <td>
+          <a href="16-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="16-05.html">Next</a></td>
+        <td>
+          <a href="16-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

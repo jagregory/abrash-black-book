@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="31-01.html">Previous</a></td>
+        <td>
+          <a href="31-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="31-03.html">Next</a></td>
+        <td>
+          <a href="31-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>That&rsquo;s a shame, because mode 13H has the simplest bitmap organization of any mode&mdash;one long, linear bitmap, with each byte controlling one pixel. We can&rsquo;t have that organization, though, so we&rsquo;ll have to find an acceptable substitute if we want to use a higher 256-color resolution.</p>
 
@@ -55,22 +58,26 @@
 
   <p>Our next task is to convert standard mode 13H into 320x400 mode. That&rsquo;s accomplished by undoing some of the mode bits that are set up especially for mode 13H, so that from a programming perspective the VGA reverts to a straightforward planar model of memory. That means taking the VGA out of chain 4 mode and doubleword mode, turning off the double display of each scan line, making sure chain mode, odd/even mode, and word mode are turned off, and selecting byte mode for video data display. All that&rsquo;s done in the <b>Set320x400Mode</b> subroutine in Listing 31.1, which we&rsquo;ll discuss next.</p>
 
-  <h4 align="left" id="Heading6">Reading and Writing Pixels</h4>
+  <h4 id="Heading6">Reading and Writing Pixels</h4>
 
   <p>The basic graphics functions in any mode are functions to read and write single pixels. Any more complex function can be built on these primitives, although that&rsquo;s rarely the speediest solution. What&rsquo;s more, once you understand the operation of the read and write pixel functions, you&rsquo;ve got all the knowledge you need to create functions that perform more complex graphics functions. Consequently, we&rsquo;ll start our exploration of 320x400 mode with pixel-at-a-time line drawing.</p>
 
   <p>Listing 31.1 draws 8 multicolored octagons in turn, drawing a new one on top of the old one each time a key is pressed. The main-loop code of Listing 31.1 should be easily understood; a series of diagonal, horizontal, and vertical lines are drawn one pixel at a time based on a list of line descriptors, with the draw colors incremented for each successive time through the line list.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="31-01.html">Previous</a></td>
+        <td>
+          <a href="31-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="31-03.html">Next</a></td>
+        <td>
+          <a href="31-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

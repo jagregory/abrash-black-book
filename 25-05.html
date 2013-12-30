@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="25-04.html">Previous</a></td>
+        <td>
+          <a href="25-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="25-06.html">Next</a></td>
+        <td>
+          <a href="25-06.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p><b>LISTING 25.3 L25-3.ASM</b></p>
   <pre>
@@ -142,7 +145,7 @@ cseg    ends
         end     start
 </pre>
 
-  <h4 align="left" id="Heading7">Manipulating Planes Individually</h4>
+  <h4 id="Heading7">Manipulating Planes Individually</h4>
 
   <p>Listing 25.4 illustrates the use of set/reset to control only some, rather than all, planes. Here, the set/reset circuitry forces plane 2 to 1 and planes 0 and 3 to 0. Because bit 1 of the Enable Set/Reset register is 0, however, set/reset does not affect plane 1; the CPU data goes unchanged to the plane 1 ALU. Consequently, the CPU data can be used to control the value written to plane 1. Given the settings of the other three planes, this means that each bit of CPU data that is 1 generates a brown pixel, and each bit that is 0 generates a red pixel. Writing alternating bytes of 07H and 0E0H, then, creates a vertically striped pattern of brown and red.</p>
 
@@ -260,16 +263,20 @@ cseg    ends
         end     start
 </pre>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="25-04.html">Previous</a></td>
+        <td>
+          <a href="25-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="25-06.html">Next</a></td>
+        <td>
+          <a href="25-06.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

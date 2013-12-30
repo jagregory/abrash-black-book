@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="01-03.html">Previous</a></td>
+        <td>
+          <a href="01-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="01-05.html">Next</a></td>
+        <td>
+          <a href="01-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <table width="100%">
     <tr>
@@ -77,7 +80,7 @@ main(int argc, char *argv[]) {
 }
 </pre>
 
-  <h4 align="left" id="Heading10">Know When It Matters</h4>
+  <h4 id="Heading10">Know When It Matters</h4>
 
   <p>The last section contained a particularly interesting phrase: <i>the time-critical portions of your code</i>. Time-critical portions of your code are those portions in which the speed of the code makes a significant difference in the overall performance of your program&mdash;and by &ldquo;significant,&rdquo; I don&rsquo;t mean that it makes the code 100 percent faster, or 200 percent, or any particular amount at all, but rather that it makes the program more responsive and/or usable <i>from the user&rsquo;s perspective</i>.</p>
 
@@ -93,7 +96,7 @@ main(int argc, char *argv[]) {
 
   <p>Besides, we don&rsquo;t want to optimize until the design is refined to our satisfaction, and that won&rsquo;t be the case until we&rsquo;ve thought about other approaches.</p>
 
-  <h4 align="left" id="Heading11">Always Consider the Alternatives</h4>
+  <h4 id="Heading11">Always Consider the Alternatives</h4>
 
   <p>Listing 1.4 is good, but let&rsquo;s see if there are other&mdash;perhaps less obvious&mdash;ways to get the same results faster. Let&rsquo;s start by considering why Listing 1.4 is so much better than Listing 1.1. Like <b>read()</b>, <b>getc()</b> calls DOS to read from the file; the speed improvement of Listing 1.4 over Listing 1.1 occurs because <b>getc()</b> eads many bytes at once via DOS, then manages those bytes for us. That&rsquo;s faster than reading them one at a time using <b>read()</b>&mdash;but there&rsquo;s no reason to think that it&rsquo;s faster than having our program read and manage blocks itself. Easier, yes, but not faster.</p>
 
@@ -115,16 +118,20 @@ main(int argc, char *argv[]) {
 
   <p>The second reason is the hallmark of the mediocre programmer. Know when optimization matters&mdash;and then optimize when it does!</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="01-03.html">Previous</a></td>
+        <td>
+          <a href="01-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="01-05.html">Next</a></td>
+        <td>
+          <a href="01-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

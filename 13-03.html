@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="13-02.html">Previous</a></td>
+        <td>
+          <a href="13-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="13-04.html">Next</a></td>
+        <td>
+          <a href="13-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>On the 386, <b>ROR</b> was the only way to split a 32-bit register into two 16-bit registers. On the 486, however, <b>BSWAP</b> can not only do the job, but can do it better, because <b>BSWAP</b> executes in just one cycle. <b>BSWAP</b> has the added benefit of not affecting any flags, unlike <b>ROR</b>. With <b>BSWAP</b>-based code like that in Listing 13.6, the upper 16 bits of a register can be accessed with only 2 cycles of overhead and without altering any flags, making the technique of packing two 16-bit registers into one 32-bit register much more useful.</p>
 
@@ -89,16 +92,20 @@ mov   dx,ax
 
   <p>Again, this technique is advantageous <i>only</i> on a 486. It also doesn&rsquo;t apply to <b>RCL</b> and <b>RCR,</b> where you definitely want to use the 1-bit versions whenever you can, because the n-bit versions are horrendously slow. But if you&rsquo;re optimizing for the 486, these tidbits can save a few critical cycles&mdash;and Lord knows that if you&rsquo;re optimizing for the 486&mdash;that is, if you need even more performance than you get from unoptimized code on a 486&mdash;you almost certainly need all the speed you can get.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="13-02.html">Previous</a></td>
+        <td>
+          <a href="13-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="13-04.html">Next</a></td>
+        <td>
+          <a href="13-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

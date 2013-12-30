@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="01-01.html">Previous</a></td>
+        <td>
+          <a href="01-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="01-03.html">Next</a></td>
+        <td>
+          <a href="01-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <h3 id="Heading5">Rules for Building High-Performance Code</h3>
 
@@ -52,15 +55,15 @@
 
   <p>Making rules is easy; the hard part is figuring out how to apply them in the real world. For my money, examining some actual working code is always a good way to get a handle on programming concepts, so let&rsquo;s look at some of the performance rules in action.</p>
 
-  <h4 align="left" id="Heading6">Know Where You&rsquo;re Going</h4>
+  <h4 id="Heading6">Know Where You&rsquo;re Going</h4>
 
   <p>If we&rsquo;re going to create high-performance code, first we have to know what that code is going to do. As an example, let&rsquo;s write a program that generates a 16-bit checksum of the bytes in a file. In other words, the program will add each byte in a specified file in turn into a 16-bit value. This checksum value might be used to make sure that a file hasn&rsquo;t been corrupted, as might occur during transmission over a modem or if a Trojan horse virus rears its ugly head. We&rsquo;re not going to do anything with the checksum value other than print it out, however; right now we&rsquo;re only interested in generating that checksum value as rapidly as possible.</p>
 
-  <h4 align="left" id="Heading7">Make a Big Map</h4>
+  <h4 id="Heading7">Make a Big Map</h4>
 
   <p>How are we going to generate a checksum value for a specified file? The logical approach is to get the file name, open the file, read the bytes out of the file, add them together, and print the result. Most of those actions are straightforward; the only tricky part lies in reading the bytes and adding them together.</p>
 
-  <h4 align="left" id="Heading8">Make Lots of Little Maps</h4>
+  <h4 id="Heading8">Make Lots of Little Maps</h4>
 
   <p>Actually, we&rsquo;re only going to make one little map, because we only have one program section that requires much thought&mdash;the section that reads the bytes and adds them up. What&rsquo;s the best way to do this?</p>
 
@@ -128,16 +131,20 @@ main(int argc, char *argv[]) {
 
   <p>These results make it clear that it&rsquo;s folly to rely on your compiler&rsquo;s optimization to make your programs fast. Listing 1.1 is simply poorly designed, and no amount of compiler optimization will compensate for that failing. To drive home the point, conListings 1.2 and 1.3, which together are equivalent to Listing 1.1 except that the entire checksum loop is written in tight assembly code. The assembly language implementation is indeed faster than any of the C versions, as shown in Table 1.1, but it&rsquo;s less than 10 percent faster, and it&rsquo;s still unacceptably slow.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="01-01.html">Previous</a></td>
+        <td>
+          <a href="01-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="01-03.html">Next</a></td>
+        <td>
+          <a href="01-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

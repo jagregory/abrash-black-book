@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="38-04.html">Previous</a></td>
+        <td>
+          <a href="38-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="39-02.html">Next</a></td>
+        <td>
+          <a href="39-02.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <h2 id="Heading1">Chapter 39<br />
   Fast Convex Polygons</h2>
@@ -69,22 +72,26 @@
 
   <p>The amount of time that the previous chapter&rsquo;s sample program spent in each of these areas is shown in Table 39.1. As you can see, half the time was spent drawing and the other half was spent tracing the polygon edges (the time spent in <b>FillConvexPolygon</b> was relatively minuscule), so we have our choice of where to begin optimizing.</p>
 
-  <h4 align="left" id="Heading4">Fast Drawing</h4>
+  <h4 id="Heading4">Fast Drawing</h4>
 
   <p>Let&rsquo;s start with drawing, which is easily sped up. The previous chapter&rsquo;s code used a double-nested loop that called a draw-pixel function to plot each pixel in the polygon individually. That&rsquo;s a ridiculous approach in a graphics mode that offers linearly mapped memory, as does VGA mode 13H, the mode in which we&rsquo;re working. At the very least, we could point a far pointer to the left edge of each polygon scan line, then draw each pixel in that scan line in quick succession, using something along the lines of <b>*ScrPtr<small>++</small> = FillColor;</b> inside a loop.</p>
 
   <p>However, it seems silly to use a loop when the x86 has an instruction, <b>REP STOS</b>, that&rsquo;s uniquely suited to filling linear memory buffers. There&rsquo;s no way to use <b>REP STOS</b> directly in C code, but it&rsquo;s a good bet that the <b>memset</b> library function uses <b>REP STOS</b>, so you could greatly enhance performance by using <b>memset</b> to draw each scan line of the polygon in a single shot. That, however, is easier said than done. The <b>memset</b> function linked in from the library is tied to the memory model in use; in small (which includes Tiny, Small, or Medium) data models <b>memset</b> accepts only near pointers, so it can&rsquo;t be used to access screen memory. Consequently, a large (which includes Compact, Large, or Huge) data model must be used to allow <b>memset</b> to draw to display memory&mdash;a clear case of the tail wagging the dog. This is an excellent example of why, although it is possible to use C to do virtually anything, it&rsquo;s sometimes much simpler just to use a little assembly code and be done with it.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="38-04.html">Previous</a></td>
+        <td>
+          <a href="38-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="39-02.html">Next</a></td>
+        <td>
+          <a href="39-02.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

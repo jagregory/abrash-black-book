@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="65-02.html">Previous</a></td>
+        <td>
+          <a href="65-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="65-04.html">Next</a></td>
+        <td>
+          <a href="65-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p><b>LISTING 65.2 L65_2.c</b></p>
   <pre>
@@ -88,7 +91,7 @@ int ClipToPlane(polygon_t *pin, plane_t *pplane, polygon_t *pout)
 
   <p>One particularly useful aspect of 3-D clipping is that if you&rsquo;re drawing texture mapped polygons, texture coordinates can be clipped in exactly the same way as (x,y,z) coordinates. In fact, the very same fraction that&rsquo;s used to advance x, y, and z from the inside point to the point of intersection with the clip plane can be used to advance the texture coordinates as well, so only one extra multiply and one extra add are required for each texture coordinate.</p>
 
-  <h4 align="left" id="Heading6">Clipping to the Frustum</h4>
+  <h4 id="Heading6">Clipping to the Frustum</h4>
 
   <p>Given a polygon-clipping function, it&rsquo;s easy to clip to the frustum: set up the four planes for the sides of the frustum, with another one or two planes for near and far clipping, if desired; next, clip each potentially visible polygon to each plane in turn; then draw whatever polygons emerge from the clipping process. Listing 65.3 is the core code for a simple 3-D clipping example that allows you to move around and look at polygonal models from any angle. The full code for this program is available on the CD-ROM in the file DDJCLIP.ZIP.</p>
 
@@ -405,16 +408,20 @@ void UpdateWorld()
 }
 </pre>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="65-02.html">Previous</a></td>
+        <td>
+          <a href="65-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="65-04.html">Next</a></td>
+        <td>
+          <a href="65-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

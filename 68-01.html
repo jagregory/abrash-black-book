@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="67-05.html">Previous</a></td>
+        <td>
+          <a href="67-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="68-02.html">Next</a></td>
+        <td>
+          <a href="68-02.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <h2 id="Heading1">Chapter 68<br />
   Quake&rsquo;s Lighting Model</h2>
@@ -57,20 +60,24 @@
 
   <p>Gouraud shading allows for decent lighting effects with a relatively small amount of calculation and a compact data set that&rsquo;s a simple extension of the basic polygon model. However, there are several important drawbacks to Gouraud shading, as well.</p>
 
-  <h4 align="left" id="Heading5">Problems with Gouraud Shading</h4>
+  <h4 id="Heading5">Problems with Gouraud Shading</h4>
 
   <p>The quality of Gouraud shading depends heavily on the average size of the polygons being drawn. Linear interpolation is used, so highlights can only occur at vertices, and color gradients are monotonic across the face of each polygon. This can make for bland lighting effects if polygons are large, and makes it difficult to do spotlights and other detailed or dramatic lighting effects. After John brought the initial, primitive Quake engine up using Gouraud shading for lighting, the first thing he tried to improve lighting quality was adding a single vertex and creating new polygons wherever a spotlight was directly overhead a polygon, with the new vertex added directly underneath the light, as shown in Figure 68.1. This produced fairly attractive highlights, but simultaneously made evident several problems.</p>
-
-  <p><br /></p>
 
   <center>
     <table border="1">
       <tr>
-        <td><a href="67-05.html">Previous</a></td>
+        <td>
+          <a href="67-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="68-02.html">Next</a></td>
+        <td>
+          <a href="68-02.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

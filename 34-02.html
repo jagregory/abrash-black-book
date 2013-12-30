@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,18 +18,22 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="34-01.html">Previous</a></td>
+        <td>
+          <a href="34-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="34-03.html">Next</a></td>
+        <td>
+          <a href="34-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
 
-  <p><br /></p>
-
-  <h4 align="left" id="Heading5">Loading the DAC via the BIOS</h4>
+  <h4 id="Heading5">Loading the DAC via the BIOS</h4>
 
   <p>The DAC can be loaded either directly or through subfunctions 10H (for a single DAC register) or 12H (for a block of DAC registers) of the BIOS video service interrupt 10H, function 10H, described in Chapter 33. For cycling the contents of the entire DAC, the block-load function (invoked by executing <b>INT</b> 10H with AH = 10H and AL = 12H to load a block of CX DAC locations, starting at location BX, from the block of RGB triplets&mdash;3 bytes per triplet&mdash;starting at ES:DX into the DAC) would be the better of the two, due to the considerably greater efficiency of calling the BIOS once rather than 256 times. At any rate, we&rsquo;d like to use one or the other of the BIOS functions for color cycling, because we know that whenever possible, one should use a BIOS function in preference to accessing hardware directly, in the interests of avoiding compatibility problems. In the case of color cycling, however, it is emphatically <i>not</i> possible to use either of the BIOS functions, for they have problems. Serious problems.</p>
 
@@ -50,7 +53,7 @@
 
   <p>Which is not to say that loading the DAC directly is a picnic either, as we&rsquo;ll see next.</p>
 
-  <h4 align="left" id="Heading6">Loading the DAC Directly</h4>
+  <h4 id="Heading6">Loading the DAC Directly</h4>
 
   <p>So we must load the DAC directly in order to perform color cycling. The DAC is loaded directly by sending (with an <b>OUT</b> instruction) the number of the DAC location to be loaded to the DAC Write Index register at 3C8H and then performing three <b>OUT</b>s to write an RGB triplet to the DAC Data register at 3C9H. This approach must be repeated 256 times to load the entire DAC, requiring over a thousand <b>OUT</b>s in all.</p>
 
@@ -60,16 +63,20 @@
 
   <p>As I commented in the last chapter, I don&rsquo;t have any gruesome tale to relate that mandates taking the slower but safer road and setting the index for each DAC location separately while interrupts are disabled. I&rsquo;m merely hypothesizing as to what ghastly mishaps <i>could</i>. happen. However, it&rsquo;s been my experience that anything that can happen on the PC <i>does</i> happen eventually; there are just too dang many PCs out there for it to be otherwise. However, load the DAC any way you like; just don&rsquo;t blame me if you get a call from someone who&rsquo;s claims that your program sometimes turns their screen into something resembling month-old yogurt. It&rsquo;s not really your fault, of course&mdash;but try explaining that to <i>them!</i></p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="34-01.html">Previous</a></td>
+        <td>
+          <a href="34-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="34-03.html">Next</a></td>
+        <td>
+          <a href="34-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

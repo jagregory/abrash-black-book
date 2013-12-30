@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="58-02.html">Previous</a></td>
+        <td>
+          <a href="58-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="58-04.html">Next</a></td>
+        <td>
+          <a href="58-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>I&rsquo;d like to emphasize that algorithmically and conceptually, there is <i>no</i> difference between scanning out a polygon top to bottom and scanning it out left to right; it is only in conjunction with the hardware organization of Mode X that the scanning direction matters in the least.</p>
 
@@ -90,16 +93,20 @@ MOV [EDI+SCANOFFSET],AH
 
   <p>Actually, we also advanced the source pointer by the Y integer amount back when we added BP to SI; all that&rsquo;s left is to detect whether our addition to the Y fractional current coordinate produced a carry. That&rsquo;s easily done by testing bit 15 of EDX; if it&rsquo;s zero, there was no carry and we&rsquo;re done; otherwise, Y carried, so we have to reset bit 15 and advance the source pointer by one scanline. The resulting program flow is shown in Figure 58.7. Note that unlike the X fractional addition, we can&rsquo;t get away with just adding in the carry from the Y fractional addition, because when the Y fraction carries, it indicates a move not from one pixel to the next on a scanline (a single byte), but rather from one scanline to the next (a full scanline width).</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="58-02.html">Previous</a></td>
+        <td>
+          <a href="58-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="58-04.html">Next</a></td>
+        <td>
+          <a href="58-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

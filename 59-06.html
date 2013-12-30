@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="59-05.html">Previous</a></td>
+        <td>
+          <a href="59-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="60-01.html">Next</a></td>
+        <td>
+          <a href="60-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>Things change when maximum optimization is selected, however: The performance of the two implementations becomes virtually identical! How can this be? Part of the answer is that the compiler does an amazingly good job with Listing 59.2. Most impressively, when compiling Listing 59.2, the compiler actually converts all right-subtree descents from code recursion to data recursion, by simply jumping back to the left-subtree handling code instead of recursively calling <b>WalkTree()</b>. This means that half the time Listing 59.4 has no advantage over Listing 59.2; in fact, it&rsquo;s at a disadvantage because the code that the compiler generates for handling right-subtree descent in Listing 59.4 is somewhat inefficient, but the right-subtree code in Listing 59.2 is a marvel of code generation, at just 3 instructions.</p>
 
@@ -60,7 +63,7 @@
 
   <p>In the next chapter, we&rsquo;ll build a BSP-tree compiler, and after that, we&rsquo;ll put together a rendering system built around the BSP trees the compiler generates. If the subject of BSP trees really grabs your fancy (as it should if you care at all about performance graphics) there is at this writing (February 1996) a World Wide Web page on BSP trees that you must investigate at <a href="http://www.qualia.com/bspfaq/">http://www.qualia.com/bspfaq/</a>. It&rsquo;s set up in the familiar Internet Frequently Asked Questions (FAQ) style, and is very good stuff.</p>
 
-  <h4 align="left" id="Heading12">Related Reading</h4>
+  <h4 id="Heading12">Related Reading</h4>
 
   <p>Foley, J., A. van Dam, S. Feiner, and J. Hughes, <i>Computer Graphics: Principles and Practice (Second Edition)</i>, Addison Wesley, 1990, pp. 555-557, 675-680.</p>
 
@@ -70,16 +73,20 @@
 
   <p>Naylor, B., &ldquo;Binary Space Partitioning Trees as an Alternative Representation of Polytopes,&rdquo; <i>Computer Aided Design</i>, Vol. 22(4), May 1990, pp. 250-253.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="59-05.html">Previous</a></td>
+        <td>
+          <a href="59-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="60-01.html">Next</a></td>
+        <td>
+          <a href="60-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

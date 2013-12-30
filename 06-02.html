@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="06-01.html">Previous</a></td>
+        <td>
+          <a href="06-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="07-01.html">Next</a></td>
+        <td>
+          <a href="07-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>The two approaches are functionally interchangeable but <i>not</i> equivalent from a performance standpoint, and which is better depends on the particular context. If it&rsquo;s a one-shot memory access, it&rsquo;s best to let the processor perform the addition; it&rsquo;s generally faster at doing this than a separate <b>ADD</b> instruction would be. If it&rsquo;s a memory access within a loop, however, it&rsquo;s advantageous on the 8088 CPU to perform the addition outside the loop, if possible, reducing effective address calculation time inside the loop, as in the following:</p>
   <pre>
@@ -83,7 +86,7 @@ lea  di,[si+2]
   <p><a id="Fig1"><img src="images/06-01.jpg" /><br />
   <b>Figure 6.1</b></a>&nbsp;&nbsp;<i>Operation of ADD Reg,Reg vs. LEA Reg,{Addr}.</i></p>
 
-  <h4 align="left" id="Heading5">The Wonders of LEA on the 386</h4>
+  <h4 id="Heading5">The Wonders of LEA on the 386</h4>
 
   <p><b>LEA</b> really comes into its own as a &ldquo;super-ADD&rdquo; instruction on the 386, 486, and Pentium, where it can take advantage of the enhanced memory addressing modes of those processors. (The 486 and Pentium offer the same modes as the 386, so I&rsquo;ll refer only to the 386 from now on.) The 386 can do two very interesting things: It can use <i>any</i> 32-bit register (EAX, EBX, and so on) as the memory addressing base register and/or the memory addressing index register, and it can multiply any 32-bit register used as an index by two, four, or eight in the process of calculating a memory address, as shown in Figure 6.2. Let&rsquo;s see what that&rsquo;s good for.</p>
 
@@ -137,16 +140,20 @@ add  ebx,edx
 
   <p>I&rsquo;d like to extend my thanks to Duane Strong of Metagraphics for his help in brainstorming uses for the 386 version of <b>LEA</b> and for pointing out the complications of 486 instruction timings.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="06-01.html">Previous</a></td>
+        <td>
+          <a href="06-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="07-01.html">Next</a></td>
+        <td>
+          <a href="07-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

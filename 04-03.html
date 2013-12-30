@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="04-02.html">Previous</a></td>
+        <td>
+          <a href="04-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="04-04.html">Next</a></td>
+        <td>
+          <a href="04-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>Back to the 8-bit bus cycle-eater. As I&rsquo;ve said, in 8088 work you should strive to use byte-sized memory variables whenever possible. That does <i>not</i> mean that you should use 2 byte-sized memory accesses to manipulate a word-sized memory variable in preference to 1 word-sized memory access, as, for instance,</p>
   <pre>
@@ -105,16 +108,20 @@ shr  ax,1
 
   <p>should execute in 10 cycles, since each <b>SHR</b> takes 2 cycles to execute, according to Intel&rsquo;s specifications. Those specifications contain Intel&rsquo;s official instruction execution times, but in this case&mdash;and in many others&mdash;the specifications are drastically wrong. Why? Because they describe execution time <i>once an instruction reaches the prefetch queue.</i> They say nothing about whether a given instruction will be in the prefetch queue when it&rsquo;s time for that instruction to run, or how long it will take that instruction to reach the prefetch queue if it&rsquo;s not there already. Thanks to the low performance of the 8088&rsquo;s external data bus, that&rsquo;s a glaring omission&mdash;but, alas, an unavoidable one. Let&rsquo;s look at why the official execution times are wrong, and why that can&rsquo;t be helped.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="04-02.html">Previous</a></td>
+        <td>
+          <a href="04-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="04-04.html">Next</a></td>
+        <td>
+          <a href="04-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

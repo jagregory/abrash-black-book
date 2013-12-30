@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="09-02.html">Previous</a></td>
+        <td>
+          <a href="09-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="09-04.html">Next</a></td>
+        <td>
+          <a href="09-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>Listing 9.1 implements the scan-on-first-character approach. Listing 9.2 scans for whatever character the caller specifies. Listing 9.3 is a test program used to compare the two approaches. How much difference does Rob&rsquo;s revelation make? Plenty. Even when the entire C function call to <b>FindString</b> is timed&mdash;<b>strlen</b> calls, parameter pushing, calling, setup, and all&mdash;the version of <b>FindString</b> in Listing 9.2, which is directed by Listing 9.3 to scan for the infrequently-occurring &ldquo;Q,&rdquo; is about 40 percent faster on a 20 MHz cached 386 for the test search of Listing 9.3 than is the version of <b>FindString</b> in Listing 9.1, which always scans for the first character, in this case &ldquo;E.&rdquo; However, when only the search loops (the code that actually does the searching) in the two versions of <b>FindString</b> are compared, Listing 9.2 is more than <i>twice</i> as fast as Listing 9.1&mdash;a remarkable improvement over code that already uses <b>REPNZ SCASB</b> and <b>REPZ CMPS</b>.</p>
 
@@ -140,16 +143,20 @@ _FindStringendp
       end
 </pre>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="09-02.html">Previous</a></td>
+        <td>
+          <a href="09-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="09-04.html">Next</a></td>
+        <td>
+          <a href="09-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

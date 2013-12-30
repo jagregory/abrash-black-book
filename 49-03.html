@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="49-02.html">Previous</a></td>
+        <td>
+          <a href="49-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="49-04.html">Next</a></td>
+        <td>
+          <a href="49-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>It would be handy to have a function that, given a base image and mask, generates the four image and mask alignments and fills in the <b>MaskedImage</b> structure. Listing 49.3, together with the include file in Listing 49.4 and the system memory-to-display memory block-copy routine in Listing 48.4 (in the previous chapter) does just that. It would be faster if Listing 49.3 were in assembly language, but there&rsquo;s no reason to think that generating aligned images needs to be particularly fast; in such cases, I prefer to use C, for reasons of coding speed, fewer bugs, and maintainability.</p>
 
@@ -123,7 +126,7 @@ typedef struct {
 } MaskedImage;
 </pre>
 
-  <h4 align="left" id="Heading5">Notes on Masked Copying</h4>
+  <h4 id="Heading5">Notes on Masked Copying</h4>
 
   <p>Listings 49.1 and 49.2, like all Mode X code I&rsquo;ve presented, perform no clipping, because clipping code would complicate the listings too much. While clipping can be implemented directly in the low-level Mode X routines (at the beginning of Listing 49.1, for instance), another, potentially simpler approach would be to perform clipping at a higher level, modifying the coordinates and dimensions passed to low-level routines such as Listings 49.1 and 49.2 as necessary to accomplish the desired clipping. It is for precisely this reason that the low-level Mode X routines support programmable start coordinates in the source images, rather than assuming (0,0); likewise for the distinction between the width of the image and the width of the area of the image to draw.</p>
 
@@ -137,16 +140,20 @@ typedef struct {
     </tr>
   </table>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="49-02.html">Previous</a></td>
+        <td>
+          <a href="49-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="49-04.html">Next</a></td>
+        <td>
+          <a href="49-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

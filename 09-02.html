@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="09-01.html">Previous</a></td>
+        <td>
+          <a href="09-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="09-03.html">Next</a></td>
+        <td>
+          <a href="09-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>However, it generally is. Sure, if the length is odd, John&rsquo;s approach incurs a penalty approximately equal to the <b>REP</b> startup time for <b>MOVSB</b>. However, if the length is even, John&rsquo;s approach doesn&rsquo;t branch, saving cycles and not emptying the prefetch queue. If copy lengths are evenly distributed between even and odd, John&rsquo;s approach is faster in most x86 systems. (Not on the 486, though.)</p>
 
@@ -66,7 +69,7 @@ SHL   AX,2       ;*64
 ADD   AX,BX      ;*80
 </pre>
 
-  <h4 align="left" id="Heading5">Speeding Up Multiplication</h4>
+  <h4 id="Heading5">Speeding Up Multiplication</h4>
 
   <p>That brings us to multiplication, one of the slowest of x86 operations and one that allows for considerable optimization. One way to speed up multiplication is to use shift and add, <b>LEA</b>, or a lookup table to hard-code a multiplication operation for a fixed multiplier, as shown above. Another is to take advantage of the early-out feature of the 386 (and the 486, but in the interests of brevity I&rsquo;ll just say &ldquo;386&rdquo; from now on) by arranging your operands so that the multiplier (always the rightmost operand following <b>MUL</b> or <b>IMUL</b>) is no larger than the other operand.</p>
 
@@ -96,7 +99,7 @@ ADD   AX,BX      ;*80
 
   <p>That doesn&rsquo;t mean that your code should test and swap operands to make sure the smaller one is the multiplier; that rarely pays off. I&rsquo;m speaking more of the case where you&rsquo;re scaling an array up by a value that&rsquo;s always in the range of, say, 2 to 10; because the scale value will always be small and the array elements may have any value, the scale value is the logical choice for the multiplier.</p>
 
-  <h4 align="left" id="Heading6">Optimizing Optimized Searching</h4>
+  <h4 id="Heading6">Optimizing Optimized Searching</h4>
 
   <p>Rob Williams writes with a wonderful optimization to the <b>REPNZ SCASB-</b>based optimized searching routine I discussed in Chapter 5. As a quick refresher, I described searching a buffer for a text string as follows: Scan for the first byte of the text string with <b>REPNZ SCASB</b>, then use <b>REPZ CMPS</b> to check for a full match whenever <b>REPNZ SCASB</b> finds a match for the first character, as shown in Figure 9.1. The principle is that most buffer characters won&rsquo;t match the first character of any given string, so <b>REPNZ SCASB</b>, by far the fastest way to search on the PC, can be used to eliminate most potential matches; each remaining potential match can then be checked in its entirety with <b>REPZ CMPS</b>.</p>
 
@@ -115,16 +118,20 @@ ADD   AX,BX      ;*80
 
   <p>Imagine, if you will, that you&rsquo;re searching for the string &ldquo;EQUAL.&rdquo; By my approach, you&rsquo;d use <b>REPNZ SCASB</b> to scan for each occurrence of &ldquo;E,&rdquo; which crops up quite often in normal text. Rob points out that it would make more sense to scan for &ldquo;Q,&rdquo; then back up one character and check the whole string when a &ldquo;Q&rdquo; is found, as shown in Figure 9.2. &ldquo;Q&rdquo; is likely to occur much less often, resulting in many fewer whole-string checks and much faster processing.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="09-01.html">Previous</a></td>
+        <td>
+          <a href="09-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="09-03.html">Next</a></td>
+        <td>
+          <a href="09-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="35-01.html">Previous</a></td>
+        <td>
+          <a href="35-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="35-03.html">Next</a></td>
+        <td>
+          <a href="35-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>Let&rsquo;s examine the case of drawing a line where the horizontal, or X length of the line is greater than the vertical, or Y length, and both lengths are greater than 0. For example, suppose we are drawing a line from (0,0) to (5,2), as shown in Figure 35.2. Note that Figure 35.2 shows the upper-left-hand corner of the screen as (0,0), rather than placing (0,0) at its more traditional lower-left-hand corner location. Due to the way in which the PC&rsquo;s graphics are mapped to memory, it is simpler to work within this framework, although a translation of Y from increasing downward to increasing upward could be effected easily enough by simply subtracting the Y coordinate from the screen height minus 1; if you are more comfortable with the traditional coordinate system, feel free to modify the code in Listings 35.1 and 35.3.</p>
 
@@ -60,7 +63,7 @@
 
   <p>The above discussion summarizes the nature rather than the exact mechanism of Bresenham&rsquo;s line-drawing algorithm. I&rsquo;ll provide a brief seat-of-the-pants discussion of the algorithm in action when we get to the C implementation of the algorithm; for a full mathematical treatment, I refer you to pages 433-436 of Foley and Van Dam&rsquo;s <i>Fundamentals of Interactive Computer Graphics</i> (Addison-Wesley, 1982), or pages 72-78 of the second edition of that book, which was published under the name <i>Computer Graphics: Principles and Practice</i> (Addison-Wesley, 1990). These sources provide the derivation of the integer-only, divide-free version of the algorithm, as well as Pascal code for drawing lines in one of the eight possible octants.</p>
 
-  <h4 align="left" id="Heading5">Strengths and Weaknesses</h4>
+  <h4 id="Heading5">Strengths and Weaknesses</h4>
 
   <p>The overwhelming strength of Bresenham&rsquo;s line-drawing algorithm is speed. With no divides, no floating-point operations, and no need for variables that won&rsquo;t fit in 16 bits, it is perfectly suited for PCs.</p>
 
@@ -68,16 +71,20 @@
 
   <p>Then, too, users hate waiting for their computer to finish drawing. By any standard of drawing performance, Bresenham&rsquo;s algorithm excels.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="35-01.html">Previous</a></td>
+        <td>
+          <a href="35-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="35-03.html">Next</a></td>
+        <td>
+          <a href="35-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

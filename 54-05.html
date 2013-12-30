@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,18 +18,22 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="54-04.html">Previous</a></td>
+        <td>
+          <a href="54-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="55-01.html">Next</a></td>
+        <td>
+          <a href="55-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
 
-  <p><br /></p>
-
-  <h4 align="left" id="Heading7">Shading: Implementation Details</h4>
+  <h4 id="Heading7">Shading: Implementation Details</h4>
 
   <p>In order to calculate the cosine of the angle between an incoming light source and a polygon&rsquo;s unit normal, we must first have the polygon&rsquo;s unit normal. This could be calculated by generating a cross-product on two polygon edges to generate a normal, then calculating the normal&rsquo;s length and scaling to produce a unit normal. Unfortunately, that would require taking a square root, so it&rsquo;s not a desirable course of action. Instead, I&rsquo;ve made a change to X-Sharp&rsquo;s polygon format. Now, the first vertex in a shaded polygon&rsquo;s vertex list is the end-point of a unit normal that starts at the second point in the polygon&rsquo;s vertex list, as shown in Figure 54.3. The first point isn&rsquo;t one of the polygon&rsquo;s vertices, but is used only to generate a unit normal. The second point, however, is a polygon vertex. Calculating the difference vector between the first and second points yields the polygon&rsquo;s unit normal. Adding a unit-normal endpoint to each polygon isn&rsquo;t free; each of those end-points has to be transformed, along with the rest of the vertices, and that takes time. Still, it&rsquo;s faster than calculating a unit normal for each polygon from scratch.</p>
 
@@ -44,16 +47,20 @@
 
   <p>Given the two unit vectors, it&rsquo;s a piece of cake to calculate intensities, as shown in Listing 54.2. The sample program DEMO1, in the X-Sharp archive on the listings disk (built by running K1.BAT), puts the shading code to work displaying a rotating ball with ambient lighting and three spot lighting sources that the user can turn on and off. What you&rsquo;ll see when you run DEMO1 is that the shading is very good&mdash;face colors change very smoothly indeed&mdash;so long as only green lighting sources are on. However, if you combine spotlight two, which is blue, with any other light source, polygon colors will start to shift abruptly and unevenly. As configured in the demo, the palette supports a wide range of shading intensities for a pure version of any one of the three primary colors, but a very limited number of intensity steps (four, in this case) for each color component when two or more primary colors are mixed. While this situation can be improved, it is fundamentally a result of the restricted capabilities of the 256-color palette, and there is only so much that can be done without a larger color set. In the next chapter, I&rsquo;ll talk about some ways to improve the quality of 256-color shading.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="54-04.html">Previous</a></td>
+        <td>
+          <a href="54-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="55-01.html">Next</a></td>
+        <td>
+          <a href="55-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

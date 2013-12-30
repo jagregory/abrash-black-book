@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,18 +18,22 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="04-06.html">Previous</a></td>
+        <td>
+          <a href="04-06.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="04-08.html">Next</a></td>
+        <td>
+          <a href="04-08.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
 
-  <p><br /></p>
-
-  <h4 align="left" id="Heading17">The Impact of DRAM Refresh</h4>
+  <h4 id="Heading17">The Impact of DRAM Refresh</h4>
 
   <p>Let&rsquo;s look at examples from opposite ends of the spectrum in terms of the impact of DRAM refresh on code performance. First, consider the series of <b>MUL</b> instructions in Listing 4.9. Since a 16-bit <b>MUL</b> on the 8088 executes in between 118 and 133 cycles and is only 2 bytes long, there should be plenty of time for the prefetch queue to fill after each instruction, even after DRAM refresh has taken its slice of memory access time. Consequently, the prefetch queue should be able to keep the Execution Unit well-supplied with instruction bytes at all times. Since Listing 4.9 uses no memory operands, the Execution Unit should never have to wait for data from memory, and DRAM refresh should have no impact on performance. (Remember that the Execution Unit can operate normally during DRAM refreshes so long as it doesn&rsquo;t need to request a memory access from the Bus Interface Unit.)</p>
 
@@ -72,7 +75,7 @@
 
   <p>Which of the two cases we&rsquo;ve examined reflects reality? While either case <i>can</i> happen, the latter case&mdash;significant performance reduction, ranging as high as 8.33 percent&mdash;is far more likely to occur. This is especially true for high-performance assembly code, which uses fast instructions that tend to cause non-stop instruction fetching.</p>
 
-  <h4 align="left" id="Heading18">What to Do About the DRAM Refresh Cycle-Eater?</h4>
+  <h4 id="Heading18">What to Do About the DRAM Refresh Cycle-Eater?</h4>
 
   <p><i>Hmmm.</i> When we discovered the prefetch queue cycle-eater, we learned to use short instructions. When we discovered the 8-bit bus cycle-eater, we learned to use byte-sized memory operands whenever possible, and to keep word-sized variables in registers. What can we do to work around the DRAM refresh cycle-eater?</p>
 
@@ -88,16 +91,20 @@
 
   <p>Wait states are cycles during which a bus access by the CPU to a device on the PC&rsquo;s bus is temporarily halted by that device while the device gets ready to complete the read or write. Wait states are well and truly the lowest level of code performance. Everything we have discussed (and will discuss)&mdash;even DMA accesses&mdash;can be affected by wait states.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="04-06.html">Previous</a></td>
+        <td>
+          <a href="04-06.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="04-08.html">Next</a></td>
+        <td>
+          <a href="04-08.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="35-03.html">Previous</a></td>
+        <td>
+          <a href="35-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="35-05.html">Next</a></td>
+        <td>
+          <a href="35-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p><b>LISTING 35.2 L35-2.C</b></p>
   <pre>
@@ -117,7 +120,7 @@ void main()
 }
 </pre>
 
-  <h4 align="left" id="Heading7">Looking at EVGALine</h4>
+  <h4 id="Heading7">Looking at EVGALine</h4>
 
   <p>The <b>EVGALine</b> function itself performs four operations. <b>EVGALine</b> first sets up the VGA&rsquo;s hardware so that all pixels drawn will be in the desired color. This is accomplished by setting two of the VGA&rsquo;s registers, the Enable Set/Reset register and the Set/Reset register. Setting the Enable Set/Reset to the value 0FH, as is done in <b>EVGALine</b>, causes all drawing to produce pixels in the color contained in the Set/Reset register. Setting the Set/Reset register to the passed color, in conjunction with the Enable Set/Reset setting of 0FH, causes all drawing done by <b>EVGALine</b> and the functions it calls to generate the passed color. In summary, setting up the Enable Set/Reset and Set/Reset registers in this way causes the remainder of <b>EVGALine</b> to draw a line in the specified color.</p>
 
@@ -138,16 +141,20 @@ void main()
   <p><a id="Fig4"><img src="images/35-04.jpg" /><br />
   <b>Figure 35.4</b></a>&nbsp;&nbsp;<i>Bresenham&rsquo;s eight possible line orientations.</i></p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="35-03.html">Previous</a></td>
+        <td>
+          <a href="35-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="35-05.html">Next</a></td>
+        <td>
+          <a href="35-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

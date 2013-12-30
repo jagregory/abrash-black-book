@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="03-10.html">Previous</a></td>
+        <td>
+          <a href="03-10.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="04-02.html">Next</a></td>
+        <td>
+          <a href="04-02.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <h2 id="Heading1">Chapter 4<br />
   In the Lair of the Cycle-Eaters</h2>
@@ -57,7 +60,7 @@
 
   <p>The nature and severity of the cycle-eaters vary enormously from processor to processor, and (especially) from memory architecture to memory architecture. In order to understand them all, we need first to understand the simplest among them, those that haunted the original 8088-based IBM PC. Later on in this book, I&rsquo;ll be better able to explain the newer generation of cycle-eaters in terms of those ancestral cycle-eaters&mdash;but we have to get the groundwork down first.</p>
 
-  <h4 align="left" id="Heading5">The 8088&rsquo;s Ancestral Cycle-Eaters</h4>
+  <h4 id="Heading5">The 8088&rsquo;s Ancestral Cycle-Eaters</h4>
 
   <p>Internally, the 8088 is a 16-bit processor, capable of running at full speed at all times&mdash;unless external data is required. External data must traverse the 8088&rsquo;s external data bus and the PC&rsquo;s data bus one byte at a time to and from peripherals, with cycle-eaters lurking along every step of the way. What&rsquo;s more, external data includes not only memory operands <i>but also instruction bytes,</i> so even instructions with no memory operands can suffer from cycle-eaters. Since some of the 8088&rsquo;s fastest instructions are register-only instructions, that&rsquo;s important indeed.</p>
 
@@ -85,16 +88,20 @@
 
   <p>The 8088 is internally a full 16-bit processor, equivalent to an 8086. (In fact, the 8086 is identical to the 8088, except that it has a full 16-bit bus. The 8088 is basically the poor man&rsquo;s 8086, because it allows a cheaper&mdash;albeit slower&mdash;system to be built, thanks to the half-sized bus.) In terms of the instruction set, the 8088 is clearly a 16-bit processor, capable of performing any given 16-bit operation&mdash;addition, subtraction, even multiplication or division&mdash;with a single instruction. Externally, however, the 8088 is unequivocally an 8-bit processor, since the external data bus is only 8 bits wide. In other words, the programming interface is 16 bits wide, but the hardware interface is only 8 bits wide, as shown in Figure 4.2. The result of this mismatch is simple: Word-sized data can be transferred between the 8088 and memory or peripherals at only one-half the maximum rate of the 8086, which is to say one-half the maximum rate for which the Execution Unit of the 8088 was designed.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="03-10.html">Previous</a></td>
+        <td>
+          <a href="03-10.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="04-02.html">Next</a></td>
+        <td>
+          <a href="04-02.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

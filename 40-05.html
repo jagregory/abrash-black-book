@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="40-04.html">Previous</a></td>
+        <td>
+          <a href="40-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="41-01.html">Next</a></td>
+        <td>
+          <a href="41-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>An insertion sort that scans backward through the AET from the current edge rather than forward from the start of the AET could be quite a bit faster, because edges rarely move more than one or two positions through the AET. However, scanning backward requires a doubly linked list, rather than the singly linked list used in Listing 40.1. I&rsquo;ve chosen to use a singly linked list partly to minimize memory requirements (double-linking requires an extra pointer field) and partly because supporting back links would complicate the code a good bit. The main reason, though, is that the potential rewards for the complications of back links and insertion sorting aren&rsquo;t great enough; profiling a variety of polygons reveals that less than ten percent of total time is spent sorting the AET.</p>
 
@@ -44,7 +47,7 @@
 
   <p>Nonconvex polygons can be filled somewhat faster than complex polygons. Because edges never cross or switch positions with other edges once they&rsquo;re in the AET, the AET for a nonconvex polygon needs to be sorted only when new edges are added. In order for this to work, though, edges must be added to the AET in strict left-to-right order. Complications arise when dealing with two edges that start at the same point, because slopes must be compared to determine which edge is leftmost. This is certainly doable, but because of space limitations and limited performance returns, I haven&rsquo;t implemented this in Listing 40.1.</p>
 
-  <h4 align="left" id="Heading9">Details, Details</h4>
+  <h4 id="Heading9">Details, Details</h4>
 
   <p>Every so often, a programming demon that I&rsquo;d thought I&rsquo;d forever laid to rest arises to haunt me once again. A minor example of this&mdash;an imp, if you will&mdash;is the use of &ldquo; = &rdquo; when I mean &ldquo; == ,&rdquo; which I&rsquo;ve done all too often in the past, and am sure I&rsquo;ll do again. That&rsquo;s minor deviltry, though, compared to the considerably greater evils of one of my personal scourges, of which I was recently reminded anew: too-close attention to detail. Not seeing the forest for the trees. Looking low when I should have looked high. Missing the big picture, if you catch my drift.</p>
 
@@ -60,16 +63,20 @@
 
   <p>Thanks, Anton.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="40-04.html">Previous</a></td>
+        <td>
+          <a href="40-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="41-01.html">Next</a></td>
+        <td>
+          <a href="41-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

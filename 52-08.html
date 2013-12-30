@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="52-07.html">Previous</a></td>
+        <td>
+          <a href="52-07.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="53-01.html">Next</a></td>
+        <td>
+          <a href="53-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>The keys to the performance increase manifested in this chapter&rsquo;s code are three. The first key is fixed-point arithmetic. In the previous two chapters, we worked with floating-point coordinates and transformation matrices. Those values are now stored as 32-bit fixed-point numbers, in the form 16.16 (16 bits of whole number, 16 bits of fraction). 32-bit fixed-point numbers allow sufficient precision for 3-D animation, but can be manipulated with fast integer operations, rather than by slow floating-point processor operations or excruciatingly slow floating-point emulator operations. Although the speed advantage of fixed-point varies depending on the operation, on the processor, and on whether or not a coprocessor is present, fixed-point multiplication can be as much as 100 times faster than the emulated floating-point equivalent. (I&rsquo;d like to take a moment to thank Chris Hecker for his invaluable input in this area.)</p>
 
@@ -38,28 +41,32 @@
 
   <p>Just for fun, I reimplemented the animation of Listings 52.1 through 52.10 with floating-point instructions. Together, the preceeding optimizations improve the performance of the entire animation&mdash;including drawing time and overhead, and not just math&mdash;by more than ten times over the code that uses the floating-point emulator. Amazing what one can accomplish with a few dozen lines of assembly and a switch in number format, isn&rsquo;t it? Note that no assembly code other than the native 386 multiply and divide is used in Listings 52.1 through 52.10, although the polygon fill code is of course mostly in assembly; we&rsquo;ve achieved 12 cubes animated at 15 fps while doing the 3-D work almost entirely in Borland C++, and we&rsquo;re <i>still</i> doing sine and cosine via the floating-point emulator. Happily, we&rsquo;re still nowhere near the upper limit on the animation potential of the PC.</p>
 
-  <h4 align="left" id="Heading6">Drawbacks</h4>
+  <h4 id="Heading6">Drawbacks</h4>
 
   <p>The techniques we&rsquo;ve used to turbocharge 3-D animation are very powerful, but there&rsquo;s a dark side to them as well. Obviously, native 386 instructions won&rsquo;t work on 8088 and 286 machines. That&rsquo;s rectifiable; equivalent multiplication and division routines could be implemented for real mode and performance would still be reasonable. It sure is nice to be able to plug in a 32-bit <b>IMUL</b> or <b>DIV</b> and be done with it, though. More importantly, 32-bit fixed-point arithmetic has limitations in range and accuracy. Points outside a 64Kx64Kx64K space can&rsquo;t be handled, imprecision tends to creep in over the course of multiple matrix concatenations, and it&rsquo;s quite possible to generate the dreaded divide by 0 interrupt if Z coordinates with absolute values less than one are used.</p>
 
   <p>I don&rsquo;t have space to discuss these issues in detail, but here are some brief thoughts: The working 64Kx64Kx64K fixed-point space can be paged into a larger virtual space. Imprecision of a pixel or two rarely matters in terms of display quality, and deterioration of concatenated rotations can be corrected by restoring orthogonality, for example by periodically calculating one row of the matrix as the cross-product of the other two (forcing it to be perpendicular to both). Alternatively, transformations can be calculated from scratch each time an object or the viewer moves, so there&rsquo;s no chance for cumulative error. 3-D clipping with a front clip plane of -1 or less can prevent divide overflow.</p>
 
-  <h4 align="left" id="Heading7">Where the Time Goes</h4>
+  <h4 id="Heading7">Where the Time Goes</h4>
 
   <p>The distribution of execution time in the animation code is no longer wildly biased toward transformation, but sine and cosine are certainly still sucking up cycles. Likewise, the overhead in the calls to <b>FixedMul()</b> and <b>FixedDiv()</b> is costly. Much of this is correctable with a little carefully crafted assembly language and a lookup table; I&rsquo;ll provide that shortly.</p>
 
   <p>Regardless, with this chapter we have made the critical jump to a usable level of performance and a serviceable general-purpose framework. From here on out, it&rsquo;s the fun stuff.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="52-07.html">Previous</a></td>
+        <td>
+          <a href="52-07.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="53-01.html">Next</a></td>
+        <td>
+          <a href="53-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

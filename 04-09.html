@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,20 +18,24 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="04-08.html">Previous</a></td>
+        <td>
+          <a href="04-08.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="04-10.html">Next</a></td>
+        <td>
+          <a href="04-10.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
 
-  <p><br /></p>
-
   <p>The answer varies considerably depending on what display adapter and what display mode we&rsquo;re talking about. The display adapter cycle-eater is worst with the Enhanced Graphics Adapter (EGA) and the original Video Graphics Array (VGA). (Many VGAs, especially newer ones, insert many fewer wait states than IBM&rsquo;s original VGA. On the other hand, Super VGAs have more bytes of display memory to be accessed in high-resolution mode.) While the Color/Graphics Adapter (CGA), Monochrome Display Adapter (MDA), and Hercules Graphics Card (HGC) all suffer from the display adapter cycle-eater as well, they suffer to a lesser degree. Since the VGA represents the base standard for PC graphics now and for the foreseeable future, and since it is the hardest graphics adapter to wring performance from, we&rsquo;ll restrict our discussion to the VGA (and its close relative, the EGA) for the remainder of this chapter.</p>
 
-  <h4 align="left" id="Heading21">The Impact of the Display Adapter Cycle-Eater</h4>
+  <h4 id="Heading21">The Impact of the Display Adapter Cycle-Eater</h4>
 
   <p>Even on the EGA and VGA, the effect of the display adapter cycle-eater depends on the display mode selected. In text mode, the display adapter cycle-eater is rarely a major factor. It&rsquo;s not that the cycle-eater isn&rsquo;t present; however, a mere 4,000 bytes control the entire text mode display, and even with the display adapter cycle-eater it just doesn&rsquo;t take that long to manipulate 4,000 bytes. Even if the display adapter cycle-eater were to cause the 8088 to take as much as 5&micro;s per display memory access&mdash;more than five times normal&mdash;it would still take only 4,000x 2x 5&micro;s, or 40 &micro;s, to read and write every byte of display memory. That&rsquo;s a lot of time as measured in 8088 cycles, but it&rsquo;s less than the blink of an eye in human time, and video performance only matters in human time. After all, the whole point of drawing graphics is to convey visual information, and if that information can be presented faster than the eye can see, that is by definition fast enough.</p>
 
@@ -102,16 +105,20 @@
 
   <p>Bear in mind that we&rsquo;re talking about a worst case here; the impact of the display adapter cycle-eater is proportional to the percent of time a given code sequence spends accessing display memory.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="04-08.html">Previous</a></td>
+        <td>
+          <a href="04-08.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="04-10.html">Next</a></td>
+        <td>
+          <a href="04-10.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="59-02.html">Previous</a></td>
+        <td>
+          <a href="59-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="59-04.html">Next</a></td>
+        <td>
+          <a href="59-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>Creating a BSP tree is a recursive process, so we&rsquo;ll perform the first split and go from there. Figure 59.3 shows the world carved along the line of wall C into two parts: walls that are in front of wall C, and walls that are behind. (Any of the walls would have been an equally valid choice for the initial split; we&rsquo;ll return to the issue of choosing splitting walls in the next chapter.) This splitting into front and back is the essential dualism of BSP trees.</p>
 
@@ -47,7 +50,7 @@
 
   <p>Both, actually. Wall A gets split into two pieces, which I&rsquo;ll call wall A and wall E; each piece is assigned to the appropriate subspace and treated as a separate wall. As shown in Figure 59.6, each of the split pieces then has a subspace to itself, and each becomes a leaf of the tree. The BSP tree is now complete.</p>
 
-  <h4 align="left" id="Heading7">Visibility Ordering</h4>
+  <h4 id="Heading7">Visibility Ordering</h4>
 
   <p>Now that we&rsquo;ve successfully built a BSP tree, you might justifiably be a little puzzled as to how any of this helps with visibility ordering. The answer is that each BSP node can definitively determine which of its child trees is nearer and which is farther from any and all viewpoints; applied throughout the tree, this principle makes it possible to establish visibility ordering for all the line segments or planes in a BSP tree, no matter what the viewing angle.</p>
 
@@ -102,16 +105,20 @@ void WalkBSPTree(NODE *pNode)
     </tr>
   </table>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="59-02.html">Previous</a></td>
+        <td>
+          <a href="59-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="59-04.html">Next</a></td>
+        <td>
+          <a href="59-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

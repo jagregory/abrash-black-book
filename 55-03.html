@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="55-02.html">Previous</a></td>
+        <td>
+          <a href="55-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="55-04.html">Next</a></td>
+        <td>
+          <a href="55-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p><b>LISTING 55.3 L55-3.C</b></p>
   <pre>
@@ -67,7 +70,7 @@
 
   <p>The sad truth is that the VGA&rsquo;s 256-color palette is an inadequate resource for general RGB shading. The good news is that clever workarounds can make VGA graphics look nearly as good as 24-bpp graphics; but the burden falls on you, the programmer, to design your applications and color mapping to compensate for the VGA&rsquo;s limitations. To experiment with a different 256-color model in X-Sharp, just change <b>InitializePalette()</b> to set up the desired palette and <b>ModelColorToColorIndex()</b> to map 24-bit RGB triplets into the palette you&rsquo;ve set up. It&rsquo;s that simple, and the results can be striking indeed.</p>
 
-  <h4 align="left" id="Heading4">A Bonus from the BitMan</h4>
+  <h4 id="Heading4">A Bonus from the BitMan</h4>
 
   <p>Finally, a note on fast VGA text, which came in from a correspondent who asked to be referred to simply as the BitMan. The BitMan passed along a nifty application of the VGA&rsquo;s under-appreciated write mode 3 that is, under the proper circumstances, the fastest possible way to draw text in any 16-color VGA mode.</p>
 
@@ -80,16 +83,20 @@
 
   <p>The keys to fast solid text are the latches and write mode 3. The latches, as you may recall from earlier discussions in this book, are four internal VGA registers that hold the last bytes read from the VGA&rsquo;s four planes; every read from VGA memory loads the latches with the values stored at that display memory address across the four planes. Whenever a write is performed to VGA memory, the latches can provide some, none, or all of the bits written to memory, depending on the bit mask, which selects between the latched data and the drawing data on a bit-by-bit basis. The latches solve half our problem; we can fill the latches with the background color, then use them to draw the background box. The trick now is drawing the text pixels in the foreground color at the same time.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="55-02.html">Previous</a></td>
+        <td>
+          <a href="55-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="55-04.html">Next</a></td>
+        <td>
+          <a href="55-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

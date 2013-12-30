@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,18 +18,22 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="23-04.html">Previous</a></td>
+        <td>
+          <a href="23-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="23-06.html">Next</a></td>
+        <td>
+          <a href="23-06.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
 
-  <p><br /></p>
-
-  <h4 align="left" id="Heading8">Color Plane Manipulation</h4>
+  <h4 id="Heading8">Color Plane Manipulation</h4>
 
   <p>The VGA provides a considerable amount of hardware assistance for manipulating the four display memory planes. Two features illustrated by the sample program are the ability to control which planes are written to by a CPU write and the ability to copy four bytes&mdash;one from each plane&mdash;with a single CPU read and a single CPU write.</p>
 
@@ -50,7 +53,7 @@
 
   <p>Don&rsquo;t worry if you&rsquo;re not catching everything in this chapter on the first pass; the VGA is a complicated beast, and learning about it is an iterative process. We&rsquo;ll be going over these features again, in different contexts, over the course of the rest of this book.</p>
 
-  <h4 align="left" id="Heading9">Page Flipping</h4>
+  <h4 id="Heading9">Page Flipping</h4>
 
   <p>When animated graphics are drawn directly on the screen, with no intermediate frame-composition stage, the image typically flickers and/or ripples, an unavoidable result of modifying display memory at the same time that it is being scanned for video data. The display memory of the VGA makes it possible to perform page flipping, which eliminates such problems. The basic premise of page flipping is that one area of display memory is displayed while another is being modified. The modifications never affect an area of memory as it is providing video data, so no undesirable side effects occur. Once the modification is complete, the modified buffer is selected for display, causing the screen to change to the new image in a single frame&rsquo;s time, typically 1/60th or 1/70th of a second. The other buffer is then available for modification.</p>
 
@@ -62,16 +65,20 @@
 
   <p>Clearly, what we want is to set the new start address, then wait for the start of the vertical sync pulse, at which point we can be sure the page has flipped. However, we can&rsquo;t just set the start address and wait, because we might have the extreme misfortune to set one of the start address registers before the start of vertical sync and the other after, resulting in mismatched halves of the start address and a nasty jump of the displayed image for one frame.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="23-04.html">Previous</a></td>
+        <td>
+          <a href="23-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="23-06.html">Next</a></td>
+        <td>
+          <a href="23-06.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

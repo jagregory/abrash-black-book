@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="39-01.html">Previous</a></td>
+        <td>
+          <a href="39-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="39-03.html">Next</a></td>
+        <td>
+          <a href="39-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>At any rate, Listing 39.1 for this chapter shows a version of <b>DrawHorizontalLineList</b> that uses memset to draw each scan line of the polygon in a single call. When linked to Chapter 38&rsquo;s test program, Listing 39.1 increases pure drawing speed (disregarding edge tracing and other nondrawing time) by more than an order of magnitude over Chapter 38&rsquo;s draw-pixel-based code, despite the fact that Listing 39.1 requires a large (in this case, the Compact) data model. Listing 39.1 works fine with Borland C<small>++</small>, but may not work with other compilers, for it relies on the aforementioned interaction between memset and the selected memory model.</p>
 
@@ -241,7 +244,7 @@ void DrawHorizontalLineList(struct HLineList * HLineListPtr,
 
   <p>Anyway, Listing 39.1 has the desired effect of vastly improving drawing time. There are cycles yet to be had in the drawing code, but as tracing polygon edges now takes 92 percent of the polygon filling time, it&rsquo;s logical to optimize the tracing code next.</p>
 
-  <h4 align="left" id="Heading5">Fast Edge Tracing</h4>
+  <h4 id="Heading5">Fast Edge Tracing</h4>
 
   <p>There&rsquo;s no secret as to why last chapter&rsquo;s <b>ScanEdge</b> was so slow: It used floating point calculations. One secret of fast graphics is using integer or fixed-point calculations, instead. (Sure, the floating point code would run faster if a math coprocessor were installed, but it would still be slower than the alternatives; besides, why require a math coprocessor when you don&rsquo;t have to?) Both integer and fixed-point calculations are fast. In many cases, fixed-point is faster, but integer calculations have one tremendous virtue: They&rsquo;re completely accurate. The tiny imprecision inherent in either fixed or floating-point calculations can result in occasional pixels being one position off from their proper location. This is no great tragedy, but after going to so much trouble to ensure that polygons don&rsquo;t overlap at common edges, why not get it exactly right?</p>
 
@@ -255,16 +258,20 @@ void DrawHorizontalLineList(struct HLineList * HLineListPtr,
     </tr>
   </table>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="39-01.html">Previous</a></td>
+        <td>
+          <a href="39-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="39-03.html">Next</a></td>
+        <td>
+          <a href="39-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

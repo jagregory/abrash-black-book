@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="19-01.html">Previous</a></td>
+        <td>
+          <a href="19-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="19-03.html">Next</a></td>
+        <td>
+          <a href="19-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <table width="100%">
     <tr>
@@ -40,7 +43,7 @@
 
   <p>(And yes, self-modifying code still works; as with all Pentium changes, the dual caches introduce no incompatibilities with 386/486 code.) Also, because the code and data caches are separate, code can&rsquo;t be driven out of the cache in a tight loop that accesses a lot of data, unlike the 486. In addition, the Pentium expands the 486&rsquo;s 32-byte prefetch queue to 128 bytes. In conjunction with the branch prediction feature (described next), which allows the Pentium to prefetch properly at most branches, this larger prefetch queue means that the Pentium&rsquo;s two pipes should be better fed than those of any previous x86 processor.</p>
 
-  <h4 align="left" id="Heading5">Crossing Cache Lines</h4>
+  <h4 id="Heading5">Crossing Cache Lines</h4>
 
   <p>There are three other characteristics of the Pentium that make for a healthy supply of instruction bytes. One is that the Pentium can prefetch instructions across cache lines. Unlike the 486, where there is a 3-cycle penalty for branching to an instruction that spans a cache line, there&rsquo;s no such penalty on the Pentium. The second is that the cache line size (the number of bytes fetched from the external cache or main memory on a cache miss) on the Pentium is 32 bytes, twice the size of the 486&rsquo;s cache line, so a cache miss causes a longer run of instructions to be placed in the cache than on the 486. The third is that the Pentium&rsquo;s external bus is twice as wide as the 486&rsquo;s, at 64 bits, and runs twice as fast, at 66 MHz, so the Pentium can fetch both instruction and data bytes from the external cache four times as fast as the 486.</p>
 
@@ -56,7 +59,7 @@
 
   <p>One change in the Pentium that you definitely do have to worry about is superscalar execution. Utilization of the V-pipe can range from near zero percent to 100 percent, depending on the code being executed, and careful rearrangement of code can have amazing effects. Maxing out V-pipe use is not a trivial task; I&rsquo;ll spend all of the next chapter discussing it so as to have time to cover it properly. In the meantime, two good references for superscalar programming and other Pentium information are Intel&rsquo;s <i>Pentium Processor User&rsquo;s Manual: Volume 3: Architecture and Programming Manual</i> (ISBN 1-55512-195-0; Intel order number 241430-001), and the article &ldquo;Optimizing Pentium Code&rdquo; by Mike Schmidt, in <i>Dr. Dobb&rsquo;s Journal</i> for January 1994.</p>
 
-  <h4 align="left" id="Heading6">Cache Organization</h4>
+  <h4 id="Heading6">Cache Organization</h4>
 
   <p>There are two other interesting changes in the Pentium&rsquo;s cache organization. First, the cache is two-way set-associative, whereas the 486 is four-way set-associative. The details of this don&rsquo;t matter, but simply put, this, combined with the 32-byte cache line size, means that the Pentium has somewhat coarser granularity in both space and time than the 486 in terms of packing bytes into the cache, although the total cache space is now bigger. There&rsquo;s nothing you can do about this, but it may make it a little harder to get a loop&rsquo;s working set into the cache. Second, the internal cache can now be configured (by the BIOS or OS; you won&rsquo;t have to worry about it) for write-back rather than write-through operation. This means that writes to the internal data cache don&rsquo;t necessarily get propagated to the external bus until other demands for cache space force the data out of the cache, making repeated writes to memory variables such as loop counters cheaper on average than on the 486, although not as cheap as registers.</p>
 
@@ -82,16 +85,20 @@ add edx,4       ;V-pipe cycle 2
 
   <p>makes it functionally identical, but cuts the cycles to 2&mdash;a 50 percent improvement. Clearly, avoiding AGIs becomes a much more challenging and rewarding game in a superscalar world, one to which I&rsquo;ll return in the next chapter.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="19-01.html">Previous</a></td>
+        <td>
+          <a href="19-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="19-03.html">Next</a></td>
+        <td>
+          <a href="19-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

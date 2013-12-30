@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="28-04.html">Previous</a></td>
+        <td>
+          <a href="28-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="29-01.html">Next</a></td>
+        <td>
+          <a href="29-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>Listing 28.3 illustrates an efficient use of write mode 3 in conjunction with read mode 1 and a Color Don&rsquo;t Care register setting of 0. The mask in AL is passed directly to the VGA&rsquo;s bit mask (that&rsquo;s how write mode 3 works&mdash;see Chapter 4 for details). Because the VGA always returns 0FFH, the single <b>AND</b> instruction loads the latches, and writes the value in AL, unmodified, to the VGA, where it is used to generate the bit mask. This is more compact and register-efficient than using separate instructions to read and write, although it is not necessarily faster by cycle count, because on a 486 or a Pentium <b>MOV</b> is a 1-cycle instruction, but <b>AND</b> with memory is a 3-cycle instruction. However, given display memory wait states, it is often the case that the two approaches run at the same speed, and the register that the above approach frees up can frequently be used to save one or more cycles in any case.</p>
 
@@ -147,16 +150,20 @@ code ends
 
   <p>Not to worry&mdash;that still leaves us a slew of interesting VGA topics, including smooth panning and scrolling, the split screen, color selection, page flipping, and Mode X. And that&rsquo;s not to mention actual uses to which the VGA&rsquo;s hardware can be put, including lines, circles, polygons, and my personal favorite, animation. We&rsquo;ve covered a lot of challenging and rewarding ground&mdash;and we&rsquo;ve only just begun.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="28-04.html">Previous</a></td>
+        <td>
+          <a href="28-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="29-01.html">Next</a></td>
+        <td>
+          <a href="29-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

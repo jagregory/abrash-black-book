@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,18 +18,22 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="30-02.html">Previous</a></td>
+        <td>
+          <a href="30-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="30-04.html">Next</a></td>
+        <td>
+          <a href="30-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
 
-  <p><br /></p>
-
-  <h4 align="left" id="Heading5">VGA and EGA Split-Screen Operation Don&rsquo;t Mix</h4>
+  <h4 id="Heading5">VGA and EGA Split-Screen Operation Don&rsquo;t Mix</h4>
 
   <p>You must set the <b>IS_VGA</b> equate at the start of Listing 30.1 correctly for the adapter the code will run on in order for the program to perform properly. This equate determines how the upper bits of the split screen start scan line are set by <b>SetSplitScreenRow</b>. If <b>IS_VGA</b> is 0 (specifying an EGA target), then bit 8 of the split screen start scan line is set by programming the entire Overflow register to 1FH; this is hard-wired for the 350-scan-line modes of the EGA. If <b>IS_VGA</b> is 1 (specifying a VGA target), then bits 8 and 9 of the split screen start scan line are set by reading the registers they reside in, changing only the split-screen-related bits, and writing the modified settings back to their respective registers.</p>
 
@@ -74,16 +77,20 @@
 
   <p>There&rsquo;s another respect in which the EGA is inferior to the VGA when it comes to the split screen, and that&rsquo;s in the area of panning when the split screen is on. This isn&rsquo;t a bug&mdash;it&rsquo;s just one of the many areas in which the VGA&rsquo;s designers learned from the shortcomings of the EGA and went the EGA one better.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="30-02.html">Previous</a></td>
+        <td>
+          <a href="30-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="30-04.html">Next</a></td>
+        <td>
+          <a href="30-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

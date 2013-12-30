@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="19-03.html">Previous</a></td>
+        <td>
+          <a href="19-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="20-01.html">Next</a></td>
+        <td>
+          <a href="20-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <h3 id="Heading8">Branch Prediction</h3>
 
@@ -60,13 +63,13 @@
 
   <p>The Pentium has all the instructions of the 486, plus a few new ones. One much-needed instruction that has finally made it into the instruction set is <b>CPUID</b>, which allows your code to determine what processor it&rsquo;s running on. <b>CPUID</b> is 15 years late, but at least it&rsquo;s finally here. Another new instruction is <b>CMPXCHG8B</b>, which does a compare and conditional exchange on a qword. <b>CMPXCHG8B</b> doesn&rsquo;t seem to me to be a particularly useful instruction, but I&rsquo;m sure Intel wouldn&rsquo;t have added it without a reason; if you know of a use for it, please pass it along to me.</p>
 
-  <h4 align="left" id="Heading10">486 versus Pentium Optimization</h4>
+  <h4 id="Heading10">486 versus Pentium Optimization</h4>
 
   <p>Many Pentium optimizations help, or at least don&rsquo;t hurt, on the 486. Many, but not all&mdash;and many <i>do</i> hurt on the 386. As I discuss various Pentium optimizations, I will attempt to note the effects on the 486 as well, but doing this in complete detail would double the sizes of these discussions and make them hard to follow. In general, I&rsquo;d recommend reserving Pentium optimization for your most critical code, and even there, it&rsquo;s a good idea to have at least two code paths, one for the 386 and one for the 486/Pentium. It&rsquo;s also a good idea to time your code on a 486 before and after Pentium-optimizing it, to make sure you haven&rsquo;t hurt performance on what will be, after all, by far the most important processor over the next couple of years.</p>
 
   <p>With that in mind, is optimizing for the Pentium even worthwhile today? That depends on your application and its market&mdash;but if you want absolutely the best possible performance for your DOS and Windows apps on the fastest hardware, Pentium optimization can make your code <i>scream</i>.</p>
 
-  <h4 align="left" id="Heading11">Going Superscalar</h4>
+  <h4 id="Heading11">Going Superscalar</h4>
 
   <p>In the next chapter, we&rsquo;ll look into the single biggest element of Pentium performance, cranking up the Pentium&rsquo;s second execution pipe. This is the area in which compiler technology is most touted for the Pentium, the two thoughts apparently being that (1) most existing code is in C, so recompiling to use the second pipe better is an automatic win, and (2) it&rsquo;s so complicated to optimize Pentium code that only a compiler can do it well. The first point is a reasonable one, but it does suffer from one flaw for large programs, in that Pentium-optimized code is larger than 486- or 386-optimized code, for reasons that will become apparent in the next chapter. Larger code means more cache misses and more page faults; and while most of the code in any program is not critical to performance, compilers optimize code indiscriminately.</p>
 
@@ -74,16 +77,20 @@
 
   <p>A compiler that generates better code than a good assembly programmer? That&rsquo;ll be the day.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="19-03.html">Previous</a></td>
+        <td>
+          <a href="19-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="20-01.html">Next</a></td>
+        <td>
+          <a href="20-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

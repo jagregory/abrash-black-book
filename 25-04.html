@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="25-03.html">Previous</a></td>
+        <td>
+          <a href="25-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="25-05.html">Next</a></td>
+        <td>
+          <a href="25-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p><b>LISTING 25.2 L25-2.ASM</b></p>
   <pre>
@@ -115,7 +118,7 @@ cseg    ends
         end     start
 </pre>
 
-  <h4 align="left" id="Heading6">Setting All Planes to a Single Color</h4>
+  <h4 id="Heading6">Setting All Planes to a Single Color</h4>
 
   <p>The set/reset circuitry can be used to force some planes to 0-bits and others to 1-bits during a single write, while letting CPU data go to still other planes, and so provides an efficient way to set all planes to a desired color. The set/reset circuitry works as follows:</p>
 
@@ -125,16 +128,20 @@ cseg    ends
 
   <p>Listing 25.3 illustrates the use of set/reset to force a specific color to be written. This program is the same as that of Listing 25.2, except that set/reset rather than the Map Mask register is used to control color. The preexisting pattern is completely overwritten this time, because the set/reset circuitry writes 0-bytes to planes that must be off as well as 0FFH-bytes to planes that must be on.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="25-03.html">Previous</a></td>
+        <td>
+          <a href="25-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="25-05.html">Next</a></td>
+        <td>
+          <a href="25-05.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

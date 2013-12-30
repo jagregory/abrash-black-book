@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="59-01.html">Previous</a></td>
+        <td>
+          <a href="59-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="59-03.html">Next</a></td>
+        <td>
+          <a href="59-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>Back-to-front or front-to-back traversal in itself wouldn&rsquo;t be so impressive&mdash;there are many ways to do that&mdash;were it not for one additional detail: The traversal can always be performed in linear time, as we&rsquo;ll see later on. For instance, you can traverse, a polygon list back-to-front from any viewpoint simply by walking through the corresponding BSP tree once, visiting each node one and only one time, and performing only one relatively inexpensive test at each node.</p>
 
@@ -37,7 +40,7 @@
   <p><a id="Fig1"><img src="images/59-01.jpg" /><br />
   <b>Figure 59.1</b></a>&nbsp;&nbsp;<i>The painter&rsquo;s algorithm.</i></p>
 
-  <h4 align="left" id="Heading5">Limitations of BSP Trees</h4>
+  <h4 id="Heading5">Limitations of BSP Trees</h4>
 
   <p>Powerful as they are, BSP trees aren&rsquo;t perfect. By far the greatest limitation of BSP trees is that they&rsquo;re time-consuming to build, enough so that, for all practical purposes, BSP trees must be precalculated, and cannot be built dynamically at runtime. In fact, a BSP-tree compiler that attempts to perform some optimization (limiting the number of surfaces that need to be split, for example) can easily take minutes or even hours to process large world databases.</p>
 
@@ -62,16 +65,20 @@
 
   <p>There are infinitely valid ways to carve up Figure 59.2, but the simplest is just to carve along the lines of the walls themselves, with each node containing one wall. This is not necessarily optimal, in the sense of producing the smallest tree, but it has the virtue of generating the splitting lines without expensive analysis. It also saves on data storage, because the data for the walls can do double duty in describing the splitting lines as well. (Putting one wall on each splitting line doesn&rsquo;t actually create a unique subspace for each wall, but it does create a unique subspace <i>boundary</i> for each wall; as we&rsquo;ll see, that spatial organization provides for the same unambiguous visibility ordering as a unique subspace would.)</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="59-01.html">Previous</a></td>
+        <td>
+          <a href="59-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="59-03.html">Next</a></td>
+        <td>
+          <a href="59-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

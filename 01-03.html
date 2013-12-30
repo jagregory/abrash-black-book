@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="01-02.html">Previous</a></td>
+        <td>
+          <a href="01-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="01-04.html">Next</a></td>
+        <td>
+          <a href="01-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <table width="100%">
     <tr>
@@ -266,7 +269,7 @@ _ChecksumFileendp
 
   <p>Well, then, how are we going to improve our design? Before we can do that, we have to understand what&rsquo;s wrong with the current design.</p>
 
-  <h4 align="left" id="Heading9">Know the Territory</h4>
+  <h4 id="Heading9">Know the Territory</h4>
 
   <p>Just why is Listing 1.1 so slow? In a word: overhead. The C library implements the <b>read()</b> function by calling DOS to read the desired number of bytes. (I figured this out by watching the code execute with a debugger, but you can buy library source code from both Microsoft and Borland.) That means that Listing 1.1 (and Listing 1.3 as well) executes one DOS function per byte processed&mdash;and DOS functions, especially this one, come with a lot of overhead.</p>
 
@@ -278,16 +281,20 @@ _ChecksumFileendp
 
   <p>Listing 1.4 is similar to Listing 1.1, but uses <b>fopen()</b> and <b>getc()</b> (rather than <b>open()</b> and <b>read()</b>) to access the file being checksummed. The results confirm our theories splendidly, and validate our new design. As shown in Table 1.1, Listing 1.4 runs more than an order of magnitude faster than even the assembly version of Listing 1.1, <i>even though Listing 1.1 and Listing 1.4 look almost the same</i>. To the casual observer, <b>read()</b> and <b>getc()</b> would seem slightly different but pretty much interchangeable, and yet in this application the performance difference between the two is about the same as that between a 4.77 MHz PC and a 16 MHz 386.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="01-02.html">Previous</a></td>
+        <td>
+          <a href="01-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="01-04.html">Next</a></td>
+        <td>
+          <a href="01-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

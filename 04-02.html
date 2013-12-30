@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="04-01.html">Previous</a></td>
+        <td>
+          <a href="04-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="04-03.html">Next</a></td>
+        <td>
+          <a href="04-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p><a id="Fig1"><img src="images/04-01.jpg" /><br />
   <b>Figure 4.1</b></a>&nbsp;&nbsp;<i>The location of the major cycle-eaters in the IBM PC.</i></p>
@@ -42,7 +45,7 @@
 
   <p>A related cycle-eater lurks beneath the 386SX chip, which is a 32-bit processor internally with only a 16-bit path to system memory. The numbers are different, but the way the cycle-eater operates is exactly the same. AT-compatible systems have 16-bit data buses, which can access a full 16-bit word at a time. The 386SX can process 32 bits (a doubleword) at a time, however, and loses a lot of time fetching that doubleword from memory in two halves.</p>
 
-  <h4 align="left" id="Heading7">The Impact of the 8-Bit Bus Cycle-Eater</h4>
+  <h4 id="Heading7">The Impact of the 8-Bit Bus Cycle-Eater</h4>
 
   <p>One obvious effect of the 8-bit bus cycle-eater is that word-sized accesses to memory operands on the 8088 take 4 cycles longer than byte-sized accesses. That&rsquo;s why the official instruction timings indicate that for code running on an 8088 an additional 4 cycles are required for every word-sized access to a memory operand. For instance,</p>
   <pre>
@@ -70,7 +73,7 @@ add  byte ptr [MemVar],al
 
   <p>The upshot of all this is simply that the 8088 can transfer word-sized data to and from memory at only half the speed of the 8086, which inevitably causes performance problems when coupled with an Execution Unit that can process word-sized data every bit as quickly as an 8086. These problems show up with any code that uses word-sized memory operands. More ominously, as we will see shortly, the 8-bit bus cycle-eater can cause performance problems with other sorts of code as well.</p>
 
-  <h4 align="left" id="Heading8">What to Do about the 8-Bit Bus Cycle-Eater?</h4>
+  <h4 id="Heading8">What to Do about the 8-Bit Bus Cycle-Eater?</h4>
 
   <p>The obvious implication of the 8-bit bus cycle-eater is that byte-sized memory variables should be used whenever possible. After all, the 8088 performs <i>byte-sized</i> memory accesses just as quickly as the 8086. For instance, Listing 4.1, which uses a byte-sized memory variable as a loop counter, runs in 10.03 s per loop. That&rsquo;s 20 percent faster than the 12.05 &micro;s per loop execution time of Listing 4.2, which uses a word-sized counter. Why the difference in execution times? Simply because each word-sized <b>DEC</b> performs 4 byte-sized memory accesses (two to read the word-sized operand and two to write the result back to memory), while each byte-sized <b>DEC</b> performs only 2 byte-sized memory accesses in all.</p>
 
@@ -110,16 +113,20 @@ LoopTop:
 
   <p>I&rsquo;d like to make a brief aside concerning code optimization in the listings in this book. Throughout this book I&rsquo;ve modeled the sample code after working code so that the timing results are applicable to real-world programming. In Listings 4.1 and 4.2, for example, I could have shown a still greater advantage for byte-sized operands simply by performing 1,000 <b>DEC</b> instructions in a row, with no branching at all. However, <b>DEC</b> instructions don&rsquo;t exist in a vacuum, so in the listings I used code that both decremented the counter and tested the result. The difference is that between decrementing a memory location (simply an instruction) and using a loop counter (a functional instruction sequence). If you come across code in this book that seems less than optimal, it&rsquo;s simply due to my desire to provide code that&rsquo;s relevant to real programming problems. On the other hand, optimal code is an elusive thing indeed; by no means should you assume that the code in this book is ideal! Examine it, question it, and improve upon it, for an inquisitive, skeptical mind is an important part of the Zen of assembly optimization.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="04-01.html">Previous</a></td>
+        <td>
+          <a href="04-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="04-03.html">Next</a></td>
+        <td>
+          <a href="04-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

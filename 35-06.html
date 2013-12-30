@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="35-05.html">Previous</a></td>
+        <td>
+          <a href="35-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="35-07.html">Next</a></td>
+        <td>
+          <a href="35-07.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>The result of all this is simply a single pixel drawn in the color set up in <b>EVGALine</b>. <b>EVGADot</b> may seem excessively complex for a function that does nothing more that draw one pixel, but programming the VGA isn&rsquo;t trivial (as we&rsquo;ve seen in the early chapters of this part). Besides, while the explanation of <b>EVGADot</b> is lengthy, the code itself is only five lines long.</p>
 
@@ -48,16 +51,20 @@
 
   <p>Listing 35.3 is a high-performance implementation of Bresenham&rsquo;s algorithm, written entirely in assembly language. The code is callable from C just as is Listing 35.1, with the same name, <b>EVGALine</b>, and with the same parameters. Either of the two can be linked to any program that calls <b>EVGALine</b>, since they appear to be identical to the calling program. The only difference between the two versions is that the sample program in Listing 35.2 runs over three times as fast on a 486 with an ISA-bus VGA when calling the assembly-language version of <b>EVGALine</b> as when calling the C version, and the difference would be considerably greater yet on a local bus, or with the use of write mode 3. Link each version with Listing 35.2 and compare performance&mdash;the difference is startling.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="35-05.html">Previous</a></td>
+        <td>
+          <a href="35-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="35-07.html">Next</a></td>
+        <td>
+          <a href="35-07.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

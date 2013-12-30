@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="50-01.html">Previous</a></td>
+        <td>
+          <a href="50-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="50-03.html">Next</a></td>
+        <td>
+          <a href="50-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>One note: I&rsquo;ll use a purely <i>right-handed</i> convention for coordinate systems. Right-handed means that if you hold your right hand with your fingers curled and the thumb sticking out, the thumb points along the Z axis and the fingers point in the direction of rotation from the X axis to the Y axis, as shown in Figure 50.2. Rotations about an axis are counter-clockwise, as viewed looking down an axis toward the origin. The handedness of a coordinate system is just a convention, and left-handed would do equally well; however, right-handed is generally used for object and world space. Sometimes, the handedness is flipped for view space, so that increasing Z equals increasing distance from the viewer along the line of sight, but I have chosen not to do that here, to avoid confusion. Therefore, Z decreases as distance along the line of sight increases; a view space coordinate of (0,0,-1000) is directly ahead, twice as far away as a coordinate of (0,0,-500).</p>
 
@@ -38,18 +41,18 @@
   <p><a id="Fig2"><img src="images/50-02.jpg" /><br />
   <b>Figure 50.2</b></a>&nbsp;&nbsp;<i>A right-handed coordinate system.</i></p>
 
-  <h4 align="left" id="Heading5">Projection</h4>
+  <h4 id="Heading5">Projection</h4>
 
   <p>Working backward from the final image, we want to take the vertices of a polygon, as transformed into view space, and project them to 2-D coordinates on the screen, which, for projection purposes, is assumed to be centered on and perpendicular to the Z axis in view space, at some distance from the screen. We&rsquo;re after visual realism, so we&rsquo;ll want to do a perspective projection, in order that farther objects look smaller than nearer objects, and so that the field of view will widen with distance. This is done by scaling the X and Y coordinates of each point proportionately to the Z distance of the point from the viewer, a simple matter of similar triangles, as shown in Figure 50.3. It doesn&rsquo;t really matter how far down the Z axis the screen is assumed to be; what matters is the ratio of the distance of the screen from the viewpoint to the width of the screen. This ratio defines the rate of divergence of the viewing pyramid&mdash;the full field of view&mdash;and is used for performing all perspective projections. Once perspective projection has been performed, all that remains before calling the polygon filler is to convert the projected X and Y coordinates to integers, appropriately clipped and adjusted as necessary to center the origin on the screen or otherwise map the image into a window, if desired.</p>
 
-  <h4 align="left" id="Heading6">Translation</h4>
+  <h4 id="Heading6">Translation</h4>
 
   <p><i>Translation</i> means adding X, Y, and Z offsets to a coordinate to move it linearly through space. Translation is as simple as it seems; it requires nothing more than an addition for each axis. Translation is, for example, used to move objects from object space, in which the center of the object is typically the origin (0,0,0), into world space, where the object may be located anywhere.</p>
 
   <p><a id="Fig3"><img src="images/50-03.jpg" /><br />
   <b>Figure 50.3</b></a>&nbsp;&nbsp;<i>Perspective projection.</i></p>
 
-  <h4 align="left" id="Heading7">Rotation</h4>
+  <h4 id="Heading7">Rotation</h4>
 
   <p><i>Rotation</i> is the process of circularly moving coordinates around the origin. For our present purposes, it&rsquo;s necessary only to rotate objects about their centers in object space, so as to turn them to the desired attitude before translating them into world space.</p>
 
@@ -71,16 +74,20 @@
 
   <p>Happily (and not coincidentally), we put together a nice 2-D animation framework back in Chapters 47, 48, and 49, during our exploratory discussion of Mode X, so we don&rsquo;t have much to worry about in terms of non-3-D details. Basically, we&rsquo;ll use Mode X (320x240, 256 colors), and we&rsquo;ll flip between two display pages, drawing to one while the other is displayed. One new 2-D element that we need is the ability to clip polygons; while we could avoid this for the moment by restricting the range of motion of the polygon so that it stays fully on the screen, certainly in the long run we&rsquo;ll want to be able to handle partially or fully clipped polygons. Listing 50.1 is the low-level code for a Mode X polygon filler that supports clipping. (The high-level polygon fill code is mode independent, and is the same as that presented in Chapters 38, 39, and 40, as noted further on.) The clipping is implemented at the low level, by trimming the Y extent of the scan line list up front, then clipping the X coordinates of each scan line in turn. This is not a particularly fast approach to clipping&mdash;ideally, the polygon would be clipped before it was scanned into a line list, avoiding potentially wasted scanning and eliminating the line-by-line X clipping&mdash;but it&rsquo;s much simpler, and, as we shall see, polygon filling performance is the least of our worries at the moment.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="50-01.html">Previous</a></td>
+        <td>
+          <a href="50-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="50-03.html">Next</a></td>
+        <td>
+          <a href="50-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

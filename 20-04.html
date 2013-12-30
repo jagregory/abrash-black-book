@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="20-03.html">Previous</a></td>
+        <td>
+          <a href="20-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="21-01.html">Next</a></td>
+        <td>
+          <a href="21-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>However, this beneficial pairing does not extend to non-<b>MOV</b> instructions with explicit memory destination operands, such as <b>ADD [EBX],EAX</b>. The Pentium executes only one such memory instruction at a time; if two memory-destination complex instructions get paired, first the U-pipe instruction is executed, and then the V-pipe instruction, with only one cycle of overlap, as shown in Figure 20.6. I don&rsquo;t know for sure, but I&rsquo;d guess that this is to guarantee that the two pipes will never perform out-of-order access to any given memory location. Thus, even though <b>AND [EBX],AL</b> pairs with <b>AND [ECX],DL</b>, the two instructions take 5 cycles in all to execute, and 4 cycles of idle time&mdash;2 in the U-pipe and 2 in the V-pipe, out of 10 cycles in all&mdash;are incurred in the process.</p>
 
@@ -58,7 +61,7 @@ mov   [ebx],dl
 
   <p>What we&rsquo;ve just seen is the read-after-write form of the superscalar hazard known as <i>register contention</i>. I&rsquo;ll return to the subject of register contention in the next chapter; in the remainder of this chapter I&rsquo;d like to cover a few short items about superscalar execution.</p>
 
-  <h4 align="left" id="Heading7">Register Starvation</h4>
+  <h4 id="Heading7">Register Starvation</h4>
 
   <p>The above examples should make it pretty clear that effective superscalar programming puts a lot of strain on the Pentium&rsquo;s relatively small register set. There are only seven general-purpose registers (I strongly suggest using EBP in critical loops), and it does not help to have to sacrifice one of those registers for temporary storage on each complex memory operation; in pre-superscalar days, we used to employ those handy CISC memory instructions to do all that stuff without using any extra registers.</p>
 
@@ -79,16 +82,20 @@ mov   [ebx],dl
   <p><a id="Fig8"><img src="images/20-08.jpg" /><br />
   <b>Figure 20.8</b></a>&nbsp;&nbsp;<i>Prefix delays.</i></p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="20-03.html">Previous</a></td>
+        <td>
+          <a href="20-03.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="21-01.html">Next</a></td>
+        <td>
+          <a href="21-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

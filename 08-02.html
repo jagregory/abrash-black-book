@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="08-01.html">Previous</a></td>
+        <td>
+          <a href="08-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="08-03.html">Next</a></td>
+        <td>
+          <a href="08-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <h3 id="Heading5">Stack Frames Slow So Much</h3>
 
@@ -50,7 +53,7 @@
 
   <p>In assembly language you have full control over segments. Use it, and, if necessary, reorganize your code to minimize segment loading.</p>
 
-  <h4 align="left" id="Heading7">Why Speeding Up Is Hard to Do</h4>
+  <h4 id="Heading7">Why Speeding Up Is Hard to Do</h4>
 
   <p>You might think that the most obvious advantage assembly language has over C is that it allows the use of all forms of instructions and all registers in all ways, whereas C compilers tend to use a subset of registers and instructions in a limited number of ways. Yes and no. It&rsquo;s true that C compilers typically don&rsquo;t generate instructions such as <b>XLAT,</b> rotates, or the string instructions. On the other hand, <b>XLAT</b> and rotates are useful in a limited set of circumstances, and string instructions <i>are</i> used in the C library functions. In fact, C library code is likely to be carefully optimized by experts, and may be much better than equivalent code you&rsquo;d produce yourself.</p>
 
@@ -113,20 +116,24 @@ jz    Match
 
   <p>That said, let me show some of these precepts in action.</p>
 
-  <h4 align="left" id="Heading9">A C-to-Assembly Case Study</h4>
+  <h4 id="Heading9">A C-to-Assembly Case Study</h4>
 
   <p>Listing 8.1 is the sample C application I&rsquo;m going to use to examine optimization in action. Listing 8.1 isn&rsquo;t really complete&mdash;it doesn&rsquo;t handle the &ldquo;no-matches&rdquo; case well, and it assumes that the sum of all matches will fit into an <b>int&mdash;</b>but it will do just fine as an optimization example.</p>
-
-  <p><br /></p>
 
   <center>
     <table border="1">
       <tr>
-        <td><a href="08-01.html">Previous</a></td>
+        <td>
+          <a href="08-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="08-03.html">Next</a></td>
+        <td>
+          <a href="08-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

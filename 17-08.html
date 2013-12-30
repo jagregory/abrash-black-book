@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="17-07.html">Previous</a></td>
+        <td>
+          <a href="17-07.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="18-01.html">Next</a></td>
+        <td>
+          <a href="18-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>The large model is actually not necessary for the 96x96 cellmap in Listing 17.5. However, I was actually more interested in seeing a fast 200x200 cellmap, and two 200x200 cellmaps can&rsquo;t fit in a single segment. (This can easily be worked around in assembly language for cellmaps up to a segment in size; beyond that size, cellmap scanning becomes pretty complex, although it can still be efficiently implemented with some clever programming.)</p>
 
@@ -48,7 +51,7 @@
 
   <p>No doubt we could get another two to five times improvement with good assembly code&mdash;but that&rsquo;s dwarfed by a 30-times improvement, so optimization at a conceptual level <i>must</i> come first.</p>
 
-  <h4 align="left" id="Heading11">The Challenge That Ate My Life</h4>
+  <h4 id="Heading11">The Challenge That Ate My Life</h4>
 
   <p>The most recent optimization challenge I laid my community of readers was to write the fastest possible Game of Life generation engine. By &ldquo;engine&rdquo; I meant that I didn&rsquo;t care about time spent in input or output, only time consumed by the call to <b>next-generation.</b> The time spent updating the cellmap was what I wanted people to concentrate on.</p>
 
@@ -72,16 +75,20 @@
 
   <p>Who won? What did I learn? To find out, read on.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="17-07.html">Previous</a></td>
+        <td>
+          <a href="17-07.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="18-01.html">Next</a></td>
+        <td>
+          <a href="18-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="64-01.html">Previous</a></td>
+        <td>
+          <a href="64-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="64-03.html">Next</a></td>
+        <td>
+          <a href="64-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <h3 id="Heading4">The Structure of Quake Levels</h3>
 
@@ -52,7 +55,7 @@
 
   <p>For relatively simple worlds, it is perfectly acceptable. It doesn&rsquo;t scale very well, though. One problem is that as you add more polygons in the world, more transformations and tests have to be performed to cull polygons that aren&rsquo;t visible; at some point, that will bog considerably performance down.</p>
 
-  <h4 align="left" id="Heading6">Nodes Inside and Outside the View Frustum</h4>
+  <h4 id="Heading6">Nodes Inside and Outside the View Frustum</h4>
 
   <p>Happily, there&rsquo;s a good workaround for this particular problem. As discussed earlier, each leaf of a BSP tree represents a convex subspace, with the nodes that bound the leaf delimiting the space. Perhaps less obvious is that each node in a BSP tree also describes a subspace&mdash;the subspace composed of all the node&rsquo;s children, as shown in Figure 64.3. Another way of thinking of this is that each node splits the subspace into two pieces created by the nodes above it in the tree, and the node&rsquo;s children then further carve that subspace into all the leaves that descend from the node.</p>
 
@@ -73,16 +76,20 @@
 
   <p>By three months after I arrived, only one element of the original VSD design was anywhere in sight, and John had taken the dictum of &ldquo;try new things&rdquo; farther than I&rsquo;d ever seen it taken.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="64-01.html">Previous</a></td>
+        <td>
+          <a href="64-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="64-03.html">Next</a></td>
+        <td>
+          <a href="64-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

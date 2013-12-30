@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="07-05.html">Previous</a></td>
+        <td>
+          <a href="07-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="08-02.html">Next</a></td>
+        <td>
+          <a href="08-02.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <h2 id="Heading1">Chapter 8<br />
   Speeding Up C with Assembly Language</h2>
@@ -55,7 +58,7 @@
 
   <p>Apropos of which, when was the last time you heard of Terry Jacks?</p>
 
-  <h4 align="left" id="Heading3">Billy, Don&rsquo;t Be a Compiler</h4>
+  <h4 id="Heading3">Billy, Don&rsquo;t Be a Compiler</h4>
 
   <p>The key to optimizing C programs with assembly language is, as always, writing good assembly language code, but with an added twist. Rule 1 when converting C code to assembly is this: <i>Don&rsquo;t think like a compiler.</i> That&rsquo;s more easily said than done, especially when the C code you&rsquo;re converting is readily available as a model and the assembly code that the compiler generates is available as well. Nevertheless, the principle of not thinking like a compiler is essential, and is, in one form or another, the basis for all that I&rsquo;ll discuss below.</p>
 
@@ -81,16 +84,20 @@
 
   <p>What this means is that when you want to speed up a portion of a C program, you should identify the entire critical portion and move <i>all</i> of that critical portion into an assembly language function. You don&rsquo;t want to move a part of the inner loop into assembly language and then call it from C every time through the loop; the function call and return overhead would be unacceptable. Carve out the critical code <i>en masse</i> and move it into assembly, and try to avoid calls and returns even in your assembly code. True, in assembly you can pass parameters in registers, but the calls and returns themselves are still slow; if the extra cycles they take don&rsquo;t affect performance, then the code they&rsquo;re in probably isn&rsquo;t critical, and perhaps you&rsquo;ve chosen to convert too much code to assembly, eh?</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="07-05.html">Previous</a></td>
+        <td>
+          <a href="07-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="08-02.html">Next</a></td>
+        <td>
+          <a href="08-02.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

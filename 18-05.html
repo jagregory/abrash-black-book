@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="18-04.html">Previous</a></td>
+        <td>
+          <a href="18-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="19-01.html">Next</a></td>
+        <td>
+          <a href="19-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>&ldquo;The basic idea is to maintain a &lsquo;change list.&rsquo; This is an array of pointers into the cell array. Each change list element points to a word which changes in the next generation. This way we don&rsquo;t have to waste time scanning every cell since most of them do not change. Two passes are made through the change list. The first pass updates the cell display on the screen, sets the life/death status of each cell for this new generation, and updates the neighbor counts for the adjacent cells. There are some efficiencies gained by using cell triplets rather than individual cells since we usually don&rsquo;t need to set all eight neighbors. [Again, the neighbor counts for cells in the same word are implied by the states of those cells.] The second pass sets the next-generation states for the cells and their neighbors, and in the process builds the change list for the next generation.</p>
 
@@ -48,7 +51,7 @@ FS : Video segment
 GS : Unused
 </pre>
 
-  <h4 align="left" id="Heading6">A Layperson&rsquo;s Overview of QLIFE</h4>
+  <h4 id="Heading6">A Layperson&rsquo;s Overview of QLIFE</h4>
 
   <p>Most likely, you&rsquo;re scratching your head right now in bemusement. I don&rsquo;t blame you; I felt the same way myself at first. It&rsquo;s actually pretty simple, though, once you have the hang of it. Basically, David runs down the change list, visiting every cell that&rsquo;s due to change in this generation, setting it to the new state, drawing it in the new state, and adjusting the counts of all its neighbors. David has a separate assembly routine for every possible change of state for a cell triplet, and he jumps to the proper routine by taking the cell triplet word, masking off the lower 9 bits, and jumping to the address where the appropriate code to perform that particular change of state resides. He does this for every entry in the change list. When this is completed, the current generation has been drawn and updated.</p>
 
@@ -65,16 +68,20 @@ jmp dx
 
   <p>There Ain&rsquo;t No Such Thing As the Fastest Code.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="18-04.html">Previous</a></td>
+        <td>
+          <a href="18-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="19-01.html">Next</a></td>
+        <td>
+          <a href="19-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

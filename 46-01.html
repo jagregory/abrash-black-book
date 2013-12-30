@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="45-06.html">Previous</a></td>
+        <td>
+          <a href="45-06.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="46-02.html">Next</a></td>
+        <td>
+          <a href="46-02.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <h2 id="Heading1">Chapter 46<br />
   Who Was that Masked Image?</h2>
@@ -45,7 +48,7 @@
 
   <p>We&rsquo;re strange thinking machines, but we&rsquo;re the best ones yet invented, and it&rsquo;s worth learning how to tap our full potential. And with that, it&rsquo;s back to dirty-rectangle animation.</p>
 
-  <h4 align="left" id="Heading3">Dirty-Rectangle Animation, Continued</h4>
+  <h4 id="Heading3">Dirty-Rectangle Animation, Continued</h4>
 
   <p>In the last chapter, Introduced the idea of dirty-rectangle animation. This technique is an alternative to page flipping that&rsquo;s capable of producing animation of very high visual quality, without any help at all from video hardware, and without the need for any extra, nondisplayed video memory. This makes dirty-rectangle animation more widely usable than page flipping, because many adapters don&rsquo;t support page flipping. Dirty-rectangle animation also tends to be simpler to implement than page flipping, because there&rsquo;s only one bitmap to keep track of. A final advantage of dirty-rectangle animation is that it&rsquo;s potentially somewhat faster than page flipping, because display-memory accesses can theoretically be reduced to exactly one access for each pixel that changes from one frame to the next.</p>
 
@@ -53,16 +56,20 @@
 
   <p>Listing 46.2 implements the low-level drawing routines in assembly language, which boosts performance a good deal. For maximum performance, it would be worthwhile to convert more of Listing 46.1 into assembly, so a call isn&rsquo;t required for each animated image, and overall performance could be improved by streamlining the C code, but Listing 46.2 goes a long way toward boosting animation speed. This program now supports snappy animation of 15 images (as opposed to 10 for the software presented in the last chapter), and the images are now two pixels wider. That level of performance is all the more impressive considering that for this chapter I&rsquo;ve converted the code from using rectangular images to using masked images.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="45-06.html">Previous</a></td>
+        <td>
+          <a href="45-06.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="46-02.html">Next</a></td>
+        <td>
+          <a href="46-02.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

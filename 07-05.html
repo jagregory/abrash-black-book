@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,18 +18,22 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="07-04.html">Previous</a></td>
+        <td>
+          <a href="07-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="08-01.html">Next</a></td>
+        <td>
+          <a href="08-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
 
-  <p><br /></p>
-
-  <h4 align="left" id="Heading8">Rotating and Shifting with Tables</h4>
+  <h4 id="Heading8">Rotating and Shifting with Tables</h4>
 
   <p>As another example of local optimization, consider the matter of rotating or shifting a mask into position. First, let&rsquo;s look at the simple task of setting bit N of AX to 1.</p>
 
@@ -80,7 +83,7 @@ BIT_PATTERN=BIT_PATTERN SHL 1
     </tr>
   </table>
 
-  <h4 align="left" id="Heading9">NOT Flips Bits&mdash;Not Flags</h4>
+  <h4 id="Heading9">NOT Flips Bits&mdash;Not Flags</h4>
 
   <p>The <b>NOT</b> instruction flips all the bits in the operand, from 0 to 1 or from 1 to 0. That&rsquo;s as simple as could be, but <b>NOT</b> nonetheless has a minor but interesting talent: It doesn&rsquo;t affect the flags. That can be irritating; I once spent a good hour tracking down a bug caused by my unconscious assumption that <b>NOT</b> does set the flags. After all, every other arithmetic and logical instruction sets the flags; why not <b>NOT</b>? Probably because <b>NOT</b> isn&rsquo;t considered to be an arithmetic or logical instruction at all; rather, it&rsquo;s a data manipulation instruction, like <b>MOV</b> and the various rotates. (These are <b>RCR, RCL, ROR,</b> and <b>ROL,</b> which affect only the Carry and Overflow flags.) NOT is often used for tasks, such as flipping masks, where there&rsquo;s no reason to test the state of the result, and in that context it can be handy to keep the flags unmodified for later testing.</p>
 
@@ -94,7 +97,7 @@ BIT_PATTERN=BIT_PATTERN SHL 1
 
   <p>The x86 instruction set offers many ways to accomplish almost any task. Understanding the subtle distinctions between the instructions&mdash;whether and which flags are set, for example&mdash;can be critical when you&rsquo;re trying to optimize a code sequence and you&rsquo;re running out of registers, or when you&rsquo;re trying to minimize branching.</p>
 
-  <h4 align="left" id="Heading10">Incrementing with and without Carry</h4>
+  <h4 id="Heading10">Incrementing with and without Carry</h4>
 
   <p>Another case in which there are two slightly different ways to perform a task involves adding 1 to an operand. You can do this with <b>INC,</b> as in <b>INC AX,</b> or you can do it with <b>ADD,</b> as in <b>ADD AX,1.</b> What&rsquo;s the difference? The obvious difference is that <b>INC</b> is usually a byte or two shorter (the exception being <b>ADD AL,1,</b> which at two bytes is the same length as <b>INC AL</b>), and is faster on some processors. Less obvious, but no less important, is that <b>ADD</b> sets the Carry flag while <b>INC</b> leaves the Carry flag untouched.</p>
 
@@ -158,16 +161,20 @@ ADC   DX,0
 
   <p>As always, pay attention!</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="07-04.html">Previous</a></td>
+        <td>
+          <a href="07-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="08-01.html">Next</a></td>
+        <td>
+          <a href="08-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

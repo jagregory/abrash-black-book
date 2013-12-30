@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="61-04.html">Previous</a></td>
+        <td>
+          <a href="61-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="62-02.html">Next</a></td>
+        <td>
+          <a href="62-02.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <h2 id="Heading1">Chapter 62<br />
   One Story, Two Rules, and a BSP Renderer</h2>
@@ -59,7 +62,7 @@
 
   <p>Onward to rendering from a BSP tree.</p>
 
-  <h4 align="left" id="Heading3">BSP-based Rendering</h4>
+  <h4 id="Heading3">BSP-based Rendering</h4>
 
   <p>For the last several chapters I&rsquo;ve been discussing the nature of BSP (Binary Space Partitioning) trees, and in Chapter 60 I presented a compiler for 2-D BSP trees. Now we&rsquo;re ready to use those compiled BSP trees to do realtime rendering.</p>
 
@@ -72,16 +75,20 @@
 
   <p>Given a BSP tree, in order to render a view of that tree, all we have to do is descend the tree, deciding at each node whether we&rsquo;re seeing the front or back of the wall at that node from the current viewpoint. We use that knowledge to first recursively descend and draw the farther subtree of that node, then draw that node, and finally draw the nearer subtree of that node. Applied recursively from the root of our BSP trees, this approach guarantees that overlapping polygons will always be drawn in back-to-front order. Listing 62.1 draws a BSP-based world in this fashion. (Because of the constraints of the printed page, Listing 62.1 is only the core of the BSP renderer, without the program framework, some math routines, and the polygon rasterizer; but, the entire program is on the CD-ROM as DDJBSP2.ZIP. Listing 62.1 is in a compressed format, with relatively little whitespace; the full version on the CD-ROM is formatted normally.)</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="61-04.html">Previous</a></td>
+        <td>
+          <a href="61-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="62-02.html">Next</a></td>
+        <td>
+          <a href="62-02.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

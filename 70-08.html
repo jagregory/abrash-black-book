@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="70-07.html">Previous</a></td>
+        <td>
+          <a href="70-07.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="70-09.html">Next</a></td>
+        <td>
+          <a href="70-09.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>From the beginning, Quake was conceived as a client-server app, specifically so that it would be possible to have persistent servers always running on the Internet, independent of whether anyone was playing on them at any particular time, as a step toward the long-term goal of persistent worlds. Also, client-server architectures tend to be more flexible and robust than peer-to-peer, and it is much easier to have players come and go at will with client-server. Quake is client-server from the ground up, and even in single-player mode, messages are passed through buffers between the client code and the server code; it&rsquo;s quite likely that the client and server would have been two processes, in fact, were it not for the need to support DOS. Client-server turned out to be the right decision, because Quake&rsquo;s ability to support persistent, come-and-go-as-you-please Internet servers with up to 16 people has been instrumental in the game&rsquo;s high visibility in the press, and its lasting popularity.</p>
 
@@ -52,20 +55,24 @@
 
   <p>The second way in which QuakeWorld attacks latency is by not interpolating. The player is actually predicted well ahead of the latest server packet (after all, the client has all the information needed to move the player, unless an outside force intervenes), giving very responsive control. The rest of the world is drawn as of the latest server packet; this is jerkier than Quake, again showing that smoothness is often a tradeoff for latency. The player&rsquo;s prediction may, of course, result in a minor paradox; for example, if an explosion turns out to have knocked the player sideways, the player&rsquo;s location may suddenly jump without warning as the server packet arrives with the correct location. In the latest version of QuakeWorld, the other players are predicted as well, with consequently more frequent paradoxes, but smoother, more convincing motion. Platforms and doors are still not predicted, and consequently are still pretty jerky. It is, of course, possible to predict more and more objects into the future; it&rsquo;s a tradeoff of smoothness and perceived low latency for the frustration of paradoxes&mdash;and that&rsquo;s the way it&rsquo;s going to stay until most people are connected to the Internet by something better than modems.</p>
 
-  <h4 align="left" id="Heading20">Quake 2</h4>
+  <h4 id="Heading20">Quake 2</h4>
 
   <p>I can&rsquo;t talk in detail about Quake 2 as a game, but I can describe some interesting technology features. The Quake 2 rendering engine isn&rsquo;t going to change that much from Quake; the improvements are largely in areas such as physics, gameplay, artwork, and overall design. The most interesting graphics change is in the preprocessing, where John has added support for radiosity lighting; that is, the ability to put a light source into the world and have the light bounced around the world realistically. This is sometimes terrific&mdash;it makes for great glowing light around lava and hanging light panels&mdash;but in other cases it&rsquo;s less spectacular than the effects that designers can get by placing lots of direct-illumination light sources in a room, so the two methods can be used as needed. Also, radiosity is <i>very</i> computationally expensive, approximately as expensive as BSPing. Most of the radiosity demos I&rsquo;ve seen have been in one or two rooms, and the order of the problem goes up tremendously on whole Quake levels. Here&rsquo;s another case where the PVS is essential; without it, radiosity processing time would be O(polygons<sup>2</sup>), but with the PVS it&rsquo;s O(polygons*average_potentially_visible_polygons), which is over an order of magnitude less (and increases approximately linearly, rather than as a squared function, with greater-level complexity).</p>
-
-  <p><br /></p>
 
   <center>
     <table border="1">
       <tr>
-        <td><a href="70-07.html">Previous</a></td>
+        <td>
+          <a href="70-07.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="70-09.html">Next</a></td>
+        <td>
+          <a href="70-09.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

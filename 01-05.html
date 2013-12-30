@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="01-04.html">Previous</a></td>
+        <td>
+          <a href="01-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="01-06.html">Next</a></td>
+        <td>
+          <a href="01-06.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>The third reason is often fallacious. C library functions are not always written in assembly, nor are they always particularly well-optimized. (In fact, they&rsquo;re often written for <i>portability</i>, which has nothing to do with optimization.) What&rsquo;s more, they&rsquo;re general-purpose functions, and often can be outperformed by well-but-not- brilliantly-written code that is well-matched to a specific task. As an example, consider Listing 1.5, which uses internal buffering to handle blocks of bytes at a time. Table 1.1 shows that Listing 1.5 is 2.5 to 4 times faster than Listing 1.4 (and as much as 49 times faster than Listing 1.1!), even though it uses no assembly at all.</p>
 
@@ -106,7 +109,7 @@ main(int argc, char *argv[]) {
 
   <p>At any rate, Listing 1.5 isn&rsquo;t much more complicated than Listing 1.4&mdash;and it&rsquo;s a <i>lot</i> faster. Always consider the alternatives; a bit of clever thinking and program redesign can go a long way.</p>
 
-  <h4 align="left" id="Heading12">Know How to Turn On the Juice</h4>
+  <h4 id="Heading12">Know How to Turn On the Juice</h4>
 
   <p>I have said time and again that optimization is pointless until the design is settled. When that time comes, however, optimization can indeed make a significant difference. Table 1.1 indicates that the optimized version of Listing 1.5 produced by Microsoft C outperforms an unoptimized version of the same code by more than 60 percent. What&rsquo;s more, a mostly-assembly version of Listing 1.5, shown in Listings 1.6 and 1.7, outperforms even the best-optimized C version of List1.5 by 26 percent. These are considerable improvements, well worth pursuing&mdash;once the design has been maxed out.</p>
 
@@ -167,16 +170,20 @@ main(int argc, char *argv[]) {
 }
 </pre>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="01-04.html">Previous</a></td>
+        <td>
+          <a href="01-04.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="01-06.html">Next</a></td>
+        <td>
+          <a href="01-06.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

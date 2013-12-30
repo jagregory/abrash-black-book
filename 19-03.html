@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="19-02.html">Previous</a></td>
+        <td>
+          <a href="19-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="19-04.html">Next</a></td>
+        <td>
+          <a href="19-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <h3 id="Heading7">Faster Addressing and More</h3>
 
@@ -65,16 +68,20 @@ mov eax,[ebx]
 
   <p>As with the 486, don&rsquo;t use <b>ENTER</b> or <b>LEAVE</b>, which are slower than the equivalent discrete instructions. Also, start using <b>TEST <i>reg,reg</i></b> instead of <b>AND <i>reg,reg</i></b> or <b>OR <i>reg,reg</i></b> to test whether a register is zero. The reason, as we&rsquo;ll see in Chapter 21, is that <b>TEST</b>, unlike <b>AND</b> and <b>OR</b>, never modifies the target register. Although in this particular case <b>AND</b> and <b>OR</b> don&rsquo;t modify the target register either, the Pentium has no way of knowing that ahead of time, so if <b>AND</b> or <b>OR</b> goes through the U-pipe, the Pentium may have to shut down the V-pipe for a cycle to avoid potential dependencies on the result of the <b>AND</b> or <b>OR</b>. <b>TEST</b> suffers from no such potential dependencies.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="19-02.html">Previous</a></td>
+        <td>
+          <a href="19-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="19-04.html">Next</a></td>
+        <td>
+          <a href="19-04.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

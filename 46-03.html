@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,18 +18,22 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="46-02.html">Previous</a></td>
+        <td>
+          <a href="46-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="47-01.html">Next</a></td>
+        <td>
+          <a href="47-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
 
-  <p><br /></p>
-
-  <h4 align="left" id="Heading4">Masked Images</h4>
+  <h4 id="Heading4">Masked Images</h4>
 
   <p>Masked images are rendered by drawing an object&rsquo;s pixels through a mask; pixels are actually drawn only where the mask specifies that drawing is allowed. This makes it possible to draw nonrectangular objects that don&rsquo;t improperly interfere with one another when they overlap. Masked images also make it possible to have transparent areas (windows) within objects. Masked images produce far more realistic animation than do rectangular images, and therefore are more desirable. Unfortunately, masked images are also considerably slower to draw&mdash;however, a good assembly language implementation can go a long way toward making masked images draw rapidly enough, as illustrated by this chapter&rsquo;s code. (Masked images are also known as <i>sprites</i>; some video hardware supports sprites directly, but on the PC it&rsquo;s necessary to handle sprites in software.)</p>
 
@@ -38,7 +41,7 @@
 
   <p>In this chapter, I&rsquo;ve used the approach of having separate, paired masks and images. Another, quite different approach to masking is to specify a transparent color for copying, and copy only those pixels that are not the transparent color. This has the advantage of not requiring separate mask data, so it&rsquo;s more compact, and the code to implement this is a little less complex than the full masking I&rsquo;ve implemented. On the other hand, the transparent color approach is less flexible because it makes one color undrawable. Also, with a transparent color, it&rsquo;s not possible to keep the same base image but use different masks, because the mask information is embedded in the image data.</p>
 
-  <h4 align="left" id="Heading5">Internal Animation</h4>
+  <h4 id="Heading5">Internal Animation</h4>
 
   <p>I&rsquo;ve added another feature essential to producing convincing animation: <i>internal animation</i>, which is the process of changing the appearance of a given object over time, as distinguished from changing only the <i>location</i> of a given object. Internal animation makes images look active and alive. I&rsquo;ve implemented the simplest possible form of internal animation in Listing 46.1&mdash;alternation between two images&mdash;but even this level of internal animation greatly improves the feel of the overall animation. You could easily increase the number of images cycled through, simply by increasing the value of <b>InternalAnimateMax</b> for a given entity. You could also implement more complex image-selection logic to produce more interesting and less predictable internal-animation effects, such as jumping, ducking, running, and the like.</p>
 
@@ -52,7 +55,7 @@
 
   <p>You might also try taking advantage of the natural coherence of animated graphics screens. In particular, because the rectangle used to erase an image at its old location often overlaps the rectangle within which the image resides at its new location, you could just directly generate the two or three nonoverlapped rectangles required to copy both the erase rectangle and the new-image rectangle for any single moving image. The calculation of these rectangles could be very efficient, given that you know in advance the direction of motion of your images. Handling this particular overlap case would eliminate most overlapped drawing, at a minimal cost. You might then decide to ignore overlapped drawing between different images, which tends to be both less common and more expensive to identify and handle.</p>
 
-  <h4 align="left" id="Heading7">Drawing Order and Visual Quality</h4>
+  <h4 id="Heading7">Drawing Order and Visual Quality</h4>
 
   <p>A final note on dirty-rectangle animation concerns the quality of the displayed screen image. In the last chapter, we simply stuffed dirty rectangles into a list in the order they became dirty, and then copied all of the rectangles in that same order. Unfortunately, this caused all of the erase rectangles to be copied first, followed by all of the rectangles of the images at their new locations. Consequently, there was a significant delay between the appearance of the erase rectangle for a given image and the appearance of the new rectangle. A byproduct was the fact that a partially complete&mdash;part old, part new&mdash;image was visible long enough to be noticed. In short, although the pixels ended up correct, they were in an intermediate, incorrect state for a sufficient period of time to make the animation look wrong.</p>
 
@@ -60,16 +63,20 @@
 
   <p>Avoid the trap of thinking animation is merely a matter of drawing the right pixels, one after another. Animation is the art of drawing <i>the right pixels at the right times</i> so that the eye and brain see what you want them to see. Animation is a lot more challenging than merely cranking out pixels, and it sure as heck isn&rsquo;t a purely linear process.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="46-02.html">Previous</a></td>
+        <td>
+          <a href="46-02.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="47-01.html">Next</a></td>
+        <td>
+          <a href="47-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

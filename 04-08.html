@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="04-07.html">Previous</a></td>
+        <td>
+          <a href="04-07.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="04-09.html">Next</a></td>
+        <td>
+          <a href="04-09.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>Wait states exist because the CPU must to be able to coexist with any adapter, no matter how slow (within reason). The 8088 expects to be able to complete each bus access&mdash;a memory or I/O read or write&mdash;in 4 cycles, but adapters can&rsquo;t always respond that quickly for a number of reasons. For example, display adapters must split access to display memory between the CPU and the circuitry that generates the video signal based on the contents of display memory, so they often can&rsquo;t immediately fulfill a request by the CPU for a display memory read or write. To resolve this conflict, display adapters can tell the CPU to wait during bus accesses by inserting one or more wait states, as shown in Figure 4.6. The CPU simply sits and idles as long as wait states are inserted, then completes the access as soon as the display adapter indicates its readiness by no longer inserting wait states. The same would be true of any adapter that couldn&rsquo;t keep up with the CPU.</p>
 
@@ -69,16 +72,20 @@
 
   <p>Enough said. All the memory in the PC is <i>not</i> display memory, however, and unless you&rsquo;re thickheaded enough to put code in display memory, the PC isn&rsquo;t going to run as slowly as a PC<i>jr.</i> (Putting code or other non-video data in unused areas of display memory sounds like a neat idea&mdash;until you consider the effect on instruction prefetching of cutting the 8088&rsquo;s already-poor memory access performance in half. Running your code from display memory is sort of like running on a hypothetical 8084&mdash;an 8086 with a <i>4-bit</i> bus. Not recommended!) Given that your code and data reside in normal system memory below the 640K mark, how great an impact does the display adapter cycle-eater have on performance?</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="04-07.html">Previous</a></td>
+        <td>
+          <a href="04-07.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="04-09.html">Next</a></td>
+        <td>
+          <a href="04-09.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

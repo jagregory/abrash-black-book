@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="07-01.html">Previous</a></td>
+        <td>
+          <a href="07-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="07-03.html">Next</a></td>
+        <td>
+          <a href="07-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>By the way, don&rsquo;t fall victim to the lures of <b>JCXZ</b> and do something like this:</p>
   <pre>
@@ -50,7 +53,7 @@ jz      SkipLoop         ;If field is 0, don&rsquo;t bother
 
   <p>In particular, if you&rsquo;re going to write 386 protected mode code, which will run only on the 386, 486, and Pentium, you&rsquo;d be well advised to rethink your use of the more esoteric members of the x86 instruction set. <b>LOOP, JCXZ,</b> the various accumulator-specific instructions, and even the string instructions in many circumstances no longer offer the advantages they did on the 8088. Sometimes they&rsquo;re just not any faster than more general instructions, so they&rsquo;re not worth going out of your way to use; sometimes, as with <b>LOOP,</b> they&rsquo;re actually slower, and you&rsquo;d do well to avoid them altogether in the 386/486 world. Reviewing the instruction cycle times in the MASM or TASM manuals, or looking over the cycle times in Intel&rsquo;s literature, is a good place to start; published cycle times are closer to actual execution times on the 386 and 486 than on the 8088, and are reasonably reliable indicators of the relative performance levels of x86 instructions.</p>
 
-  <h4 align="left" id="Heading5">Avoiding LOOPS of Any Stripe</h4>
+  <h4 id="Heading5">Avoiding LOOPS of Any Stripe</h4>
 
   <p>Cycle counting and directly substituting instructions (<b>DEC CX/JNZ</b> for <b>LOOP,</b> for example) are techniques that belong at the lowest level of optimization. It&rsquo;s an important level, but it&rsquo;s fairly mechanical; once you&rsquo;ve learned the capabilities and relative performance levels of the various instructions, you should be able to select the best instructions fairly easily. What&rsquo;s more, this is a task at which compilers excel. What I&rsquo;m saying is that you shouldn&rsquo;t get too caught up in counting cycles because that&rsquo;s a small (albeit important) part of the optimization picture, and not the area in which your greatest advantage lies.</p>
 
@@ -74,16 +77,20 @@ jz      SkipLoop         ;If field is 0, don&rsquo;t bother
 
   <p>When the <b>LOOP</b> in Listing 7.1 is replaced with <b>DEC CX/JNZ,</b> performance improves to 168 &micro;s, less than 2 percent faster than Listing 7.1. Actually, instruction fetching, instruction alignment, cache characteristics, or something similar is affecting these results; I&rsquo;d expect a slightly larger improvement&mdash;around 7 percent&mdash;but that&rsquo;s the most that counting cycles could buy us in this case. (All right, already; <b>LOOPNZ</b> could be used at the bottom of the loop, and other optimizations are surely possible, but all that won&rsquo;t add up to anywhere near the benefits we&rsquo;re about to see from local optimization, and that&rsquo;s the whole point.)</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="07-01.html">Previous</a></td>
+        <td>
+          <a href="07-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="07-03.html">Next</a></td>
+        <td>
+          <a href="07-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

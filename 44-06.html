@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="44-05.html">Previous</a></td>
+        <td>
+          <a href="44-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="45-01.html">Next</a></td>
+        <td>
+          <a href="45-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <h4 align="center" id="Heading8">Knowing When to Flip</h4>
 
@@ -42,7 +45,7 @@
 
   <p>So, to flip pages, you must complete all drawing to the non-displayed page, wait for Display Enable to be active, set the new start address, and wait for Vertical Sync to be active. At that point, you can be fully confident that the page that you just flipped off the screen is not displayed and can safely (invisibly) be updated. A side benefit of page flipping is that your program will automatically have a constant time base, with the rate at which new screens are drawn synchronized to the frame rate of the display (typically 60 or 70 Hz). However, complex updates may take more than one frame to complete, especially on slower processors; this can be compensated for by maintaining a count of new screens drawn and cross-referencing that to the BIOS timer count periodically, accelerating the overall pace of the animation (moving farther each time and the like) if updates are happening too slowly.</p>
 
-  <h4 align="left" id="Heading9">Enter the Split Screen</h4>
+  <h4 id="Heading9">Enter the Split Screen</h4>
 
   <p>So far, I&rsquo;ve discussed page flipping in 640x350 mode. There&rsquo;s a reason for that: 640x350 is the highest-resolution standard mode in which there&rsquo;s enough display memory for two full pages on a standard VGA. It&rsquo;s possible to program the VGA to a non-standard 640x400 mode and still have two full pages, but that&rsquo;s pretty much the limit. One 640x480 page takes 38,400 bytes of display memory, and clearly there isn&rsquo;t enough room in 64 K of display memory for two of <i>those</i> monster pages.</p>
 
@@ -61,16 +64,20 @@
 
   <p>So. Is VGA animation worth all the fuss? <i>Mais oui.</i> Run the sample program; if you&rsquo;ve never seen aggressive VGA animation before, you&rsquo;ll be amazed at how smooth it can be. Not every square millimeter of every animated screen must be in constant motion. Most graphics screens need a little quiet space to display scores, coordinates, file names, or (if all else fails) company logos. If you don&rsquo;t tell the user he&rsquo;s/she&rsquo;s only getting 339 scan lines of animation, he&rsquo;ll/she&rsquo;ll probably never know.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="44-05.html">Previous</a></td>
+        <td>
+          <a href="44-05.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="45-01.html">Next</a></td>
+        <td>
+          <a href="45-01.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

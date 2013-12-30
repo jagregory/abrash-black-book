@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,16 +18,20 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="21-01.html">Previous</a></td>
+        <td>
+          <a href="21-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="21-03.html">Next</a></td>
+        <td>
+          <a href="21-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
-
-  <p><br /></p>
 
   <p>As on the 486, you should keep a careful eye out for AGIs involving the stack pointer. Implicit modifiers of ESP, such as <b>PUSH</b> and <b>POP</b>, are special-cased so you don&rsquo;t have to worry about AGIs. However, if you explicitly modify ESP with this instruction</p>
   <pre>
@@ -92,7 +95,7 @@ mov al,[Var]  ;U-pipe cycle 2
 
   <p>where an attempt is made to set both EAX and its AL subregister on the same cycle. Write-after-write contention implies that the two instructions comprising the above substitute for <b>MOVZX</b> should have at least one unrelated instruction between them when <b>SUB EAX,EAX</b> executes in the V-pipe.</p>
 
-  <h4 align="left" id="Heading5">Exceptions to Register Contention</h4>
+  <h4 id="Heading5">Exceptions to Register Contention</h4>
 
   <p>Intel has special-cased some very useful exceptions to register contention. Happily, write-after-read operations do <i>not</i> cause contention. Such operations, as in</p>
   <pre>
@@ -140,16 +143,20 @@ LoopTop:
                      ; pair in the U-pipe
 </pre>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="21-01.html">Previous</a></td>
+        <td>
+          <a href="21-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="21-03.html">Next</a></td>
+        <td>
+          <a href="21-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>

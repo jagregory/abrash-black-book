@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,18 +18,22 @@
   <center>
     <table border="1">
       <tr>
-        <td><a href="57-01.html">Previous</a></td>
+        <td>
+          <a href="57-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="57-03.html">Next</a></td>
+        <td>
+          <a href="57-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
 
-  <p><br /></p>
-
-  <h4 align="left" id="Heading5">Texture Mapping: Orientation Independence</h4>
+  <h4 id="Heading5">Texture Mapping: Orientation Independence</h4>
 
   <p>The double-DDA texture-mapping code presented in the previous chapter worked adequately, but there were two things about it that left me less than satisfied. One flaw was performance; I&rsquo;ll address that shortly. The other flaw was the way textures shifted noticeably as the orientations of the polygons onto which they were mapped changed.</p>
 
@@ -115,7 +118,7 @@ void ScanOutLine(EdgeScan * LeftEdge, EdgeScan * RightEdge)
 }
 </pre>
 
-  <h4 align="left" id="Heading6">Mapping Textures across Multiple Polygons</h4>
+  <h4 id="Heading6">Mapping Textures across Multiple Polygons</h4>
 
   <p>One of the truly nifty things about double-DDA texture mapping is that it is not limited to mapping a texture onto a single polygon. A single texture can be mapped across any number of adjacent polygons simply by having polygons that share vertices in 3-space also share vertices in the texture map. In fact, the demonstration program DEMO1 in the X-Sharp archive maps a single texture across two polygons; this is the blue-on-green pattern that stretches across two panels of the spinning ball. This capability makes it easy to produce polygon-based objects with complex surfaces (such as banding and insignia on spaceships, or even human figures). Just map the desired texture onto the underlying polygonal framework of an object, and let double-DDA texture mapping do the rest.</p>
 
@@ -127,16 +130,20 @@ void ScanOutLine(EdgeScan * LeftEdge, EdgeScan * RightEdge)
 
   <p>Listing 57.2 is a high-performance assembly language implementation of Listing 57.1. Apart from the conversion to assembly language, this implementation improves performance by focusing on reducing inner loop bottlenecks. In fact, the whole of Listing 57.2 is nothing more than the inner loop for texture-mapped polygon drawing; Listing 57.2 is only the code to draw a single scan line. Most of the work in drawing a texture-mapped polygon comes in scanning out individual lines, though, so this is the appropriate place to optimize.</p>
 
-  <p><br /></p>
-
   <center>
     <table border="1">
       <tr>
-        <td><a href="57-01.html">Previous</a></td>
+        <td>
+          <a href="57-01.html">Previous</a>
+        </td>
 
-        <td><a href="index.html">Table of Contents</a></td>
+        <td>
+          <a href="index.html">Table of Contents</a>
+        </td>
 
-        <td><a href="57-03.html">Next</a></td>
+        <td>
+          <a href="57-03.html">Next</a>
+        </td>
       </tr>
     </table>
   </center>
