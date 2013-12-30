@@ -1,0 +1,313 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X 256-Color Animation</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=49//-->
+<!--PAGES=924-929//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="49-03.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="49-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H3><A NAME="Heading6"></A><FONT COLOR="#000077">Animation</FONT></H3>
+<P>Gosh. There&#146;s just no way I can discuss high-level animation fundamentals in any detail here; I could spend an entire (and entirely separate) book on animation techniques alone. You might want to have a look at Chapters 43 through 46 before attacking the code in this chapter; that will have to do us for the present volume. (I will return to <I>3-D</I> animation in the next chapter.)</P>
+<P>Basically, I&#146;m going to perform page flipped animation, in which one page (that is, a bitmap large enough to hold a full screen) of display memory is displayed while another page is drawn to. When the drawing is finished, the newly modified page is displayed, and the other&#151;now invisible&#151;page is drawn to. The process repeats ad infinitum. For further information, some good places to start are <I>Computer Graphics</I>, by Foley and van Dam (Addison-Wesley); <I>Principles of Interactive Computer Graphics</I>, by Newman and Sproull (McGraw Hill); and &#147;Real-Time Animation&#148; by Rahner James (January 1990, <I>Dr. Dobb&#146;s Journal</I>).</P>
+<P>Some of the code in this chapter was adapted for Mode X from the code in Chapter 44&#151;yet another reason to read that chapter before finishing this one.</P>
+<H3><A NAME="Heading7"></A><FONT COLOR="#000077">Mode X Animation in Action</FONT></H3>
+<P>Listing 49.5 ties together everything I&#146;ve discussed about Mode X so far in a compact but surprisingly powerful animation package. Listing 49.5 first uses solid and patterned fills and system-memory-to-screen-memory masked copying to draw a static background containing a mountain, a sun, a plain, water, and a house with puffs of smoke coming out of the chimney, and sets up the four alignments of a masked kite image. The background is transferred to both display pages, and drawing of 20 kite images in the nondisplayed page using fast masked copying begins. After all images have been drawn, the page is flipped to show the newly updated screen, and the kites are moved and drawn in the other page, which is no longer displayed. Kites are erased at their old positions in the nondisplayed page by block copying from the background page. (See the discussion in the previous chapter for the display memory organization used by Listing 49.5.) So far as the displayed image is concerned, there is never any hint of flicker or disturbance of the background. This continues at a rate of up to 60 times a second until Esc is pressed to exit the program. See Figure 49.1 for a screen shot of the resulting image&#151;add the animation in your imagination.
+</P>
+<P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/49-01.jpg',227,175 )"> --><IMG SRC="images/49-01.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/49-01.jpg',227,175)"> --><FONT COLOR="#000077"><B>Figure 49.1</B></FONT></A>&nbsp;&nbsp;<I>An animated Mode X screen.</I>
+</P>
+<P><B>LISTING 49.5 L49-5.C</B></P>
+<!-- CODE //-->
+<PRE>
+/* Sample mode X VGA animation program. Portions of this code first appeared
+   in PC Techniques. Compiled with Borland C&#43;&#43; 2.0 in C compilation mode. */
+
+#include &lt;stdio.h&gt;
+#include &lt;conio.h&gt;
+#include &lt;dos.h&gt;
+#include &lt;math.h&gt;
+#include &#147;maskim.h&#148;
+
+#define SCREEN_SEG         0xA000
+#define SCREEN_WIDTH       320
+#define SCREEN_HEIGHT      240
+#define PAGE0_START_OFFSET 0
+#define PAGE1_START_OFFSET (((long)SCREEN_HEIGHT*SCREEN_WIDTH)/4)
+#define BG_START_OFFSET    (((long)SCREEN_HEIGHT*SCREEN_WIDTH*2)/4)
+#define DOWNLOAD_START_OFFSET (((long)SCREEN_HEIGHT*SCREEN_WIDTH*3)/4)
+
+static unsigned int PageStartOffsets[2] = {PAGE0_START_OFFSET,PAGE1_START_OFFSET};
+static char GreenAndBrownPattern[] = {2,6,2,6, 6,2,6,2, 2,6,2,6, 6,2,6,2};
+static char PineTreePattern[] = {2,2,2,2, 2,6,2,6, 2,2,6,2, 2,2,2,2};
+static char BrickPattern[] = {6,6,7,6, 7,7,7,7, 7,6,6,6, 7,7,7,7,};
+static char RoofPattern[] = {8,8,8,7, 7,7,7,7, 8,8,8,7, 8,8,8,7};
+
+#define SMOKE_WIDTH  7
+#define SMOKE_HEIGHT 7
+static char SmokePixels[] = {
+   0, 0,15,15,15, 0, 0,
+   0, 7, 7,15,15,15, 0,
+   8, 7, 7, 7,15,15,15,
+   8, 7, 7, 7, 7,15,15,
+   0, 8, 7, 7, 7, 7,15,
+   0, 0, 8, 7, 7, 7, 0,
+   0, 0, 0, 8, 8, 0, 0};
+static char SmokeMask[] = {
+   0, 0, 1, 1, 1, 0, 0,
+   0, 1, 1, 1, 1, 1, 0,
+   1, 1, 1, 1, 1, 1, 1,
+   1, 1, 1, 1, 1, 1, 1,
+   1, 1, 1, 1, 1, 1, 1,
+   0, 1, 1, 1, 1, 1, 0,
+   0, 0, 1, 1, 1, 0, 0};
+#define KITE_WIDTH  10
+#define KITE_HEIGHT 16
+static char KitePixels[] = {
+   0, 0, 0, 0,45, 0, 0, 0, 0, 0,
+   0, 0, 0,46,46,46, 0, 0, 0, 0,
+   0, 0,47,47,47,47,47, 0, 0, 0,
+   0,48,48,48,48,48,48,48, 0, 0,
+  49,49,49,49,49,49,49,49,49, 0,
+   0,50,50,50,50,50,50,50, 0, 0,
+   0,51,51,51,51,51,51,51, 0, 0,
+   0, 0,52,52,52,52,52, 0, 0, 0,
+   0, 0,53,53,53,53,53, 0, 0, 0,
+   0, 0, 0,54,54,54, 0, 0, 0, 0,
+   0, 0, 0,55,55,55, 0, 0, 0, 0,
+   0, 0, 0, 0,58, 0, 0, 0, 0, 0,
+   0, 0, 0, 0,59, 0, 0, 0, 0,66,
+   0, 0, 0, 0,60, 0, 0,64, 0,65,
+   0, 0, 0, 0, 0,61, 0, 0,64, 0,
+   0, 0, 0, 0, 0, 0,62,63, 0,64};
+static char KiteMask[] = {
+   0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+   0, 0, 0, 1, 1, 1, 0, 0, 0, 0,
+   0, 0, 1, 1, 1, 1, 1, 0, 0, 0,
+   0, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+   1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+   0, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+   0, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+   0, 0, 1, 1, 1, 1, 1, 0, 0, 0,
+   0, 0, 1, 1, 1, 1, 1, 0, 0, 0,
+   0, 0, 0, 1, 1, 1, 0, 0, 0, 0,
+   0, 0, 0, 1, 1, 1, 0, 0, 0, 0,
+   0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+   0, 0, 0, 0, 1, 0, 0, 0, 0, 1,
+   0, 0, 0, 0, 1, 0, 0, 1, 0, 1,
+   0, 0, 0, 0, 0, 1, 0, 0, 1, 0,
+   0, 0, 0, 0, 0, 0, 1, 1, 0, 1};
+static MaskedImage KiteImage;
+
+#define NUM_OBJECTS  20
+typedef struct {
+   int X,Y,Width,Height,XDir,YDir,XOtherPage,YOtherPage;
+   MaskedImage *Image;
+} AnimatedObject;
+AnimatedObject AnimatedObjects[] = {
+   {  0,  0,KITE_WIDTH,KITE_HEIGHT, 1, 1,  0,  0,&ampKiteImage},
+   { 10, 10,KITE_WIDTH,KITE_HEIGHT, 0, 1, 10, 10,&ampKiteImage},
+   { 20, 20,KITE_WIDTH,KITE_HEIGHT,-1, 1, 20, 20,&ampKiteImage},
+   { 30, 30,KITE_WIDTH,KITE_HEIGHT,-1,-1, 30, 30,&ampKiteImage},
+   { 40, 40,KITE_WIDTH,KITE_HEIGHT, 1,-1, 40, 40,&ampKiteImage},
+   { 50, 50,KITE_WIDTH,KITE_HEIGHT, 0,-1, 50, 50,&ampKiteImage},
+   { 60, 60,KITE_WIDTH,KITE_HEIGHT, 1, 0, 60, 60,&ampKiteImage},
+   { 70, 70,KITE_WIDTH,KITE_HEIGHT,-1, 0, 70, 70,&ampKiteImage},
+   { 80, 80,KITE_WIDTH,KITE_HEIGHT, 1, 2, 80, 80,&ampKiteImage},
+   { 90, 90,KITE_WIDTH,KITE_HEIGHT, 0, 2, 90, 90,&ampKiteImage},
+   {100,100,KITE_WIDTH,KITE_HEIGHT,-1, 2,100,100,&ampKiteImage},
+   {110,110,KITE_WIDTH,KITE_HEIGHT,-1,-2,110,110,&ampKiteImage},
+   {120,120,KITE_WIDTH,KITE_HEIGHT, 1,-2,120,120,&ampKiteImage},
+   {130,130,KITE_WIDTH,KITE_HEIGHT, 0,-2,130,130,&ampKiteImage},
+   {140,140,KITE_WIDTH,KITE_HEIGHT, 2, 0,140,140,&ampKiteImage},
+   {150,150,KITE_WIDTH,KITE_HEIGHT,-2, 0,150,150,&ampKiteImage},
+   {160,160,KITE_WIDTH,KITE_HEIGHT, 2, 2,160,160,&ampKiteImage},
+   {170,170,KITE_WIDTH,KITE_HEIGHT,-2, 2,170,170,&ampKiteImage},
+   {180,180,KITE_WIDTH,KITE_HEIGHT,-2,-2,180,180,&ampKiteImage},
+   {190,190,KITE_WIDTH,KITE_HEIGHT, 2,-2,190,190,&ampKiteImage},
+};
+void main(void);
+void DrawBackground(unsigned int);
+void MoveObject(AnimatedObject *);
+extern void Set320x240Mode(void);
+extern void FillRectangleX(int, int, int, int, unsigned int, int);
+extern void FillPatternX(int, int, int, int, unsigned int, char*);
+extern void CopySystemToScreenMaskedX(int, int, int, int, int, int,
+   char *, unsigned int, int, int, char *);
+extern void CopyScreenToScreenX(int, int, int, int, int, int,
+   unsigned int, unsigned int, int, int);
+extern unsigned int CreateAlignedMaskedImage(MaskedImage *,
+   unsigned int, char *, int, int, char *);
+extern void CopyScreenToScreenMaskedX(int, int, int, int, int, int,
+   MaskedImage *, unsigned int, int);
+extern void ShowPage(unsigned int);
+
+void main()
+{
+   int DisplayedPage, NonDisplayedPage, Done, i;
+   union REGS regset;
+   Set320x240Mode();
+   /* Download the kite image for fast copying later. */
+   if (CreateAlignedMaskedImage(&ampKiteImage, DOWNLOAD_START_OFFSET,
+         KitePixels, KITE_WIDTH, KITE_HEIGHT, KiteMask) == 0) {
+      regset.x.ax = 0x0003; int86(0x10, &ampregset, &ampregset);
+      printf(&#147;Couldn&#146;t get memory\n&#148;); exit();
+   }
+   /* Draw the background to the background page. */
+   DrawBackground(BG_START_OFFSET);
+   /* Copy the background to both displayable pages. */
+   CopyScreenToScreenX(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0,
+         BG_START_OFFSET, PAGE0_START_OFFSET, SCREEN_WIDTH, SCREEN_WIDTH);
+   CopyScreenToScreenX(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0,
+         BG_START_OFFSET, PAGE1_START_OFFSET, SCREEN_WIDTH, SCREEN_WIDTH);
+   /* Move the objects and update their images in the nondisplayed
+      page, then flip the page, until Esc is pressed. */
+   Done = DisplayedPage = 0;
+   do {
+      NonDisplayedPage = DisplayedPage ^ 1;
+      /* Erase each object in nondisplayed page by copying block from
+            background page at last location in that page. */
+      for (i=0; i&lt;NUM_OBJECTS; i&#43;&#43;) {
+         CopyScreenToScreenX(AnimatedObjects[i].XOtherPage,
+               AnimatedObjects[i].YOtherPage,
+               AnimatedObjects[i].XOtherPage &#43;
+               AnimatedObjects[i].Width,
+               AnimatedObjects[i].YOtherPage &#43;
+               AnimatedObjects[i].Height,
+               AnimatedObjects[i].XOtherPage,
+               AnimatedObjects[i].YOtherPage, BG_START_OFFSET,
+               PageStartOffsets[NonDisplayedPage], SCREEN_WIDTH, SCREEN_WIDTH);
+      }
+      /* Move and draw each object in the nondisplayed page. */
+      for (i=0; i&lt;NUM_OBJECTS; i&#43;&#43;) {
+         MoveObject(&ampAnimatedObjects[i]);
+         /* Draw object into nondisplayed page at new location */
+         CopyScreenToScreenMaskedX(0, 0, AnimatedObjects[i].Width,
+               AnimatedObjects[i].Height, AnimatedObjects[i].X,
+               AnimatedObjects[i].Y, AnimatedObjects[i].Image,
+               PageStartOffsets[NonDisplayedPage], SCREEN_WIDTH);
+      }
+      /* Flip to the page into which we just drew. */
+      ShowPage(PageStartOffsets[DisplayedPage = NonDisplayedPage]);
+      /* See if it&#146;s time to end. */
+      if (kbhit()) {
+         if (getch() == 0x1B) Done = 1;   /* Esc to end */
+      }
+   } while (!Done);
+   /* Restore text mode and done. */
+   regset.x.ax = 0x0003; int86(0x10, &ampregset, &ampregset);
+}
+void DrawBackground(unsigned int PageStart)
+{
+   int i,j,Temp;
+   /* Fill the screen with cyan. */
+   FillRectangleX(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, PageStart, 11);
+   /* Draw a green and brown rectangle to create a flat plain. */
+   FillPatternX(0, 160, SCREEN_WIDTH, SCREEN_HEIGHT, PageStart,
+                GreenAndBrownPattern);
+   /* Draw blue water at the bottom of the screen. */
+   FillRectangleX(0, SCREEN_HEIGHT-30, SCREEN_WIDTH, SCREEN_HEIGHT,
+                  PageStart, 1);
+   /* Draw a brown mountain rising out of the plain. */
+   for (i=0; i&lt;120; i&#43;&#43;)
+      FillRectangleX(SCREEN_WIDTH/2-30-i, 51&#43;i, SCREEN_WIDTH/2-30&#43;i&#43;1,
+                     51&#43;i&#43;1, PageStart, 6);
+   /* Draw a yellow sun by overlapping rects of various shapes. */
+   for (i=0; i&lt;=20; i&#43;&#43;) {
+      Temp = (int)(sqrt(20.0*20.0 - (float)i*(float)i) &#43; 0.5);
+      FillRectangleX(SCREEN_WIDTH-25-i, 30-Temp, SCREEN_WIDTH-25&#43;i&#43;1,
+                     30&#43;Temp&#43;1, PageStart, 14);
+   }
+   /* Draw green trees down the side of the mountain. */
+   for (i=10; i&lt;90; i &#43;= 15)
+      for (j=0; j&lt;20; j&#43;&#43;)
+       FillPatternX(SCREEN_WIDTH/2&#43;i-j/3-15, i&#43;j&#43;51,SCREEN_WIDTH/2&#43;i&#43;j/3-15&#43;1,
+                                       i&#43;j&#43;51&#43;1, PageStart, PineTreePattern);
+   /* Draw a house on the plain. */
+   FillPatternX(265, 150, 295, 170, PageStart, BrickPattern);
+   FillPatternX(265, 130, 270, 150, PageStart, BrickPattern);
+   for (i=0; i&lt;12; i&#43;&#43;)
+      FillPatternX(280-i*2, 138&#43;i, 280&#43;i*2&#43;1, 138&#43;i&#43;1, PageStart, RoofPattern);
+   /* Finally, draw puffs of smoke rising from the chimney. */
+   for (i=0; i&lt;4; i&#43;&#43;)
+      CopySystemToScreenMaskedX(0, 0, SMOKE_WIDTH, SMOKE_HEIGHT, 264,
+        110-i*20, SmokePixels, PageStart, SMOKE_WIDTH,SCREEN_WIDTH, SmokeMask);
+}
+/* Move the specified object, bouncing at the edges of the screen and
+   remembering where the object was before the move for erasing next time. */
+void MoveObject(AnimatedObject * ObjectToMove) {
+   int X, Y;
+   X = ObjectToMove-&gt;X &#43; ObjectToMove-&gt;XDir;
+   Y = ObjectToMove-&gt;Y &#43; ObjectToMove-&gt;YDir;
+   if ((X &lt; 0) || (X &gt; (SCREEN_WIDTH - ObjectToMove-&gt;Width))) {
+      ObjectToMove-&gt;XDir = -ObjectToMove-&gt;XDir;
+      X = ObjectToMove-&gt;X &#43; ObjectToMove-&gt;XDir;
+   }
+   if ((Y &lt; 0) || (Y &gt; (SCREEN_HEIGHT - ObjectToMove-&gt;Height))) {
+      ObjectToMove-&gt;YDir = -ObjectToMove-&gt;YDir;
+      Y = ObjectToMove-&gt;Y &#43; ObjectToMove-&gt;YDir;
+   }
+   /* Remember previous location for erasing purposes. */
+   ObjectToMove-&gt;XOtherPage = ObjectToMove-&gt;X;
+   ObjectToMove-&gt;YOtherPage = ObjectToMove-&gt;Y;
+   ObjectToMove-&gt;X = X; /* set new location */
+   ObjectToMove-&gt;Y = Y;
+}
+
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="49-03.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="49-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

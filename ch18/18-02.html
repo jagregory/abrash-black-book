@@ -1,0 +1,98 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: It's a Wonderful Life</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=18//-->
+<!--PAGES=351-352//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="18-01.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="18-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H3><A NAME="Heading4"></A><FONT COLOR="#000077">Table-Driven Magic</FONT></H3>
+<P>David Stafford won my first Optimization Challenge by means of a huge look-up table and an incredible state machine driven by that table. The table didn&#146;t cause David&#146;s entry to exceed the line limit because David&#146;s submission included code to generate the table on the fly as part of the build process. David has done himself one better this time with his QLIFE program; not only does his build process generate a 64K table, but it also generates virtually all his code, consisting of 17,000-plus lines of assembly language spanning another 64K. What David has done is write the equivalent of a bitblt compiler for the Game of Life; one might in fact call it a Life compiler. What David&#146;s code generates is still a general-purpose program; it takes arbitrary seed values, and can run for an arbitrary number of generations, so it&#146;s not as if David simply hardwired the instructions to draw each successive screen. However, it&#146;s a general-purpose program that is exquisitely tailored to the task it needs to perform.
+</P>
+<P>All the pieces of QLIFE are shown in Listings 18.1 through 18.5, as follows: Listing 18.1 is BUILD.BAT, the batch file used to build QLIFE; Listing 18.2 is LCOMP.C, the program used to generate the assembler code and data file QLIFE.ASM; Listing 18.3 is MAIN.C, the main program for QLIFE; Listing 18.4 is VIDEO.C, the video-related functions, and Listing 18.5 is LIFE.H, the header file. The following sidebar contains David&#146;s build instructions, exactly as he wrote them. I certainly won&#146;t have room to discuss all the marvelous intricacies of David&#146;s code; I suggest you look over these listings until you understand them thoroughly (it took me a day to pick them apart) because there&#146;s a lot of neat stuff in there, and it&#146;s an approach to performance programming that operates at a more efficient, tightly integrated level than you may ever see again. One hint: It helps a <I>lot</I> to build and run LCOMP.C, redirect its output to QLIFE.ASM, and look at the assembly code in that file. This code is the entirety of David&#146;s generation engine, and it&#146;s almost impossible to visualize its operation without actually seeing it.</P>
+<BLOCKQUOTE>
+<P><FONT SIZE="-1"><HR>How To Build Qlife<P>QLIFE is written for Borland C<SMALL>&#43;&#43;</SMALL>, but it shouldn&#146;t be too difficult to convert it to work with Microsoft C<SMALL>&#43;&#43;</SMALL>. To build QLIFE, run the BUILD.BAT batch file with the size of the life grid on the command line (see below). The command-line options are:</P>
+<TABLE WIDTH="100%"><TD WIDTH="3%">
+<TD WIDTH="15%" ALIGN="LEFT" VALIGN="TOP"><SMALL>WIDTH 32</SMALL>
+<TD ALIGN="LEFT" VALIGN="TOP"><SMALL>Sets the width of the life grid to 96 cells (divided by 3)</SMALL>.
+<TR>
+<TD WIDTH="3%">
+<TD ALIGN="LEFT" VALIGN="TOP"><SMALL>HEIGHT 96</SMALL>
+<TD ALIGN="LEFT" VALIGN="TOP"><SMALL>Sets the height of the life grid to 96 cells</SMALL>.
+<TR>
+<TD WIDTH="3%">
+<TD ALIGN="LEFT" VALIGN="TOP"><SMALL>NOCOUNTER</SMALL>
+<TD ALIGN="LEFT" VALIGN="TOP"><SMALL>Turns off the generation counter (optional)</SMALL>.
+<TR>
+<TD WIDTH="3%">
+<TD ALIGN="LEFT" VALIGN="TOP"><SMALL>NODRAW</SMALL>
+<TD ALIGN="LEFT" VALIGN="TOP"><SMALL>Turns off drawing of the cell map (optional)</SMALL>.
+<TR>
+<TD WIDTH="3%">
+<TD ALIGN="LEFT" VALIGN="TOP"><SMALL>GEN 1000</SMALL>
+<TD ALIGN="LEFT" VALIGN="TOP"><SMALL>Calculates 1,000 generations (optional)</SMALL>.
+</TABLE>
+<P>These <I>must</I> be in uppercase. For example, the minimum you really need is &#147;WIDTH 40 HEIGHT 120.&#148; I used &#147;WIDTH 46 HEIGHT 138 NOCOUNTER NODRAW GEN 7000&#148; during testing.</P>
+<P>If you have selected the GEN option, you will have to press a key to exit QLIFE when it is finished. This is so I could visually compare the result of N generations under QLIFE with N generations under Abrash&#146;s original life program. You should be aware that the program from the listing contains a small bug, which may make it appear that they do not generate identical results. The original program does not display a cell until it changes, so if a cell is alive on the first generation and never dies, then it will never be displayed. This bug is not present in QLIFE.</P>
+<P>You should have no trouble running QLIFE with cell grids up to 210&#215;200.</P>
+<P>You <I>must</I> have a VGA and at least a 386 to run QLIFE. The 386 features that it uses are not integral to the algorithm (they&#146;re a convenience for the code), so feel free to modify QLIFE to run on earlier CPUs if you wish. QLIFE works best if you have a large CPU cache (256K is recommended).</P>
+<P>&#151;<I>David Stafford</I></P>
+</FONT><HR>
+</BLOCKQUOTE>
+<P>
+</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="18-01.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="18-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

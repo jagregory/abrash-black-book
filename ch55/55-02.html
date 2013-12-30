@@ -1,0 +1,157 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Color Modeling in 256-Color Mode</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=55//-->
+<!--PAGES=1036-1038//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="55-01.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="55-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>So it&#146;s perfectly reasonable to maintain 24 bits of color resolution, and X-Sharp represents colors internally as ideal, device-independent 24-bit RGB triplets. All shading calculations are performed on these triplets, with 24-bit color precision. It&#146;s only after the final 24-bit RGB drawing color is calculated that the display adapter&#146;s color capabilities come into play, as the X-Sharp function <B>ModelColorToColorIndex()</B> is called to map the desired RGB color to the closest match the adapter is capable of displaying. Of course, that mapping is adapter-dependent. On a 24-bpp device, it&#146;s pretty obvious how the internal RGB color format maps to displayed pixel colors: directly. On VGAs with 15-bpp Sierra Hicolor DACS, the mapping is equally simple, with the five upper bits of each color component mapping straight to display pixels. But how on earth do we map those 16,000,000-plus RGB colors into the 256-color space of a standard VGA?</P>
+<P>This is the &#147;color definition&#148; problem I mentioned at the start of this chapter. The VGA palette is arbitrarily programmable to any set of 256 colors, with each color defined by six bits each of red, green, and blue intensity. In X-Sharp, the function <B>InitializePalette()</B> can be customized to set up the palette however we wish; this gives us nearly complete flexibility in defining the working color set. Even with infinite flexibility, however, 256 out of 16,000,000 or so possible colors is a pretty puny selection. It&#146;s easy to set up the palette to give yourself a good selection of just blue intensities, or of just greens; but for general color modeling there&#146;s simply not enough palette to go around.</P>
+<P>One way to deal with the limited simultaneous color capabilities of the VGA is to build an application that uses only a subset of RGB space, then bias the VGA&#146;s palette toward that subspace. This is the approach used in the DEMO1 sample program in X-Sharp; Listings 55.2 and 55.3 show the versions of <B>InitializePalette()</B> and <B>ModelColorToColorIndex() </B>that set up and perform the color mapping for DEMO1.</P>
+<P><B>LISTING 55.2 L55-2.C</B></P>
+<!-- CODE //-->
+<PRE>
+ /* Sets up the palette in mode X, to a 2-2-2 general R-G-B organization, with
+    64 separate levels each of pure red, green, and blue. This is very good
+    for pure colors, but mediocre at best for mixes.
+
+    ------------------------
+    |0  0 | Red|Green| Blue |
+    ------------------------
+     7  6  5  4  3  2  1  0
+
+    ------------------------
+    |0  1 |      Red        |
+    ------------------------
+     7  6  5  4  3  2  1  0
+
+    ------------------------
+    |1  0 |     Green       |
+    ------------------------
+     7  6  5  4  3  2  1  0
+
+    ------------------------
+    |1  1 |      Blue       |
+    ------------------------
+     7  6  5  4  3  2  1  0
+
+    Colors are gamma corrected for a gamma of 2.3 to provide approximately
+    even intensity steps on the screen.
+ */
+
+ #include &ltdos.h&gt
+ #include "polygon.h"
+
+ static unsigned char Gamma4Levels[] = { 0, 39, 53, 63 };
+ static unsigned char Gamma64Levels[] = {
+     0, 10, 14, 17, 19, 21, 23, 24, 26, 27, 28, 29, 31, 32, 33, 34,
+    35, 36, 37, 37, 38, 39, 40, 41, 41, 42, 43, 44, 44, 45, 46, 46,
+    47, 48, 48, 49, 49, 50, 51, 51, 52, 52, 53, 53, 54, 54, 55, 55,
+    56, 56, 57, 57, 58, 58, 59, 59, 60, 60, 61, 61, 62, 62, 63, 63,
+ };
+
+ static unsigned char PaletteBlock[256][3];   /* 256 RGB entries */
+
+ void InitializePalette()
+ {
+    int Red, Green, Blue, Index;
+    union REGS regset;
+    struct SREGS sregset;
+
+    for (Red=0; Red&lt4; Red&#43;&#43;) {
+       for (Green=0; Green&lt4; Green&#43;&#43;) {
+          for (Blue=0; Blue&lt4; Blue&#43;&#43;) {
+             Index = (Red&lt&lt4)&#43;(Green&lt&lt2)&#43;Blue;
+             PaletteBlock[Index][0] = Gamma4Levels[Red];
+             PaletteBlock[Index][1] = Gamma4Levels[Green];
+             PaletteBlock[Index][2] = Gamma4Levels[Blue];
+          }
+       }
+    }
+
+    for (Red=0; Red&lt64; Red&#43;&#43;) {
+       PaletteBlock[64&#43;Red][0] = Gamma64Levels[Red];
+       PaletteBlock[64&#43;Red][1] = 0;
+       PaletteBlock[64&#43;Red][2] = 0;
+    }
+
+    for (Green=0; Green&lt64; Green&#43;&#43;) {
+       PaletteBlock[128&#43;Green][0] = 0;
+       PaletteBlock[128&#43;Green][1] = Gamma64Levels[Green];
+       PaletteBlock[128&#43;Green][2] = 0;
+    }
+
+    for (Blue=0; Blue&lt64; Blue&#43;&#43;) {
+       PaletteBlock[192&#43;Blue][0] = 0;
+       PaletteBlock[192&#43;Blue][1] = 0;
+       PaletteBlock[192&#43;Blue][2] = Gamma64Levels[Blue];
+    }
+
+    /* Now set up the palette */
+    regset.x.ax = 0x1012;   /* set block of DAC registers function */
+    regset.x.bx = 0;        /* first DAC location to load */
+    regset.x.cx = 256;      /* # of DAC locations to load */
+    regset.x.dx = (unsigned int)PaletteBlock; /* offset of array from which
+                                                 to load RGB settings */
+    sregset.es = DS; /* segment of array from which to load settings */
+    int86x(0x10, &ampregset, &ampregset, &ampsregset); /* load the palette block */
+ }
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="55-01.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="55-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

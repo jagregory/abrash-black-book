@@ -1,0 +1,90 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: There Ain't No Such Thing as the Fastest Code</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=16//-->
+<!--PAGES=305-308//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="16-03.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="16-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>Truth to tell, I didn&#146;t expect a three-times speedup; around two times was what I had in mind. Which just goes to show that any code can be made faster than you&#146;d expect, if you think about it long enough and from many different perspectives. (The most potent word-counting technique seems to be a 64K lookup table that allows handling two bytes simultaneously. This is not the sort of technique one comes up with by brute-force optimization.) Thinking (or, worse yet, boasting) that your code is the fastest possible is rollescating on a tightrope in a hurricane; you&#146;re due for a fall, if you catch my drift. Case in point: Terje Mathisen&#146;s word-counting program.
+</P>
+<H4 ALIGN="LEFT"><A NAME="Heading6"></A><FONT COLOR="#000077">Blinding Yourself to a Better Approach</FONT></H4>
+<P>Not so long ago, Terje Mathisen, who I introduced earlier in this book, wrote a very fast word-counting program, and posted it on Bix. When I say it was fast, I mean <I>fast;</I> this code was optimized like nobody&#146;s business. We&#146;re talking top-quality code here.</P>
+<P>When the topic of optimizing came up in one of the Bix conferences, Terje&#146;s program was mentioned, and he posted the following message: &#147;I challenge BIXens (and especially <B>mabrash!</B>) to speed it up significantly. I would consider 5 percent a good result.&#148; The clear implication was, &#147;That code is as fast as it can possibly be.&#148;</P>
+<P>Naturally, it wasn&#146;t; there ain&#146;t no such thing as the fastest code (TANSTATFC? I agree, it doesn&#146;t have the ring of TANSTAAFL). I pored over Terje&#146;s 386 native-mode code, and found the critical inner loop, which was indeed as tight as one could imagine, consisting of just a few 386 native-mode instructions. However, one of the instructions was this:</P>
+<!-- CODE SNIP //-->
+<PRE>
+ 
+ CMP   DH,[EBX&#43;EAX]
+ 
+</PRE>
+<!-- END CODE SNIP //-->
+<P>Harmless enough, save for two things. First, EBX happened to be zero at this point (a leftover from an earlier version of the code, as it turned out), so it was superfluous as a memory-addressing component; this made it possible to use base-only addressing (<B>[EAX]</B>) rather than base&#43;index addressing (<B>[EBX&#43;EAX]</B>), which saves a cycle on the 386. Second: Changing the instruction to <B>CMP [EAX],DH</B> saved 2 cycles&#151;just enough, by good fortune, to speed up the whole program by 5 percent.</P>
+<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/16-02i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I><B>CMP reg,[mem]</B> takes 6 cycles on the 386, but <B>CMP [ mem ],reg</B> takes only 5 cycles; you should always perform<B>CMP</B> with the memory operand on the left on the 386.</I></SMALL>
+</TABLE>
+<P>(Granted, <B>CMP [<I>mem</I>],<I>reg</I></B> is 1 cycle slower than <B>CMP <I>reg</I>,[<I>mem</I>]</B> on the 286, and they&#146;re both the same on the 8088; in this case, though, the code was specific to the 386. In case you&#146;re curious, both forms take 2 cycles on the 486; quite a lot faster, eh?)</P>
+<H4 ALIGN="LEFT"><A NAME="Heading7"></A><FONT COLOR="#000077">Watch Out for Luggable Assumptions!</FONT></H4>
+<P>The first lesson to be learned here is not to lug assumptions that may no longer be valid from the 8088/286 world into the wonderful new world of 386 native-mode programming. The second lesson is that after you&#146;ve slaved over your code for a while, you&#146;re in no shape to see its flaws, or to be able to get the new perspectives needed to speed it up. I&#146;ll bet Terje looked at that <B>[EBX&#43;EAX]</B> addressing a hundred times while trying to speed up his code, but he didn&#146;t really see what it did; instead, he saw what it was supposed to do. Mental shortcuts like this are what enable us to deal with the complexities of assembly language without overloading after about 20 instructions, but they can be a major problem when looking over familiar code.</P>
+<P>The third, and most interesting, lesson is that a far more fruitful optimization came of all this, one that nicely illustrates that cycle counting is not the key to happiness, riches, and wondrous performance. After getting my 5 percent speedup, I mentioned to Terje the possibility of using a 64K lookup table. (This predated the arrival of entries for the optimization contest.) He said that he had considered it, but it didn&#146;t seem to him to be worthwhile. He couldn&#146;t shake the thought, though, and started to poke around, and one day, <I>voila,</I> he posted a new version of his word count program, WC50, that was <I>much</I> faster than the old version. I don&#146;t have exact numbers, but Terje&#146;s preliminary estimate was 80 percent faster, and word counting&#151;<I>including</I> disk cache access time&#151;proceeds at more than 3 MB per second on a 33 MHz 486. Even allowing for the speed of the 486, those are very impressive numbers indeed.</P>
+<P>The point I want to make, though, is that the biggest optimization barrier that Terje faced was that he <I>thought</I> he had the fastest code possible. Once he opened up the possibility that there were faster approaches, and looked beyond the specific approach that he had so carefully optimized, he was able to come up with code that was a <I>lot</I> faster. Consider the incongruity of Terje&#146;s willingness to consider a 5 percent speedup significant in light of his later near-doubling of performance.</P>
+<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/16-03i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>Don&#146;t get stuck in the rut of instruction-by-instruction optimization. It&#146;s useful in key loops, but very often, a change in approach will work far greater wonders than any amount of cycle counting can.</I></SMALL>
+</TABLE>
+<P>By the way, Terje&#146;s WC50 program is a full-fledged counting program; it counts characters, words, and lines, can handle multiple files, and lets you specify the characters that separate words, should you so desire. Source code is provided as part of the archive WC50 comes in. All in all, it&#146;s a nice piece of work, and you might want to take a look at it if you&#146;re interested in really fast assembly code. I wouldn&#146;t call it the <I>fastest</I> word-counting code, though, because I would of course never be so foolish as to call <I>anything</I> the fastest.</P>
+<H3><A NAME="Heading8"></A><FONT COLOR="#000077">The Astonishment of Right-Brain Optimization</FONT></H3>
+<P>As it happened, the challenge I issued to my <I>PC TECHNIQUES</I> readers was a smashing success, with dozens of good entries. I certainly enjoyed it, even though I did have to look at a <I>lot</I> of tricky assembly code that I didn&#146;t write&#151;hard work under the best of circumstances. It was worth the trouble, though. The winning entry was an astonishing example of what assembly language can do in the right hands; on my 386, it was <I>four times</I> faster at word counting than the nice, tight assembly code I provided as a starting point&#151;and about 13 times faster than the original C implementation. Attention, high-level language chauvinists: Is the speedup getting significant yet? Okay, maybe word counting isn&#146;t the most critical application, but how would you like to have that kind of improvement in your compression software, or in your real-time games&#151;or in Windows graphics?</P>
+<P>The winner was David Stafford, who at the time was working for Borland International; his entry is shown in Listing 16.5. Dave Methvin, whom some of you may recall as a tech editor of the late, lamented <I>PC Tech Journal,</I> was a close second, and Mick Brown, about whom I know nothing more than that he is obviously an extremely good assembly language programmer, was a close third, as shown in Table 16.2, which precedes Listing 16.5. Those three were out ahead of the pack; the fourth-place entry, good as it was (twice as fast as my original code), was twice as slow as David&#146;s winning entry, so you can see that David, Dave, and Mick attained a rarefied level of optimization indeed.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="16-03.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="16-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

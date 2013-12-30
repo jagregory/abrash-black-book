@@ -1,0 +1,292 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Yet Another VGA Write Mode</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=27//-->
+<!--PAGES=504-508//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="27-01.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="27-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H4 ALIGN="LEFT"><A NAME="Heading5"></A><FONT COLOR="#000077">Copying Chunky Bitmaps to VGA Memory Using Write Mode 2</FONT></H4>
+<P>Let&#146;s take a look at two examples of write mode 2 in action. Listing 27.1 presents a program that uses write mode 2 to copy a graphics image in chunky format to the VGA. In chunky format adjacent bits in a single byte make up each pixel: mode 4 of the CGA, EGA, and VGA is a 2-bit-per-pixel chunky mode, and mode 13H of the VGA is an 8-bit-per-pixel chunky mode. Chunky format is convenient, since all the information about each pixel is contained in a single byte; consequently chunky format is often used to store bitmaps in system memory.
+</P>
+<P>Unfortunately, VGA memory is organized as a planar rather than chunky bitmap in modes 0DH through 12H, with the bits that make up each pixel spread across four planes. The conversion from chunky to planar format in write mode 0 is quite a nuisance, requiring a good deal of bit manipulation. In write mode 2, however, the conversion becomes a snap, as shown in Listing 27.1. Once the VGA is placed in write mode 2, the lower four bits (the lower nibble) of the CPU byte (a single 4-bit chunky pixel) become eight planar pixels, all the same color. As discussed in Chapter 25, the bit mask makes it possible to narrow the effect of the CPU write down to a single pixel.</P>
+<P>Given the above, conversion of a chunky 4-bit-per-pixel bitmap to the VGA&#146;s planar format in write mode 2 is trivial. First, the Bit Mask register is set to allow only the VGA display memory bits corresponding to the leftmost chunky pixel of the two stored in the first chunky bitmap byte to be modified. Next, the destination byte in display memory is read in order to load the latches. Then a byte containing two chunky pixels is read from the chunky bitmap in system memory, and the byte is rotated four bits to the right to get the leftmost chunky pixel in position. This rotated byte is written to the destination byte; since write mode 2 is active, each bit of the chunky pixel goes to its respective plane, and since the Bit Mask register is set up to allow only one bit in each plane to be modified, a single pixel in the color of the chunky pixel is written to VGA memory.</P>
+<P>This process is then repeated for the rightmost chunky pixel, if necessary, and repeated again for as many pixels as there are in the image.</P>
+<P><B>LISTING 27.1 L27-1.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+; Program to illustrate one use of write mode 2 of the VGA and EGA by
+; animating the image of an &#147;A&#148; drawn by copying it from a chunky
+; bit-map in system memory to a planar bit-map in VGA or EGA memory.
+;
+; Assemble with MASM or TASM
+;
+; By Michael Abrash
+;
+Stack   segment para stack &#145;STACK&#146;
+        db      512 dup(0)
+Stack   ends
+
+SCREEN_WIDTH_IN_BYTES   equ     80
+DISPLAY_MEMORY_SEGMENT  equ     0a000h
+SC_INDEX                                  equ     3c4h    ;Sequence Controller Index register
+MAP_MASK                                  equ     2       ;index of Map Mask register
+GC_INDEX                                  equ     03ceh   ;Graphics Controller Index reg
+GRAPHICS_MODE                             equ     5       ;index of Graphics Mode reg
+BIT_MASKequ     8       ;index of Bit Mask reg
+
+Data    segment para common &#145;DATA&#146;
+;
+; Current location of &#147;A&#148; as it is animated across the screen.
+;
+CurrentX        dw      ?
+CurrentY        dw      ?
+RemainingLength dw      ?
+;
+; Chunky bit-map image of a yellow &#147;A&#148; on a bright blue background
+;
+AImage          label   byte
+                dw      13, 13          ;width, height in pixels
+                db      000h, 000h, 000h, 000h, 000h, 000h, 000h
+                db      009h, 099h, 099h, 099h, 099h, 099h, 000h
+                db      009h, 099h, 099h, 099h, 099h, 099h, 000h
+                db      009h, 099h, 099h, 0e9h, 099h, 099h, 000h
+                db      009h, 099h, 09eh, 0eeh, 099h, 099h, 000h
+                db      009h, 099h, 0eeh, 09eh, 0e9h, 099h, 000h
+                db      009h, 09eh, 0e9h, 099h, 0eeh, 099h, 000h
+                db      009h, 09eh, 0eeh, 0eeh, 0eeh, 099h, 000h
+                db      009h, 09eh, 0e9h, 099h, 0eeh, 099h, 000h
+                db      009h, 09eh, 0e9h, 099h, 0eeh, 099h, 000h
+                db      009h, 099h, 099h, 099h, 099h, 099h, 000h
+                db      009h, 099h, 099h, 099h, 099h, 099h, 000h
+                db      000h, 000h, 000h, 000h, 000h, 000h, 000h
+Data    ends
+
+Code    segment para public &#145;CODE&#146;
+        assume  cs:Code, ds:Data
+Start   proc    near
+        mov     ax,Data
+        mov     ds,ax
+        mov     ax,10h
+        int     10h             ;select video mode 10h (640&#215;350)
+;
+; Prepare for animation.
+;
+        mov     [CurrentX],0
+        mov     [CurrentY],200
+        mov     [RemainingLength],600   ;move 600 times
+;
+; Animate, repeating RemainingLength times. It&#146;s unnecessary to erase
+; the old image, since the one pixel of blank fringe around the image
+; erases the part of the old image not overlapped by the new image.
+;
+AnimationLoop:
+        mov     bx,[CurrentX]
+        mov     cx,[CurrentY]
+        mov     si,offset AImage
+        call    DrawFromChunkyBitmap    ;draw the &#147;A&#148; image
+        inc     [CurrentX]              ;move one pixel to the right
+
+        mov     cx,0                    ;delay so we don&#146;t move the
+DelayLoop:                              ; image too fast; adjust as
+                                        ; needed
+        loop    DelayLoop
+
+        dec     [RemainingLength]
+        jnz     AnimationLoop
+;
+; Wait for a key before returning to text mode and ending.
+;
+        mov     ah,01h
+        int     21h
+        mov     ax,03h
+        int     10h
+        mov     ah,4ch
+        int     21h
+Start   endp
+;
+; Draw an image stored in a chunky-bit map into planar VGA/EGA memory
+; at the specified location.
+;
+; Input:
+;       BX = X screen location at which to draw the upper-left corner
+;               of the image
+;       CX = Y screen location at which to draw the upper-left corner
+;               of the image
+;       DS:SI = pointer to chunky image to draw, as follows:
+;               word at 0: width of image, in pixels
+;               word at 2: height of image, in pixels
+;               byte at 4: msb/lsb = first &amp second chunky pixels,
+;                       repeating for the remainder of the scan line
+;                       of the image, then for all scan lines. Images
+;                       with odd widths have an unused null nibble
+;                       padding each scan line out to a byte width
+;
+; AX, BX, CX, DX, SI, DI, ES destroyed.
+;
+DrawFromChunkyBitmap    proc    near
+        cld
+;
+; Select write mode 2.
+;
+        mov     dx,GC_INDEX
+        mov     al,GRAPHICS_MODE
+        out     dx,al
+        inc     dx
+        mov     al,02h
+        out     dx,al
+;
+; Enable writes to all 4 planes.
+;
+        mov     dx,SC_INDEX
+        mov     al,MAP_MASK
+        out     dx,al
+        inc     dx
+        mov     al,0fh
+        out     dx,al
+;
+; Point ES:DI to the display memory byte in which the first pixel
+; of the image goes, with AH set up as the bit mask to access that
+; pixel within the addressed byte.
+;
+        mov     ax,SCREEN_WIDTH_IN_BYTES
+        mul     cx              ;offset of start of top scan line
+        mov     di,ax
+        mov     cl,bl
+        and     cl,111b
+        mov     ah,80h          ;set AH to the bit mask for the
+        shr     ah,cl           ; initial pixel
+        shr     bx,1
+        shr     bx,1
+        shr     bx,1            ;X in bytes
+        add     di,bx           ;offset of upper-left byte of image
+        mov     bx,DISPLAY_MEMORY_SEGMENT
+        mov     es,bx           ;ES:DI points to the byte at which the
+                                ; upper left of the image goes
+;
+; Get the width and height of the image.
+;
+        mov     cx,[si]         ;get the width
+        inc     si
+        inc     si
+        mov     bx,[si]      ;get the height
+        inc     si
+        inc     si
+        mov     dx,GC_INDEX
+        mov     al,BIT_MASK
+        out     dx,al           ;leave the GC Index register pointing
+        inc     dx              ; to the Bit Mask register
+RowLoop:
+
+        push    ax              ;preserve the left column&#146;s bit mask
+        push    cx              ;preserve the width
+        push    di              ;preserve the destination offset
+
+ColumnLoop:
+        mov     al,ah
+        out     dx,al           ;set the bit mask to draw this pixel
+        mov     al,es:[di]      ;load the latches
+        mov     al,[si]         ;get the next two chunky pixels
+        shr     al,1
+        shr     al,1
+        shr     al,1
+        shr     al,1            ;move the first pixel into the lsb
+        stosb                   ;draw the first pixel
+        ror     ah,1           ;move mask to next pixel position
+        jc      CheckMorePixels ;is next pixel in the adjacent byte?
+        dec     di              ;no
+
+CheckMorePixels:
+        dec     cx              ;see if there are any more pixels
+        jz      AdvanceToNextScanLine ; across in image
+        mov     al,ah
+        out     dx,al           ;set the bit mask to draw this pixel
+        mov     al,es:[di]      ;load the latches
+        lodsb                   ;get the same two chunky pixels again
+                          ; and advance pointer to the next
+                               ; two pixels
+        stosb                   ;draw the second of the two pixels
+        ror     ah,1            ;move mask to next pixel position
+        jc      CheckMorePixels2 ;is next pixel in the adjacent byte?
+        dec     di              ;no
+
+CheckMorePixels2:
+        loop    ColumnLoop      ;see if there are any more pixels
+                                ; across in the image
+        jmp     short CheckMoreScanLines
+
+AdvanceToNextScanLine:
+        inc     si              ;advance to the start of the next
+                                ; scan line in the image
+
+CheckMoreScanLines:
+        pop     di              ;get back the destination offset
+        pop     cx              ;get back the width
+        pop     ax              ;get back the left column&#146;s bit mask
+        add     di,SCREEN_WIDTH_IN_BYTES
+                                ;point to the start of the next scan
+                                ; line of the image
+        dec     bx              ;see if there are any more scan lines
+        jnz     RowLoop         ; in the image
+        ret
+DrawFromChunkyBitmap    endp
+Code    ends
+        end     Start
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="27-01.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="27-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

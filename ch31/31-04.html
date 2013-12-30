@@ -1,0 +1,82 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Higher 256-Color Resolution on the VGA</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=31//-->
+<!--PAGES=599-600//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="31-03.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="31-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>The interesting aspects of Listing 31.1 are three. First, the <B>Set320&#215;400Mode</B> subroutine selects 320&#215;400 256-color mode. This is accomplished by performing a mode 13H mode set followed by then putting the VGA into standard planar byte mode. <B>Set320&#215;400Mode</B> zeros display memory as well. It&#146;s necessary to clear display memory even after a mode 13H mode set because the mode 13H mode set clears only the 64K of display memory that can be accessed in that mode, leaving 192K of display memory untouched.</P>
+<P>The second interesting aspect of Listing 31.1 is the <B>WritePixel</B> subroutine, which draws a colored pixel at any <I>x,y</I> addressable location on the screen. Although it may not be obvious because I&#146;ve optimized the code a little, the process of drawing a pixel is remarkably simple. First, the pixel&#146;s display memory address is calculated as</P>
+<P><I>address</I>=(<I>y</I> * (SCREEN_WIDTH / 4)) + (<I>x</I> / 4)</P>
+<P>which might be more recognizable as:</P>
+<P><I>address</I>=((<I>y</I> * SCREEN_WIDTH) + <I>x</I>) / 4</P>
+<P>(There are 4 pixels at each display memory address in 320&#215;400 mode, hence the division by 4.) Then the pixel&#146;s plane is calculated as</P>
+<P><I>plane</I>=<I>x</I> and 3</P>
+<P>which is equivalent to:</P>
+<P><I>plane</I>=<I>x</I> modulo 4</P>
+<P>The pixel&#146;s color is then written to the addressed byte in the addressed plane. That&#146;s all there is to it!</P>
+<P>The third item of interest in Listing 31.1 is the <B>ReadPixel</B> subroutine. <B>ReadPixel</B> is virtually identical to <B>WritePixel</B>, save that in <B>ReadPixel</B> the Read Map register is programmed with a plane number, while <B>WritePixel</B> uses a plane <I>mask</I> to set the Map Mask register. Of course, that difference merely reflects a fundamental difference in the operation of the two registers. (If that&#146;s Greek to you, refer back to Chapters 23&#150;30 for a refresher on VGA programming.) <B>ReadPixel</B> isn&#146;t used in Listing 31.1, but I&#146;ve included it because, as I said above, the read and write pixel functions together can support a whole host of more complex graphics functions.</P>
+<P>How does 320&#215;400 256-color mode stack up as regards performance? As it turns out, the programming model of 320&#215;400 mode is actually pretty good for pixel drawing, pretty much on a par with the model of mode 13H. When you run Listing 31.1, you&#146;ll no doubt notice that the lines are drawn quite rapidly. (In fact, the drawing could be considerably faster still with a dedicated line-drawing subroutine, which would avoid the multiplication associated with each pixel in Listing 31.1.)</P>
+<P>In 320&#215;400 mode, the calculation of the memory address is not significantly slower than in mode 13H, and the calculation and selection of the target plane is quickly accomplished. As with mode 13H, 320&#215;400 mode benefits tremendously from the byte-per-pixel organization of 256-color mode, which eliminates the need for the time-consuming pixel-masking of the 16-color modes. Most important, byte-per-pixel modes never require read-modify-write operations (which can be extremely slow due to display memory wait states) in order to clip and draw pixels. To draw a pixel, you just store its color in display memory&#151;what could be simpler?</P>
+<P>More sophisticated operations than pixel drawing are less easy to accomplish in 320&#215;400 mode, but with a little ingenuity it is possible to implement a reasonably efficient version of just about any useful graphics function. A fast line draw for 320&#215;400 256-color mode would be simple (although not as fast as would be possible in mode 13H). Fast image copies could be implemented by copying one-quarter of the image to one plane, one-quarter to the next plane, and so on for all four planes, thereby eliminating the <B>OUT</B> per pixel that sequential processing requires. If you&#146;re really into performance, you could store your images with all the bytes for plane 0 grouped together, followed by all the bytes for plane 1, and so on. That would allow a single <B>REP MOVS</B> instruction to copy all the bytes for a given plane, with just four <B>REP MOVS</B> instructions copying the whole image. In a number of cases, in fact, 320&#215;400 256-color mode can actually be much faster than mode 13H, because the VGA&#146;s hardware can be used to draw four or even eight pixels with a single access; I&#146;ll return to the topic of high-performance programming in 256-color modes other than mode 13H (&#147;non-chain 4&#148; modes) in Chapter 47.</P>
+<P>It&#146;s all a bit complicated, but as I say, you should be able to design an adequately fast&#151;and often <I>very</I> fast&#151;version for 320&#215;400 mode of whatever graphics function you need. If you&#146;re not all that concerned with speed, <B>WritePixel</B> and <B>ReadPixel</B> should meet your needs.</P>
+<H3><A NAME="Heading7"></A><FONT COLOR="#000077">Two 256-Color Pages</FONT></H3>
+<P>Listing 31.2 demonstrates the two pages of 320&#215;400 256-color mode by drawing slanting color bars in page 0, then drawing color bars slanting the other way in page 1 and flipping to page 1 on the next key press. (Note that page 1 is accessed starting at offset 8000H in display memory, and is&#151;unsurprisingly&#151;displayed by setting the start address to 8000H.) Finally, Listing 31.2 draws vertical color bars in page 0 and flips back to page 0 when another key is pressed.
+</P>
+<P>The color bar routines don&#146;t use the <B>WritePixel</B> subroutine from Listing 31.1; they go straight to display memory instead for improved speed. As I mentioned above, better speed yet could be achieved by a color-bar algorithm that draws all the pixels in plane 0, then all the pixels in plane 1, and so on, thereby avoiding the overhead of constantly reprogramming the Map Mask register.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="31-03.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="31-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

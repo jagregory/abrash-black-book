@@ -1,0 +1,201 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Patient Coding, Faster Code</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=10//-->
+<!--PAGES=193-196//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="10-01.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="10-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>Not so nowadays, though. Computers love boring work; they&#146;re very patient and disciplined, and, besides, one human year = seven dog years = two zillion computer years. So when we&#146;re faced with a problem that has an obvious but exceedingly lengthy solution, we&#146;re apt to say, &#147;Ah, let the computer do that, it&#146;s fast,&#148; and go back to making paper airplanes. Unfortunately, brute-force solutions tend to be slow even when performed by modern-day microcomputers, which are capable of several MIPS except when I&#146;m late for an appointment and want to finish a compile and run just one more test before I leave, in which case the crystal in my computer is apparently designed to automatically revert to 1 Hz.)
+</P>
+<P>The solution that I instantly came up with to finding the GCD is about as brute- force as you can get: Divide both the larger integer (iL) and the smaller integer (iS) by every integer equal to or less than the smaller integer, until a number is found that divides both evenly, as shown in Figure 10.1. This works, but it&#146;s a lousy solution, requiring as many as iS*2 divisions; <I>very</I> expensive, especially for large values of iS. For example, finding the GCD of 30,001 and 30,002 would require 60,002 divisions, which alone, disregarding tests and branches, would take about 2 seconds on an 8088, and more than 50 milliseconds even on a 25 MHz 486&#151;a <I>very</I> long time in computer years, and not insignificant in human years either.</P>
+<P>Listing 10.1 is an implementation of the brute-force approach to GCD calculation. Table 10.1 shows how long it takes this approach to find the GCD for several integer pairs. As expected, performance is extremely poor when iS is large.</P>
+<P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/10-01.jpg',411,233 )"> --><IMG SRC="images/10-01.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/10-01.jpg',411,233)"> --><FONT COLOR="#000077"><B>Figure 10.1</B></FONT></A>&nbsp;&nbsp;<I>Using a brute-force algorithm to find a GCD.</I>
+</P>
+<TABLE WIDTH="100%">
+<TR>
+<TH COLSPAN="6"><HR>
+<TR>
+<TH VALIGN="TOP" ALIGN="LEFT">
+<TH VALIGN="TOP" ALIGN="LEFT" COLSPAN="5">Integer pairs for which to find GCD
+<TR>
+<TH VALIGN="TOP" ALIGN="LEFT" WIDTH="35%">
+<TH VALIGN="TOP" ALIGN="LEFT" WIDTH="13%">90 & 27
+<TH VALIGN="TOP" ALIGN="LEFT" WIDTH="13%">42 & 998
+<TH VALIGN="TOP" ALIGN="LEFT" WIDTH="13%">453 & 121
+<TH VALIGN="TOP" ALIGN="LEFT" WIDTH="13%">27432 & 165
+<TH VALIGN="TOP" ALIGN="LEFT" WIDTH="13%">27432 & 17550
+<TR>
+<TH COLSPAN="6"><HR>
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT"><B>Listing 10.1</B><BR>(Brute force)
+<TD VALIGN="TOP" ALIGN="LEFT">60&#181;s<BR>(100%)
+<TD VALIGN="TOP" ALIGN="LEFT">110&#181;s<BR>(100%)
+<TD VALIGN="TOP" ALIGN="LEFT">311ms<BR>(100%)
+<TD VALIGN="TOP" ALIGN="LEFT">426&#181;s<BR>(100%)
+<TD VALIGN="TOP" ALIGN="LEFT">43580&#181;s<BR>(100%)
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT"><B>Listing 10.2</B><BR>(Subtraction)
+<TD VALIGN="TOP" ALIGN="LEFT">25<BR>(42%)
+<TD VALIGN="TOP" ALIGN="LEFT">72<BR>(65%)
+<TD VALIGN="TOP" ALIGN="LEFT">67<BR>(22%)
+<TD VALIGN="TOP" ALIGN="LEFT">280<BR>(66%)
+<TD VALIGN="TOP" ALIGN="LEFT">72<BR>(0.16%)
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT"><B>Listing 10.3</B><BR>(Division: code recursive<BR>Euclid&#146;s algorithm)
+<TD VALIGN="TOP" ALIGN="LEFT">20<BR>(33%)
+<TD VALIGN="TOP" ALIGN="LEFT">33<BR>(30%)
+<TD VALIGN="TOP" ALIGN="LEFT">48<BR>(15%)
+<TD VALIGN="TOP" ALIGN="LEFT">32<BR>(8%)
+<TD VALIGN="TOP" ALIGN="LEFT">53<BR>(0.12%)
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT"><B>Listing 10.4</B><BR>(C version of data recursive Euclid&#146;s algorithm; normal optimization)
+<TD VALIGN="TOP" ALIGN="LEFT">12<BR>(20%)
+<TD VALIGN="TOP" ALIGN="LEFT">17<BR>(15%)
+<TD VALIGN="TOP" ALIGN="LEFT">25<BR>(8%)
+<TD VALIGN="TOP" ALIGN="LEFT">16<BR>(4%)
+<TD VALIGN="TOP" ALIGN="LEFT">26<BR>(0.06%)
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT"><B>Listing 10.4</B><BR>(/Ox = maximumoptimization)
+<TD VALIGN="TOP" ALIGN="LEFT">12<BR>(20%)
+<TD VALIGN="TOP" ALIGN="LEFT">16<BR>(15)
+<TD VALIGN="TOP" ALIGN="LEFT">20<BR>(6%)
+<TD VALIGN="TOP" ALIGN="LEFT">15<BR>(4%)
+<TD VALIGN="TOP" ALIGN="LEFT">23<BR>(0.05%)
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT"><B>Listing 10.5</B><BR>(Assembly version of data recursive Euclid&#146;s algorithm)
+<TD VALIGN="TOP" ALIGN="LEFT">10<BR>(17%)
+<TD VALIGN="TOP" ALIGN="LEFT">10<BR>(9%)
+<TD VALIGN="TOP" ALIGN="LEFT">15<BR>(5%)
+<TD VALIGN="TOP" ALIGN="LEFT">10<BR>(2%)
+<TD VALIGN="TOP" ALIGN="LEFT">17<BR>(0.04%)
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT" COLSPAN="6"><SMALL><B>Note:</B> Performance of Listings 10.1 through 10.5 in finding the greatest common divisors of various pairs of integers. Times are in microseconds. Percentages represent execution time as a percentage of the execution time of Listing 10.1 for the same integer pair. Listings 10.1-10.4 were compiled with Microsoft C /C<SMALL>&#43;&#43;</SMALL> except as noted, the default optimization was used. All times measured with the Zen timer (from Chapter 3) on a 20 MHz cached 386.</SMALL>
+<TR>
+<TH COLSPAN="6"><HR>
+<TR>
+<TH CAPTION VALIGN="TOP" ALIGN="LEFT" COLSPAN="6">Table 10.1 Performance of GCD algorithm implementations.
+<TR>
+<TH COLSPAN="6"><HR>
+</TABLE>
+<P><B>LISTING 10.1 L10-1.C</B></P>
+<!-- CODE //-->
+<PRE>
+/* Finds and returns the greatest common divisor of two positive
+   integers. Works by trying every integral divisor between the
+   smaller of the two integers and 1, until a divisor that divides
+   both integers evenly is found. All C code tested with Microsoft
+   and Borland compilers.*/
+
+unsigned int gcd(unsigned int int1, unsigned int int2) {
+   unsigned int temp, trial_divisor;
+   /* Swap if necessary to make sure that int1 &gt;= int2 */
+   if (int1 &lt; int2) {
+      temp = int1;
+      int1 = int2;
+      int2 = temp;
+   }
+   /* Now just try every divisor from int2 on down, until a common
+      divisor is found. This can never be an infinite loop because
+      1 divides everything evenly */
+   for (trial_divisor = int2; ((int1 % trial_divisor) != 0) ||
+         ((int2 % trial_divisor) != 0); trial_divisor&#151;)
+      ;
+   return(trial_divisor);
+}
+</PRE>
+<!-- END CODE //-->
+<H4 ALIGN="LEFT"><A NAME="Heading5"></A><FONT COLOR="#000077">Wasted Breakthroughs</FONT></H4>
+<P>Sedgewick&#146;s first solution to the GCD problem was pretty much the one I came up with. He then pointed out that the GCD of iL and iS is the same as the GCD of iL-iS and iS. This was obvious (once Sedgewick pointed it out); by the very nature of division, any number that divides iL evenly nL times and iS evenly nS times must divide iL-iS evenly nL-nS times. Given that insight, I immediately designed a new, faster approach, shown in Listing 10.2.
+</P>
+<P><B>LISTING 10.2 L10-2.C</B></P>
+<!-- CODE //-->
+<PRE>
+/* Finds and returns the greatest common divisor of two positive
+   integers. Works by subtracting the smaller integer from the
+   larger integer until either the values match (in which case
+   that&#146;s the gcd), or the larger integer becomes the smaller of
+   the two, in which case the two integers swap roles and the
+   subtraction process continues. */
+
+unsigned int gcd(unsigned int int1, unsigned int int2) {
+   unsigned int temp;
+   /* If the two integers are the same, that&#146;s the gcd and we&#146;re
+      done */
+   if (int1 == int2) {
+      return(int1);
+   }
+   /* Swap if necessary to make sure that int1 &gt;= int2 */
+   if (int1 &lt; int2) {
+      temp = int1;
+      int1 = int2;
+      int2 = temp;
+   }
+
+   /* Subtract int2 from int1 until int1 is no longer the larger of
+      the two */
+   do {
+      int1 -= int2;
+   } while (int1 &gt; int2);
+   /* Now recursively call this function to continue the process */
+   return(gcd(int1, int2));
+}
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="10-01.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="10-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

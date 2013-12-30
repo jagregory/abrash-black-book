@@ -1,0 +1,146 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Pushing the 286 and 386</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=11//-->
+<!--PAGES=212-216//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="11-02.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="11-04.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>In short, a close relative of our old friend the 8-bit bus cycle-eater&#151;the system memory wait state cycle-eater&#151;haunts us still on all but zero-wait-state 286 and 386 computers, and that means that the prefetch queue cycle-eater is alive and well. (The system memory wait state cycle-eater isn&#146;t really a new cycle-eater, but rather a variant of the general wait state cycle-eater, of which the display adapter cycle-eater is yet another variant.) While the 286 in the AT can fetch instructions much faster than can the 8088 in the PC, it can execute those instructions faster still.
+</P>
+<P>The picture is less clear in the 386 world since there are so many different memory architectures, but similar problems can occur in any computer built around a 286 or 386. The prefetch queue cycle-eater is even a factor&#151;albeit a lesser one&#151;on zero-wait-state machines, both because branching empties the queue and because some instructions can outrun even zero&#151;5 cycles longer than the official execution time.)</P>
+<P>To summarize:</P>
+<DL>
+<DD><B>&#149;</B>&nbsp;&nbsp;Memory-accessing instructions don&#146;t run at their official speeds on non-zero-wait-state 286/386 computers.
+<DD><B>&#149;</B>&nbsp;&nbsp;The prefetch queue cycle-eater reduces performance on 286/386 computers, particularly when non-zero-wait-state memory is used.
+<DD><B>&#149;</B>&nbsp;&nbsp;Branches often execute at less than their rated speeds on the 286 and 386 since the prefetch queue is emptied.
+<DD><B>&#149;</B>&nbsp;&nbsp;The extent to which the prefetch queue and wait states affect performance varies from one 286/386 computer to another, making precise optimization impossible.
+</DL>
+<P>What&#146;s to be learned from all this? Several things:
+</P>
+<DL>
+<DD><B>&#149;</B>&nbsp;&nbsp;Keep your instructions short.
+<DD><B>&#149;</B>&nbsp;&nbsp;Keep it in the registers; avoid memory, since memory generally can&#146;t keep up with the processor.
+<DD><B>&#149;</B>&nbsp;&nbsp;Don&#146;t jump.
+</DL>
+<P>Of course, those are exactly the rules that apply to 8088 optimization as well. Isn&#146;t it convenient that the same general rules apply across the board?
+</P>
+<H4 ALIGN="CENTER"><A NAME="Heading7"></A><FONT COLOR="#000077">Data Alignment</FONT></H4>
+<P>Thanks to its 16-bit bus, the 286 can access word-sized memory variables just as fast as byte-sized variables. There&#146;s a catch, however: That&#146;s only true for word-sized variables that start at even addresses. When the 286 is asked to perform a word-sized access starting at an odd address, it actually performs two separate accesses, each of which fetches 1 byte, just as the 8088 does for all word-sized accesses.
+</P>
+<P>Figure 11.1 illustrates this phenomenon. The conversion of word-sized accesses to odd addresses into double byte-sized accesses is transparent to memory-accessing instructions; all any instruction knows is that the requested word has been accessed, no matter whether 1 word-sized access or 2 byte-sized accesses were required to accomplish it.</P>
+<P>The penalty for performing a word-sized access starting at an odd address is easy to calculate: Two accesses take twice as long as one access.</P>
+<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP" ALIGN="LEFT"><IMG SRC="images/11-02i.jpg"><TD WIDTH="95%" ALIGN="LEFT" VALIGN="TOP"><SMALL><I>In other words, the effective capacity of the 286&#146;s external data bus is </I><I>halved</I> <I>when a word-sized access to an odd address is performed.</I></SMALL>
+</TABLE>
+<P>That, in a nutshell, is the data alignment cycle-eater, the one new cycle-eater of the 286 and 386. (The data alignment cycle-eater is a close relative of the 8088&#146;s 8-bit bus cycle-eater, but since it behaves differently&#151;occurring only at odd addresses&#151;and is avoided with a different workaround, we&#146;ll consider it to be a new cycle-eater.)
+</P>
+<P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/11-01.jpg',409,328 )"> --><IMG SRC="images/11-01.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/11-01.jpg',409,328)"> --><FONT COLOR="#000077"><B>Figure 11.1</B></FONT></A>&nbsp;&nbsp;<I>The data alignment cycle-eater.</I>
+</P>
+<P>The way to deal with the data alignment cycle-eater is straightforward: <I>Don&#146;t perform word-sized accesses to odd addresses on the 286 if you can help it</I>. The easiest way to avoid the data alignment cycle-eater is to place the directive <B>EVEN</B> before each of your word-sized variables. <B>EVEN</B> forces the offset of the next byte assembled to be even by inserting a <B>NOP</B> if the current offset is odd; consequently, you can ensure that any word-sized variable can be accessed efficiently by the 286 simply by preceding it with <B>EVEN</B>.</P>
+<P>Listing 11.2, which accesses memory a word at a time with each word starting at an odd address, runs on a 10 MHz AT clone in 1.27 ms per repetition of <B>MOVSW</B>, or 0.64 ms per word-sized memory access. That&#146;s 6-plus cycles per word-sized access, which breaks down to two separate memory accesses&#151;3 cycles to access the high byte of each word and 3 cycles to access the low byte of each word, the inevitable result of non-word-aligned word-sized memory accesses&#151;plus a bit extra for DRAM refresh.</P>
+<P><B>LISTING 11.2 L11-2.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+;
+; *** Listing 11.2 ***
+;
+; Measures the performance of accesses to word-sized
+; variables that start at odd addresses (are not
+; word-aligned).
+;
+Skip:
+        push    ds
+        pop     es
+        mov     si,1    ;source and destination are the same
+        mov     di,si   ; and both are not word-aligned
+        mov     cx,1000 ;move 1000 words
+        cld
+        call    ZTimerOn
+        rep     movsw
+        call    ZTimerOff
+</PRE>
+<!-- END CODE //-->
+<P>On the other hand, Listing 11.3, which is exactly the same as Listing 11.2 save that the memory accesses are word-aligned (start at even addresses), runs in 0.64 ms per repetition of <B>MOVSW</B>, or 0.32 &#181;s per word-sized memory access. That&#146;s 3 cycles per word-sized access&#151;exactly twice as fast as the non-word-aligned accesses of Listing 11.2, just as we predicted.</P>
+<P><B>LISTING 11.3 L11-3.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+;
+; *** Listing 11.3 ***
+;
+; Measures the performance of accesses to word-sized
+; variables that start at even addresses (are word-aligned).
+;
+Skip:
+        push    ds
+        pop     es
+        sub     si,si   ;source and destination are the same
+        mov     di,si   ; and both are word-aligned
+        mov     cx,1000 ;move 1000 words
+        cld
+        call    ZTimerOn
+        rep     movsw
+        call    ZTimerOff
+</PRE>
+<!-- END CODE //-->
+<P>The data alignment cycle-eater has intriguing implications for speeding up 286/386 code. The expenditure of a little care and a few bytes to make sure that word-sized variables and memory blocks are word-aligned can literally double the performance of certain code running on the 286. Even if it doesn&#146;t double performance, word alignment usually helps and never hurts.
+</P>
+<H4 ALIGN="LEFT"><A NAME="Heading8"></A><FONT COLOR="#000077">Code Alignment</FONT></H4>
+<P>Lack of word alignment can also interfere with instruction fetching on the 286, although not to the extent that it interferes with access to word-sized memory variables. The 286 prefetches instructions a word at a time; even if a given instruction doesn&#146;t begin at an even address, the 286 simply fetches the first byte of that instruction at the same time that it fetches the last byte of the previous instruction, as shown in Figure 11.2, then separates the bytes internally. That means that in most cases, instructions run just as fast whether they&#146;re word-aligned or not.
+</P>
+<P>There is, however, a non-word-alignment penalty on <I>branches</I> to odd addresses. On a branch to an odd address, the 286 is only able to fetch 1 useful byte with the first instruction fetch following the branch, as shown in Figure 11.3. In other words, lack of word alignment of the target instruction for any branch effectively cuts the instruction-fetching power of the 286 in half for the first instruction fetch after that branch. While that may not sound like much, you&#146;d be surprised at what it can do to tight loops; in fact, a brief story is in order.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="11-02.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="11-04.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

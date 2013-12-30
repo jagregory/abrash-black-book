@@ -1,0 +1,184 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Saving Screens and Other VGA Mysteries</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=29//-->
+<!--PAGES=545-547//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="29-01.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="29-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P><B>LISTING 29.2 L29-2.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+; Program to restore a mode 10h EGA graphics screen from
+; the file SNAPSHOT.SCR.
+;
+VGA_SEGMENT                 equ   0a000h
+SC_INDEX                    equ   3c4h            ;Sequence Controller Index register
+MAP_MASK                    equ   2               ;Map Mask register index in SC
+DISPLAYED_SCREEN_SIZE       equ  (640/8)*350      ;# of displayed bytes per plane in a
+                                                  ; hi-res graphics screen
+;
+stack      segment para stack &#145;STACK&#146;
+                 db              512 dup (?)
+stack      ends
+;
+Data       segment     word &#145;DATA&#146;
+Filename         db          &#145;SNAPSHOT.SCR&#146;,0   ;name of file we&#146;re restoring from
+ErrMsg1          db          &#145;*** Couldn&#146;&#145;t open SNAPSHOT.SCR ***&#146;,0dh,0ah,&#145;$&#146;
+ErrMsg2          db          &#145;*** Error reading from SNAPSHOT.SCR ***&#146;,0dh,0ah,&#145;$&#146;
+WaitKeyMsg       db          0dh, 0ah, &#145;Done. Press any key to end...&#146;,0dh,0ah,&#145;$&#146;
+Handle           dw          ?                  ;handle of file we&#146;re restoring from
+Plane            db          ?                  ;plane being written
+Data       ends
+;
+Code          segment
+              assume   cs:Code, ds:Data
+Start         proc     near
+              mov      ax,Data
+              mov      ds,ax
+;
+; Go to hi-res graphics mode.
+;
+              mov      ax,10h          ;AH = 0 means mode set, AL = 10h selects
+                                       ; hi-res graphics mode
+              int      10h             ;BIOS video interrupt
+;
+; Open SNAPSHOT.SCR.
+;
+              mov      ah,3dh           ;DOS open file function
+              mov      dx,offset Filename
+              sub      al,al            ;open for reading
+              int      21h
+              mov      [Handle],ax      ;save the handle
+              jnc      RestoreTheScreen ;we&#146;re ready to restore if no error
+              mov      ah,9             ;DOS print string function
+              mov      dx,offset ErrMsg1
+              int      21h              ;notify of the error
+              jmp      short Done;and done
+;
+; Loop through the 4 planes, making each writable in turn and
+; reading it from disk. Note that all 4 planes are writable at
+; A000:0000; the Map Mask register selects which planes are readable
+; at any one time. We only make one plane readable at a time.
+;
+RestoreTheScreen:
+              mov      [Plane],0                ;start with plane 0
+RestoreLoop:
+              mov      dx,SC_INDEX
+              mov      al,MAP_MASK              ;set SC Index to Map Mask register
+outdx,al
+              inc      dx
+              mov      cl,[Plane]               ;get the # of the plane we want
+; to restore
+              mov      al,1
+              shl      al,cl                    ;set the bit enabling writes to
+                                                ; only the one desired plane
+              out      dx,al                    ;set to read from desired plane
+              mov      ah,3fh                   ;DOS read from file function
+              mov      bx,[Handle]
+              mov      cx,DISPLAYED_SCREEN_SIZE ;# of bytes to read
+              sub      dx,dx                    ;start loading bytes at A000:0000
+              push     ds
+              mov      si,VGA_SEGMENT
+              mov      ds,si
+              int      21h                      ;read the displayed portion of this plane
+              pop      ds
+              jc       ReadError
+              cmp      ax,DISPLAYED_SCREEN_SIZE ;did all bytes get read?
+              jz       RestoreLoopBottom
+ReadError:
+              mov      ah,9                     ;DOS print string function
+              mov      dx,offset ErrMsg2
+              int      21h                      ;notify about the error
+              jmp      short DoClose            ;and done
+RestoreLoopBottom:
+              mov      al,[Plane]
+              inc      ax                       ;point to the next plane
+              mov      [Plane],al
+              cmp      al,3                     ;have we done all planes?
+              jbe      RestoreLoop              ;no, so do the next plane
+;
+; Close SNAPSHOT.SCR.
+;
+DoClose:
+              mov      ah,3eh                   ;DOS close file function
+              mov      bx,[Handle]
+              int      21h
+;
+; Wait for a keypress.
+;
+              mov      ah,8                     ;DOS input without echo function
+              int      21h
+;
+; Restore text mode.
+;
+              mov      ax,3
+              int      10h
+;
+; Done.
+;
+Done:
+              mov      ah,4ch                   ;DOS terminate function
+              int      21h
+Start         endp
+Code          ends
+              end      Start
+</PRE>
+<!-- END CODE //-->
+<P>If you compare Listings 29.1 and 29.2, you will see that the Map Mask register setting used to load a given plane does not match the Read Map register setting used to read that plane. This is so because while only one plane can ever be read at a time, anywhere from zero to four planes can be written to at once; consequently, Read Map register settings are plane selections from 0 to 3, while Map Mask register settings are plane <I>masks</I> from 0 to 15, where a bit 0 setting of 1 enables writes to plane 0, a bit 1 setting of 1 enables writes to plane 1, and so on. Again, Chapter 28 provides a detailed explanation of the differences between the Read Map and Map Mask registers.</P>
+<P>Screen saving and restoring is pretty simple, eh? There are a few caveats, of course, but nothing serious. First, the adapter&#146;s registers must be programmed properly in order for screen saving and restoring to work. For screen saving, you must be in read mode 0; if you&#146;re in color compare mode, there&#146;s no telling what bit pattern you&#146;ll save, but it certainly won&#146;t be the desired screen image. For screen restoring, you must be in write mode 0, with the Bit Mask register set to 0FFH and Data Rotate register set to 0 (no data rotation and the logical function set to pass the data through unchanged).</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="29-01.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="29-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

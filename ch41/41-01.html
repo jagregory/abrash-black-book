@@ -1,0 +1,124 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Those Way-Down Polygon Nomenclature Blues</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=41//-->
+<!--PAGES=757-761//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="../ch40/40-05.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="41-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 41<BR>Those Way-Down Polygon Nomenclature Blues
+</FONT></H2>
+<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Names Do Matter when You Conceptualize a Data Structure</FONT></H3>
+<P>After I wrote the columns on polygons in <I>Dr. Dobb&#146;s Journal</I> that became Chapters 38&#150;40, long-time reader Bill Huber wrote to take me to task&#151;and a well-deserved kick in the fanny it was, I might add&#151;for my use of non-standard polygon terminology in those columns. Unix&#146;s X-Window System (XWS) defines three categories of polygons: complex, nonconvex, and convex. These three categories, each a specialized subset of the preceding category, not-so-coincidentally map quite nicely to three increasingly fast polygon filling techniques. Therefore, I used the XWS names to describe the sorts of polygons that can be drawn with each of the polygon filling techniques.</P>
+<P>The problem is that those names don&#146;t accurately describe all the sorts of polygons that the techniques are capable of drawing. Convex polygons are those for which no interior angle is greater than 180 degrees. The &#147;convex&#148; drawing approach described in the previous few chapters actually handles a number of polygons that are not convex; in fact, it can draw any polygon through which no horizontal line can be drawn that intersects the boundary more than twice. (In other words, the boundary reverses the Y direction exactly twice, disregarding polygons that have degenerated into horizontal lines, which I&#146;m going to ignore.)</P>
+<P>Bill was kind enough to send me the pages out of <I>Computational Geometry, An Introduction</I> (Springer-Verlag, 1988) that describe the correct terminology; such polygons are, in fact, &#147;monotone with respect to a vertical line&#148; (which unfortunately makes a rather long <B>#define</B> variable). Actually, to be a tad more precise, I&#146;d call them &#147;monotone with respect to a vertical line and simple,&#148; where &#147;simple&#148; means &#147;not self-intersecting.&#148; Similarly, the polygon type I called &#147;nonconvex&#148; is actually &#147;simple,&#148; and I suppose what I called &#147;complex&#148; should be referred to as &#147;nonsimple,&#148; or maybe just &#147;none of the above.&#148;</P>
+<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/41-01i.jpg"><TD WIDTH="95%"><SMALL><I>This may seem like nit-picking, but actually, it isn&#146;t; what it&#146;s really about is the tremendous importance of having a shared language. In one of his books, Richard Feynman describes having developed his own mathematical framework, complete with his own notation and terminology, in high school. When he got to college and started working with other people who were at his level, he suddenly understood that people can&#146;t share ideas effectively unless they speak the same language; otherwise, they waste a great deal of time on misunderstandings and explanation.</I></SMALL>
+</TABLE>
+<P>Or, as Bill Huber put it, &#147;You are free to adopt your own terminology when it suits your purposes well. But you risk losing or confusing those who could be among your most astute readers&#151;those who already have been trained in the same or a related field.&#148; Ditto. Likewise. <I>D&#146;accord</I>. And <I>mea culpa</I> ; I shall endeavor to watch my language in the future.</P>
+<H3><A NAME="Heading3"></A><FONT COLOR="#000077">Nomenclature in Action</FONT></H3>
+<P>Just to show you how much difference proper description and interchange of ideas can make, consider the case of identifying convex polygons. When I was writing about polygons in my column in <I>DDJ</I>, a nonfunctional method for identifying such polygons&#151;checking for exactly two X direction changes and two Y direction changes around the perimeter of the polygon&#151;crept into the column by accident. That method, as I noted in a later column, does not work. (That&#146;s why you won&#146;t find it in this book.) Still, a fast method of checking for convex polygons would be highly desirable, because such polygons can be drawn with the fast code from Chapter 39, rather than the relatively slow, general-purpose code from Chapter 40.</P>
+<P>Now consider Bill&#146;s point that we&#146;re not limited to drawing convex polygons in our &#147;convex fill&#148; code, but can actually handle any simple polygon that&#146;s monotone with respect to a vertical line. Additionally, consider Anton Treuenfels&#146;s point, made back in Chapter 40, that life gets simpler if we stop worrying about which edge of a polygon is the left edge and which is the right, and instead just scan out each raster line starting at whichever edge is left-most. Now, what do we have?</P>
+<P>What we have is an approach passed along by Jim Kent, of Autodesk Animator fame. If we modify the low-level code to check which edge is left-most on each scan line and start drawing there, as just described, then we can handle any polygon that&#146;s monotone with respect to a vertical line regardless of whether the edges cross. (I&#146;ll call this &#147;monotone-vertical&#148; from now on; if anyone wants to correct that terminology, jump right in.) In other words, we can then handle nonsimple polygons that are monotone-vertical; self-intersection is no longer a problem. We just scan around the polygon&#146;s perimeter looking for exactly two direction reversals along the Y axis only, and if that proves to be the case, we can handle the polygon at high speed. Figure 41.1 shows polygons that can be drawn by a monotone-vertical capable filler; Figure 41.2 shows some that cannot. Listing 41.1 shows code to test whether a polygon is appropriately monotone.</P>
+<P><B>LISTING 41.1 L41-1.C</B></P>
+<!-- CODE //-->
+<PRE>
+/* Returns 1 if polygon described by passed-in vertex list is monotone with
+respect to a vertical line, 0 otherwise. Doesn&#146;t matter if polygon is simple 
+(non-self-intersecting) or not. Tested with Borland C&#43;&#43; in small model. */
+
+#include &#147;polygon.h&#148;
+
+#define SIGNUM(a) ((a&gt;0)?1:((a&lt;0)?-1:0))
+
+int PolygonIsMonotoneVertical(struct PointListHeader * VertexList)
+{
+   int i, Length, DeltaYSign, PreviousDeltaYSign;
+   int NumYReversals = 0;
+   struct Point *VertexPtr = VertexList-&gt;PointPtr;
+
+   /* Three or fewer points can&#146;t make a non-vertical-monotone polygon */
+   if ((Length=VertexList-&gt;Length) &lt; 4) return(1);
+
+   /* Scan to the first non-horizontal edge */
+   PreviousDeltaYSign = SIGNUM(VertexPtr[Length-1].Y - VertexPtr[0].Y);
+   i = 0;
+   while ((PreviousDeltaYSign == 0) && (i &lt; (Length-1))) {
+      PreviousDeltaYSign = SIGNUM(VertexPtr[i].Y - VertexPtr[i&#43;1].Y);
+      i&#43;&#43;;
+   }
+
+   if (i == (Length-1)) return(1);  /* polygon is a flat line */
+
+   /* Now count Y reversals. Might miss one reversal, at the last vertex, but 
+      because reversal counts must be even, being off by one isn&#146;t a problem */
+   do {
+      if ((DeltaYSign = SIGNUM(VertexPtr[i].Y - VertexPtr[i&#43;1].Y))
+            != 0) {
+         if (DeltaYSign != PreviousDeltaYSign) {
+            /* Switched Y direction; not vertical-monotone if
+               reversed Y direction as many as three times */
+            if (&#43;&#43;NumYReversals &gt; 2) return(0);
+            PreviousDeltaYSign = DeltaYSign;
+         }
+      }
+   } while (i&#43;&#43; &lt; (Length-1));
+   return(1);  /* it&#146;s a vertical-monotone polygon */
+}
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="../ch40/40-05.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="41-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

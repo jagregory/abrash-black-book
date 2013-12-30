@@ -1,0 +1,131 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: The Game of Life</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=17//-->
+<!--PAGES=329-331//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="17-02.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="17-04.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H3><A NAME="Heading5"></A><FONT COLOR="#000077">Where Does the Time Go?</FONT></H3>
+<P>How slow is Listing 17.1? Table 17.1 shows that even on a 486, Listing 17.1 does fewer than three 96&#215;96 generations per second. (The times in Table 17.1 are for 1,000 generations of a 96&#215;96 cell map with <B>seed=1, LIMIT_18_HZ=0, WRAP_EDGES=1,</B> and <B>magnifier=2,</B> running on a 33 MHz 486.) Since my target is 18 generations per second with a 200&#215;200 cellmap on a 20 MHz 386, Listing 17.1 is too slow by a rather wide margin&#151;75 times too slow, in fact. You might say we have a little optimizing to do.</P>
+<P>The first rule of optimization is: Only optimize where it matters. Use a profiler, or risk making a fool of yourself. Consider Listings 17.1 and 17.2. Where do you think the potential for significant speed-up lies? I&#146;ll tell you one place where I thought there was considerable potential&#151;in <B>draw_pixel()</B>. As a programmer of high-speed graphics, I figured any drawing function that was not only written in C/C<SMALL>&#43;&#43;</SMALL> but also recalculated the target address from scratch for each pixel would be among the first optimization targets. I also expected to get major gains out of going to a Ping-Pong arrangement so that I didn&#146;t have to copy the new cellmap back to <B>current_map</B> after calculating the next generation.</P>
+<TABLE WIDTH="100%"><TR>
+<TD COLSPAN="4"><HR>
+<TR>
+<TH VALIGN="TOP" ALIGN="LEFT" WIDTH="40%">
+<TH VALIGN="TOP" ALIGN="LEFT" WIDTH="20%">Listing 17.1
+<TH VALIGN="TOP" ALIGN="LEFT" WIDTH="20%">Listing 17.3
+<TH VALIGN="TOP" ALIGN="LEFT" WIDTH="20%">Listing 17.4
+<TR>
+<TD COLSPAN="4"><HR>
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT"><B>Total execution time</B>
+<TD VALIGN="TOP" ALIGN="LEFT">340 secs
+<TD VALIGN="TOP" ALIGN="LEFT">94 secs
+<TD VALIGN="TOP" ALIGN="LEFT">45 secs
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT"><B>cell_state()</B>
+<TD VALIGN="TOP" ALIGN="LEFT">275
+<TD VALIGN="TOP" ALIGN="LEFT">21
+<TD VALIGN="TOP" ALIGN="LEFT">&#151;
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT"><B>next_generation()</B>
+<TD VALIGN="TOP" ALIGN="LEFT">60
+<TD VALIGN="TOP" ALIGN="LEFT">14
+<TD VALIGN="TOP" ALIGN="LEFT">40
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT"><B>count_neighbors()</B>
+<TD VALIGN="TOP" ALIGN="LEFT">&#151;
+<TD VALIGN="TOP" ALIGN="LEFT">54
+<TD VALIGN="TOP" ALIGN="LEFT">&#151;
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT"><B>draw_pixel()</B>
+<TD VALIGN="TOP" ALIGN="LEFT">2
+<TD VALIGN="TOP" ALIGN="LEFT">2
+<TD VALIGN="TOP" ALIGN="LEFT">2
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT"><B>set_cell()</B>
+<TD VALIGN="TOP" ALIGN="LEFT">&lt1
+<TD VALIGN="TOP" ALIGN="LEFT">&lt1
+<TD VALIGN="TOP" ALIGN="LEFT">&lt1
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT"><B>clear_cell()</B>
+<TD VALIGN="TOP" ALIGN="LEFT">&lt1
+<TD VALIGN="TOP" ALIGN="LEFT">&lt1
+<TD VALIGN="TOP" ALIGN="LEFT">&lt1
+<TR>
+<TD VALIGN="TOP" ALIGN="LEFT"><B>copy_cells()</B>
+<TD VALIGN="TOP" ALIGN="LEFT">&lt1
+<TD VALIGN="TOP" ALIGN="LEFT">&lt1
+<TD VALIGN="TOP" ALIGN="LEFT">&lt1
+<TR>
+<TD COLSPAN="4"><HR>
+<TR>
+<TH COLSPAN="4" CAPTION VALIGN="TOP" ALIGN="LEFT">Table 17.1 Execution times for the game of life.
+<TR>
+<TD COLSPAN="4"><HR>
+</TABLE>
+<P>I was wrong. Wrong, wrong, wrong. (But at least I was smart enough to use a profiler before actually writing any new code.) Table 17.1 shows where the time actually goes in Listings 17.1 and 17.2. As you can see, the time taken by <B>draw_pixel(),</B> <B>copy_cells(),</B> and <I>everything</I> other than calculating the next generation is nothing more than noise. We could optimize these routines right down to executing <I>instantaneously,</I> and you know what? It wouldn&#146;t make the slightest perceptible difference in how fast the program runs. Given the present state of our Game of Life implementation, the only areas worth looking at for possible optimizations are <B>cell_state()</B> and <B>next_generation().</B></P>
+<TABLE WIDTH="100%"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/17-01i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><I><SMALL>It&#146;s worth noting, though, that one reason <B>draw_pixel()</B> doesn&#146;t much affect performance is that in Listing 17.1, we&#146;re smart enough to redraw pixels only when their states change, rather than during every generation. Detecting and eliminating redundant operations is part of knowing the nature of your data, and is a potent optimization technique that will be extremely useful a little later in this chapter.</SMALL></I>
+</TABLE>
+<H3><A NAME="Heading6"></A><FONT COLOR="#000077">The Hazards and Advantages of Abstraction</FONT></H3>
+<P>How can we speed up <B>cell_state()</B> and <B>next_generation()</B>? I&#146;ll tell you how <I>not</I> to do it: By writing those member functions in assembly. It&#146;s tempting to say that <B>cell_state()</B> is taking all the time, so we need to speed it up with assembly, but what we really need to do is figure out <I>why</I> <B>cell_state()</B> is taking all the time, then address that aspect of the program directly.</P>
+<P>Once you know where you need to optimize, the one word to keep in mind isn&#146;t assembly, it&#146;s...plastics. No, actually, it&#146;s <I>abstraction.</I> Well-written C and especially C<SMALL>&#43;&#43;</SMALL> programs are highly abstract models. For example, Listing 17.1 essentially creates a new programming language in which cells are tangible things, with built-in manipulation instructions. Given the cellmap member functions, you don&#146;t even need to know the cell storage format! This is a wonderful thing, in general; it saves programming time and bugs, and frees you to work on the application&#146;s needs, rather than implementation details.</P>
+<TABLE WIDTH="100%"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/17-02i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><I><SMALL>However, if you never look beneath the surface of the abstract model at the implementation details, you have no idea of what the true performance cost of various operations</I><I> is, and, without that, you have largely surrendered control over performance.</SMALL></I>
+</TABLE>
+<P>Having said that, let me hasten to add that algorithmic improvements can make a big difference even when working at a purely abstract level. For a large unordered data set, a high-level Quicksort will beat the pants off the best-implemented insertion sort you can imagine. Still, you can optimize your algorithm from here &#146;til doomsday, and if you have a fast algorithm running on top of a highly abstract programming model, you&#146;ll almost certainly end up with a slow program. In Listing 17.1, the abstraction that&#146;s killing us is that of looking at the eight neighbors with eight completely independent operations, requiring eight calls to <B>cell_state()</B> and eight calculations of cell address and cell mask. In fact, given the nature of cell storage, the eight neighbors are in a fixed relationship to one another, and the addresses and masks of all eight can generally be found very easily via hard-wired offsets and shifts once the address and mask of any one is known.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="17-02.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="17-04.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

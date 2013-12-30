@@ -1,0 +1,79 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: It's a Wonderful Life</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=18//-->
+<!--PAGES=347-351//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="../ch17/17-08.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="18-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 18<BR>It&#146;s a plain Wonderful Life
+</FONT></H2>
+<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Optimization beyond the Pale</FONT></H3>
+<P>When I was in high school, my gym teacher had us run a race around the soccer field, or rather, around a course marked with cones that roughly outlined the shape of the field. I quickly settled into second place behind Dwight Chamberlin. We cruised around the field, and when we came to the far corner, Dwight cut across the corner, inside a cone placed awkwardly far out from the others. I followed, and everyone else cut inside the cone too&#151;except the pear-shaped kid bringing up the rear, who plodded his way around every single cone on his way to finishing about half a lap behind. When the laggard finally crossed the finish line, the coach named him the winner, to my considerable irritation. After all, the object was to see who could run the fastest, wasn&#146;t it?
+</P>
+<P>Actually, it wasn&#146;t. The object was to see who could run the fastest according to the limitations placed upon the contest. This is a crucial distinction, although usually taken for granted. Would it have been legitimate if I had cut across the middle of the field? If I had ridden a bike? If I had broken the world record for the 100 meters by dropping 100 meters from a plane? Competition has meaning only within a carefully circumscribed arena.</P>
+<P>Why am I telling you this? First, because it is a useful lesson for programming.</P>
+<TABLE WIDTH="100%"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/18-01i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><SMALL><I>All programming is performed within limitations, some of which can be bent or changed, but many of which cannot. You cannot change the maximum memory bandwidth of a VGA, or the maximum instruction execution rate of a 486. That is why the stunning 3D demos you see at SIGGRAPH have only passing relevance to everyday life on the desktop. A rule that Intel&#146;s chip designers cannot break is 8086 compatibility, much as I&#146;m sure they&#146;d like to, but of course the flip side is that although RISC chips are technically superior, they command but a small fraction of the market; raw performance is not the arena of competition. Similarly, you will often be unable to change the specifications for the software you implement.</I></SMALL>
+</TABLE>
+<H3><A NAME="Heading3"></A><FONT COLOR="#000077">Breaking the Rules</FONT></H3>
+<P>The other reason for the anecdote has to do with the way my second Optimization Challenge worked itself out. If you&#146;ll recall from the last chapter, the challenge I made to the readers of <I>PC TECHNIQUES</I> was to devise the fastest possible version of the Game of Life cellular automata simulation game. I gave an example, laid out the rules, and stood aside. Good thing, too. <I>Apres moi, le deluge....</I></P>
+<P>And when the dust had settled, I was left with the uneasy realization that every submitted entry broke the rules. <I>Every single entry</I>. The rules clearly stated that submitted code must produce <I>exactly the same output</I> as my example implementation under all circumstances in order to be eligible to win. I do not think that there can be any question about what &#147;exactly the same output&#148; means. It means the same pixels, in the same colors, at the same places on the screen at the same points in all the Life simulations that the original code was capable of running. Period. And not one of the entries met that standard. Some submitted listings were more than 400 lines long. Some didn&#146;t display the generation number at the right side of the screen, didn&#146;t draw the same pixel colors, or didn&#146;t bother with magnification. Some had bugs. Some didn&#146;t support all possible cellmap widths and heights up to 200&#215;200, requiring widths and heights that were specific multiples of a number of cells that lent itself to a particular implementation.</P>
+<P>This last mission is, in a way, a brilliant approach, as evidenced by the fact that it yielded the two fastest submissions, but it is not within the rules of the contest. Some of the rule-breaking was major, some very minor, and some had nothing to do with the Life engine itself, but the rules were clear; where was I to draw the line if not with exact compliance? And I was fully prepared to draw that line rigorously, disqualifying some mind-bending submissions in order to let lesser but fully compliant entries win&#151;until I realized that there <I>were</I> no fully compliant entries.</P>
+<P>Given which, I heaved a sigh of relief, threw away the rules, and picked a winner in the true spirit of the contest: raw speed. Two winners, in fact: Peter Klerings, a programmer for Turck GmbH in Munich, Germany, whose entry just plain runs like a bat out of hell, and David Stafford (who was also the winner of my first Optimization Challenge), of Borland International, whose entry is slightly slower mainly because he didn&#146;t optimize the drawing part of the program, in full accordance with the contest rules, which specifically excluded drawing time from consideration. Unfortunately, Peter&#146;s generation code and drawing code are so tightly intertwined that it is impossible to separate them, and hence not really possible to figure out whose generation engine is faster. Anyway, at 180 to 200 generations per second, including drawing time, for 200&#215;200 cellmaps (and in the neighborhood of <I>1000</I> gps for 96&#215;96 cellmaps, the size of my original implementation), they&#146;re the fastest submissions I received. They&#146;re both more than an order of magnitude faster than my final optimized C<SMALL>&#43;&#43;</SMALL> Life implementation shown in Chapter 17, and more than 300 times faster than my original, perfectly functional Life implementation. Not 300 percent&#151;300 <I>times</I>. Cell generations scud across the screen like clouds, and walkers shoot out like bullets. Each is a worthy winner, and I feel confident that the true objective of the challenge has been met: pure, breathtaking <I>speed</I>.</P>
+<P>Notwithstanding, <I>mea culpa</I>. The next time I lay a challenge, I will define the rules with scrupulous care. Even so, this was much more than just another cycle-counting contest. We&#146;re fortunate enough to be privy to a startling demonstration of the power of the best optimizer anyone has yet devised&#151;you. (That&#146;s the general &#147;you&#148;; I realize that the specific &#147;you&#148; may or may not be quite up to the optimizing level of the specific &#147;David Stafford&#148; or &#147;Peter Klerings.&#148;)</P>
+<P>Onward to the code.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="../ch17/17-08.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="18-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

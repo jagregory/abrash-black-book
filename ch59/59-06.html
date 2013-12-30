@@ -1,0 +1,84 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: The Idea of BSP Trees</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=59//-->
+<!--PAGES=1112-1114//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="59-05.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="../ch60/60-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>Things change when maximum optimization is selected, however: The performance of the two implementations becomes virtually identical! How can this be? Part of the answer is that the compiler does an amazingly good job with Listing 59.2. Most impressively, when compiling Listing 59.2, the compiler actually converts all right-subtree descents from code recursion to data recursion, by simply jumping back to the left-subtree handling code instead of recursively calling <B>WalkTree()</B>. This means that half the time Listing 59.4 has no advantage over Listing 59.2; in fact, it&#146;s at a disadvantage because the code that the compiler generates for handling right-subtree descent in Listing 59.4 is somewhat inefficient, but the right-subtree code in Listing 59.2 is a marvel of code generation, at just 3 instructions.</P>
+<P>What&#146;s more, although left-subtree traversal is more efficient with data recursion than with code recursion, the advantage is only four instructions, because only one parameter is passed and because the compiler doesn&#146;t bother setting up an EBP-based stack frame, instead it uses ESP to address the stack. (And, in fact, this cost could be reduced still further by eliminating the check for a NULL <B>pNode</B> at all but the top level.) There are other interesting aspects to what the compiler does with Listings 59.2 and 59.4 but that&#146;s enough to give you the idea. It&#146;s worth noting that the compiler might not do as well with code recursion in a more complex function, and that a good assembly language implementation could probably speed up Listing 59.4 enough to make it measurably faster than Listing 59.2, but not even close to being <I>enough</I> faster to be worth the effort.</P>
+<P>The moral of this story (apart from it being a good idea to enable compiler optimization) is:</P>
+<DL>
+<DD><B>1.</B>&nbsp;&nbsp;Understand what you&#146;re doing, through and through.
+<DD><B>2.</B>&nbsp;&nbsp;Build a complete and consistent model in your head.
+<DD><B>3.</B>&nbsp;&nbsp;Design from the principles that the model provides.
+<DD><B>4.</B>&nbsp;&nbsp;Implement the design.
+<DD><B>5.</B>&nbsp;&nbsp;Measure to learn what you&#146;ve wrought.
+<DD><B>6.</B>&nbsp;&nbsp;Go back to step 1 and apply what you&#146;ve just learned.
+</DL>
+<P>With each iteration you&#146;ll dig deeper, learn more, and improve your ability to know where and how to focus your design and programming efforts. For example, with the C compilers I used five to 10 years ago, back when I learned about the relative strengths and weaknesses of code and data recursion, and with the processors then in use, Listing 59.4 would have blown away Listing 59.2. While doing this chapter, I&#146;ve learned that given current processors and compiler technology, data recursion isn&#146;t going to get me any big wins; and yes, that was news to me. That&#146;s <I>good</I>; this information saves me from wasted effort in the future and tells me what to concentrate on when I use recursion.</P>
+<P>Assume nothing, keep digging deeper, and never stop learning and growing. The world won&#146;t hold still for you, but fortunately you <I>can</I> run fast enough to keep up if you just keep at it.</P>
+<P>Depths within depths indeed!</P>
+<H3><A NAME="Heading11"></A><FONT COLOR="#000077">Surfing Amidst the Trees</FONT></H3>
+<P>In the next chapter, we&#146;ll build a BSP-tree compiler, and after that, we&#146;ll put together a rendering system built around the BSP trees the compiler generates. If the subject of BSP trees really grabs your fancy (as it should if you care at all about performance graphics) there is at this writing (February 1996) a World Wide Web page on BSP trees that you must investigate at <A HREF="http://www.qualia.com/bspfaq/">http://www.qualia.com/bspfaq/</A>. It&#146;s set up in the familiar Internet Frequently Asked Questions (FAQ) style, and is very good stuff.</P>
+<H4 ALIGN="LEFT"><A NAME="Heading12"></A><FONT COLOR="#000077">Related Reading</FONT></H4>
+<P>Foley, J., A. van Dam, S. Feiner, and J. Hughes, <I>Computer Graphics: Principles and Practice (Second Edition)</I>, Addison Wesley, 1990, pp. 555-557, 675-680.</P>
+<P>Fuchs, H., Z. Kedem, and B. Naylor, &#147;On Visible Surface Generation by A Priori Tree Structures,&#148; <I>Computer Graphics</I> Vol. 17(3), June 1980, pp. 124-133.</P>
+<P>Gordon, D., and S. Chen, &#147;Front-to-Back Display of BSP Trees,&#148; <I>IEEE Computer Graphics and Applications,</I> September 1991, pp. 79-85.</P>
+<P>Naylor, B., &#147;Binary Space Partitioning Trees as an Alternative Representation of Polytopes,&#148; <I>Computer Aided Design</I>, Vol. 22(4), May 1990, pp. 250-253.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="59-05.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="../ch60/60-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

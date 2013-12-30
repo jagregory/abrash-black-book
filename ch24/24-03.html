@@ -1,0 +1,90 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Parallel Processing</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=24//-->
+<!--PAGES=458-460//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="24-02.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="../ch25/25-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>Logical function 0, which writes the CPU data unmodified, is the standard mode of operation of the ALUs. In this mode, the CPU data is combined with the latched data by ignoring the latched data entirely. Expressed as a logical function, this could be considered CPU data ANDed with 1 (or ORed with 0). This is the mode to use whenever you want to place CPU data into display memory, replacing the previous contents entirely. It may occur to you that there is no need to latch display memory at all when the data unmodified function is selected. In the sample program, that is true, but if the bit mask is being used, the latches must be loaded even for the data unmodified function, as I&#146;ll discuss in the next chapter.
+</P>
+<P>Logical functions 1 through 3 cause the CPU data to be ANDed, ORed, and XORed with the latched data, respectively. Of these, XOR is the most useful, since exclusive-ORing is a traditional way to perform animation. The uses of the AND and OR logical functions are less obvious. AND can be used to mask a blank area into display memory, or to mask off those portions of a drawing operation that don&#146;t overlap an existing display memory image. OR could conceivably be used to force an image into display memory over an existing image. To be honest, I haven&#146;t encountered any particularly valuable applications for AND and OR, but they&#146;re the sort of building-block features that could come in handy in just the right context, so keep them in mind.</P>
+<H3><A NAME="Heading4"></A><FONT COLOR="#000077">Notes on the ALU/Latch Demo Program</FONT></H3>
+<P>VGA settings such as the logical function select should be restored to their default condition before the BIOS is called to output text or draw pixels. The VGA BIOS does not guarantee that it will set most VGA registers except on mode sets, and there are so many compatible BIOSes around that the code of the IBM BIOS is not a reliable guide. For instance, when the BIOS is called to draw text, it&#146;s likely that the result will be illegible if the Bit Mask register is not in its default state. Similarly, a mode set should generally be performed before exiting a program that tinkers with VGA settings.
+</P>
+<P>Along the same lines, the sample program does not explicitly set the Map Mask register to ensure that all planes are enabled for writing. The mode set for mode 10H leaves all planes enabled, so I did not bother to program the Map Mask register, or any other register besides the Data Rotate register, for that matter. However, the profusion of compatible BIOSes means there is some small risk in relying on the BIOS to leave registers set properly. For the highly safety-conscious, the best course would be to program data control registers such as the Map Mask and Read Mask explicitly before relying on their contents.</P>
+<P>On the other hand, any function the BIOS provides explicitly&#151;as part of the interface specification&#151;such as setting the palette RAM, should be used in preference to programming the hardware directly whenever possible, because the BIOS may mask hardware differences between VGA implementations.</P>
+<P>The code that draws each vertical box in the sample program reads from display memory immediately before writing to display memory. The read operation loads the VGA latches. The value that is read is irrelevant as far as the sample program is concerned. The read operation is present only because it is necessary to perform a read to load the latches, and there is no way to read without placing a value in a register. This is a bit of a nuisance, since it means that the value of some 8-bit register must be destroyed. Under certain circumstances, a single logical instruction such as <B>XOR</B> or <B>AND</B> can be used to perform both the read to load the latches and then write to modify display memory without affecting any CPU registers, as we&#146;ll see later on.</P>
+<P>All text in the sample program is drawn by VGA BIOS function 13H, the write string function. This function is also present in the AT&#146;s BIOS, but not in the XT&#146;s or PC&#146;s, and as a result is rarely used; the function is always available if a VGA is installed, however. Text drawn with this function is relatively slow. If speed is important, a program can draw text directly into display memory much faster in any given display mode. The great virtue of the BIOS write string function in the case of the VGA is that it provides an uncomplicated way to get text on the screen reliably in any mode and color, over any background.</P>
+<P>The expression used to load DX in the <B>TEXT_UP</B> macro in the sample program may seem strange, but it&#146;s a convenient way to save a byte of program code and a few cycles of execution time. DX is being loaded with a word value that&#146;s composed of two independent immediate byte values. The obvious way to implement this would be with</P>
+<!-- CODE SNIP //-->
+<PRE>
+MOV DL,VALUE1
+MOV DH,VALUE2
+</PRE>
+<!-- END CODE SNIP //-->
+<P>which requires four instruction bytes. By shifting the value destined for the high byte into the high byte with MASM&#146;s shift-left operator, <B>SHL</B> (*100H would work also), and then logically combining the values with MASM&#146;s <B>OR</B> operator (or the <B>ADD</B> operator), both halves of DX can be loaded with a single instruction, as in</P>
+<!-- CODE SNIP //-->
+<PRE>
+MOV DX,(VALUE2 SHL 8) OR VALUE1
+</PRE>
+<!-- END CODE SNIP //-->
+<P>which takes only three bytes and is faster, being a single instruction. (Note, though, that in 32-bit protected mode, there&#146;s a size and performance penalty for 16-bit instructions such as the <B>MOV</B> above; see the first part of this book for details.) As shown, a macro is an ideal place to use this technique; the macro invocation can refer to two separate byte values, making matters easier for the programmer, while the macro itself can combine the values into a single word-sized constant.</P>
+<TABLE WIDTH="100%"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/24-01i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><SMALL><I>A minor optimization tip illustrated in the listing is the use of <B>INC AX</B> and <B>DEC AX</B> in the <B>DrawVerticalBox</B> subroutine when only AL actually needs to be modified. Word-sized register increment and decrement instructions (or dword-sized instructions in 32-bit protected mode) are only one byte long, while byte-size register increment and decrement instructions are two bytes long. Consequently, when size counts, it is worth using a whole 16-bit (or 32-bit) register instead of the low 8 bits of that register for <B>INC</B> and <B>DEC</B>&#151;if you don&#146;t need the upper portion of the register for any other purpose, or if you can be sure that the <B>INC</B> or <B>DEC</B> won&#146;t affect the upper part of the register.</I></SMALL>
+</TABLE>
+<P>The latches and ALUs are central to high-performance VGA code, since they allow programs to process across all four memory planes without a series of <B>OUT</B>s and read/write operations. It is not always easy to arrange a program to exploit this power, however, because the ALUs are far more limited than a CPU. In many instances, however, additional hardware in the VGA, including the bit mask, the set/reset features, and the barrel shifter, can assist the ALUs in controlling data, as we&#146;ll see in the next few chapters.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="24-02.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="../ch25/25-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

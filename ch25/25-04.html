@@ -1,0 +1,155 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: VGA Data Machinery</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=25//-->
+<!--PAGES=472-474//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="25-03.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="25-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P><B>LISTING 25.2 L25-2.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+; Program to illustrate operation of Map Mask register when drawing
+;  to memory that already contains data.
+; By Michael Abrash.
+;
+stack   segment para stack &#145;STACK&#146;
+        db      512 dup(?)
+stack   ends
+;
+EGA_VIDEO_SEGMENT       equ     0a000h  ;EGA display memory segment
+;
+; EGA register equates.
+;
+SC_INDEX        equ     3c4h    ;SC index register
+SC_MAP_MASK     equ     2       ;SC map mask register
+;
+; Macro to set indexed register INDEX of SC chip to SETTING.
+;
+SETSC   macro   INDEX, SETTING
+        mov     dx,SC_INDEX
+        mov     al,INDEX
+        out     dx,al
+        inc     dx
+        mov     al,SETTING
+        out     dx,al
+        dec     dx
+        endm
+;
+cseg    segment para public &#145;CODE#146;
+        assume  cs:cseg
+start   proc    near
+;
+; Select 640&#215;480 graphics mode.
+;
+        mov     ax,012h
+        int     10h
+;
+        mov     ax,EGA_VIDEO_SEGMENT
+        mov     es,ax                   ;point to video memory
+;
+; Draw 24 10-scan-line high horizontal bars in green, 10 scan lines apart.
+;
+        SETSC   SC_MAP_MASK,02h         ;map mask setting enables only
+                                        ; plane 1, the green plane
+        sub     di,di           ;start at beginning of video memory
+        mov     al,0ffh
+        mov     bp,24           ;# bars to draw
+HorzBarLoop:
+        mov     cx,80*10        ;# bytes per horizontal bar
+        rep stosb               ;draw bar
+        add     di,80*10        ;point to start of next bar
+        dec     bp
+        jnz     HorzBarLoop
+;
+; Fill screen with blue, using Map Mask register to enable writes
+; to blue plane only.
+;
+        SETSC   SC_MAP_MASK,01h         ;map mask setting enables only
+                                        ; plane 0, the blue plane
+        sub     di,di
+        mov     cx,80*480               ;# bytes per screen
+        mov     al,0ffh
+        rep stosb                       ;perform fill (affects only
+                                        ; plane 0, the blue plane)
+;
+; Wait for a keystroke.
+;
+        mov     ah,1
+        int     21h
+;
+; Restore text mode.
+;
+        mov     ax,03h
+        int     10h
+;
+; Exit to DOS.
+;
+        mov     ah,4ch
+        int     21h
+start   endp
+cseg    ends
+        end     start
+</PRE>
+<!-- END CODE //-->
+<H4 ALIGN="LEFT"><A NAME="Heading6"></A><FONT COLOR="#000077">Setting All Planes to a Single Color</FONT></H4>
+<P>The set/reset circuitry can be used to force some planes to 0-bits and others to 1-bits during a single write, while letting CPU data go to still other planes, and so provides an efficient way to set all planes to a desired color. The set/reset circuitry works as follows:
+</P>
+<P>For each of the bits 0-3 in the Enable Set/Reset register (Graphics Controller register 1) that is 1, the corresponding bit in the Set/Reset register (GC register 0) is extended to a byte (0 or 0FFH) and replaces the CPU data for the corresponding plane. For each of the bits in the Enable Set/Reset register that is 0, the CPU data is used unchanged for that plane (normal operation). For example, if the Enable Set/Reset register is set to 01H and the Set/Reset register is set to 05H, then the CPU data is replaced for plane 0 only (the blue plane), and the value it is replaced with is 0FFH (bit 0 of the Set/Reset register extended to a byte). Note that in this case, bits 1-3 of the Set/Reset register have no effect.</P>
+<P>It is important to understand that the set/reset circuitry directly replaces CPU data in Graphics Controller data flow. Refer back to Figure 25.3 to see that the output of the set/reset circuitry passes through (and may be transformed by) the ALU and the bit mask before being written to memory, and even then the Map Mask register must enable the write. When using set/reset, it is generally desirable to set the Map Mask register to enable all planes the set/reset circuitry is controlling, since those memory planes which are disabled by the Map Mask register cannot be modified, and the purpose of enabling set/reset for a plane is to force that plane to be set by the set/reset circuitry.</P>
+<P>Listing 25.3 illustrates the use of set/reset to force a specific color to be written. This program is the same as that of Listing 25.2, except that set/reset rather than the Map Mask register is used to control color. The preexisting pattern is completely overwritten this time, because the set/reset circuitry writes 0-bytes to planes that must be off as well as 0FFH-bytes to planes that must be on.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="25-03.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="25-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

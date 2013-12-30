@@ -1,0 +1,156 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Sneakers in Space</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=51//-->
+<!--PAGES=965-967//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="51-05.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="../ch52/52-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P><B>LISTING 51.5  POLYGON.H</B></P>
+<!-- CODE //-->
+<PRE>
+/* POLYGON.H: Header file for polygon-filling code, also includes a number of
+   useful items for 3D animation. */
+#define MAX_POLY_LENGTH 4  /* four vertices is the max per poly */
+#define SCREEN_WIDTH 320
+#define SCREEN_HEIGHT 240
+#define PAGE0_START_OFFSET 0
+#define PAGE1_START_OFFSET (((long)SCREEN_HEIGHT*SCREEN_WIDTH)/4)
+/* Ratio: distance from viewpoint to projection plane / width of projection
+   plane. Defines the width of the field of view. Lower absolute values = wider
+   fields of view; higher values = narrower. */
+#define PROJECTION_RATIO   -2.0 /* negative because visible Z coordinates are negative */
+/* Draws the polygon described by the point list PointList in color Color with
+   all vertices offset by (X,Y) */
+#define DRAW_POLYGON(PointList,NumPoints,Color,X,Y)          \
+   Polygon.Length = NumPoints; Polygon.PointPtr = PointList; \
+   FillConvexPolygon(&ampPolygon, Color, X, Y);
+/* Describes a single 2D point */
+struct Point {
+   int X;   /* X coordinate */
+   int Y;   /* Y coordinate */
+};
+/* Describes a single 3D point in homogeneous coordinates */
+struct Point3 {
+   double X;   /* X coordinate */
+   double Y;   /* Y coordinate */
+   double Z;   /* Z coordinate */
+   double W;
+};
+/* Describes a series of points (used to store a list of vertices that
+   describe a polygon; each vertex is assumed to connect to the two adjacent
+   vertices, and the last vertex is assumed to connect to the first) */
+   struct PointListHeader {
+   int Length;                /* # of points */
+   struct Point * PointPtr;   /* pointer to list of points */
+};
+/* Describes beginning and ending X coordinates of a single horizontal line */
+struct HLine {
+   int XStart; /* X coordinate of leftmost pixel in line */
+   int XEnd;   /* X coordinate of rightmost pixel in line */
+};
+/* Describes a Length-long series of horizontal lines, all assumed to be on
+   contiguous scan lines starting at YStart and proceeding downward (describes
+   a scan-converted polygon to low-level hardware-dependent drawing code) */
+struct HLineList {
+   int Length;                /* # of horizontal lines */
+   int YStart;                /* Y coordinate of topmost line */
+   struct HLine * HLinePtr;   /* pointer to list of horz lines */
+};
+struct Rect { int Left, Top, Right, Bottom; };
+/* Structure describing one face of an object (one polygon) */
+struct Face {
+   int * VertNums;   /* pointer to vertex ptrs */
+   int NumVerts;     /* # of vertices */
+   int Color;        /* polygon color */
+};
+/* Structure describing an object */
+struct Object {
+   int NumVerts;
+   struct Point3 * VertexList;
+   struct Point3 * XformedVertexList;
+   struct Point3 * ProjectedVertexList;
+   struct Point * ScreenVertexList;
+   int NumFaces;
+   struct Face * FaceList;
+};
+extern void XformVec(double Xform[4][4], double * SourceVec, double * DestVec);
+extern void ConcatXforms(double SourceXform1[4][4],
+   double SourceXform2[4][4], double DestXform[4][4]);
+extern void XformAndProjectPoly(double Xform[4][4],
+   struct Point3 * Poly, int PolyLength, int Color);
+extern int FillConvexPolygon(struct PointListHeader *, int, int, int);
+extern void Set320x240Mode(void);
+extern void ShowPage(unsigned int StartOffset);
+extern void FillRectangleX(int StartX, int StartY, int EndX,
+   int EndY, unsigned int PageBase, int Color);
+extern void XformAndProjectPoints(double Xform[4][4],struct Object * ObjectToXform);
+extern void DrawVisibleFaces(struct Object * ObjectToXform);
+extern void AppendRotationX(double XformToChange[4][4], double Angle);
+extern void AppendRotationY(double XformToChange[4][4], double Angle);
+extern void AppendRotationZ(double XformToChange[4][4], double Angle);
+extern int DisplayedPage, NonDisplayedPage;
+extern struct Rect EraseRect[];
+</PRE>
+<!-- END CODE //-->
+<H3><A NAME="Heading6"></A><FONT COLOR="#000077">A Note on Rounding Negative Numbers</FONT></H3>
+<P>In the previous chapter, I added 0.5 and truncated in order to round values from floating-point to integer format. Here, in Listing 51.2, I&#146;ve switched to adding 0.5 and using the <B>floor()</B> function. For positive values, the two approaches are equivalent; for negative values, only the <B>floor()</B> approach works properly.</P>
+<H3><A NAME="Heading7"></A><FONT COLOR="#000077">Object Representation</FONT></H3>
+<P>Each object consists of a list of vertices and a list of faces, with the vertices of each face defined by pointers into the vertex list; this allows each vertex to be transformed exactly once, even though several faces may share a single vertex. Each object contains the vertices not only in their original, untransformed state, but in three other forms as well: transformed to view space, transformed and projected to screen space, and converted to screen coordinates. Earlier, we saw that it can be convenient to store the screen coordinates within the object, so that if the object hasn&#146;t moved with respect to the viewer, it can be redrawn without the need for recalculation, but why bother storing the view and screen space forms of the vertices as well?
+</P>
+<P>The screen space vertices are useful for some sorts of hidden surface removal. For example, to determine whether two polygons overlap as seen by the viewer, you must first know how they look to the viewer, accounting for perspective; screen space provides that information. (So do the final screen coordinates, but with less accuracy, and without any Z information.) The view space vertices are useful for collision and proximity detection; screen space can&#146;t be used here, because objects are distorted by the perspective projection into screen space. World space would serve as well as view space for collision detection, but because it&#146;s possible to transform directly from object space to view space with a single matrix, it&#146;s often preferable to skip over world space. It&#146;s not mandatory that vertices be stored for all these different spaces, but the coordinates in all those spaces have to be calculated as intermediate steps anyway, so we might as well keep them around for those occasions when they&#146;re needed.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="51-05.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="../ch52/52-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

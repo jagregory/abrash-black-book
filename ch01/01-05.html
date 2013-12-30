@@ -1,0 +1,192 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: The Best Optimizer Is between Your Ears</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=01//-->
+<!--PAGES=015-017//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="01-04.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="01-06.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>The third reason is often fallacious. C library functions are not always written in assembly, nor are they always particularly well-optimized. (In fact, they&#146;re often written for <I>portability</I>, which has nothing to do with optimization.) What&#146;s more, they&#146;re general-purpose functions, and often can be outperformed by well-but-not- brilliantly-written code that is well-matched to a specific task. As an example, consider Listing 1.5, which uses internal buffering to handle blocks of bytes at a time. Table 1.1 shows that Listing 1.5 is 2.5 to 4 times faster than Listing 1.4 (and as much as 49 times faster than Listing 1.1!), even though it uses no assembly at all.</P>
+<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/01-05i.jpg"><TD WIDTH="95%"><SMALL><I>Clearly, you can do well by using special-purpose C code in place of a C library function&#151;if you have a thorough understanding of how the C library function operates and exactly what your application needs done. Otherwise, you&#146;ll end up rewriting C library functions in C, which makes no sense at all.</I></SMALL>
+</TABLE>
+<P><B>LISTING 1.5 L1-5.C</B></P>
+<!-- CODE //-->
+<PRE>
+/*
+* Program to calculate the 16-bit checksum of the stream of bytes
+* from the specified file. Buffers the bytes internally, rather
+* than letting C or DOS do the work.
+*/
+#include &lt;stdio.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;alloc.h&gt;   /* alloc.h for Borland,
+                                malloc.h for Microsoft  */
+
+#define BUFFER_SIZE  0x8000   /* 32Kb data buffer */
+
+main(int argc, char *argv[]) {
+      int Handle;
+      unsigned int Checksum;
+      unsigned char *WorkingBuffer, *WorkingPtr;
+      int WorkingLength, LengthCount;
+
+      if ( argc != 2 ) {
+            printf(&#147;usage: checksum filename\n&#148;);
+            exit(1);
+      }
+      if ( (Handle = open(argv[1], O_RDONLY | O_BINARY)) == -1 ) {
+            printf(&#147;Can&#146;t open file: %s\n&#148;, argv[1]);
+            exit(1);
+      }
+
+      /* Get memory in which to buffer the data */
+      if ( (WorkingBuffer = malloc(BUFFER_SIZE)) == NULL ) {
+            printf(&#147;Can&#146;t get enough memory\n&#148;);
+            exit(1);
+      }
+
+      /* Initialize the checksum accumulator */
+      Checksum = 0;
+
+      /* Process the file in BUFFER_SIZE chunks */
+      do {
+            if ( (WorkingLength = read(Handle, WorkingBuffer,
+                  BUFFER_SIZE)) == -1 ) {
+                  printf(&#147;Error reading file %s\n&#148;, argv[1]);
+                  exit(1);
+            }
+            /* Checksum this chunk */
+            WorkingPtr = WorkingBuffer;
+            LengthCount = WorkingLength;
+            while ( LengthCount&#150;&#150; ) {
+            /* Add each byte in turn into the checksum accumulator */
+                  Checksum &#43;= (unsigned int) *WorkingPtr&#43;&#43;;
+      }
+      } while ( WorkingLength );
+
+      /* Report the result */
+      printf(&#147;The checksum is: %u\n&#148;, Checksum);
+      exit(0);
+}
+</PRE>
+<!-- END CODE //-->
+<P>That brings us to the fourth reason: avoiding an internal-buffered implementation like Listing 1.5 because of the difficulty of coding such an approach. True, it is easier to let a C library function do the work, but it&#146;s not all that hard to do the buffering internally. The key is the concept of handling data in <I>restartable blocks;</I> that is, reading a chunk of data, operating on the data until it runs out, suspending the operation while more data is read in, and then continuing as though nothing had happened.</P>
+<P>In Listing 1.5 the restartable block implementation is pretty simple because checksumming works with one byte at a time, forgetting about each byte immediately after adding it into the total. Listing 1.5 reads in a block of bytes from the file, checksums the bytes in the block, and gets another block, repeating the process until the entire file has been processed. In Chapter 5, we&#146;ll see a more complex restartable block implementation, involving searching for text strings.</P>
+<P>At any rate, Listing 1.5 isn&#146;t much more complicated than Listing 1.4&#151;and it&#146;s a <I>lot</I> faster. Always consider the alternatives; a bit of clever thinking and program redesign can go a long way.</P>
+<H4 ALIGN="LEFT"><A NAME="Heading12"></A><FONT COLOR="#000077">Know How to Turn On the Juice</FONT></H4>
+<P>I have said time and again that optimization is pointless until the design is settled. When that time comes, however, optimization can indeed make a significant difference. Table 1.1 indicates that the optimized version of Listing 1.5 produced by Microsoft C outperforms an unoptimized version of the same code by more than 60 percent. What&#146;s more, a mostly-assembly version of Listing 1.5, shown in Listings 1.6 and 1.7, outperforms even the best-optimized C version of List1.5 by 26 percent. These are considerable improvements, well worth pursuing&#151;once the design has been maxed out.
+</P>
+<P><B>LISTING 1.6 L1-6.C</B></P>
+<!-- CODE //-->
+<PRE>
+/*
+* Program to calculate the 16-bit checksum of the stream of bytes
+* from the specified file. Buffers the bytes internally, rather
+* than letting C or DOS do the work, with the time-critical
+* portion of the code written in optimized assembler.
+*/
+#include &lt;stdio.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;alloc.h&gt;   /* alloc.h for Borland,
+                         malloc.h for Microsoft  */
+
+#define BUFFER_SIZE  0x8000   /* 32K data buffer */
+
+main(int argc, char *argv[]) {
+      int Handle;
+      unsigned int Checksum;
+      unsigned char *WorkingBuffer;
+      int WorkingLength;
+
+      if ( argc != 2 ) {
+            printf(&#147;usage: checksum filename\n&#148;);
+            exit(1);
+      }
+      if ( (Handle = open(argv[1], O_RDONLY | O_BINARY)) == -1 ) {
+            printf(&#147;Can&#146;t open file: %s\n&#148;, argv[1]);
+            exit(1);
+      }
+
+      /* Get memory in which to buffer the data */
+      if ( (WorkingBuffer = malloc(BUFFER_SIZE)) == NULL ) {
+            printf(&#147;Can&#146;t get enough memory\n&#148;);
+            exit(1);
+      }
+
+      /* Initialize the checksum accumulator */
+      Checksum = 0;
+
+      /* Process the file in 32K chunks */
+      do {
+            if ( (WorkingLength = read(Handle, WorkingBuffer,
+            BUFFER_SIZE)) == -1 ) {
+                  printf(&#147;Error reading file %s\n&#148;, argv[1]);
+                  exit(1);
+            }
+            /* Checksum this chunk if there&#146;s anything in it */
+            if ( WorkingLength )
+                  ChecksumChunk(WorkingBuffer, WorkingLength, &Checksum);
+            } while ( WorkingLength );
+
+            /* Report the result */
+            printf(&#147;The checksum is: %u\n&#148;, Checksum);
+            exit(0);
+}
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="01-04.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="01-06.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

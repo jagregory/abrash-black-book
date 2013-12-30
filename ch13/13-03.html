@@ -1,0 +1,113 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Aiming the 486</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=13//-->
+<!--PAGES=254-256//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="13-02.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="13-04.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>On the 386, <B>ROR</B> was the only way to split a 32-bit register into two 16-bit registers. On the 486, however, <B>BSWAP</B> can not only do the job, but can do it better, because <B>BSWAP</B> executes in just one cycle. <B>BSWAP</B> has the added benefit of not affecting any flags, unlike <B>ROR</B>. With <B>BSWAP</B>-based code like that in Listing 13.6, the upper 16 bits of a register can be accessed with only 2 cycles of overhead and without altering any flags, making the technique of packing two 16-bit registers into one 32-bit register much more useful.</P>
+<P><B>LISTING 13.6 L13-6.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+      mov    cx,[initialskip]
+      bswap  ecx        ;put skip value in upper half of ECX
+      mov    cx,100     ;put loop count in CX
+looptop:
+       :
+      bswap  ecx        ;make skip value word accessible in CX
+      add    bx,cx      ;skip BX ahead
+      inc    cx         ;set next skip value
+      bswap  ecx        ;put loop count in CX
+      dec    cx         ;count down loop
+      jnz    looptop
+</PRE>
+<!-- END CODE //-->
+<H3><A NAME="Heading5"></A><FONT COLOR="#000077">Pushing and Popping Memory</FONT></H3>
+<P>Pushing or popping a memory location, as in <B>PUSH WORD PTR [BX]</B> or <B>POP [MemVar]</B>, is a compact, easy way to get a value onto or off of the stack, especially when pushing parameters for calling a C-compatible function. However, on a 486, these are unattractive instructions from a performance perspective. Pushing a memory location takes four cycles; by contrast, loading a memory location into a register takes only one cycle, and pushing a register takes just 1 more cycle, for a total of two cycles. Therefore,</P>
+<!-- CODE SNIP //-->
+<PRE>
+mov   ax,[bx]
+push  ax
+</PRE>
+<!-- END CODE SNIP //-->
+<P>is twice as fast as
+</P>
+<!-- CODE SNIP //-->
+<PRE>
+push   word ptr [bx]
+</PRE>
+<!-- END CODE SNIP //-->
+<P>and the only cost is that the previous contents of AX are destroyed.
+</P>
+<P>Likewise, popping a memory location takes six cycles, but popping a register and writing it to memory takes only two cycles combined. The <I>i486 Microprocessor Programmer&#146;s Reference Manual</I> lists a 4-cycle execution time for popping a register, but pay that no mind; popping a register takes only 1 cycle.</P>
+<P>Why is it that such a convenient operation as pushing or popping memory is so slow? The rule on the 486 is that simple operations, which can be executed in a single cycle by the 486&#146;s RISC core, are fast; whereas complex operations, which must be carried out in microcode just as they were on the 386, are almost all relatively slow. Slow, complex operations include all the string instructions except <B>REP MOVS,</B> as well as <B>XLAT, LOOP,</B> and, of course, <B>PUSH <I>mem</I></B> and <B>POP <I>mem.</I></B></P>
+<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/13-02i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>Whenever possible, try to use the 486&#146;s 1-cycle instructions, including <B>MOV, ADD, SUB, CMP, ADC, SBB, XOR, AND, OR, TEST, LEA</B>, and <B>PUSH reg</B> and <B>POP reg</B>. These instructions have an added benefit in that it&#146;s often possible to rearrange them for maximum pipeline efficiency, as is the case with Terje&#146;s optimization described earlier in this chapter.</I></SMALL>
+</TABLE>
+<H3><A NAME="Heading6"></A><FONT COLOR="#000077">Optimal 1-Bit Shifts and Rotates</FONT></H3>
+<P>On a 486, the n-bit forms of the shift and rotate instructions&#151;as in <B>ROR AX,2</B> and <B>SHL BX,9</B>&#151;are 2-cycle instructions, but the 1-bit forms&#151;as in <B>ROR AX,1</B> and <B>SHL BX,1&#151;</B>are <I>3-cycle</I> instructions. Go figure.</P>
+<P>Assemblers default to the 1-bit instruction for 1-bit shifts and rotates. That&#146;s not unreasonable since the 1-bit form is a byte shorter and is just as fast as the n-bit forms on a 386 and faster on a 286, and the n-bit form doesn&#146;t even exist on an 8088. In a really critical loop, however, it might be worth hand-assembling the n-bit form of a single-bit shift or rotate in order to save that cycle. The easiest way to do this is to assemble a 2-bit form of the desired instruction, as in <B>SHL AX,2,</B> then look at the hex codes that the assembler generates and use <B>DB</B> to insert them in your program code, with the value two replaced with the value one. For example, you could determine that <B>SHL AX,2</B> assembles to the bytes 0C1H 0E0H 002H, either by looking at the disassembly in a debugger or by having the assembler generate a listing file. You could then insert the n-bit version of <B>SHL AX,1</B> in your code as follows:</P>
+<!-- CODE SNIP //-->
+<PRE>
+mov   ax,1
+db    0c1h, 0e0h, 001h
+mov   dx,ax
+</PRE>
+<!-- END CODE SNIP //-->
+<P>At the end of this sequence, DX will contain 2, and the fast n-bit version of <B>SHL AX,1</B> will have executed. If you use this approach, I&#146;d recommend using a macro, rather than sticking DBs in the middle of your code.</P>
+<P>Again, this technique is advantageous <I>only</I> on a 486. It also doesn&#146;t apply to <B>RCL</B> and <B>RCR,</B> where you definitely want to use the 1-bit versions whenever you can, because the n-bit versions are horrendously slow. But if you&#146;re optimizing for the 486, these tidbits can save a few critical cycles&#151;and Lord knows that if you&#146;re optimizing for the 486&#151;that is, if you need even more performance than you get from unoptimized code on a 486&#151;you almost certainly need all the speed you can get.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="13-02.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="13-04.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

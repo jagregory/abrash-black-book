@@ -1,0 +1,175 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Adding a Dimension</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=50//-->
+<!--PAGES=943-945//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="50-03.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="50-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>The other 2-D element we need is some way to erase the polygon at its old location before it&#146;s moved and redrawn. We&#146;ll do that by remembering the bounding rectangle of the polygon each time it&#146;s drawn, then erasing by clearing that area with a rectangle fill.
+</P>
+<P>With the 2-D side of the picture well under control, we&#146;re ready to concentrate on the good stuff. Listings 50.2 through 50.5 are the sample 3-D animation program. Listing 50.2 provides matrix multiplication functions in a straightforward fashion. Listing 50.3 transforms, projects, and draws polygons. Listing 50.4 is the general header file for the program, and Listing 50.5 is the main animation program.</P>
+<P>Other modules required are: Listings 47.1 and 47.6 from Chapter 47 (Mode X mode set, rectangle fill); Listing 49.6 from Chapter 49; Listing 39.4 from Chapter 39 (polygon edge scan); and the <B>FillConvexPolygon()</B> function from Listing 38.1 in Chapter 38. All necessary code modules, along with a project file, are present in the subdirectory for this chapter on the listings disk, whether they were presented in this chapter or some earlier chapter. This will be the case for the next several chapters as well, where listings from previous chapters are referenced. This scheme may crowd the listings diskette a little bit, but it will certainly reduce confusion!</P>
+<P><B>LISTING 50.2  L50-2.C</B></P>
+<!-- CODE //-->
+<PRE>
+/* Matrix arithmetic functions.
+   Tested with Borland C&#43;&#43; in the small model. */
+
+/* Matrix multiplies Xform by SourceVec, and stores the result in
+   DestVec. Multiplies a 4x4 matrix times a 4x1 matrix; the result
+   is a 4x1 matrix, as follows:
+   --     --     -- --     -- --
+   |       |     | 4 |     | 4 |
+   |  4x4  |  X  | x |  =  | x |
+   |       |     | 1 |     | 1 |
+   --     --     -- --     -- -- */
+void XformVec(double Xform[4][4], double * SourceVec,
+   double * DestVec)
+{
+   int i,j;
+
+   for (i=0; i&lt4; i&#43;&#43;) {
+      DestVec[i] = 0;
+      for (j=0; j&lt4; j&#43;&#43;)
+         DestVec[i] &#43;= Xform[i][j] * SourceVec[j];
+   }
+}
+
+/* Matrix multiplies SourceXform1 by SourceXform2 and stores the
+   result in DestXform. Multiplies a 4x4 matrix times a 4x4 matrix;
+   the result is a 4x4 matrix, as follows:
+   --     --     --     --     --     --
+   |       |     |       |     |       |
+   |  4x4  |  X  |  4x4  |  =  |  4x4  |
+   |       |     |       |     |       |
+   --     --     --     --     --     -- */
+void ConcatXforms(double SourceXform1[4][4], double SourceXform2[4][4],
+   double DestXform[4][4])
+{
+   int i,j,k;
+
+   for (i=0; i&lt4; i&#43;&#43;) {
+      for (j=0; j&lt4; j&#43;&#43;) {
+         DestXform[i][j] = 0;
+         for (k=0; k&lt4; k&#43;&#43;)
+            DestXform[i][j] &#43;= SourceXform1[i][k] * SourceXform2[k][j];
+      }
+   }
+}
+</PRE>
+<!-- END CODE //-->
+<P><B>LISTING 50.3 L50-3.C</B></P>
+<!-- CODE //-->
+<PRE>
+/* Transforms convex polygon Poly (which has PolyLength vertices),
+   performing the transformation according to Xform (which generally
+   represents a transformation from object space through world space
+   to view space), then projects the transformed polygon onto the
+   screen and draws it in color ???Color. Also updates the extent of the
+   rectangle (EraseRect) that&#146;s used to erase the screen later.
+   Tested with Borland C&#43;&#43; in the small model. */
+#include &#147;polygon.h&#148;
+
+void XformAndProjectPoly(double Xform[4][4], struct Point3 * Poly,
+   int PolyLength, int Color)
+{
+   int i;
+   struct Point3 XformedPoly[MAX_POLY_LENGTH];
+   struct Point ProjectedPoly[MAX_POLY_LENGTH];
+   struct PointListHeader Polygon;
+
+   /* Transform to view space, then project to the screen */
+   for (i=0; i&ltPolyLength; i&#43;&#43;) {
+      /* Transform to view space */
+      XformVec(Xform, (double *)&ampPoly[i], (double *)&ampXformedPoly[i]);
+      /* Project the X &amp Y coordinates to the screen, rounding to the
+         nearest integral coordinates. The Y coordinate is negated to
+         flip from view space, where increasing Y is up, to screen
+         space, where increasing Y is down. Add in half the screen
+         width and height to center on the screen */
+      ProjectedPoly[i].X = ((int) (XformedPoly[i].X/XformedPoly[i].Z *
+            PROJECTION_RATIO*(SCREEN_WIDTH/2.0)&#43;0.5))&#43;SCREEN_WIDTH/2;
+      ProjectedPoly[i].Y = ((int) (XformedPoly[i].Y/XformedPoly[i].Z *
+            -1.0 * PROJECTION_RATIO * (SCREEN_WIDTH / 2.0) &#43; 0.5)) &#43;
+            SCREEN_HEIGHT/2;
+      /* Appropriately adjust the extent of the rectangle used to
+         erase this page later */
+         if (ProjectedPoly[i].X &gt EraseRect[NonDisplayedPage].Right)
+          if (ProjectedPoly[i].X &lt SCREEN_WIDTH)
+            EraseRect[NonDisplayedPage].Right = ProjectedPoly[i].X;
+          else EraseRect[NonDisplayedPage].Right = SCREEN_WIDTH;
+         if (ProjectedPoly[i].Y &gt EraseRect[NonDisplayedPage].Bottom)
+          if (ProjectedPoly[i].Y &lt SCREEN_HEIGHT)
+            EraseRect[NonDisplayedPage].Bottom = ProjectedPoly[i].Y;
+          else EraseRect[NonDisplayedPage].Bottom = SCREEN_HEIGHT;
+         if (ProjectedPoly[i].X &lt EraseRect[NonDisplayedPage].Left)
+          if (ProjectedPoly[i].X &gt 0)
+            EraseRect[NonDisplayedPage].Left = ProjectedPoly[i].X;
+          else EraseRect[NonDisplayedPage].Left = 0;
+         if (ProjectedPoly[i].Y &lt EraseRect[NonDisplayedPage].Top)
+          if (ProjectedPoly[i].Y &gt 0)
+            EraseRect[NonDisplayedPage].Top = ProjectedPoly[i].Y;
+          else EraseRect[NonDisplayedPage].Top = 0;
+   }
+   /* Draw the polygon */
+   DRAW_POLYGON(ProjectedPoly, PolyLength, Color, 0, 0);
+}
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="50-03.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="50-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

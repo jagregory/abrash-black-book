@@ -1,0 +1,363 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Of Songs, Taxes, and the Simplicity of Complex Polygons</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=40//-->
+<!--PAGES=744-750//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="40-01.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="40-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>Advancing the X coordinates is easy. For each edge, we&#146;ll store the current X coordinate and all required error term information, and we&#146;ll use that to advance the edge one scan line at a time; then, we&#146;ll resort the AET by X coordinate as needed. Removing edges as they end is also easy; we&#146;ll just count down the length of each active edge on each scan line and remove an edge when its count reaches zero. Adding edges as their tops are encountered is a tad more complex. While there are a number of ways to do this, one particularly efficient approach is to start out by putting all the edges of the polygon, sorted by increasing Y coordinate, into a single list, called the <I>global edge table</I> (GET). Then, as each scan line is encountered, all edges at the start of the GET that begin on the current scan line are moved to the AET; because the GET is Y-sorted, there&#146;s no need to search the entire GET. For still greater efficiency, edges in the GET that share common Y coordinates can be sorted by increasing X coordinate; this ensures that no more than one pass through the AET per scan line is ever needed when adding new edges from the GET in such a way as to keep the AET sorted in ascending X order.</P>
+<P>What form should the GET and AET take? Linked lists of edge structures, as shown in Figure 40.3. With linked lists, all that&#146;s required to move edges from the GET to the AET as they become active, sort the AET, and remove edges that have been fully drawn is the exchanging of a few pointers.</P>
+<P>In summary, we&#146;ll initially store all the polygon edges in Y-primary/X-secondary sort order in the GET, complete with initial X and Y coordinates, error terms and error term adjustments, lengths, and directions of X movement for each edge. Once the GET is built, we&#146;ll do the following:</P>
+<DL>
+<DD><B>1.</B>&nbsp;&nbsp;Set the current Y coordinate to the Y coordinate of the first edge in the GET.
+<DD><B>2.</B>&nbsp;&nbsp;Move all edges with the current Y coordinate from the GET to the AET, removing them from the GET and maintaining the X-sorted order of the AET.
+<DD><B>3.</B>&nbsp;&nbsp;Draw all odd-to-even spans in the AET at the current Y coordinate.
+<DD><B>4.</B>&nbsp;&nbsp;Count down the lengths of all edges in the AET, removing any edges that are done, and advancing the X coordinates of all remaining edges in the AET by one scan line.
+<DD><B>5.</B>&nbsp;&nbsp;Sort the AET in order of ascending X coordinate.
+<DD><B>6.</B>&nbsp;&nbsp;Advance the current Y coordinate by one scan line.
+<DD><B>7.</B>&nbsp;&nbsp;If either the AET or GET isn&#146;t empty, go to step 2.
+</DL>
+<P><A NAME="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/40-03.jpg',407,199 )"> --><IMG SRC="images/40-03.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/40-03.jpg',407,199)"> --><FONT COLOR="#000077"><B>Figure 40.3</B></FONT></A>&nbsp;&nbsp;<I>The global and active edge tables as linked lists.</I>
+</P>
+<P>That&#146;s really all there is to it. Compare Listing 40.1 to the fast convex polygon filling code from Chapter 39, and you&#146;ll see that, contrary to expectation, complex polygon filling is indeed one of the more sane and sensible corners of the universe.
+</P>
+<P><B>LISTING 40.1 L40-1.C</B></P>
+<!-- CODE //-->
+<PRE>
+ /* Color-fills an arbitrarily-shaped polygon described by VertexList.
+    If the first and last points in VertexList are not the same, the path
+    around the polygon is automatically closed. All vertices are offset
+    by (XOffset, YOffset). Returns 1 for success, 0 if memory allocation
+    failed. All C code tested with Borland C&#43;&#43;.
+    If the polygon shape is known in advance, speedier processing may be
+    enabled by specifying the shape as follows: &#147;convex&#148; - a rubber band
+    stretched around the polygon would touch every vertex in order;
+    &#147;nonconvex&#148; - the polygon is not self-intersecting, but need not be
+    convex; &#147;complex&#148; - the polygon may be self-intersecting, or, indeed,
+    any sort of polygon at all. Complex will work for all polygons; convex
+    is fastest. Undefined results will occur if convex is specified for a
+    nonconvex or complex polygon.
+    Define CONVEX_CODE_LINKED if the fast convex polygon filling code from
+    Chapter 38 is linked in. Otherwise, convex polygons are
+    handled by the complex polygon filling code.
+    Nonconvex is handled as complex in this implementation. See text for a
+    discussion of faster nonconvex handling. */
+
+ #include &lt;stdio.h&gt;
+ #include &lt;math.h&gt;
+ #ifdef __TURBOC__
+ #include &lt;alloc.h&gt;
+ #else    /* MSC */
+ #include &lt;malloc.h&gt;
+ #endif
+ #include &#147;polygon.h&#148;
+
+ #define SWAP(a,b) {temp = a; a = b; b = temp;}
+
+ struct EdgeState {
+    struct EdgeState *NextEdge;
+    int X;
+    int StartY;
+    int WholePixelXMove;
+    int XDirection;
+    int ErrorTerm;
+    int ErrorTermAdjUp;
+    int ErrorTermAdjDown;
+    int Count;
+ };
+
+ extern void DrawHorizontalLineSeg(int, int, int, int);
+ extern int FillConvexPolygon(struct PointListHeader *, int, int, int);
+ static void BuildGET(struct PointListHeader *, struct EdgeState *, int, int);
+ static void MoveXSortedToAET(int);
+ static void ScanOutAET(int, int);
+ static void AdvanceAET(void);
+ static void XSortAET(void);
+
+ /* Pointers to global edge table (GET) and active edge table (AET) */
+ static struct EdgeState *GETPtr, *AETPtr;
+
+ int FillPolygon(struct PointListHeader * VertexList, int Color,
+       int PolygonShape, int XOffset, int YOffset)
+ {
+    struct EdgeState *EdgeTableBuffer;
+    int CurrentY;
+
+ #ifdef CONVEX_CODE_LINKED
+    /* Pass convex polygons through to fast convex polygon filler */
+    if (PolygonShape == CONVEX)
+       return(FillConvexPolygon(VertexList, Color, XOffset, YOffset));
+ #endif
+
+    /* It takes a minimum of 3 vertices to cause any pixels to be
+       drawn; reject polygons that are guaranteed to be invisible */
+    if (VertexList-&gt;Length &lt; 3)
+       return(1);
+    /* Get enough memory to store the entire edge table */
+    if ((EdgeTableBuffer =
+          (struct EdgeState *) (malloc(sizeof(struct EdgeState) *
+          VertexList-&gt;Length))) == NULL)
+       return(0);  /* couldn&#146;&#146;t get memory for the edge table */
+    /* Build the global edge table */
+    BuildGET(VertexList, EdgeTableBuffer, XOffset, YOffset);
+    /* Scan down through the polygon edges, one scan line at a time,
+       so long as at least one edge remains in either the GET or AET */
+    AETPtr = NULL;    /* initialize the active edge table to empty */
+    CurrentY = GETPtr-&gt;StartY; /* start at the top polygon vertex */
+    while ((GETPtr != NULL) || (AETPtr != NULL)) {
+       MoveXSortedToAET(CurrentY);  /* update AET for this scan line */
+       ScanOutAET(CurrentY, Color); /* draw this scan line from AET */
+       AdvanceAET();                /* advance AET edges 1 scan line */
+       XSortAET();                  /* resort on X */
+       CurrentY&#43;&#43;;                  /* advance to the next scan line */
+    }
+    /* Release the memory we&#146;ve allocated and we&#146;re done */
+    free(EdgeTableBuffer);
+    return(1);
+ }
+
+ /* Creates a GET in the buffer pointed to by NextFreeEdgeStruc from
+    the vertex list. Edge endpoints are flipped, if necessary, to
+    guarantee all edges go top to bottom. The GET is sorted primarily
+    by ascending Y start coordinate, and secondarily by ascending X
+    start coordinate within edges with common Y coordinates. */
+ static void BuildGET(struct PointListHeader * VertexList,
+       struct EdgeState * NextFreeEdgeStruc, int XOffset, int YOffset)
+ {
+    int i, StartX, StartY, EndX, EndY, DeltaY, DeltaX, Width, temp;
+    struct EdgeState *NewEdgePtr;
+    struct EdgeState *FollowingEdge, **FollowingEdgeLink;
+    struct Point *VertexPtr;
+
+    /* Scan through the vertex list and put all non-0-height edges into
+       the GET, sorted by increasing Y start coordinate */
+    VertexPtr = VertexList-&gt;PointPtr;   /* point to the vertex list */
+    GETPtr = NULL;    /* initialize the global edge table to empty */
+    for (i = 0; i &lt; VertexList-&gt;Length; i&#43;&#43;) {
+       /* Calculate the edge height and width */
+       StartX = VertexPtr[i].X &#43; XOffset;
+       StartY = VertexPtr[i].Y &#43; YOffset;
+       /* The edge runs from the current point to the previous one */
+       if (i == 0) {
+          /* Wrap back around to the end of the list */
+          EndX = VertexPtr[VertexList-&gt;Length-1].X &#43; XOffset;
+          EndY = VertexPtr[VertexList-&gt;Length-1].Y &#43; YOffset;
+       } else {
+          EndX = VertexPtr[i-1].X &#43; XOffset;
+          EndY = VertexPtr[i-1].Y &#43; YOffset;
+       }
+       /* Make sure the edge runs top to bottom */
+       if (StartY &gt; EndY) {
+          SWAP(StartX, EndX);
+          SWAP(StartY, EndY);
+       }
+       /* Skip if this can&#146;t ever be an active edge (has 0 height) */
+       if ((DeltaY = EndY - StartY) != 0) {
+          /* Allocate space for this edge&#146;s info, and fill in the
+             structure */
+          NewEdgePtr = NextFreeEdgeStruc&#43;&#43;;
+          NewEdgePtr-&gt;XDirection =   /* direction in which X moves */
+                ((DeltaX = EndX - StartX) &gt; 0) ? 1 : -1;
+          Width = abs(DeltaX);
+          NewEdgePtr-&gt;X = StartX;
+          NewEdgePtr-&gt;StartY = StartY;
+          NewEdgePtr-&gt;Count = DeltaY;
+          NewEdgePtr-&gt;ErrorTermAdjDown = DeltaY;
+          if (DeltaX &gt;= 0)  /* initial error term going L-&gt;R */
+             NewEdgePtr-&gt;ErrorTerm = 0;
+          else              /* initial error term going R-&gt;L */
+             NewEdgePtr-&gt;ErrorTerm = -DeltaY &#43; 1;
+          if (DeltaY &gt;= Width) {     /* Y-major edge */
+             NewEdgePtr-&gt;WholePixelXMove = 0;
+             NewEdgePtr-&gt;ErrorTermAdjUp = Width;
+          } else {                   /* X-major edge */
+             NewEdgePtr-&gt;WholePixelXMove =
+                   (Width / DeltaY) * NewEdgePtr-&gt;XDirection;
+             NewEdgePtr-&gt;ErrorTermAdjUp = Width % DeltaY;
+          }
+          /* Link the new edge into the GET so that the edge list is
+             still sorted by Y coordinate, and by X coordinate for all
+             edges with the same Y coordinate */
+          FollowingEdgeLink = &GETPtr;
+          for (;;) {
+             FollowingEdge = *FollowingEdgeLink;
+             if ((FollowingEdge == NULL) ||
+                   (FollowingEdge-&gt;StartY &gt; StartY) ||
+                   ((FollowingEdge-&gt;StartY == StartY) &&
+                   (FollowingEdge-&gt;X &gt;= StartX))) {
+                NewEdgePtr-&gt;NextEdge = FollowingEdge;
+                *FollowingEdgeLink = NewEdgePtr;
+                break;
+             }
+             FollowingEdgeLink = &FollowingEdge-&gt;NextEdge;
+          }
+       }
+    }
+ }
+
+ /* Sorts all edges currently in the active edge table into ascending
+    order of current X coordinates */
+ static void XSortAET() {
+    struct EdgeState *CurrentEdge, **CurrentEdgePtr, *TempEdge;
+    int SwapOccurred;
+
+    /* Scan through the AET and swap any adjacent edges for which the
+       second edge is at a lower current X coord than the first edge.
+       Repeat until no further swapping is needed */
+    if (AETPtr != NULL) {
+       do {
+          SwapOccurred = 0;
+          CurrentEdgePtr = &AETPtr;
+          while ((CurrentEdge = *CurrentEdgePtr)-&gt;NextEdge != NULL) {
+             if (CurrentEdge-&gt;X &gt; CurrentEdge-&gt;NextEdge-&gt;X) {
+                /* The second edge has a lower X than the first;
+                   swap them in the AET */
+                TempEdge = CurrentEdge-&gt;NextEdge-&gt;NextEdge;
+                *CurrentEdgePtr = CurrentEdge-&gt;NextEdge;
+                CurrentEdge-&gt;NextEdge-&gt;NextEdge = CurrentEdge;
+                CurrentEdge-&gt;NextEdge = TempEdge;
+                SwapOccurred = 1;
+             }
+             CurrentEdgePtr = &(*CurrentEdgePtr)-&gt;NextEdge;
+          }
+       } while (SwapOccurred != 0);
+    }
+ }
+
+ /* Advances each edge in the AET by one scan line.
+    Removes edges that have been fully scanned. */
+ static void AdvanceAET() {
+    struct EdgeState *CurrentEdge, **CurrentEdgePtr;
+
+    /* Count down and remove or advance each edge in the AET */
+    CurrentEdgePtr = &AETPtr;
+    while ((CurrentEdge = *CurrentEdgePtr) != NULL) {
+       /* Count off one scan line for this edge */
+       if ((--(CurrentEdge-&gt;Count)) == 0) {
+          /* This edge is finished, so remove it from the AET */
+          *CurrentEdgePtr = CurrentEdge-&gt;NextEdge;
+       } else {
+          /* Advance the edge&#146;s X coordinate by minimum move */
+          CurrentEdge-&gt;X &#43;= CurrentEdge-&gt;WholePixelXMove;
+          /* Determine whether it&#146;s time for X to advance one extra */
+          if ((CurrentEdge-&gt;ErrorTerm &#43;=
+                CurrentEdge-&gt;ErrorTermAdjUp) &gt; 0) {
+             CurrentEdge-&gt;X &#43;= CurrentEdge-&gt;XDirection;
+             CurrentEdge-&gt;ErrorTerm -= CurrentEdge-&gt;ErrorTermAdjDown;
+          }
+          CurrentEdgePtr = &CurrentEdge-&gt;NextEdge;
+       }
+    }
+ }
+
+ /* Moves all edges that start at the specified Y coordinate from the
+    GET to the AET, maintaining the X sorting of the AET. */
+ static void MoveXSortedToAET(int YToMove) {
+    struct EdgeState *AETEdge, **AETEdgePtr, *TempEdge;
+    int CurrentX;
+
+    /* The GET is Y sorted. Any edges that start at the desired Y
+       coordinate will be first in the GET, so we&#146;ll move edges from
+       the GET to AET until the first edge left in the GET is no longer
+       at the desired Y coordinate. Also, the GET is X sorted within
+       each Y coordinate, so each successive edge we add to the AET is
+       guaranteed to belong later in the AET than the one just added. */
+    AETEdgePtr = &AETPtr;
+    while ((GETPtr != NULL) && (GETPtr-&gt;StartY == YToMove)) {
+       CurrentX = GETPtr-&gt;X;
+       /* Link the new edge into the AET so that the AET is still
+          sorted by X coordinate */
+       for (;;) {
+          AETEdge = *AETEdgePtr;
+          if ((AETEdge == NULL) || (AETEdge-&gt;X &gt;= CurrentX)) {
+             TempEdge = GETPtr-&gt;NextEdge;
+             *AETEdgePtr = GETPtr;  /* link the edge into the AET */
+             GETPtr-&gt;NextEdge = AETEdge;
+             AETEdgePtr = &GETPtr-&gt;NextEdge;
+             GETPtr = TempEdge;   /* unlink the edge from the GET */
+             break;
+          } else {
+             AETEdgePtr = &AETEdge-&gt;NextEdge;
+          }
+       }
+    }
+ }
+
+ /* Fills the scan line described by the current AET at the specified Y
+    coordinate in the specified color, using the odd/even fill rule */
+ static void ScanOutAET(int YToScan, int Color) {
+    int LeftX;
+    struct EdgeState *CurrentEdge;
+
+    /* Scan through the AET, drawing line segments as each pair of edge
+       crossings is encountered. The nearest pixel on or to the right
+       of left edges is drawn, and the nearest pixel to the left of but
+       not on right edges is drawn */
+    CurrentEdge = AETPtr;
+    while (CurrentEdge != NULL) {
+       LeftX = CurrentEdge-&gt;X;
+       CurrentEdge = CurrentEdge-&gt;NextEdge;
+       DrawHorizontalLineSeg(YToScan, LeftX, CurrentEdge-&gt;X-1, Color);
+       CurrentEdge = CurrentEdge-&gt;NextEdge;
+    }
+ }
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="40-01.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="40-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

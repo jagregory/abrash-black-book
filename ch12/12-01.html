@@ -1,0 +1,113 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Pushing the 486</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=12//-->
+<!--PAGES=233-237//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="../ch11/11-08.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="12-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 12<BR>Pushing the 486
+</FONT></H2>
+<H3><A NAME="Heading2"></A><FONT COLOR="#000077">It&#146;s Not Just a Bigger 386</FONT></H3>
+<P>So this traveling salesman is walking down a road, and he sees a group of men digging a ditch with their bare hands. &#147;Whoa, there!&#148; he says. &#147;What you guys need is a Model 8088 ditch digger!&#148; And he whips out a trowel and sells it to them.
+</P>
+<P>A few days later, he stops back around. They&#146;re happy with the trowel, but he sells them the latest ditch-digging technology, the Model 80286 spade. That keeps them content until he stops by again with a Model 80386 shovel (a full 32 inches wide, with a narrow point to emulate the trowel), and <I>that</I> holds them until he comes back around with what they really need: a Model 80486 bulldozer.</P>
+<P>Having reached the top of the line, the salesman doesn&#146;t pay them a call for a while. When he does, not only are they none too friendly, but they&#146;re digging with the 80386 shovel; the bulldozer is sitting off to one side. &#147;Why on earth are you using that shovel?&#148; the salesman asks. &#147;Why aren&#146;t you digging with the bulldozer?&#148;</P>
+<P>&#147;Well, Lord knows we tried,&#148; says the foreman, &#147;but it was all we could do just to lift the damn thing!&#148;</P>
+<P>Substitute &#147;processor&#148; for the various digging implements, and you get an idea of just how different the optimization rules for the 486 are from what you&#146;re used to. Okay, it&#146;s not quite <I>that</I> bad&#151;but upon encountering a processor where string instructions are often to be avoided and memory-to-register <B>MOV</B>s are frequently as fast as register-to-register <B>MOV</B>s, Dorothy was heard to exclaim (before she sank out of sight in a swirl of hopelessly mixed metaphors), &#147;I don&#146;t think we&#146;re in Kansas anymore, Toto.&#148;</P>
+<H4 ALIGN="LEFT"><A NAME="Heading3"></A><FONT COLOR="#000077">Enter the 486</FONT></H4>
+<P>No chip that is a direct, fully compatible descendant of the 8088, 286, and 386 could ever be called a RISC chip, but the 486 certainly contains RISC elements, and it&#146;s those elements that are most responsible for making 486 optimization unique. Simple, common instructions are executed in a single cycle by a RISC-like core processor, but other instructions are executed pretty much as they were on the 386, where every instruction takes at least 2 cycles. For example, <B>MOV AL, [TestChar]</B> takes only 1 cycle on the 486, assuming both instruction and data are in the cache&#151;3 cycles faster than the 386&#151;but <B>STOSB</B> takes 5 cycles, 1 cycle <I>slower</I> than on the 386. The floating-point execution unit inside the 486 is also much faster than the 387 math coprocessor, largely because, being in the same silicon as the CPU (the 486 has a math coprocessor built in), it is more tightly coupled. The results are sometimes startling: <B>FMUL</B> (floating point multiply) is usually faster on the 486 than <B>IMUL</B> (integer multiply)!</P>
+<P>An encyclopedic approach to 486 optimization would take a book all by itself, so in this chapter I&#146;m only going to hit the highlights of 486 optimization, touching on several optimization rules, some documented, some not. You might also want to check out the following sources of 486 information: <I>i486 Microprocessor Programmer&#146;s Reference Manual,</I> from Intel; &#147;8086 Optimization: Aim Down the Middle and Pray,&#148; in the March, 1991 <I>Dr. Dobb&#146;s Journal</I>; and &#147;Peak Performance: On to the 486,&#148; in the November, 1990 <I>Programmer&#146;s Journal.</I></P>
+<H3><A NAME="Heading4"></A><FONT COLOR="#000077">Rules to Optimize By</FONT></H3>
+<P>In Appendix G of the <I>i486 Microprocessor Programmer</I>&#146;<I>s</I> <I>Reference Manual</I>, Intel lists a number of optimization techniques for the 486. While neither exhaustive (we&#146;ll look at two undocumented optimizations shortly) nor entirely accurate (we&#146;ll correct two of the rules here), Intel&#146;s list is certainly a good starting point. In particular, the list conveys the extent to which 486 optimization differs from optimization for earlier x86 processors. Generally, I&#146;ll be discussing optimization for real mode (it being the most widely used mode at the moment), although many of the rules should apply to protected mode as well.</P>
+<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/12-01i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>486 optimization is generally more precise and less frustrating than optimization for other x86 processors because every 486 has an identical internal cache. Whenever both the instructions being executed and the data the instructions access are in the cache, those instructions will run in a consistent and calculatable number of cycles on all 486s, with little chance of interference from the prefetch queue and without regard to the speed of external memory.</I></SMALL>
+</TABLE>
+<P>In other words, for cached code (which time-critical code almost always is), performance is predictable and can be calculated with good precision, and those calculations will apply on any 486. However, &#147;predictable&#148; doesn&#146;t mean &#147;trivial&#148;; the cycle times printed for the various instructions are not the whole story. You must be aware of all the rules, documented and undocumented, that go into calculating actual execution times&#151;and uncovering some of those rules is exactly what this chapter is about.
+</P>
+<H4 ALIGN="LEFT"><A NAME="Heading5"></A><FONT COLOR="#000077">The Hazards of Indexed Addressing</FONT></H4>
+<P>Rule #1: Avoid indexed addressing (that is, try not to use either two registers or scaled addressing to point to memory).
+</P>
+<P>Intel cautions against using indexing to address memory because there&#146;s a one-cycle penalty for indexed addressing. True enough&#151;but &#147;indexed addressing&#148; might not mean what you expect.</P>
+<P>Traditionally, SI and DI are considered the index registers of the x86 CPUs. That is not the sense in which &#147;indexed addressing&#148; is meant here, however. In real mode, indexed addressing means that two registers, rather than one or none, are used to point to memory. (In this context, the use of one register to address memory is &#147;base addressing,&#148; no matter what register is used.) <B>MOV AX, [BX&#43;DI]</B> and <B>MOV CL, [BP&#43;SI&#43;10]</B> perform indexed addressing; <B>MOV AX,[BX]</B> and <B>MOV DL, [SI&#43;1]</B> do not.</P>
+<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/12-02i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>Therefore, in real mode, the rule is to avoid using two registers to point to memory whenever possible. Often, this simply means adding the two registers together outside a loop before memory is actually addressed.</I></SMALL>
+</TABLE>
+<P>As an example, you might adhere to this rule by replacing the code
+</P>
+<!-- CODE SNIP //-->
+<PRE>
+LoopTop:
+    add  ax,[bx&#43;si]
+    add  si,2
+    dec  cx
+    jnz  LoopTop
+</PRE>
+<!-- END CODE SNIP //-->
+<P>with this
+</P>
+<!-- CODE SNIP //-->
+<PRE>
+    add  si,bx
+LoopTop:
+    add  ax,[si]
+    add  si,2
+    dec  cx
+    jnz  LoopTop
+    sub  si,bx
+</PRE>
+<!-- END CODE SNIP //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="../ch11/11-08.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="12-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

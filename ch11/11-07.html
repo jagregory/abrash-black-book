@@ -1,0 +1,97 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Pushing the 286 and 386</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=11//-->
+<!--PAGES=224-226//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="11-06.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="11-08.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P><B>LISTING 11.5 L11-5.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+;
+; *** Listing 11.5 ***
+;
+; Measures the performance of adding an immediate value
+; to a memory variable, for comparison with Listing 11.4,
+; which adds an immediate value to a register.
+;
+        jmp     Skip
+;
+        even            ;always make sure word-sized memory
+                        ; variables are word-aligned!
+WordVar dw      0
+;
+Skip:
+        call    ZTimerOn
+        rept    1000
+        add     [WordVar]100h
+        endm
+        call    ZTimerOff
+</PRE>
+<!-- END CODE //-->
+<P>What&#146;s going on? Simply this: Instruction fetching is controlling overall execution time on <I>both</I> processors. Both the 8088 in a PC and the 286 in an AT can execute the bytes of the instructions in Listings 11.4 and 11.5 faster than they can be fetched. Since the instructions are exactly the same lengths on both processors, it stands to reason that the ratio of the overall execution times of the instructions should be the same on both processors as well. Instruction length controls execution time, and the instruction lengths are the same&#151;therefore the ratios of the execution times are the same. The 286 can both fetch and execute instruction bytes faster than the 8088 can, so code executes much faster on the 286; nonetheless, because the 286 can also execute those instruction bytes much faster than it can fetch them, overall performance is still largely determined by the size of the instructions.</P>
+<P>Is this always the case? No. When the prefetch queue is full, memory-accessing instructions on the 286 and 386 are much faster (relative to register-only instructions) than they are on the 8088. Given the system wait states prevalent on 286 and 386 computers, however, the prefetch queue is likely to be empty quite a bit, especially when code consisting of instructions with short EU execution times is executed. Of course, that&#146;s just the sort of code we&#146;re likely to write when we&#146;re optimizing, so the performance of high-speed code is more likely to be controlled by instruction size than by EU execution time on most 286 and 386 computers, just as it is on the PC.</P>
+<P>All of which is just a way of saying that faster memory access and EA calculation notwithstanding, it&#146;s just as desirable to keep instructions short and memory accesses to a minimum on the 286 and 386 as it is on the 8088. And the way to do that is to use the registers as heavily as possible, use string instructions, use short forms of instructions, and the like.</P>
+<P>The more things change, the more they remain the same....</P>
+<H4 ALIGN="LEFT"><A NAME="Heading17"></A><FONT COLOR="#000077">POPF and the 286</FONT></H4>
+<P>We&#146;ve one final 286-related item to discuss: the hardware malfunction of <B>POPF</B> under certain circumstances on the 286.</P>
+<P>The problem is this: Sometimes <B>POPF</B> permits interrupts to occur when interrupts are initially off and the setting popped into the Interrupt flag from the stack keeps interrupts off. In other words, an interrupt can happen even though the Interrupt flag is never set to 1. Now, I don&#146;t want to blow this particular bug out of proportion. It only causes problems in code that cannot tolerate interrupts under any circumstances, and that&#146;s a rare sort of code, especially in user programs. However, some code really does need to have interrupts absolutely disabled, with no chance of an interrupt sneaking through. For example, a critical portion of a disk BIOS might need to retrieve data from the disk controller the instant it becomes available; even a few hundred microseconds of delay could result in a sector&#146;s worth of data misread. In this case, one misplaced interrupt during a <B>POPF</B> could result in a trashed hard disk if that interrupt occurs while the disk BIOS is reading a sector of the File Allocation Table.</P>
+<P>There is a workaround for the <B>POPF</B> bug. While the workaround is easy to use, it&#146;s considerably slower than <B>POPF</B>, and costs a few bytes as well, so you won&#146;t want to use it in code that can tolerate interrupts. On the other hand, in code that truly cannot be interrupted, you should view those extra cycles and bytes as cheap insurance against mysterious and erratic program crashes.</P>
+<P>One obvious reason to discuss the <B>POPF</B> workaround is that it&#146;s useful. Another reason is that the workaround is an excellent example of Zen-level assembly coding, in that there&#146;s a well-defined goal to be achieved but no obvious way to do so. The goal is to reproduce the functionality of the <B>POPF</B> instruction without using <B>POPF</B>, and the place to start is by asking exactly what <B>POPF</B> does.</P>
+<P>All <B>POPF</B> does is pop the word on top of the stack into the FLAGS register, as shown in Figure 11.4. How can we do that without <B>POPF</B>? Of course, the 286&#146;s designers intended us to use <B>POPF</B> for this purpose, and didn&#146;t intentionally provide any alternative approach, so we&#146;ll have to devise an alternative approach of our own. To do that, we&#146;ll have to search for instructions that contain some of the same functionality as <B>POPF</B>, in the hope that one of those instructions can be used in some way to replace <B>POPF</B>.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="11-06.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="11-08.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

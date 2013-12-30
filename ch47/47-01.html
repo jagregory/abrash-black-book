@@ -1,0 +1,82 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X: 256-color VGA Magic</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=47//-->
+<!--PAGES=875-879//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="../ch46/46-03.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="47-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 47<BR>Mode X: 256-Color VGA Magic
+</FONT></H2>
+<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Introducing the VGA&#146;s Undocumented &#147;Animation-Optimal&#148; Mode</FONT></H3>
+<P>At a book signing for my book <I>Zen of Code Optimization</I>, an attractive young woman came up to me, holding my book, and said, &#147;You&#146;re Michael Abrash, aren&#146;t you?&#148; I confessed that I was, prepared to respond in an appropriately modest yet proud way to the compliments I was sure would follow. (It was my own book signing, after all.) It didn&#146;t work out quite that way, though. The first thing out of her mouth was:</P>
+<P>&#147;&#145;Mode X&#146; is a stupid name for a graphics mode.&#148; As my jaw started to drop, she added, &#147;And you didn&#146;t invent the mode, either. My husband did it before you did.&#148;</P>
+<P>And they say there are no groupies in programming!</P>
+<P>Well. I never claimed that I invented the mode (which is a 320&#215;256-color mode with some very special properties, as we&#146;ll see shortly). I did discover it independently, but so did other people in the game business, some of them no doubt before I did. The difference is that all those other people held onto this powerful mode as a trade secret, while I didn&#146;t; instead, I spread the word as broadly as I could in my column in <I>Dr. Dobb&#146;s Journal,</I> on the theory that the more people knew about this mode, the more valuable it would be. And I succeeded, as evidenced by the fact that this now widely-used mode is universally known by the name I gave it in <I>DDJ,</I> &#147;Mode X.&#148; Neither do I think that&#146;s a bad name; it&#146;s short, catchy, and easy to remember, and it befits the mystery status of this mode, which was omitted entirely from IBM&#146;s documentation of the VGA.</P>
+<P>In fact, when all is said and done, Mode X is one of my favorite accomplishments. I remember reading that Charles Schultz, creator of &#147;Peanuts,&#148; was particularly proud of having introduced the phrase &#147;security blanket&#148; to the English language. I feel much the same way about Mode X; it&#146;s now a firmly entrenched part of the computer lexicon, and how often do any of us get a chance to do that? And that&#146;s not to mention all the excellent games that would not have been as good without Mode X.</P>
+<P>So, in the end, I&#146;m thoroughly pleased with Mode X; the world is a better place for it, even if it did cost me my one potential female fan. (Contrary to popular belief, the lives of computer columnists and rock stars are not, repeat, <I>not</I>, all that similar.) This and the following two chapters are based on the <I>DDJ</I> columns that started it all back in 1991, three columns that generated a tremendous amount of interest and spawned a ton of games, and about which I still regularly get letters and e-mail. Ladies and gentlemen, I give you...Mode X.</P>
+<H3><A NAME="Heading3"></A><FONT COLOR="#000077">What Makes Mode X Special?</FONT></H3>
+<P>Consider the strange case of the VGA&#146;s 320&#215;256-color mode&#151;Mode X&#151;which is undeniably complex to program and isn&#146;t even documented by IBM&#151;but which is, nonetheless, perhaps the single best mode the VGA has to offer, especially for animation.
+</P>
+<P>We&#146;ve seen the VGA&#146;s undocumented 256-color modes, in Chapters 31 and 32, but now it&#146;s time to delve into the wonders of Mode X itself. (Most of the performance tips I&#146;ll discuss for this mode also apply to the other non-standard 256-color modes, however.) Five features set Mode X apart from other VGA modes. First, it has a 1:1 aspect ratio, resulting in equal pixel spacing horizontally and vertically (that is, square pixels). Square pixels make for the most attractive displays, and avoid considerable programming effort that would otherwise be necessary to adjust graphics primitives and images to match the screen&#146;s pixel spacing. (For example, with square pixels, a circle can be drawn as a circle; otherwise, it must be drawn as an ellipse that corrects for the aspect ratio&#151;a slower and considerably more complicated process.) In contrast, mode 13H, the only documented 256-color mode, provides a nonsquare 320&#215;200 resolution.</P>
+<P>Second, Mode X allows page flipping, a prerequisite for the smoothest possible animation. Mode 13H does not allow page flipping, nor does mode 12H, the VGA&#146;s high-resolution 640&#215;480 16-color mode.</P>
+<P>Third, Mode X allows the VGA&#146;s plane-oriented hardware to be used to process pixels in parallel, improving performance by up to four times over mode 13H.</P>
+<P>Fourth, like mode 13H but unlike all other VGA modes, Mode X is a byte-per-pixel mode (each pixel is controlled by one byte in display memory), eliminating the slow read-before-write and bit-masking operations often required in 16-color modes, where each byte of display memory represents more than a single pixel. In addition to cutting the number of memory accesses in half, this is important because the 486/Pentium write FIFO and the memory caching schemes used by many VGA clones speed up writes more than reads.</P>
+<P>Fifth, unlike mode 13H, Mode X has plenty of offscreen memory free for image storage. This is particularly effective in conjunction with the use of the VGA&#146;s latches; together, the latches and the off-screen memory allow images to be copied to the screen four pixels at a time.</P>
+<P>There&#146;s a sixth feature of Mode X that&#146;s <I>not</I> so terrific: It&#146;s hard to program efficiently. As Chapters 23 through 30 of this book demonstrates, 16-color VGA programming can be demanding. Mode X is often as demanding as 16-color programming, and operates by a set of rules that turns everything you&#146;ve learned in 16-color mode sideways. Programming Mode X is nothing like programming the nice, flat bitmap of mode 13H, or, for that matter, the flat, linear (albeit banked) bitmap used by 256-color SuperVGA modes. (I&#146;t&#146;s important to remember that Mode X works on <I>all</I> VGAs, not just SuperVGAs.) Many programmers I talk to love the flat bitmap model, and think that it&#146;s the ideal organization for display memory because it&#146;s so straightforward to program. Here, however, the complexity of Mode X is opportunity&#151;opportunity for the best combination of performance and appearance the VGA has to offer. If you do 256-color programming, and especially if you use animation, you&#146;re missing the boat if you&#146;re not using Mode X.</P>
+<P>Although some developers have taken advantage of Mode X, its use is certainly not universal, being entirely undocumented; only an experienced VGA programmer would have the slightest inkling that it even exists, and figuring out how to make it perform beyond the write pixel/read pixel level is no mean feat. Little other than my <I>DDJ</I> columns has been published about it, although John Bridges has widely distributed his code for a number of undocumented 256-color resolutions, and I&#146;d like to acknowledge the influence of his code on the mode set routine presented in this chapter.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="../ch46/46-03.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="47-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

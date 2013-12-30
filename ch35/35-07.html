@@ -1,0 +1,440 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Bresenham Is Fast, and Fast Is Good</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=35//-->
+<!--PAGES=671-678//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="35-06.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="../ch36/36-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P><B>LISTING 35.3 L35-3.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+; Fast assembler implementation of Bresenham&#146;s line-drawing algorithm
+; for the EGA and VGA. Works in modes 0Eh, 0Fh, 10h, and 12h.
+; Borland C<SMALL>&#43&#43;</SMALL> near-callable.
+; Bit mask accumulation technique when |DeltaX| &gt;= |DeltaY|
+;  suggested by Jim Mackraz.
+;
+; Assembled with TASM
+;
+; By Michael Abrash
+;
+;****************************************************************
+; C-compatible line-drawing entry point at _EVGALine.           *
+; Near C-callable as:                                           *
+;       EVGALine(X0, Y0, X1, Y1, Color);                        *
+;****************************************************************
+;
+
+       model small
+       .code
+
+;
+; Equates.
+;
+EVGA_SCREEN_WIDTH_IN_BYTES  equ  80        ;memory offset from start of
+                                           ; one row to start of next
+                                           ; in display memory
+EVGA_SCREEN_SEGMENT         equ  0a000h    ;display memory segment
+GC_INDEX                    equ  3ceh      ;Graphics Controller
+                                           ; Index register port
+SET_RESET_INDEX             equ  0         ;indexes of needed
+ENABLE_SET_RESET_INDEX      equ  1         ; Graphics Controller
+BIT_MASK_INDEX              equ  8         ; registers
+
+;
+; Stack frame.
+;
+EVGALineParms   struc
+                dw      ?               ;pushed BP
+                dw      ?               ;pushed return address (make double
+                                        ; word for far call)
+X0              dw      ?               ;starting X coordinate of line
+Y0              dw      ?               ;starting Y coordinate of line
+X1              dw      ?               ;ending X coordinate of line
+Y1              dw      ?               ;ending Y coordinate of line
+Color           db      ?               ;color of line
+                db      ?               ;dummy to pad to word size
+EVGALineParms   ends
+
+;****************************************************************
+; Line drawing macros.                                          *
+;****************************************************************
+
+;
+; Macro to loop through length of line, drawing each pixel in turn.
+; Used for case of |DeltaX| &gt;= |DeltaY|.
+; Input:
+;       MOVE_LEFT: 1 if DeltaX &lt; 0, 0 else
+;       AL: pixel mask for initial pixel
+;       BX: |DeltaX|
+;       DX: address of GC data register, with index register set to
+;               index of Bit Mask register
+;       SI: DeltaY
+;       ES:DI: display memory address of byte containing initial
+;               pixel
+;
+LINE1   macro   MOVE_LEFT
+        local   LineLoop, MoveXCoord, NextPixel, Line1End
+        local   MoveToNextByte, ResetBitMaskAccumulator
+        mov     cx,bx                   ;# of pixels in line
+        jcxz    Line1End                ;done if there are no more pixels
+                                        ; (there&#146;s always at least the one pixel
+                                        ; at the start location)
+        shl     si,1                    ;DeltaY * 2
+        mov     bp,si                   ;error term
+        sub     bp,bx                   ;error term starts at DeltaY * 2 - DeltaX
+        shl     bx,1                    ;DeltaX * 2
+        sub     si,bx                   ;DeltaY * 2 - DeltaX * 2 (used in loop)
+        add     bx,si                   ;DeltaY * 2 (used in loop)
+        mov     ah,al                   ;set aside pixel mask for initial pixel
+                                        ; with AL (the pixel mask accumulator) set
+                                        ; for the initial pixel
+LineLoop:
+;
+; See if it&#146;s time to advance the Y coordinate yet.
+;
+        and     bp,bp                   ;see if error term is negative
+        js      MoveXCoord              ;yes, stay at the same Y coordinate
+;
+; Advance the Y coordinate, first writing all pixels in the current
+; byte, then move the pixel mask either left or right, depending
+; on MOVE_LEFT.
+;
+        out     dx,al                   ;set up bit mask for pixels in this byte
+        xchg    byte ptr [di],al
+                                        ;load latches and write pixels, with bit mask
+                                        ; preserving other latched bits. Because
+                                        ; set/reset is enabled for all planes, the
+                                        ; value written actually doesn&#146;t matter
+        add     di,EVGA_SCREEN_WIDTH_IN_BYTES   ;increment Y coordinate
+        add     bp,si                   ;adjust error term back down
+;
+; Move pixel mask one pixel (either right or left, depending
+; on MOVE_LEFT), adjusting display memory address when pixel mask wraps.
+;
+if MOVE_LEFT
+        rol     ah,1                    ;move pixel mask 1 pixel to the left
+else
+        ror     ah,1                    ;move pixel mask 1 pixel to the right
+endif
+        jnc     ResetBitMaskAccumulator ;didn&#146;t wrap to next byte
+        jmp     short MoveToNextByte    ;did wrap to next byte
+;
+; Move pixel mask one pixel (either right or left, depending
+; on MOVE_LEFT), adjusting display memory address and writing pixels
+; in this byte when pixel mask wraps.
+;
+MoveXCoord:
+        add     bp,bx                   ;increment error term &amp keep same
+if MOVE_LEFT
+        rol     ah,1                    ;move pixel mask 1 pixel to the left
+else
+        ror     ah,1                    ;move pixel mask 1 pixel to the right
+endif
+        jnc     NextPixel               ;if still in same byte, no need to
+                                        ; modify display memory yet
+        out     dx,al                   ;set up bit mask for pixels in this byte.
+        xchg    byte ptr [di],al
+                                        ;load latches and write pixels, with bit mask
+                                        ; preserving other latched bits. Because
+                                        ; set/reset is enabled for all planes, the
+                                        ; value written actually doesn&#146;t matter
+MoveToNextByte:
+if MOVE_LEFT
+        dec     di                      ;next pixel is in byte to left
+else
+        inc     di                      ;next pixel is in byte to right
+endif
+ResetBitMaskAccumulator:
+        sub     al,al                   ;reset pixel mask accumulator
+NextPixel:
+        or      al,ah                   ;add the next pixel to the pixel mask
+                                        ; accumulator
+        loop    LineLoop
+;
+; Write the pixels in the final byte.
+;
+Line1End:
+        out     dx,al                   ;set up bit mask for pixels in this byte
+        xchg    byte ptr [di],al
+                                        ;load latches and write pixels, with bit mask
+                                        ; preserving other latched bits. Because
+                                        ; set/reset is enabled for all planes, the
+                                        ; value written actually doesn&#146;t matter
+        endm
+
+;
+; Macro to loop through length of line, drawing each pixel in turn.
+; Used for case of DeltaX &lt; DeltaY.
+; Input:
+;       MOVE_LEFT: 1 if DeltaX &lt; 0, 0 else
+;       AL: pixel mask for initial pixel
+;       BX: |DeltaX|
+;       DX: address of GC data register, with index register set to
+;               index of Bit Mask register
+;       SI: DeltaY
+;       ES:DI: display memory address of byte containing initial
+;               pixel
+;
+LINE2   macro   MOVE_LEFT
+        local   LineLoop, MoveYCoord, ETermAction, Line2End
+        mov     cx,si                  ;# of pixels in line
+        jcxz    Line2End               ;done if there are no more pixels
+        shl     bx,1                   ;DeltaX * 2
+        mov     bp,bx                  ;error term
+        sub     bp,si                  ;error term starts at DeltaX * 2 - DeltaY
+        shl     si,1                   ;DeltaY * 2
+        sub     bx,si                  ;DeltaX * 2 - DeltaY * 2 (used in loop)
+        add     si,bx                  ;DeltaX * 2 (used in loop)
+;
+; Set up initial bit mask &amp write initial pixel.
+;
+        out     dx,al
+        xchg    byte ptr [di],ah
+                                       ;load latches and write pixel, with bit mask
+                                       ; preserving other latched bits. Because
+                                       ; set/reset is enabled for all planes, the
+                                       ; value written actually doesn&#146;t matter
+LineLoop:
+;
+; See if it&#146;s time to advance the X coordinate yet.
+;
+        and     bp,bp                  ;see if error term is negative
+        jns     ETermAction            ;no, advance X coordinate
+        add     bp,si                  ;increment error term &amp keep same
+        jmp     short MoveYCoord       ; X coordinate
+ETermAction:
+;
+; Move pixel mask one pixel (either right or left, depending
+; on MOVE_LEFT), adjusting display memory address when pixel mask wraps.
+;
+if MOVE_LEFT
+        rol     al,1
+        sbb     di,0
+else
+        ror     al,1
+        adc     di,0
+endif
+        out     dx,al                  ;set new bit mask
+        add     bp,bx                  ;adjust error term back down
+;
+; Advance Y coordinate.
+;
+MoveYCoord:
+        add     di,EVGA_SCREEN_WIDTH_IN_BYTES
+;
+; Write the next pixel.
+;
+        xchg    byte ptr [di],ah
+                                       ;load latches and write pixel, with bit mask
+                                       ; preserving other latched bits. Because
+                                       ; set/reset is enabled for all planes, the
+                                       ; value written actually doesn&#146;t matter
+;
+        loop    LineLoop
+Line2End:
+        endm
+
+;****************************************************************
+; Line drawing routine.                                         *
+;****************************************************************
+
+        public  _EVGALine
+_EVGALine       proc    near
+        push    bp
+        mov     bp,sp
+        push    si                     ;preserve register variables
+        push    di
+        push    ds
+;
+; Point DS to display memory.
+;
+        mov     ax,EVGA_SCREEN_SEGMENT
+        mov     ds,ax
+;
+; Set the Set/Reset and Set/Reset Enable registers for
+; the selected color.
+;
+        mov     dx,GC_INDEX
+        mov     al,SET_RESET_INDEX
+        out     dx,al
+        inc     dx
+        mov     al,[bp&#43;Color]
+        out     dx,al
+        dec     dx
+        mov     al,ENABLE_SET_RESET_INDEX
+        out     dx,al
+        inc     dx
+        mov     al,0ffh
+        out     dx,al
+;
+; Get DeltaY.
+;
+        mov     si,[bp&#43;Y1]                 ;line Y start
+        mov     ax,[bp&#43;Y0]                 ;line Y end, used later in
+                                               ;calculating the start address
+        sub     si,ax                          ;calculate DeltaY
+        jns     CalcStartAddress               ;if positive, we&#146;re set
+;
+; DeltaY is negative &#151; swap coordinates so we&#146;re always working
+; with a positive DeltaY.
+;
+        mov     ax,[bp&#43;Y1]                 ;set line start to Y1, for use
+                                               ; in calculating the start address
+        mov     dx,[bp&#43;X0]
+        xchg    dx,[bp&#43;X1]
+        mov     [bp&#43;X0],dx                 ;swap X coordinates
+        neg     si                             ;convert to positive DeltaY
+;
+; Calculate the starting address in display memory of the line.
+; Hardwired for a screen width of 80 bytes.
+;
+CalcStartAddress:
+        shl     ax,1                   ;Y0 * 2 ;Y0 is already in AX
+        shl     ax,1                   ;Y0 * 4
+        shl     ax,1                   ;Y0 * 8
+        shl     ax,1                   ;Y0 * 16
+        mov     di,ax
+        shl     ax,1                   ;Y0 * 32
+        shl     ax,1                   ;Y0 * 64
+        add     di,ax                  ;Y0 * 80
+        mov     dx,[bp&#43;X0]
+        mov     cl,dl                  ;set aside lower 3 bits of column for
+        and     cl,7                   ; pixel masking
+        shr     dx,1
+        shr     dx,1
+        shr     dx,1                   ;get byte address of column (X0/8)
+        add     di,dx                  ;offset of line start in display segment
+;
+; Set up GC Index register to point to the Bit Mask register.
+;
+        mov     dx,GC_INDEX
+        mov     al,BIT_MASK_INDEX
+        out     dx,al
+        inc     dx                     ;leave DX pointing to the GC Data register
+;
+; Set up pixel mask (in-byte pixel address).
+;
+        mov     al,80h
+        shr     al,cl
+;
+; Calculate DeltaX.
+;
+        mov     bx,[bp&#43;X1]
+        sub     bx,[bp&#43;X0]
+;
+; Handle correct one of four octants.
+;
+        js      NegDeltaX
+        cmp     bx,si
+        jb      Octant1
+;
+; DeltaX &gt;= DeltaY &gt;= 0.
+;
+        LINE1   0
+        jmp     EVGALineDone
+;
+; DeltaY &gt; DeltaX &gt;= 0.
+;
+Octant1:
+        LINE2   0
+        jmp     short EVGALineDone
+;
+NegDeltaX:
+        neg     bx      ;|DeltaX|
+        cmp     bx,si
+        jb      Octant2
+;
+; |DeltaX| &gt;= DeltaY and DeltaX &lt; 0.
+;
+        LINE1   1
+        jmp     short EVGALineDone
+;
+; |DeltaX| &lt; DeltaY and DeltaX &lt; 0.
+;
+Octant2:
+        LINE2   1
+;
+EVGALineDone:
+;
+; Restore EVGA state.
+;
+        mov     al,0ffh
+        out     dx,al                  ;set Bit Mask register to 0ffh
+        dec     dx
+        mov     al,ENABLE_SET_RESET_INDEX
+        out     dx,al
+        inc     dx
+        sub     al,al
+        out     dx,al                  ;set Enable Set/Reset register to 0
+;
+        pop     ds
+        pop     di
+        pop     si
+        pop     bp
+        ret
+_EVGALine       endp
+
+        end
+</PRE>
+<!-- END CODE //-->
+<P>An explanation of the workings of the code in Listing 35.3 would be a lengthy one, and would be redundant since the basic operation of the code in Listing 35.3 is no different from that of the code in Listing 35.1, although the implementation is much changed due to the nature of assembly language and also due to designing for speed rather than for clarity. Given that you thoroughly understand the C implementation in Listing 35.1, the assembly language implementation in Listing 35.3, which is well-commented, should speak for itself.
+</P>
+<P>One point I do want to make is that Listing 35.3 incorporates a clever notion for which credit is due Jim Mackraz, who described the notion in a letter written in response to an article I wrote long ago in the late and lamented <I>Programmer&#146;s Journal</I>. Jim&#146;s suggestion was that when drawing lines for which |<B>DeltaX</B>| is greater than |<B>DeltaY</B>|, bits set to 1 for each of the pixels controlled by a given byte can be accumulated in a register, rather than drawing each pixel individually. All the pixels controlled by that byte can then be drawn at once, with a single access to display memory, when all pixel processing associated with that byte has been completed. This approach can save many <B>OUT</B>s and many display memory reads and writes when drawing nearly-horizontal lines, and that&#146;s important because EGAs and VGAs hold the CPU up for a considerable period of time on each I/O operation and display memory access.</P>
+<P>All too many PC programmers fall into the high-level-language trap of thinking that a good algorithm guarantees good performance. Not so: As our two implementations of Bresenham&#146;s algorithm graphically illustrate (pun not originally intended, but allowed to stand once recognized), truly great PC code requires both a good algorithm <I>and</I> a good assembly implementation. In Listing 35.3, we&#146;ve got y-oh-my, isn&#146;t it fun?</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="35-06.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="../ch36/36-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

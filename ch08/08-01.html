@@ -1,0 +1,86 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Speeding Up C with Assembly Language</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=08//-->
+<!--PAGES=149-153//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="../ch07/07-05.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="08-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 8<BR>Speeding Up C with Assembly Language
+</FONT></H2>
+<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Jumping Languages When You Know It&#146;ll Help</FONT></H3>
+<P>When I was a senior in high school, a pop song called &#147;Seasons in the Sun,&#148; sung by one Terry Jacks, soared up the pop charts and spent, as best I can recall, two straight weeks atop <I>Kasey Kasem&#146;s American Top 40.</I> &#147;Seasons in the Sun&#148; wasn&#146;t a particularly good song, primarily because the lyrics were silly. I&#146;ve never understood why the song was a hit, but, as so often happens with undistinguished but popular music by forgotten one- or two-shot groups (&#147;Don&#146;t Pull Your Love Out on Me Baby,&#148; &#147;Billy Don&#146;t Be a Hero,&#148; <I>et al.</I>), I heard it everywhere for a month or so, then gave it not another thought for 15 years.</P>
+<P>Recently, though, I came across a review of a Rhino Records collection of obscure 1970s pop hits. Knowing that Jeff Duntemann is an aficionado of such esoterica (who do <I>you</I> know who owns an album by The Peppermint Trolley Company?), I sent the review to him. He was amused by it and, as we kicked the names of old songs around, &#147;Seasons in the Sun&#148; came up. I expressed my wonderment that a song that really wasn&#146;t very good was such a big hit.</P>
+<P>&#147;Well,&#148; said Jeff, &#147;I think it suffered in the translation from the French.&#148;</P>
+<P>Ah-ha! Mystery solved. Apparently everyone but me knew that it was translated from French, and that novelty undoubtedly made the song a big hit. The translation was also surely responsible for the sappy lyrics; dollars to donuts that the original French lyrics were stronger.</P>
+<P>Which brings us without missing a beat to this chapter&#146;s theme, speeding up C with assembly language. When you seek to speed up a C program by converting selected parts of it (generally no more than a few functions) to assembly language, make sure you end up with high-performance assembly language code, not fine-tuned C code. Compilers like Microsoft C/C<SMALL>&#43;&#43;</SMALL> and Watcom C are by now pretty good at fine-tuning C code, and you&#146;re not likely to do much better by taking the compiler&#146;s assembly language output and tweaking it.</P>
+<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/08-01i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>To make the process of translating C code to assembly language worth the trouble, you must ignore what the compiler does and design your assembly language code from a pure assembly language perspective. With a merely adequate translation, you risk laboring mightily for little or no reward.</I></SMALL>
+</TABLE>
+<P>Apropos of which, when was the last time you heard of Terry Jacks?
+</P>
+<H4 ALIGN="LEFT"><A NAME="Heading3"></A><FONT COLOR="#000077">Billy, Don&#146;t Be a Compiler</FONT></H4>
+<P>The key to optimizing C programs with assembly language is, as always, writing good assembly language code, but with an added twist. Rule 1 when converting C code to assembly is this: <I>Don&#146;t think like a compiler.</I> That&#146;s more easily said than done, especially when the C code you&#146;re converting is readily available as a model and the assembly code that the compiler generates is available as well. Nevertheless, the principle of not thinking like a compiler is essential, and is, in one form or another, the basis for all that I&#146;ll discuss below.</P>
+<P>Before I discuss Rule 1 further, let me mention rule number 0: <I>Only optimize where it matters.</I> The bulk of execution time in any program is spent in a very small portion of the code, and most code beyond that small portion doesn&#146;t have any perceptible impact on performance. Unless you&#146;re supremely concerned with code size (an area in which assembly-only programs can excel), I&#146;d suggest that you write most of your code in C and reserve assembly for the truly critical sections of your code; that&#146;s the formula that I find gives the most bang for the buck.</P>
+<P>This is not to say that complete programs shouldn&#146;t be <I>designed</I> with optimized assembly language in mind. As you&#146;ll see shortly, orienting your data structures towards assembly language can be a salubrious endeavor indeed, even if most of your code is in C. When it comes to actually optimizing code and/or converting it to assembly, though, do it only where it matters. Get a profiler&#151;and use it!</P>
+<P>Also make it a point to concentrate on refining your program design and algorithmic approach at the conceptual and/or C levels before doing any assembly language optimization.</P>
+<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/08-02i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>Assembly language optimization is the final and far from the only step in the optimization chain, and as such should be performed last; converting to assembly too soon can lock in your code before the design is optimal. At the very least, conversion to assembly tends to make future changes and debugging more difficult, slowing you down and limiting your options.</I></SMALL>
+</TABLE>
+<H3><A NAME="Heading4"></A><FONT COLOR="#000077">Don&#146;t Call Your Functions on Me, Baby</FONT></H3>
+<P>In order to think differently from a compiler, you must understand both what compilers and C programmers tend to do and how that differs from what assembly language does well. In this pursuit, it can be useful to examine the code your compiler generates, either by viewing the code in a debugger or by having the compiler generate an assembly language output file. (The latter is done with /Fa or /Fc in Microsoft C/C<SMALL>&#43;&#43;</SMALL> and -S in Borland C<SMALL>&#43;&#43;</SMALL>.)</P>
+<P>C programmers tend to modularize their code with lots of function calls. That&#146;s good for readable, reliable, reusable code, and it allows the compiler to optimize better because it can deal with fewer variables and statements in each optimization arena&#151;but it&#146;s not so good when viewed from the assembly language level. Calls and returns are slow, especially in the large code model, and the pushes required to put parameters on the stack are expensive as well.</P>
+<P>What this means is that when you want to speed up a portion of a C program, you should identify the entire critical portion and move <I>all</I> of that critical portion into an assembly language function. You don&#146;t want to move a part of the inner loop into assembly language and then call it from C every time through the loop; the function call and return overhead would be unacceptable. Carve out the critical code <I>en masse</I> and move it into assembly, and try to avoid calls and returns even in your assembly code. True, in assembly you can pass parameters in registers, but the calls and returns themselves are still slow; if the extra cycles they take don&#146;t affect performance, then the code they&#146;re in probably isn&#146;t critical, and perhaps you&#146;ve chosen to convert too much code to assembly, eh?</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="../ch07/07-05.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="08-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

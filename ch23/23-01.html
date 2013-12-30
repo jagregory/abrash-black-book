@@ -1,0 +1,83 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Bones and Sinew</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=23//-->
+<!--PAGES=423-427//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="../ch22/22-03.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="23-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H2 ALIGN="CENTER"><FONT COLOR="#000077"><I>Part II
+</I></FONT></H2>
+<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 23<BR>Bones and Sinew
+</FONT></H2>
+<H3><A NAME="Heading2"></A><FONT COLOR="#000077">At the Very Heart of Standard PC Graphics</FONT></H3>
+<P>The VGA is unparalleled in the history of computer graphics, for it is by far the most widely-used graphics standard ever, the closest we may ever come to a <I>lingua franca</I> of computer graphics. No other graphics standard has even come close to the 50,000,000 or so VGAs in use today, and virtually every PC compatible sold today has full VGA compatibility built in. There are, of course, a variety of graphics accelerators that outperform the standard VGA, and indeed, it is becoming hard to find a plain vanilla VGA anymore&#151;but there is no standard for accelerators, and every accelerator contains a true-blue VGA at its core.</P>
+<P>What that means is that if you write your programs for the VGA, you&#146;ll have the largest possible market for your software. In order for graphics-based software to succeed, however, it must perform well. Wringing the best performance from the VGA is no simple task, and it&#146;s <I>impossible</I> unless you really understand how the VGA works&#151;unless you have the internals down cold. This book is about PC graphics at many levels, but high performance is the foundation for all that is to come, so it is with the inner workings of the VGA that we will begin our exploration of PC graphics.</P>
+<P>The first eight chapters of Part II is a guided tour of the heart of the VGA; after you&#146;ve absorbed what we&#146;ll cover in this and the next seven chapters, you&#146;ll have the foundation for understanding just about everything the VGA can do, including the fabled Mode X and more. As you read through these first chapters, please keep in mind that the <I>really</I> exciting stuff&#151;animation, 3-D, blurry-fast lines and circles and polygons&#151;has to wait until we have the fundamentals out of the way. So hold on and follow along, and before you know it the fireworks will be well underway.</P>
+<P>We&#146;ll start our exploration with a quick overview of the VGA, and then we&#146;ll dive right in and get a taste of what the VGA can do.</P>
+<H3><A NAME="Heading3"></A><FONT COLOR="#000077">The VGA</FONT></H3>
+<P>The VGA is the baseline adapter for modern IBM PC compatibles, present in virtually every PC sold today or in the last several years. (Note that the VGA is often nothing more than a chip on a motherboard, with some memory, a DAC, and maybe a couple of glue chips; nonetheless, I&#146;ll refer to it as an adapter from now on for simplicity.) It guarantees that every PC is capable of documented resolutions up to 640&#215;480 (with 16 possible colors per pixel) and 320&#215;200 (with 256 colors per pixel), as well as undocumented&#151;but nonetheless thoroughly standard&#151;resolutions up to 360&#215;480 in 256-color mode, as we&#146;ll see in Chapters 31&#150;34 and 47&#150;49. In order for a video adapter to claim VGA compatibility, it must support all the features and code discussed in this book (with a very few minor exceptions that I&#146;ll note)&#151;and my experience is that just about 100 percent of the video hardware currently shipping or shipped since 1990 is in fact VGA compatible. Therefore, VGA code will run on nearly all of the 50,000,000 or so PC compatibles out there, with the exceptions being almost entirely obsolete machines from the 1980s. This makes good VGA code and VGA programming expertise valuable commodities indeed.
+</P>
+<P>Right off the bat, I&#146;d like to make one thing perfectly clear: The VGA is hard&#151;sometimes <I>very</I> hard&#151;to program for good performance. Hard, but not impossible&#151;and that&#146;s why I like this odd board. It&#146;s a throwback to an earlier generation of micros, when inventive coding and a solid understanding of the hardware were the best tools for improving performance. Increasingly, faster processors and powerful coprocessors are seen as the solution to the sluggish software produced by high-level languages and layers of interface and driver code, and that&#146;s surely a valid approach. However, there are tens of millions of VGAs installed right now, in machines ranging from 6-MHz 286s to 90-MHz Pentiums. What&#146;s more, because the VGAs are generally 8- or at best 16-bit devices, and because of display memory wait states, a faster processor isn&#146;t as much of a help as you&#146;d expect. The upshot is that only a seasoned performance programmer who understands the VGA through and through can drive the board to its fullest potential.</P>
+<P>Throughout this book, I&#146;ll explore the VGA by selecting a specific algorithm or feature and implementing code to support it on the VGA, examining aspects of the VGA architecture as they become relevant. You&#146;ll get to see VGA features in context, where they are more comprehensible than in IBM&#146;s somewhat arcane documentation, and you&#146;ll get working code to use or to modify to meet your needs.</P>
+<P>The prime directive of VGA programming is that there&#146;s rarely just one way to program the VGA for a given purpose. Once you understand the tools the VGA provides, you&#146;ll be able to combine them to generate the particular synergy your application needs. My VGA routines are not intended to be taken as gospel, or to show &#147;best&#148; implementations, but rather to start you down the road to understanding the VGA.</P>
+<P>Let&#146;s begin.</P>
+<H3><A NAME="Heading4"></A><FONT COLOR="#000077">An Introduction to VGA Programming</FONT></H3>
+<P>Most discussions of the VGA start out with a traditional &#147;Here&#146;s a block diagram of the VGA&#148; approach, with lists of registers and statistics. I&#146;ll get to that eventually, but you can find it in IBM&#146;s VGA documentation and several other books. Besides, it&#146;s numbing to read specifications and explanations, and the VGA is an exciting adapter, the kind that makes you want to get your hands dirty probing under the hood, to write some nifty code just to see what the board can do. What&#146;s more, the best way to understand the VGA is to see it work, so let&#146;s jump right into a sample of the VGA in action, getting a feel for the VGA&#146;s architecture in the process.
+</P>
+<P>Listing 23.1 is a sample VGA program that pans around an animated 16-color medium-resolution (640&#215;350) playfield. There&#146;s a lot packed into this code; I&#146;m going to focus on the VGA-specific aspects so we don&#146;t get sidetracked. I&#146;m not going to explain how the ball is animated, for example; we&#146;ll get to animation starting in Chapter 42. What I will do is cover each of the VGA features used in this program&#151;the virtual screen, vertical and horizontal panning, color plane manipulation, multi-plane block copying, and page flipping&#151;at a conceptual level, letting the code itself demonstrate the implementation details. We&#146;ll return to many of these concepts in more depth later in this book.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="../ch22/22-03.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="23-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

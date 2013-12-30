@@ -1,0 +1,587 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Who Was that Masked Image?</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=46//-->
+<!--PAGES=863-871//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="46-01.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="46-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P><B>LISTING 46.1 L46-1.C</B></P>
+<!-- CODE //-->
+<PRE>
+/* Sample simple dirty-rectangle animation program, partially optimized and
+   featuring internal animation, masked images (sprites), and nonoverlapping dirty
+   rectangle copying. Tested with Borland C&#43;&#43; in the small model. */
+
+#include &ltstdlib.h&gt
+#include &ltconio.h&gt
+#include &ltalloc.h&gt
+#include &ltmemory.h&gt
+#include &ltdos.h&gt
+
+/* Comment out to disable overlap elimination in the dirty rectangle list. */
+#define CHECK-OVERLAP 1
+#define SCREEN-WIDTH  320
+#define SCREEN-HEIGHT 200
+#define SCREEN-SEGMENT 0xA000
+
+/* Describes a dirty rectangle */
+typedef struct {
+   void *Next;    /* pointer to next node in linked dirty rect list */
+   int Top;
+   int Left;
+   int Right;
+   int Bottom;
+} DirtyRectangle;
+/* Describes an animated object */
+typedef struct {
+   int X;            /* upper left corner in virtual bitmap */
+   int Y;
+   int XDirection;   /* direction and distance of movement */
+   int YDirection;
+   int InternalAnimateCount; /* tracking internal animation state */
+   int InternalAnimateMax;   /* maximum internal animation state */
+} Entity;
+/* storage used for dirty rectangles */
+#define MAX-DIRTY-RECTANGLES  100
+int NumDirtyRectangles;
+DirtyRectangle DirtyRectangles[MAX-DIRTY-RECTANGLES];
+/* head/tail of dirty rectangle list */
+DirtyRectangle DirtyHead;
+/* If set to 1, ignore dirty rectangle list and copy the whole screen. */
+int DrawWholeScreen = 0;
+/* pixels and masks for the two internally animated versions of the image
+   we&#146;ll animate */
+#define IMAGE-WIDTH  13
+#define IMAGE-HEIGHT 11
+char ImagePixels0[] = {
+   0, 0, 0, 9, 9, 9, 9, 9, 0, 0, 0, 0, 0,
+   0, 0, 9, 9, 9, 9, 9, 9, 9, 0, 0, 0, 0,
+   0, 9, 9, 0, 0,14,14,14, 9, 9, 0, 0, 0,
+   9, 9, 0, 0, 0, 0,14,14,14, 9, 9, 0, 0,
+   9, 9, 0, 0, 0, 0,14,14,14, 9, 9, 0, 0,
+   9, 9,14, 0, 0,14,14,14,14, 9, 9, 0, 0,
+   9, 9,14,14,14,14,14,14,14, 9, 9, 0, 0,
+   9, 9,14,14,14,14,14,14,14, 9, 9, 0, 0,
+   0, 9, 9,14,14,14,14,14, 9, 9, 0, 0, 0,
+   0, 0, 9, 9, 9, 9, 9, 9, 9, 0, 0, 0, 0,
+   0, 0, 0, 9, 9, 9, 9, 9, 0, 0, 0, 0, 0,
+};
+char ImageMask0[] = {
+   0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+   0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+   0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0,
+   1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0,
+   1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0,
+   1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0,
+   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+   0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+   0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+   0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+};
+char ImagePixels1[] = {
+   0, 0, 0, 9, 9, 9, 9, 9, 0, 0, 0, 0, 9,
+   0, 0, 9, 9, 9, 9, 9, 9, 9, 0, 9, 9, 9,
+   0, 9, 9, 0, 0,14,14,14, 9, 9, 9, 9, 0,
+   9, 9, 0, 0, 0, 0,14,14,14, 0, 0, 0, 0,
+   9, 9, 0, 0, 0, 0,14,14, 0, 0, 0, 0, 0,
+   9, 9,14, 0, 0,14,14,14, 0, 0, 0, 0, 0,
+   9, 9,14,14,14,14,14,14, 0, 0, 0, 0, 0,
+   9, 9,14,14,14,14,14,14,14, 0, 0, 0, 0,
+   0, 9, 9,14,14,14,14,14, 9, 9, 9, 9, 0,
+   0, 0, 9, 9, 9, 9, 9, 9, 9, 0, 9, 9, 9,
+   0, 0, 0, 9, 9, 9, 9, 9, 0, 0, 0, 9, 9,
+};
+char ImageMask1[] = {
+   0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
+   0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1,
+   0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0,
+   1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0,
+   1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0,
+   1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0,
+   1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+   1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+   0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+   0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1,
+   0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
+};
+/* Pointers to pixel and mask data for various internally animated
+   versions of our animated image. */
+char * ImagePixelArray[] = {ImagePixels0, ImagePixels1};
+char * ImageMaskArray[] = {ImageMask0, ImageMask1};
+/* Animated entities */
+#define NUM-ENTITIES 15
+Entity Entities[NUM-ENTITIES];
+/* pointer to system buffer into which we&#146;ll draw */
+char far *SystemBufferPtr;
+/* pointer to screen */
+char far *ScreenPtr;
+void EraseEntities(void);
+void CopyDirtyRectanglesToScreen(void);
+void DrawEntities(void);
+void AddDirtyRect(Entity *, int, int);
+void DrawMasked(char far *, char *, char *, int, int, int);
+void FillRect(char far *, int, int, int, int);
+void CopyRect(char far *, char far *, int, int, int, int);
+
+void main()
+{
+   int i, XTemp, YTemp;
+   unsigned int TempCount;
+   char far *TempPtr;
+   union REGS regs;
+   /* Allocate memory for the system buffer into which we&#146;ll draw */
+   if (!(SystemBufferPtr = farmalloc((unsigned int)SCREEN-WIDTH*
+         SCREEN-HEIGHT))) {
+      printf(&#148;Couldn&#146;t get memory\n&#148;);
+      exit(1);
+   }
+   /* Clear the system buffer */
+   TempPtr = SystemBufferPtr;
+   for (TempCount = ((unsigned)SCREEN-WIDTH*SCREEN-HEIGHT); TempCount--; ) {
+      *TempPtr&#43;&#43; = 0;
+   }
+   /* Point to the screen */
+   ScreenPtr = MK-FP(SCREEN-SEGMENT, 0);
+   /* Set up the entities we&#146;ll animate, at random locations */
+   randomize();
+   for (= 0; &lt NUM-ENTITIES; i&#43;&#43;) {
+      Entities[i].X = random(SCREEN-WIDTH - IMAGE-WIDTH);
+      Entities[i].Y = random(SCREEN-HEIGHT - IMAGE-HEIGHT);
+      Entities[i].XDirection = 1;
+      Entities[i].YDirection = -1;
+      Entities[i].InternalAnimateCount = &amp 1;
+      Entities[i].InternalAnimateMax = 2;
+   }
+   /* Set the dirty rectangle list to empty, and set up the head/tail node
+      as a sentinel */
+   NumDirtyRectangles = 0;
+   DirtyHead.Next = &ampDirtyHead;
+   DirtyHead.Top = 0x7FFF;
+   DirtyHead.Left= 0x7FFF;
+   DirtyHead.Bottom = 0x7FFF;
+   DirtyHead.Right = 0x7FFF;
+   /* Set 320x200 256-color graphics mode */
+   regs.x.ax = 0x0013;
+   int86(0x10, &ampregs, &ampregs);
+   /* Loop and draw until a key is pressed */
+   do {
+      /* Draw the entities to the system buffer at their current locations,
+         updating the dirty rectangle list */
+      DrawEntities();
+      /* Draw the dirty rectangles, or the whole system buffer if
+         appropriate */
+      CopyDirtyRectanglesToScreen();
+      /* Reset the dirty rectangle list to empty */
+      NumDirtyRectangles = 0;
+      DirtyHead.Next = &ampDirtyHead;
+      /* Erase the entities in the system buffer at their old locations,
+         updating the dirty rectangle list */
+      EraseEntities();
+      /* Move the entities, bouncing off the edges of the screen */
+      for (= 0; &lt NUM-ENTITIES; i&#43;&#43;) {
+         XTemp = Entities[i].X + Entities[i].XDirection;
+         YTemp = Entities[i].Y + Entities[i].YDirection;
+         if ((XTemp &lt 0) || ((XTemp + IMAGE-WIDTH) &gt SCREEN-WIDTH)) {
+            Entities[i].XDirection = -Entities[i].XDirection;
+            XTemp = Entities[i].X + Entities[i].XDirection;
+         }
+         if ((YTemp &lt 0) || ((YTemp + IMAGE-HEIGHT) &gt SCREEN-HEIGHT)) {
+            Entities[i].YDirection = -Entities[i].YDirection;
+            YTemp = Entities[i].Y + Entities[i].YDirection;
+         }
+         Entities[i].X = XTemp;
+         Entities[i].Y = YTemp;
+      }
+   } while (!kbhit());
+   getch();    /* clear the keypress */
+
+   /* Return back to text mode */
+   regs.x.ax = 0x0003;
+   int86(0x10, &ampregs, &ampregs);
+}
+/* Draw entities at their current locations, updating dirty rectangle list. */
+void DrawEntities()
+{
+   int i;
+   char far *RowPtrBuffer;
+   char *TempPtrImage;
+   char *TempPtrMask;
+   Entity *EntityPtr;
+
+   for (= 0, EntityPtr = Entities; &lt NUM-ENTITIES; i&#43;&#43;, EntityPtr&#43;&#43;) {
+      /* Remember the dirty rectangle info for this entity */
+      AddDirtyRect(EntityPtr, IMAGE-HEIGHT, IMAGE-WIDTH);
+      /* Point to the destination in the system buffer */
+      RowPtrBuffer = SystemBufferPtr + (EntityPtr-&gtY * SCREEN-WIDTH) +
+            EntityPtr-&gtX;
+      /* Advance the image animation pointer */
+      if (&#43;&#43;EntityPtr-&gtInternalAnimateCount &gt=
+            EntityPtr-&gtInternalAnimateMax) {
+         EntityPtr-&gtInternalAnimateCount = 0;
+      }
+      /* Point to the image and mask to draw */
+      TempPtrImage = ImagePixelArray[EntityPtr-&gtInternalAnimateCount];
+      TempPtrMask = ImageMaskArray[EntityPtr-&gtInternalAnimateCount];
+      DrawMasked(RowPtrBuffer, TempPtrImage, TempPtrMask, IMAGE-HEIGHT,
+               IMAGE-WIDTH, SCREEN-WIDTH);
+   }
+}
+/* Copy the dirty rectangles, or the whole system buffer if appropriate,
+   to the screen. */
+void CopyDirtyRectanglesToScreen()
+{
+   int i, RectWidth, RectHeight;
+   unsigned int Offset;
+   DirtyRectangle * DirtyPtr;
+   if (DrawWholeScreen) {
+      /* Just copy the whole buffer to the screen */
+      DrawWholeScreen = 0;
+      CopyRect(ScreenPtr, SystemBufferPtr, SCREEN-HEIGHT, SCREEN-WIDTH,
+               SCREEN-WIDTH, SCREEN-WIDTH);
+   } else {
+      /* Copy only the dirty rectangles, in the YX-sorted order in which
+         they&#146;re linked */
+      DirtyPtr = DirtyHead.Next;
+      for (= 0; &lt NumDirtyRectangles; i&#43;&#43;) {
+         /* Offset in both system buffer and screen of image */
+         Offset = (unsigned int) (DirtyPtr-&gtTop * SCREEN-WIDTH) +
+               DirtyPtr-&gtLeft;
+         /* Dimensions of dirty rectangle */
+         RectWidth = DirtyPtr-&gtRight - DirtyPtr-&gtLeft;
+         RectHeight = DirtyPtr-&gtBottom - DirtyPtr-&gtTop;
+         /* Copy a dirty rectangle */
+         CopyRect(ScreenPtr + Offset, SystemBufferPtr + Offset,
+               RectHeight, RectWidth, SCREEN-WIDTH, SCREEN-WIDTH);
+         /* Point to the next dirty rectangle */
+         DirtyPtr = DirtyPtr-&gtNext;
+      }
+   }
+}
+/* Erase the entities in the system buffer at their current locations,
+   updating the dirty rectangle list. */
+void EraseEntities()
+{
+   int i;
+   char far *RowPtr;
+   
+   for (= 0; &lt NUM-ENTITIES; i&#43;&#43;) {
+      /* Remember the dirty rectangle info for this entity */
+      AddDirtyRect(&ampEntities[i], IMAGE-HEIGHT, IMAGE-WIDTH);
+      /* Point to the destination in the system buffer */
+      RowPtr = SystemBufferPtr + (Entities[i].Y * SCREEN-WIDTH) +
+            Entities[i].X;
+      /* Clear the rectangle */
+      FillRect(RowPtr, IMAGE-HEIGHT, IMAGE-WIDTH, SCREEN-WIDTH, 0);
+   }
+}
+/* Add a dirty rectangle to the list. The list is maintained in top-to-bottom,
+   left-to-right (YX sorted) order, with no pixel ever included twice, to minimize
+   the number of display memory accesses and to avoid screen artifacts resulting 
+   from a large time interval between erasure and redraw for a given object or for
+   adjacent objects. The technique used is to check for overlap between the 
+   rectangle and all rectangles already in the list. If no overlap is found, the 
+   rectangle is added to the list. If overlap is found, the rectangle is broken 
+   into nonoverlapping pieces, and the pieces are added to the list by recursive 
+   calls to this function. */
+   void AddDirtyRect(Entity * pEntity, int ImageHeight, int ImageWidth)
+{
+   DirtyRectangle * DirtyPtr;
+   DirtyRectangle * TempPtr;
+   Entity TempEntity;
+   int i;
+   if (NumDirtyRectangles &gt= MAX-DIRTY-RECTANGLES) {
+      /* Too many dirty rectangles; just redraw the whole screen */
+      DrawWholeScreen = 1;
+      return;
+   }
+   /* Remember this dirty rectangle. Break up if necessary to avoid
+      overlap with rectangles already in the list, then add whatever
+      rectangles are left, in YX sorted order */
+#ifdef CHECK-OVERLAP
+   /* Check for overlap with existing rectangles */
+   TempPtr = DirtyHead.Next;
+   for (= 0; &lt NumDirtyRectangles; i&#43;&#43;, TempPtr = TempPtr-&gtNext) {
+      if ((TempPtr-&gtLeft &lt (pEntity-&gtX + ImageWidth)) &amp&amp
+          (TempPtr-&gtRight &gt pEntity-&gtX) &amp&amp
+          (TempPtr-&gtTop &lt (pEntity-&gtY + ImageHeight)) &amp&amp
+          (TempPtr-&gtBottom &gt pEntity-&gtY)) {
+
+         /* We&#146;ve found an overlapping rectangle. Calculate the
+            rectangles, if any, remaining after subtracting out the
+            overlapped areas, and add them to the dirty list */
+         /* Check for a nonoverlapped left portion */
+         if (TempPtr-&gtLeft &gt pEntity-&gtX) {
+            /* There&#146;s definitely a nonoverlapped portion at the left; add
+               it, but only to at most the top and bottom of the overlapping
+               rect; top and bottom strips are taken care of below */
+            TempEntity.X = pEntity-&gtX;
+            TempEntity.Y = max(pEntity-&gtY, TempPtr-&gtTop);
+            AddDirtyRect(&ampTempEntity,
+                  min(pEntity-&gtY + ImageHeight, TempPtr-&gtBottom) -
+                  TempEntity.Y,
+                        TempPtr-&gtLeft - pEntity-&gtX);
+         }
+         /* Check for a nonoverlapped right portion */
+         if (TempPtr-&gtRight &lt (pEntity-&gtX + ImageWidth)) {
+            /* There&#146;s definitely a nonoverlapped portion at the right; add
+               it, but only to at most the top and bottom of the overlapping
+               rect; top and bottom strips are taken care of below */
+            TempEntity.X = TempPtr-&gtRight;
+            TempEntity.Y = max(pEntity-&gtY, TempPtr-&gtTop);
+            AddDirtyRect(&ampTempEntity,
+                  min(pEntity-&gtY + ImageHeight, TempPtr-&gtBottom) -
+                  TempEntity.Y,
+                  (pEntity-&gtX + ImageWidth) - TempPtr-&gtRight);
+         }
+         /* Check for a nonoverlapped top portion */
+         if (TempPtr-&gtTop &gt pEntity-&gtY) {
+            /* There&#146;s a top portion that&#146;s not overlapped */
+            TempEntity.X = pEntity-&gtX;
+            TempEntity.Y = pEntity-&gtY;
+            AddDirtyRect(&ampTempEntity, TempPtr-&gtTop - pEntity-&gtY, ImageWidth);
+         }
+         /* Check for a nonoverlapped bottom portion */
+         if (TempPtr-&gtBottom &lt (pEntity-&gtY + ImageHeight)) {
+            /* There&#146;s a bottom portion that&#146;s not overlapped */
+            TempEntity.X = pEntity-&gtX;
+            TempEntity.Y = TempPtr-&gtBottom;
+            AddDirtyRect(&ampTempEntity,
+                  (pEntity-&gtY + ImageHeight) - TempPtr-&gtBottom, ImageWidth);
+         }
+         /* We&#146;ve added all non-overlapped portions to the dirty list */
+         return;
+      }
+   }
+#endif /* CHECK-OVERLAP */
+   /* There&#146;s no overlap with any existing rectangle, so we can just
+      add this rectangle as-is */
+   /* Find the YX-sorted insertion point. Searches will always terminate,
+      because the head/tail rectangle is set to the maximum values */
+   TempPtr = &ampDirtyHead;
+   while (((DirtyRectangle *)TempPtr-&gtNext)-&gtTop &lt pEntity-&gtY) {
+      TempPtr = TempPtr-&gtNext;
+   }
+   while ((((DirtyRectangle *)TempPtr-&gtNext)-&gtTop == pEntity-&gtY) &amp&amp
+           (((DirtyRectangle *)TempPtr-&gtNext)-&gtLeft &lt pEntity-&gtX)) {
+      TempPtr = TempPtr-&gtNext;
+   }
+   /* Set the rectangle and actually add it to the dirty list */
+   DirtyPtr = &ampDirtyRectangles[NumDirtyRectangles&#43;&#43;];
+   DirtyPtr-&gtLeft = pEntity-&gtX;
+   DirtyPtr-&gtTop = pEntity-&gtY;
+   DirtyPtr-&gtRight = pEntity-&gtX + ImageWidth;
+   DirtyPtr-&gtBottom = pEntity-&gtY + ImageHeight;
+   DirtyPtr-&gtNext = TempPtr-&gtNext;
+   TempPtr-&gtNext = DirtyPtr;
+}
+</PRE>
+<!-- END CODE //-->
+<P><B>LISTING 46.2  L46-2.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+; Assembly language helper routines for dirty rectangle animation. Tested with
+; TASM. 
+; Fills a rectangle in the specified buffer. 
+; C-callable as:  
+;  void FillRect(char far * BufferPtr, int RectHeight, int RectWidth,
+;                   int BufferWidth, int Color);
+;
+        .model  small
+        .code
+parms   struc
+                dw      ?       ;pushed BP
+                dw      ?       ;pushed return address
+BufferPtr       dd      ?       ;far pointer to buffer in which to fill
+RectHeight      dw      ?       ;height of rectangle to fill
+RectWidth       dw      ?       ;width of rectangle to fill
+BufferWidth     dw      ?       ;width of buffer in which to fill
+Color           dw      ?       ;color with which to fill
+parms   ends
+        public  -FillRect
+-FillRectproc  near
+        cld
+        push    bp
+        mov     bp,sp
+        push    di
+
+        les     di,[bp+BufferPtr]
+        mov     dx,[bp+RectHeight]
+        mov     bx,[bp+BufferWidth]
+        su    bx,[bp+RectWidth]         ;distance from end of one dest scan
+                                        ; to start of next
+        mov     al,byte ptr [bp+Color]
+        mov     ah,al                   ;double the color for REP STOSW
+RowLoop:
+        mov     cx,[bp+RectWidth]
+        shr     cx,1
+        rep     stosw
+        adc     cx,cx
+        rep     stosb
+        add     di,bx                   ;point to next scan to fill
+        dec     dx                      ;count down rows to fill
+        jnz     RowLoop
+
+        pop     di
+        pop     bp
+        ret
+-FillRect   endp
+
+; Draws a masked image (a sprite) to the specified buffer. C-callable as:
+;     void DrawMasked(char far * BufferPtr, char * Pixels, char * Mask,
+;                   int ImageHeight, int ImageWidth, int BufferWidth);
+parms2  struc
+                dw      ?       ;pushed BP
+                dw      ?       ;pushed return address
+BufferPtr2      dd      ?       ;far pointer to buffer in which to draw
+Pixels          dw      ?       ;pointer to image pixels
+Mask            dw      ?       ;pointer to image mask
+ImageHeight     dw      ?       ;height of image to draw
+ImageWidth      dw      ?       ;width of image to draw
+BufferWidth2    dw      ?       ;width of buffer in which to draw
+parms2  ends
+        public  -DrawMasked
+-DrawMasked     proc    near
+        cld
+        push    bp
+        mov     bp,sp
+        push    si
+        push    di
+
+        les     di,[bp+BufferPtr2]
+        mov     si,[bp+Mask]
+        mov     bx,[bp+Pixels]
+        mov     dx,[bp+ImageHeight]
+        mov     ax,[bp+BufferWidth2]
+        su    ax,[bp+ImageWidth]        ;distance from end of one dest scan
+        mov     [bp+BufferWidth2],ax    ; to start of next
+RowLoop2:
+        mov     cx,[bp+ImageWidth]
+ColumnLoop:
+        lods                            ;get the next mask byte
+        and     al,al                   ;draw this pixel?
+        jz      SkipPixel               ;no
+        mov     al,[bx]                 ;yes, draw the pixel
+        mov     es:[di],al
+SkipPixel:
+        inc     bx                      ;point to next source pixel
+        inc     d                       ;point to next dest pixel
+        dec     cx
+        jnz     ColumnLoop
+        add     di,[bp+BufferWidth2]    ;point to next scan to fill
+        dec     dx                      ;count down rows to fill
+        jnz     RowLoop2
+
+        pop     di
+        pop     si
+        pop     bp
+        ret
+-DrawMasked     endp
+
+; Copies a rectangle from one buffer to another. C-callable as:
+;     void CopyRect(DestBufferPtr, SrcBufferPtr, CopyHeight, CopyWidth,
+;                   DestBufferWidth, SrcBufferWidth);
+
+parms3  struc
+                dw      ?       ;pushed BP
+                dw      ?       ;pushed return address
+DestBufferPtr   dd      ?       ;far pointer to buffer to which to copy
+SrcBufferPtr    dd      ?       ;far pointer to buffer from which to copy
+CopyHeight      dw      ?       ;height of rect to copy
+CopyWidth       dw      ?       ;width of rect to copy
+DestBufferWidth dw      ?       ;width of buffer to which to copy
+SrcBufferWidth  dw      ?       ;width of buffer from which to copy
+parms3  ends
+        public  -CopyRect
+-CopyRect       proc    near
+        cld
+        push    bp
+        mov     bp,sp
+        push    si
+        push    di
+        push    ds
+
+        les     di,[bp+DestBufferPtr]
+        lds     si,[bp+SrcBufferPtr]
+        mov     dx,[bp+CopyHeight]
+        mov     bx,[bp+DestBufferWidth] ;distance from end of one dest scan
+        su    bx,[bp+CopyWidth]         ; of copy to the next
+        mov     ax,[bp+SrcBufferWidth]  ;distance from end of one source scan
+        su    ax,[bp+CopyWidth]         ; of copy to the next
+RowLoop3:
+        mov     cx,[bp+CopyWidth]       ;# of bytes to copy
+        shr     cx,1
+        rep     movsw                   ;copy as many words as possible
+        adc     cx,cx
+        rep     movs                    ;copy odd byte, if any
+        add     si,ax                   ;point to next source scan line
+        add     di,bx                   ;point to next dest scan line
+        dec     dx                      ;count down rows to fill
+        jnz     RowLoop3
+
+        pop     ds
+        pop     di
+        pop     si
+        pop     bp
+        ret
+-CopyRect       endp
+        end
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="46-01.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="46-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

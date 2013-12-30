@@ -1,0 +1,72 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Bresenham Is Fast, and Fast Is Good</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=35//-->
+<!--PAGES=670-671//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="35-05.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="35-07.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>The result of all this is simply a single pixel drawn in the color set up in <B>EVGALine</B>. <B>EVGADot</B> may seem excessively complex for a function that does nothing more that draw one pixel, but programming the VGA isn&#146;t trivial (as we&#146;ve seen in the early chapters of this part). Besides, while the explanation of <B>EVGADot</B> is lengthy, the code itself is only five lines long.</P>
+<P>Line drawing would be somewhat faster if the code of <B>EVGADot</B> were made an inline part of <B>Octant0</B> and <B>Octant1</B>, thereby saving the overhead of preparing parameters and calling the function. Feel free to do this if you wish; I maintained <B>EVGADot</B> as a separate function for clarity and for ease of inserting a pixel-drawing function for a different graphics adapter, should that be desired. If you do install a pixel-drawing function for a different adapter, or a fundamentally different mode such as a 256-color SuperVGA mode, remember to remove the hardware-dependent <B>outportb</B> lines in <B>EVGALine</B> itself.</P>
+<H3><A NAME="Heading10"></A><FONT COLOR="#000077">Comments on the C Implementation</FONT></H3>
+<P><B>EVGALine</B> does no error checking whatsoever. My assumption in writing <B>EVGALine</B> was that it would be ultimately used as the lowest-level primitive of a graphics software package, with operations such as error checking and clipping performed at a higher level. Similarly, <B>EVGALine</B> is tied to the VGA&#146;s screen coordinate system of (0,0) to (639,199) (in mode 0EH), (0,0) to (639,349) (in modes 0FH and 10H), or (0,0) to (639,479) (in mode 12H), with the upper left corner considered to be (0,0). Again, transformation from any coordinate system to the coordinate system used by <B>EVGALine</B> can be performed at a higher level. <B>EVGALine</B> is specifically designed to do one thing: draw lines into the display memory of the VGA. Additional functionality can be supplied by the code that calls <B>EVGALine</B>.</P>
+<P>The version of <B>EVGALine</B> shown in Listing 35.1 is reasonably fast, but it is not as fast as it might be. Inclusion of <B>EVGADot</B> directly into <B>Octant0</B> and <B>Octant1</B>, and, indeed, inclusion of <B>Octant0</B> and <B>Octant1</B> directly into <B>EVGALine</B> would speed execution by saving the overhead of calling and parameter passing. Handpicked register variables might speed performance as well, as would the use of word <B>OUT</B>s rather than byte <B>OUT</B>s. A more significant performance increase would come from eliminating separate calculation of the address and mask for each pixel. Since the location of each pixel relative to the previous pixel is known, the address and mask could simply be adjusted from one pixel to the next, rather than recalculated from scratch.</P>
+<P>These enhancements are not incorporated into the code in Listing 35.1 for a couple of reasons. One reason is that it&#146;s important that the workings of the algorithm be clearly visible in the code, for learning purposes. Once the implementation is understood, rewriting it for improved performance would certainly be a worthwhile exercise. Another reason is that when flat-out speed is needed, assembly language is the best way to go. Why produce hard-to-understand C code to boost speed a bit when assembly-language code can perform the same task at two or more times the speed?</P>
+<P>Given which, a high-speed assembly language version of <B>EVGALine</B> would seem to be a logical next step.</P>
+<H3><A NAME="Heading11"></A><FONT COLOR="#000077">Bresenham&#146;s Algorithm in Assembly</FONT></H3>
+<P>Listing 35.3 is a high-performance implementation of Bresenham&#146;s algorithm, written entirely in assembly language. The code is callable from C just as is Listing 35.1, with the same name, <B>EVGALine</B>, and with the same parameters. Either of the two can be linked to any program that calls <B>EVGALine</B>, since they appear to be identical to the calling program. The only difference between the two versions is that the sample program in Listing 35.2 runs over three times as fast on a 486 with an ISA-bus VGA when calling the assembly-language version of <B>EVGALine</B> as when calling the C version, and the difference would be considerably greater yet on a local bus, or with the use of write mode 3. Link each version with Listing 35.2 and compare performance&#151;the difference is startling.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="35-05.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="35-07.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

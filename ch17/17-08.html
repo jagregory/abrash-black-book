@@ -1,0 +1,84 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: The Game of Life</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=17//-->
+<!--PAGES=345-346//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="17-07.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="../ch18/18-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>The large model is actually not necessary for the 96&#215;96 cellmap in Listing 17.5. However, I was actually more interested in seeing a fast 200&#215;200 cellmap, and two 200&#215;200 cellmaps can&#146;t fit in a single segment. (This can easily be worked around in assembly language for cellmaps up to a segment in size; beyond that size, cellmap scanning becomes pretty complex, although it can still be efficiently implemented with some clever programming.)
+</P>
+<P>Anyway, using the large model helps illustrate that it&#146;s the data representation and the data processing approach you choose that matter most. Optimization details like memory models and segments and in-line functions and assembly language are important but secondary. Let your mind roam creatively before you start coding. Otherwise, you may find you&#146;re writing well-tuned slow code, which is by no means the same thing as fast code.</P>
+<P>Take a close look at Listing 17.5. You will see that it&#146;s quite a bit simpler than Listing 17.4. To some extent, that&#146;s because I decided to hard-wire the program to wrap around from one edge of the cellmap to the other (it&#146;s much more interesting that way), but the main reason is that it&#146;s a lot easier to work with the neighbor-count model. There&#146;s no complex mask and pointer management, and the only thing that <I>really</I> needs to be optimized is scanning for zero bytes. (And, in fact, I haven&#146;t optimized even that because it&#146;s done in a C<SMALL>&#43;&#43;</SMALL> loop; it should really be <B>REPZ SCASB.</B>)</P>
+<P>In truth, none of the code in Listing 17.5 is particularly well-optimized, and, as I noted, the program must be compiled with the large model for large cellmaps. Also, of course, the entire program is still in C<SMALL>&#43;&#43;</SMALL>; note well that there&#146;s not a whit of assembly here.</P>
+<TABLE WIDTH="100%"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/17-05i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><I><SMALL>We&#146;ve gotten more than a 30-times speedup simply by removing a little of the abstraction that C<SMALL>&#43;&#43;</SMALL> encourages, and by storing and processing the data in a manner appropriate for the typical nature of the data itself. In other words, we&#146;ve done some linear, left-brained optimization (using pointers and reducing calls) and some non-linear, right-brained optimization (understanding the real problem and listening for the creative whisper of non-obvious solutions).</SMALL></I>
+</TABLE>
+<P>No doubt we could get another two to five times improvement with good assembly code&#151;but that&#146;s dwarfed by a 30-times improvement, so optimization at a conceptual level <I>must</I> come first.</P>
+<H4 ALIGN="LEFT"><A NAME="Heading11"></A><FONT COLOR="#000077">The Challenge That Ate My Life</FONT></H4>
+<P>The most recent optimization challenge I laid my community of readers was to write the fastest possible Game of Life generation engine. By &#147;engine&#148; I meant that I didn&#146;t care about time spent in input or output, only time consumed by the call to <B>next-generation.</B> The time spent updating the cellmap was what I wanted people to concentrate on.</P>
+<P>Here are the rules I laid down for the challenge:</P>
+<DL>
+<DD><B>&#149;</B>&nbsp;&nbsp;Readers could modify any code in Listing 17.5, except the main loop, as well as change the cell map representation any way they liked. However, the code had to produce exactly the same output as Listing 17.5 under all circumstances in order to be eligible to win.
+<DD><B>&#149;</B>&nbsp;&nbsp;Engine code had to be less than 400 lines long <I>in total,</I> excluding the video-related code shown in Listing 17.2.
+<DD><B>&#149;</B>&nbsp;&nbsp;Submissions had to compile/assemble with Borland C<SMALL>&#43;&#43;</SMALL> (in either C<SMALL>&#43;&#43;</SMALL> or C mode, as desired) and/or TASM.
+<DD><B>&#149;</B>&nbsp;&nbsp;All submissions had to handle cellmaps at least 200&#215;200 in size.
+<DD><B>&#149;</B>&nbsp;&nbsp;Assembly language could of course be used to speed up any part of the program. C rather than C<SMALL>&#43;&#43;</SMALL> was legal as well, so long as entered implementations produced the same results as Listing 17.5 and 17.2 together and were less than 400 lines long.
+<DD><B>&#149;</B>&nbsp;&nbsp;All entries would be timed on the same 33 MHz 486 with a 256K external cache.
+</DL>
+<P>That was the challenge I put to the readers. Little did I realize the challenge it would lay on <I>me:</I> Entries poured in from the four corners of the globe. Some were plain, some were brilliant, some were, well, berserk. Many didn&#146;t even work. But all had to be gone through, examined for adherence to the rules, read, compiled, linked, run, and judged. I learned a lot&#151;about a lot of things, not the least of which was the process (or maybe the wisdom) of laying down challenges to readers.</P>
+<P>Who won? What did I learn? To find out, read on.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="17-07.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="../ch18/18-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

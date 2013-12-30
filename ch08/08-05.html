@@ -1,0 +1,220 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Speeding Up C with Assembly Language</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=08//-->
+<!--PAGES=163-166//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="08-04.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="../ch09/09-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>Listings 8.5 and 8.6 together go the final step and change the rules in favor of assembly language. Listing 8.5 creates the same list of linked blocks as Listing 8.1. However, instead of storing an array of structures within each block, it stores <I>two</I> arrays in each block, one consisting of ID numbers and the other consisting of the corresponding values, as shown in Figure 8.3. No information is lost; the data is merely rearranged.</P>
+<P><B>LISTING 8.5  L8-5.C</B></P>
+<!-- CODE //-->
+<PRE>
+/* Program to search an array spanning a linked list of variable-
+   sized blocks, for all entries with a specified ID number,
+   and return the average of the values of all such entries. Each of
+   the variable-sized blocks may contain any number of data entries,
+   stored in the form of two separate arrays, one for ID numbers and
+   one for values. */
+
+#include &ltstdio.h&gt
+#ifdef __TURBOC__
+#include &ltalloc.h&gt
+#else
+#include &ltmalloc.h&gt
+#endif
+
+void main(void);
+void exit(int);
+extern unsigned int FindIDAverage2(unsigned int,
+                                   struct BlockHeader *);
+</PRE>
+<!-- END CODE //-->
+<P><A NAME="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/08-03.jpg',413,261 )"> --><IMG SRC="images/08-03.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/08-03.jpg',413,261)"> --><FONT COLOR="#000077"><B>Figure 8.3</B></FONT></A>&nbsp;&nbsp;<I>Linked array storage format (version 2).</I>
+</P>
+<!-- CODE //-->
+<PRE>
+/* Structure that starts each variable-sized block */
+struct BlockHeader {
+   struct BlockHeader *NextBlock; /* Pointer to next block, or NULL
+                                     if this is the last block in the
+                                     linked list */
+   unsigned int BlockCount;       /* The number of DataElement entries
+                                     in this variable-sized block */
+};
+
+void main(void) {
+   int i,j;
+   unsigned int IDToFind;
+   struct BlockHeader *BaseArrayBlockPointer,*WorkingBlockPointer;
+   int *WorkingDataPointer;
+   struct BlockHeader **LastBlockPointer;
+
+   printf(&#148;ID # for which to find average: &#147;);
+   scanf(&#148;%d&#148;,&ampIDToFind);
+
+   /* Build an array across 5 blocks, for testing */
+   /* Anchor the linked list to BaseArrayBlockPointer */
+   LastBlockPointer = &ampBaseArrayBlockPointer;
+   /* Create 5 blocks of varying sizes */
+   for (i = 1; i &lt 6; i&#43;&#43;) {
+      /* Try to get memory for the next block */
+      if ((WorkingBlockPointer =
+          (struct BlockHeader *) malloc(sizeof(struct BlockHeader) &#43;
+           sizeof(int) * 2 * i * 10)) == NULL) {
+         exit(1);
+      }
+      /* Set the number of data elements in this block */
+      WorkingBlockPointer-&gtBlockCount = i * 10;
+      /* Link the new block into the chain */
+      *LastBlockPointer = WorkingBlockPointer;
+      /* Point to the first data field */
+      WorkingDataPointer = (int *) ((char *)WorkingBlockPointer &#43;
+            sizeof(struct BlockHeader));
+      /* Fill the data fields with ID numbers and values */
+      for (j = 0; j &lt (i * 10); j&#43;&#43;, WorkingDataPointer&#43;&#43;) {
+         *WorkingDataPointer = j;
+         *(WorkingDataPointer &#43; i * 10) = i * 1000 &#43; j;
+      }
+      /* Remember where to set link from this block to the next */
+      LastBlockPointer = &ampWorkingBlockPointer-&gtNextBlock;
+   }
+   /* Set the last block&#146;s &#147;next block&#148; pointer to NULL to indicate
+      that there are no more blocks */
+   WorkingBlockPointer-&gtNextBlock = NULL;
+   printf(&#148;Average of all elements with ID %d: %u\n&#148;,
+         IDToFind, FindIDAverage2(IDToFind, BaseArrayBlockPointer));
+   exit(0);
+}
+</PRE>
+<!-- END CODE //-->
+<P><B>LISTING 8.6  L8-6.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+; Alternative optimized assembly language version of FindIDAverage
+; requires data organized as two arrays within each block rather
+; than as an array of two-value element structures. This allows the
+; use of REP SCASW for ID searching.
+
+SearchedForIDequ4               ;Passed parameter offsets in the
+BlockPointerequ6                ; stack frame (skip over pushed BP
+                                ; and the return address)
+NextBlockequ0                   ;Field offsets in struct BlockHeader
+BlockCountequ2
+BLOCK_HEADER_SIZEequ4           ;Number of bytes in struct BlockHeader
+
+        .model  small
+        .code
+        public  _FindIDAverage2
+_FindIDAverage2 proc    near
+        push    bp              ;Save caller&#146;s stack frame
+        mov     bp,sp           ;Point to our stack frame
+        push    di              ;Preserve C register variables
+        push    si
+        mov     di,ds           ;Prepare for SCASW
+        mov     es,di
+        cld
+        mov     si,[bp&#43;BlockPointer]    ;Pointer to first block
+        mov     ax,[bp&#43;SearchedForID]   ;ID we&#146;re looking for
+        sub     dx,dx                       ;IDMatchSum = 0
+        mov     bp,dx                       ;IDMatchCount = 0
+                                            ;***stack frame no longer available***
+; Search through all the linked blocks until the last block
+; (marked with a NULL pointer to the next block) has been searched.
+BlockLoop:
+; Search through all the DataElement entries within this block
+; and accumulate data from all that match the desired ID.
+        mov     cx,[si&#43;BlockCount]
+        jcxz    DoNextBlock;Skip this block if there&#146;s no data
+                                   ; to search through
+        mov     bx,cx              ;We&#146;ll use BX to point to the
+        shl     bx,1               ; corresponding value entry in the
+; case of an ID match (BX is the
+; length in bytes of the ID array)
+; Point to the first DataElement entry within this block.
+        lea     di,[si&#43;BLOCK_HEADER_SIZE]
+IntraBlockLoop:
+        repnz   scasw              ;Search for the ID
+        jnz     DoNextBlock        ;No match, the block is done
+        inc     bp                 ;We have a match; IDMatchCount&#43;&#43;;
+        add     dx,[di&#43;bx-2];IDMatchSum &#43;= DataPointer-&gtValue;
+; (SCASW has advanced DI 2 bytes)
+        and     cx,cx              ;Is there more data to search through?
+        jnz     IntraBlockLoop     ;yes
+; Point to the next block and continue if that pointer isn&#146;t NULL.
+DoNextBlock:
+        mov     si,[si&#43;NextBlock] ;Get pointer to the next block
+        and     si,si           ;Is it a NULL pointer?
+        jnz     BlockLoop       ;No, continue
+; Calculate the average of all matches.
+        sub     ax,ax           ;Assume we found no matches
+        and     bp,bp
+        jz      Done            ;We didn&#146;t find any matches, return 0
+        xchg    ax,dx           ;Prepare for division
+        div     bp              ;Return IDMatchSum / IDMatchCount
+Done:   pop     si              ;Restore C register variables
+        pop     di
+        pop     bp              ;Restore caller&#146;s stack frame
+        ret
+_FindIDAverage2 ENDP
+        end
+</PRE>
+<!-- END CODE //-->
+<P>The whole point of this rearrangement is to allow us to use <B>REP SCASW</B> to search through each block, and that&#146;s exactly what <B>FindIDAverage2</B> in Listing 8.6 does. The result: Listing 8.6 calculates the average about <I>three times</I> as fast as the original C implementation and more than twice as fast as Listing 8.4, heavily optimized as the latter code is.</P>
+<P>I trust you get the picture. The sort of instruction-by-instruction optimization that so many of us love to do as a kind of puzzle is fun, but compilers can do it nearly as well as you can, and in the future will surely do it better. What a compiler <I>can&#146;t</I> do is tie together the needs of the program specification on the high end and the processor on the low end, resulting in critical code that runs just about as fast as the hardware permits. The only software that can do that is located north of your sternum and slightly aft of your nose. Dust it off and put it to work&#151;and your code will never again be confused with anything by Hamilton, Joe, Frank, eynolds or Bo Donaldson and the Heywoods.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="08-04.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="../ch09/09-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

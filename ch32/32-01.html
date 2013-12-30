@@ -1,0 +1,83 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Be It Resolved: 360x480</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=32//-->
+<!--PAGES=607-611//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="../ch31/31-05.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="32-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 32<BR>Be It Resolved: 360&#215;480
+</FONT></H2>
+<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Taking 256-Color Modes About as Far as the Standard VGA Can Take Them</FONT></H3>
+<P>In the last chapter, we learned how to coax 320&#215;400 256-color resolution out of a standard VGA. At the time, I noted that the VGA was actually capable of supporting 256-color resolutions as high as 360&#215;480, but didn&#146;t pursue the topic further, preferring to concentrate on the versatile and easy-to-set 320&#215;400 256-color mode instead.
+</P>
+<P>Some time back I was sent a particularly useful item from John Bridges, a longtime correspondent and an excellent programmer. It was a complete mode set routine for 360&#215;480 256-color mode that he has placed into the public domain. In addition, John wrote, &#147;I also have a couple of freeware (free, but not public domain) utilities out there, including PICEM, which displays PIC, PCX, and GIF images not only in 360&#215;480&#215;256 but also in 640&#215;350&#215;256, 640&#215;400&#215;256, 640&#215;480&#215;256, and 800&#215;600&#215;256 on SuperVGAs.&#148;</P>
+<P>In this chapter, I&#146;m going to combine John&#146;s mode set code with appropriately modified versions of the dot-plot code from Chapter 31 and the line-drawing code that we&#146;ll develop in Chapter 35. Together, those routines will make a pretty nifty demo of the capabilities of 360&#215;480 256-color mode.</P>
+<H3><A NAME="Heading3"></A><FONT COLOR="#000077">Extended 256-Color Modes: What&#146;s Not to Like?</FONT></H3>
+<P>When last we left 256-color programming, we had found that the standard 256-color mode, mode 13H, which officially offers 320&#215;200 resolution, actually displays 400, not 200, scan lines, with line-doubling used to reduce the effective resolution to 320&#215;200. By tweaking a few of the VGA&#146;s mode registers, we converted mode 13H to a true 320&#215;400 256-color mode. As an added bonus, that 320&#215;400 mode supports two graphics pages, a distinct improvement over the single graphics page supported by mode 13H. (We also learned how to get <I>four</I> graphics pages at 320&#215;200 resolution, should that be needed.)</P>
+<P>I particularly like 320&#215;400 256-color mode for two reasons: It supports two-page graphics, which is very important for animation applications; and it doesn&#146;t require changing any of the monitor timing characteristics of the VGA. The mode bits that we changed to produce 320&#215;400 256-color mode are pretty much guaranteed to be the same from one VGA to another, but the monitor-oriented registers are less certain to be constant, especially for VGAs that provide special support for the extended capabilities of various multiscanning monitors.</P>
+<P>All in all, those are good arguments for 320&#215;400 256-color mode. However, the counter-argument seems compelling as well&#151;nothing beats higher resolution for producing striking graphics. Given that, and given that John Bridges was kind enough to make his mode set code available, I&#146;m going to look at 360&#215;480 256mode next. However, bear in mind that the drawbacks of this mode are the flip side of the strengths of 320&#215;400 256-color mode: Only one graphics page, and direct setting of the monitorregisters. Also, this mode has a peculiar and unique aspect ratio, with 480 pixels (as many as high-resolution mode 12H) vertically and only 360 horizontally. That makes for fairly poor horizontal resolution and sometimes-jagged drawing; on the other hand, the resolution is better in both directions than in mode 13H, and mode 13H itself has an odd aspect ratio, so it seems a bit petty to complain.</P>
+<P>The single graphics page isn&#146;t a drawback if you don&#146;t need page flipping, of course, so there&#146;s not much to worry about there: If you need page flipping, don&#146;t use this mode. The direct setting of the monitor-oriented registers is another matter altogether.</P>
+<P>I don&#146;t know how likely this code is to produce problems with clone VGAs in general; however, I did find that I had to put an older Video Seven VRAM VGA into &#147;pure&#148; mode&#151;where it treats the VRAMs as DRAMs and exactly emulates a plain-vanilla IBM VGA&#151;before 360&#215;480 256-color mode would work properly. Now, that particular problem was due to an inherent characteristic of VRAMs, and shouldn&#146;t occur on Video Seven&#146;s Fastwrite adapter or any other VGA clone. Nonetheless, 360&#215;480 256-color mode is a good deal different from any standard VGA mode, and while the code in this chapter runs perfectly well on all other VGAs in my experience, I can&#146;t guarantee its functionality on any particular VGA/monitor combination, unlike 320&#215;400 256-color mode. Mind you, 360&#215;480 256-color mode <I>should</I> work on all VGAs&#151;there are just too many variables involved for me to be certain. Feedback from readers with broad 360&#215;480 256-color experience is welcome.</P>
+<P>The above notwithstanding, 360&#215;480 256-color mode offers 64 times as many colors and nearly three times as many pixels as IBM&#146;s original CGA color graphics mode, making startlingly realistic effects possible. No mode of the VGA (at least no mode that I know of!), documented or undocumented, offers a better combination of resolution and color; even 320&#215;400 256-color mode has 26 percent fewer pixels.</P>
+<P>In other words, 360&#215;480 256-color mode is worth considering&#151;so let&#146;s have a look.</P>
+<H3><A NAME="Heading4"></A><FONT COLOR="#000077">360x480 256-Color Mode</FONT></H3>
+<P>I&#146;m going to start by showing you 360&#215;480 256-color mode in action, after which we&#146;ll look at how it works. I suspect that once you see what this mode looks like, you&#146;ll be more than eager to learn how to use it.
+</P>
+<P>Listing 32.1 contains three C-callable assembly functions. As you would expect, <B>Set360&#215;480Mode</B> places the VGA into 360&#215;480 256mode. <B>Draw360&#215;480Dot</B> draws a pixel of the specified color at the specified location. Finally, <B>Read360&#215;480Dot</B> returns the color of the pixel at the specified location. (This last function isn&#146;t actually used in the example program in this chapter, but is included for completeness.)</P>
+<P>Listing 32.2 contains an adaptation of some C linecode I&#146;ll be presenting shortly in Chapter 35. If you&#146;re reading this book in serial fashion and haven&#146;t gotten there yet, simply take it on faith. If you really <I>really</I> need to know how the line-draw code works right <I>now</I>, by all means make a short forward call to Chapter 35 and digest it. The line-draw code presented below has been altered to select 360&#215;480 256-color mode, and to cycle through all 256 colors that this mode supports, drawing each line in a different color.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="../ch31/31-05.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="32-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

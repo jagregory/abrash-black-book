@@ -1,0 +1,132 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: The Best Optimizer Is between Your Ears</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=01//-->
+<!--PAGES=018-019//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="01-05.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="../ch02/02-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P><B>LISTING 1.7 L1-7.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+; Assembler subroutine to perform a 16-bit checksum on a block of
+; bytes 1 to 64K in size. Adds checksum for block into passed-in
+; checksum.
+;
+; Call as:
+;     void ChecksumChunk(unsigned char *Buffer,
+;     unsigned int BufferLength, unsigned int *Checksum);
+;
+; where:
+;     Buffer = pointer to start of block of bytes to checksum
+;     BufferLength = # of bytes to checksum (0 means 64K, not 0)
+;     Checksum = pointer to unsigned int variable checksum is
+;stored in
+;
+; Parameter structure:
+;
+Parms struc
+                    dw    ?    ;pushed BP
+                    dw    ?    ;return address
+Buffer              dw    ?
+BufferLength        dw    ?
+Checksum            dw    ?
+Parmsends
+;
+     .model small
+     .code
+     public _ChecksumChunk
+_ChecksumChunkprocnear
+     push  bp
+     mov   bp,sp
+     push  si                        ;save C&#146;s register variable
+;
+     cld                             ;make LODSB increment SI
+      mov  si,[bp&#43;Buffer]            ;point to buffer
+      mov  cx,[bp&#43;BufferLength]      ;get buffer length
+      mov  bx,[bp&#43;Checksum]          ;point to checksum variable
+      mov  dx,[bx]                   ;get the current checksum
+      sub  ah,ah                     ;so AX will be a 16-bit value after LODSB
+ChecksumLoop:
+      lodsb                  ;get the next byte
+      add  dx,ax             ;add it into the checksum total
+      loop ChecksumLoop      ;continue for all bytes in block
+      mov  [bx],dx           ;save the new checksum
+;
+      pop  si                ;restore C&#146;s register variable
+      pop  bp
+      ret
+_ChecksumChunkendp
+      end
+</PRE>
+<!-- END CODE //-->
+<P>Note that in Table 1.1, optimization makes little difference except in the case of Listing 1.5, where the design has been refined considerably. Execution time in the other cases is dominated by time spent in DOS and/or the C library, so optimization of the code you write is pretty much irrelevant. What&#146;s more, while the approximately two-times improvement we got by optimizing is not to be sneezed at, it pales against the up-to-50-times improvement we got by redesigning.
+</P>
+<P>By the way, the execution times even of Listings 1.6 and 1.7 are dominated by DOS disk access times. If a disk cache is enabled and the file to be checksummed is already in the cache, the assembly version is three times as fast as the C version. In other words, the inherent nature of this application limits the performance improvement that can be obtained via assembly. In applications that are more CPU-intensive and less disk-bound, particularly those applications in which string instructions and/or unrolled loops can be used effectively, assembly tends to be considerably faster relative to C than it is in this very specific case.</P>
+<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/01-06i.jpg"><TD WIDTH="95%"><SMALL><I>Don&#146;t get hung up on optimizing compilers or assembly language&#151;the best optimizer is between your ears.</I></SMALL>
+</TABLE>
+<P>All this is basically a way of saying: Know where you&#146;re going, know the territory, and know when it matters.
+</P>
+<H3><A NAME="Heading13"></A><FONT COLOR="#000077">Where We&#146;ve Been, What We&#146;ve Seen</FONT></H3>
+<P>What have we learned? Don&#146;t let other people&#146;s code&#151;even DOS&#151;do the work for you when speed matters, at least not without knowing what that code does and how well it performs.
+</P>
+<P>Optimization only matters after you&#146;ve done your part on the program design end. Consider the ratios on the vertical axis of Table 1.1, which show that optimization is almost totally wasted in the checksumming application without an efficient design. Optimization is no panacea. Table 1.1 shows a two-times improvement from optimization&#151;and a 50-times-plus improvement from redesign. The longstanding debate about which C compiler optimizes code best doesn&#146;t matter quite so much in light of Table 1.1, does it? Your organic optimizer matters much more than your compiler&#146;s optimizer, and there&#146;s always assembly for those usually small sections of code where performance really matters.</P>
+<H4 ALIGN="LEFT"><A NAME="Heading14"></A><FONT COLOR="#000077">Where We&#146;re Going</FONT></H4>
+<P>This chapter has presented a quick step-by-step overview of the design process. I&#146;m not claiming that this is the only way to create high-performance code; it&#146;s just an approach that works for me. Create code however you want, but never forget that design matters more than detailed optimization. Never stop looking for inventive ways to boost performance&#151;and never waste time speeding up code that doesn&#146;t need to be sped up.
+</P>
+<P>I&#146;m going to focus on specific ways to create high-performance code from now on. In Chapter 5, we&#146;ll continue to look at restartable blocks and internal buffering, in the form of a program that searches files for text strings.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="01-05.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="../ch02/02-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

@@ -1,0 +1,307 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: There Ain't No Such Thing as the Fastest Code</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=16//-->
+<!--PAGES=308-311//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="16-04.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="16-06.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>Table 16.2 has two times for each entry listed: the first value is the overall counting time, including time spent in the main program, disk I/O, and everything else; the second value is the time actually spent counting words, the time spent in <B>ScanBuffer</B> . The first value is the time perceived by the user, but the second value best reflects the quality of the optimization in each entry, since the rest of the overall execution time is fixed.</P>
+<TABLE WIDTH="85%"><TR>
+<TD COLSPAN="3"><HR>
+<TR>
+<TD VALIGN="TOP" ALIGN="LFFT">
+<TH ALIGN="CENTER" COLSPAN="2">Word-Counting Time
+<TR>
+<TH WIDTH="35%" ALIGN="LEFT" VALIGN="TOP">Name
+<TH WIDTH="25%" ALIGN="LEFT" VALIGN="TOP">Overall time
+<TH WIDTH="25%" ALIGN="LEFT" VALIGN="TOP">(ScanBuffer only)
+<TR>
+<TD COLSPAN="3"><HR>
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP">David Stafford Listing 16.5       <TD ALIGN="LEFT" VALIGN="TOP">0.61 seconds
+<TD ALIGN="LEFT" VALIGN="TOP">0.33 seconds
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP">Dave Methvin
+<TD ALIGN="LEFT" VALIGN="TOP">0.66
+<TD ALIGN="LEFT" VALIGN="TOP">0.39
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP">Mick Brown
+<TD ALIGN="LEFT" VALIGN="TOP">0.70
+<TD ALIGN="LEFT" VALIGN="TOP">0.41
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP">Wendell Neubert
+<TD ALIGN="LEFT" VALIGN="TOP">0.92
+<TD ALIGN="LEFT" VALIGN="TOP">0.65
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP"><B>For Comparison:</B> 
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP">Michael Abrash
+<TD ALIGN="LEFT" VALIGN="TOP">1.73
+<TD ALIGN="LEFT" VALIGN="TOP">1.44
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP">assembly code
+<TD ALIGN="LEFT" VALIGN="TOP">
+<TD ALIGN="LEFT" VALIGN="TOP">
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP">Listing 16.1
+<TD ALIGN="LEFT" VALIGN="TOP">
+<TD ALIGN="LEFT" VALIGN="TOP">
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP">Michael Abrash
+<TD ALIGN="LEFT" VALIGN="TOP">4.70
+<TD ALIGN="LEFT" VALIGN="TOP">4.43
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP">C code
+<TD ALIGN="LEFT" VALIGN="TOP">
+<TD ALIGN="LEFT" VALIGN="TOP">
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP">Listing 16.4
+<TD ALIGN="LEFT" VALIGN="TOP">
+<TD ALIGN="LEFT" VALIGN="TOP">
+<TR>
+<TD ALIGN="LEFT" VALIGN="TOP" COLSPAN="3"><SMALL><B>Note:</B> All times measured on a 20 MHz cached 386 DX.</SMALL>
+<TR>
+<TH ALIGN="LEFT" VALIGN="TOP" COLSPAN="3">Table 16.2  The top four word-counting entries.
+<TR>
+<TD COLSPAN="3"><HR>
+</TABLE>
+<P><B>LISTING 16.5  QSCAN3.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+ ;  QSCAN3.ASM
+ ;  David Stafford
+ 
+ 
+         COMMENT $
+  
+How it works
+&#151;&#151;&#151;&#151;&#151;&#151;
+The idea is to go through the buffer fetching each letter-pair (words
+rather than bytes).  The carry flag indicates whether we are
+currently in a (text) word or not.  The letter-pair fetched from the
+buffer is converted to a 16-bit address by shifting it left one bit
+(losing the high bit of the second character) and putting the carry
+flag in the low bit.  The high bit of the count register is set to
+1.  Then the count register is added to the byte found at the given
+address in a large (64K, naturally) table.  The byte at the given
+address will contain a 1 in the high bit if the last character of the
+letter-pair is a word-letter (alphanumeric or apostrophe).  This  will
+set the carry flag since the high bit of the count register is also a
+1. The low bit of the byte found at the given address will be one if
+the second character of the previous letter-pair was a word-letter
+and the first character of this letter-pair is not a word-letter. It
+will also be 1 if the first character of this letter-pair is a
+word-letter but the second character is not.  This process is
+repeated.  Finally, the carry flag is saved to indicate the final
+in-a-word/not-in-a-word status.  The count register is masked to
+remove the high bit and the count of words remains in the count
+register.
+ Sound complicated?  You&#146;re right!  But it&#146;s fast!
+  
+The beauty of this method is that no jumps are required, the
+operations are fast, it requires only one table and the process can
+be repeated (unrolled) many times.  QSCAN3 can read 256 bytes without
+jumping.
+ 
+         COMMEND $
+                 .model small
+                 .code
+  
+ Test1           macro   x,y             ;9 or 10 bytes
+ Addr&ampx:         mov     di,[bp&#43;y]       ;3 or 4 bytes
+                 adc     di,di
+                 or      ax,si
+                 add     al,[di]
+                 endm
+  
+ Test2           macro   x,y              ;7 or 8 bytes
+ Addr&ampx:         mov     di,[bp&#43;y]        ;3 or 4 bytes
+                 adc     di,di
+                 add     ah,[di]
+                 endm
+  
+ Scan            =       128           ;scan 256 bytes at a time 
+ Buffer          =       4             ;parms
+ BufferLength    =       6
+ CharFlag        =       8
+ WordCount       =       10
+  
+                 public _ScanBuffer
+ _ScanBuffer     proc near
+                 push    bp
+                 mov     bp,sp
+                 push    si
+                 push    di
+  
+                 xor     cx,cx
+                 mov     si,[bp&#43;Buffer]       ;si = text buffer
+                 mov     ax,[bp&#43;BufferLength] ;dx = length in bytes
+                 shr     ax,1                 ;dx = length in words
+                 jnz     NormalBuf
+ OneByteBuf:
+                 mov     ax,seg WordTable
+                 mov     es,ax
+  
+                 mov     di,[bp&#43;CharFlag]
+                 mov     bh,[di]             ;bh = old CharFlag
+                 mov     bl,[si]             ;bl = character
+                 add     bh,&#145;A&#146;-1            ;make bh into character
+                 add     bx,bx               ;prepare to index
+                 mov     al,es:[bx]
+                 cbw                         ;get hi bit in ah (then bh)
+                 shr     al,1                ;get low bit
+                 adc     cx,cx               ;cx = 0 or 1
+                 xchg    ax,bx
+                 jmp     CleanUp
+ NormalBuf:
+                 push    bp                  ;(1)
+                 pushf                       ;(2)
+  
+                 cwd                         ;dx = 0
+                 mov     cl,Scan
+                 div     cx
+                 or      dx,dx               ;remainder?
+                 jz      StartAtTheTop       ;nope, do the whole banana 
+                 sub     cx,dx
+                 sub     si,cx               ;adjust buf pointer
+                 sub     si,cx
+                 inc     ax                  ;adjust for partial read
+ 
+ StartAtTheTop:  mov     bx,dx               ;get index for start...
+                 shl     bx,1
+                 mov     di,LoopEntry[bx]    ;...address in di
+                 xchg    dx,ax               ;dx is the loop counter
+                 xor     cx,cx               ;total word count
+                 mov     bx,[bp&#43;CharFlag]
+                 mov     bl,[bx]             ;bl = old CharFlag
+                 mov     bp,seg WordTable
+                 mov     ds,bp
+                 mov     bp,si               ;scan buffer with bp
+                 mov     si,8080h            ;hi bits
+                 mov     ax,si               ;init local word counter
+                 shr     bl,1                ;carry = old CharFlag
+                 jmp     di
+  
+                 align   2
+ Top:            add     bx,bx               ;restore carry
+ n               =       0
+                 rept    Scan/2
+                 Test1   %n,%n*2
+                 Test2   %n&#43;1,%n*2&#43;2
+ n               =       n&#43;2
+                 endm
+ EndCount:
+                 sbb     bx,bx             ;save carry
+  if             Scan ge 128               ;because al&#43;ah may equal 128!
+                 or      ax,si
+                 add     al,ah
+                 mov     ah,0
+ else
+                 add     al,ah
+                 and     ax,7fh            ;mask
+ endif
+                 add     cx,ax             ;update word count
+                 mov     ax,si
+                 add     bp,Scan*2
+                 dec     dx                ;any left?
+                 jng     Quit
+                 jmp     Top
+  
+ Quit:           popf                      ;(2) even or odd buffer?
+                 jnc     ItsEven 
+                 clc
+                 Test1   Odd,-1
+                 sbb     bx,bx             ;save carry
+                 shr     ax,1
+                 adc     cx,0
+ ItsEven:
+                 push    ss                ;restore ds
+                 pop     ds
+                 pop     bp                ;(1)
+ CleanUp:
+                 mov     si,[bp&#43;WordCount]
+                 add     [si],cx
+                 adc     word ptr [si&#43;2],0
+                 and     bh,1              ;save only the carry flag
+                 mov     si,[bp&#43;CharFlag]
+                 mov     [si],bh
+                 pop     di
+                 pop     si
+                 pop     bp
+                 ret
+ _ScanBuffer     endp
+  
+                 .data
+ Address         macro   X
+                 dw      Addr&ampX
+                 endm
+  
+ LoopEntry       label word
+ n               =       Scan
+                 REPT Scan
+                 Address %n MOD Scan
+ n               =       n - 1
+                 ENDM
+  
+                 .fardata WordTable
+ include         qscan3.inc                ;built by MAKETAB
+                 end
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="16-04.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="16-06.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

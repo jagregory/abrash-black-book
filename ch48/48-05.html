@@ -1,0 +1,196 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X Marks the Latch</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=48//-->
+<!--PAGES=908-911//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="48-04.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="../ch49/49-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>Listing 48.3 has an important limitation: It does not guarantee proper handling when the source and destination overlap, as in the case of a downward scroll, for example. Listing 48.3 performs top-to-bottom, left-to-right copying. Downward scrolls require bottom-to-top copying; likewise, rightward horizontal scrolls require right-to-left copying. As it happens, my intended use for Listing 48.3 is to copy images between off-screen memory and on-screen memory, and to save areas under pop-up menus and the like, so I don&#146;t really need overlap handling&#151;and I do really need to keep the complexity of this discussion down. However, you will surely want to add overlap handling if you plan to perform arbitrary scrolling and copying in display memory.
+</P>
+<P>Now that we have a fast way to copy images around in display memory, we can draw icons and other images as much as four times faster than in mode 13H, depending on the speed of the VGA&#146;s display memory. (In case you&#146;re worried about the nibble-alignment limitation on fast copies, don&#146;t be; I&#146;ll address that fully in due time, but the secret is to store all four possible rotations in off-screen memory, then select the correct one for each copy.) However, before our fast display memory-to-display memory copy routine can do us any good, we must have a way to get pixel patterns from system memory into display memory, so that they can then be copied with the fast copy routine.</P>
+<H4 ALIGN="LEFT"><A NAME="Heading5"></A><FONT COLOR="#000077">Copying to Display Memory</FONT></H4>
+<P>The final piece of the puzzle is the system memory to display-memory-copy-routine shown in Listing 48.4. This routine assumes that pixels are stored in system memory in exactly the order in which they will ultimately appear on the screen; that is, in the same linear order that mode 13H uses. It would be more efficient to store all the pixels for one plane first, then all the pixels for the next plane, and so on for all four planes, because many <B>OUT</B>s could be avoided, but that would make images rather hard to create. And, while it is true that the speed of drawing images is, in general, often a critical performance factor, the speed of copying images from system memory to display memory is not particularly critical in Mode X. Important images can be stored in off-screen memory and copied to the screen via the latches much faster than even the speediest system memory-to-display memory copy routine could manage.</P>
+<P>I&#146;m not going to present a routine to perform Mode X copies from display memory to system memory, but such a routine would be a straightforward inverse of Listing 48.4.</P>
+<P><B>LISTING 48.4 L48-4.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+; Mode X (320x240, 256 colors) system memory to display memory copy
+; routine. Uses approach of changing the plane for each pixel copied;
+; this is slower than copying all pixels in one plane, then all pixels
+; in the next plane, and so on, but it is simpler; besides, images for
+; which performance is critical should be stored in off-screen memory
+; and copied to the screen via the latches. Copies up to but not
+; including the column at SourceEndX and the row at SourceEndY. No
+; clipping is performed. C near-callable as:
+;
+;    void CopySystemToScreenX(int SourceStartX, int SourceStartY,
+;       int SourceEndX, int SourceEndY, int DestStartX,
+;       int DestStartY, char* SourcePtr, unsigned int DestPageBase,
+;       int SourceBitmapWidth, int DestBitmapWidth);
+
+SC_INDEX        equ    03c4h           ;Sequence Controller Index register port
+MAP_MASK        equ    02h             ;index in SC of Map Mask register
+SCREEN_SEG      equ    0a000h          ;segment of display memory in Mode X
+
+parms   struc
+                    dw    2 dup (?)    ;pushed BP and return address
+SourceStartX        dw    ?            ;X coordinate of upper-left corner of source
+SourceStartY        dw    ?            ;Y coordinate of upper-left corner of source
+SourceEndX          dw    ?            ;X coordinate of lower-right corner of source
+                                       ; (the row at EndX is not copied)
+SourceEndY          dw    ?            ;Y coordinate of lower-right corner of source
+                                       ; (the column at EndY is not copied)
+DestStartX          dw    ?            ;X coordinate of upper-left corner of dest
+DestStartY          dw    ?            ;Y coordinate of upper-left corner of dest
+SourcePtr           dw    ?            ;pointer in DS to start of bitmap in which
+                                       ; source resides
+DestPageBase        dw    ?            ;base offset in display memory of page in
+                                       ; which dest resides
+SourceBitmapWidth    dw    ?           ;# of pixels across source bitmap
+DestBitmapWidth      dw    ?           ;# of pixels across dest bitmap
+                                       ; (must be a multiple of 4)
+parms   ends
+
+RectWidth            equ    -2         ;local storage for width of rectangle
+LeftMask             equ    -4         ;local storage for left rect edge plane mask
+STACK_FRAME_SIZE     equ    4
+
+        .model  small
+        .code
+        public  _CopySystemToScreenX
+_CopySystemToScreenX proc    near
+        push    bp                     ;preserve caller&#146;s stack frame
+        mov     bp,sp                  ;point to local stack frame
+        sub     sp,STACK_FRAME_SIZE    ;allocate space for local vars
+        push    si                     ;preserve caller&#146;s register variables
+        push    di
+
+        cld
+        mov     ax,SCREEN_SEG          ;point ES to display memory
+        mov     es,ax
+        mov     ax,[bp+SourceBitmapWidth]
+        mul     [bp+SourceStartY]      ;top source rect scan line
+        add     ax,[bp+SourceStartX]
+        add     ax,[bp+SourcePtr]      ;offset of first source rect pixel
+        mov     si,ax                  ; in DS
+        
+        mov     ax,[bp+DestBitmapWidth]
+        shr     ax,1                   ;convert to width in addresses
+        shr     ax,1
+        mov     [bp+DestBitmapWidth],ax ;remember address width
+        mul     [bp+DestStartY]         ;top dest rect scan line
+        mov     di,[bp+DestStartX]
+        mov     cx,di
+        shr     di,1                    ;X/4 = offset of first dest rect pixel in
+        shr     di,1                    ; scan line
+        add     di,ax                   ;offset of first dest rect pixel in page
+        add     di,[bp+DestPageBase]    ;offset of first dest rect pixel
+                                        ; in display memory
+        and     cl,011b                 ;CL = first dest pixel&#146;s plane
+        mov     al,11h                  ;upper nibble comes into play when 
+                                        ; plane wraps from 3 back to 0
+        shl     al,cl                   ;set the bit for the first dest pixel&#146;s 
+        mov     [bp+LeftMask],al        ; plane in each nibble to 1
+
+        mov     cx,[bp+SourceEndX]      ;calculate # of pixels across
+        sub     cx,[bp+SourceStartX]    ; rect
+        jle     CopyDone                ;skip if 0 or negative width
+        mov     [bp+RectWidth],cx
+        mov     bx,[bp+SourceEndY]
+        sub     bx,[bp+SourceStartY]    ;BX = height of rectangle
+        jle     CopyDone                ;skip if 0 or negative height
+        mov     dx,SC_INDEX             ;point to SC Index register
+        mov     al,MAP_MASK
+        out     dx,al                   ;point SC Index reg to the Map Mask
+        inc     dx                      ;point DX to SC Data reg
+CopyRowsLoop:
+        mov     ax,[bp+LeftMask]
+        mov     cx,[bp+RectWidth]
+        push    si                      ;remember the start offset in the source
+        push    di                      ;remember the start offset in the dest
+CopyScanLineLoop:
+        out     dx,al                   ;set the plane for this pixel
+        movsb                           ;copy the pixel to the screen
+        rol     al,1                    ;set mask for next pixel&#146;s plane
+        cmc                             ;advance destination address only when
+        sbb     di,0                    ; wrapping from plane 3 to plane 0
+                                        ; (else undo INC DI done by MOVSB)
+        loop    CopyScanLineLoop
+        pop     di                      ;retrieve the dest start offset
+        add     di,[bp+DestBitmapWidth] ;point to the start of the
+                                        ; next scan line of the dest
+        pop     si                      ;retrieve the source start offset
+        add     si,[bp+SourceBitmapWidth] ;point to the start of the
+                                        ; next scan line of the source
+        dec     bx                      ;count down scan lines
+        jnz     CopyRowsLoop
+CopyDone:
+        pop     di                      ;restore caller&#146;s register variables
+        pop     si
+        mov     sp,bp                   ;discard storage for local variables
+        pop     bp                      ;restore caller&#146;s stack frame
+        ret
+_CopySystemToScreenX endp
+        end
+</PRE>
+<!-- END CODE //-->
+<H3><A NAME="Heading6"></A><FONT COLOR="#000077">Who Was that Masked Image Copier?</FONT></H3>
+<P>At this point, it&#146;s getting to be time for us to take all the Mode X tools we&#146;ve developed, together with one more tool&#151;masked image copying&#151;and the remaining unexplored feature of Mode X, page flipping, and build an animation application. I hope that when we&#146;re done, you&#146;ll agree with me that Mode X is <I>the</I> way to animate on the PC.</P>
+<P>In truth, though, it matters less whether or not <I>you</I> think that Mode X is the best way to animate than whether or not your users think it&#146;s the best way based on results; end users care only about results, not how you produced them. For my writing, you folks are the end users&#151;and notice how remarkably little you care about how this book gets written and produced. You care that it turned up in the bookstore, and you care about the contents, but you sure as heck don&#146;t care about how it got that far from a bin of tree pulp. When you&#146;re a creator, the process matters. When you&#146;re a buyer, results are everything. All important. <I>Sine qua non.</I> The whole enchilada.</P>
+<P>If you catch my drift.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="48-04.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="../ch49/49-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

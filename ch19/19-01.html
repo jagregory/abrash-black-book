@@ -1,0 +1,81 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Pentium: Not the Same Old Song</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=19//-->
+<!--PAGES=369-373//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="../ch18/18-05.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="19-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 19<BR>Pentium: Not the Same Old Song
+</FONT></H2>
+<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Learning a Whole Different Set of Optimization Rules</FONT></H3>
+<P>I can still remember the day I did my first 8088 programming. I had just moved over from the distantly related Z80, so the 8088 wasn&#146;t totally alien, but it was nonetheless an incredibly exciting processor. The 8088&#146;s instruction set was vastly more powerful and varied than the Z80&#146;s, and as someone who thrives on puzzles of all sorts, from crosswords to Freecell to jigsaws to assembly language optimization, I was delighted to find that the 8088 made the optimization universe an order of magnitude more complicated&#151;and correspondingly more interesting.
+</P>
+<P>Well, the years went by and the Z80 just died, and 8088 optimization got ever more complex and intriguing as I discovered the hazards of the 8088&#146;s cycle-eaters. By the time 1989 rolled around, I had written <I>Zen of Assembly Language</I>, in which I described all that I had learned about the 8088 and concluded that 8088 optimization was a black art of infinite subtlety. Unfortunately, by that time the 286 was the standard, with the 386 coming on strong, and if the 286 was less amenable to hand optimization than the 8088 (and it surely was), then the 386 was downright unfriendly. Sure, assembly optimization could buy some performance on the 386, but only 20, 30, 40 percent or so&#151;a far cry from the 100 to 400 percent of the 8088. At the same time, compiler technology was improving quickly, and the days of hand tuning seemed numbered.</P>
+<P>Happily, the 486 traveled to the beat of a different drum. The 486 had some interesting internal pipeline hazards, as well as an internal cache that made cycle counting more meaningful than ever before, and careful code massaging sometimes yielded startling results. Nonetheless, the 486 was still too simple to mark a return to the golden age of optimization.</P>
+<H3><A NAME="Heading3"></A><FONT COLOR="#000077">The Return of Optimization as Art</FONT></H3>
+<P>Then the Pentium came around, and filled our code with optimization hazards, and life was good again. The Pentium has two execution pipelines and enough rules and exceptions to those rules to bring joy to the heart of the hardest-core assembly junkie. For a change, Intel documented most of the Pentium optimization rules and spread the word about them, so we don&#146;t have to go through as much spelunking of the Pentium as with its predecessors. They&#146;ve done this, I suspect, largely because more than any previous x86 processor, the Pentium&#146;s performance is highly dependent on properly optimized code.
+</P>
+<P>In the worst case, where the second execution pipe is dormant most of the time, the Pentium won&#146;t perform all that much better than a 486 at the same clock speed. In the best case, where the second pipe is heavily used and the Pentium&#146;s other advantages (such as branch prediction, write-back cache, 64-bit full speed external bus, and dual 8K caches) can kick in, the Pentium can be more than twice as fast as a 486. In a critical inner loop, hand optimization can double or even triple performance over 486-optimized code&#151;and that&#146;s on top of the sorts of algorithmic and design optimizations that are routinely performed on any processor. Good compilers can make a big difference on the Pentium, too, but there are some gotchas there, to which I&#146;ll return later.</P>
+<P>It&#146;s been a long time coming, but hard-core, big-payoff assembly language optimization is back in style, and for the rest of this book I&#146;ll be delving into the Byzantine wonders of the Pentium. In this chapter, I&#146;ll do a quick overview, then cover a variety of smaller Pentium optimization topics. In the next chapter, I&#146;ll tackle the 900-pound gorilla of Pentium optimization: superscalar (dual execution pipe) programming. Trust me, this&#146;ll be fun.</P>
+<P>Listen, do you want to know a secret? This lead-in has been brought to you with the help of &#147;classic rock&#148;&#151;another way of saying &#147;music Baby Boomers listened to back when they cared more about music than 401Ks and regular flossing.&#148; There are so many of us Boomers that our music, even the worst of it, will never go away. When we&#146;re 90 years old, propped up in our Kraftmatic adjustable beds and surfing the 5,000-channel information superhighway from one infomercial to the next, the sound system in the retirement community will be piping in a Muzak version of &#147;Louie, Louie,&#148; while on the holovid Country Joe McDonald and the Fish pitch Preparation H. I can hardly wait.</P>
+<P>Gimme a &#147;P&#148;....</P>
+<H3><A NAME="Heading4"></A><FONT COLOR="#000077">The Pentium: An Overview</FONT></H3>
+<P>Architecturally, the Pentium is vastly different in many ways from the 486, but most of those differences are transparent to programmers. After all, the whole idea behind the Pentium is that it runs the same code as previous x86 processors, but faster; otherwise, Intel could have made a faster, cheaper RISC processor. Still, knowledge of the Pentium&#146;s architecture is useful for understanding exactly how code will perform, and a few of the architectural differences are most decidedly <I>not</I> transparent to performance programmers.</P>
+<P>The Pentium is essentially one full 486 execution unit (EU), plus a second stripped-down 486 EU, on a single chip. The first EU is referred to as the U execution pipe, or <I>U-pipe;</I> the second, more limited one is called the <I>V-pipe</I>. The two pipes are capable of executing instructions simultaneously, have separate write buffers, and can even access the data cache simultaneously (although with certain limitations that I&#146;ll discuss in the next chapter), so on the Pentium it is possible to execute two instructions, even instructions that access memory, in a single clock. The cycle times for instruction execution in a given pipe (both pipes process instructions at the same speed) are comparable to those for the 486, although some instructions&#151;notably <B>MUL</B>, the repeated string instructions, and some of the shifts and rotates&#151;have gotten faster.</P>
+<P>My first thought upon hearing of the Pentium&#146;s dual pipes was to wonder how often the prefetch queue stalls for lack of instruction bytes, given that the demand for instruction bytes can be twice that of the 486. The answer is: rarely indeed, and then only because the code is not in the internal cache. The 486 has a single 8K cache that stores both code and data, and prefetching can stall if data fetching doesn&#146;t allow time for prefetching to occur (although this rarely happens in practice).</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="../ch18/18-05.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="19-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

@@ -1,0 +1,229 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: It's a Wonderful Life</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=18//-->
+<!--PAGES=361-365//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="18-03.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="18-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P><B>LISTING 18.3 MAIN.C</B></P>
+<!-- CODE //-->
+<PRE>
+// MAIN.C
+//
+// David Stafford
+//
+
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;conio.h&gt;
+#include &lt;time.h&gt;
+#include &lt;bios.h&gt;
+#include &#147;life.h&#148;
+
+// functions in VIDEO.C
+void enter_display_mode( void );
+void exit_display_mode( void );
+void show_text( int x, int y, char *text );
+
+void InitCellmap( void )
+  {
+  unsigned int i, j, t, x, y, init;
+
+  for( init = (HEIGHT * WIDTH * 3) / 2; init; init&#151; )
+    {
+    x = random( WIDTH * 3 );
+    y = random( HEIGHT );
+
+    CellMap[ (y * WIDTH) &#43; x / 3 ] |= 0x1000 &lt;&lt; (2 - (x % 3));
+    }
+
+  for( i = j = 0; i &lt; WIDTH * HEIGHT; i&#43;&#43; )
+    {
+    if( CellMap[ i ] &amp 0x7000 )
+      {
+      ChangeList1[ j&#43;&#43; ] = (short)&ampCellMap[ i ];
+      }
+    }
+
+  NextGen();   // Set cell states, prime the pump.
+  }
+
+void main( void )
+  {
+  unsigned long generation = 0;
+  char gen_text[ 80 ];
+  long start_time, end_time;
+  unsigned int seed;
+
+  printf( &#147;Seed (0 for random seed): &#148; );
+  scanf( &#147;%d&#148;, &ampseed );
+  if( seed == 0 )  seed = (unsigned) time(NULL);
+  srand( seed );
+
+  #ifndef NODRAW
+  enter_display_mode();
+  show_text( 0, 10, &#147;Generation:&#148; );
+  #endif
+
+  InitCellmap();       // randomly initialize cell map
+
+  _bios_timeofday( _TIME_GETCLOCK, &ampstart_time );
+
+  do
+    {
+    NextGen();
+    generation&#43;&#43;;
+
+    #ifndef NOCOUNTER
+    sprintf( gen_text, &#147;%10lu&#148;, generation );
+    show_text( 0, 12, gen_text );
+    #endif
+    }
+  #ifdef GEN
+  while( generation &lt; GEN );
+  #else
+  while( !kbhit() );
+  #endif
+
+  _bios_timeofday( _TIME_GETCLOCK, &ampend_time );
+  end_time -= start_time;
+
+  #ifndef NODRAW
+  getch();    // clear keypress
+  exit_display_mode();
+  #endif
+
+  printf( &#147;Total generations: %ld\nSeed: %u\n&#148;, generation, seed );
+  printf( &#147;%ld ticks\n&#148;, end_time );
+  printf( &#147;Time: %f generations/second\n&#148;,
+          (double)generation / (double)end_time * 18.2 );
+  }
+</PRE>
+<!-- END CODE //-->
+<P><B>LISTING 18.4 VIDEO.C</B></P>
+<!-- CODE //-->
+<PRE>
+/* VGA mode 13h functions for Game of Life.
+   Tested with Borland C&#43;&#43;. */
+#include &lt;stdio.h&gt;
+#include &lt;conio.h&gt;
+#include &lt;dos.h&gt;
+
+#define TEXT_X_OFFSET   28
+#define SCREEN_WIDTH_IN_BYTES 320
+
+#define SCREEN_SEGMENT  0xA000
+
+/* Mode 13h mode-set function. */
+void enter_display_mode()
+{
+   union REGS regset;
+
+   regset.x.ax = 0x0013;
+   int86(0x10, &ampregset, &ampregset);
+}
+
+/* Text mode mode-set function. */
+void exit_display_mode()
+{
+   union REGS regset;
+
+   regset.x.ax = 0x0003;
+   int86(0x10, &ampregset, &ampregset);
+}
+
+/* Text display function. Offsets text to non-graphics area of
+   screen. */
+void show_text(int x, int y, char *text)
+{
+   gotoxy(TEXT_X_OFFSET &#43; x, y);
+   puts(text);
+}
+</PRE>
+<!-- END CODE //-->
+<P><B>LISTING 18.5 LIFE.H</B></P>
+<!-- CODE //-->
+<PRE>
+void far NextGen( void );
+
+extern unsigned short CellMap[];
+extern unsigned short far ChangeList1[];
+
+#define LEFT        (-2)
+#define RIGHT       (&#43;2)
+#define UP          (WIDTH * LEFT)
+#define DOWN        (WIDTH * RIGHT)
+#define UPPERLEFT   (UP &#43; LEFT)
+#define UPPERRIGHT  (UP &#43; RIGHT)
+#define LOWERLEFT   (DOWN &#43; LEFT)
+#define LOWERRIGHT  (DOWN &#43; RIGHT)
+#define WRAPLEFT    (RIGHT * (WIDTH - 1))
+#define WRAPRIGHT   (LEFT  * (WIDTH - 1))
+#define WRAPUP      (DOWN  * (HEIGHT - 1))
+#define WRAPDOWN    (UP    * (HEIGHT - 1))
+</PRE>
+<!-- END CODE //-->
+<H3><A NAME="Heading5"></A><FONT COLOR="#000077">Keeping Track of Change with a Change List</FONT></H3>
+<P>In my earlier optimizations to the Game of Life, described in the last chapter, I noted that most cells in a Life cellmap are dead, and in most cases all the neighbors are dead as well. This observation enabled me to get a major speed-up by scanning the cellmap for the few non-zero bytes (cells that were either alive or have neighbors that are alive). Although that was a big improvement, it still required my code to touch every cell to check its state. David has improved on this by maintaining a <I>change list;</I> that is, a list of pointers to cells that change in the current generation. Only those cells and their neighbors need to be checked or touched in any way in order to create the next generation, saving a great many instructions and also a great many cache misses due to the fact that cellmaps are too big to fit into the 486&#146;s internal cache. During a given generation, David runs down the list of cells that changed from the previous generation to make the changes for this generation, and in the process generates the change list for the next generation.</P>
+<P>That&#146;s the overall approach, but this being David Stafford, it&#146;s not that simple, of course. I&#146;ll let him tell you how his implementation works in his own words. (I&#146;ve edited David&#146;s text a bit, and added my own comments in square brackets, so blame me for any errors.)</P>
+<P>&#147;Each three cells in the life grid are packed into two bytes, as shown in Figure 18.1. So, it is convenient if the width of the cell array is an even multiple of three. There&#146;s nothing in the algorithm that prevents it from supporting any arbitrary size, but the code is a bit simpler this way. So if you want a 200&#215;200 grid, I recommend just using a 201&#215;200 grid, and be happy with the extra free column. Otherwise the edge wrapping code gets more complex.</P>
+<P>&#147;Since every cell has from zero to eight neighbors, you may be wondering how I can manage to keep track of them with only three bits. Each cell really has only a maximum of seven neighbors since we only need to keep track of neighbors <I>outside</I> of the current cell word. That is, if cell &#145;B&#146; changes state then we don&#146;t need to reflect this in the neighbor counts of cells &#145;A&#146; and &#145;C.&#146; Updating is made a little faster. [In other words, when David picks up a word representing three cells, each of the three cells has at least one of the other cells in that word as a neighbor, and the state of that neighbor is stored right in that word, as shown in Figure 18.1. Therefore, the neighbor count for a given cell never needs to reflect more than seven neighbors, because at least one of the eight neighbors&#146; states is already encoded in the word.]</P>
+<P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/18-01.jpg',414,279 )"> --><IMG SRC="images/18-01.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/18-01.jpg',414,279)"> --><FONT COLOR="#000077"><B>Figure 18.1</B></FONT></A>&nbsp;&nbsp;<I>Cell triplet storage.</I>
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="18-03.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="18-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

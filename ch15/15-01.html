@@ -1,0 +1,87 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Linked Lists and Unintended Challenges</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=15//-->
+<!--PAGES=279-284//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="../ch14/14-06.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="15-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 15<BR>Linked Lists and plain Unintended Challenges
+</FONT></H2>
+<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Unfamiliar Problems with Familiar Data Structures</FONT></H3>
+<P>After 21 years, this story still makes me wince. Oh, the humiliations I suffer for your enlightenment....
+</P>
+<P>It wasn&#146;t until ninth grade that I had my first real girlfriend. Okay, maybe I was a little socially challenged as a kid, but hey, show me a good programmer who wasn&#146;t; it goes with the territory. Her name was Jeannie Schweigert, and she was about four feet tall, pretty enough, and female&#151;and willing to go out with me, which made her approximately as attractive as Cheryl Tiegs, in my book.</P>
+<P>Jeannie and I hung out together at school, and went to basketball games and a few parties together, but somehow the two of us were never alone. Being 14, neither of us could drive, so her parents tended to end up chauffeuring us. That&#146;s a next-to-ideal arrangement, I now realize, having a daughter of my own (ideal being exiling all males between the ages of 12 and 18 to Tasmania), but at the time, it drove me nuts. You see...ahem...I had never actually kissed Jeannie&#151;or anyone, for that matter, unless you count maiden aunts and the like&#151;and I was dying to. At the same time, I was terrified at the prospect. What if I turned out to be no good at it? It wasn&#146;t as if I could go to Kisses &#145;R&#146; Us and take lessons.</P>
+<P>My long-awaited opportunity finally came after a basketball game. For a change, <I>my</I> father was driving, and when we dropped her off at her house, I walked her to the door. This was my big chance. I put my arms around her, bent over with my eyes closed, just like in the movies....</P>
+<P>And whacked her on the top of the head with my chin. (As I said, she was only about four feet tall.) And I do mean whacked. Jeannie burst into hysterical laughter, tried to calm herself down, said goodnight, and went inside, still giggling. No kiss.</P>
+<P>I was a pretty mature teenager, so this was only slightly more traumatic than leading the Tournament of Roses parade in my underwear. On the next try, though, I did manage to get the hang of this kissing business, and eventually even went on to have a child. (Not with Jeannie, I might add; the mind boggles at the mess I could have made of <I>that</I> with her.) As it turns out, none of that stuff is particularly difficult; in fact, it&#146;s kind of enjoyable, wink, wink, say no more.</P>
+<P>When you&#146;re dealing with something new, a little knowledge goes a long way. When it comes to kissing, we have to fumble along the learning curve on our own, but there are all sorts of resources to help speed up the learning process when it comes to programming. The basic mechanisms of programming&#151;searches, sorts, parsing, and the like&#151;are well-understood and superbly well-documented. Treat yourself to a book like <I>Algorithms,</I> by Robert Sedgewick (Addison Wesley), or Knuth&#146;s <I>The Art of Computer Programming</I> series (also from Addison Wesley; and where was Knuth with <I>The Art of Kissing</I> when I needed him?), or practically anything by Jon Bentley, and when you tackle a new area, give yourself a head start. There&#146;s still plenty of room for inventiveness and creativity on your part, but why not apply that energy on top of the knowledge that&#146;s already been gained, instead of reinventing the wheel? I know, reinventing the wheel is just the kind of challenge programmers love&#151;but can you really afford to waste the time? And do you honestly think that you&#146;re so smart that you can out-think Knuth, who&#146;s spent a lifetime at this stuff and happens to be a genius?</P>
+<P>Maybe you can&#151;but I sure can&#146;t. For example, consider the evolution of my understanding of linked lists.</P>
+<H3><A NAME="Heading3"></A><FONT COLOR="#000077">Linked Lists</FONT></H3>
+<P>Linked lists are data structures composed of discrete elements, or nodes, joined together with links. In C, the links are typically pointers. Like all data structures, linked lists have their strengths and their weaknesses. Primary among the strengths are: simplicity; speedy sequential processing; ease and speed of insertion and deletion; the ability to mix nodes of various sizes and types; and the ability to handle variable amounts of data, especially when the total amount of data changes dynamically or is not always known beforehand. Weaknesses include: greater memory requirements than arrays (the pointers take up space); slow non-sequential processing, including finding arbitrary nodes; and an inability to backtrack, unless doubly-linked lists are used. Unfortunately, doubly linked lists need more memory, as well as processing time to maintain the backward links.
+</P>
+<P>Linked lists aren&#146;t very good for most types of sorts. Insertion and bubble sorts work fine, but more sophisticated sorts depend on efficient random access, which linked lists don&#146;t provide. Likewise, you wouldn&#146;t want to do a binary search on a linked list. On the other hand, linked lists are ideal for applications where nothing more than sequential access is needed to data that&#146;s always sorted or nearly sorted.</P>
+<P>Consider a polygon fill function, for example. Polygon edges are added to the active edge list in x-sorted order, and tend to stay pretty nearly x-sorted, so sophisticated sorting is never needed. Edges are read out of the list in sorted order, just the way linked lists work best. Moreover, linked lists are straightforward to implement, and with linked lists an arbitrary number of polygon edges can be handled with no fuss. All in all, linked lists work beautifully for filling polygons. For an example of the use of linked lists in polygon filling, see my column in the May 1991 issue of <I>Dr. Dobb&#146;s Journal.</I> Be warned, though, that none of the following optimizations are to be found in that column.</P>
+<P>You see, that column was my first heavy-duty use of linked lists, and they seemed so simple that I didn&#146;t even open Sedgewick or Knuth. For hashing or Boyer-Moore searching, sure, I&#146;d have done my homework first; but linked lists seemed too obvious to bother. I was much more concerned with the polygon-related aspects of the implementation, and, in truth, I gave the linked list implementation not a moment&#146;s thought before I began coding. Heck, I had handled <I>much</I> tougher programming problems in the past; surely it would be faster to figure this one out on my own than to look it up.</P>
+<P>Not!</P>
+<P>The basic concept of a linked list&#151;the one I came up with for that <I>DDJ</I> column&#151;is straightforward, as shown in Figure 15.1. A head pointer points to the first node in the list, which points to the next node, which points to the next, and so on, until the last node in the list is reached (typically denoted by a <B>NULL</B> next-node pointer). Conceptually, nothing could be simpler. From an implementation perspective, however, there are serious flaws with this model.</P>
+<P>The fundamental problem is that the model of Figure 15.1 unnecessarily complicates link manipulation. In order to delete a node, for example, you must change the preceding node&#146;s <B>NextNode</B> pointer to point to the following node, as shown in Listing 15.1. (Listing 15.2 is the header file LLIST.H, which is <B>#include</B>d by all the linked list listings in this chapter.) Easy enough&#151;unless the preceding node happens to be the head pointer, which doesn&#146;t <I>have</I> a <B>NextNode</B> field, because it&#146;s not a node, so Listing 15.1 won&#146;t work. Cumbersome special code and extra information (a pointer to the head of the list) are required to handle the head-pointer case, as shown in Listing 15.3. (I&#146;ll grant you that if you make the next-node pointer the first field in the <B>LinkNode</B> structure, at offset 0, then you could successfully point to the head pointer and pretend it was a <B>LinkNode</B> structure&#151;but that&#146;s an ugly and potentially dangerous trick, and we&#146;ll see a better approach next.)</P>
+<P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/15-01.jpg',405,97 )"> --><IMG SRC="images/15-01.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/15-01.jpg',405,97)"> --><FONT COLOR="#000077"><B>Figure 15.1</B></FONT></A>&nbsp;&nbsp;<I>The basic concept of a linked list.</I>
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="../ch14/14-06.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="15-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

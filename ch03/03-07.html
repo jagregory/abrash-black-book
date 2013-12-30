@@ -1,0 +1,713 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Assume Nothing</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=03//-->
+<!--PAGES=053-065//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="03-06.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="03-08.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>While permitting the timer interrupt to occur allows long intervals to be timed, that same interrupt makes the long-period Zen timer less accurate than the precision Zen timer, since the time the BIOS spends handling timer interrupts during the timing interval is included in the time measured by the long-period timer. Likewise, any other interrupts that occur during the timing interval, most notably keyboard and mouse interrupts, will increase the measured time.
+</P>
+<P>The long-period Zen timer has some of the same effects on the system time as does the precision Zen timer, so it&#146;s a good idea to reboot the system after a session with the long-period Zen timer. The long-period Zen timer does not, however, have the same potential for introducing major inaccuracy into the system clock time during a single timing run since it leaves interrupts enabled and therefore allows the system clock to update normally.</P>
+<H4 ALIGN="LEFT"><A NAME="Heading13"></A><FONT COLOR="#000077">Stopping the Clock</FONT></H4>
+<P>There&#146;s a potential problem with the long-period Zen timer. The problem is this: In order to measure times longer than 54  ms, we must maintain not one but two timing components, the timer 0 count and the BIOS time-of-day count. The time-of-day count measures the passage of 54.9  ms intervals, while the timer 0 count measures time within those 54.9  ms intervals. We need to read the two time components simultaneously in order to get a clean reading. Otherwise, we may read the timer count just before it turns over and generates an interrupt, then read the BIOS time-of-day count just after the interrupt has occurred and caused the time-of-day count to turn over, with a resulting 54  ms measurement inaccuracy. (The opposite sequence&#151;reading the time-of-day count and then the timer count&#151;can result in a 54  ms inaccuracy in the other direction.)
+</P>
+<P>The only way to avoid this problem is to stop timer 0, read both the timer and time-of-day counts while the timer is stopped, and then restart the timer. Alas, the gate input to timer 0 isn&#146;t program-controllable in the PC, so there&#146;s no documented way to stop the timer. (The latched read feature we used in Listing 3.1 doesn&#146;t stop the timer; it latches a count, but the timer keeps running.) What should we do?</P>
+<P>As it turns out, an undocumented feature of the 8253 makes it possible to stop the timer dead in its tracks. Setting the timer to a new mode and waiting for an initial count to be loaded causes the timer to stop until the count is loaded. Surprisingly, the timer count remains readable and correct while the timer is waiting for the initial load.</P>
+<P>In my experience, this approach works beautifully with fully 8253-compatible chips. However, there&#146;s no guarantee that it will always work, since it programs the 8253 in an undocumented way. What&#146;s more, IBM chose not to implement compatibility with this particular 8253 feature in the custom chips used in PS/2 computers. On PS/2 computers, we have no choice but to latch the timer 0 count and then stop the BIOS count (by disabling interrupts) as quickly as possible. We&#146;ll just have to accept the fact that on PS/2 computers we may occasionally get a reading that&#146;s off by 54  ms, and leave it at that.</P>
+<P>I&#146;ve set up Listing 3.5 so that it can assemble to either use or not use the undocumented timer-stopping feature, as you please. The <B>PS2</B> equate selects between the two modes of operation. If <B>PS2</B> is 1 (as it is in Listing 3.5), then the latch-and-read method is used; if <B>PS2</B> is 0, then the undocumented timer-stop approach is used. The latch-and-read method will work on all PC-compatible computers, but may occasionally produce results that are incorrect by 54  ms. The timer-stop approach avoids synchronization problems, but doesn&#146;t work on all computers.</P>
+<P><B>LISTING 3.5 LZTIMER.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+;
+; The long-period Zen timer. (LZTIMER.ASM)
+; Uses the 8253 timer and the BIOS time-of-day count to time the
+; performance of code that takes less than an hour to execute.
+; Because interrupts are left on (in order to allow the timer
+; interrupt to be recognized), this is less accurate than the
+; precision Zen timer, so it is best used only to time code that takes
+; more than about 54 milliseconds to execute (code that the precision
+; Zen timer reports overflow on). Resolution is limited by the
+; occurrence of timer interrupts.
+;
+; By Michael Abrash
+;
+; Externally callable routines:
+;
+;  ZTimerOn: Saves the BIOS time of day count and starts the
+;    long-period Zen timer.
+;
+;  ZTimerOff: Stops the long-period Zen timer and saves the timer
+;    count and the BIOS time-of-day count.
+;
+;  ZTimerReport: Prints the time that passed between starting and
+;    stopping the timer.
+;
+; Note: If either more than an hour passes or midnight falls between
+;     calls to ZTimerOn and ZTimerOff, an error is reported. For
+;     timing code that takes more than a few minutes to execute,
+;     either the DOS TIME command in a batch file before and after
+;     execution of the code to time or the use of the DOS
+;     time-of-day function in place of the long-period Zen timer is
+;     more than adequate.
+;
+; Note: The PS/2 version is assembled by setting the symbol PS2 to 1.
+;     PS2 must be set to 1 on PS/2 computers because the PS/2&#146;s
+;     timers are not compatible with an undocumented timer-stopping
+;     feature of the 8253; the alternative timing approach that
+;     must be used on PS/2 computers leaves a short window
+;     during which the timer 0 count and the BIOS timer count may
+;     not be synchronized. You should also set the PS2 symbol to
+;     1 if you&#146;re getting erratic or obviously incorrect results.
+;
+; Note: When PS2 is 0, the code relies on an undocumented 8253
+;     feature to get more reliable readings. It is possible that
+;     the 8253 (or whatever chip is emulating the 8253) may be put
+;     into an undefined or incorrect state when this feature is
+;     used.
+;
+;     ******************************************************************
+;     * If your computer displays any hint of erratic behavior         *
+;      *    after the long-period Zen timer is used, such as the floppy*
+;     *    drive failing to operate properly, reboot the system, set   *
+;     *    PS2 to 1 and leave it that way!                             *
+;     ******************************************************************
+;
+; Note: Each block of code being timed should ideally be run several
+;     times, with at least two similar readings required to
+;     establish a true measurement, in order to eliminate any
+;     variability caused by interrupts.
+;
+; Note: Interrupts must not be disabled for more than 54 ms at a
+;     stretch during the timing interval. Because interrupts
+;     are enabled, keys, mice, and other devices that generate
+;     interrupts should not be used during the timing interval.
+;
+; Note: Any extra code running off the timer interrupt (such as
+;     some memory-resident utilities) will increase the time
+;     measured by the Zen timer.
+;
+; Note: These routines can introduce inaccuracies of up to a few
+;     tenths of a second into the system clock count for each
+;     code section timed. Consequently, it&#146;s a good idea to
+;     reboot at the conclusion of timing sessions. (The
+;     battery-backed clock, if any, is not affected by the Zen
+;     timer.)
+;
+; All registers and all flags are preserved by all routines.
+;
+
+Code segment word public &#145;CODE&#146;
+     assume cs:  Code, ds:nothing
+     public      ZTimerOn, ZTimerOff, ZTimerReport
+
+;
+; Set PS2 to 0 to assemble for use on a fully 8253-compatible
+; system; when PS2 is 0, the readings are more reliable if the
+; computer supports the undocumented timer-stopping feature,
+; but may be badly off if that feature is not supported. In
+; fact, timer-stopping may interfere with your computer&#146;s
+; overall operation by putting the 8253 into an undefined or
+; incorrect state. Use with caution!!!
+;
+; Set PS2 to 1 to assemble for use on non-8253-compatible
+; systems, including PS/2 computers; when PS2 is 1, readings
+; may occasionally be off by 54 ms, but the code will work
+; properly on all systems.
+;
+; A setting of 1 is safer and will work on more systems,
+; while a setting of 0 produces more reliable results in systems
+; which support the undocumented timer-stopping feature of the
+; 8253. The choice is yours.
+;
+PS2                  equ1
+;
+; Base address of the 8253 timer chip.
+;
+BASE_8253            equ40h
+;
+; The address of the timer 0 count registers in the 8253.
+;
+TIMER_0_8253         equBASE_8253 &#43; 0
+;
+; The address of the mode register in the 8253.
+;
+MODE_8253            equBASE_8253 &#43; 3
+;
+; The address of the BIOS timer count variable in the BIOS
+; data segment.
+;
+TIMER_COUNT           equ46ch
+;
+; Macro to emulate a POPF instruction in order to fix the bug in some
+; 80286 chips which allows interrupts to occur during a POPF even when
+; interrupts remain disabled.
+;
+MPOPF macro
+      local p1, p2
+      jmp short p2
+p1:   iret        ;jump to pushed address &amp pop flags
+p2:   pushcs      ;construct far return address to
+      call p1     ; the next instruction
+endm
+
+;
+; Macro to delay briefly to ensure that enough time has elapsed
+; between successive I/O accesses so that the device being accessed
+; can respond to both accesses even on a very fast PC.
+;
+DELAY macro
+     jmp $&#43;2
+     jmp $&#43;2
+     jmp $&#43;2
+     endm
+
+StartBIOSCountLow     dw   ?       ;BIOS count low word at the
+                                   ; start of the timing period
+StartBIOSCountHigh    dw   ?       ;BIOS count high word at the
+                                   ; start of the timing period
+EndBIOSCountLow       dw   ?       ;BIOS count low word at the
+                                   ; end of the timing period
+EndBIOSCountHigh      dw   ?       ;BIOS count high word at the
+                                   ; end of the timing period
+EndTimedCount         dw   ?       ;timer 0 count at the end of
+                                   ; the timing period
+ReferenceCount        dw   ?       ;number of counts required to
+                                   ; execute timer overhead code
+;
+; String printed to report results.
+;
+OutputStr labelbyte
+          db     0dh, 0ah, &#145;Timed count: &#145;
+TimedCountStr    db10 dup (?)
+          db&#146;    microseconds&#146;, 0dh, 0ah
+          db     &#145;$&#146;
+;
+; Temporary storage for timed count as it&#146;s divided down by powers
+; of ten when converting from doubleword binary to ASCII.
+;
+CurrentCountLow       dw    ?
+CurrentCountHigh  dw  ?
+;
+; Powers of ten table used to perform division by 10 when doing
+; doubleword conversion from binary to ASCII.
+;
+PowersOfTenlabelword
+     dd   1
+     dd   10
+     dd   100
+     dd   1000
+     dd   10000
+     dd   100000
+     dd   1000000
+     dd   10000000
+     dd   100000000
+     dd   1000000000
+PowersOfTenEnd   labelword
+;
+; String printed to report that the high word of the BIOS count
+; changed while timing (an hour elapsed or midnight was crossed),
+; and so the count is invalid and the test needs to be rerun.
+;
+TurnOverStrlabelbyte
+     db  0dh, 0ah
+     db &#145;****************************************************&#146;
+     db 0dh, 0ah
+     db&#146;*   Either midnight passed or an hour or more passed *&#146;
+     db 0dh, 0ah
+     db&#146;*  while timing was in progress. If the former was  *&#146;
+     db 0dh, 0ah
+     db&#146;*  the case, please rerun the test; if the latter   *&#146;
+     db 0dh, 0ah
+     db&#146;* was the case, the test code takes too long to    *&#146;
+     db 0dh, 0ah
+     db&#146;* run to be timed by the long-period Zen timer.    *&#146;
+     db 0dh, 0ah
+     db &#145;* Suggestions: use the DOS TIME command, the DOS   *&#146;
+     db 0dh, 0ah
+     db &#145;* time function, or a watch.                       *&#146;
+     db 0dh, 0ah
+     db &#145;****************************************************&#146;
+     db 0dh, 0ah
+     db&#146;$&#146;
+
+;********************************************************************
+;* Routine called to start timing.         *
+;********************************************************************
+
+ZTimerOn  proc near
+
+;
+; Save the context of the program being timed.
+;
+     push ax
+     pus  hf
+;
+; Set timer 0 of the 8253 to mode 2 (divide-by-N), to cause
+; linear counting rather than count-by-two counting. Also stops
+; timer 0 until the timer count is loaded, except on PS/2
+; computers.
+;
+     mov  al,00110100b      ;mode 2
+     out  MODE_8253,al
+;
+; Set the timer count to 0, so we know we won&#146;t get another
+; timer interrupt right away.
+; Note: this introduces an inaccuracy of up to 54 ms in the system
+; clock count each time it is executed.
+;
+     DELAY
+     subal,al
+     outTIMER_0_8253,al       ;lsb
+     DELAY
+     outTIMER_0_8253,al       ;msb
+;
+; In case interrupts are disabled, enable interrupts briefly to allow
+; the interrupt generated when switching from mode 3 to mode 2 to be
+; recognized. Interrupts must be enabled for at least 210 ns to allow
+; time for that interrupt to occur. Here, 10 jumps are used for the
+; delay to ensure that the delay time will be more than long enough
+; even on a very fast PC.
+;
+     pushf
+     sti
+     rept 10
+     jmp  $&#43;2
+     endm
+     MPOPF
+;
+; Store the timing start BIOS count.
+; (Since the timer count was just set to 0, the BIOS count will
+; stay the same for the next 54 ms, so we don&#146;t need to disable
+; interrupts in order to avoid getting a half-changed count.)
+;
+     push   ds
+     subax, ax
+     movds, ax
+     movax, ds:[TIMER_COUNT&#43;2]
+     movcs: [StartBIOSCountHigh],ax
+     movax, ds:[TIMER_COUNT]
+     movcs: [StartBIOSCountLow],ax
+     pop    ds
+;
+; Set the timer count to 0 again to start the timing interval.
+;
+     mov    al,00110100b        ;set up to load initial
+     out    MODE_8253,al        ; timer count
+     DELAY
+     subal, al
+     out    TIMER_0_8253,al;    load count lsb
+     DELAY
+     out   TIMER_0_8253,al;     load count msb
+;
+; Restore the context of the program being timed and return to it.
+;
+     MPOPF
+     popax
+     ret
+
+ZTimerOnendp
+
+;********************************************************************
+;* Routine called to stop timing and get count.                     *
+;********************************************************************
+
+ZTimerOff procnear
+
+;
+; Save the context of the program being timed.
+;
+     pushf
+     pushax
+     pushcx
+;
+; In case interrupts are disabled, enable interrupts briefly to allow
+; any pending timer interrupt to be handled. Interrupts must be
+; enabled for at least 210 ns to allow time for that interrupt to
+; occur. Here, 10 jumps are used for the delay to ensure that the
+; delay time will be more than long enough even on a very fast PC.
+;
+     sti
+     rept 10
+     jmp  $&#43;2
+     endm
+
+;
+; Latch the timer count.
+;
+
+if PS2
+
+     mov  al,00000000b
+     out  MODE_8253,al     ;latch timer 0 count
+;
+; This is where a one-instruction-long window exists on the PS/2.
+; The timer count and the BIOS count can lose synchronization;
+; since the timer keeps counting after it&#146;s latched, it can turn
+; over right after it&#146;s latched and cause the BIOS count to turn
+; over before interrupts are disabled, leaving us with the timer
+; count from before the timer turned over coupled with the BIOS
+; count from after the timer turned over. The result is a count
+; that&#146;s 54 ms too long.
+;
+
+else
+
+;
+; Set timer 0 to mode 2 (divide-by-N), waiting for a 2-byte count
+; load, which stops timer 0 until the count is loaded. (Only works
+; on fully 8253-compatible chips.)
+;
+     mov   al,00110100b;     mode 2
+     out   MODE_8253,al
+     DELAY
+     mov   al,00000000b      ;latch timer 0 count
+     out   MODE_8253,al
+
+endif
+
+     cli                     ;stop the BIOS count
+;
+; Read the BIOS count. (Since interrupts are disabled, the BIOS
+; count won&#146;t change.)
+;
+     push ds
+     sub  ax,ax
+     mov  ds,ax
+     mov  ax,ds:[TIMER_COUNT&#43;2]
+     mov  cs:[EndBIOSCountHigh],ax
+     mov  ax,ds:[TIMER_COUNT]
+     mov  cs:[EndBIOSCountLow],ax
+     pop  ds
+;
+; Read the timer count and save it.
+;
+     in   al,TIMER_0_8253        ;lsb
+     DELAY
+     mov  ah,al
+     in   al,TIMER_0_8253        ;msb
+     xchg ah,al
+     neg  ax                     ;convert from countdown
+                                 ; remaining to elapsed
+                                 ; count
+     mov  cs:[EndTimedCount],ax
+;
+; Restart timer 0, which is still waiting for an initial count
+; to be loaded.
+;
+
+ife PS2
+
+     DELAY
+     mov  al,00110100b        ;mode 2, waiting to load a
+                              ; 2-byte count
+     out  MODE_8253,al
+     DELAY
+     sub  al,al
+     out  TIMER_0_8253,al     ;lsb
+     DELAY
+     mov  al,ah
+     out  TIMER_0_8253,al     ;msb
+     DELAY
+
+endif
+
+sti;let the BIOS count continue
+;
+; Time a zero-length code fragment, to get a reference for how
+; much overhead this routine has. Time it 16 times and average it,
+; for accuracy, rounding the result.
+;
+     mov   cs:[ReferenceCount],0
+     mov   cx,16
+     cli                         ;interrupts off to allow a
+                                 ; precise reference count
+RefLoop:
+     call  ReferenceZTimerOn
+     call  ReferenceZTimerOff
+     loop  RefLoop
+     sti
+     add   cs:[ReferenceCount],8;     total &#43; (0.5 * 16)
+     mov   cl,4
+     shr   cs:[ReferenceCount],cl;(total) / 16 &#43; 0.5
+;
+; Restore the context of the program being timed and return to it.
+;
+     popcx
+     popax
+     MPOPF
+     ret
+
+ZTimerOff endp
+
+;
+; Called by ZTimerOff to start the timer for overhead measurements.
+;
+
+ReferenceZTimerOnprocnear
+;
+; Save the context of the program being timed.
+;
+     pushax
+     pushf
+;
+; Set timer 0 of the 8253 to mode 2 (divide-by-N), to cause
+; linear counting rather than count-by-two counting.
+;
+     mov    al,00110100b     ;mode 2
+     out    MODE_8253,al
+;
+; Set the timer count to 0.
+;
+     DELAY
+     sub     al,al
+     out     TIMER_0_8253,al     ;lsb
+     DELAY
+     out     TIMER_0_8253,al     ;msb
+;
+; Restore the context of the program being timed and return to it.
+;
+     MPOPF
+     popax
+     ret
+
+ReferenceZTimerOnendp
+
+;
+; Called by ZTimerOff to stop the timer and add the result to
+; ReferenceCount for overhead measurements. Doesn&#146;t need to look
+; at the BIOS count because timing a zero-length code fragment
+; isn&#146;t going to take anywhere near 54 ms.
+;
+
+ReferenceZTimerOff procnear
+;
+; Save the context of the program being timed.
+;
+     pushf
+     pushax
+     pushcx
+
+;
+; Match the interrupt-window delay in ZTimerOff.
+;
+     sti
+     rept10
+     jmp$&#43;2
+     endm
+
+     mov    al,00000000b
+     out    MODE_8253,al     ;latch timer
+;
+; Read the count and save it.
+;
+     DELAY
+     in    al,TIMER_0_8253     ;lsb
+     DELAY
+     mov   ah,al
+     in    al,TIMER_0_8253     ;msb
+     xchg  ah,al
+     neg   ax                  ;convert from countdown
+                               ; remaining to elapsed
+                               ; count
+     add   cs:[ReferenceCount],ax
+;
+; Restore the context and return.
+;
+     popcx
+     popax
+     MPOPF
+     ret
+
+ReferenceZTimerOff endp
+
+;********************************************************************
+;* Routine called to report timing results.                           *
+;********************************************************************
+
+ZTimerReportprocnear
+
+     pushf
+     push    ax
+     push    bx
+     push    cx
+     push    dx
+     push    si
+     push    di
+     push    ds
+     ;
+     push    cs     ;DOS functions require that DS point
+     pop     ds     ; to text to be displayed on the screen
+     assume  ds     :Code
+;
+; See if midnight or more than an hour passed during timing. If so,
+; notify the user.
+;
+     mov    ax,[StartBIOSCountHigh]
+     cmp    ax,[EndBIOSCountHigh]
+     jz     CalcBIOSTime     ;hour count didn&#146;t change,
+                             ; so everything&#146;s fine
+     inc    ax
+     cmp    ax,[EndBIOSCountHigh]
+     jnz    TestTooLong      ;midnight or two hour
+                             ; boundaries passed, so the
+                             ; results are no good
+     mov    ax,[EndBIOSCountLow]
+     cmp    ax,[StartBIOSCountLow]
+     jb     CalcBIOSTime     ;a single hour boundary
+                             ; passed--that&#146;s OK, so long as
+                             ; the total time wasn&#146;t more
+                             ; than an hour
+
+;
+; Over an hour elapsed or midnight passed during timing, which
+; renders the results invalid. Notify the user. This misses the
+; case where a multiple of 24 hours has passed, but we&#146;ll rely
+; on the perspicacity of the user to detect that case.
+;
+TestTooLong:
+     mov    ah,9
+     mov    dx,offset TurnOverStr
+     int    21h
+     jmp    short ZTimerReportDone
+;
+; Convert the BIOS time to microseconds.
+;
+CalcBIOSTime:
+     mov     ax,[EndBIOSCountLow]
+     sub    ax,[StartBIOSCountLow]
+     mov    dx,54925          ;number of microseconds each
+                              ; BIOS count represents
+     mul    dx
+     mov    bx,ax             ;set aside BIOS count in
+     mov    cx,dx             ; microseconds
+;
+; Convert timer count to microseconds.
+;
+     mov    ax,[EndTimedCount]
+     mov    si,8381
+     mul    si
+     mov    si,10000
+     div    si               ;* .8381 = * 8381 / 10000
+;
+; Add timer and BIOS counts together to get an overall time in
+; microseconds.
+;
+     add    bx,ax
+     adc    cx,0
+;
+; Subtract the timer overhead and save the result.
+;
+     mov    ax,[ReferenceCount]
+     mov    si,8381          ;convert the reference count
+     mul    si               ; to microseconds
+     mov    si,10000
+     div    si;* .8381 = * 8381 / 10000
+     sub    bx,ax
+     sbb    cx,0
+     mov    [CurrentCountLow],bx
+     mov    [CurrentCountHigh],cx
+;
+; Convert the result to an ASCII string by trial subtractions of
+; powers of 10.
+;
+     mov    di,offset PowersOfTenEnd - offset PowersOfTen - 4
+     mov    si,offset TimedCountStr
+CTSNextDigit:
+     mov    bl,&#146;0&#146;
+CTSLoop:
+     mov    ax,[CurrentCountLow]
+     mov    dx,[CurrentCountHigh]
+     sub    ax,PowersOfTen[di]
+     sbb    dx,PowersOfTen[di&#43;2]
+     jc     CTSNextPowerDown
+     inc    bl
+     mov    [CurrentCountLow],ax
+     mov    [CurrentCountHigh],dx
+     jmp    CTSLoop
+CTSNextPowerDown:
+     mov    [si],bl
+     inc    si
+     sub    di,4
+     jns    CTSNextDigit
+;
+;
+; Print the results.
+;
+     mov    ah,9
+     mov    dx,offset OutputStr
+     int    21h
+;
+ZTimerReportDone:
+     pop    ds
+     pop    di
+     pop    si
+     pop    dx
+     pop    cx
+     pop    bx
+     pop    ax
+     MPOPF
+     ret
+
+ZTimerReport    endp
+
+Code   ends
+       end
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="03-06.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="03-08.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

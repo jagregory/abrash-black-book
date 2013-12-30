@@ -1,0 +1,80 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Dog Hair and Dirty Rectangles</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=45//-->
+<!--PAGES=839-843//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="../ch44/44-06.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="45-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 45<BR>Dog Hair and Dirty Rectangles
+</FONT></H2>
+<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Different Angles on Animation</FONT></H3>
+<P>We brought our pets with us when we moved to Seattle. At about the same time, our Golden Retriever, Sam, observed his third birthday. Sam is relatively intelligent, in the sense that he is clearly smarter than a banana slug, although if he were in the same room with Jeff Duntemann&#146;s dog Mr. Byte, there&#146;s a reasonable chance that he would mistake Mr. Byte for something edible (a category that includes rocks, socks, and a surprising number of things too disgusting to mention), and Jeff would have to find a new source of things to write about.
+</P>
+<P>But that&#146;s not important now. What is important is that&#151;and I am not making this up&#151;this morning I managed to find the one pair of socks Sam hadn&#146;t chewed holes in. And what&#146;s even more important is that after we moved and Sam turned three, he calmed down amazingly. We had been waiting for this magic transformation since Sam turned one, the age at which most puppies turn into normal dogs who lie around a lot, waking up to eat their Science Diet (motto, &#147;The dog food that costs more than the average neurosurgeon makes in a year&#148;) before licking themselves in embarrassing places and going back to sleep. When Sam turned one and remained hopelessly out of control we said, &#147;Goldens take two years to calm down,&#148; as if we had a clue. When he turned two and remained undeniably Sam we said, &#147;Any day now.&#148; By the time he turned three, we were reduced to figuring that it was only about seven more years until he expired, at which point we might be able to take all the fur he had shed in his lifetime and weave ourselves some clothes without holes in them, or quite possibly a house.</P>
+<P>But miracle of miracles, we moved, and Sam instantly turned into the dog we thought we&#146;d gotten when we forked over $500&#151;calm, sweet, and obedient. Weeks went by, and Sam was, if anything, better than ever. Clearly, the change was permanent.</P>
+<P>And then we took Sam to the vet for his annual check-up and found that he had an ear infection. Thanks to the wonders of modern animal medicine, a $5 bottle of liquid restored his health in just two days. And with his health, we got, as a bonus, the old Sam. You see, Sam hadn&#146;t changed. He was just tired from being sick. Now he once again joyously knocks down any stranger who makes the mistake of glancing in his direction, and will, quite possibly, be booked any day now on suspicion of homicide by licking.</P>
+<H3><A NAME="Heading3"></A><FONT COLOR="#000077">Plus &#231;a Change</FONT></H3>
+<P>Okay, you give up. What exactly does this have to do with graphics? I&#146;m glad you asked. The lesson to be learned from Sam, The Dog With A Brain The Size Of A Walnut, is that while things may <I>look</I> like they&#146;ve changed, in fact they often haven&#146;t. Take VGA performance. If you buy a 486 with a SuperVGA, you&#146;ll get performance that knocks your socks off, especially if you run Windows. Things are liable to be so fast that you&#146;ll figure the SuperVGA has to deserve some of the credit. Well, maybe it does if it&#146;s a local-bus VGA. But maybe it doesn&#146;t, even if it is local bus&#151;and it certainly doesn&#146;t if it&#146;s an ISA bus VGA, because no ISA bus VGA can run faster than about 300 nanoseconds per access, and VGAs capable of that speed have been common for at least a couple of years now.</P>
+<P>Your 486 VGA system is fast almost entirely because it has a 486 in it. (486 systems with graphics accelerators such as the ATI Ultra or Diamond Stealth are another story altogether.) Underneath it all, the VGA is still painfully slow&#151;and if you have an old VGA or IBM&#146;s original PS/2 motherboard VGA, it&#146;s incredibly slow. The fastest ISA-bus VGA around is two to twenty times slower than system memory, and the slowest VGA around is as much as 100 times slower. In the old days, the rule was, &#147;Display memory is slow, and should be avoided.&#148; Nowadays, the rule is, &#147;Display memory is not quite so slow, but should still be avoided.&#148;</P>
+<P>So, as I say, sometimes things don&#146;t change. Of course, sometimes they do change. For example, in just 49 dog years, I fully expect to own at least one pair of underwear without a single hole in it. Which brings us, deus ex machina and the creek don&#146;t rise, to yet another animation method: dirty-rectangle animation.</P>
+<H3><A NAME="Heading4"></A><FONT COLOR="#000077">VGA Access Times</FONT></H3>
+<P>Actually, before we get to dirty rectangles, I&#146;d like to take you through a quick refresher on VGA memory and I/O access times. I want to do this partly because the slow access times of the VGA make dirty-rectangle animation particularly attractive, and partly as a public service, because even I was shocked by the results of some I/O performance tests I recently ran.
+</P>
+<P>Table 45.1 shows the results of the aforementioned I/O performance tests, as run on two 486/33 SuperVGA systems under the Phar Lap 386|DOS-Extender. (The systems and VGAs are unnamed because this is a not-very-scientific spot test, and I don&#146;t want to unfairly malign, say, a VGA whose only sin is being plugged into a lousy motherboard, or vice versa.) Under Phar Lap, 32-bit protected-mode apps run with full I/O privileges, meaning that the <B>OUT</B> instructions I measured had the best official cycle times possible on the 486: 10 cycles. <B>OUT</B> officially takes 16 cycles in real mode on a 486, and officially takes a mind-boggling 30 cycles in protected mode if running <I>without</I> full I/O privileges (as is normally the case for protected-mode applications). Basically, I/O is just plain slow on a 486.</P>
+<P>As slow as 30 or even 10 cycles is for an <B>OUT</B>, one could only wish that VGA I/O were actually that fast. The fastest measured <B>OUT</B> to a VGA in Table 45.1 is 26 cycles, and the slowest is 126&#151;this for an operation that&#146;s <I>supposed</I> to take 10 cycles. To put this in context, <B>MUL</B> takes only 13 to 42 cycles, and a normal <B>MOV</B> to or from system memory takes exactly one cycle on the 486. In short, <B>OUT</B>s to VGAs are as much as 100 times slower than normal memory accesses, and are generally two to four times slower than even display memory accesses, although there are exceptions.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="../ch44/44-06.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="45-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

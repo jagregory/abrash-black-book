@@ -1,0 +1,238 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: The Best Optimizer Is between Your Ears</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=01//-->
+<!--PAGES=010-013//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="01-02.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="01-04.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<TABLE WIDTH="100%">
+<TR>
+<TD COLSPAN="7"><HR>
+<TR>
+<TH WIDTH="15%" ALIGN="LEFT" VALIGN="BOTTOM">Listing
+<TH WIDTH="15%" ALIGN="LEFT" VALIGN="BOTTOM">Borland
+<TH WIDTH="12%" ALIGN="LEFT" VALIGN="BOTTOM">Microsoft
+<TH WIDTH="12%" ALIGN="LEFT" VALIGN="BOTTOM">Borland
+<TH WIDTH="12%" ALIGN="LEFT" VALIGN="BOTTOM">Microsoft
+<TH WIDTH="12%" ALIGN="LEFT" VALIGN="BOTTOM">Assembly
+<TH WIDTH="12%" ALIGN="LEFT" VALIGN="BOTTOM">Optimization<BR>Ratio
+<TR>
+<TD COLSPAN="7"><HR>
+<TR>
+<TD VALIGN="BOTTOM" ALIGN="LEFT">
+<TD VALIGN="BOTTOM" ALIGN="LEFT">(no opt)
+<TD VALIGN="BOTTOM" ALIGN="LEFT">(no opt)
+<TD VALIGN="BOTTOM" ALIGN="LEFT">(opt)
+<TD VALIGN="BOTTOM" ALIGN="LEFT">(opt)
+<TR>
+<TD VALIGN="BOTTOM" ALIGN="LEFT">1
+<TD VALIGN="BOTTOM" ALIGN="LEFT">166.9
+<TD VALIGN="BOTTOM" ALIGN="LEFT">166.8
+<TD VALIGN="BOTTOM" ALIGN="LEFT">167.0
+<TD VALIGN="BOTTOM" ALIGN="LEFT">165.8
+<TD VALIGN="BOTTOM" ALIGN="LEFT">155.1
+<TD VALIGN="BOTTOM" ALIGN="LEFT">1.08
+<TR>
+<TD VALIGN="BOTTOM" ALIGN="LEFT">4
+<TD VALIGN="BOTTOM" ALIGN="LEFT">13.5
+<TD VALIGN="BOTTOM" ALIGN="LEFT">13.6
+<TD VALIGN="BOTTOM" ALIGN="LEFT">13.5
+<TD VALIGN="BOTTOM" ALIGN="LEFT">13.5
+<TD VALIGN="BOTTOM" ALIGN="LEFT">...
+<TD VALIGN="BOTTOM" ALIGN="LEFT">1.01
+<TR>
+<TD VALIGN="BOTTOM" ALIGN="LEFT">5
+<TD VALIGN="BOTTOM" ALIGN="LEFT">4.7
+<TD VALIGN="BOTTOM" ALIGN="LEFT">5.5
+<TD VALIGN="BOTTOM" ALIGN="LEFT">3.8
+<TD VALIGN="BOTTOM" ALIGN="LEFT">3.4
+<TD VALIGN="BOTTOM" ALIGN="LEFT">2.7
+<TD VALIGN="BOTTOM" ALIGN="LEFT">2.04
+<TR>
+<TD VALIGN="BOTTOM" ALIGN="LEFT">Ratio best<BR>designed<BR>to worst<BR>designed
+<TD VALIGN="BOTTOM" ALIGN="LEFT">35.51
+<TD VALIGN="BOTTOM" ALIGN="LEFT">30.33
+<TD VALIGN="BOTTOM" ALIGN="LEFT">43.95
+<TD VALIGN="BOTTOM" ALIGN="LEFT">48.76
+<TD VALIGN="BOTTOM" ALIGN="LEFT">57.44
+<TR>
+<TD COLSPAN="7"><SMALL><B>Note:</B> The execution times (in seconds) for this chapter&#146;s listings were timed when the compiled listings were run on the WordPerfect 4.2 thesaurus file TH.WP (362,293 bytes in size), as compiled in the small model with Borland and Microsoft compilers with optimization on (opt) and off (no opt). All times were measured with Paradigm Systems&#146; TIMER program on a 10 MHz 1-wait-state AT clone with a 28-ms hard disk, with disk caching turned off.</SMALL>
+<TR>
+<TD COLSPAN="7"><HR>
+<TR>
+<TH ALIGN="LEFT" COLSPAN="7">Table 1.1 Execution Times for WordPerfect Checksum.
+<TR>
+<TD COLSPAN="7"><HR>
+<TR>
+</TABLE>
+<P><B>LISTING 1.2 L1-2.C</B></P>
+<!-- CODE //-->
+<PRE>
+/*
+* Program to calculate the 16-bit checksum of the stream of bytes
+* from the specified file. Obtains the bytes one at a time in
+* assembler, via direct calls to DOS.
+*/
+
+#include &lt;stdio.h&gt;
+#include &lt;fcntl.h&gt;
+
+main(int argc, char *argv[]) {
+      int Handle;
+      unsigned char Byte;
+      unsigned int Checksum;
+      int ReadLength;
+
+      if ( argc != 2 ) {
+            printf(&#147;usage: checksum filename\n&#148;);
+            exit(1);
+      }
+      if ( (Handle = open(argv[1], O_RDONLY | O_BINARY)) == -1 ) {
+            printf(&#147;Can&#146;t open file: %s\n&#148;, argv[1]);
+            exit(1);
+      }
+      if ( !ChecksumFile(Handle, &Checksum) ) {
+            printf(&#147;Error reading file %s\n&#148;, argv[1]);
+            exit(1);
+      }
+
+      /* Report the result */
+      printf(&#147;The checksum is: %u\n&#148;, Checksum);
+      exit(0);
+}
+</PRE>
+<!-- END CODE //-->
+<P><B>LISTING 1.3 L1-3.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+; Assembler subroutine to perform a 16-bit checksum on the file
+; opened on the passed-in handle. Stores the result in the
+; passed-in checksum variable. Returns 1 for success, 0 for error.
+;
+; Call as:
+;           int ChecksumFile(unsigned int Handle, unsigned int *Checksum);
+;
+; where:
+;           Handle = handle # under which file to checksum is open
+;           Checksum = pointer to unsigned int variable checksum is
+;           to be stored in
+;
+; Parameter structure:
+;
+Parms      struc
+                 dw        ?       ;pushed BP
+                 dw        ?       ;return address
+Handle           dw        ?
+Checksum         dw        ?
+Parms      ends
+;
+                 .model small
+                 .data
+TempWord label   word
+TempByte         db        ?       ;each byte read by DOS will be stored here
+                 db        0       ;high byte of TempWord is always 0
+                                   ;for 16-bit adds
+;
+                 .code
+                 public _ChecksumFile
+_ChecksumFile    proc near
+                 push      bp
+                 mov       bp,sp
+                 push      si                  ;save C&#146;s register variable
+;
+                 mov       bx,[bp&#43;Handle]       ;get file handle
+                 sub       si,si                ;zero the checksum ;accumulator
+                 mov       cx,1                 ;request one byte on each ;read
+                 mov       dx,offset TempByte   ;point DX to the byte in
+                                                ;which DOS should store
+                                                ;each byte read
+ChecksumLoop:
+                 mov       ah,3fh               ;DOS read file function #
+                 int       21h                  ;read the byte
+jcErrorEnd;an error occurred
+                 and       ax,ax                ;any bytes read?
+                 jz        Success              ;no-end of file reached-we&#146;re done
+                 add       si,[TempWord]        ;add the byte into the
+                                                ;checksum total
+jmpChecksumLoop
+ErrorEnd:
+                 sub       ax,ax                ;error
+                 jmp       short Done
+Success:
+                 mov       bx,[bp&#43;Checksum] ;point to the checksum variable
+                 mov       [bx],si              ;save the new checksum
+                 mov       ax,1                 ;success
+;
+Done:
+                 pop       si                   ;restore C&#146;s register variable
+                 pop       bp
+                 ret
+_ChecksumFileendp
+                 end
+</PRE>
+<!-- END CODE //-->
+<P>The lesson is clear: Optimization makes code faster, but without proper design, optimization just creates fast slow code.
+</P>
+<P>Well, then, how are we going to improve our design? Before we can do that, we have to understand what&#146;s wrong with the current design.</P>
+<H4 ALIGN="LEFT"><A NAME="Heading9"></A><FONT COLOR="#000077">Know the Territory</FONT></H4>
+<P>Just why is Listing 1.1 so slow? In a word: overhead. The C library implements the <B>read()</B> function by calling DOS to read the desired number of bytes. (I figured this out by watching the code execute with a debugger, but you can buy library source code from both Microsoft and Borland.) That means that Listing 1.1 (and Listing 1.3 as well) executes one DOS function per byte processed&#151;and DOS functions, especially this one, come with a lot of overhead.</P>
+<P>For starters, DOS functions are invoked with interrupts, and interrupts are among the slowest instructions of the x86 family CPUs. Then, DOS has to set up internally and branch to the desired function, expending more cycles in the process. Finally, DOS has to search its own buffers to see if the desired byte has already been read, read it from the disk if not, store the byte in the specified location, and return. All of that takes a <I>long</I> time&#151;far, far longer than the rest of the main loop in Listing 1.1. In short, Listing 1.1 spends virtually all of its time executing <B>read(),</B> and most of that time is spent somewhere down in DOS.</P>
+<P>You can verify this for yourself by watching the code with a debugger or using a code profiler, but take my word for it: There&#146;s a great deal of overhead to DOS calls, and that&#146;s what&#146;s draining the life out of Listing 1.1.</P>
+<P>How can we speed up Listing 1.1? It should be clear that we must somehow avoid invoking DOS for every byte in the file, and that means reading more than one byte at a time, then buffering the data and parceling it out for examination one byte at a time. By gosh, that&#146;s a description of C&#146;s stream I/O feature, whereby C reads files in chunks and buffers the bytes internally, doling them out to the application as needed by reading them from memory rather than calling DOS. Let&#146;s try using stream I/O and see what happens.</P>
+<P>Listing 1.4 is similar to Listing 1.1, but uses <B>fopen()</B> and <B>getc()</B> (rather than <B>open()</B> and <B>read()</B>) to access the file being checksummed. The results confirm our theories splendidly, and validate our new design. As shown in Table 1.1, Listing 1.4 runs more than an order of magnitude faster than even the assembly version of Listing 1.1, <I>even though Listing 1.1 and Listing 1.4 look almost the same</I>. To the casual observer, <B>read()</B> and <B>getc()</B> would seem slightly different but pretty much interchangeable, and yet in this application the performance difference between the two is about the same as that between a 4.77 MHz PC and a 16 MHz 386.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="01-02.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="01-04.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

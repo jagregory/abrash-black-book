@@ -1,0 +1,85 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Video Est Omnis Divisa</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=30//-->
+<!--PAGES=572-574//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="30-02.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="30-04.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H4 ALIGN="LEFT"><A NAME="Heading5"></A><FONT COLOR="#000077">VGA and EGA Split-Screen Operation Don&#146;t Mix</FONT></H4>
+<P>You must set the <B>IS_VGA</B> equate at the start of Listing 30.1 correctly for the adapter the code will run on in order for the program to perform properly. This equate determines how the upper bits of the split screen start scan line are set by <B>SetSplitScreenRow</B>. If <B>IS_VGA</B> is 0 (specifying an EGA target), then bit 8 of the split screen start scan line is set by programming the entire Overflow register to 1FH; this is hard-wired for the 350-scan-line modes of the EGA. If <B>IS_VGA</B> is 1 (specifying a VGA target), then bits 8 and 9 of the split screen start scan line are set by reading the registers they reside in, changing only the split-screen-related bits, and writing the modified settings back to their respective registers.</P>
+<P>The VGA version of Listing 30.1 won&#146;t work on an EGA, because EGA registers aren&#146;t readable. The EGA version of Listing 30.1 won&#146;t work on a VGA, both because VGA monitors require different vertical settings than EGA monitors and because the EGA version doesn&#146;t set bit 9 of the split screen start scan line. In short, there is no way that I know of to support both VGA and EGA split screens with common code; separate drivers are required. This is one of the reasons that split screens are so rarely used in PC programming.</P>
+<P>By the way, Listing 30.1 operates in mode 10H because that&#146;s the highest-resolution mode the VGA and EGA share. That&#146;s not the only mode the split screen works in, however. In fact, it works in <I>all</I> modes, as we&#146;ll see later.</P>
+<H3><A NAME="Heading6"></A><FONT COLOR="#000077">Setting the Split-Screen-Related Registers</FONT></H3>
+<P>Setting the split-screen-related registers is not as simple a matter as merely outputting the right values to the right registers; timing is also important. The split screen start scan line value is checked against the number of each scan line as that scan line is displayed, which means that the split screen start scan line potentially takes effect the moment it is set. In other words, if the screen is displaying scan line 15 and you set the split screen start to 16, that change will be picked up immediately and the split screen will start after the next scan line. This is markedly different from changes to the start address, which take effect only at the start of the next frame.
+</P>
+<P>The instantly-effective nature of the split screen is a bit of a problem, not because the changed screen appears as soon as the new split screen start scan line is set&#151;that seems to me to be an advantage&#151;but because the changed screen can appear <I>before</I> the new split screen start scan line is set.</P>
+<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/30-01i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>Remember, the split screen start scan line is spread out over two or three registers. What if the incompletely-changed value matches the current scan line after you&#146;ve set one register but before you&#146;ve set the rest? For one frame, you&#146;ll see the split screen in a wrong place&#151;possibly a very wrong place&#151;resulting in jumping and flicker.</I></SMALL>
+</TABLE>
+<P>The solution is simple: Set the split screen start scan line at a time when it can&#146;t possibly match the currently displayed scan line. The easy way to do that is to set it when there isn&#146;t any currently displayed scan line&#151;during vertical non-display time. One safe time that&#146;s easy to find is the start of the vertical sync pulse, which is typically pretty near the middle of vertical non-display time, and that&#146;s the approach I&#146;ve followed in Listing 30.1. I&#146;ve also disabled interrupts during the period when the split screen registers are being set. This isn&#146;t absolutely necessary, but if it&#146;s not done, there&#146;s the possibility that an interrupt will occur between register sets and delay the later register sets until display time, again causing flicker.
+</P>
+<P>One interesting effect of setting the split screen registers at the start of vertical sync is that it has the effect of synchronizing the program to the display adapter&#146;s frame rate. No matter how fast the computer running Listing 30.1 may be, the split screen will move at a maximum rate of once per frame. This is handy for regulating execution speed over a wide variety of hardware performance ranges; however, be aware that the VGA supports 70 Hz frame rates in all non-480-scan-line modes, while the VGA in 480-scan-line-modes and the EGA in all color modes support 60 Hz frame rates.</P>
+<H3><A NAME="Heading7"></A><FONT COLOR="#000077">The Problem with the EGA Split Screen</FONT></H3>
+<P>I mentioned earlier that the EGA&#146;s split screen is a little buggy. How? you may well ask, particularly given that Listing 30.1 illustrates that the EGA split screen seems pretty functional.
+</P>
+<P>The bug is this: The first scan line of the EGA split screen&#151;the scan line starting at offset zero in display memory&#151;is displayed not once but twice. In other words, the first line of split screen display memory, and only the first line, is replicated one unnecessary time, pushing all the other lines down by one.</P>
+<P>That&#146;s not a fatal bug, of course. In fact, if the first few scan lines are identical, it&#146;s not even noticeable. The EGA&#146;s split-screen bug can produce visible distortion given certain patterns, however, so you should try to make the top few lines identical (if possible) when designing split-screen images that might be displayed on EGAs, and you should in any case check how your split-screens look on both VGAs and EGAs.</P>
+<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/30-02i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>I have an important caution here: Don&#146;t count on the EGA&#146;s split-screen bug; that is, don&#146;t rely on the first scan line being doubled when you design your split screens. IBM designed and made the original EGA, but a lot of companies cloned it, and there&#146;s no guarantee that all EGA clones copy the bug. It is a certainty, at least, that the VGA didn&#146;t copy it.</I></SMALL>
+</TABLE>
+<P>There&#146;s another respect in which the EGA is inferior to the VGA when it comes to the split screen, and that&#146;s in the area of panning when the split screen is on. This isn&#146;t a bug&#151;it&#146;s just one of the many areas in which the VGA&#146;s designers learned from the shortcomings of the EGA and went the EGA one better.
+</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="30-02.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="30-04.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

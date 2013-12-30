@@ -1,0 +1,142 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: In the Lair of the Cycle-Eaters</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=04//-->
+<!--PAGES=080-084//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="04-01.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="04-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/04-01.jpg',411,379 )"> --><IMG SRC="images/04-01.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/04-01.jpg',411,379)"> --><FONT COLOR="#000077"><B>Figure 4.1</B></FONT></A>&nbsp;&nbsp;<I>The location of the major cycle-eaters in the IBM PC.</I>
+</P>
+<P><A NAME="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/04-02.jpg',418,236 )"> --><IMG SRC="images/04-02.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/04-02.jpg',418,236)"> --><FONT COLOR="#000077"><B>Figure 4.2</B></FONT></A>&nbsp;&nbsp;<I>Internal data bus widths of the 8088.</I>
+</P>
+<P>As shown in Figure 4.1, the 8-bit bus cycle-eater lies squarely on the 8088&#146;s external data bus. Technically, it might be more accurate to place this cycle-eater in the Bus Interface Unit, which breaks 16-bit memory accesses into paired 8-bit accesses, but it is really the limited width of the external data bus that constricts data flow into and out of the 8088. True, the original PC&#146;s bus is also only 8 bits wide, but that&#146;s just to match the 8088&#146;s 8-bit bus; even if the PC&#146;s bus were 16 bits wide, data could still pass into and out of the 8088 chip itself only 1 byte at a time.
+</P>
+<P>Each bus access by the 8088 takes 4 clock cycles, or 0.838 &#181;s in the 4.77 MHz PC, and transfers 1 byte. That means that the maximum rate at which data can be transferred into and out of the 8088 is 1 byte every 0.838 &#181;s. While 8086 bus accesses also take 4 clock cycles, each 8086 bus access can transfer either 1 byte or 1 word, for a maximum transfer rate of 1 word every 0.838 &#181;s. Consequently, for word-sized memory accesses, the 8086 has an effective transfer rate of 1 byte every 0.419 &#181;s. By contrast, every word-sized access on the 8088 requires two 4-cycle-long bus accesses, one for the high byte of the word and one for the low byte of the word. As a result, the 8088 has an effective transfer rate for word-sized memory accesses of just 1 word every 1.676 &#181;s&#151;and that, in a nutshell, is the 8-bit bus cycle-eater.</P>
+<P>A related cycle-eater lurks beneath the 386SX chip, which is a 32-bit processor internally with only a 16-bit path to system memory. The numbers are different, but the way the cycle-eater operates is exactly the same. AT-compatible systems have 16-bit data buses, which can access a full 16-bit word at a time. The 386SX can process 32 bits (a doubleword) at a time, however, and loses a lot of time fetching that doubleword from memory in two halves.</P>
+<H4 ALIGN="LEFT"><A NAME="Heading7"></A><FONT COLOR="#000077">The Impact of the 8-Bit Bus Cycle-Eater</FONT></H4>
+<P>One obvious effect of the 8-bit bus cycle-eater is that word-sized accesses to memory operands on the 8088 take 4 cycles longer than byte-sized accesses. That&#146;s why the official instruction timings indicate that for code running on an 8088 an additional 4 cycles are required for every word-sized access to a memory operand. For instance,
+</P>
+<!-- CODE SNIP //-->
+<PRE>
+mov  ax,word ptr [MemVar]
+</PRE>
+<!-- END CODE SNIP //-->
+<P>takes 4 cycles longer to read the word at address <B>MemVar</B> than</P>
+<!-- CODE SNIP //-->
+<PRE>
+mov  al,byte ptr [MemVar]
+</PRE>
+<!-- END CODE SNIP //-->
+<P>takes to read the byte at address <B>MemVar.</B> (Actually, the difference between the two isn&#146;t very likely to be exactly 4 cycles, for reasons that will become clear once we discuss the prefetch queue and dynamic RAM refresh cycle-eaters later in this chapter.)</P>
+<P>What&#146;s more, in some cases one instruction can perform multiple word-sized accesses, incurring that 4-cycle penalty on each access. For example, adding a value to a word-sized memory variable requires two word-sized accesses&#151;one to read the destination operand from memory prior to adding to it, and one to write the result of the addition back to the destination operand&#151;and thus incurs not one but two 4-cycle penalties. As a result</P>
+<!-- CODE SNIP //-->
+<PRE>
+add  word ptr [MemVar],ax
+</PRE>
+<!-- END CODE SNIP //-->
+<P>takes about 8 cycles longer to execute than:
+</P>
+<!-- CODE SNIP //-->
+<PRE>
+add  byte ptr [MemVar],al
+</PRE>
+<!-- END CODE SNIP //-->
+<P>String instructions can suffer from the 8-bit bus cycle-eater to a greater extent than other instructions. Believe it or not, a single <B>REP MOVSW</B> instruction can lose as much as 131,070 word-sized memory accesses x 4 cycles, or <I>524,280 cycles</I> to the 8-bit bus cycle-eater! In other words, one 8088 instruction (admittedly, an instruction that does a great deal) can take over one-tenth of a second longer on an 8088 than on an 8086, simply because of the 8-bit bus. <I>One-tenth of a second!</I> That&#146;s a phenomenally long time in computer terms; in one-tenth of a second, the 8088 can perform more than 50,000 additions and subtractions.</P>
+<P>The upshot of all this is simply that the 8088 can transfer word-sized data to and from memory at only half the speed of the 8086, which inevitably causes performance problems when coupled with an Execution Unit that can process word-sized data every bit as quickly as an 8086. These problems show up with any code that uses word-sized memory operands. More ominously, as we will see shortly, the 8-bit bus cycle-eater can cause performance problems with other sorts of code as well.</P>
+<H4 ALIGN="LEFT"><A NAME="Heading8"></A><FONT COLOR="#000077">What to Do about the 8-Bit Bus Cycle-Eater?</FONT></H4>
+<P>The obvious implication of the 8-bit bus cycle-eater is that byte-sized memory variables should be used whenever possible. After all, the 8088 performs <I>byte-sized</I> memory accesses just as quickly as the 8086. For instance, Listing 4.1, which uses a byte-sized memory variable as a loop counter, runs in 10.03 s per loop. That&#146;s 20 percent faster than the 12.05 &#181;s per loop execution time of Listing 4.2, which uses a word-sized counter. Why the difference in execution times? Simply because each word-sized <B>DEC</B> performs 4 byte-sized memory accesses (two to read the word-sized operand and two to write the result back to memory), while each byte-sized <B>DEC</B> performs only 2 byte-sized memory accesses in all.</P>
+<P><B>LISTING 4.1  LST4-1.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+; Measures the performance of a loop which uses a
+; byte-sized memory variable as the loop counter.
+;
+      jmp  Skip
+;
+Counter    db    100
+;
+Skip:
+      call ZTimerOn
+LoopTop:
+      dec  [Counter]
+      jnz  LoopTop
+      call ZTimerOff
+</PRE>
+<!-- END CODE //-->
+<P><B>LISTING 4.2  LST4-2.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+; Measures the performance of a loop which uses a
+; word-sized memory variable as the loop counter.
+;
+      jmp  Skip
+;
+Counter    dw    100
+;
+Skip:
+      call  ZTimerOn
+LoopTop:
+      dec   [Counter]
+      jnz   LoopTop
+      call  ZTimerOff
+</PRE>
+<!-- END CODE //-->
+<P>I&#146;d like to make a brief aside concerning code optimization in the listings in this book. Throughout this book I&#146;ve modeled the sample code after working code so that the timing results are applicable to real-world programming. In Listings 4.1 and 4.2, for example, I could have shown a still greater advantage for byte-sized operands simply by performing 1,000 <B>DEC</B> instructions in a row, with no branching at all. However, <B>DEC</B> instructions don&#146;t exist in a vacuum, so in the listings I used code that both decremented the counter and tested the result. The difference is that between decrementing a memory location (simply an instruction) and using a loop counter (a functional instruction sequence). If you come across code in this book that seems less than optimal, it&#146;s simply due to my desire to provide code that&#146;s relevant to real programming problems. On the other hand, optimal code is an elusive thing indeed; by no means should you assume that the code in this book is ideal! Examine it, question it, and improve upon it, for an inquisitive, skeptical mind is an important part of the Zen of assembly optimization.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="04-01.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="04-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

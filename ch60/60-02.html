@@ -1,0 +1,97 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Compiling BSP Trees</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=60//-->
+<!--PAGES=1119-1123//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="60-01.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="60-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>If you find any of the above confusing (and it would be understandable if that were the case; BSP trees are not easy to get the hang of), you might want to refer back to the previous chapter. It would also be a good idea to get hold of the visual BSP compiler I&#146;ll discuss shortly; when it comes to understanding BSP trees, there&#146;s nothing quite like seeing one being built.
+</P>
+<P>So there are really only two interesting operations in building a BSP tree: choosing a root node for the current subspace (a &#147;splitter&#148;) and assigning surfaces to one side or another of the current root node, splitting any that straddle the splitter. We&#146;ll get to the issue of choosing splitters shortly, but first let&#146;s look at the process of splitting and assigning. To do that, we need to understand parametric lines.</P>
+<H4 ALIGN="LEFT"><A NAME="Heading4"></A><FONT COLOR="#000077">Parametric Lines</FONT></H4>
+<P>We&#146;re all familiar with lines described in slope-intercept form, with y as a function of x
+</P>
+<P>y = mx + b</P>
+<P>but there&#146;s another sort of line description that&#146;s very useful for clipping (and for a variety of 3-D purposes, such as curved surfaces and texture mapping): <I>parametric lines</I>. In parametric lines, x and y are decoupled from one another, and are instead described as a function of the parameter t:</P>
+<P>x = x<sub>start</sub> &#43; t(x<sub>end</sub> - x<sub>start</sub>)<BR>y = y<sub>start</sub> &#43; t(y<sub>end</sub> - y<sub>start</sub>)</P>
+<P>This can be summarized as</P>
+<P>L = L<sub>start</sub> &#43; t(L<sub>end</sub> - L<sub>start</sub>)</P>
+<P>where L = (x, y).</P>
+<P>Figure 60.1 shows how a parametric line works. The t parameter describes how far along a line segment the current x and y coordinates are. Note that this description is valid not only for the line segment, but also for the entire infinite line; however, only points with t values between 0 and 1 are actually on the line segment.</P>
+<P>In our 2-D BSP compiler (as you&#146;ll recall from the previous chapter, we&#146;re working with 2-D trees for simplicity, but the principles generalize to 3-D), we&#146;ll represent our walls (all vertical) as line segments viewed from above. The segments will be stored in parametric form, with the endpoints of the original line segment and two t values describing the endpoints of the current (possibly clipped) segment providing a complete specification for each segment, as shown in Figure 60.2.</P>
+<P>What does that do for us? For one thing, it keeps clipping errors from creeping in, because clipped line segments are always based on the original line segment, not derived from clipped versions. Also, it&#146;s potentially a more compact format, because we need to store the endpoints only for the original line segments; for clipped line segments, we can just store pairs of t values, along with a pointer to the original line segment. The biggest win, however, is that it allows us to use parametric line clipping, a very clean form of clipping, indeed.</P>
+<P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/60-01.jpg',404,176 )"> --><IMG SRC="images/60-01.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/60-01.jpg',404,176)"> --><FONT COLOR="#000077"><B>Figure 60.1</B></FONT></A>&nbsp;&nbsp;<I>A sample parametric line.</I>
+</P>
+<P><A NAME="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/60-02.jpg',407,246 )"> --><IMG SRC="images/60-02.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/60-02.jpg',407,246)"> --><FONT COLOR="#000077"><B>Figure 60.2</B></FONT></A>&nbsp;&nbsp;<I>Line segment storage in the BSP compiler.</I>
+</P>
+<H4 ALIGN="LEFT"><A NAME="Heading5"></A><FONT COLOR="#000077">Parametric Line Clipping</FONT></H4>
+<P>In order to assign a line segment to one subspace or the other of a splitter, we must somehow figure out whether the line segment straddles the splitter or falls on one side or the other. In order to determine that, we first plug the line segment and splitter into the following parametric line intersection equation
+</P>
+<P>number = N (L<sub>start</sub> - S<sub>start</sub>) (Equation 1)<BR>denom = -N (L<sub>end</sub> - L<sub>start</sub>) (Equation 2)<BR>t<sub>intersect</sub> = number / denom (Equation 3)</P>
+<P>where N is the normal of the splitter, S<SUB>start</SUB> is the start point of the splitting line segment in standard (x,y) form, and L<SUB>start</SUB> and L<SUB>end</SUB> are the endpoints of the line segment being split, again in (x,y) form. Figure 60.3 illustrates the intersection calculation. Due to lack of space, I&#146;m just going to present this equation and its implications as fact, rather than deriving them; if you want to know more, there&#146;s an excellent explanation on page 117 of <I>Computer Graphics: Principles and Practice,</I> by Foley and van Dam (Addison Wesley, ISBN 0-201-12110-7), a book that you should certainly have in your library.</P>
+<P>If the denominator is zero, we know that the lines are parallel and don&#146;t intersect, so we don&#146;t divide, but rather check the sign of the numerator, which tells us which side of the splitter the line segment is on. Otherwise, we do the division, and the result is the t value for the intersection point, as shown in Figure 60.3. We then simply compare the t value to the t values of the endpoints of the line segment being split. If it&#146;s between them, that&#146;s where we split the line segment, otherwise, we can tell which side of the splitter the line segment is on by which side of the line segment&#146;s t range it&#146;s on. Simple comparisons do all the work, and there&#146;s no need to do the work of generating actual x and y values. If you look closely at Listing 60.1, the core of the BSP compiler, you&#146;ll see that the parametric clipping code itself is exceedingly short and simple.</P>
+<P><A NAME="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/60-03.jpg',410,507 )"> --><IMG SRC="images/60-03.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/60-03.jpg',410,507)"> --><FONT COLOR="#000077"><B>Figure 60.3</B></FONT></A>&nbsp;&nbsp;<I>How line intersection is calculated.</I>
+</P>
+<P>One interesting point about Listing 60.1 is that it generates normals to splitting surfaces simply by exchanging the x and y lengths of the splitting line segment and negating the resultant y value, thereby rotating the line 90 degrees. In 3-D, it&#146;s not that simple to come by a normal; you could calculate the normal as the cross-product of two of the polygon&#146;s edges, or precalculate it when you build the world database.
+</P>
+<H4 ALIGN="LEFT"><A NAME="Heading6"></A><FONT COLOR="#000077">The BSP Compiler</FONT></H4>
+<P>Listing 60.1 shows the core of a BSP compiler&#151;the code that actually builds the BSP tree. (Note that Listing 60.1 is excerpted from a C<SMALL>&#43;&#43;</SMALL> .CPP file, but in fact what I show here is very close to straight C. It may even compile as a .C file, though I haven&#146;t checked.) The compiler begins by setting up an empty tree, then passes that tree and the complete set of line segments from which a BSP tree is to be generated to <B>SelectBSPTree()</B>, which chooses a root node and calls <B>BuildBSPTree()</B> to add that node to the tree and generate child trees for each of the node&#146;s two subspaces. <B>BuildBSPTree()</B> calls <B>SelectBSPTree()</B> recursively to select a root node for each of those child trees, and this continues until all lines have been assigned nodes. <B>SelectBSP()</B> uses parametric clipping to decide on the splitter, as described below, and <B>BuildBSPTree()</B> uses parametric clipping to decide which subspace of the splitter each line belongs in, and to split lines, if necessary.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="60-01.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="60-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

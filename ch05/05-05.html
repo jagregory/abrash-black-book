@@ -1,0 +1,81 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Crossing the Border</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=05//-->
+<!--PAGES=122-123//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="05-04.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="../ch06/06-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>It might also be worth converting the search engine to assembly for searches performed entirely in memory; with the overhead of file access eliminated, improvements in search-engine performance would translate directly into significantly faster overall performance. One such application that would have much the same structure as Listing 5.1 would be searching through expanded memory buffers, and another would be searching through huge (segment-spanning) buffers.
+</P>
+<P>And so we find, as we so often will, that optimization is definitely not a cut-and-dried matter, and that there is no such thing as a single &#147;best&#148; approach.</P>
+<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/05-03i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>You must know what your application will typically do, and you must know whether you&#146;re more concerned with average or worst-case performance before you can decide how best to speed up your program&#151;and, indeed, whether speeding it up is worth doing at all.</I></SMALL>
+</TABLE>
+<P>By the way, don&#146;t think that just because very large block sizes don&#146;t much improve performance, it wasn&#146;t worth using restartable blocks in Listing 5.1. Listing 5.1 runs more than three times more slowly with a block size of 32 bytes than with a block size of 4K, and any byte-by-byte approach would surely be slower still, due to the overhead of repeated calls to DOS and/or the C stream I/O library.
+</P>
+<P>Restartable blocks do minimize the overhead of DOS file-access calls in Listing 5.1; it&#146;s just that there&#146;s no way to reduce that overhead to the point where it becomes worth attempting to further improve the performance of our relatively efficient search engine. Although the search engine is by no means fully optimized, it&#146;s nonetheless as fast as there&#146;s any reason for it to be, given the balance of performance among the components of this program.</P>
+<H3><A NAME="Heading10"></A><FONT COLOR="#000077">Always Look Where Execution Is Going</FONT></H3>
+<P>I&#146;ve explained two important lessons: Know when it&#146;s worth optimizing further, and use restartable blocks to process large data sets as a series of blocks, with each block handled at high speed. The first lesson is less obvious than it seems.
+</P>
+<P>When I set out to write this chapter, I fully intended to write an assembly language version of Listing 5.1, and I expected the assembly version to be much faster. When I actually looked at where execution time was going (which I did by modifying the program to remove the calls to the <B>read()</B> function, but a code profiler could be used to do the same thing much more easily), I found that the best code in the world wouldn&#146;t make much difference.</P>
+<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/05-04i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>When you try to speed up code, take a moment to identify the hot spots in your program so that you know where optimization is needed and whether it will make a significant difference before you invest your time.</I></SMALL>
+</TABLE>
+<P>As for restartable blocks: Here we tackled a considerably more complex application of restartable blocks than we did in Chapter 1&#151;which turned out not to be so difficult after all. Don&#146;t let irregularities in the programming tasks you tackle, such as strings that span blocks, fluster you into settling for easy, general&#151;and slow&#151;solutions. Focus on making the inner loop&#151;the code that handles each block&#151;as efficient as possible, then structure the rest of your code to support the inner loop.
+</P>
+<P>Programming with restartable blocks isn&#146;t easy, but when speed is an issue, using restartable blocks in the right places more than pays for itself with greatly improved performance. And when speed is <I>not</I> an issue, of course, or in code that&#146;s not time-critical, you wouldn&#146;t dream of wasting your time on optimization.</P>
+<P>Would you?</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="05-04.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="../ch06/06-01.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

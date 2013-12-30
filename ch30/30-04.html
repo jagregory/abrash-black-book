@@ -1,0 +1,75 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Video Est Omnis Divisa</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=30//-->
+<!--PAGES=574-575//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="30-03.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="30-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H3><A NAME="Heading8"></A><FONT COLOR="#000077">Split Screen and Panning</FONT></H3>
+<P>Back in Chapter 23, I presented a program that performed smooth horizontal panning. Smooth horizontal panning consists of two parts: byte-by-byte (8-pixel) panning by changing the start address and pixel-by-pixel intrabyte panning by setting the Pel Panning register (AC register 13H) to adjust alignment by 0 to 7 pixels. (IBM prefers its own jargon and uses the word &#147;pel&#148; instead of &#147;pixel&#148; in much of their documentation, hence &#147;pel panning.&#148; Then there&#146;s DASD, a.k.a. Direct Access Storage Device&#151;IBM-speak for hard disk.)
+</P>
+<P>Horizontal smooth panning works just fine, although I&#146;ve always harbored some doubts that any one horizontal-smooth-panning approach works properly on all display board clones. (More on this later.) There&#146;s a catch when using horizontal smooth panning with the split screen up, though, and it&#146;s a serious catch: You can&#146;t byte-pan the split screen (which always starts at offset zero, no matter what the setting of the start address registers)&#151;but you <I>can</I> pel-pan the split screen.</P>
+<P>Put another way, when the normal portion of the screen is horizontally smooth-panned, the split screen portion moves a pixel at a time until it&#146;s time to move to the next byte, then jumps back to the start of the current byte. As the top part of the screen moves smoothly about, the split screen will move and jump, move and jump, over and over. Believe me, it&#146;s not a pretty sight.</P>
+<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/30-03i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>What&#146;s to be done? On the EGA, nothing. Unless you&#146;re willing to have your users&#146; eyes doing the jitterbug, don&#146;t use horizontal smooth scrolling while the split screen is up. Byte panning is fine&#151;just don&#146;t change the Pel Panning register from its default setting.</I></SMALL>
+</TABLE>
+<P>On the VGA, there is recourse. A VGA-only bit, bit 5 of the AC Mode Control register (AC register 10H), turns off pel panning in the split screen. In other words, when this bit is set to 1, pel panning is reset to zero before the first line of the split screen, and remains zero until the end of the frame. This doesn&#146;t allow you to pan the split screen horizontally, mind you&#151;there&#146;s no way to do that&#151;but it does let you pan the normal screen while the split screen stays rock-solid. This can be used to produce an attractive &#147;streaming tape&#148; effect in the normal screen while the split screen is used to display non-moving information.
+</P>
+<H4 ALIGN="LEFT"><A NAME="Heading9"></A><FONT COLOR="#000077">The Split Screen and Horizontal Panning: An Example</FONT></H4>
+<P>Listing 30.2 illustrates the interaction of horizontal smooth panning with the split screen, as well as the suppression of pel panning in the split screen. Listing 30.2 creates a virtual screen 1024 pixels across by setting the Offset register (CRTC register 13H) to 64, sets the normal screen to scan video data beginning far enough up in display memory to leave room for the split screen starting at offset zero, turns on the split screen, and fills in the normal screen and split screen with distinctive patterns. Next, Listing 30.2 pans the normal screen horizontally without setting bit 5 of the AC Mode Control register to 1. As you&#146;d expect, the split screen jerks about quite horribly. After a key press, Listing 30.2 sets bit 5 of the Mode Control register and pans the normal screen again. This time, the split screen doesn&#146;t budge an inch&#151;<I>if</I> the code is running on a VGA.</P>
+<P>By the way, if <B>IS_VGA</B> is set to 0 in Listing 30.2, the program will assemble in a form that will run on the EGA and <I>only</I> the EGA. Pel panning suppression in the split screen won&#146;t work in this version, however, because the EGA lacks the capability to support that feature. When the EGA version runs, the split screen simply jerks back and forth during both panning sessions.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="30-03.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="30-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

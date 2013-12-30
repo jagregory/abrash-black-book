@@ -1,0 +1,78 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Be It Resolved: 360x480</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=32//-->
+<!--PAGES=618-620//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="32-03.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="32-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>The second thing you&#146;ll notice is that exquisite shading effects are possible in 360&#215;480 256-color mode; adjacent lines blend together remarkably smoothly, even with the default palette. The VGA allows you to select your 256 colors from a palette of 256K, so you could, if you wished, set up the colors to produce still finer shading albeit with fewer distinctly different colors available. For more on this and related topics, see the coverage of palette reprogramming that begins in the next chapter.
+</P>
+<P>The one thing you may not notice right away is just how much detail is visible on the screen, because the blending of colors tends to obscure the superior resolution of this mode. Each of the four rectangles displayed measures 180 pixels horizontally by 240 vertically. Put another way, each <I>one</I> of those rectangles has two-thirds as many pixels as the entire mode 13H screen; in all, 360&#215;480 256-color mode has 2.7 times as many pixels as mode 13H! As mentioned above, the resolution is unevenly distributed, with vertical resolution matching that of mode 12H but horizontal resolution barely exceeding that of mode 13H&#151;but resolution is hot stuff, no matter how it&#146;s laid out, and 360&#215;480 256-color mode has the highest 256-color resolution you&#146;re ever likely to see on a standard VGA. (SuperVGAs are quite another matter&#151;but when you <I>require</I> a SuperVGA you&#146;re automatically excluding what might be a significant chunk of the market for your code.)</P>
+<P>Now that we&#146;ve seen the wonders of which our new mode is capable, let&#146;s take the time to understand how it works.</P>
+<H3><A NAME="Heading5"></A><FONT COLOR="#000077">How 360&#215;480 256-Color Mode Works</FONT></H3>
+<P>In describing 360&#215;480 256-color mode, I&#146;m going to assume that you&#146;re familiar with the discussion of 320&#215;400 256-color mode in the last chapter. If not, go back to that chapter and read it; the two modes have a great deal in common, and I&#146;m not going to bore you by repeating myself when the goods are just a few page flips (the paper kind) away.
+</P>
+<P>360&#215;480 256-color mode is essentially 320&#215;400 256-color mode, but stretched in both dimensions. Let&#146;s look at the vertical stretching first, since that&#146;s the simpler of the two.</P>
+<H4 ALIGN="LEFT"><A NAME="Heading6"></A><FONT COLOR="#000077">480 Scan Lines per Screen: A Little Slower, But No Big Deal</FONT></H4>
+<P>There&#146;s nothing unusual about 480 scan lines; standard modes 11H and 12H support that vertical resolution. The number of scan lines has nothing to do with either the number of colors or the horizontal resolution, so converting 320&#215;400 256mode to 320&#215;480 256-color mode is a simple matter of reprogramming the VGA&#146;s vertical control registers&#151;which control the scan lines displayed, the vertical sync pulse, vertical blanking, and the total number of scan lines&#151;to the 480-scansettings, and setting the polarities of the horizontal and vertical sync pulses to tell the monitor to adjust to a 480-line screen.
+</P>
+<P>Switching to 480 scan lines has the effect of slowing the screen refresh rate. The VGA always displays at 70 Hz <I>except</I> in 480-scan-line modes; there, due to the time required to scan the extra lines, the refresh rate slows to 60 Hz. (VGA monitors always scan at the same rate horizontally; that is, the distance across the screen covered by the electron beam in a given period of time is the same in all modes. Consequently, adding extra lines per frame requires extra time.) 60 Hz isn&#146;t <I>bad</I>&#151;that&#146;s the only refresh rate the EGA ever supported, and the EGA was the industry standard in its time&#151;but it does tend to flicker a little more and so is a little harder on the eyes than 70 Hz.</P>
+<H4 ALIGN="LEFT"><A NAME="Heading7"></A><FONT COLOR="#000077">360 Pixels per Scan Line: No Mean Feat</FONT></H4>
+<P>Converting from 320 to 360 pixels per scan line is more difficult than converting from 400 to 480 scan lines per screen. None of the VGA&#146;s graphics modes supports 360 pixels across the screen, or anything like it; the standard choices are 320 and 640 pixels across. However, the VGA <I>does</I> support the horizontal resolution we seek&#151;360 pixels&#151;in 40-column <I>text</I> mode.</P>
+<P>Unfortunately, the register settings that select those horizontal resolutions aren&#146;t directly transferable to graphics mode. Text modes display 9 dots (the width of one character) for each time information is fetched from display memory, while graphics modes display just 4 or 8 dots per display memory fetch. (Although it&#146;s a bit confusing, it&#146;s standard terminology to refer to the interval required for one display memory fetch as a &#147;character,&#148; and I&#146;ll follow that terminology from now on.) Consequently, both modes display either 40 or 80 characters per scan line; the only difference is that text modes display more pixels per character. Given that graphics modes <I>can&#146;t</I> display 9 dots per character (there&#146;s only enough information for eight 16pixels or four 256-color pixels in each memory fetch, and that&#146;s that), we&#146;d seem to be at an impasse.</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="32-03.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="32-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

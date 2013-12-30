@@ -1,0 +1,169 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Mode X: 256-color VGA Magic</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=47//-->
+<!--PAGES=879-882//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="47-01.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="47-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>Given the tremendous advantages of Mode X over the documented mode 13H, I&#146;d very much like to get it into the hands of as many developers as possible, so I&#146;m going to spend the next few chapters exploring this odd but worthy mode. I&#146;ll provide mode set code, delineate the bitmap organization, and show how the basic write pixel and read pixel operations work. Then, I&#146;ll move on to the magic stuff: rectangle fills, screen clears, scrolls, image copies, pixel inversion, and, yes, polygon fills (just a different driver for the polygon code), all blurry fast; hardware raster ops; and page flipping. In the end, I&#146;ll build a working animation program that shows many of the features of Mode X in action.
+</P>
+<P>The mode set code is the logical place to begin.</P>
+<H3><A NAME="Heading4"></A><FONT COLOR="#000077">Selecting 320x240 256-Color Mode</FONT></H3>
+<P>We could, if we wished, write our own mode set code for Mode X from scratch&#151;but why bother? Instead, we&#146;ll let the BIOS do most of the work by having it set up mode 13H, which we&#146;ll then turn into Mode X by changing a few registers. Listing 47.1 does exactly that.
+</P>
+<P>The code in Listing 47.1 has been around for some time, and the very first version had a bug that serves up an interesting lesson. The original <I>DDJ</I> version made images roll on IBM&#146;s fixed-frequency VGA monitors, a problem that didn&#146;t come to my attention until the code was in print and shipped to 100,000 readers.</P>
+<P>The bug came about this way: The code I modified to make the Mode X mode set code used the VGA&#146;s 28-MHz clock. Mode X should have used the 25-MHz clock, a simple matter of setting bit 2 of the Miscellaneous Output register (3C2H) to 0 instead of 1.</P>
+<P>Alas, I neglected to change that single bit, so frames were drawn at a faster rate than they should have been; however, both of my monitors are multifrequency types, and they automatically compensated for the faster frame rate. Consequently, my clock-selection bug was invisible and innocuous&#151;until it was distributed broadly and everybody started banging on it.</P>
+<P>IBM makes only fixed-frequency VGA monitors, which require very specific frame rates; if they don&#146;t get what you&#146;ve told them to expect, the image rolls. The corrected version is the one shown here as Listing 47.1; it does select the 25-MHz clock, and works just fine on fixed-frequency monitors.</P>
+<P>Why didn&#146;t I catch this bug? Neither I nor a single one of my testers had a fixed-frequency monitor! This nicely illustrates how difficult it is these days to test code in all the PC-compatible environments in which it might run. The problem is particularly severe for small developers, who can&#146;t afford to buy every model of every hardware component from every manufacturer; just imagine trying to test network-aware software in all possible configurations!</P>
+<P>When people ask why software isn&#146;t bulletproof; why it crashes or doesn&#146;t coexist with certain programs; why PC clones aren&#146;t always compatible; why, in short, the myriad irritations of using a PC exist&#151;this is a big part of the reason. I guess that&#146;s just the price we pay for the unfettered creativity and vast choice of the PC market.</P>
+<P><B>LISTING 47.1 L47-1.ASM</B></P>
+<!-- CODE //-->
+<PRE>
+; Mode X (320x240, 256 colors) mode set routine. Works on all VGAs.
+; ****************************************************************
+; * Revised 6/19/91 to select correct clock; fixes vertical roll *
+; * problems on fixed-frequency (IBM 851X-type) monitors.        *
+; ****************************************************************
+; C near-callable as:
+;       void Set320x240Mode(void);
+; Tested with TASM
+; Modified from public-domain mode set code by John Bridges.
+
+SC_INDEX        equ  03c4h   ;Sequence Controller Index
+CRTC_INDEX      equ  03d4h   ;CRT Controller Index
+MISC_OUTPUT     equ  03c2h   ;Miscellaneous Output register
+SCREEN_SEG      equ  0a000h  ;segment of display memory in mode X
+
+        .model  small
+        .data
+; Index/data pairs for CRT Controller registers that differ between
+; mode 13h and mode X.
+CRTParms label  word
+        dw      00d06h  ;vertical total
+        dw      03e07h  ;overflow (bit 8 of vertical counts)
+        dw      04109h  ;cell height (2 to double-scan)
+        dw      0ea10h  ;v sync start
+        dw      0ac11h  ;v sync end and protect cr0-cr7
+        dw      0df12h  ;vertical displayed
+        dw      00014h  ;turn off dword mode
+        dw      0e715h  ;v blank start
+        dw      00616h  ;v blank end
+        dw      0e317h  ;turn on byte mode
+CRT_PARM_LENGTH equ     (($-CRTParms)/2)
+
+        .code
+        public  _Set320x240Mode
+_Set320x240Mode proc    near
+        push    bp      ;preserve caller&#146;s stack frame
+        push    si      ;preserve C register vars
+        push    di      ; (don&#146;t count on BIOS preserving anything)
+
+        mov     ax,13h  ;let the BIOS set standard 256-color
+        int     10h     ; mode (320x200 linear)
+
+        mov     dx,SC_INDEX
+        mov     ax,0604h
+        out     dx,ax   ;disable chain4 mode
+        mov     ax,0100h
+        out     dx,ax   ;synchronous reset while setting Misc Output
+                        ; for safety, even though clock unchanged
+        mov     dx,MISC_OUTPUT
+        mov     al,0e3h
+        out     dx,al   ;select 25 MHz dot clock & 60 Hz scanning rate
+
+        mov     dx,SC_INDEX
+        mov     ax,0300h
+        out     dx,ax   ;undo reset (restart sequencer)
+
+        mov     dx,CRTC_INDEX ;reprogram the CRT Controller
+        mov     al,11h  ;VSync End reg contains register write
+        out     dx,al   ; protect bit
+        inc     dx      ;CRT Controller Data register
+        in      al,dx   ;get current VSync End register setting
+        and     al,7fh  ;remove write protect on various
+        out     dx,al   ; CRTC registers
+        dec     dx      ;CRT Controller Index
+        cld
+        mov     si,offset CRTParms ;point to CRT parameter table
+        mov     cx,CRT_PARM_LENGTH ;# of table entries
+SetCRTParmsLoop:
+        lodsw           ;get the next CRT Index/Data pair
+        out     dx,ax   ;set the next CRT Index/Data pair
+        loop    SetCRTParmsLoop
+
+        mov     dx,SC_INDEX
+        mov     ax,0f02h
+        out     dx,ax   ;enable writes to all four planes
+        mov     ax,SCREEN_SEG ;now clear all display memory, 8 pixels
+        mov     es,ax         ; at a time
+        sub     di,di   ;point ES:DI to display memory
+        sub     ax,ax   ;clear to zero-value pixels
+        mov     cx,8000h ;# of words in display memory
+        rep     stosw   ;clear all of display memory
+
+        pop     di      ;restore C register vars
+        pop     si
+        pop     bp      ;restore caller&#146;s stack frame
+        ret
+_Set320x240Mode endp
+        end
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="47-01.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="47-03.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

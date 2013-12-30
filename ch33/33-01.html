@@ -1,0 +1,86 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Yogi Bear and Eurythmics Confront VGA Colors</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=33//-->
+<!--PAGES=623-628//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="../ch32/32-05.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="33-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 33<BR>Yogi Bear and Eurythmics Confront VGA Colors
+</FONT></H2>
+<H3><A NAME="Heading2"></A><FONT COLOR="#000077">The Basics of VGA Color Generation</FONT></H3>
+<P>Kevin Mangis wants to know about the VGA&#146;s 4-bit to 8-bit to 18-bit color translation. Mansur Loloyan would like to find out how to generate a look-up table containing 256 colors and how to change the default color palette. And surely they are only the tip of the iceberg; hordes of screaming programmers from every corner of the planet are no doubt tearing the place up looking for a discussion of VGA color, and venting their frustration at my mailbox. <I>Let&#146;s have it</I>, they&#146;ve said, clearly and in considerable numbers. As Eurythmics might say, who is this humble writer to disagree?</P>
+<P>On the other hand, I hope you all know what you&#146;re getting into. To paraphrase Yogi, the VGA is smarter (and more confusing) than the average board. There&#146;s the basic 8-bit to 18-bit translation, there&#146;s the EGA-compatible 4-bit to 6-bit translation, there&#146;s the 2- or 4-bit color paging register that&#146;s used to pad 6- or 4-bit pixel values out to 8 bits, and then there&#146;s 256-color mode. Fear not, it will all make sense in the end, but it may take us a couple of additional chapters to get there&#151;so let&#146;s get started.</P>
+<P>Before we begin, though, I must refer you to Michael Covington&#146;s excellent article, &#147;Color Vision and the VGA,&#148; in the June/July 1990 issue of <I>PC TECHNIQUES</I>. Michael, one of the most brilliant people it has ever been my pleasure to meet, is an expert in many areas I know nothing about, including linguistics and artificial intelligence. Add to that list the topic of color perception, for his article superbly describes the mechanisms by which we perceive color and ties that information to the VGA&#146;s capabilities. After reading Michael&#146;s article, you&#146;ll understand what colors the VGA is capable of generating, and why.</P>
+<P>Our topic in this chapter complements Michael&#146;s article nicely. Where he focused on color perception, we&#146;ll focus on color generation; that is, the ways in which the VGA can be programmed to generate those colors that lie within its capabilities. To find out why a VGA can&#146;t generate as pure a red as an LED, read Michael&#146;s article. If you want to find out how to flip between 16 different sets of 16 colors, though, don&#146;t touch that dial!</P>
+<P>I would be remiss if I didn&#146;t point you in the direction of two more articles, these in the July 1990 issue of <I>Dr. Dobb&#146;s Journal</I>. &#147;Super VGA Programming,&#148; by Chris Howard, provides a good deal of useful information about SuperVGA chipsets, modes, and programming. &#147;Circles and the Digital Differential Analyzer,&#148; by Tim Paterson, is a good article about fast circle drawing, a topic we&#146;ll tackle soon. All in all, the dog days of 1990 were good times for graphics.</P>
+<H3><A NAME="Heading3"></A><FONT COLOR="#000077">VGA Color Basics</FONT></H3>
+<P>Briefly put, the VGA color translation circuitry takes in one 4- or 8-bit pixel value at a time and translates it into three 6-bit values, one each of red, green, and blue, that are converted to corresponding analog levels and sent to the monitor. Seems simple enough, doesn&#146;t it? Unfortunately, nothing is ever that simple on the VGA, and color translation is no exception.
+</P>
+<H4 ALIGN="LEFT"><A NAME="Heading4"></A><FONT COLOR="#000077">The Palette RAM</FONT></H4>
+<P>The color path in the VGA involves two stages, as shown in Figure 33.1. The first stage fetches a 4-bit pixel from display memory and feeds it into the EGA-compatible palette RAM (so called because it is functionally equivalent to the palette RAM color translation circuitry of the EGA), which translates it into a 6-bit value and sends it on to the DAC. The translation involves nothing more complex than the 4-bit value of a pixel being used as the address of one of the 16 palette RAM registers; a pixel value of 0 selects the contents of palette RAM register 0, a pixel value of 1 selects register 1, and so on. Each palette RAM register stores 6 bits, so each time a palette RAM register is selected by an incoming 4-bit pixel value, 6 bits of information are sent out by the palette RAM. (The operation of the palette RAM was described back in Chapter 29.)
+</P>
+<P>The process is much the same in text mode, except that in text mode each 4-bit pixel value is generated based on the character&#146;s font pattern and attribute. In 256-color mode, which we&#146;ll get to eventually, the palette RAM is not a factor from the programmer&#146;s perspective and should be left alone.</P>
+<H4 ALIGN="LEFT"><A NAME="Heading5"></A><FONT COLOR="#000077">The DAC</FONT></H4>
+<P>Once the EGA-compatible palette RAM has fulfilled its karma and performed 4-bit to 6-bit translation on a pixel, the resulting value is sent to the DAC (Digital/Analog Converter). The DAC performs an 8-bit to 18-bit conversion in much the same manner as the palette RAM, converts the 18-bit result to analog red, green, and blue signals (6 bits for each signal), and sends the three analog signals to the monitor. The DAC is a separate chip, external to the VGA chip, but it&#146;s an integral part of the VGA standard and is present on every VGA.
+</P>
+<P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/33-01.jpg',334,420 )"> --><IMG SRC="images/33-01.jpg"><BR><!-- </A>
+<BR><A HREF="javascript:displayWindow('images/33-01.jpg',334,420)"> --><FONT COLOR="#000077"><B>Figure 33.1</B></FONT></A>&nbsp;&nbsp;<I>The VGA color generation path.</I>
+</P>
+<P>(I&#146;d like to take a moment to point out that you can&#146;t speak of &#147;color&#148; at any point in the color translation process until the output stage of the DAC. The 4-bit pixel values in memory, 6-bit values in the palette RAM, and 8-bit values sent to the DAC are all attributes, not colors, because they&#146;re subject to translation by a later stage. For example, a pixel with a 4-bit value of 0 isn&#146;t black, it&#146;s attribute 0. It will be translated to 3FH if palette RAM register 0 is set to 3FH, but that&#146;s not the color white, just another attribute. The value 3FH coming into the DAC isn&#146;t white either, and if the value stored in DAC register 63 is red=7, green=0, and blue=0, the actual <I>color</I> displayed for that pixel that was 0 in display memory will be dim red. It isn&#146;t color until the DAC says it&#146;s color.)</P>
+<P>The DAC contains 256 18-bit storage registers, used to translate one of 256 possible 8-bit values into one of 256K (262,144, to be precise) 18-bit values. The 18-bit values are actually composed of three 6-bit values, one each for red, green, and blue; for each color component, the higher the number, the brighter the color, with 0 turning that color off in the pixel and 63 (3FH) making that color maximum brightness. Got all that?</P><P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="../ch32/32-05.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="33-02.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+

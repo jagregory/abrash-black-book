@@ -1,0 +1,112 @@
+<HTML>
+<HEAD>
+<META name=vsisbn content="1576101746">
+<META name=vstitle content="Michael Abrash's Graphics Programming Black Book, Special Edition">
+<META name=vsauthor content="Michael Abrash">
+<META name=vspublisher content="The Coriolis Group">
+<META name=vspubdate content="07/01/97">
+<META name=vscategory content="Web and Software Development: Game Development,Web and Software Development: Graphics and Multimedia Development">
+
+
+
+
+
+
+<TITLE>Michael Abrash's Graphics Programming Black Book Special Edition: Dog Hair and Dirty Rectangles</TITLE>
+
+<!-- HEADER -->
+<!-- Empty Reference Subhead -->
+
+<!--ISBN=1576101746//-->
+<!--TITLE=Michael Abrash's Graphics Programming Black Book Special Edition//-->
+<!--AUTHOR=Michael Abrash//-->
+<!--PUBLISHER=The Coriolis Group, Inc.//-->
+<!--CHAPTER=45//-->
+<!--PAGES=851-853//-->
+<!--UNASSIGNED1//-->
+<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="45-03.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="45-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+<P><BR></P>
+<P>One point I&#146;d like to make is that although the system-memory buffer in Listing 45.1 has exactly the same dimensions as the screen bitmap, that&#146;s not a requirement, and there are some good reasons not to make the two the same size. For example, if the system buffer is bigger than the area displayed on the screen, it&#146;s possible to pan the visible area around the system buffer. Or, alternatively, the system buffer can be just the size of a desired window, representing a window into a larger, virtual buffer. We could then draw the desired portion of the virtual bitmap into the system-memory buffer, then copy the buffer to the screen, and the effect will be of having panned the window to the new location.
+</P>
+<TABLE WIDTH="100%"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/45-02i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><SMALL><I>Another argument in favor of a small viewing window is that it restricts the amount of display memory actually drawn to. Restricting the display memory used for animation reduces the total number of display-memory accesses, which in turn boosts overall performance; it also improves the performance and appearance of panning, in which the whole window has to be redrawn or copied.</I></SMALL>
+</TABLE>
+<P>If you keep a close watch, you&#146;ll notice that many high-performance animation games similarly restrict their full-featured animation area to a relatively small region. Often, it&#146;s hard to tell that this is the case, because the animation region is surrounded by flashy digitized graphics and by items such as scoreboards and status screens, but look closely and see if the animation region in your favorite game isn&#146;t smaller than you thought.
+</P>
+<H3><A NAME="Heading8"></A><FONT COLOR="#000077">Hi-Res VGA Page Flipping</FONT></H3>
+<P>On a standard VGA, hi-res mode is mode 12H, which offers 640&#215;480 resolution with 16 colors. That&#146;s a nice mode, with plenty of pixels, and square ones at that, but it lacks one thing&#151;page flipping. The problem is that the mode 12H bitmap is 150 K in size, and the standard VGA has only 256 K total, too little memory for two of those monster mode 12H pages. With only one page, flipping is obviously out of the question, and without page flipping, top-flight, hi-res animation can&#146;t be implemented. The standard fallback is to use the EGA&#146;s hi-res mode, mode 10H (640&#215;350, 16 colors) for page flipping, but this mode is less than ideal for a couple of reasons: It offers sharply lower vertical resolution, and it&#146;s lousy for handling scaled-up CGA graphics, because the vertical resolution is a fractional multiple&#151;1.75 times, to be exact&#151;of that of the CGA. CGA resolution may not seem important these days, but many images were originally created for the CGA, as were many graphics packages and games, and it&#146;s at least convenient to be able to handle CGA graphics easily. Then, too, 640&#215;350 is also a poor multiple of the 200 scan lines of the popular 320&#215;200 256-color mode 13H of the VGA.
+</P>
+<P>There are a couple of interesting, if imperfect, solutions to the problem of hi-res page flipping. One is to use the split screen to enable page flipping only in the top two-thirds of the screen; see the previous chapter for details, and for details on the mechanics of page flipping generally. This doesn&#146;t address the CGA problem, but it does yield square pixels and a full 640&#215;480 screen resolution, although not all those pixels are flippable and thus animatable.</P>
+<P>A second solution is to program the screen to a 640&#215;400 mode. Such a mode uses almost every byte of display memory (64,000 bytes, actually; you could add another few lines, if you really wanted to), and thereby provides the highest resolution possible on the VGA for a fully page-flipped display. It maps well to CGA and mode 13H resolutions, being either identical or double in both dimensions. As an added benefit, it offers an easy-on-the-eyes 70-Hz frame rate, as opposed to the 60 Hz that is the best that mode 12H can offer, due to the design of standard VGA monitors. Best of all, perhaps, is that 640&#215;400 16-color mode is easy to set up.</P>
+<P>The key to 640&#215;400 mode is understanding that on a VGA, mode 10H (640&#215;350) is, at heart, a 400-scan-line mode. What I mean by that is that in mode 10H, the Vertical Total register, which controls the total number of scan lines, both displayed and nondisplayed, is set to 447, exactly the same as in the VGA&#146;s text modes, which do in fact support 400 scan lines. A properly sized and centered display is achieved in mode 10H by setting the polarity of the sync pulses to tell the monitor to scan vertically at a faster rate (to make fewer lines fill the screen), by starting the overscan after 350 lines, and by setting the vertical sync and blanking pulses appropriately for the faster vertical scanning rate. Changing those settings is all that&#146;s required to turn mode 10H into a 640&#215;400 mode, and that&#146;s easy to do, as illustrated by Listing 45.2, which provides mode set code for 640&#215;400 mode.</P>
+<P><B>LISTING 45.2 L45-2.C</B></P>
+<!-- CODE //-->
+<PRE>
+/* Mode set routine for VGA 640&#215;400 16-color mode. Tested with
+   Borland C&#43;&#43; in C compilation mode. */
+
+#include &lt;dos.h&gt;
+
+void Set640&#215;400()
+{
+   union REGS regset;
+
+   /* First, set to standard 640&#215;350 mode (mode 10h) */
+   regset.x.ax = 0&#215;0010;
+   int86(0&#215;10, &ampregset, &ampregset);
+
+   /* Modify the sync polarity bits (bits 7 &amp 6) of the
+      Miscellaneous Output register (readable at 0&#215;3CC, writable at
+      0&#215;3C2) to select the 400-scan-line vertical scanning rate */
+   outp(0&#215;3C2, ((inp(0&#215;3CC) &amp 0&#215;3F) | 0&#215;40));
+
+   /* Now, tweak the registers needed to convert the vertical
+      timings from 350 to 400 scan lines */
+   outpw(0&#215;3D4, 0&#215;9C10);   /* adjust the Vertical Sync Start register
+                              for 400 scan lines */
+   outpw(0&#215;3D4, 0&#215;8E11);   /* adjust the Vertical Sync End register
+                              for 400 scan lines */
+   outpw(0&#215;3D4, 0&#215;8F12);   /* adjust the Vertical Display End
+                              register for 400 scan lines */
+   outpw(0&#215;3D4, 0&#215;9615);   /* adjust the Vertical Blank Start
+                              register for 400 scan lines */
+   outpw(0&#215;3D4, 0&#215;B916);   /* adjust the Vertical Blank End register
+                              for 400 scan lines */
+}
+</PRE>
+<!-- END CODE //-->
+<P><BR></P>
+<CENTER>
+<TABLE BORDER>
+<TR>
+<TD><A HREF="45-03.html">Previous</A></TD>
+<TD><A HREF="../index.html">Table of Contents</A></TD>
+<TD><A HREF="45-05.html">Next</A></TD>
+</TR>
+</TABLE>
+</CENTER>
+
+<hr width="90%" size="1" noshade>
+<div align="center">
+<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+</div>
+<!-- all of the reference materials (books) have the footer and subfoot reveresed -->
+<!-- reference_subfoot = footer -->
+<!-- reference_footer = subfoot -->
+
+<!-- BEGIN SUB FOOTER -->
+</BODY>
+</HTML>
+
+<!-- END FOOTER -->
+
+
