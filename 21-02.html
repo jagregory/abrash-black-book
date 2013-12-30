@@ -24,7 +24,7 @@
 <!--CHAPTER=21//-->
 <!--PAGES=402-405//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -84,7 +84,7 @@ mov [MemVar2],0 ;U-pipe 2
 </PRE>
 <!-- END CODE SNIP //-->
 <P>Note, however, that my experiments thus far indicate that the two writes in the first case don&rsquo;t actually pair (possibly because the memory variables have never been read into the internal cache), so you might want to insert an instruction between the two <B>MOV</B>s&mdash;and, of course, this is yet another reason why you should always measure your code&rsquo;s actual performance.</P>
-<H3><A NAME="Heading4"></A><FONT COLOR="#000077">Register Contention</FONT></H3>
+<H3><A NAME="Heading4"></A>Register Contention</H3>
 <P>Finally, we come to the last major component of superscalar optimization: register contention. The basic premise here is simple: You can&rsquo;t use the same register in two inherently sequential ways in a single cycle. For example, you can&rsquo;t execute
 </P>
 <!-- CODE SNIP //-->
@@ -106,7 +106,7 @@ mov al,[Var]  ;U-pipe cycle 2
 </PRE>
 <!-- END CODE SNIP //-->
 <P>where an attempt is made to set both EAX and its AL subregister on the same cycle. Write-after-write contention implies that the two instructions comprising the above substitute for <B>MOVZX</B> should have at least one unrelated instruction between them when <B>SUB EAX,EAX</B> executes in the V-pipe.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading5"></A><FONT COLOR="#000077">Exceptions to Register Contention</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading5"></A>Exceptions to Register Contention</H4>
 <P>Intel has special-cased some very useful exceptions to register contention. Happily, write-after-read operations do <I>not</I> cause contention. Such operations, as in</P>
 <!-- CODE SNIP //-->
 <PRE>
@@ -140,7 +140,7 @@ LoopTop:
 </PRE>
 <!-- END CODE SNIP //-->
 <P>Branches can&rsquo;t pair in the U-pipe; a branch that executes in the U-pipe runs alone, with the V-pipe idle. If a call or jump is correctly predicted by the Pentium&rsquo;s branch prediction circuitry (as discussed in the last chapter), it executes in a single cycle, pairing if it runs in the V-pipe; if mispredicted, conditional jumps take 4 cycles in the U-pipe and 5 cycles in the V-pipe, and mispredicted calls and unconditional jumps take 3 cycles in either pipe. Note that <B>RET</B> can&rsquo;t pair.</P>
-<H3><A NAME="Heading6"></A><FONT COLOR="#000077">Who&rsquo;s in First?</FONT></H3>
+<H3><A NAME="Heading6"></A>Who&rsquo;s in First?</H3>
 <P>One of the trickiest things about superscalar optimization is that a given instruction stream can execute at a different speed depending on the pipe where it starts execution, because which instruction goes through the U-pipe first determines which of the following instructions will be able to pair. If we take the last example and add one more instruction, the other instructions will go through different pipes than previously, and cause the loop as a whole to take 50 percent longer, even though we only added 25 percent more cycles:
 </P>
 <!-- CODE //-->
@@ -169,7 +169,7 @@ LoopTop:
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

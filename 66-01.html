@@ -24,7 +24,7 @@
 <!--CHAPTER=66//-->
 <!--PAGES=1209-1213//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,26 +36,25 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 66<BR>Quake&rsquo;s Hidden-Surface Removal
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Struggling with Z-Order Solutions to the Hidden Surface Problem</FONT></H3>
+<H2><A NAME="Heading1"></A>Chapter 66<BR>Quake&rsquo;s Hidden-Surface Removal</H2>
+<H3><A NAME="Heading2"></A>Struggling with Z-Order Solutions to the Hidden Surface Problem</H3>
 <P>Okay, I admit it: I&rsquo;m sick and tired of classic rock. Admittedly, it&rsquo;s been a while, about 20 years, since I was last excited to hear anything by the Cars or Boston, and I was never particularly excited in the first place about Bob Seger or Queen, to say nothing of Elvis, so some things haven&rsquo;t changed. But I knew something was up when I found myself changing the station on the Allman Brothers and Steely Dan and Pink Floyd and, God help me, the Beatles (just stuff like &ldquo;Hello Goodbye&rdquo; and &ldquo;I&rsquo;ll Cry Instead,&rdquo; though, not &ldquo;Ticket to Ride&rdquo; or &ldquo;A Day in the Life&rdquo;; I&rsquo;m not <I>that</I> far gone). It didn&rsquo;t take long to figure out what the problem was; I&rsquo;d been hearing the same songs for a quarter-century, and I was bored.</P>
 <P>I tell you this by way of explaining why it was that when my daughter and I drove back from dinner the other night, the radio in my car was tuned, for the first time ever, to a station whose slogan is &ldquo;There is no alternative.&rdquo;</P>
 <P>Now, we&rsquo;re talking here about a 10-year-old who worships the Beatles and has been raised on a steady diet of oldies. She loves melodies, catchy songs, and good singers, none of which you&rsquo;re likely to find on an alternative rock station. So it&rsquo;s no surprise that when I turned on the radio, the first word out of her mouth was &ldquo;Yuck!&rdquo;</P>
 <P>What did surprise me was that after listening for a while, she said, &ldquo;You know, Dad, it&rsquo;s actually kind of interesting.&rdquo;</P>
 <P>Apart from giving me a clue as to what sort of music I can expect to hear blasting through our house when she&rsquo;s a teenager, her quick uptake on alternative rock (versus my decades-long devotion to the music of my youth) reminded me of something that it&rsquo;s easy to forget as we become older and more set in our ways. It reminded me that it&rsquo;s essential to keep an open mind, and to be willing, better yet, eager, to try new things. Programmers tend to become attached to familiar approaches, and are inclined to stick with whatever is currently doing the job adequately well, but in programming there are always alternatives, and I&rsquo;ve found that they&rsquo;re often worth considering.</P>
 <P>Not that I should have needed any reminding, considering the ever-evolving nature of Quake.</P>
-<H3><A NAME="Heading3"></A><FONT COLOR="#000077">Creative Flux and Hidden Surfaces</FONT></H3>
+<H3><A NAME="Heading3"></A>Creative Flux and Hidden Surfaces</H3>
 <P>Back in Chapter 64, I described the creative flux that led to John Carmack&rsquo;s decision to use a precalculated potentially visible set (PVS) of polygons for each possible viewpoint in Quake, the game we&rsquo;re developing here at id Software. The precalculated PVS meant that instead of having to spend a lot of time searching through the world database to find out which polygons were visible from the current viewpoint, we could simply draw all the polygons in the PVS from back-to-front (getting the ordering courtesy of the world BSP tree) and get the correct scene drawn with no searching at all; letting the back-to-front drawing perform the final stage of hidden-surface removal (HSR). This was a terrific idea, but it was far from the end of the road for Quake&rsquo;s design.
 </P>
-<H4 ALIGN="LEFT"><A NAME="Heading4"></A><FONT COLOR="#000077">Drawing Moving Objects</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading4"></A>Drawing Moving Objects</H4>
 <P>For one thing, there was still the question of how to sort and draw moving objects properly; in fact, this is the single technical question I&rsquo;ve been asked most often in recent months, so I&rsquo;ll take a moment to address it here. The primary problem is that a moving model can span multiple BSP leaves, with the leaves that are touched varying as the model moves; that, together with the possibility of multiple models in one leaf, means there&rsquo;s no easy way to use BSP order to draw the models in correctly sorted order. When I wrote Chapter 64, we were drawing sprites (such as explosions), moveable BSP models (such as doors), and polygon models (such as monsters) by clipping each into all the leaves it touched, then drawing the appropriate parts as each BSP leaf was reached in back-to-front traversal. However, this didn&rsquo;t solve the issue of sorting multiple moving models in a single leaf against each other, and also left some ugly sorting problems with complex polygon models.
 </P>
 <P>John solved the sorting issue for sprites and polygon models in a startlingly low-tech way: We now z-buffer them. (That is, before we draw each pixel, we compare its distance, or z, value with the z value of the pixel currently on the screen, drawing only if the new pixel is nearer than the current one.) First, we draw the basic world, walls, ceilings, and the like. No z-buffer <I>testing</I> is involved at this point (the world visible surface determination is done in a different way, as we&rsquo;ll see soon); however, we do <I>fill</I> the z-buffer with the z values (actually, 1/z values, as discussed below) for all the world pixels. Z-filling is a much faster process than z-buffering the entire world would be, because no reads or compares are involved, just writes of z values. Once the drawing and z-filling of the world is done, we can simply draw the sprites and polygon models with z-buffering and get perfect sorting all around.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading5"></A><FONT COLOR="#000077">Performance Impact</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading5"></A>Performance Impact</H4>
 <P>Whenever a z-buffer is involved, the questions inevitably are: What&rsquo;s the memory footprint and what&rsquo;s the performance impact? Well, the memory footprint at 320x200 is 128K, not trivial but not a big deal for a game that requires 8 MB to run. The performance impact is about 10 percent for z-filling the world, and roughly 20 percent (with lots of variation) for drawing sprites and polygon models. In return, we get a perfectly sorted world, and also the ability to do additional effects, such as particle explosions and smoke, because the z-buffer lets us flawlessly sort such effects into the world. All in all, the use of the z-buffer vastly improved the visual quality and flexibility of the Quake engine, and also simplified the code quite a bit, at an acceptable memory and performance cost.
 </P>
-<H4 ALIGN="LEFT"><A NAME="Heading6"></A><FONT COLOR="#000077">Leveling and Improving Performance</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading6"></A>Leveling and Improving Performance</H4>
 <P>As I said above, in the Quake architecture, the world itself is drawn first, without z-buffer reads or compares, but filling the z-buffer with the world polygons&rsquo; z values, and then the moving objects are drawn atop the world, using full z-buffering. Thus far, I&rsquo;ve discussed how to draw moving objects. For the rest of this chapter, I&rsquo;m going to talk about the other part of the drawing equation; that is, how to draw the world itself, where the entire world is stored as a single BSP tree and never moves.
 </P><P><BR></P>
 <CENTER>
@@ -70,7 +69,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

@@ -24,7 +24,7 @@
 <!--CHAPTER=27//-->
 <!--PAGES=504-508//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,7 +36,7 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H4 ALIGN="LEFT"><A NAME="Heading5"></A><FONT COLOR="#000077">Copying Chunky Bitmaps to VGA Memory Using Write Mode 2</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading5"></A>Copying Chunky Bitmaps to VGA Memory Using Write Mode 2</H4>
 <P>Let&rsquo;s take a look at two examples of write mode 2 in action. Listing 27.1 presents a program that uses write mode 2 to copy a graphics image in chunky format to the VGA. In chunky format adjacent bits in a single byte make up each pixel: mode 4 of the CGA, EGA, and VGA is a 2-bit-per-pixel chunky mode, and mode 13H of the VGA is an 8-bit-per-pixel chunky mode. Chunky format is convenient, since all the information about each pixel is contained in a single byte; consequently chunky format is often used to store bitmaps in system memory.
 </P>
 <P>Unfortunately, VGA memory is organized as a planar rather than chunky bitmap in modes 0DH through 12H, with the bits that make up each pixel spread across four planes. The conversion from chunky to planar format in write mode 0 is quite a nuisance, requiring a good deal of bit manipulation. In write mode 2, however, the conversion becomes a snap, as shown in Listing 27.1. Once the VGA is placed in write mode 2, the lower four bits (the lower nibble) of the CPU byte (a single 4-bit chunky pixel) become eight planar pixels, all the same color. As discussed in Chapter 25, the bit mask makes it possible to narrow the effect of the CPU write down to a single pixel.</P>
@@ -277,7 +277,7 @@ Code    ends
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

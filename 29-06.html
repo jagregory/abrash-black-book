@@ -24,7 +24,7 @@
 <!--CHAPTER=29//-->
 <!--PAGES=557-559//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -38,7 +38,7 @@
 <P><BR></P>
 <P>Does that do it for color selection? Yes and no. For the EGA, we&rsquo;ve covered the whole of color selection&mdash;but not so for the VGA. The VGA can emulate everything we&rsquo;ve discussed, but actually performs one 4-bit to 8-bit translation (except in 256-color modes, where all 256 colors are simultaneously available), followed by yet another translation, this one 8-bit to 18-bit. What&rsquo;s more, the VGA has the ability to flip instantly through as many as 16 16-color sets. The VGA&rsquo;s color selection capabilities, which are supported by another set of BIOS functions, can be used to produce stunning color effects, as we&rsquo;ll see when we cover them starting in Chapter 33.
 </P>
-<H3><A NAME="Heading7"></A><FONT COLOR="#000077">Modifying VGA Registers</FONT></H3>
+<H3><A NAME="Heading7"></A>Modifying VGA Registers</H3>
 <P>EGA registers are not readable. VGA registers are readable. This revelation will not come as news to most of you, but many programmers still insist on setting entire VGA registers even when they&rsquo;re modifying only selected bits, as if they were programming the EGA. This comes to mind because I recently received a query inquiring why write mode 1 (in which the contents of the latches are copied directly to display memory) didn&rsquo;t work in Mode X. (I&rsquo;ll go into Mode X in detail later in this book.) Actually, write mode 1 does work in Mode X; it didn&rsquo;t work when this particular correspondent enabled it because he did so by writing the value 01H to the Graphics Mode register. As it happens, the write mode field is only one of several fields in that register, as shown in Figure 29.4. In 256-color modes, one of the other fields&mdash;bit 6, which enables 256-color pixel formatting&mdash;is not 0, and setting it to 0 messes up the screen quite thoroughly.
 </P>
 <P>The correct way to set a field within a VGA register is, of course, to read the register, mask off the desired field, insert the desired setting, and write the result back to the register. In the case of setting the VGA to write mode 1, do this:</P>
@@ -57,7 +57,7 @@ out   dx,al            ;set write mode 1
 <P>This approach is more of a nuisance than simply setting the whole register, but it&rsquo;s safer. It&rsquo;s also slower; for cases where you must set a field repeatedly, it might be worthwhile to read and mask the register once at the start, and save it in a variable, so that the value is readily available in memory and need not be repeatedly read from the port. This approach is especially attractive because <B>IN</B>s are much slower than memory accesses on 386 and 486 machines.</P>
 <P>Astute readers may wonder why I didn&rsquo;t put a delay sequence, such as <B>JMP $+2</B>, between the <B>IN</B> and <B>OUT</B> involving the same register. There are, after all, guidelines from IBM, specifying that a certain period should be allowed to elapse before a second access to an I/O port is attempted, because not all devices can respond as rapidly as a 286 or faster CPU can access a port. My answer is that while I can&rsquo;t guarantee that a delay isn&rsquo;t needed, I&rsquo;ve never found a VGA that required one; I suspect that the delay specification has more to do with motherboard chips such as the timer, the interrupt controller, and the like, and I sure hate to waste the delay time if it&rsquo;s not necessary. However, I&rsquo;ve never been able to find anyone with the definitive word on whether delays might ever be needed when accessing VGAs, so if you know the gospel truth, or if you know of a VGA/processor combo that does require delays, please let me know by contacting me through the publisher. You&rsquo;d be doing a favor for a whole generation of graphics programmers who aren&rsquo;t sure whether they&rsquo;re skating on thin ice without those legendary delays.</P>
 <P><A NAME="Fig4"><!-- </A><A HREF="javascript:displayWindow('images/29-04.jpg',405,279 )"> --><IMG SRC="images/29-04.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/29-04.jpg',405,279)"> --><FONT COLOR="#000077"><B>Figure 29.4</B></FONT></A>&nbsp;&nbsp;<I>Graphics mode register fields.</I>
+<BR><A HREF="javascript:displayWindow('images/29-04.jpg',405,279)"> --><B>Figure 29.4</B></A>&nbsp;&nbsp;<I>Graphics mode register fields.</I>
 <P><BR></P>
 <CENTER>
 <TABLE BORDER>
@@ -71,7 +71,7 @@ out   dx,al            ;set write mode 1
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

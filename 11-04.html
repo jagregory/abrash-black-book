@@ -24,7 +24,7 @@
 <!--CHAPTER=11//-->
 <!--PAGES=216-220//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -49,10 +49,10 @@ LoopTop:
 </PRE>
 <!-- END CODE SNIP //-->
 <P><A NAME="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/11-02.jpg',406,204 )"> --><IMG SRC="images/11-02.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/11-02.jpg',406,204)"> --><FONT COLOR="#000077"><B>Figure 11.2</B></FONT></A>&nbsp;&nbsp;<I>Word-aligned prefetching on the 286. </I>
+<BR><A HREF="javascript:displayWindow('images/11-02.jpg',406,204)"> --><B>Figure 11.2</B></A>&nbsp;&nbsp;<I>Word-aligned prefetching on the 286. </I>
 </P>
 <P><A NAME="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/11-03.jpg',408,240 )"> --><IMG SRC="images/11-03.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/11-03.jpg',408,240)"> --><FONT COLOR="#000077"><B>Figure 11.3</B></FONT></A>&nbsp;&nbsp;<I>How instruction bytes are fetched after a branch.</I>
+<BR><A HREF="javascript:displayWindow('images/11-03.jpg',408,240)"> --><B>Figure 11.3</B></A>&nbsp;&nbsp;<I>How instruction bytes are fetched after a branch.</I>
 </P>
 <P>Now, this code <I>should</I> run in, say, about 12 cycles per loop at most. Instead, it took over 14 cycles per loop, an execution time that I could not explain in any way. After rolling it around in my head for a while, I took a look at the code under a debugger...and the answer leaped out at me. <I>The loop began at an odd address!</I> That meant that two instruction fetches were required each time through the loop; one to get the opcode byte of the <B>LOOP</B> instruction, which resided at the end of one word-aligned word, and another to get the displacement byte, which resided at the start of the next word-aligned word.</P>
 <P>One simple change brought the execution time down to a reasonable 12.5 cycles per loop:</P>
@@ -80,22 +80,22 @@ FindChar  proc near
 <!-- END CODE SNIP //-->
 <P>In my experience, this simple practice is the one form of code alignment that consistently provides a reasonable return for bytes and effort expended, although sometimes it also pays to word-align tight time-critical loops.
 </P>
-<H4 ALIGN="CENTER"><A NAME="Heading9"></A><FONT COLOR="#000077">Alignment and the 386</FONT></H4>
+<H4 ALIGN="CENTER"><A NAME="Heading9"></A>Alignment and the 386</H4>
 <P>So far we&rsquo;ve only discussed alignment as it pertains to the 286. What, you may well ask, of the 386?
 </P>
 <P>The 386 adds the issue of <I>doubleword</I> alignment (that is, alignment to addresses that are multiples of four.) The rule for the 386 is: Word-sized memory accesses should be word-aligned (it&rsquo;s impossible for word-aligned word-sized accesses to cross doubleword boundaries), and doubleword-sized memory accesses should be doubleword-aligned. However, in real (as opposed to 32-bit protected) mode, doubleword-sized memory accesses are rare, so the simple word-alignment rule we&rsquo;ve developed for the 286 serves for the 386 in real mode as well.</P>
 <P>As for code alignment...the subroutine-start word-alignment rule of the 286 serves reasonably well there too since it avoids the worst case, where just 1 byte is fetched on entry to a subroutine. While optimum performance would dictate doubleword alignment of subroutines, that takes 3 bytes, a high price to pay for an optimization that improves performance <I>only</I> on the post 286 processors.</P>
-<H4 ALIGN="CENTER"><A NAME="Heading10"></A><FONT COLOR="#000077">Alignment and the Stack</FONT></H4>
+<H4 ALIGN="CENTER"><A NAME="Heading10"></A>Alignment and the Stack</H4>
 <P>One side-effect of the data alignment cycle-eater of the 286 and 386 is that you should <I>never</I> allow the stack pointer to become odd. (You can make the stack pointer odd by adding an odd value to it or subtracting an odd value from it, or by loading it with an odd value.) An odd stack pointer on the 286 or 386 (or a non-doubleword-aligned stack in 32-bit protected mode on the 386, 486, or Pentium) will significantly reduce the performance of <B>PUSH,</B> <B>POP,</B> <B>CALL</B>, and <B>RET</B>, as well as <B>INT</B> and <B>IRET</B>, which are executed to invoke DOS and BIOS functions, handle keystrokes and incoming serial characters, and manage the mouse. I know of a Forth programmer who vastly improved the performance of a complex application on the AT simply by forcing the Forth interpreter to maintain an even stack pointer at all times.</P>
 <P>An interesting corollary to this rule is that you shouldn&rsquo;t <B>INC SP</B> twice to add 2, even though that takes fewer bytes than <B>ADD SP,2</B>. The stack pointer is odd between the first and second <B>INC</B>, so any interrupt occurring between the two instructions will be serviced more slowly than it normally would. The same goes for decrementing twice; use <B>SUB SP,2</B> instead.</P>
 <TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP" ALIGN="LEFT"><IMG SRC="images/i.jpg"><TD WIDTH="95%" ALIGN="LEFT" VALIGN="TOP"><SMALL><I>Keep the stack pointer aligned at all times.</I></SMALL>
 </TABLE>
-<H4 ALIGN="CENTER"><A NAME="Heading11"></A><FONT COLOR="#000077">The DRAM Refresh Cycle-Eater: Still an Act of God</FONT></H4>
+<H4 ALIGN="CENTER"><A NAME="Heading11"></A>The DRAM Refresh Cycle-Eater: Still an Act of God</H4>
 <P>The DRAM refresh cycle-eater is the cycle-eater that&rsquo;s least changed from its 8088 form on the 286 and 386. In the AT, DRAM refresh uses a little over five percent of all available memory accesses, slightly less than it uses in the PC, but in the same ballpark. While the DRAM refresh penalty varies somewhat on various AT clones and 386 computers (in fact, a few computers are built around static RAM, which requires no refresh at all; likewise, caches are made of static RAM so cached systems generally suffer less from DRAM refresh), the 5 percent figure is a good rule of thumb.
 </P>
 <P>Basically, the effect of the DRAM refresh cycle-eater is pretty much the same throughout the PC-compatible world: fairly small, so it doesn&rsquo;t greatly affect performance; unavoidable, so there&rsquo;s no point in worrying about it anyway; and a nuisance since it results in fractional cycle counts when using the Zen timer. Just as with the PC, a given code sequence on the AT can execute at varying speeds at different times as a result of the interaction between the code and DRAM refresh.</P>
 <P>There&rsquo;s nothing much new with DRAM refresh on 286/386 computers, then. Be aware of it, but don&rsquo;t overly concern yourself&mdash;DRAM refresh is still an act of God, and there&rsquo;s not a blessed thing you can do about it. Happily, the internal caches of the 486 and Pentium make DRAM refresh largely a performance non-issue on those processors.</P>
-<H4 ALIGN="CENTER"><A NAME="Heading12"></A><FONT COLOR="#000077">The Display Adapter Cycle-Eater</FONT></H4>
+<H4 ALIGN="CENTER"><A NAME="Heading12"></A>The Display Adapter Cycle-Eater</H4>
 <P>Finally we come to the last of the cycle-eaters, the display adapter cycle-eater. There are two ways of looking at this cycle-eater on 286/386 computers: (1) It&rsquo;s much worse than it was on the PC, or (2) it&rsquo;s just about the same as it was on the PC.
 </P>
 <P>Either way, the display adapter cycle-eater is extremely bad news on 286/386 computers and on 486s and Pentiums as well. In fact, this cycle-eater on those systems is largely responsible for the popularity of VESA local bus (VLB).</P>
@@ -112,7 +112,7 @@ FindChar  proc near
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

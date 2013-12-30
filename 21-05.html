@@ -24,7 +24,7 @@
 <!--CHAPTER=21//-->
 <!--PAGES=409-411//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -121,7 +121,7 @@ ckloopdone:
 <P>Listing 21.5 is undeniably intricate code, and not the sort of thing one would choose to write as a matter of course. On the other hand, it&rsquo;s five times as fast as the tight, seemingly-speedy loop in Listing 21.1 (and six times as fast as Listing 21.1 would have been if the prefix byte had behaved as expected). That&rsquo;s an awful lot of speed to wring out of a five-instruction loop, and the TCP/IP checksum is, in fact, used by network software, an area in which a five-times speedup might make a significant difference in overall system performance.
 </P>
 <P>I don&rsquo;t claim that Listing 21.5 is the fastest possible way to do a TCP/IP checksum on a Pentium; in fact, it isn&rsquo;t. Unrolling the loop one more time, together with a trick of Terje&rsquo;s that uses <B>LEA</B> to advance ESI (neither <B>LEA</B> nor <B>DEC</B> affects the carry flag, allowing Terje to add the carry from the previous loop iteration into the next iteration&rsquo;s checksum via <B>ADC</B>), produces a version that&rsquo;s a full 33 percent faster. Nonetheless, Listings 21.1 through 21.5 illustrate many of the techniques and considerations in Pentium optimization. Hand-optimization for the Pentium isn&rsquo;t simple, and requires careful measurement to check the efficacy of your optimizations, so reserve it for when you really, really need it&mdash;but when you need it, you need it <I>bad</I>.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading8"></A><FONT COLOR="#000077">A Quick Note on the 386 and 486</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading8"></A>A Quick Note on the 386 and 486</H4>
 <P>I&rsquo;ve mentioned that Pentium-optimized code does fine on the 486, but not always so well on the 386. On a 486, Listing 21.1 runs at 9 cycles per checksummed word, and Listing 21.5 runs at 2.5 cycles per checksummed word, a healthy 3.6-times speedup. On a 386, Listing 21.1 runs at 22 cycles per word; Listing 21.5 runs at 7 cycles per word, a 3.1-times speedup. As is often the case, Pentium optimization helped the other processors, but not as much as it helped the Pentium, and less on the 386 than on the 486.
 </P><P><BR></P>
 <CENTER>
@@ -136,7 +136,7 @@ ckloopdone:
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

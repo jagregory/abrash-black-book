@@ -24,7 +24,7 @@
 <!--CHAPTER=57//-->
 <!--PAGES=1061-1065//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,20 +36,19 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 57<BR>10,000 Freshly Sheared Sheep on the Screen
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">The Critical Role of Experience in Implementing Fast, Smooth Texture Mapping</FONT></H3>
+<H2><A NAME="Heading1"></A>Chapter 57<BR>10,000 Freshly Sheared Sheep on the Screen</H2>
+<H3><A NAME="Heading2"></A>The Critical Role of Experience in Implementing Fast, Smooth Texture Mapping</H3>
 <P>I recently spent an hour or so learning how to shear a sheep. Among other things, I learned&mdash;in great detail&mdash;about the importance of selecting the proper comb for your shears, heard about the man who holds the world&rsquo;s record for sheep sheared in a day (more than 600, if memory serves), and discovered, Lord help me, the many and varied ways in which the New Zealand Sheep Shearing Board improves the approved sheep-shearing method every year. The fellow giving the presentation did his best, but let&rsquo;s face it, sheep just aren&rsquo;t very interesting. If you have children, you&rsquo;ll know why I was there; if you don&rsquo;t, there&rsquo;s no use explaining.
 </P>
 <P>The chap doing the shearing did say one thing that stuck with me, although it may not sound particularly profound. (Actually, it sounds pretty silly, but bear with me.) He said, &ldquo;You don&rsquo;t get really good at sheep shearing for 10 years, or 10,000 sheep.&rdquo; I&rsquo;ll buy that. In fact, to extend that morsel of wisdom to the greater, non-ovine-centric universe, it actually takes a good chunk of experience before you get good at anything worthwhile&mdash;especially graphics, for a couple of reasons. First, performance matters a lot in graphics, and performance programming is largely a matter of experience. You can&rsquo;t speed up PC graphics simply by looking in a book for a better algorithm; you have to understand the code C compilers generate, assembly language optimization, VGA hardware, and the performance implications of various graphics-programming approaches and algorithms. Second, computer graphics is a matter of illusion, of convincing the eye to see what you want it to see, and that&rsquo;s very much a black art based on experience.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading3"></A><FONT COLOR="#000077">Visual Quality: A Black Hole ... Er, Art</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading3"></A>Visual Quality: A Black Hole ... Er, Art</H4>
 <P>Pleasing the eye with realtime computer animation is something less than a science, at least at the PC level, where there&rsquo;s a limited color palette and no time for antialiasing; in fact, sometimes it can be more than a little frustrating. As you may recall, in the previous chapter I implemented texture mapping in X-Sharp. There was plenty of experience involved there, some of which I didn&rsquo;t mention. My first implementation was disappointing; the texture maps shimmied and sheared badly, like a loosely affiliated flock of pixels, each marching to its own drummer. Then, I added a control key to speed up the rotation; what a difference! The aliasing problems were still there, but with the faster rotation, the pixels moved too quickly for the eye to pick up on the aliasing; the rotating texture maps, and the rotating ball as a whole, crossed the threshold into being accepted by the eye as a viewed object, rather than simply a collection of pixels.
 </P>
 <P>The obvious lesson here is that adequate speed is important to convincing animation. There&rsquo;s another, less obvious side to this lesson, though. I&rsquo;d been running the texture-mapping demo on a 20 MHz 386 with a slow VGA when I discovered the beneficial effects of greater animation speed. When, some time later, I ran the demo on a 33 MHz 486 with a fast VGA, I found that the faster rotation was too fast! The ball spun so rapidly that the eye couldn&rsquo;t blend successive images together into continuous motion, much like watching a badly flickering movie.</P>
 <TABLE WIDTH="100%"><TR>
 <TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><SMALL><I>So the second lesson is that either too little or too much speed can destroy the illusion. Unless you&rsquo;re antialiasing, you need to tune the shifting of your images so that they&rsquo;re in the &ldquo;sweet spot&rdquo; of apparent motion, in which the eye is willing to ignore the jumping and aliasing, and blend the images together into continuous motion. Only experience can give you a feel for that sweet spot.</I></SMALL>
 </TABLE>
-<H4 ALIGN="LEFT"><A NAME="Heading4"></A><FONT COLOR="#000077">Fixed-Point Arithmetic, Redux</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading4"></A>Fixed-Point Arithmetic, Redux</H4>
 <P>In the previous chapter I added texture mapping to X-Sharp, but lacked space to explain some of its finer points. I&rsquo;ll pick up the thread now and cover some of those points here, and discuss the visual and performance enhancements that previous chapter&rsquo;s code needed&mdash;and which are now present in the version of X-Sharp in this chapter&rsquo;s subdirectory on the CD-ROM.
 </P>
 <P>Back in Chapter 38, I spent a good bit of time explaining exactly which pixels were inside a polygon and which were outside, and how to draw those pixels accordingly. This was important, I said, because only with a precise, consistent way of defining inside and outside would it be possible to draw adjacent polygons without either overlap or gaps between them.</P>
@@ -70,7 +69,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

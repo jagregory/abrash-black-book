@@ -24,7 +24,7 @@
 <!--CHAPTER=01//-->
 <!--PAGES=004-007//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,18 +36,16 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2 ALIGN="CENTER"><FONT COLOR="#000077"><I>Part I
-</I></FONT></H2>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 1<BR>The Best Optimizer Is between Your Ears
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">The Human Element of Code Optimization</FONT></H3>
+<H2 ALIGN="CENTER"><I>Part I</I></H2>
+<H2><A NAME="Heading1"></A>Chapter 1<BR>The Best Optimizer Is between Your Ears</H2>
+<H3><A NAME="Heading2"></A>The Human Element of Code Optimization</H3>
 <P>This book is devoted to a topic near and dear to my heart: writing software that pushes PCs to the limit. Given run-of-the-mill software, PCs run like the 97-pound-weakling minicomputers they are. Give them the proper care, however, and those ugly boxes are capable of miracles. The key is this: Only on microcomputers do you have the run of the whole machine, without layers of operating systems, drivers, and the like getting in the way. You can do <I>anything</I> you want, and you can understand everything that&rsquo;s going on, if you so wish.</P>
 <P>As we&rsquo;ll see shortly, you should indeed so wish.</P>
 <P>Is performance still an issue in this era of cheap 486 computers and super-fast Pentium computers? You bet. How many programs that <I>you</I> use really run so fast that you wouldn&rsquo;t be happier if they ran faster? We&rsquo;re so used to slow software that when a compile-and-link sequence that took two minutes on a PC takes just ten seconds on a 486 computer, we&rsquo;re ecstatic&mdash;when in truth we should be settling for nothing less than instantaneous response.</P>
 <P>Impossible, you say? Not with the proper design, including incremental compilation and linking, use of extended and/or expanded memory, and well-crafted code. PCs can do just about anything you can imagine (with a few obvious exceptions, such as applications involving super-computer-class number-crunching) if you believe that it can be done, if you understand the computer inside and out, and if you&rsquo;re willing to think past the obvious solution to unconventional but potentially more fruitful approaches.</P>
 <P>My point is simply this: PCs can work wonders. It&rsquo;s not easy coaxing them into doing that, but it&rsquo;s rewarding&mdash;and it&rsquo;s sure as heck fun. In this book, we&rsquo;re going to work some of those wonders, starting...</P>
 <P>...now.</P>
-<H3><A NAME="Heading3"></A><FONT COLOR="#000077">Understanding High Performance</FONT></H3>
+<H3><A NAME="Heading3"></A>Understanding High Performance</H3>
 <P>Before we can create high-performance code, we must understand what high performance is. The objective (not always attained) in creating high-performance software is to make the software able to carry out its appointed tasks so rapidly that it responds instantaneously, as far as the user is concerned. In other words, high-performance code should ideally run so fast that any further improvement in the code would be pointless.
 </P>
 <P>Notice that the above definition most emphatically does <I>not</I> say anything about making the software as fast as possible. It also does not say anything about using assembly language, or an optimizing compiler, or, for that matter, a compiler at all. It also doesn&rsquo;t say anything about how the code was designed and written. What it does say is that high-performance code shouldn&rsquo;t get in the user&rsquo;s way&mdash;and that&rsquo;s <I>all</I>.</P>
@@ -57,7 +55,7 @@
 </TABLE>
 <P>&ldquo;What&rsquo;s a fast slow program?&rdquo; you ask. That&rsquo;s a good question, and a brief (true) story is perhaps the best answer.
 </P>
-<H4 ALIGN="LEFT"><A NAME="Heading4"></A><FONT COLOR="#000077">When Fast Isn&rsquo;t Fast</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading4"></A>When Fast Isn&rsquo;t Fast</H4>
 <P>In the early 1970s, as the first hand-held calculators were hitting the market, I knew a fellow named Irwin. He was a good student, and was planning to be an engineer. Being an engineer back then meant knowing how to use a slide rule, and Irwin could jockey a slipstick with the best of them. In fact, he was so good that he challenged a fellow with a calculator to a duel&mdash;and won, becoming a local legend in the process.
 </P>
 <P>When you get right down to it, though, Irwin was spitting into the wind. In a few short years his hard-earned slipstick skills would be worthless, and the entire discipline would be essentially wiped from the face of the earth. What&rsquo;s more, anyone with half a brain could see that changeover coming. Irwin had basically wasted the considerable effort and time he had spent optimizing his soon-to-be-obsolete skills.</P>
@@ -74,7 +72,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

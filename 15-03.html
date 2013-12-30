@@ -24,7 +24,7 @@
 <!--CHAPTER=15//-->
 <!--PAGES=287-290//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -64,16 +64,16 @@ struct LinkNode *FindNodeBeforeValueNotLess(
 </PRE>
 <!-- END CODE //-->
 <P><A NAME="Fig4"><!-- </A><A HREF="javascript:displayWindow('images/15-04.jpg',405,105 )"> --><IMG SRC="images/15-04.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/15-04.jpg',405,105)"> --><FONT COLOR="#000077"><B>Figure 15.4</B></FONT></A>&nbsp;&nbsp;<I>List terminated by a sentinel.</I>
+<BR><A HREF="javascript:displayWindow('images/15-04.jpg',405,105)"> --><B>Figure 15.4</B></A>&nbsp;&nbsp;<I>List terminated by a sentinel.</I>
 </P>
-<H3><A NAME="Heading5"></A><FONT COLOR="#000077">Circular Lists</FONT></H3>
+<H3><A NAME="Heading5"></A>Circular Lists</H3>
 <P>One minor but elegant refinement yet remains: Use a single node as both the head <I>and</I> the tail of the list. We can do this by connecting the last node back to the first through the head/tail node in a circular fashion, as shown in Figure 15.5. This head/tail node can also, of course, be a sentinel; when it&rsquo;s necessary to check for the end of the list explicitly, that can be done by comparing the current node pointer to the head pointer. If they&rsquo;re equal, you&rsquo;re at the head/tail node.</P>
 <P>Why am I so fond of this circular list architecture? For one thing, it saves a node, and most of my linked list programming has been done in severely memory-constrained environments. Mostly, though, it&rsquo;s just so <I>neat;</I> with this setup, there&rsquo;s not a single node or inner-loop instruction wasted. Perfect economy of programming, if you ask me.</P>
 <P>I must admit that I racked my brains for quite a while to come up with the circular list, simple as it may seem. Shortly after coming up with it, I happened to look in Sedgewick&rsquo;s book, only to find my nifty optimization described plain as day; and a little while after <I>that,</I> I came across a thread in the algorithms/computer.sci topic on BIX that described it in considerable detail. Folks, the information is out there. Look it up <I>before</I> turning on your optimizer afterburners!</P>
 <P>Listings 15.1 and 15.6 together form a suite of C functions for maintaining a circular linked list sorted by ascending value. (Listing 15.5 requires modification before it will work with circular lists.) Listing 15.7 is an assembly language version of <B>InsertNodeSorted()</B>; note the tremendous efficiency of the scanning loop in <B>InsertNodeSorted()&mdash;</B>four instructions per node!&mdash;thanks to the dummy head/tail/sentinel node. Listing 15.8 is a simple application that illustrates the use of the linked-list functions in Listings 15.1 and 15.6.</P>
 <P>Contrast Figure 15.5 with Figure 15.1, and Listings 15.1, 15.5, 15.6, and 15.7 with Listings 15.3 and 15.4. Yes, linked lists are simple, but not so simple that a little knowledge doesn&rsquo;t make a substantial difference. Make it a habit to read Knuth or Sedgewick or the like before you write a single line of code.</P>
 <P><A NAME="Fig5"><!-- </A><A HREF="javascript:displayWindow('images/15-05.jpg',410,112 )"> --><IMG SRC="images/15-05.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/15-05.jpg',410,112)"> --><FONT COLOR="#000077"><B>Figure 15.5</B></FONT></A>&nbsp;&nbsp;<I>Representing a circular list.</I>
+<BR><A HREF="javascript:displayWindow('images/15-05.jpg',410,112)"> --><B>Figure 15.5</B></A>&nbsp;&nbsp;<I>Representing a circular list.</I>
 </P>
 <P><B>LISTING 15.6 L15-6.C</B></P>
 <!-- CODE //-->
@@ -158,7 +158,7 @@ struct LinkNode *InsertNodeSorted(struct LinkNode *HeadOfListNode,
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

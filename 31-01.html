@@ -24,7 +24,7 @@
 <!--CHAPTER=31//-->
 <!--PAGES=587-591//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,26 +36,25 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 31<BR>Higher 256-Color Resolution on the VGA
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">When Is 320x200 Really 320x400?</FONT></H3>
+<H2><A NAME="Heading1"></A>Chapter 31<BR>Higher 256-Color Resolution on the VGA</H2>
+<H3><A NAME="Heading2"></A>When Is 320x200 Really 320x400?</H3>
 <P>One of the more appealing features of the VGA is its ability to display 256 simultaneous colors. Unfortunately, one of the <I>less</I> appealing features of the VGA is the limited resolution (320x200) of the one 256-color mode the IBM-standard BIOS supports. (There are, of course, higher resolution 256-color modes in the legion of SuperVGAs, but they are by no means a standard, and differences between seemingly identical modes from different manufacturers can be vexing.) More colors can often compensate for less resolution, but the resolution difference between the 640x480 16-color mode and the 320x200 256-color mode is so great that many programmers must regretfully decide that they simply can&rsquo;t afford to use the 256-color mode.</P>
 <P>If there&rsquo;s one thing we&rsquo;ve learned about the VGA, however, it&rsquo;s that there&rsquo;s <I>never</I> just one way to do things. With the VGA, alternatives always exist for the clever programmer, and that&rsquo;s more true than you might imagine with 256-color mode. Not only is there a high 256-color resolution, there are <I>lots</I> of higher 256-color resolutions, going all the way up to 360x480&mdash;and that&rsquo;s with the vanilla IBM VGA!</P>
 <P>In this chapter, I&rsquo;m going to focus on one of my favorite 256-color modes, which provides 320x400 resolution and two graphics pages and can be set up with very little reof the VGA. In the next chapter, I&rsquo;ll discuss higher-resolution 256-color modes, and starting in Chapter 47, I&rsquo;ll cover the high-performance &ldquo;Mode X&rdquo; 256-color programming that many games use.</P>
 <P>So. Let&rsquo;s get started.</P>
-<H3><A NAME="Heading3"></A><FONT COLOR="#000077">Why 320x200? Only IBM Knows for Sure</FONT></H3>
+<H3><A NAME="Heading3"></A>Why 320x200? Only IBM Knows for Sure</H3>
 <P>The first question, of course, is, &ldquo;How can it be possible to get higher 256-color resolutions out of the VGA?&rdquo; After all, there were no unused higher resolutions to be found in the CGA, Hercules card, or EGA.
 </P>
 <P>The answer is another question: &ldquo;Why did IBM <I>not</I> use the higher-resolution 256-color modes of the VGA?&rdquo; The VGA is easily capable of twice the 200-scan-line vertical resolution of mode 13H, the 256-color mode, and IBM clearly made a decision not to support a higher-resolution 256-color mode. In fact, mode 13H <I>does</I> display 400 scan lines, but each row of pixels is displayed on two successive scan lines, resulting in an effective resolution of 320x200. This is the same scan-doubling approach used by the VGA to convert the CGA&rsquo;s 200-scan-line modes to 400 scan lines; however, the resolution of the CGA has long been fixed at 200 scan lines, so IBM had no choice with the CGA modes but to scan-double the lines. Mode 13H has no such historical limitation&mdash;it&rsquo;s the first 256-color mode ever offered by IBM, if you don&rsquo;t count the late and unlamented Professional Graphics Controller (PGC). Why, then, would IBM choose to limit the resolution of mode 13H?</P>
 <P>There&rsquo;s no way to know, but one good guess is that IBM wanted a standard 256-color mode across all PS/2 computers (for which the VGA was originally created), and mode 13H is the highest-resolution 256-color mode that could fill the bill. You see, each 256-color pixel requires one byte of display memory, so a 320x200 256-color mode requires 64,000 bytes of display memory. That&rsquo;s no problem for the VGA, which has 256K of display memory, but it&rsquo;s a stretch for the MCGA of the Model 30, since the MCGA comes with only 64K.</P>
 <P>On the other hand, the smaller display memory size of the MCGA also limits the number of colors supported in 640x480 mode to 2, rather than the 16 supported by the VGA. In this case, though, IBM simply created two modes and made both available on the VGA: mode 11H for 640x480 2-color graphics and mode 12H for 640x480 16-color graphics. The same could have been done for 256-color graphics&mdash;but wasn&rsquo;t. Why? I don&rsquo;t know. Maybe IBM just didn&rsquo;t like the odd aspect ratio of a 320x400 graphics mode. Maybe they didn&rsquo;t want to have to worry about how to map in more than 64K of display memory. Heck, maybe they made a mistake in designing the chip. Whatever the reason, mode 13H is really a 400-scan-line mode masquerading as a 200-scan-line mode, and we can readily end that masquerade.</P>
-<H3><A NAME="Heading4"></A><FONT COLOR="#000077">320x400 256-Color Mode</FONT></H3>
+<H3><A NAME="Heading4"></A>320x400 256-Color Mode</H3>
 <P>Okay, what&rsquo;s so great about 320x400 256-color mode? Two things: easy, safe mode sets and page flipping.
 </P>
 <P>As I said above, mode 13H is really a 320x400 mode, albeit with each line doubled to produce an effective resolution of 320x200. That means that we don&rsquo;t need to change any display timings, widths, or heights in order to tweak mode 13H into 320x400 mode&mdash;and that makes 320x400 a safe choice. Basically, 320x400 mode differs from mode 13H only in the settings of <I>mode</I> bits, which are sure to be consistent from one VGA clone to the next and which work equally well with all monitors. The other hi-res 256-color modes differ from mode 13H not only in the settings of the mode bits but also in the settings of timing and dimension registers, which may not be exactly the same on all VGA clones and particularly not on all multisync monitors. (Because multisyncs sometimes shrink the active area of the screen when used with standard VGA modes, some VGAs use alternate register settings for multisync monitors that adjust the CRT Controller timings to use as much of the screen area as possible for displaying pixels.)</P>
 <P>The other good thing about 320x400 256-color mode is that two pages are supported. Each 320x400 256-color mode requires 128,000 bytes of display memory, so we can just barely manage two pages in 320x400 mode, one starting at offset 0 in display memory and the other starting at offset 8000H. Those two pages are the largest pair of pages that can fit in the VGA&rsquo;s 256K, though, and the higher-resolution 256-color modes, which use still larger bitmaps (areas of display memory that control pixels on the screen), can&rsquo;t support two pages at all. As we&rsquo;ve seen in earlier chapters and will see again in this book, paging is very useful for off-screen construction of images and fast, smooth animation.</P>
 <P>That&rsquo;s why I like 320x400 256-color mode. The next step is to understand how display memory is organized in 320x400 mode, and that&rsquo;s not so simple.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading5"></A><FONT COLOR="#000077">Display Memory Organization in 320x400 Mode</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading5"></A>Display Memory Organization in 320x400 Mode</H4>
 <P>First, let&rsquo;s look at why display memory must be organized differently in 320x400 256-color mode than in mode 13H. The designers of the VGA intentionally limited the maximum size of the bitmap in mode 13H to 64K, thereby limiting resolution to 320x200. This was accomplished <I>in hardware</I>, so there is no way to extend the bitmap organization of mode 13H to 320x400 mode.</P><P><BR></P>
 <CENTER>
 <TABLE BORDER>
@@ -69,7 +68,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

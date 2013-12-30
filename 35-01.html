@@ -24,7 +24,7 @@
 <!--CHAPTER=35//-->
 <!--PAGES=653-658//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,9 +36,8 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 35<BR>Bresenham Is Fast, and Fast Is Good
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Implementing and Optimizing Bresenham&rsquo;s Line-Drawing Algorithm</FONT></H3>
+<H2><A NAME="Heading1"></A>Chapter 35<BR>Bresenham Is Fast, and Fast Is Good</H2>
+<H3><A NAME="Heading2"></A>Implementing and Optimizing Bresenham&rsquo;s Line-Drawing Algorithm</H3>
 <P>For all the complexity of graphics design and programming, surprisingly few primitive functions lie at the heart of most graphics software. Heavily used primitives include routines that draw dots, circles, area fills, bit block logical transfers, and, of course, lines. For many years, computer graphics were created primarily with specialized line-drawing hardware, so lines are in a way the <I>lingua franca</I> of computer graphics. Lines are used in a wide variety of microcomputer graphics applications today, notably CAD/CAM and computer-aided engineering.</P>
 <P>Probably the best-known formula for drawing lines on a computer display is called Bresenham&rsquo;s line-drawing algorithm. (We have to be specific here because there is also a less-well-known Bresenham&rsquo;s circle-drawing algorithm.) In this chapter, I&rsquo;ll present two implementations for the EGA and VGA of Bresenham&rsquo;s line-drawing algorithm, which provides decent line quality and excellent drawing speed.</P>
 <P>The first implementation is in rather plain C, with the second in not-so-plain assembly, and they&rsquo;re both pretty good code. The assembly implementation is damned good code, in fact, but if you want to know whether it&rsquo;s the fastest Bresenham&rsquo;s implementation possible, I must tell you that it isn&rsquo;t. First of all, the code could be sped up a bit by shuffling and combining the various error-term manipulations, but that results in <I>truly</I> cryptic code. I wanted you to be able to relate the original algorithm to the final code, so I skipped those optimizations. Also, write mode 3, which is unique to the VGA, could be used for considerably faster drawing. I&rsquo;ve described write mode 3 in earlier chapters, and I strongly recommend its use in VGA-only line drawing.</P>
@@ -47,16 +46,16 @@
 <P>Finally, unrolled loops and/or duplicated code could be used to eliminate most of the branches in the final assembly implementation, and because x86 processors are notoriously slow at branching, that would make quite a difference in overall performance. If you&rsquo;re interested in unrolled loops and similar assembly techniques, I refer you to the first part of this book.</P>
 <P>That brings us neatly to my final point: Even if I didn&rsquo;t know that there were further optimizations to be made to my line-drawing implementation, I&rsquo;d <I>assume</I> that there were. As I&rsquo;m sure the experienced assembly programmers among you know, there are dozens of ways to tackle any problem in assembly, and someone else always seems to have come up with a trick that never occurred to you. I&rsquo;ve incorporated a suggestion made by Jim Mackraz in the code in this chapter, and I&rsquo;d be most interested in hearing of any other tricks or tips you may have.</P>
 <P>Notwithstanding, the line-drawing implementation in Listing 35.3 is plenty fast enough for most purposes, so let&rsquo;s get the discussion underway.</P>
-<H3><A NAME="Heading3"></A><FONT COLOR="#000077">The Task at Hand</FONT></H3>
+<H3><A NAME="Heading3"></A>The Task at Hand</H3>
 <P>There are two important characteristics of any line-drawing function. First, it must draw a reasonable approximation of a line. A computer screen has limited resolution, and so a line-drawing function must actually approximate a straight line by drawing a series of pixels in what amounts to a jagged pattern that generally proceeds in the desired direction. That pattern of pixels must reliably suggest to the human eye the true line it represents. Second, to be usable, a line-drawing function must be <I>fast</I>. Minicomputers and mainframes generally have hardware that performs line drawing, but most microcomputers offer no such assistance. True, nowadays graphics accelerators such as the S3 and ATI chips have line drawing hardware, but some other accelerators don&rsquo;t; when drawing lines on the latter sort of chip, when drawing on the CGA, EGA, and VGA, and when drawing sorts of lines not supported by line-drawing hardware as well, the PC&rsquo;s CPU must draw lines on its own, and, as many users of graphics-oriented software know, that can be a slow process indeed.</P>
 <P>Line drawing quality and speed derive from two factors: The algorithm used to draw the line and the implementation of that algorithm. The first implementation (written in Borland C<SMALL>++</SMALL>) that I&rsquo;ll be presenting in this chapter illustrates the workings of the algorithm and draws lines at a good rate. The second implementation, written in assembly language and callable directly from Borland C<SMALL>++</SMALL>, draws lines at extremely high speed, on the order of three to six times faster than the C version. Between them, the two implementations illuminate Bresenham&rsquo;s line-drawing algorithm and provide high-performance line-drawing capability.</P>
 <P>The difficulty in drawing a line lies in generating a set of pixels that, taken together, are a reasonable facsimile of a true line. Only horizontal, vertical, and 1:1 diagonal lines can be drawn precisely along the true line being represented; all other lines must be approximated from the array of pixels that a given video mode supports, as shown in Figure 35.1.</P>
 <P>Considerable thought has gone into the design of line-drawing algorithms, and a number of techniques for drawing high-quality lines have been developed. Unfortunately, most of these techniques were developed for powerful, expensive graphics workstations and require very high resolution, a large color palette, and/or floating-point hardware. These techniques tend to perform poorly and produce less visually impressive results on all but the best-endowed PCs.</P>
 <P>Bresenham&rsquo;s line-drawing algorithm, on the other hand, is uniquely suited to microcomputer implementation in that it requires no floating-point operations, no divides, and no multiplies inside the line-drawing loop. Moreover, it can be implemented with surprisingly little code.</P>
-<H3><A NAME="Heading4"></A><FONT COLOR="#000077">Bresenham&rsquo;s Line-Drawing Algorithm</FONT></H3>
+<H3><A NAME="Heading4"></A>Bresenham&rsquo;s Line-Drawing Algorithm</H3>
 <P>The key to grasping Bresenham&rsquo;s algorithm is to understand that when drawing an approximation of a line on a finite-resolution display, each pixel drawn will lie either exactly on the true line or to one side or the other of the true line. The amount by which the pixel actually drawn deviates from the true line is the <I>error</I> of the line drawing at that point. As the drawing of the line progresses from one pixel to the next, the error can be used to tell when, given the resolution of the display, a more accurate approximation of the line can be drawn by placing a given pixel one unit of screen resolution away from its predecessor in either the horizontal or the vertical direction, or both.</P>
 <P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/35-01.jpg',409,162 )"> --><IMG SRC="images/35-01.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/35-01.jpg',409,162)"> --><FONT COLOR="#000077"><B>Figure 35.1</B></FONT></A>&nbsp;&nbsp;<I>Approximating a true line from a pixel array.</I>
+<BR><A HREF="javascript:displayWindow('images/35-01.jpg',409,162)"> --><B>Figure 35.1</B></A>&nbsp;&nbsp;<I>Approximating a true line from a pixel array.</I>
 <P><BR></P>
 <CENTER>
 <TABLE BORDER>
@@ -70,7 +69,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

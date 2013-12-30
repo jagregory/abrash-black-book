@@ -24,7 +24,7 @@
 <!--CHAPTER=13//-->
 <!--PAGES=248-251//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,14 +36,13 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 13<BR>Aiming the 486
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Pipelines and Other Hazards of the High End</FONT></H3>
+<H2><A NAME="Heading1"></A>Chapter 13<BR>Aiming the 486</H2>
+<H3><A NAME="Heading2"></A>Pipelines and Other Hazards of the High End</H3>
 <P>It&rsquo;s a sad but true fact that 84 percent of American schoolchildren are ignorant of 92 percent of American history. Not my daughter, though. We recently visited historical Revolutionary-War-vintage Fort Ticonderoga, and she&rsquo;s now 97 percent aware of a key element of our national heritage: that the basic uniform for soldiers in those days was what appears to be underwear, plus a hat so that no one could complain that they were undermining family values. Ha! Just kidding! Actually, what she learned was that in those days, it was pure coincidence if a cannonball actually hit anything it was aimed at, which isn&rsquo;t surprising considering the lack of rifling, precision parts, and ballistics. The guides at the fort shot off three cannons; the closest they came to the target was about 50 feet, and that was only because the wind helped. I think the idea in early wars was just to put so much lead in the air that some of it was bound to hit <I>something;</I> preferably, but not necessarily, the enemy.</P>
 <P>Nowadays, of course, we have automatic weapons that allow a teenager to singlehandedly defeat the entire U.S. Army, not to mention so-called &ldquo;smart&rdquo; bombs, which are smart in the sense that they can seek out and empty a taxpayer&rsquo;s wallet without being detected by radar. There&rsquo;s an obvious lesson here about progress, which I leave you to deduce for yourselves.</P>
 <P>Here&rsquo;s the same lesson, in another form. Ten years ago, we had a slow processor, the 8088, for which it was devilishly hard to optimize, and for which there was no good optimization documentation available. Now we have a processor, the 486, that&rsquo;s 50 to 100 times faster than the 8088&mdash;and for which there is no good optimization documentation available. Sure, Intel provides a few tidbits on optimization in the back of the <I>i486 Microprocessor Programmer&rsquo;s Reference Manual,</I> but, as I discussed in Chapter 12, that information is both incomplete and not entirely correct. Besides, most assembly language programmers don&rsquo;t bother to read Intel&rsquo;s manuals (which are extremely informative and well done, but only slightly more fun to read than the phone book), and go right on programming the 486 using outdated 8088 optimization techniques, blissfully unaware of a new and heavily mutated generation of cycle-eaters that interact with their code in ways undreamt of even on the 386.</P>
 <P>For example, consider how Terje Mathisen doubled the speed of his word-counting program on a 486 simply by shuffling a couple of instructions.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading3"></A><FONT COLOR="#000077">486 Pipeline Optimization</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading3"></A>486 Pipeline Optimization</H4>
 <P>I&rsquo;ve mentioned Terje Mathisen in my writings before. Terje is an assembly language programmer extraordinaire, and author of the incredibly fast public-domain word-counting program WC (which comes complete with source code; well worth a look, if you want to see what <I>really</I> fast code looks like). Terje&rsquo;s a regular participant in the ibm.pc/fast.code topic on Bix. In a thread titled &ldquo;486 Pipeline Optimization, or TANSTATFC (There Ain&rsquo;t No Such Thing As The Fastest Code),&rdquo; he detailed the following optimization to WC, perhaps the best example of 486 pipeline optimization I&rsquo;ve yet seen.</P>
 <P>Terje&rsquo;s inner loop originally looked something like the code in Listing 13.1. (I&rsquo;ve taken a few liberties for illustrative purposes.) Of course, Terje unrolls this loop a few times (128 times, to be exact). By the way, in Listing 13.1 you&rsquo;ll notice that Terje counts not only words but also lines, at a rate of three instructions for every two characters!</P>
 <P><B>LISTING 13.1 L13-1.ASM</B></P>
@@ -58,7 +57,7 @@ add dx,[bx+8000h]   ;increment word and line count
 <P>Listing 13.1 looks as tight as it could be, with just two one-cycle instructions, one two-cycle instruction, and no branches. It <I>is</I> tight, but those three instructions actually take a minimum of 8 cycles to execute, as shown in Figure 13.1. The problem is that DI is loaded just before being used to address memory, and that costs 2 cycles because it interrupts the 486&rsquo;s internal instruction pipeline. Likewise, BX is loaded just before being used to address memory, costing another two cycles. Thus, this loop takes twice as long as cycle counts would seem to indicate, simply because two registers are loaded immediately before being used, disrupting the 486&rsquo;s pipeline.</P>
 <P>Listing 13.2 shows Terje&rsquo;s immediate response to these pipelining problems; he simply swapped the instructions that load DI and BL. This one change cut execution time per character pair from eight cycles to five cycles! The load of BL is now separated by one instruction from the use of BX to address memory, so the pipeline penalty is reduced from two cycles to one cycle. The load of DI is also separated by one instruction from the use of DI to address memory (remember, the loop is unrolled, so the last instruction is followed by the first instruction), but because the intervening instruction takes two cycles, there&rsquo;s no penalty at all.</P>
 <P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/13-01.jpg',100,65 )"> --><IMG SRC="images/13-01.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/13-01.jpg',100,65)"> --><FONT COLOR="#000077"><B>Figure 13.1</B></FONT></A>&nbsp;&nbsp;<I>Cycle-eaters in the original WC.</I>
+<BR><A HREF="javascript:displayWindow('images/13-01.jpg',100,65)"> --><B>Figure 13.1</B></A>&nbsp;&nbsp;<I>Cycle-eaters in the original WC.</I>
 </P>
 <TABLE WIDTH="100%">
 <TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>Remember, pipeline penalties diminish with increasing number of cycles, not instructions, between the pipeline disrupter and the potentially affected instruction.</I></SMALL>
@@ -86,7 +85,7 @@ add dx,[bx+8000h]   ;increment word and line count
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

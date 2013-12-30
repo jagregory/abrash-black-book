@@ -24,7 +24,7 @@
 <!--CHAPTER=51//-->
 <!--PAGES=960-963//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -139,11 +139,11 @@ void DrawVisibleFaces(struct Object * ObjectToXform)
 <P>The sample program, as shown in Figure 51.3, places a cube, floating in three-space, under the complete control of the user. The arrow keys may be used to move the cube left, right, up, and down, and the A and T keys may be used to move the cube away from or toward the viewer. The F1 and F2 keys perform rotation around the Z axis, the axis running from the viewer straight into the screen. The 4 and 6 keys perform rotation around the Y (vertical) axis, and the 2 and 8 keys perform rotation around the X axis, which runs horizontally across the screen; the latter four keys are most conveniently used by flipping the keypad to the numeric state.
 </P>
 <P><A NAME="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/51-03.jpg',405,203 )"> --><IMG SRC="images/51-03.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/51-03.jpg',405,203)"> --><FONT COLOR="#000077"><B>Figure 51.3</B></FONT></A>&nbsp;&nbsp;<I>Sample screens from the 3-D cube program.</I>
+<BR><A HREF="javascript:displayWindow('images/51-03.jpg',405,203)"> --><B>Figure 51.3</B></A>&nbsp;&nbsp;<I>Sample screens from the 3-D cube program.</I>
 </P>
 <P>The demo involves six polygons, one for each side of the cube. Each of the polygons must be transformed and projected, so it would seem that 24 vertices (four for each polygon) must be handled, but some steps have been taken to improve performance. All vertices for the object have been stored in a single list; the definition of each face contains not the vertices for that face themselves, but rather indexes into the object&rsquo;s vertex list, as shown in Figure 51.4. This reduces the number of vertices to be manipulated from 24 to 8, for there are, after all, only eight vertices in a cube, with three faces sharing each vertex. In this way, the transformation burden is lightened by two-thirds. Also, as mentioned earlier, backface removal is performed with integers, in screen coordinates, rather than with floating-point values in screen space. Finally, the <B>RecalcXForm</B> flag is set whenever the user changes the object-to-world transformation. Only when this flag is set is the full object-to-view transformation recalculated and the object&rsquo;s vertices transformed and projected again; otherwise, the values already stored within the object are reused. In the sample application, this brings no visual improvement, because there&rsquo;s only the one object, but the underlying mechanism is sound: In a full-blown 3-D animation application, with multiple objects moving about the screen, it would help a great deal to flag which of the objects had moved with respect to the viewer, performing a new transformation and projection only for those that had.</P>
 <P><A NAME="Fig4"><!-- </A><A HREF="javascript:displayWindow('images/51-04.jpg',407,308 )"> --><IMG SRC="images/51-04.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/51-04.jpg',407,308)"> --><FONT COLOR="#000077"><B>Figure 51.4</B></FONT></A>&nbsp;&nbsp;<I>The object data structure</I>
+<BR><A HREF="javascript:displayWindow('images/51-04.jpg',407,308)"> --><B>Figure 51.4</B></A>&nbsp;&nbsp;<I>The object data structure</I>
 <P><BR></P>
 <CENTER>
 <TABLE BORDER>
@@ -157,7 +157,7 @@ void DrawVisibleFaces(struct Object * ObjectToXform)
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

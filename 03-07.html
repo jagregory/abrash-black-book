@@ -24,7 +24,7 @@
 <!--CHAPTER=03//-->
 <!--PAGES=053-065//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -39,7 +39,7 @@
 <P>While permitting the timer interrupt to occur allows long intervals to be timed, that same interrupt makes the long-period Zen timer less accurate than the precision Zen timer, since the time the BIOS spends handling timer interrupts during the timing interval is included in the time measured by the long-period timer. Likewise, any other interrupts that occur during the timing interval, most notably keyboard and mouse interrupts, will increase the measured time.
 </P>
 <P>The long-period Zen timer has some of the same effects on the system time as does the precision Zen timer, so it&rsquo;s a good idea to reboot the system after a session with the long-period Zen timer. The long-period Zen timer does not, however, have the same potential for introducing major inaccuracy into the system clock time during a single timing run since it leaves interrupts enabled and therefore allows the system clock to update normally.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading13"></A><FONT COLOR="#000077">Stopping the Clock</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading13"></A>Stopping the Clock</H4>
 <P>There&rsquo;s a potential problem with the long-period Zen timer. The problem is this: In order to measure times longer than 54  ms, we must maintain not one but two timing components, the timer 0 count and the BIOS time-of-day count. The time-of-day count measures the passage of 54.9  ms intervals, while the timer 0 count measures time within those 54.9  ms intervals. We need to read the two time components simultaneously in order to get a clean reading. Otherwise, we may read the timer count just before it turns over and generates an interrupt, then read the BIOS time-of-day count just after the interrupt has occurred and caused the time-of-day count to turn over, with a resulting 54  ms measurement inaccuracy. (The opposite sequence&mdash;reading the time-of-day count and then the timer count&mdash;can result in a 54  ms inaccuracy in the other direction.)
 </P>
 <P>The only way to avoid this problem is to stop timer 0, read both the timer and time-of-day counts while the timer is stopped, and then restart the timer. Alas, the gate input to timer 0 isn&rsquo;t program-controllable in the PC, so there&rsquo;s no documented way to stop the timer. (The latched read feature we used in Listing 3.1 doesn&rsquo;t stop the timer; it latches a count, but the timer keeps running.) What should we do?</P>
@@ -698,7 +698,7 @@ Code   ends
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

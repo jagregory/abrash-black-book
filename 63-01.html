@@ -24,7 +24,7 @@
 <!--CHAPTER=63//-->
 <!--PAGES=1163-1167//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,9 +36,8 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 63<BR>Floating-Point for Real-Time 3-D
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Knowing When to Hurl Conventional Math Wisdom Out the Window</FONT></H3>
+<H2><A NAME="Heading1"></A>Chapter 63<BR>Floating-Point for Real-Time 3-D</H2>
+<H3><A NAME="Heading2"></A>Knowing When to Hurl Conventional Math Wisdom Out the Window</H3>
 <P>In a crisis, sometimes it&rsquo;s best to go with the first solution that comes into your head&mdash;but not very often.
 </P>
 <P>When I turned 16, my mother had an aging, three-cylinder Saab&mdash;not one of the sporty Saabs that appeared in the late &rsquo;70s, but a blunt-nosed, ungainly little wagon that seated up to seven people in sardine-like comfort, with two of them perched on the gas tank. That was the car I learned to drive on, and the one I took whenever I wanted to go somewhere and my mother didn&rsquo;t need it.</P>
@@ -52,14 +51,14 @@
 <P>There&rsquo;s a surprisingly close analog to this in programming. Often, when faced with a problem in his or her code, a programmer&rsquo;s response is to come up with a solution as quickly as possible and immediately hack it in. For all but the simplest problems, though, there are side effects and design issues involved that should be thought through before any coding is done. I try to think of bugs and other problem situations as opportunities to reexamine how my code works, as well as chances to detect and correct structural defects I hadn&rsquo;t previously suspected; in fact, I&rsquo;m often able to simplify code as I fix a bug, thanks to the understanding I gain in the process.</P>
 <P>Taking that a step farther, it&rsquo;s useful to reexamine assumptions periodically even if no bugs are involved. You might be surprised at how quickly assumptions that once were completely valid can deteriorate.</P>
 <P>For example, consider floating-point math.</P>
-<H3><A NAME="Heading3"></A><FONT COLOR="#000077">Not Your Father&rsquo;s Floating-Point</FONT></H3>
+<H3><A NAME="Heading3"></A>Not Your Father&rsquo;s Floating-Point</H3>
 <P>Until last year, I had never done any serious floating-point (FP) optimization, for the perfectly good reason that FP math had never been fast enough for any of the code I needed to write. It was an article of faith that FP, while undeniably convenient, because of its automatic support for constant precision over an enormous range of magnitudes, was just not fast enough for real-time programming, so I, like pretty much everyone else doing 3-D, expended a lot of time and effort in making fixed-point do the job.
 </P>
 <P>That article of faith was true up through the 486, but all the old assumptions are out the window on the Pentium, for three reasons: faster FP instructions, a pipelined floating-point unit (FPU), and the magic of a parallel FXCH. Taken together, these mean that FP addition and subtraction are nearly as fast as integer operations, and FP multiplication and division have the potential to be much faster&mdash;all with the range and precision advantages of FP. Better yet, the FPU has its own set of eight registers, so the use of floating-point can help relieve pressure on the x86&rsquo;s integer registers, as well.</P>
 <P>One effect of all this is that with the Pentium, floating-point on the x86 has gone from being irrelevant to real-time 3-D to being a key element. Quake uses FP all the way down into the inner loop of the span rasterizer, performing several FP operations every 16 pixels.</P>
 <P>Floating-point has not only become important for real-time 3-D on the PC, but will soon become even more crucial. Hardware accelerators will take care of texture mapping and will increase feasible scene complexity, meaning the CPU will do less bit-twiddling and will have far more vertices to transform and project, and far more motion physics and line-of-sight calculations and the like as well.</P>
 <P>By way of getting you started with floating-point for real-time 3-D, in this chapter I&rsquo;ll examine the basics of Pentium FP optimization, then look at how some key mathematical techniques for 3-D&mdash;dot product, cross product, transformation, and projection&mdash;can be accelerated.</P>
-<H3><A NAME="Heading4"></A><FONT COLOR="#000077">Pentium Floating-Point Optimization</FONT></H3>
+<H3><A NAME="Heading4"></A>Pentium Floating-Point Optimization</H3>
 <P>I&rsquo;m going to assume you&rsquo;re already familiar with x86 FP code in general; for additional information, check out Intel&rsquo;s <I>Pentium Processor User&rsquo;s Manual</I> (order #241430-001; 1-800-548-4725), a book that you should have if you&rsquo;re doing Pentium programming of any sort. I&rsquo;d also recommend taking a look around <A HREF="http://www.intel.com">http://www.intel.com</A>.</P>
 <P>I&rsquo;m going to focus on six core instructions in this section: FLD, FST, FADD, FSUB, FMUL, and FDIV. First, let&rsquo;s look at cycle times for these instructions. FLD takes 1 cycle; the value is pushed onto the FP stack and ready for use on the next cycle. FST takes 2 cycles, although when storing to memory, there&rsquo;s a potential extra cycle that can be lost, as I&rsquo;ll describe shortly.</P><P><BR></P>
 <CENTER>
@@ -74,7 +73,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

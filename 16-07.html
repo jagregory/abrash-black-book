@@ -24,7 +24,7 @@
 <!--CHAPTER=16//-->
 <!--PAGES=313-316//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -145,7 +145,7 @@
                 end
 </PRE>
 <!-- END CODE //-->
-<H3><A NAME="Heading11"></A><FONT COLOR="#000077">Level 2: A New Perspective</FONT></H3>
+<H3><A NAME="Heading11"></A>Level 2: A New Perspective</H3>
 <P>The second level of optimization is one of breaking out of the mode of thinking established by my original code. Some entrants clearly did exactly that. They stepped back, thought about what the code actually needed to do, rather than just improving how it already worked, and implemented code that sprang from that new perspective.
 </P>
 <P>You can see one example of this in Listing 16.6, where Willem uses <B>CMP AX,0101H</B> to check two bytes at once. While you might think of this as nothing more than a doubling up of tests, it&rsquo;s a little more than that, especially when taken together with the use of two loops. This is a break with the serial nature of the C code, a recognition that word counting is really nothing more than a state machine that transitions from the &ldquo;in word&rdquo; state to the &ldquo;not in word&rdquo; state and back, counting a word on one but not both of those transitions. Willem says, in effect, &ldquo;We&rsquo;re in a word; if the next two bytes are non-separators, then we&rsquo;re still in a word, else we&rsquo;re not in a word, so count and change to the appropriate state.&rdquo; That&rsquo;s really quite different from saying, as I originally did, &ldquo;If the last byte was a non-separator, then if the current byte is a separator, then count a word.&rdquo; Willem has moved away from the all-in-one approach, splitting the code up into state-specific chunks that are more efficient because each does only the work required in a particular state.</P>
@@ -165,7 +165,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

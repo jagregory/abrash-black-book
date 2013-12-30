@@ -24,7 +24,7 @@
 <!--CHAPTER=31//-->
 <!--PAGES=591-593//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -41,7 +41,7 @@
 <P>We&rsquo;re talking about the VGA, so of course there are actually <I>several</I> bitmap organizations that let us use higher 256-color resolutions than mode 13H. The one I like best is shown in Figure 31.1. Each byte controls one 256-color pixel. Pixel 0 is at address 0 in plane 0, pixel 1 is at address 0 in plane 1, pixel 2 is at address 0 in plane 2, pixel 3 is at address 0 in plane 3, pixel 4 is at address 1 in plane 0, and so on.</P>
 <P>Let&rsquo;s look at this another way. Ideally, we&rsquo;d like one long bitmap, with each pixel at the address that&rsquo;s just after the address of the pixel to the left. Well, that&rsquo;s true in this case too, <I>if</I> you consider the number of the plane that the pixel is in to be part of the pixel&rsquo;s address. View the pixel numbers on the screen as increasing from left to right and from the end of one scan line to the start of the next. Then the pixel number, n, of the pixel at display memory address <I>address</I> in plane <I>plane</I> is:</P>
 <P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/31-01.jpg',405,331 )"> --><IMG SRC="images/31-01.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/31-01.jpg',405,331)"> --><FONT COLOR="#000077"><B>Figure 31.1</B></FONT></A>&nbsp;&nbsp;<I>Bitmap organization in 320x400 256-color mode in 320x400 256-color mode.</I>
+<BR><A HREF="javascript:displayWindow('images/31-01.jpg',405,331)"> --><B>Figure 31.1</B></A>&nbsp;&nbsp;<I>Bitmap organization in 320x400 256-color mode in 320x400 256-color mode.</I>
 </P>
 <P><I>n</I> = (<I>address</I> * 4) + <I>plane</I></P>
 <P>To turn that around, the display memory address of pixel number n is given by</P>
@@ -51,7 +51,7 @@
 <P>Basically, the full address of the pixel, its pixel number, is broken into two components: the display memory address and the plane.</P>
 <P>By the way, because 320x400 mode has a significantly different memory organization from mode 13H, the BIOS text routines won&rsquo;t work in 320x400 mode. If you want to draw text in 320x400 mode, you&rsquo;ll have to look up a font in the BIOS ROM and draw the text yourself. Likewise, the BIOS read pixel and write pixel routines won&rsquo;t work in 320x400 mode, but that&rsquo;s no problem because I&rsquo;ll provide equivalent routines in the next section.</P>
 <P>Our next task is to convert standard mode 13H into 320x400 mode. That&rsquo;s accomplished by undoing some of the mode bits that are set up especially for mode 13H, so that from a programming perspective the VGA reverts to a straightforward planar model of memory. That means taking the VGA out of chain 4 mode and doubleword mode, turning off the double display of each scan line, making sure chain mode, odd/even mode, and word mode are turned off, and selecting byte mode for video data display. All that&rsquo;s done in the <B>Set320x400Mode</B> subroutine in Listing 31.1, which we&rsquo;ll discuss next.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading6"></A><FONT COLOR="#000077">Reading and Writing Pixels</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading6"></A>Reading and Writing Pixels</H4>
 <P>The basic graphics functions in any mode are functions to read and write single pixels. Any more complex function can be built on these primitives, although that&rsquo;s rarely the speediest solution. What&rsquo;s more, once you understand the operation of the read and write pixel functions, you&rsquo;ve got all the knowledge you need to create functions that perform more complex graphics functions. Consequently, we&rsquo;ll start our exploration of 320x400 mode with pixel-at-a-time line drawing.
 </P>
 <P>Listing 31.1 draws 8 multicolored octagons in turn, drawing a new one on top of the old one each time a key is pressed. The main-loop code of Listing 31.1 should be easily understood; a series of diagonal, horizontal, and vertical lines are drawn one pixel at a time based on a list of line descriptors, with the draw colors incremented for each successive time through the line list.</P><P><BR></P>
@@ -67,7 +67,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

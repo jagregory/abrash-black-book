@@ -24,7 +24,7 @@
 <!--CHAPTER=23//-->
 <!--PAGES=443-445//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,7 +36,7 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H4 ALIGN="LEFT"><A NAME="Heading8"></A><FONT COLOR="#000077">Color Plane Manipulation</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading8"></A>Color Plane Manipulation</H4>
 <P>The VGA provides a considerable amount of hardware assistance for manipulating the four display memory planes. Two features illustrated by the sample program are the ability to control which planes are written to by a CPU write and the ability to copy four bytes&mdash;one from each plane&mdash;with a single CPU read and a single CPU write.
 </P>
 <P>The Map Mask register (SC register 2) selects which planes are written to by CPU writes. If bit 0 of the Map Mask register is 1, then each byte written by the CPU will be written to VGA memory plane 0, the plane that provides the video data for the least significant bit of the palette RAM address. If bit 0 of the Map Mask register is 0, then CPU writes will not affect plane 0. Bits 1, 2, and 3 of the Map Mask register similarly control CPU access to planes 1, 2, and 3, respectively. Any of the 16 possible combinations of enabled and disabled planes can be selected. Beware, however, of writing to an area of memory that is not zeroed. Planes that are disabled by the Map Mask register are not altered by CPU writes, so old and new images can mix on the screen, producing unwanted color effects as, say, three planes from the old image mix with one plane from the new image. The sample program solves this by ensuring that the memory written to is zeroed. A better way to set all planes at once is provided by the set/reset capabilities of the VGA, which I&rsquo;ll cover in Chapter 25.</P>
@@ -47,7 +47,7 @@
 <P>The Map Mask register can still mask out planes in write mode 1. All four planes are copied in the sample program because the Map Mask register is still 0Fh from when the blank image was created.</P>
 <P>The animated images appear to move a bit jerkily because they are byte-aligned and so must move a minimum of 8 pixels horizontally. This is easily solved by storing rotated versions of all images in VGA memory, and then in each instance drawing the correct rotation for the pixel alignment at which the image is to be drawn; we&rsquo;ll see this technique in action in Chapter 49.</P>
 <P>Don&rsquo;t worry if you&rsquo;re not catching everything in this chapter on the first pass; the VGA is a complicated beast, and learning about it is an iterative process. We&rsquo;ll be going over these features again, in different contexts, over the course of the rest of this book.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading9"></A><FONT COLOR="#000077">Page Flipping</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading9"></A>Page Flipping</H4>
 <P>When animated graphics are drawn directly on the screen, with no intermediate frame-composition stage, the image typically flickers and/or ripples, an unavoidable result of modifying display memory at the same time that it is being scanned for video data. The display memory of the VGA makes it possible to perform page flipping, which eliminates such problems. The basic premise of page flipping is that one area of display memory is displayed while another is being modified. The modifications never affect an area of memory as it is providing video data, so no undesirable side effects occur. Once the modification is complete, the modified buffer is selected for display, causing the screen to change to the new image in a single frame&rsquo;s time, typically 1/60th or 1/70th of a second. The other buffer is then available for modification.
 </P>
 <P>As described above, the VGA has 64K per plane, enough to hold two pages and more in 640x350 mode 10H, but not enough for two pages in 640x480 mode 12H. For page flipping, two non-overlapping areas of display memory are needed. The sample program uses two 672x384 virtual pages, each 32,256 bytes long, one starting at A000:0000 and the other starting at A000:7E00. Flipping between the pages is as simple as setting the start address registers to point to one display area or the other&mdash;but, as it turns out, that&rsquo;s not as simple as it sounds.</P>
@@ -66,7 +66,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

@@ -24,7 +24,7 @@
 <!--CHAPTER=53//-->
 <!--PAGES=999-1001//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,11 +36,11 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H3><A NAME="Heading4"></A><FONT COLOR="#000077">Raw Speed, Part II: Look it Up</FONT></H3>
+<H3><A NAME="Heading4"></A>Raw Speed, Part II: Look it Up</H3>
 <P>It&rsquo;s a funny thing about Turbo Profiler: Time spent in the Borland C<SMALL>++</SMALL> 80x87 emulator doesn&rsquo;t show up directly anywhere that I can see in the timing results. The only way to detect it is by way of the line that reports what percent of total time is represented by all the areas that were profiled; if you&rsquo;re profiling all areas, whatever&rsquo;s not explicitly accounted for seems to be the floating-point emulator time. This quirk fooled me for a while, leading me to think sine and cosine weren&rsquo;t major drags on performance, because the <B>sin()</B> and <B>cos()</B> functions spend most of their time in the emulator, and that time doesn&rsquo;t show up in Turbo Profiler&rsquo;s statistics on those functions. Once I figured out what was going on, it turned out that not only were <B>sin()</B> and <B>cos()</B> major drags, they were taking up over half the total execution time by themselves.</P>
 <P>The solution is a lookup table. Listing 53.1 contains a function called <B>CosSin()</B> that calculates both the sine and cosine of an angle, via a lookup table. The function accepts angles in tenths of degrees; I decided to use tenths of degrees rather than radians because that way it&rsquo;s always possible to look up the sine and cosine of the exact angle requested, rather than approximating, as would be required with radians. Tenths of degrees should be fine enough control for most purposes; if not, it&rsquo;s easy to alter <B>CosSin()</B> for finer gradations yet. GENCOS.C, the program used to generate the lookup table (COSTABLE.INC), included in Listing 53.1, can be found in the XSHARP22 subdirectory on the listings diskette. GENCOS.C can generate a cosine table with any integral number of steps per degree.</P>
 <P>FIXED.ASM (Listing 53.1) speeds X-Sharp up quite a bit, and it changes the performance balance a great deal. When we started out with 3-D animation, calculation time was the dragon we faced; more than 90 percent of the total time was spent doing matrix and projection math. Additional optimizations in the area of math could still be made (using 32-bit multiplies in the backface-removal code, for example), but fixed-point math, the sine and cosine lookup, and selective assembly optimizations have done a pretty good job already. The bulk of the time taken by X-Sharp is now spent drawing polygons, drawing rectangles (to erase objects), and waiting for the page to flip. In other words, we&rsquo;ve slain the dragon of 3-D math, or at least wounded it grievously; now we&rsquo;re back to the dragon of polygon filling. We&rsquo;ll address faster polygon filling soon, but for the moment, we have more than enough horsepower to have some fun with. First, though, we need one more feature: hidden surfaces.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading5"></A><FONT COLOR="#000077">Hidden Surfaces</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading5"></A>Hidden Surfaces</H4>
 <P>So far, we&rsquo;ve made a number of simplifying assumptions in order to get the animation to look good; for example, all objects must currently be convex polyhedrons. What&rsquo;s more, right now, objects can never pass behind or in front of each other. What that means is that it&rsquo;s time to have a look at hidden surfaces.
 </P>
 <P>There are a passel of ways to do hidden surfaces. Way off at one end (the slow end) of the spectrum is Z-buffering, whereby each pixel of each polygon is checked as it&rsquo;s drawn to see whether it&rsquo;s the frontmost version of the pixel at those coordinates. At the other end is the technique of simply drawing the objects in back-to-front order, so that nearer objects are drawn on top of farther objects. The latter approach, depth sorting, is the one we&rsquo;ll take today. (Actually, true depth sorting involves detecting and resolving possible ambiguities when objects overlap in Z; in this chapter, we&rsquo;ll simply sort the objects on Z and leave it at that.)</P>
@@ -48,7 +48,7 @@
 <P>For photo-realistic rendering, these are serious problems. For fast PC-based animation, however, they&rsquo;re manageable. Choose objects that aren&rsquo;t too elongated; arrange their paths of travel so they don&rsquo;t intersect in problematic ways; and, if they do overlap incorrectly, trust that the glitch will be lost in the speed of the animation and the complexity of the screen.</P>
 <P>Listing 53.2 shows X-Sharp file OLIST.C, which includes the key routines for depth sorting. Objects are now stored in a linked list. The initial, empty list, created by <B>InitializeObjectList(),</B> consists of a sentinel entry at either end, one at the farthest possible z coordinate, and one at the nearest. New entries are inserted by <B>AddObject()</B> in z-sorted order. Each time the objects are moved, before they&rsquo;re drawn at their new locations, <B>SortObjects()</B> is called to Z-sort the object list, so that drawing will proceed from back to front. The Z-sorting is done on the basis of the objects&rsquo; center points; a center-point field has been added to the object structure to support this, and the center point for each object is now transformed along with the vertices. That&rsquo;s really all there is to depth sorting&mdash;and now we can have objects that overlap in X and Y.</P>
 <P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/53-01.jpg',407,199 )"> --><IMG SRC="images/53-01.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/53-01.jpg',407,199)"> --><FONT COLOR="#000077"><B>Figure 53.1</B></FONT></A>&nbsp;&nbsp;<I>Why back-to-front sorting doesn&rsquo;t always work properly.</I>
+<BR><A HREF="javascript:displayWindow('images/53-01.jpg',407,199)"> --><B>Figure 53.1</B></A>&nbsp;&nbsp;<I>Why back-to-front sorting doesn&rsquo;t always work properly.</I>
 <P><BR></P>
 <CENTER>
 <TABLE BORDER>
@@ -62,7 +62,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

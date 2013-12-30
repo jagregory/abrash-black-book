@@ -24,7 +24,7 @@
 <!--CHAPTER=14//-->
 <!--PAGES=274-277//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -38,7 +38,7 @@
 <P><BR></P>
 <P>Table 14.1 represents a limited and decidedly unscientific comparison of searching techniques. Nonetheless, the overall trend is clear: For all but the shortest patterns, well-implemented Boyer-Moore is generally as good as or better than&mdash;sometimes <I>much</I> better than&mdash;brute-force searching. (For short patterns, you might want to use <B>REPNZ SCASB,</B> thereby getting the best of both worlds.)</P>
 <P>Know your data and use your smarts. Don&rsquo;t stop thinking just because you&rsquo;re implementing a big-name algorithm; you know more than it does.</P>
-<H3><A NAME="Heading6"></A><FONT COLOR="#000077">Further Optimization of Boyer-Moore</FONT></H3>
+<H3><A NAME="Heading6"></A>Further Optimization of Boyer-Moore</H3>
 <P>We can do substantially better yet than Listing 14.3 if we&rsquo;re willing to accept tighter limits on the data. Limiting the length of the searched-for pattern to a maximum of 255 bytes allows us to use the <B>XLAT</B> instruction and generally tighten the critical loop. (Be aware, however, that <B>XLAT</B> is a relatively expensive instruction on the 486 and Pentium.) Putting a copy of the searched-for string at the end of the search buffer as a sentinel, so that the search never fails, frees us from counting down the buffer length, and makes it easy to unroll the critical loop. Listing 14.4, which implements these optimizations, is about 60 percent faster than Listing 14.3.</P>
 <P><B>LISTING 14.4 L14-4.ASM</B></P>
 <!-- CODE //-->
@@ -192,7 +192,7 @@ _FindString     endp
 </PRE>
 <!-- END CODE //-->
 <P>Note that Table 14.1 includes the time required to build the skip table each time <B>FindString</B> is called. This time could be eliminated for all but the first search when repeatedly searching for a particular pattern, by building the skip table externally and passing a pointer to it as a parameter.</P>
-<H3><A NAME="Heading7"></A><FONT COLOR="#000077">Know What You Know</FONT></H3>
+<H3><A NAME="Heading7"></A>Know What You Know</H3>
 <P>Here we&rsquo;ve turned up our nose at a repeated string instruction, we&rsquo;ve gone against the grain by comparing backward, and yet we&rsquo;ve speeded up our code quite a bit. All this without any restrictions or special requirements (excluding Listing 14.4)&mdash;and without any new information. Everything we needed was sitting there all along; we just needed to think to look at it.
 </P>
 <P>As Yogi Berra might put it, &ldquo;You don&rsquo;t know what you know until you know it.&rdquo;</P><P><BR></P>
@@ -208,7 +208,7 @@ _FindString     endp
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

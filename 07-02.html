@@ -24,7 +24,7 @@
 <!--CHAPTER=07//-->
 <!--PAGES=139-141//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -51,12 +51,12 @@ jz      SkipLoop         ;If field is 0, don&rsquo;t bother
 </PRE>
 <!-- END CODE SNIP //-->
 <P>will do just fine and is faster on all processors. Use <B>JCXZ</B> only when the Zero flag isn&rsquo;t already set to reflect the status of CX.</P>
-<H3><A NAME="Heading4"></A><FONT COLOR="#000077">The Lessons of LOOP and JCXZ</FONT></H3>
+<H3><A NAME="Heading4"></A>The Lessons of LOOP and JCXZ</H3>
 <P>What can we learn from <B>LOOP</B> and <B>JCXZ?</B> First, that a single instruction that is intended to do a complex task is not necessarily faster than several instructions that together do the same thing. Second, that the relative merits of instructions and optimization rules vary to a surprisingly large degree across the x86 family.</P>
 <P>In particular, if you&rsquo;re going to write 386 protected mode code, which will run only on the 386, 486, and Pentium, you&rsquo;d be well advised to rethink your use of the more esoteric members of the x86 instruction set. <B>LOOP, JCXZ,</B> the various accumulator-specific instructions, and even the string instructions in many circumstances no longer offer the advantages they did on the 8088. Sometimes they&rsquo;re just not any faster than more general instructions, so they&rsquo;re not worth going out of your way to use; sometimes, as with <B>LOOP,</B> they&rsquo;re actually slower, and you&rsquo;d do well to avoid them altogether in the 386/486 world. Reviewing the instruction cycle times in the MASM or TASM manuals, or looking over the cycle times in Intel&rsquo;s literature, is a good place to start; published cycle times are closer to actual execution times on the 386 and 486 than on the 8088, and are reasonably reliable indicators of the relative performance levels of x86 instructions.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading5"></A><FONT COLOR="#000077">Avoiding LOOPS of Any Stripe</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading5"></A>Avoiding LOOPS of Any Stripe</H4>
 <P>Cycle counting and directly substituting instructions (<B>DEC CX/JNZ</B> for <B>LOOP,</B> for example) are techniques that belong at the lowest level of optimization. It&rsquo;s an important level, but it&rsquo;s fairly mechanical; once you&rsquo;ve learned the capabilities and relative performance levels of the various instructions, you should be able to select the best instructions fairly easily. What&rsquo;s more, this is a task at which compilers excel. What I&rsquo;m saying is that you shouldn&rsquo;t get too caught up in counting cycles because that&rsquo;s a small (albeit important) part of the optimization picture, and not the area in which your greatest advantage lies.</P>
-<H3><A NAME="Heading6"></A><FONT COLOR="#000077">Local Optimization</FONT></H3>
+<H3><A NAME="Heading6"></A>Local Optimization</H3>
 <P>One level at which assembly language programming pays off handsomely is that of <I>local optimization;</I> that is, selecting the best <I>sequence</I> of instructions for a task. The key to local optimization is viewing the 80x86 instruction set as a set of building blocks, each with unique characteristics. Your job is to sequence those blocks so that they perform well. It doesn&rsquo;t matter what the instructions are intended to do or what their names are; all that matters is what they <I>do.</I></P>
 <P>Our discussion of <B>LOOP</B> versus <B>DEC/JNZ</B> is an excellent example of optimization by cycle counting. It&rsquo;s worth knowing, but once you&rsquo;ve learned it, you just routinely use <B>DEC/JNZ</B> at the bottom of loops in 386/486-specific code, and that&rsquo;s that. Besides, you&rsquo;ll save at most a few cycles each time, and while that helps a little, it&rsquo;s not going to make all <I>that</I> much difference.</P>
 <P>Now let&rsquo;s step back for a moment, and with no preconceptions consider what the x86 instruction set can do for us. The bulk of the time with both <B>LOOP</B> and <B>DEC/JNZ</B> is taken up by branching, which just happens to be one of the slowest aspects of every processor in the x86 family, and the rest is taken up by decrementing the count register and checking whether it&rsquo;s zero. There may be ways to perform those tasks a little faster by selecting different instructions, but they can get only so fast, and branching can&rsquo;t even get all that fast.</P>
@@ -76,7 +76,7 @@ jz      SkipLoop         ;If field is 0, don&rsquo;t bother
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

@@ -24,7 +24,7 @@
 <!--CHAPTER=04//-->
 <!--PAGES=090-093//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -39,7 +39,7 @@
 <P>Clearly, either instruction fetch time <I>or</I> Execution Unit execution time&mdash;or even a mix of the two, if an instruction is partially prefetched&mdash;can determine code performance. Some people operate under a rule of thumb by which they assume that the execution time of each instruction is 4 cycles times the number of bytes in the instruction. While that&rsquo;s often true for register-only code, it frequently doesn&rsquo;t hold for code that accesses memory. For one thing, the rule should be 4 cycles times the number of <I>memory accesses,</I> not instruction bytes, since all accesses take 4 cycles on the 8088-based PC. For another, memory-accessing instructions often have slower Execution Unit execution times than the 4 cycles per memory access rule would dictate, because the 8088 isn&rsquo;t very fast at calculating memory addresses. Also, the 4 cycles per instruction byte rule isn&rsquo;t true for register-only instructions that are already in the prefetch queue when the preceding instruction ends.</P>
 <P>The truth is that it never hurts performance to reduce either the cycle count or the byte count of a given bit of code, but there&rsquo;s no guarantee that one or the other will improve performance either. For example, consider Listing 4.7, which consists of a series of 4-cycle, 2-byte <B>MOV AL,0</B> instructions, and which executes at the rate of 1.81 &micro;s per instruction. Now consider Listing 4.8, which replaces the 4-cycle <B>MOV AL,0</B> with the 3-cycle (but still 2-byte) <B>SUB AL,AL,</B> Despite its 1-cycle-per-instruction advantage, Listing 4.8 runs at exactly the same speed as Listing 4.7. The reason: Both instructions are 2 bytes long, and in both cases it is the 8-cycle instruction fetch time, not the 3 or 4-cycle Execution Unit execution time, that limits performance.</P>
 <P><A NAME="Fig4"><!-- </A><A HREF="javascript:displayWindow('images/04-04.jpg',410,449 )"> --><IMG SRC="images/04-04.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/04-04.jpg',410,449)"> --><FONT COLOR="#000077"><B>Figure 4.4</B></FONT></A>&nbsp;&nbsp;<I>Execution and instruction prefetching sequence for Listing 4.6.</I>
+<BR><A HREF="javascript:displayWindow('images/04-04.jpg',410,449)"> --><B>Figure 4.4</B></A>&nbsp;&nbsp;<I>Execution and instruction prefetching sequence for Listing 4.6.</I>
 </P>
 <P><B>LISTING 4.7  LST4-7.ASM</B></P>
 <!-- CODE //-->
@@ -77,11 +77,11 @@
 <TABLE WIDTH="100%"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><SMALL><I>The only true execution time for an instruction is a time measured in a certain context, and that time is meaningful only in that context.</I></SMALL>
 </TABLE>
 <P>What we <I>really</I> want is to know how long useful working code takes to run, not how long a single instruction takes, and the Zen timer gives us the tool we need to gather that information. Granted, it would be easier if we could just add up neatly documented instruction execution times&mdash;but that&rsquo;s not going to happen. Without actually measuring the performance of a given code sequence, you simply don&rsquo;t know how fast it is. For crying out loud, even the people who <I>designed</I> the 8088 at Intel couldn&rsquo;t tell you exactly how quickly a given 8088 code sequence executes on the PC just by looking at it! Get used to the idea that execution times are only meaningful in context, learn the rules of thumb in this book, and use the Zen timer to measure your code.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading12"></A><FONT COLOR="#000077">Approximating Overall Execution Times</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading12"></A>Approximating Overall Execution Times</H4>
 <P>Don&rsquo;t think that because overall instruction execution time is determined by both instruction fetch time and Execution Unit execution time, the two times should be added together when estimating performance. For example, practically speaking, each <B>SHR</B> in Listing 4.5 does not take 8 cycles of instruction fetch time plus 2 cycles of Execution Unit execution time to execute. Figure 4.3 shows that while a given <B>SHR</B> is executing, the fetch of the next <B>SHR</B> is starting, and since the two operations are overlapped for 2 cycles, there&rsquo;s no sense in charging the time to both instructions. You could think of the extra instruction fetch time for <B>SHR</B> in Listing 4.5 as being 6 cycles, which yields an overall execution time of 8 cycles when added to the 2 cycles of Execution Unit execution time.</P>
 <P>Alternatively, you could think of each <B>SHR</B> in Listing 4.5 as taking 8 cycles to fetch, and then executing in effectively 0 cycles while the next <B>SHR</B> is being fetched. Whichever perspective you prefer is fine. The important point is that the time during which the execution of one instruction and the fetching of the next instruction overlap should only be counted toward the overall execution time of one of the instructions. For all intents and purposes, one of the two instructions runs at no performance cost whatsoever while the overlap exists.</P>
 <P>As a working definition, we&rsquo;ll consider the execution time of a given instruction in a particular context to start when the first byte of the instruction is sent to the Execution Unit and end when the first byte of the next instruction is sent to the EU.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading13"></A><FONT COLOR="#000077">What to Do about the Prefetch Queue Cycle-Eater?</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading13"></A>What to Do about the Prefetch Queue Cycle-Eater?</H4>
 <P>Reducing the impact of the prefetch queue cycle-eater is one of the overriding principles of high-performance assembly code. How can you do this? One effective technique is to minimize access to memory operands, since such accesses compete with instruction fetching for precious memory accesses. You can also greatly reduce instruction fetch time simply by your choice of instructions: <I>Keep your instructions short.</I> Less time is required to fetch instructions that are 1 or 2 bytes long than instructions that are 5 or 6 bytes long. Reduced instruction fetching lowers minimum execution time (minimum execution time is 4 cycles times the number of instruction bytes) and often leads to faster overall execution.</P>
 <P>While short instructions minimize overall prefetch time, ironically they actually often suffer more from the prefetch queue bottleneck than do long instructions. Short instructions generally have such fast execution times that they drain the prefetch queue despite their small size. For example, consider the <B>SHR</B> of Listing 4.5, which runs at only 25 percent of its Execution Unit execution time even though it&rsquo;s only 2 bytes long, thanks to the prefetch queue bottleneck. Short instructions are nonetheless generally faster than long instructions, thanks to the combination of fewer instruction bytes and faster Execution Unit execution times, and should be used as much as possible&mdash;just don&rsquo;t expect them to run at their &ldquo;official&rdquo; documented speeds.</P><P><BR></P>
 <CENTER>
@@ -96,7 +96,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

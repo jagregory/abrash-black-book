@@ -24,7 +24,7 @@
 <!--CHAPTER=16//-->
 <!--PAGES=311-313//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,12 +36,12 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H3><A NAME="Heading9"></A><FONT COLOR="#000077">Levels of Optimization</FONT></H3>
+<H3><A NAME="Heading9"></A>Levels of Optimization</H3>
 <P>Three levels of optimization were evident in the word-counting entries I received in response to my challenge. I&rsquo;d briefly describe them as &ldquo;fine-tuning,&rdquo; &ldquo;new perspective,&rdquo; and &ldquo;table-driven state machine.&rdquo; The latter categories produce faster code, but, by the same token, they are harder to design, harder to implement, and more difficult to understand, so they&rsquo;re suitable for only the most demanding applications. (Heck, I don&rsquo;t even guarantee that David Stafford&rsquo;s entry works perfectly, although, knowing him, it probably does; the more complex and cryptic the code, the greater the chance for obscure bugs.) 
 </P>
 <TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>Remember, optimize only when needed, and stop when further optimization will not be noticed. Optimization that&rsquo;s not perceptible to the user is like buying Telly Savalas a comb; it&rsquo;s not going to do any harm, but it&rsquo;s nonetheless a waste of time.</I></SMALL>
 </TABLE>
-<H4 ALIGN="LEFT"><A NAME="Heading10"></A><FONT COLOR="#000077">Optimization Level 1: Good Code</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading10"></A>Optimization Level 1: Good Code</H4>
 <P>The first level of optimization involves fine-tuning and clever use of the instruction set. The basic framework is still the same as my code (which in turn is basically the same as that of the original C code), but that framework is implemented more efficiently.
 </P>
 <P>One obvious level 1 optimization is using a <B>word</B> rather than <B>dword</B> counter. <B>ScanBuffer</B> can never be called upon to handle more than 64K bytes at a time, so no more than 32K words can ever be found. Given that, it&rsquo;s a logical step to use <B>INC</B> rather than <B>ADD/ADC</B> to keep count, adding the tally into the full 32-bit count only upon exiting the function. Another useful optimization is aligning loop tops and other branch destinations to <B>word</B> , or better yet <B>dword</B> , boundaries.</P>
@@ -61,7 +61,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

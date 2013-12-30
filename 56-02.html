@@ -24,7 +24,7 @@
 <!--CHAPTER=56//-->
 <!--PAGES=1050-1053//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -38,18 +38,17 @@
 <P><BR></P>
 <P>Ah, but what is an &ldquo;equivalent amount&rdquo;? Think of it this way. If a destination edge is 100 scan lines high, it will be stepped 100 times. Then, we&rsquo;ll divide the<B> SourceXWidth</B> and <B>SourceYHeight</B> lengths of the source edge by 100, and add those amounts to the source edge&rsquo;s coordinates each time the destination is stepped one scan line. Put another way, we have, as usual, arranged things so that in the destination polygon we step <B>DestYHeight</B> times, where <B>DestYHeight</B> is the height of the destination edge. The this approach arranges to step the source image edge <B>DestYHeight</B> times also, to match what the destination is doing.</P>
 <P><A NAME="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/56-03.jpg',408,184 )"> --><IMG SRC="images/56-03.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/56-03.jpg',408,184)"> --><FONT COLOR="#000077"><B>Figure 56.3</B></FONT></A>&nbsp;&nbsp;<I>Mapping a texture onto a 2-D rotated polygon.</I>
+<BR><A HREF="javascript:displayWindow('images/56-03.jpg',408,184)"> --><B>Figure 56.3</B></A>&nbsp;&nbsp;<I>Mapping a texture onto a 2-D rotated polygon.</I>
 </P>
 <P>Now we&rsquo;re able to track the coordinates of the polygon edges through the source image in tandem with the destination edges. Stepping across each destination scan line uses precisely the same technique, as shown in Figure 56.4. In the destination, we step <B>DestXWidth</B> times across each scan line of the polygon, once for each pixel on the scan line. (<B>DestXWidth</B> is the horizontal distance between the two edges being scanned on any given scan line.) To match this, we divide <B>SourceXWidth</B> and <B>SourceYHeight</B> (the lengths of the scan line in the source image, as determined by the source edge points we&rsquo;ve been tracking, as just described) by the width of the destination scan line, <B>DestXWidth</B>, to produce <B>SourceXStep</B> and <B>SourceYStep</B>. Then, we just step <B>DestXWidth</B> times, adding <B>SourceXStep</B> and <B>SourceYStep</B> to <B>SourceX</B> and <B>SourceY</B> each time, and choose the nearest image pixel to (<B>SourceX</B>,<B>SourceY</B>) to copy to (<B>DestX</B>, <B>DestY</B>). (Note that the names used above, such as <B>SourceXWidth</B>, are used for descriptive purposes, and don&rsquo;t necessarily correspond to the actual variable names used in Listing 56.2.)</P>
 <P>That&rsquo;s a workable approach for 2-D rotated polygons&mdash;but what about 3-D rotated polygons, where the visible dimensions of the polygon can vary with 3-D rotation and perspective projection? First, I&rsquo;d like to make it clear that texture mapping takes place from the source image to the destination polygon after the destination polygon is projected to the screen. That is, the image will be mapped after the destination polygon is in its final, drawable form. Given that, it should be apparent that the above approach automatically compensates for all changes in the dimensions of a polygon. You see, this approach divides source edges and scan lines into however many steps the destination polygon requires. If the destination polygon is much narrower than the source polygon, as a result of 3-D rotation and perspective projection, we just end up taking bigger steps through the source image and skipping a lot of source image pixels, as shown in Figure 56.5. The upshot is that the above approach handles all transformations and projections effortlessly. It could also be used to scale source images up to fit in larger polygons; all that&rsquo;s needed is a list of where the polygon&rsquo;s vertices map into the source image, and everything else happens automatically. In fact, mapping from any polygonal area of a bitmap to any destination polygon will work, given only that the two polygons have the same number of vertices.</P>
 <P><A NAME="Fig4"><!-- </A><A HREF="javascript:displayWindow('images/56-04.jpg',410,161 )"> --><IMG SRC="images/56-04.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/56-04.jpg',410,161)"> --><FONT COLOR="#000077"><B>Figure 56.4</B></FONT></A>&nbsp;&nbsp;<I>Mapping a horizontal destination scan line back to the source image.</I>
+<BR><A HREF="javascript:displayWindow('images/56-04.jpg',410,161)"> --><B>Figure 56.4</B></A>&nbsp;&nbsp;<I>Mapping a horizontal destination scan line back to the source image.</I>
 </P>
 <P><A NAME="Fig5"><!-- </A><A HREF="javascript:displayWindow('images/56-05.jpg',407,160 )"> --><IMG SRC="images/56-05.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/56-05.jpg',407,160)"> --><FONT COLOR="#000077"><B>Figure 56.5</B></FONT></A>&nbsp;&nbsp;<I>Mapping a texture onto a narrower polygon.</I>
+<BR><A HREF="javascript:displayWindow('images/56-05.jpg',407,160)"> --><B>Figure 56.5</B></A>&nbsp;&nbsp;<I>Mapping a texture onto a narrower polygon.</I>
 </P>
-<P><H4 ALIGN="LEFT"><A NAME="Heading5"></A><FONT COLOR="#000077">Notes on DDA Texture Mapping</P>
-</FONT></H4>
+<P><H4 ALIGN="LEFT"><A NAME="Heading5"></A>Notes on DDA Texture Mapping</P></H4>
 <P>That&rsquo;s all there is to quick-and-dirty texture mapping. This technique basically uses a two-stage digital differential analyzer (DDA) approach to step through the appropriate part of the source image in tandem with the normal scan-line stepping through the destination polygon, so I&rsquo;ll call it &ldquo;DDA texture mapping.&rdquo; It&rsquo;s worth noting that there is no need for any trigonometric functions at all, and only two divides are required per scan line.</P>
 <P>This isn&rsquo;t a perfect approach, of course. For one thing, it isn&rsquo;t anywhere near as fast as drawing solid polygons; the speed is more comparable to drawing each polygon as a series of lines. Also, the DDA approach results in far from perfect image quality, since source pixels may be skipped or selected twice. I trust, however, that you can see how easy it would be to improve image quality by antialiasing with the DDA approach. For example, we could simply average the four surrounding pixels as we did for simple, unweighted antialiasing in Chapters F, G,Chapter K on the companion CD-ROM. Or, we could take a Wu antialiasing approach (see Chapter 57) and average the two bracketing pixels along each axis according to proximity. If we had cycles to waste (which, given that this is real-time animation on a PC, we don&rsquo;t), we could improve image quality by putting the source pixels through a low-pass filter sized in X and Y according to the ratio of the source and destination dimensions (that is, how much the destination is scaled up or down from the source).</P>
 <P>Even more important is that the sort of texture mapping I&rsquo;ll do in X-Sharp doesn&rsquo;t correct for perspective. That doesn&rsquo;t much matter for small polygons or polygons that are nearly parallel to the screen in 3-space, but it can produce very noticeable bowing of textures on large polygons at an angle to the screen. Perspective texture mapping is a complex subject that&rsquo;s outside the scope of this book, but you should be aware of its existence, because perspective texture mapping is a key element of many games these days.</P>
@@ -67,7 +66,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

@@ -24,7 +24,7 @@
 <!--CHAPTER=33//-->
 <!--PAGES=628-630//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,16 +36,16 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H4 ALIGN="LEFT"><A NAME="Heading6"></A><FONT COLOR="#000077">Color Paging with the Color Select Register</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading6"></A>Color Paging with the Color Select Register</H4>
 <P>&ldquo;Wait a minute,&rdquo; you say bemusedly. &ldquo;Aren&rsquo;t you missing some bits between the palette RAM and the DAC?&rdquo; Indeed I am. The palette RAM puts out 6 bits at a time, and the DAC takes in 8 bits at a time. The two missing bits&mdash;bits 6 and 7 going into the DAC&mdash;are supplied by bits 2 and 3 of the Color Select register (Attribute Controller register 14H). This has intriguing implications. In 16-color modes, pixel data can select only one of 16 attributes, which the EGA palette RAM translates into one of 64 attributes. Normally, those 64 attributes look up colors from registers 0 through 63 in the DAC, because bits 2 and 3 of the Color Select register are both zero. By changing the Color Select register, however, one of three other 64 color sets can be selected instantly. I&rsquo;ll refer to the process of flipping through color sets in this manner as <I>color paging</I>.</P>
 <P>That&rsquo;s interesting, but frankly it seems somewhat half-baked; why bother expanding 16 attributes to 64 attributes before looking up the colors in the DAC? What we&rsquo;d <I>really</I> like is to map the 16 attributes straight through the palette RAM without changing them and supply the upper <I>4</I> bits going to the DAC from a register, giving us 16 color pages. As it happens, all we have to do to make that happen is set bit 7 of the Attribute Controller Mode register (register 10H) to 1. Once that&rsquo;s done, bits 0 through 3 of the Color Select register go straight to bits 4 through 7 of the DAC, and only bits 3 through 0 coming out of the palette RAM are used; bits 4 and 5 from the palette RAM are ignored. In this mode, the palette RAM effectively contains 4-bit, rather than 6-bit, registers, but that&rsquo;s no problem because the palette RAM will be programmed to pass pixel values through unchanged by having register 0 set to 0, register 1 set to 1, and so on, a configuration in which the upper two bits of all the palette RAM registers are the same (zero) and therefore irrelevant. As a matter of fact, you&rsquo;ll generally want to set the palette RAM to this pass-through state when working with VGA color, whether you&rsquo;re using color paging or not.</P>
 <P>Why is it a good idea to set the palette RAM to a pass-through state? It&rsquo;s a good idea because the palette RAM is programmed by the BIOS to EGA-compatible settings and the first 64 DAC registers are programmed to emulate the 64 colors that an EGA can display during mode sets for 16-color modes. This is done for compatibility with EGA programs, and it&rsquo;s useless if you&rsquo;re going to tinker with the VGA&rsquo;s colors. As a VGA programmer, you want to take a 4-bit pixel value and turn it into an 18-bit RGB value; you can do that without any help from the palette RAM, and setting the palette RAM to pass-through values effectively takes it out of the circuit and simplifies life something wonderful. The palette RAM exists solely for EGA compatibility, and serves no useful purpose that I know of for VGA-only color programming.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading7"></A><FONT COLOR="#000077">256-Color Mode</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading7"></A>256-Color Mode</H4>
 <P>So far I&rsquo;ve spoken only of 16-color modes; what of 256-color modes?
 </P>
 <P>The rule in 256-color modes is: <I>Don&rsquo;t tinker with the VGA palette</I>. Period. You can select any colors you want by reprogramming the DAC, and there&rsquo;s no guarantee as to what will happen if you mess around with the palette RAM. There&rsquo;s no benefit that I know of to changing the palette RAM in 256-color mode, and the effect may vary from VGA to VGA. So don&rsquo;t do it unless you know something I don&rsquo;t.</P>
 <P>On the other hand, feel free to alter the DAC settings to your heart&rsquo;s content in 256-color mode, all the more so because this is the only mode in which all 256 DAC settings can be displayed simultaneously. By the way, the Color Select register and bit 7 of the Attribute Controller Mode register are ignored in 256-color mode; all 8 bits sent from the VGA chip to the DAC come from display memory. Therefore, there is no color paging in 256-color mode. Of course, that makes sense given that all 256 DAC registers are simultaneously in use in 256-color mode.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading8"></A><FONT COLOR="#000077">Setting the Palette RAM</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading8"></A>Setting the Palette RAM</H4>
 <P>The palette RAM can be programmed either directly or through BIOS interrupt 10H, function 10H. I strongly recommend using the BIOS interrupt; a clone BIOS may mask incompatibilities with genuine IBM silicon. Such incompatibilities could include anything from flicker to trashing the palette RAM; or they may not exist at all, but why find out the hard way? My policy is to use the BIOS unless there&rsquo;s a clear reason not to do so, and there&rsquo;s no such reason that I know of in this case.
 </P>
 <P>When programming specifically for the VGA, the palette RAM needs to be loaded only once, to store the pass-through values 0 through 15 in palette RAM registers 0 through 15. Setting the entire palette RAM is accomplished easily enough with subfunction 2 (AL=2) of function 10H (AH=10H) of interrupt 10H. A single call to this subfunction sets all 16 palette RAM registers (and the Overscan register) from a block of 17 bytes pointed to by ES:DX, with ES:DX pointing to the value for register 0, ES:DX+1 pointing to the value for register 1, and so on up to ES:DX+16, which points to the overscan value. The palette RAM registers store 6 bits each, so only the lower 6 bits of each of the first 16 bytes in the 17-byte block are significant. (The Overscan register, which specifies what&rsquo;s displayed between the area of the screen that&rsquo;s controlled by the values in display memory and the blanked region at the edges of the screen, is an 8-bit register, however.)</P>
@@ -63,7 +63,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

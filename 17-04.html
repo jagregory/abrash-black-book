@@ -24,7 +24,7 @@
 <!--CHAPTER=17//-->
 <!--PAGES=331-334//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -39,13 +39,13 @@
 <P>There&rsquo;s a kicker here, though, and that&rsquo;s the counting of neighbors for cells at the edge of the cellmap. When cellmap wrapping is enabled (so that the cellmap becomes essentially a toroid, with each edge joined seamlessly to the opposite edge, as opposed to having a border of off-cells), neighbors that reside on the other edge of the cellmap can&rsquo;t be accessed by the standard fixed offset, as shown in Figure 17.1. So, in general, we could improve performance by hard-wiring our neighbor-counting for the bit-per-cell cellmap format, but it seems we&rsquo;d need a lot of conditional code to handle wrapping, and that would slow things back down again.
 </P>
 <P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/17-01.jpg',408,258 )"> --><IMG SRC="images/17-01.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/17-01.jpg',408,258)"> --><FONT COLOR="#000077"><B>Figure 17.1</B></FONT></A>&nbsp;&nbsp;<I>Edge-wrapping complications.</I>
+<BR><A HREF="javascript:displayWindow('images/17-01.jpg',408,258)"> --><B>Figure 17.1</B></A>&nbsp;&nbsp;<I>Edge-wrapping complications.</I>
 </P>
 <P>When a problem doesn&rsquo;t lend itself well to optimization, make it a practice to see if you can change the problem definition to one that allows for greater efficiency. In this case, we&rsquo;ll change the problem by putting padding bytes around the edge of the cellmap, and duplicating each edge of the cellmap in the padding bytes at the opposite side, as shown in Figure 17.2. That way, a hard-wired neighbor count will find exactly what it should&mdash;the opposite edge&mdash;without any special code at all.
 </P>
 <P>But doesn&rsquo;t that extra copying of the edges take time? Sure, but only a little; we can build it into the cellmap copying function, and then frankly we won&rsquo;t even notice it. Avoiding tens or hundreds of thousands of calls to <B>cell_state(),</B> on the other hand, will be <I>very</I> noticeable. Listing 17.3 shows the alterations to Listing 17.1 required to implement a hard-wired neighbor-counting function. This is a minor change, in truth, implemented in about half an hour and not making the code significantly larger&mdash;but Listing 17.3 is 3.6 times faster than Listing 17.1, as shown in Table 17.1. We&rsquo;re up to about 10 generations per second on a 486; not where we want to be, but it is a vast improvement.</P>
 <P><A NAME="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/17-02.jpg',407,260 )"> --><IMG SRC="images/17-02.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/17-02.jpg',407,260)"> --><FONT COLOR="#000077"><B>Figure 17.2</B></FONT></A>&nbsp;&nbsp;<I>The &ldquo;padding cells&rdquo; solution.</I>
+<BR><A HREF="javascript:displayWindow('images/17-02.jpg',407,260)"> --><B>Figure 17.2</B></A>&nbsp;&nbsp;<I>The &ldquo;padding cells&rdquo; solution.</I>
 </P>
 <P><B>LISTING 17.3 L17-3.CPP</B></P>
 <!-- CODE //-->
@@ -226,7 +226,7 @@ void cellmap::next_generation(cellmap&amp next_map)
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

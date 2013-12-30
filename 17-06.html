@@ -24,7 +24,7 @@
 <!--CHAPTER=17//-->
 <!--PAGES=338-340//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -43,11 +43,11 @@
 	<li>There are many possible cellmap representations other than one bit-per-pixel.</li>
 	<li>Cells change state relatively infrequently.</li>
 </ul>
-<H3><A NAME="Heading8"></A><FONT COLOR="#000077">Bringing In the Right Brain</FONT></H3>
+<H3><A NAME="Heading8"></A>Bringing In the Right Brain</H3>
 <P>In the previous section, we saw how a C<SMALL>++</SMALL> program could be sped up about eight times simply by rearranging the data and code in straightforward ways. Now we&rsquo;re going to see how right-brain non-linear optimization can speed things up by another four times&mdash;and make the code <I>simpler.</I></P>
 <P>Now <I>that&rsquo;s</I> Zen code optimization.</P>
 <P>I have two objectives to achieve in the remainder of this chapter. First, I want to show that optimization consists of many levels, from assembly language up to conceptual design, and that assembly language kicks in pretty late in the optimization process. Second, I want to encourage you to saturate your brain with everything you know about any particular optimization problem, then make space for your right brain to solve the problem.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading9"></A><FONT COLOR="#000077">Re-Examining the Task</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading9"></A>Re-Examining the Task</H4>
 <P>Earlier in this chapter, we looked at a straightforward Game of Life implementation, then increased performance considerably by making the implementation a little less abstract and a little less general. We made a small change to the cellmap format, adding padding bytes off the edges so that pointer arithmetic would always work, but the major optimizations were moving the critical code into a single loop and using pointers rather than member functions whenever possible. In other words, we took what we already knew and made it more efficient.
 </P>
 <P>Now it&rsquo;s time to re-examine the nature of this programming task from the ground up, looking for things that we <I>don&rsquo;t</I> yet know. Let&rsquo;s take a moment to review what the Game of Life consists of. The basic task is evolving a new generation, and that&rsquo;s done by looking at the number of &ldquo;on&rdquo; neighbors a cell has and the cell&rsquo;s own state. If a cell is on, and two or three neighbors are on, then the cell stays on; otherwise, an on-cell is turned off. If a cell is off and exactly three neighbors are on, then the cell is turned on; otherwise, an off-cell stays off. That&rsquo;s all there is to it. As any fool can see, the trick is to arrange things so that we can count neighbors and check the cell state as quickly as possible. Large lookup tables, oddly encoded cellmaps, and lots of bit-twiddling assembly code spring to mind as possible approaches. Can&rsquo;t you just feel your adrenaline start to pump?</P>
@@ -59,9 +59,9 @@
 <P>But what about the overhead needed to maintain the neighbor counts? Well, each time a cell changes state, eight operations would be needed to update the counts in the eight neighboring cells. But this happens only once every ten cells, on average&mdash;so the cost of this approach is only one-tenth that of the original approach!</P>
 <P><I>Know your data.</I></P>
 <P><A NAME="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/17-03.jpg',405,113 )"> --><IMG SRC="images/17-03.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/17-03.jpg',405,113)"> --><FONT COLOR="#000077"><B>Figure 17.3</B></FONT></A>&nbsp;&nbsp;<I>New cell format.</I>
+<BR><A HREF="javascript:displayWindow('images/17-03.jpg',405,113)"> --><B>Figure 17.3</B></A>&nbsp;&nbsp;<I>New cell format.</I>
 </P>
-<H4 ALIGN="LEFT"><A NAME="Heading10"></A><FONT COLOR="#000077">Acting on What We Know</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading10"></A>Acting on What We Know</H4>
 <P>Once we&rsquo;ve changed the cellmap format to store neighbor counts as well as states, with a byte for each cell, we can get another performance boost by again examining what we know about our data. I said earlier that most cells are off during any given generation. This means that most cells have no neighbors that are on. Since the cell map representation for an off-cell that has no neighbors is a zero byte, we can skip over scads of unchanged cells at a pop simply by scanning for non-zero bytes. This is much faster than explicitly testing cell states and neighbor counts, and lends itself beautifully to assembly language implementation as <B>REPZ SCASB</B> or (with a little cleverness) <B>REPZ SCASW.</B> (Unfortunately, there&rsquo;s no C library function that can scan memory for the next byte that&rsquo;s non-zero.)</P>
 <P>Listing 17.5 is a Game of Life implementation that uses the neighbor-count cell map format and scans for non-zero bytes. On a 20 MHz 386, Listing 17.5 is about 4.5 times faster at calculating generations (that is, the generation engine is 4.5 times faster; I&rsquo;m ignoring the time consumed by drawing and text display) than Listing 17.4, which is no slouch. On a 33 MHz 486, Listing 17.5 is about 3.5 times faster than Listing 17.4. This is true even though Listing 17.5 must be compiled using the large model. Imagine that&mdash;getting a four times speed-up while switching from the small model to the large model!</P><P><BR></P>
 <CENTER>
@@ -76,7 +76,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

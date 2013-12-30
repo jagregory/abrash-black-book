@@ -24,7 +24,7 @@
 <!--CHAPTER=32//-->
 <!--PAGES=620-622//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -41,7 +41,7 @@
 <P>I&rsquo;ll bet that you can see where I&rsquo;m headed: We can switch from the 25 MHz clock to the 28 MHz clock in 320x480 256mode in order to get more pixels. It takes two clocks to produce one 256-color pixel, so we&rsquo;ll get 40 rather than 80 extra pixels by doing this, bringing our horizontal resolution to the desired 360 pixels.</P>
 <P>Switching horizontal resolutions sounds easy, doesn&rsquo;t it? Alas, it&rsquo;s not. There&rsquo;s no standard VGA mode that uses the 28 MHz clock to draw 8 rather than 9 dots per character, so the timing parameters have to be calculated from scratch. John Bridges has already done that for us, but I want you to appreciate that producing this mode took some work. The registers controlling the total number of characters per scan line, the number of characters displayed, the horizontal sync pulse, horizontal blanking, the offset from the start of one line to the start of the next, and the clock speed all have to be altered in order to set up 360x480 256-color mode. The function <B>Set360x480Mode</B> in Listing 32.1 does all that, and sets up the registers that control vertical resolution, as well.</P>
 <P>Once all that&rsquo;s done, the VGA is in 360x480 mode, awaiting our every high-resolution 256-color graphics whim.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading8"></A><FONT COLOR="#000077">Accessing Display Memory in 360x480 256-Color Mode</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading8"></A>Accessing Display Memory in 360x480 256-Color Mode</H4>
 <P>Setting up for 360x480 256-color mode proved to be quite a task. Is drawing in this mode going to be as difficult?
 </P>
 <P>No. In fact, if you know how to draw in 320x400 256-color mode, you already know how to draw in 360x480 256-color mode; the conversion between the two is a simple matter of changing the working screen width from 320 pixels to 360 pixels. In fact, if you were to take the 320x400 256-color pixel reading and pixel writing code from Chapter 31 and change the <B>SCREEN_WIDTH</B> equate from 320 to 360, those routines would work perfectly in 360x480 256-color mode.</P>
@@ -53,7 +53,7 @@
 <P>The other programming difference between the two modes is that the area of display memory mapped to the screen is longer in 360x480 256-color mode, which is only common sense given that there are more pixels in that mode. The exact amount of memory required in 360x480 256-color mode is 360 times 480 = 172,800 bytes. That&rsquo;s more than half of the VGA&rsquo;s 256 Kb memory complement, so page-flipping is out; however, there&rsquo;s no reason you couldn&rsquo;t use that extra memory to create a virtual screen larger than 360x480, around which you could then scroll, if you wish.</P>
 <P>That&rsquo;s really all there is to drawing in 360x480 256-color mode. From a programming perspective, this mode is no more complicated than 320x400 256-color mode once the mode set is completed, and should be capable of good performance given some clever coding. It&rsquo;s not particular straightforward to implement bitblt, block move, or fast line-drawing code for any of the extended 256-color modes, but it can be done&mdash;and it&rsquo;s worth the trouble. Even the small taste we&rsquo;ve gotten of the capabilities of these modes shows that they put the traditional CGA, EGA, and generally even VGA modes to shame.</P>
 <P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/32-01.jpg',406,181 )"> --><IMG SRC="images/32-01.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/32-01.jpg',406,181)"> --><FONT COLOR="#000077"><B>Figure 32.1</B></FONT></A>&nbsp;&nbsp;<I>Pixel organization in 360x480 256-color mode.</I>
+<BR><A HREF="javascript:displayWindow('images/32-01.jpg',406,181)"> --><B>Figure 32.1</B></A>&nbsp;&nbsp;<I>Pixel organization in 360x480 256-color mode.</I>
 </P>
 <P>There&rsquo;s more and better to come, though; in later chapters, we&rsquo;ll return to high-resolution 256-color programming in a big way, by exploring the tremendous potential of these modes for real time 2-D and 3-D animation.
 </P><P><BR></P>
@@ -69,7 +69,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

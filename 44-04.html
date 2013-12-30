@@ -24,7 +24,7 @@
 <!--CHAPTER=44//-->
 <!--PAGES=830-833//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -38,7 +38,7 @@
 <P><BR></P>
 <P>Listing 44.1 is written in C. It could equally well have been written in assembly language, and would then have been somewhat faster. However, wanted to make the point (as I&rsquo;ve made again and again) that assembly language, and, indeed, optimization in general, is needed only in the most critical portions of any program, and then only when the program would otherwise be too slow. Only in a highly performance-sensitive situation would the performance boost resulting from converting Listing 44.1 to assembly justify the time spent in coding and the bugs that would likely creep in&mdash;and the sample program already updates the screen at the maximum possible rate of once per frame even on a 1985-vintage 8-MHz AT. In this case, faster performance would result only in a longer wait for the page to flip.
 </P>
-<H4 ALIGN="CENTER"><A NAME="Heading5"></A><FONT COLOR="#000077">Write Mode 3</FONT></H4>
+<H4 ALIGN="CENTER"><A NAME="Heading5"></A>Write Mode 3</H4>
 <P>It&rsquo;s possible to update the bitmap very efficiently on the VGA, because the VGA can draw up to 8 pixels at once, and because the VGA provides a number of hardware features to speed up drawing. This article makes considerable use of one particularly unusual hardware feature, write mode 3. We discussed write mode 3 back in Chapter 26, but we&rsquo;ve covered a lot of ground since then&mdash;so I&rsquo;m going to run through a quick refresher on write mode 3.
 </P>
 <P>Some background: In the standard VGA&rsquo;s high-resolution mode, mode 12H (640x480 with 16 colors, the mode in which this chapter&rsquo;s sample program runs), each byte of display memory controls 8 adjacent pixels on the screen. (The color of each pixel is, in turn, controlled by 4 bits spread across the four VGA memory planes, but we need not concern ourselves with that here.) Now, there will often be times when we want to change some but not all of the pixels controlled by a particular byte of display memory. This is not easily done, for there is no way to write half a byte, or two bits, or such to memory; it&rsquo;s the whole byte or none of it at all.</P>
@@ -79,7 +79,7 @@ mov   byte ptr es:[di],0ffh
 </TABLE>
 <P>In short, write mode 3 is a good choice for single-color drawing that modifies individual pixels within display memory bytes. Not coincidentally, the sample application draws only single-color objects within the animation area; this allows write mode 3 to be used for all drawing, in keeping with our desire for speedy screen updates.
 </P>
-<H4 ALIGN="CENTER"><A NAME="Heading6"></A><FONT COLOR="#000077">Drawing Text</FONT></H4>
+<H4 ALIGN="CENTER"><A NAME="Heading6"></A>Drawing Text</H4>
 <P>We&rsquo;ll need text in the sample application; is that also a good use for write mode 3? Sometimes it is, but not in this particular case.
 </P>
 <P>Each character in a font is represented by a pattern of bits, with 1-bits representing character pixels and 0-bits representing background pixels. Since we&rsquo;ll be using the 8x8 font stored in the BIOS ROM (a pointer to which can be obtained by calling a BIOS service, as illustrated by Listing 44.2), each character is exactly 8 bits, or 1 byte wide. We&rsquo;ll further insist that characters be placed on byte boundaries (that is, with their left edges only at pixels with X coordinates that are multiples of 8); this means that the character bytes in the font are automatically aligned with display memory, and no rotation or clipping of characters is needed. Finally, we&rsquo;ll draw all text in white.</P><P><BR></P>
@@ -95,7 +95,7 @@ mov   byte ptr es:[di],0ffh
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

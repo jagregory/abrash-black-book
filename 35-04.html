@@ -24,7 +24,7 @@
 <!--CHAPTER=35//-->
 <!--PAGES=664-667//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -124,7 +124,7 @@ void main()
 }
 </PRE>
 <!-- END CODE //-->
-<H4 ALIGN="LEFT"><A NAME="Heading7"></A><FONT COLOR="#000077">Looking at EVGALine</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading7"></A>Looking at EVGALine</H4>
 <P>The <B>EVGALine</B> function itself performs four operations. <B>EVGALine</B> first sets up the VGA&rsquo;s hardware so that all pixels drawn will be in the desired color. This is accomplished by setting two of the VGA&rsquo;s registers, the Enable Set/Reset register and the Set/Reset register. Setting the Enable Set/Reset to the value 0FH, as is done in <B>EVGALine</B>, causes all drawing to produce pixels in the color contained in the Set/Reset register. Setting the Set/Reset register to the passed color, in conjunction with the Enable Set/Reset setting of 0FH, causes all drawing done by <B>EVGALine</B> and the functions it calls to generate the passed color. In summary, setting up the Enable Set/Reset and Set/Reset registers in this way causes the remainder of <B>EVGALine</B> to draw a line in the specified color.</P>
 <P><B>EVGALine</B> next performs a simple check to cut in half the number of line orientations that must be handled separately. Figure 35.4 shows the eight possible line orientations among which a Bresenham&rsquo;s algorithm implementation must distinguish. (In interpreting Figure 35.4, assume that lines radiate outward from the center of the figure, falling into one of eight octants delineated by the horizontal and vertical axes and the two diagonals.) The need to categorize lines into these octants falls out of the major/minor axis nature of the algorithm; the orientations are distinguished by which coordinate forms the major axis and by whether each of X and Y increases or decreases from the line start to the line end.</P>
 <TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="95%"><SMALL><I>A moment of thought will show, however, that four of the line orientations are redundant. Each of the four orientations for which <B>DeltaY</B>, the Y component of the line, is less than 0 (that is, for which the line start Y coordinate is greater than the line end Y coordinate) can be transformed into one of the four orientations for which the line start Y coordinate is less than the line end Y coordinate simply by reversing the line start and end coordinates, so that the line is drawn in the other direction. <B>EVGALine</B> does this by swapping (X0,Y0) (the line start coordinates) with (X1,Y1) (the line end coordinates) whenever Y0 is greater than Y1.</I></SMALL>
@@ -132,7 +132,7 @@ void main()
 <P>This accomplished, <B>EVGALine</B> must still distinguish among the four remaining line orientations. Those four orientations form two major categories, orientations for which the X dimension is the major axis of the line and orientations for which the Y dimension is the major axis. As shown in Figure 35.4, octants 1 (where X increases from start to finish) and 2 (where X decreases from start to finish) fall into the latter category, and differ in only one respect, the direction in which the X coordinate moves when it changes. Handling of the running error of the line is exactly the same for both cases, as one would expect given the symmetry of lines differing only in the sign of <B>DeltaX</B>, the X coordinate of the line. Consequently, for those cases where <B>DeltaX</B> is less than zero, the direction of X movement is made negative, and the absolute value of <B>DeltaX</B> is used for error term calculations.</P>
 <P>Similarly, octants 0 (where X increases from start to finish) and 3 (where X decreases from start to finish) differ only in the direction in which the X coordinate moves when it changes. The difference between line drawing in octants 0 and 3 and line drawing in octants 1 and 2 is that in octants 0 and 3, since X is the major axis, the X coordinate changes on every pixel of the line and the Y coordinate changes only when the running error of the line dictates. In octants 1 and 2, the Y coordinate changes on every pixel and the X coordinate changes only when the running error dictates, since Y is the major axis.</P>
 <P><A NAME="Fig4"><!-- </A><A HREF="javascript:displayWindow('images/35-04.jpg',408,247 )"> --><IMG SRC="images/35-04.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/35-04.jpg',408,247)"> --><FONT COLOR="#000077"><B>Figure 35.4</B></FONT></A>&nbsp;&nbsp;<I>Bresenham&rsquo;s eight possible line orientations.</I>
+<BR><A HREF="javascript:displayWindow('images/35-04.jpg',408,247)"> --><B>Figure 35.4</B></A>&nbsp;&nbsp;<I>Bresenham&rsquo;s eight possible line orientations.</I>
 <P><BR></P>
 <CENTER>
 <TABLE BORDER>
@@ -146,7 +146,7 @@ void main()
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

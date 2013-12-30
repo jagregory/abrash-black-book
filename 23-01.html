@@ -24,7 +24,7 @@
 <!--CHAPTER=23//-->
 <!--PAGES=423-427//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,23 +36,21 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2 ALIGN="CENTER"><FONT COLOR="#000077"><I>Part II
-</I></FONT></H2>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 23<BR>Bones and Sinew
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">At the Very Heart of Standard PC Graphics</FONT></H3>
+<H2 ALIGN="CENTER"><I>Part II</I></H2>
+<H2><A NAME="Heading1"></A>Chapter 23<BR>Bones and Sinew</H2>
+<H3><A NAME="Heading2"></A>At the Very Heart of Standard PC Graphics</H3>
 <P>The VGA is unparalleled in the history of computer graphics, for it is by far the most widely-used graphics standard ever, the closest we may ever come to a <I>lingua franca</I> of computer graphics. No other graphics standard has even come close to the 50,000,000 or so VGAs in use today, and virtually every PC compatible sold today has full VGA compatibility built in. There are, of course, a variety of graphics accelerators that outperform the standard VGA, and indeed, it is becoming hard to find a plain vanilla VGA anymore&mdash;but there is no standard for accelerators, and every accelerator contains a true-blue VGA at its core.</P>
 <P>What that means is that if you write your programs for the VGA, you&rsquo;ll have the largest possible market for your software. In order for graphics-based software to succeed, however, it must perform well. Wringing the best performance from the VGA is no simple task, and it&rsquo;s <I>impossible</I> unless you really understand how the VGA works&mdash;unless you have the internals down cold. This book is about PC graphics at many levels, but high performance is the foundation for all that is to come, so it is with the inner workings of the VGA that we will begin our exploration of PC graphics.</P>
 <P>The first eight chapters of Part II is a guided tour of the heart of the VGA; after you&rsquo;ve absorbed what we&rsquo;ll cover in this and the next seven chapters, you&rsquo;ll have the foundation for understanding just about everything the VGA can do, including the fabled Mode X and more. As you read through these first chapters, please keep in mind that the <I>really</I> exciting stuff&mdash;animation, 3-D, blurry-fast lines and circles and polygons&mdash;has to wait until we have the fundamentals out of the way. So hold on and follow along, and before you know it the fireworks will be well underway.</P>
 <P>We&rsquo;ll start our exploration with a quick overview of the VGA, and then we&rsquo;ll dive right in and get a taste of what the VGA can do.</P>
-<H3><A NAME="Heading3"></A><FONT COLOR="#000077">The VGA</FONT></H3>
+<H3><A NAME="Heading3"></A>The VGA</H3>
 <P>The VGA is the baseline adapter for modern IBM PC compatibles, present in virtually every PC sold today or in the last several years. (Note that the VGA is often nothing more than a chip on a motherboard, with some memory, a DAC, and maybe a couple of glue chips; nonetheless, I&rsquo;ll refer to it as an adapter from now on for simplicity.) It guarantees that every PC is capable of documented resolutions up to 640x480 (with 16 possible colors per pixel) and 320x200 (with 256 colors per pixel), as well as undocumented&mdash;but nonetheless thoroughly standard&mdash;resolutions up to 360x480 in 256-color mode, as we&rsquo;ll see in Chapters 31-34 and 47-49. In order for a video adapter to claim VGA compatibility, it must support all the features and code discussed in this book (with a very few minor exceptions that I&rsquo;ll note)&mdash;and my experience is that just about 100 percent of the video hardware currently shipping or shipped since 1990 is in fact VGA compatible. Therefore, VGA code will run on nearly all of the 50,000,000 or so PC compatibles out there, with the exceptions being almost entirely obsolete machines from the 1980s. This makes good VGA code and VGA programming expertise valuable commodities indeed.
 </P>
 <P>Right off the bat, I&rsquo;d like to make one thing perfectly clear: The VGA is hard&mdash;sometimes <I>very</I> hard&mdash;to program for good performance. Hard, but not impossible&mdash;and that&rsquo;s why I like this odd board. It&rsquo;s a throwback to an earlier generation of micros, when inventive coding and a solid understanding of the hardware were the best tools for improving performance. Increasingly, faster processors and powerful coprocessors are seen as the solution to the sluggish software produced by high-level languages and layers of interface and driver code, and that&rsquo;s surely a valid approach. However, there are tens of millions of VGAs installed right now, in machines ranging from 6-MHz 286s to 90-MHz Pentiums. What&rsquo;s more, because the VGAs are generally 8- or at best 16-bit devices, and because of display memory wait states, a faster processor isn&rsquo;t as much of a help as you&rsquo;d expect. The upshot is that only a seasoned performance programmer who understands the VGA through and through can drive the board to its fullest potential.</P>
 <P>Throughout this book, I&rsquo;ll explore the VGA by selecting a specific algorithm or feature and implementing code to support it on the VGA, examining aspects of the VGA architecture as they become relevant. You&rsquo;ll get to see VGA features in context, where they are more comprehensible than in IBM&rsquo;s somewhat arcane documentation, and you&rsquo;ll get working code to use or to modify to meet your needs.</P>
 <P>The prime directive of VGA programming is that there&rsquo;s rarely just one way to program the VGA for a given purpose. Once you understand the tools the VGA provides, you&rsquo;ll be able to combine them to generate the particular synergy your application needs. My VGA routines are not intended to be taken as gospel, or to show &ldquo;best&rdquo; implementations, but rather to start you down the road to understanding the VGA.</P>
 <P>Let&rsquo;s begin.</P>
-<H3><A NAME="Heading4"></A><FONT COLOR="#000077">An Introduction to VGA Programming</FONT></H3>
+<H3><A NAME="Heading4"></A>An Introduction to VGA Programming</H3>
 <P>Most discussions of the VGA start out with a traditional &ldquo;Here&rsquo;s a block diagram of the VGA&rdquo; approach, with lists of registers and statistics. I&rsquo;ll get to that eventually, but you can find it in IBM&rsquo;s VGA documentation and several other books. Besides, it&rsquo;s numbing to read specifications and explanations, and the VGA is an exciting adapter, the kind that makes you want to get your hands dirty probing under the hood, to write some nifty code just to see what the board can do. What&rsquo;s more, the best way to understand the VGA is to see it work, so let&rsquo;s jump right into a sample of the VGA in action, getting a feel for the VGA&rsquo;s architecture in the process.
 </P>
 <P>Listing 23.1 is a sample VGA program that pans around an animated 16-color medium-resolution (640x350) playfield. There&rsquo;s a lot packed into this code; I&rsquo;m going to focus on the VGA-specific aspects so we don&rsquo;t get sidetracked. I&rsquo;m not going to explain how the ball is animated, for example; we&rsquo;ll get to animation starting in Chapter 42. What I will do is cover each of the VGA features used in this program&mdash;the virtual screen, vertical and horizontal panning, color plane manipulation, multi-plane block copying, and page flipping&mdash;at a conceptual level, letting the code itself demonstrate the implementation details. We&rsquo;ll return to many of these concepts in more depth later in this book.</P><P><BR></P>
@@ -68,7 +66,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

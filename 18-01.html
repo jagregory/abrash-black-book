@@ -24,7 +24,7 @@
 <!--CHAPTER=18//-->
 <!--PAGES=347-351//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,16 +36,15 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 18<BR>It&rsquo;s a plain Wonderful Life
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Optimization beyond the Pale</FONT></H3>
+<H2><A NAME="Heading1"></A>Chapter 18<BR>It&rsquo;s a plain Wonderful Life</H2>
+<H3><A NAME="Heading2"></A>Optimization beyond the Pale</H3>
 <P>When I was in high school, my gym teacher had us run a race around the soccer field, or rather, around a course marked with cones that roughly outlined the shape of the field. I quickly settled into second place behind Dwight Chamberlin. We cruised around the field, and when we came to the far corner, Dwight cut across the corner, inside a cone placed awkwardly far out from the others. I followed, and everyone else cut inside the cone too&mdash;except the pear-shaped kid bringing up the rear, who plodded his way around every single cone on his way to finishing about half a lap behind. When the laggard finally crossed the finish line, the coach named him the winner, to my considerable irritation. After all, the object was to see who could run the fastest, wasn&rsquo;t it?
 </P>
 <P>Actually, it wasn&rsquo;t. The object was to see who could run the fastest according to the limitations placed upon the contest. This is a crucial distinction, although usually taken for granted. Would it have been legitimate if I had cut across the middle of the field? If I had ridden a bike? If I had broken the world record for the 100 meters by dropping 100 meters from a plane? Competition has meaning only within a carefully circumscribed arena.</P>
 <P>Why am I telling you this? First, because it is a useful lesson for programming.</P>
 <TABLE WIDTH="100%"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><SMALL><I>All programming is performed within limitations, some of which can be bent or changed, but many of which cannot. You cannot change the maximum memory bandwidth of a VGA, or the maximum instruction execution rate of a 486. That is why the stunning 3D demos you see at SIGGRAPH have only passing relevance to everyday life on the desktop. A rule that Intel&rsquo;s chip designers cannot break is 8086 compatibility, much as I&rsquo;m sure they&rsquo;d like to, but of course the flip side is that although RISC chips are technically superior, they command but a small fraction of the market; raw performance is not the arena of competition. Similarly, you will often be unable to change the specifications for the software you implement.</I></SMALL>
 </TABLE>
-<H3><A NAME="Heading3"></A><FONT COLOR="#000077">Breaking the Rules</FONT></H3>
+<H3><A NAME="Heading3"></A>Breaking the Rules</H3>
 <P>The other reason for the anecdote has to do with the way my second Optimization Challenge worked itself out. If you&rsquo;ll recall from the last chapter, the challenge I made to the readers of <I>PC TECHNIQUES</I> was to devise the fastest possible version of the Game of Life cellular automata simulation game. I gave an example, laid out the rules, and stood aside. Good thing, too. <I>Apres moi, le deluge....</I></P>
 <P>And when the dust had settled, I was left with the uneasy realization that every submitted entry broke the rules. <I>Every single entry</I>. The rules clearly stated that submitted code must produce <I>exactly the same output</I> as my example implementation under all circumstances in order to be eligible to win. I do not think that there can be any question about what &ldquo;exactly the same output&rdquo; means. It means the same pixels, in the same colors, at the same places on the screen at the same points in all the Life simulations that the original code was capable of running. Period. And not one of the entries met that standard. Some submitted listings were more than 400 lines long. Some didn&rsquo;t display the generation number at the right side of the screen, didn&rsquo;t draw the same pixel colors, or didn&rsquo;t bother with magnification. Some had bugs. Some didn&rsquo;t support all possible cellmap widths and heights up to 200x200, requiring widths and heights that were specific multiples of a number of cells that lent itself to a particular implementation.</P>
 <P>This last mission is, in a way, a brilliant approach, as evidenced by the fact that it yielded the two fastest submissions, but it is not within the rules of the contest. Some of the rule-breaking was major, some very minor, and some had nothing to do with the Life engine itself, but the rules were clear; where was I to draw the line if not with exact compliance? And I was fully prepared to draw that line rigorously, disqualifying some mind-bending submissions in order to let lesser but fully compliant entries win&mdash;until I realized that there <I>were</I> no fully compliant entries.</P>
@@ -64,7 +63,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

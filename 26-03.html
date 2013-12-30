@@ -24,7 +24,7 @@
 <!--CHAPTER=26//-->
 <!--PAGES=489-497//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -372,7 +372,7 @@ cseg    ends
 </P>
 <P>Similarly, Listing 26.1 is designed to illustrate write mode 3 and its interaction with the rest of the VGA as a contrast to Listing 25.1 in Chapter 25, rather than for maximum speed, and it could be made considerably more efficient. If we were going for performance, we&rsquo;d have the CPU not only rotate the bytes into position, but also do the masking by ANDing in software. Even more significantly, we would have the CPU combine adjacent characters into complete, rotated bytes whenever possible, so that only one drawing operation would be required per byte of display memory modified. By doing this, we would eliminate all per-character <B>OUT</B>s, and would minimize display memory accesses, approximately doubling text-drawing speed.</P>
 <P>As a final note, consider that non-transparent text could also be accelerated with write mode 3. The latches could be filled with the background (text box) color, set/reset could be set to the foreground (text) color, and write mode 3 could then be used to turn monochrome text bytes written by the CPU into characters on the screen with just one write per byte. There are complications, such as drawing partial bytes, and rotating the bytes to align the characters, which we&rsquo;ll revisit later on in Chapter 55, while we&rsquo;re working through the details of the X-Sharp library. Nonetheless, the performance benefit of this approach can be a speedup of as much as four times&mdash;all thanks to the decidedly quirky but surprisingly powerful and flexible write mode 3.</P>
-<H3><A NAME="Heading4"></A><FONT COLOR="#000077">A Note on Preserving Register Bits</FONT></H3>
+<H3><A NAME="Heading4"></A>A Note on Preserving Register Bits</H3>
 <P>If you take a quick look, you&rsquo;ll see that the code in Listing 26.1 uses the readable register feature of the VGA to preserve reserved bits and bits other than those being modified. Older adapters such as the CGA and EGA had few readable registers, so it was necessary to set all bits in a register whenever that register was modified. Happily, all VGA registers are readable, which makes it possible to change only those bits of immediate interest, and, in general, I highly recommend doing exactly that, since IBM (or clone manufacturers) may well someday use some of those reserved bits or change the meanings of some of the bits that are currently in use.
 </P><P><BR></P>
 <CENTER>
@@ -387,7 +387,7 @@ cseg    ends
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

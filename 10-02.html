@@ -24,7 +24,7 @@
 <!--CHAPTER=10//-->
 <!--PAGES=193-196//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -41,7 +41,7 @@
 <P>The solution that I instantly came up with to finding the GCD is about as brute- force as you can get: Divide both the larger integer (iL) and the smaller integer (iS) by every integer equal to or less than the smaller integer, until a number is found that divides both evenly, as shown in Figure 10.1. This works, but it&rsquo;s a lousy solution, requiring as many as iS*2 divisions; <I>very</I> expensive, especially for large values of iS. For example, finding the GCD of 30,001 and 30,002 would require 60,002 divisions, which alone, disregarding tests and branches, would take about 2 seconds on an 8088, and more than 50 milliseconds even on a 25 MHz 486&mdash;a <I>very</I> long time in computer years, and not insignificant in human years either.</P>
 <P>Listing 10.1 is an implementation of the brute-force approach to GCD calculation. Table 10.1 shows how long it takes this approach to find the GCD for several integer pairs. As expected, performance is extremely poor when iS is large.</P>
 <P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/10-01.jpg',411,233 )"> --><IMG SRC="images/10-01.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/10-01.jpg',411,233)"> --><FONT COLOR="#000077"><B>Figure 10.1</B></FONT></A>&nbsp;&nbsp;<I>Using a brute-force algorithm to find a GCD.</I>
+<BR><A HREF="javascript:displayWindow('images/10-01.jpg',411,233)"> --><B>Figure 10.1</B></A>&nbsp;&nbsp;<I>Using a brute-force algorithm to find a GCD.</I>
 </P>
 <TABLE WIDTH="100%">
 <TR>
@@ -136,7 +136,7 @@ unsigned int gcd(unsigned int int1, unsigned int int2) {
 }
 </PRE>
 <!-- END CODE //-->
-<H4 ALIGN="LEFT"><A NAME="Heading5"></A><FONT COLOR="#000077">Wasted Breakthroughs</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading5"></A>Wasted Breakthroughs</H4>
 <P>Sedgewick&rsquo;s first solution to the GCD problem was pretty much the one I came up with. He then pointed out that the GCD of iL and iS is the same as the GCD of iL-iS and iS. This was obvious (once Sedgewick pointed it out); by the very nature of division, any number that divides iL evenly nL times and iS evenly nS times must divide iL-iS evenly nL-nS times. Given that insight, I immediately designed a new, faster approach, shown in Listing 10.2.
 </P>
 <P><B>LISTING 10.2 L10-2.C</B></P>
@@ -186,7 +186,7 @@ unsigned int gcd(unsigned int int1, unsigned int int2) {
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

@@ -24,7 +24,7 @@
 <!--CHAPTER=27//-->
 <!--PAGES=515-517//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,15 +36,15 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H3><A NAME="Heading7"></A><FONT COLOR="#000077">When to Use Write Mode 2 and When to Use Set/Reset</FONT></H3>
+<H3><A NAME="Heading7"></A>When to Use Write Mode 2 and When to Use Set/Reset</H3>
 <P>As indicated earlier, write mode 2 and set/reset are functionally interchangeable. Write mode 2 lends itself to more efficient implementations when the drawing color changes frequently, as in Listing 27.2.
 </P>
 <P>Set/reset tends to be superior when many pixels in succession are drawn in the same color, since with set/reset enabled for all planes the Set/Reset register provides the color data and as a result the CPU is free to draw whatever byte value it wishes. For example, the CPU can execute an <B>OR</B> instruction to display memory when set/reset is enabled for all planes, thus both loading the latches and writing the color value with a single instruction, secure in the knowledge that the value it writes is ignored in favor of the set/reset color.</P>
 <P>Set/reset is also the mode of choice whenever it is necessary to force the value written to some planes to a fixed value while allowing the CPU byte to modify other planes. This is the mode of operation when set/reset is enabled for some but not all planes.</P>
-<H3><A NAME="Heading8"></A><FONT COLOR="#000077">Mode 13H&mdash;320x200 with 256 Colors</FONT></H3>
+<H3><A NAME="Heading8"></A>Mode 13H&mdash;320x200 with 256 Colors</H3>
 <P>I&rsquo;m going to take a minute&mdash;and I do mean a minute&mdash;to discuss the programming model for mode 13H, the VGA&rsquo;s 320x200 256-color mode. Frankly, there&rsquo;s just not much to it, especially compared to the convoluted 16-color model that we&rsquo;ve explored over the last five chapters. Mode 13H offers the simplest programming model in the history of PC graphics: A linear bitmap starting at A000:0000, consisting of 64,000 bytes, each controlling one pixel. The byte at offset 0 controls the upper left pixel on the screen, the byte at offset 319 controls the upper right pixel on the screen, the byte at offset 320 controls the second pixel down at the left of the screen, and the byte at offset 63,999 controls the lower right pixel on the screen. That&rsquo;s all there is to it; it&rsquo;s so simple that I&rsquo;m not going to spend any time on a demo program, especially given that some of the listings later in this book, such as the antialiasing code in Chapter F on the companion CD-ROM, use mode 13H.
 </P>
-<H3><A NAME="Heading9"></A><FONT COLOR="#000077">Flipping Pages from Text to Graphics and Back</FONT></H3>
+<H3><A NAME="Heading9"></A>Flipping Pages from Text to Graphics and Back</H3>
 <P>A while back, I got an interesting letter from Phil Coleman, of La Jolla, who wrote:
 </P>
 <P>&ldquo;Suppose I have the EGA in mode 10H (640x350 16-color graphics). I would like to preserve some or all of the image while I temporarily switch to text mode 3 to give my user a &lsquo;Help&rsquo; screen. Naturally memory is scarce so I&rsquo;d rather not make a copy of the video buffer at A000H to &lsquo;remember&rsquo; the image while I digress to the Help text. The EGA BIOS says that the screen memory will not be cleared on a mode set if bit 7 of AL is set. Yet if I try that, it is clear that writing text into the B800H buffer trashes much more than the 4K bytes of a text page; when I switch back to mode 10H, &ldquo;ghosts&rdquo; appear in the form of bands of colored dots. (When in text mode, I do make a copy of the 4K buffer at B800H before showing the help; and I restore the 4K before switching back to mode 10H.) Is there a way to preserve the graphics image while I switch to text mode?&rsquo;&rsquo;</P>
@@ -67,7 +67,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

@@ -24,7 +24,7 @@
 <!--CHAPTER=01//-->
 <!--PAGES=007-009//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,7 +36,7 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H3><A NAME="Heading5"></A><FONT COLOR="#000077">Rules for Building High-Performance Code</FONT></H3>
+<H3><A NAME="Heading5"></A>Rules for Building High-Performance Code</H3>
 <P>We&rsquo;ve got the following rules for creating high-performance software:
 </P>
 <ul>
@@ -50,13 +50,13 @@
 </ul>
 <P>Making rules is easy; the hard part is figuring out how to apply them in the real world. For my money, examining some actual working code is always a good way to get a handle on programming concepts, so let&rsquo;s look at some of the performance rules in action.
 </P>
-<H4 ALIGN="LEFT"><A NAME="Heading6"></A><FONT COLOR="#000077">Know Where You&rsquo;re Going</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading6"></A>Know Where You&rsquo;re Going</H4>
 <P>If we&rsquo;re going to create high-performance code, first we have to know what that code is going to do. As an example, let&rsquo;s write a program that generates a 16-bit checksum of the bytes in a file. In other words, the program will add each byte in a specified file in turn into a 16-bit value. This checksum value might be used to make sure that a file hasn&rsquo;t been corrupted, as might occur during transmission over a modem or if a Trojan horse virus rears its ugly head. We&rsquo;re not going to do anything with the checksum value other than print it out, however; right now we&rsquo;re only interested in generating that checksum value as rapidly as possible.
 </P>
-<H4 ALIGN="LEFT"><A NAME="Heading7"></A><FONT COLOR="#000077">Make a Big Map</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading7"></A>Make a Big Map</H4>
 <P>How are we going to generate a checksum value for a specified file? The logical approach is to get the file name, open the file, read the bytes out of the file, add them together, and print the result. Most of those actions are straightforward; the only tricky part lies in reading the bytes and adding them together.
 </P>
-<H4 ALIGN="LEFT"><A NAME="Heading8"></A><FONT COLOR="#000077">Make Lots of Little Maps</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading8"></A>Make Lots of Little Maps</H4>
 <P>Actually, we&rsquo;re only going to make one little map, because we only have one program section that requires much thought&mdash;the section that reads the bytes and adds them up. What&rsquo;s the best way to do this?
 </P>
 <P>It would be convenient to load the entire file into memory and then sum the bytes in one loop. Unfortunately, there&rsquo;s no guarantee that any particular file will fit in the available memory; in fact, it&rsquo;s a sure thing that many files <I>won&rsquo;t</I> fit into memory, so that approach is out.</P>
@@ -125,7 +125,7 @@ main(int argc, char *argv[]) {
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

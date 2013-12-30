@@ -24,7 +24,7 @@
 <!--CHAPTER=04//-->
 <!--PAGES=099-104//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -42,23 +42,23 @@
 <P>By understanding the circumstances in which wait states can occur, you can avoid them when possible. Even when it&rsquo;s not possible to work around wait states, it&rsquo;s still to your advantage to understand how they can cause your code to run more slowly.</P>
 <P>First, let&rsquo;s learn a bit more about wait states by contrast with DRAM refresh. Unlike DRAM refresh, wait states do not occur on any regularly scheduled basis, and are of no particular duration. Wait states can only occur when an instruction performs a memory or I/O read or write. Both the presence of wait states and the number of wait states inserted on any given bus access are entirely controlled by the device being accessed. When it comes to wait states, the CPU is passive, merely accepting whatever wait states the accessed device chooses to insert during the course of the access. All of this makes perfect sense given that the whole point of the wait state mechanism is to allow a device to stretch out any access to itself for however much time it needs to perform the access.</P>
 <P><A NAME="Fig6"><!-- </A><A HREF="javascript:displayWindow('images/04-06.jpg',415,242 )"> --><IMG SRC="images/04-06.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/04-06.jpg',415,242)"> --><FONT COLOR="#000077"><B>Figure 4.6</B></FONT></A>&nbsp;&nbsp;<I>Video wait states inserted by the display adapter.</I>
+<BR><A HREF="javascript:displayWindow('images/04-06.jpg',415,242)"> --><B>Figure 4.6</B></A>&nbsp;&nbsp;<I>Video wait states inserted by the display adapter.</I>
 </P>
 <P>As with DRAM refresh, wait states don&rsquo;t stop the 8088 completely. The Execution Unit can continue processing while wait states are inserted, so long as the EU doesn&rsquo;t need to perform a bus access. However, in the PC, wait states most often occur when an instruction accesses a memory operand, so in fact the Execution Unit usually is stopped by wait states. (Instruction fetches rarely wait in an 8088-based PC because system memory is zero-wait-state. AT-class memory systems routinely insert 1 or more wait states, however.)
 </P>
 <P>As it turns out, wait states pose a serious problem in just one area in the PC. While any adapter <I>can</I> insert wait states, in the PC only display adapters do so to the extent that performance is seriously affected.</P>
-<H3><A NAME="Heading20"></A><FONT COLOR="#000077">The Display Adapter Cycle-Eater</FONT></H3>
+<H3><A NAME="Heading20"></A>The Display Adapter Cycle-Eater</H3>
 <P>Display adapters must serve two masters, and that creates a fundamental performance problem. Master #1 is the circuitry that drives the display screen. This circuitry must constantly read display memory in order to obtain the information used to draw the characters or dots displayed on the screen. Since the screen must be redrawn between 50 and 70 times per second, and since each redraw of the screen can require as many as 36,000 reads of display memory (more in Super VGA modes), master #1 is a demanding master indeed. No matter how demanding master #1 gets, however, its needs must <I>always</I> be met&mdash;otherwise the quality of the picture on the screen would suffer.</P>
 <P>Master #2 is the CPU, which reads from and writes to display memory in order to manipulate the bytes that the video circuitry reads to form the picture on the screen. Master #2 is less important than master #1, since the CPU affects display quality only indirectly. In other words, if the video circuitry has to wait for display memory accesses, the picture will develop holes, snow, and the like, but if the CPU has to wait for display memory accesses, the program will just run a bit slower&mdash;no big deal.</P>
 <P>It matters a great deal which master is more important, for while both the CPU and the video circuitry must gain access to display memory, only one of the two masters can read or write display memory at any one time. Potential conflicts are resolved by flat-out guaranteeing the video circuitry however many accesses to display memory it needs, with the CPU waiting for whatever display memory accesses are left over.</P>
 <P>It turns out that the 8088 CPU has to do a lot of waiting, for three reasons. First, the video circuitry can take as much as about 90 percent of the available display memory access time, as shown in Figure 4.7, leaving as little as about 10 percent of all display memory accesses for the 8088. (These percentages vary considerably among the many EGA and VGA clones.)</P>
 <P><A NAME="Fig7"><!-- </A><A HREF="javascript:displayWindow('images/04-07.jpg',415,342 )"> --><IMG SRC="images/04-07.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/04-07.jpg',415,342)"> --><FONT COLOR="#000077"><B>Figure 4.7</B></FONT></A>&nbsp;&nbsp;<I>Allocation of display memory access.</I>
+<BR><A HREF="javascript:displayWindow('images/04-07.jpg',415,342)"> --><B>Figure 4.7</B></A>&nbsp;&nbsp;<I>Allocation of display memory access.</I>
 </P>
 <P>Second, because the displayed dots (or <I>pixels,</I> short for &ldquo;picture elements&rdquo;) must be drawn on the screen at a constant speed, many display adapters provide memory accesses only at fixed intervals. As a result, time can be lost while the 8088 synchronizes with the start of the next display adapter memory access, even if the video circuitry isn&rsquo;t accessing display memory at that time, as shown in Figure 4.8.</P>
 <P>Finally, the time it takes a display adapter to complete a memory access is related to the speed of the clock which generates pixels on the screen rather than to the memory access speed of the 8088. Consequently, the time taken for display memory to complete an 8088 read or write access is often longer than the time taken for system memory to complete an access, even if the 8088 lucks into hitting a free display memory access just as it becomes available, again as shown in Figure 4.8. Any or all of the three factors I&rsquo;ve described can result in wait states, slowing the 8088 and creating the display adapter cycle.</P>
 <P><A NAME="Fig8"><!-- </A><A HREF="javascript:displayWindow('images/04-08.jpg',417,375 )"> --><IMG SRC="images/04-08.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/04-08.jpg',417,375)"> --><FONT COLOR="#000077"><B>Figure 4.8</B></FONT></A>&nbsp;&nbsp;<I>Display memory access slots.</I>
+<BR><A HREF="javascript:displayWindow('images/04-08.jpg',417,375)"> --><B>Figure 4.8</B></A>&nbsp;&nbsp;<I>Display memory access slots.</I>
 </P>
 <P>If some of this is Greek to you, don&rsquo;t worry. The important point is that display memory is not very fast compared to normal system memory. How slow is it? <I>Incredibly</I> slow. Remember how slow IBM&rsquo;s ill-fated PC<I>jr</I>was? In case you&rsquo;ve forgotten, I&rsquo;ll refresh your memory: The PC<I>jr</I>was at best only half as fast as the PC. The PC<I>jr</I> had an 8088 running at 4.77 MHz, just like the PC&mdash;why do you suppose it was so much slower? I&rsquo;ll tell you why: <I>All the memory in the PCjr was display memory.</I></P>
 <P>Enough said. All the memory in the PC is <I>not</I> display memory, however, and unless you&rsquo;re thickheaded enough to put code in display memory, the PC isn&rsquo;t going to run as slowly as a PC<I>jr.</I> (Putting code or other non-video data in unused areas of display memory sounds like a neat idea&mdash;until you consider the effect on instruction prefetching of cutting the 8088&rsquo;s already-poor memory access performance in half. Running your code from display memory is sort of like running on a hypothetical 8084&mdash;an 8086 with a <I>4-bit</I> bus. Not recommended!) Given that your code and data reside in normal system memory below the 640K mark, how great an impact does the display adapter cycle-eater have on performance?</P><P><BR></P>
@@ -74,7 +74,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

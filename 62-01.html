@@ -24,7 +24,7 @@
 <!--CHAPTER=62//-->
 <!--PAGES=1145-1149//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,9 +36,8 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 62<BR>One Story, Two Rules, and a BSP Renderer
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Taking a Compiled BSP Tree from Logical to Visual Reality</FONT></H3>
+<H2><A NAME="Heading1"></A>Chapter 62<BR>One Story, Two Rules, and a BSP Renderer</H2>
+<H3><A NAME="Heading2"></A>Taking a Compiled BSP Tree from Logical to Visual Reality</H3>
 <P>As I&rsquo;ve noted before, I&rsquo;m working on Quake, id Software&rsquo;s follow-up to DOOM. A month or so back, we added page flipping to Quake, and made the startling discovery that the program ran nearly twice as fast with page flipping as it did with the alternative method of drawing the whole frame to system memory, then copying it to the screen. We were delighted by this, but baffled. I did a few tests and came up with several possible explanations, including slow writes through the external cache, poor main memory performance, and cache misses when copying the frame from system memory to video memory. Although each of these can indeed affect performance, none seemed to account for the magnitude of the speedup, so I assumed there was some hidden hardware interaction at work. Anyway, &ldquo;why&rdquo; was secondary; what really mattered was that we had a way to double performance, which meant I had a lot of work to do to support page flipping as widely as possible.
 </P>
 <P>A few days ago, I was using the Pentium&rsquo;s built-in performance counters to seek out areas for improvement in Quake and, for no particular reason, checked the number of writes performed while copying the frame to the screen in non-page-flipped mode. The answer was 64,000. That seemed odd, since there were 64,000 byte-sized pixels to copy, and I was calling <B>memcpy()</B>, which of course performs copies a dword at a time whenever possible. I thought maybe the Pentium counters report the number of bytes written rather than the number of writes performed, but fortunately, this time I tested my assumptions by writing an ASM routine to copy the frame a dword at a time, without the help of <B>memcpy()</B>. This time the Pentium counters reported 16,000 writes.</P>
@@ -50,12 +49,12 @@
 </TABLE>
 <P>By the way, I have found the Pentium&rsquo;s performance counters to be very useful in of information on the performance counters and other aspects of the Pentium is Mike Schmit&rsquo;s book, <I>Pentium Processor Optimization Tools</I>, AP Professional, ISBN 0-12-627230-1.</P>
 <P>Onward to rendering from a BSP tree.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading3"></A><FONT COLOR="#000077">BSP-based Rendering</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading3"></A>BSP-based Rendering</H4>
 <P>For the last several chapters I&rsquo;ve been discussing the nature of BSP (Binary Space Partitioning) trees, and in Chapter 60 I presented a compiler for 2-D BSP trees. Now we&rsquo;re ready to use those compiled BSP trees to do realtime rendering.
 </P>
 <P>As you&rsquo;ll recall, the BSP compiler took a list of vertical walls and built a 2-D BSP tree from the walls, as viewed from above. The result is shown in Figure 62.1. The world is split into two pieces by the line of the root wall, and each half of the world is then split again by the root&rsquo;s children, and so on, until the world is carved into subspaces along the lines of all the walls.</P>
 <P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/62-01.jpg',400,153 )"> --><IMG SRC="images/62-01.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/62-01.jpg',400,153)"> --><FONT COLOR="#000077"><B>Figure 62.1</B></FONT></A>&nbsp;&nbsp;<I>Vertical walls and a BSP tree to represent them.</I>
+<BR><A HREF="javascript:displayWindow('images/62-01.jpg',400,153)"> --><B>Figure 62.1</B></A>&nbsp;&nbsp;<I>Vertical walls and a BSP tree to represent them.</I>
 </P>
 <P>Our objective is to draw the world so that whenever walls overlap we see the nearer wall at each overlapped pixel. The simplest way to do that is with the painter&rsquo;s algorithm; that is, drawing the walls in back-to-front order, assuming no polygons interpenetrate or form cycles. BSP trees guarantee that no polygons interpenetrate (such polygons are automatically split), and make it easy to walk the polygons in back-to-front (or front-to-back) order.
 </P>
@@ -72,7 +71,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

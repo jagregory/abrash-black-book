@@ -24,7 +24,7 @@
 <!--CHAPTER=36//-->
 <!--PAGES=687-692//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,7 +36,7 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H3><A NAME="Heading5"></A><FONT COLOR="#000077">Run-Length Slice Details</FONT></H3>
+<H3><A NAME="Heading5"></A>Run-Length Slice Details</H3>
 <P>A couple of run-length slice implementation details yet remain. First is the matter of how error-term turnover is detected. This is done in much the same way as it is with standard Bresenham&rsquo;s: The error term is maintained as a negative valve and advances for each step; when the error term reaches 0, it&rsquo;s time to add an extra pixel to the current run. This means that we only have to test for carry after advancing the error term to determine whether or not to add an extra pixel to each run. (Actually, the code in this chapter tests for the error term being greater than zero, but the assembly code in the next chapter will use the very efficient carry approach.)
 </P>
 <P>The second and more difficult detail is balancing the runs so that they&rsquo;re centered around the ideal line, and therefore draw the same pixels that standard Bresenham&rsquo;s would draw. If we just drew full-length runs from the start, we&rsquo;d end up with an unbalanced line, as shown in Figure 36.5. Instead, we have to split the initial pixel plus one full run as evenly as possible between the first and last runs of the line, and adjust the initial error term appropriately for the initial half-run.</P>
@@ -44,7 +44,7 @@
 <P>The other trick here is that if an odd number of pixels are allocated between the first and last partial runs, we&rsquo;ll end up with an odd pixel, since we are unable to draw a half-pixel. This odd pixel is accounted for by adding half a pixel to the error term.</P>
 <P>That&rsquo;s all there is to run-length slice line drawing; the partial first and last runs are the only tricky part. Listing 36.1 is a run-length slice implementation in C. This is not an optimized implementation, nor is it meant to be; this listing is provided so that you can see how the run-length slice algorithm works. In the next chapter, I&rsquo;ll move on to an optimized version, but for now, Listing 36.1 will make it much easier to grasp the principles of run-length slice drawing, and to understand the optimized code I&rsquo;ll present in the next chapter.</P>
 <P><A NAME="Fig5"><!-- </A><A HREF="javascript:displayWindow('images/36-05.jpg',412,327 )"> --><IMG SRC="images/36-05.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/36-05.jpg',412,327)"> --><FONT COLOR="#000077"><B>Figure 36.5</B></FONT></A>&nbsp;&nbsp;<I>Balancing run-length slice lines: a) unbalanced; b) balanced.</I>
+<BR><A HREF="javascript:displayWindow('images/36-05.jpg',412,327)"> --><B>Figure 36.5</B></A>&nbsp;&nbsp;<I>Balancing run-length slice lines: a) unbalanced; b) balanced.</I>
 </P>
 <P><B>LISTING 36.1 L36-1.C</B></P>
 <!-- CODE //-->
@@ -302,7 +302,7 @@ void DrawVerticalRun(char far **ScreenPtr, int XAdvance,
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

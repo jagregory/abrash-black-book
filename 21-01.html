@@ -24,7 +24,7 @@
 <!--CHAPTER=21//-->
 <!--PAGES=397-402//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,13 +36,12 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 21<BR>Unleashing the Pentium&rsquo;s V-Pipe
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Focusing on Keeping Both Pentium Pipes Full</FONT></H3>
+<H2><A NAME="Heading1"></A>Chapter 21<BR>Unleashing the Pentium&rsquo;s V-Pipe</H2>
+<H3><A NAME="Heading2"></A>Focusing on Keeping Both Pentium Pipes Full</H3>
 <P>The other day, my daughter suggested that we each draw the prettiest picture we could, then see whose was prettier. I won&rsquo;t comment on who won, except to note that apparently a bolt of lightning zipping toward a moose with antlers that bear an unfortunate resemblance to a propeller beanie isn&rsquo;t going to win me any scholarships to art school, if you catch my drift. Anyway, my drawing happened to feature the word &ldquo;chartreuse&rdquo; (because it rhymed with &ldquo;moose&rdquo; and &ldquo;Zeus&rdquo;&mdash;hence the lightning; more than that I am not at liberty to divulge), and she wanted to know if the moose was actually chartreuse. I had to admit that I didn&rsquo;t know, so we went to the dictionary, whereupon we learned that chartreuse is a pale apple-green color. Then she brought up the Windows Control Panel, pointed to the selection of predefined colors, and asked, &ldquo;Which of those is chartreuse?&rdquo;&mdash;and I realized that I <I>still</I> didn&rsquo;t know.</P>
 <P>Some things can be described perfectly with words, but others just have to be experienced. Color is one such category, and Pentium optimization is another. I&rsquo;ve spent the last two chapters detailing the rules for Pentium optimization, and I&rsquo;ll spend half of this one doing so, as well. That&rsquo;s good; without understanding the fundamentals, we have no chance of optimizing well. It&rsquo;s not enough, though. We also need to look at a real-world example of Pentium optimization in action, and we&rsquo;ll do that later in this chapter; after which, you should go out and do some Pentium optimization on your own. Optimization is one of those things that you can learn a lot about from reading, but ultimately it has to sink into your pores as you do it&mdash;especially Pentium optimization because the Pentium is perhaps the most complex (and rewarding) chip to optimize for that I&rsquo;ve ever seen.</P>
 <P>In the last chapter, we explored the dual-execution-pipe nature of the Pentium, and learned which instructions could pair (execute simultaneously) in which pipes. Now we&rsquo;re ready to look at AGIs and register contention&mdash;two hazards that can prevent otherwise properly written code from taking full advantage of the Pentium&rsquo;s two pipes, and can thereby keep your code from pushing the Pentium to maximum performance.</P>
-<H3><A NAME="Heading3"></A><FONT COLOR="#000077">Address Generation Interlocks</FONT></H3>
+<H3><A NAME="Heading3"></A>Address Generation Interlocks</H3>
 <P>The Pentium is advertised as having a five-stage pipeline for each of its execution units. All this means is that at any given time, up to five instructions are in various stages of execution in each pipe; this overlapping of execution is done for speed, so each instruction doesn&rsquo;t have to wait until the previous one has finished. The only way that the Pentium&rsquo;s pipelining directly affects the way you program is in the areas of AGIs and register dependencies.
 </P>
 <P>AGIs are <I>Address Generation Interlocks</I>, a fancy way of saying that if a register is used to address memory, as is EBX in this instruction</P>
@@ -55,7 +54,7 @@ mov [ebx],eax
 </P>
 <P>The rule for AGIs is simple: If you modify any part of a register during a cycle, you cannot use that register to address memory during either that cycle or the next cycle. If you try to do this, the Pentium will simply stall the instruction that tries to use that register to address memory until two cycles after the register was modified. This was true on the 486 as well, but the Pentium&rsquo;s new twist is that since more than one instruction can execute in a single cycle, an AGI can stall an instruction that&rsquo;s as many as three instructions away from the changing of the addressing register, as shown in Figure 21.1, and an AGI can also cause a stall that costs as many as three instructions, as shown in Figure 21.2. This means that AGIs are both much easier to cause and potentially more expensive than on the 486, and you must keep a sharp eye out for them. It also means that it&rsquo;s often worth calculating a memory pointer several instructions ahead of its actual use. Unfortunately, this tends to extend the lifetimes of pointer registers to span a greater number of instructions, making the Pentium&rsquo;s relatively small register set seem even smaller.</P>
 <P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/21-01.jpg',414,341 )"> --><IMG SRC="images/21-01.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/21-01.jpg',414,341)"> --><FONT COLOR="#000077"><B>Figure 21.1</B></FONT></A>&nbsp;&nbsp;<I>An AGI can stall up to three instructions later.</I>
+<BR><A HREF="javascript:displayWindow('images/21-01.jpg',414,341)"> --><B>Figure 21.1</B></A>&nbsp;&nbsp;<I>An AGI can stall up to three instructions later.</I>
 </P>
 <P>As an example of a sort of AGI that&rsquo;s new to the Pentium, consider the following test for a NULL pointer, followed by the use of the pointer if it&rsquo;s not NULL:
 </P>
@@ -73,7 +72,7 @@ mov  edx,[ebp-8]  ;V-pipe cycle 3 lockstep idle
 <!-- END CODE SNIP //-->
 <P>This commonplace code loses a U-pipe cycle to the AGI caused by <B>AND EBX,EBX</B>, followed by the attempt two instructions later to use EBX to point to memory. The code loses a V-pipe cycle as well, because lockstep execution won&rsquo;t let the next V-pipe instruction execute until the paired U-pipe instruction that suffered the AGI finishes. The solution is to use <B>TEST EBX,EBX</B> instead of <B>AND; TEST</B> can&rsquo;t modify EBX, so no AGI occurs. Sure, <B>AND EBX,EBX</B> doesn&rsquo;t modify EBX either, but the Pentium doesn&rsquo;t know that, so it has to insert the AGI.</P>
 <P><A NAME="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/21-02.jpg',407,342 )"> --><IMG SRC="images/21-02.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/21-02.jpg',407,342)"> --><FONT COLOR="#000077"><B>Figure 21.2</B></FONT></A>&nbsp;&nbsp;<I>An AGI can cost as many as 3 cycles.</I>
+<BR><A HREF="javascript:displayWindow('images/21-02.jpg',407,342)"> --><B>Figure 21.2</B></A>&nbsp;&nbsp;<I>An AGI can cost as many as 3 cycles.</I>
 <P><BR></P>
 <CENTER>
 <TABLE BORDER>
@@ -87,7 +86,7 @@ mov  edx,[ebp-8]  ;V-pipe cycle 3 lockstep idle
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

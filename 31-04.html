@@ -24,7 +24,7 @@
 <!--CHAPTER=31//-->
 <!--PAGES=599-600//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -51,7 +51,7 @@
 <P>In 320x400 mode, the calculation of the memory address is not significantly slower than in mode 13H, and the calculation and selection of the target plane is quickly accomplished. As with mode 13H, 320x400 mode benefits tremendously from the byte-per-pixel organization of 256-color mode, which eliminates the need for the time-consuming pixel-masking of the 16-color modes. Most important, byte-per-pixel modes never require read-modify-write operations (which can be extremely slow due to display memory wait states) in order to clip and draw pixels. To draw a pixel, you just store its color in display memory&mdash;what could be simpler?</P>
 <P>More sophisticated operations than pixel drawing are less easy to accomplish in 320x400 mode, but with a little ingenuity it is possible to implement a reasonably efficient version of just about any useful graphics function. A fast line draw for 320x400 256-color mode would be simple (although not as fast as would be possible in mode 13H). Fast image copies could be implemented by copying one-quarter of the image to one plane, one-quarter to the next plane, and so on for all four planes, thereby eliminating the <B>OUT</B> per pixel that sequential processing requires. If you&rsquo;re really into performance, you could store your images with all the bytes for plane 0 grouped together, followed by all the bytes for plane 1, and so on. That would allow a single <B>REP MOVS</B> instruction to copy all the bytes for a given plane, with just four <B>REP MOVS</B> instructions copying the whole image. In a number of cases, in fact, 320x400 256-color mode can actually be much faster than mode 13H, because the VGA&rsquo;s hardware can be used to draw four or even eight pixels with a single access; I&rsquo;ll return to the topic of high-performance programming in 256-color modes other than mode 13H (&ldquo;non-chain 4&rdquo; modes) in Chapter 47.</P>
 <P>It&rsquo;s all a bit complicated, but as I say, you should be able to design an adequately fast&mdash;and often <I>very</I> fast&mdash;version for 320x400 mode of whatever graphics function you need. If you&rsquo;re not all that concerned with speed, <B>WritePixel</B> and <B>ReadPixel</B> should meet your needs.</P>
-<H3><A NAME="Heading7"></A><FONT COLOR="#000077">Two 256-Color Pages</FONT></H3>
+<H3><A NAME="Heading7"></A>Two 256-Color Pages</H3>
 <P>Listing 31.2 demonstrates the two pages of 320x400 256-color mode by drawing slanting color bars in page 0, then drawing color bars slanting the other way in page 1 and flipping to page 1 on the next key press. (Note that page 1 is accessed starting at offset 8000H in display memory, and is&mdash;unsurprisingly&mdash;displayed by setting the start address to 8000H.) Finally, Listing 31.2 draws vertical color bars in page 0 and flips back to page 0 when another key is pressed.
 </P>
 <P>The color bar routines don&rsquo;t use the <B>WritePixel</B> subroutine from Listing 31.1; they go straight to display memory instead for improved speed. As I mentioned above, better speed yet could be achieved by a color-bar algorithm that draws all the pixels in plane 0, then all the pixels in plane 1, and so on, thereby avoiding the overhead of constantly reprogramming the Map Mask register.</P><P><BR></P>
@@ -67,7 +67,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

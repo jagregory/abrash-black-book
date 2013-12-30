@@ -24,7 +24,7 @@
 <!--CHAPTER=01//-->
 <!--PAGES=010-013//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -205,7 +205,7 @@ _ChecksumFileendp
 <P>The lesson is clear: Optimization makes code faster, but without proper design, optimization just creates fast slow code.
 </P>
 <P>Well, then, how are we going to improve our design? Before we can do that, we have to understand what&rsquo;s wrong with the current design.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading9"></A><FONT COLOR="#000077">Know the Territory</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading9"></A>Know the Territory</H4>
 <P>Just why is Listing 1.1 so slow? In a word: overhead. The C library implements the <B>read()</B> function by calling DOS to read the desired number of bytes. (I figured this out by watching the code execute with a debugger, but you can buy library source code from both Microsoft and Borland.) That means that Listing 1.1 (and Listing 1.3 as well) executes one DOS function per byte processed&mdash;and DOS functions, especially this one, come with a lot of overhead.</P>
 <P>For starters, DOS functions are invoked with interrupts, and interrupts are among the slowest instructions of the x86 family CPUs. Then, DOS has to set up internally and branch to the desired function, expending more cycles in the process. Finally, DOS has to search its own buffers to see if the desired byte has already been read, read it from the disk if not, store the byte in the specified location, and return. All of that takes a <I>long</I> time&mdash;far, far longer than the rest of the main loop in Listing 1.1. In short, Listing 1.1 spends virtually all of its time executing <B>read(),</B> and most of that time is spent somewhere down in DOS.</P>
 <P>You can verify this for yourself by watching the code with a debugger or using a code profiler, but take my word for it: There&rsquo;s a great deal of overhead to DOS calls, and that&rsquo;s what&rsquo;s draining the life out of Listing 1.1.</P>
@@ -223,7 +223,7 @@ _ChecksumFileendp
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

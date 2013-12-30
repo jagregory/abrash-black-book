@@ -24,7 +24,7 @@
 <!--CHAPTER=47//-->
 <!--PAGES=875-879//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,16 +36,15 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 47<BR>Mode X: 256-Color VGA Magic
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Introducing the VGA&rsquo;s Undocumented &ldquo;Animation-Optimal&rdquo; Mode</FONT></H3>
+<H2><A NAME="Heading1"></A>Chapter 47<BR>Mode X: 256-Color VGA Magic</H2>
+<H3><A NAME="Heading2"></A>Introducing the VGA&rsquo;s Undocumented &ldquo;Animation-Optimal&rdquo; Mode</H3>
 <P>At a book signing for my book <I>Zen of Code Optimization</I>, an attractive young woman came up to me, holding my book, and said, &ldquo;You&rsquo;re Michael Abrash, aren&rsquo;t you?&rdquo; I confessed that I was, prepared to respond in an appropriately modest yet proud way to the compliments I was sure would follow. (It was my own book signing, after all.) It didn&rsquo;t work out quite that way, though. The first thing out of her mouth was:</P>
 <P>&ldquo;&lsquo;Mode X&rsquo; is a stupid name for a graphics mode.&rdquo; As my jaw started to drop, she added, &ldquo;And you didn&rsquo;t invent the mode, either. My husband did it before you did.&rdquo;</P>
 <P>And they say there are no groupies in programming!</P>
 <P>Well. I never claimed that I invented the mode (which is a 320x256-color mode with some very special properties, as we&rsquo;ll see shortly). I did discover it independently, but so did other people in the game business, some of them no doubt before I did. The difference is that all those other people held onto this powerful mode as a trade secret, while I didn&rsquo;t; instead, I spread the word as broadly as I could in my column in <I>Dr. Dobb&rsquo;s Journal,</I> on the theory that the more people knew about this mode, the more valuable it would be. And I succeeded, as evidenced by the fact that this now widely-used mode is universally known by the name I gave it in <I>DDJ,</I> &ldquo;Mode X.&rdquo; Neither do I think that&rsquo;s a bad name; it&rsquo;s short, catchy, and easy to remember, and it befits the mystery status of this mode, which was omitted entirely from IBM&rsquo;s documentation of the VGA.</P>
 <P>In fact, when all is said and done, Mode X is one of my favorite accomplishments. I remember reading that Charles Schultz, creator of &ldquo;Peanuts,&rdquo; was particularly proud of having introduced the phrase &ldquo;security blanket&rdquo; to the English language. I feel much the same way about Mode X; it&rsquo;s now a firmly entrenched part of the computer lexicon, and how often do any of us get a chance to do that? And that&rsquo;s not to mention all the excellent games that would not have been as good without Mode X.</P>
 <P>So, in the end, I&rsquo;m thoroughly pleased with Mode X; the world is a better place for it, even if it did cost me my one potential female fan. (Contrary to popular belief, the lives of computer columnists and rock stars are not, repeat, <I>not</I>, all that similar.) This and the following two chapters are based on the <I>DDJ</I> columns that started it all back in 1991, three columns that generated a tremendous amount of interest and spawned a ton of games, and about which I still regularly get letters and e-mail. Ladies and gentlemen, I give you...Mode X.</P>
-<H3><A NAME="Heading3"></A><FONT COLOR="#000077">What Makes Mode X Special?</FONT></H3>
+<H3><A NAME="Heading3"></A>What Makes Mode X Special?</H3>
 <P>Consider the strange case of the VGA&rsquo;s 320x256-color mode&mdash;Mode X&mdash;which is undeniably complex to program and isn&rsquo;t even documented by IBM&mdash;but which is, nonetheless, perhaps the single best mode the VGA has to offer, especially for animation.
 </P>
 <P>We&rsquo;ve seen the VGA&rsquo;s undocumented 256-color modes, in Chapters 31 and 32, but now it&rsquo;s time to delve into the wonders of Mode X itself. (Most of the performance tips I&rsquo;ll discuss for this mode also apply to the other non-standard 256-color modes, however.) Five features set Mode X apart from other VGA modes. First, it has a 1:1 aspect ratio, resulting in equal pixel spacing horizontally and vertically (that is, square pixels). Square pixels make for the most attractive displays, and avoid considerable programming effort that would otherwise be necessary to adjust graphics primitives and images to match the screen&rsquo;s pixel spacing. (For example, with square pixels, a circle can be drawn as a circle; otherwise, it must be drawn as an ellipse that corrects for the aspect ratio&mdash;a slower and considerably more complicated process.) In contrast, mode 13H, the only documented 256-color mode, provides a nonsquare 320x200 resolution.</P>
@@ -67,7 +66,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

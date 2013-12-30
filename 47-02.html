@@ -24,7 +24,7 @@
 <!--CHAPTER=47//-->
 <!--PAGES=879-882//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -39,7 +39,7 @@
 <P>Given the tremendous advantages of Mode X over the documented mode 13H, I&rsquo;d very much like to get it into the hands of as many developers as possible, so I&rsquo;m going to spend the next few chapters exploring this odd but worthy mode. I&rsquo;ll provide mode set code, delineate the bitmap organization, and show how the basic write pixel and read pixel operations work. Then, I&rsquo;ll move on to the magic stuff: rectangle fills, screen clears, scrolls, image copies, pixel inversion, and, yes, polygon fills (just a different driver for the polygon code), all blurry fast; hardware raster ops; and page flipping. In the end, I&rsquo;ll build a working animation program that shows many of the features of Mode X in action.
 </P>
 <P>The mode set code is the logical place to begin.</P>
-<H3><A NAME="Heading4"></A><FONT COLOR="#000077">Selecting 320x240 256-Color Mode</FONT></H3>
+<H3><A NAME="Heading4"></A>Selecting 320x240 256-Color Mode</H3>
 <P>We could, if we wished, write our own mode set code for Mode X from scratch&mdash;but why bother? Instead, we&rsquo;ll let the BIOS do most of the work by having it set up mode 13H, which we&rsquo;ll then turn into Mode X by changing a few registers. Listing 47.1 does exactly that.
 </P>
 <P>The code in Listing 47.1 has been around for some time, and the very first version had a bug that serves up an interesting lesson. The original <I>DDJ</I> version made images roll on IBM&rsquo;s fixed-frequency VGA monitors, a problem that didn&rsquo;t come to my attention until the code was in print and shipped to 100,000 readers.</P>
@@ -154,7 +154,7 @@ _Set320x240Mode endp
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

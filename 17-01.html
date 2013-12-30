@@ -24,7 +24,7 @@
 <!--CHAPTER=17//-->
 <!--PAGES=322-325//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,16 +36,15 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 17<BR>The Game of Life
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">The Triumph of Algorithmic Optimization in a Cellular Automata Game</FONT></H3>
+<H2><A NAME="Heading1"></A>Chapter 17<BR>The Game of Life</H2>
+<H3><A NAME="Heading2"></A>The Triumph of Algorithmic Optimization in a Cellular Automata Game</H3>
 <P>I&rsquo;ve spent a lot of my life discussing assembly language optimization, which I consider to be an important and underappreciated topic. However, I&rsquo;d like to take this opportunity to point out that there is much, much more to optimization than assembly language. Assembly is essential for absolute maximum performance, but it&rsquo;s not the only ingredient; necessary but not sufficient, if you catch my drift&mdash;and not even necessary, if you&rsquo;re looking for improved but not maximum performance. You&rsquo;ve heard it a thousand times: Optimize your algorithm first. Devise new approaches. Or, as Knuth said, <I>Premature optimization is the root of all evil.</I></P>
 <P>This is, of course, old hat, stuff you know like the back of your hand. Or is it? As Jeff Duntemann pointed out to me the other day, performance programmers are made, not born. While I&rsquo;m merrily gallivanting around in this book optimizing 486 pipelining and turning simple tasks into horribly complicated and terrifyingly fast state machines, many of you are still developing your basic optimization skills. I don&rsquo;t want to shortchange those of you in the latter category, so in this chapter, we&rsquo;ll discuss some high-level language optimizations that can be applied by mere mortals within a reasonable period of time. We&rsquo;re going to examine a complete optimization process, from start to finish, and what we will find is that it&rsquo;s possible to get a 50-times speed-up without using <I>one byte of assembly!</I> It&rsquo;s all a matter of perspective&mdash;how you look at your code and data.</P>
-<H3><A NAME="Heading3"></A><FONT COLOR="#000077">Conway&rsquo;s Game</FONT></H3>
+<H3><A NAME="Heading3"></A>Conway&rsquo;s Game</H3>
 <P>The program that we&rsquo;re going to optimize is Conway&rsquo;s famous Game of Life, long-ago favorite of the hackers at MIT&rsquo;s AI Lab. If you&rsquo;ve never seen it, let me assure you: Life is <I>neat,</I> and more than a little hypnotic. Fractals have been the hot graphics topic in recent years, but for eye-catching dazzle, Life is hard to beat.</P>
 <P>Of course, eye-catching dazzle requires real-time performance&mdash;lots of pixels help too&mdash;and there&rsquo;s the rub. When there are, say, 40,000 cells to process and display, a simple, straightforward implementation just doesn&rsquo;t cut it, even on a 33 MHz 486. Happily, though, there are many, many ways to speed up Life, and they illustrate a variety of important optimization principles, as this chapter will show.</P>
 <P>First, I&rsquo;ll describe the ground rules of Life, implement a very straightforward version in C<SMALL>++</SMALL>, and then speed that version up by about eight times without using any drastically different approaches or any assembly. This may be a little tame for some of you, but be patient; for after that, we&rsquo;ll haul out the big guns and move into the 30 to 40 times speed-up range. Then in the next chapter, I&rsquo;ll show you how several programmers <I>really</I> floored it in taking me up on my second Optimization Challenge, which involved the Game of Life.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading4"></A><FONT COLOR="#000077">The Rules of the Game</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading4"></A>The Rules of the Game</H4>
 <P>The Game of Life is ridiculously simple. There is a cellmap, consisting of a rectangular matrix of cells, each of which may initially be either on or off. Each cell has eight neighbors: two horizontally, two vertically, and four diagonally. For each succeeding generation of cells, the game logic determines whether each cell will be on or off according to the following rules:
 </P>
 <ul>
@@ -66,7 +65,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

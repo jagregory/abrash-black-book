@@ -24,7 +24,7 @@
 <!--CHAPTER=08//-->
 <!--PAGES=156-160//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -162,7 +162,7 @@ unsigned int FindIDAverage(unsigned int SearchedForID,
 <!-- END CODE //-->
 <P>The main body of Listing 8.1 constructs a linked list of memory blocks of various sizes and stores an array of structures across those blocks, as shown in Figure 8.2. The function <B>FindIDAverage</B> in Listing 8.1 searches through that array for all matches to a specified ID number and returns the average value of all such matches. <B>FindIDAverage</B> contains two nested loops, the outer one repeating once for each linked block and the inner one repeating once for each array element in each block. The inner loop&mdash;the critical one&mdash;is compact, containing only four statements, and should lend itself rather well to compiler optimization.</P>
 <P><A NAME="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/08-02.jpg',413,265 )"> --><IMG SRC="images/08-02.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/08-02.jpg',413,265)"> --><FONT COLOR="#000077"><B>Figure 8.2</B></FONT></A>&nbsp;&nbsp;<I>Linked array storage format (version 1).</I>
+<BR><A HREF="javascript:displayWindow('images/08-02.jpg',413,265)"> --><B>Figure 8.2</B></A>&nbsp;&nbsp;<I>Linked array storage format (version 1).</I>
 </P>
 <P>As it happens, Microsoft C/C<SMALL>++</SMALL> does optimize the inner loop of <B>FindIDAverage</B> nicely. Listing 8.2 shows the code Microsoft C/C<SMALL>++</SMALL> generates for the inner loop, consisting of a mere seven assembly language instructions inside the loop. The compiler is smart enough to convert the loop index variable, which counts up but is used for nothing but counting loops, into a count-down variable so that the <B>LOOP</B> instruction can be used.</P>
 <P><B>LISTING 8.2  L8-2.COD</B></P>
@@ -212,7 +212,7 @@ $FB264:
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

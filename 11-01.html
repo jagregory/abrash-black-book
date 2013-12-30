@@ -24,7 +24,7 @@
 <!--CHAPTER=11//-->
 <!--PAGES=205-210//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,12 +36,11 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 11<BR>Pushing the 286 and 386
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">New Registers, New Instructions, New Timings, New Complications</FONT></H3>
+<H2><A NAME="Heading1"></A>Chapter 11<BR>Pushing the 286 and 386</H2>
+<H3><A NAME="Heading2"></A>New Registers, New Instructions, New Timings, New Complications</H3>
 <P>This chapter, adapted from my earlier book <I>Zen of Assembly Language</I> (1989; now out of print), provides an overview of the 286 and 386, often contrasting those processors with the 8088. At the time I originally wrote this, the 8088 was the king of processors, and the 286 and 386 were the new kids on the block. Today, of course, all three processors are past their primes, but many millions of each are still in use, and the 386 in particular is still well worth considering when optimizing software.</P>
 <P>This chapter provides an interesting look at the evolution of the x86 architecture, to a greater degree than you might expect, for the x86 family came into full maturity with the 386; the 486 and the Pentium are really nothing more than faster 386s, with very little in the way of new functionality. In contrast, the 286 added a number of instructions, respectable performance, and protected mode to the 8088&rsquo;s capabilities, and the 386 added more instructions and a whole new set of addressing modes, and brought the x86 family into the 32-bit world that represents the future (and, increasingly, the present) of personal computing. This chapter also provides insight into the effects on optimization of the variations in processors and memory architectures that are common in the PC world. So, although the 286 and 386 no longer represent the mainstream of computing, this chapter is a useful mix of history lesson, x86 overview, and details on two workhorse processors that are still in wide use.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading3"></A><FONT COLOR="#000077">Family Matters</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading3"></A>Family Matters</H4>
 <P>While the x86 family is a large one, only a few members of the family&mdash;which includes the 8088, 8086, 80188, 80186, 286, 386SX, 386DX, numerous permutations of the 486, and now the Pentium&mdash;really matter.
 </P>
 <P>The 8088 is now all but extinct in the PC arena. The 8086 was used fairly widely for a while, but has now all but disappeared. The 80186 and 80188 never really caught on for use in PC and don&rsquo;t require further discussion.</P>
@@ -49,7 +48,7 @@
 <P>I&rsquo;m not going to discuss the 386SX in detail. If you do find yourself programming for the 386SX, follow the same general rules you should follow for the 8088: use short instructions, use the registers as heavily as possible, and don&rsquo;t branch. In other words, avoid memory, since the 386SX is by definition better at processing data internally than it is at accessing memory.</P>
 <P>The 486 is a world unto itself for the purposes of optimization, and the Pentium is a <I>universe</I> unto itself. We&rsquo;ll treat them separately in later chapters.</P>
 <P>This leaves us with just two processors: the 286 and the 386. Each was <I>the</I> PC standard in its day. The 286 is no longer used in new systems, but there are millions of 286-based systems still in daily use. The 386 is still being used in new systems, although it&rsquo;s on the downhill leg of its lifespan, and it is in even wider use than the 286. The future clearly belongs to the 486 and Pentium, but the 286 and 386 are still very much a part of the present-day landscape.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading4"></A><FONT COLOR="#000077">Crossing the Gulf to the 286 and the 386</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading4"></A>Crossing the Gulf to the 286 and the 386</H4>
 <P>Apart from vastly improved performance, the biggest difference between the 8088 and the 286 and 386 (as well as the later Intel CPUs) is that the 286 introduced protected mode, and the 386 greatly expanded the capabilities of protected mode. We&rsquo;re only going to talk about real-mode operation of the 286 and 386 in this book, however. Protected mode offers a whole new memory management scheme, one that isn&rsquo;t supported by the 8088. Only code specifically written for protected mode can run in that mode; it&rsquo;s an alien and hostile environment for MS-DOS programs.
 </P>
 <P>In particular, segments are different creatures in protected mode. They&rsquo;re <I>selectors</I>&mdash;indexes into a table of segment descriptors&mdash;rather than plain old registers, and can&rsquo;t be set to arbitrary values. That means that segments can&rsquo;t be used for temporary storage or as part of a fast indivisible 32-bit load from memory, as in</P>
@@ -69,7 +68,7 @@ mov  dx,word ptr [LongVar+2]
 <P>Protected mode uses those altered segment registers to offer access to a great deal more memory than real mode: The 286 supports 16 megabytes of memory, while the 386 supports 4 gigabytes (4K megabytes) of physical memory and 64 <I>terabytes</I> (64K gigabytes!) of virtual memory.</P>
 <P>In protected mode, your programs generally run under an operating system (OS/2, Unix, Windows NT or the like) that exerts much more control over the computer than does MS-DOS. Protected mode operating systems can generally run multiple programs simultaneously, and the performance of any one program may depend far less on code quality than on how efficiently the program uses operating system services and how often and under what circumstances the operating system preempts the program. Protected mode programs are often mostly collections of operating system calls, and the performance of whatever code <I>isn&rsquo;t</I> operating-system oriented may depend primarily on how large a time slice the operating system gives that code to run in.</P>
 <P>In short, taken as a whole, protected mode programming is a different kettle of fish altogether from what I&rsquo;ve been describing in this book. There&rsquo;s certainly a knack to optimizing specifically for protected mode under a given operating system...but it&rsquo;s not what we&rsquo;ve been learning, and now is not the time to pursue it further. In general, though, the optimization strategies discussed in this book still hold true in protected mode; it&rsquo;s just issues specific to protected mode or a particular operating system that we won&rsquo;t discuss.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading5"></A><FONT COLOR="#000077">In the Lair of the Cycle-Eaters, Part II</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading5"></A>In the Lair of the Cycle-Eaters, Part II</H4>
 <P>Under the programming interface, the 286 and 386 differ considerably from the 8088. Nonetheless, with one exception and one addition, the cycle-eaters remain much the same on computers built around the 286 and 386. Next, we&rsquo;ll review each of the familiar cycle-eaters I covered in Chapter 4 as they apply to the 286 and 386, and we&rsquo;ll look at the new member of the gang, the data alignment cycle-eater.
 </P>
 <P>The one cycle-eater that vanishes on the 286 and 386 is the 8-bit bus cycle-eater. The 286 is a 16-bit processor both internally and externally, and the 386 is a 32-bit processor both internally and externally, so the Execution Unit/Bus Interface Unit size mismatch that plagues the 8088 is eliminated. Consequently, there&rsquo;s no longer any need to use byte-sized memory variables in preference to word-sized variables, at least so long as word-sized variables start at even addresses, as we&rsquo;ll see shortly. On the other hand, access to byte-sized variables still isn&rsquo;t any <I>slower</I> than access to word-sized variables, so you can use whichever size suits a given task best.</P><P><BR></P>
@@ -85,7 +84,7 @@ mov  dx,word ptr [LongVar+2]
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

@@ -24,7 +24,7 @@
 <!--CHAPTER=52//-->
 <!--PAGES=985-987//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -41,10 +41,10 @@
 <P>The second performance key is the use of the 386&rsquo;s native 32-bit multiply and divide instructions. C compilers operating in real mode call library routines to perform multiplications and divisions involving 32-bit values, and those library functions are fairly slow, especially for division. On a 386, 32-bit multiplication and division can be handled with the bit of code in Listing 52.9&mdash;and most of even that code is only for rounding.</P>
 <P>The third performance key is maintaining and operating on only the relevant portions of transformation matrices and coordinates. The bottom row of every transformation matrix we&rsquo;ll use (in this book) is [0 0 0 1], so why bother using or recalculating it when concatenating transforms and transforming points? Likewise for the fourth element of a 3-D vector in homogeneous coordinates, which is always 1. Basically, transformation matrices are treated as consisting of a 3x3 rotation matrix and a 3x1 translation vector, and coordinates are treated as 3x1 vectors. This saves a great many multiplications in the course of transforming each point.</P>
 <P>Just for fun, I reimplemented the animation of Listings 52.1 through 52.10 with floating-point instructions. Together, the preceeding optimizations improve the performance of the entire animation&mdash;including drawing time and overhead, and not just math&mdash;by more than ten times over the code that uses the floating-point emulator. Amazing what one can accomplish with a few dozen lines of assembly and a switch in number format, isn&rsquo;t it? Note that no assembly code other than the native 386 multiply and divide is used in Listings 52.1 through 52.10, although the polygon fill code is of course mostly in assembly; we&rsquo;ve achieved 12 cubes animated at 15 fps while doing the 3-D work almost entirely in Borland C++, and we&rsquo;re <I>still</I> doing sine and cosine via the floating-point emulator. Happily, we&rsquo;re still nowhere near the upper limit on the animation potential of the PC.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading6"></A><FONT COLOR="#000077">Drawbacks</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading6"></A>Drawbacks</H4>
 <P>The techniques we&rsquo;ve used to turbocharge 3-D animation are very powerful, but there&rsquo;s a dark side to them as well. Obviously, native 386 instructions won&rsquo;t work on 8088 and 286 machines. That&rsquo;s rectifiable; equivalent multiplication and division routines could be implemented for real mode and performance would still be reasonable. It sure is nice to be able to plug in a 32-bit <B>IMUL</B> or <B>DIV</B> and be done with it, though. More importantly, 32-bit fixed-point arithmetic has limitations in range and accuracy. Points outside a 64Kx64Kx64K space can&rsquo;t be handled, imprecision tends to creep in over the course of multiple matrix concatenations, and it&rsquo;s quite possible to generate the dreaded divide by 0 interrupt if Z coordinates with absolute values less than one are used.</P>
 <P>I don&rsquo;t have space to discuss these issues in detail, but here are some brief thoughts: The working 64Kx64Kx64K fixed-point space can be paged into a larger virtual space. Imprecision of a pixel or two rarely matters in terms of display quality, and deterioration of concatenated rotations can be corrected by restoring orthogonality, for example by periodically calculating one row of the matrix as the cross-product of the other two (forcing it to be perpendicular to both). Alternatively, transformations can be calculated from scratch each time an object or the viewer moves, so there&rsquo;s no chance for cumulative error. 3-D clipping with a front clip plane of -1 or less can prevent divide overflow.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading7"></A><FONT COLOR="#000077">Where the Time Goes</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading7"></A>Where the Time Goes</H4>
 <P>The distribution of execution time in the animation code is no longer wildly biased toward transformation, but sine and cosine are certainly still sucking up cycles. Likewise, the overhead in the calls to <B>FixedMul()</B> and <B>FixedDiv()</B> is costly. Much of this is correctable with a little carefully crafted assembly language and a lookup table; I&rsquo;ll provide that shortly.</P>
 <P>Regardless, with this chapter we have made the critical jump to a usable level of performance and a serviceable general-purpose framework. From here on out, it&rsquo;s the fun stuff.</P><P><BR></P>
 <CENTER>
@@ -59,7 +59,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

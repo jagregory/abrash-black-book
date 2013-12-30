@@ -24,7 +24,7 @@
 <!--CHAPTER=53//-->
 <!--PAGES=1001-1003//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -123,10 +123,10 @@ void SortObjects()
 }
 </PRE>
 <!-- END CODE //-->
-<H4 ALIGN="LEFT"><A NAME="Heading6"></A><FONT COLOR="#000077">Rounding</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading6"></A>Rounding</H4>
 <P>FIXED.ASM contains the equate <B>ROUNDING-ON</B>. When this equate is 1, the results of multiplications and divisions are rounded to the nearest fixed-point values; when it&rsquo;s 0, the results are truncated. The difference between the results produced by the two approaches is, at most, 2<SUP><SMALL>-16</SMALL></SUP>; you wouldn&rsquo;t think that would make much difference, now, would you? But it does. When the animation is run with rounding disabled, the cubes start to distort visibly after a few minutes, and after a few minutes more they look like they&rsquo;ve been run over. In contrast, I&rsquo;ve never seen any significant distortion with rounding on, even after a half-hour or so. I think the difference with rounding is not that it&rsquo;s so much more accurate, but rather that the errors are evenly distributed; with truncation, the errors are biased, and biased errors become very visible when they&rsquo;re applied to right-angle objects. Even with rounding, though, the errors will eventually creep in, and reorthogonalization will become necessary at some point.</P>
-<P>The performance cost of rounding is small, and the benefits are highly visible. Still, truncation errors become significant only when they accumulate over time, as, for example, when rotation matrices are repeatedly concatenated over the course of many transformations. Some time could be saved by rounding only in such cases. For example, division is performed only in the course of projection, and the results do not accumulate over time, so it would be reasonable to disable rounding for division. <H4 ALIGN="LEFT"><A NAME="Heading7"></A><FONT COLOR="#000077">Having a Ball</P>
-</FONT></H4>
+<P>The performance cost of rounding is small, and the benefits are highly visible. Still, truncation errors become significant only when they accumulate over time, as, for example, when rotation matrices are repeatedly concatenated over the course of many transformations. Some time could be saved by rounding only in such cases. For example, division is performed only in the course of projection, and the results do not accumulate over time, so it would be reasonable to disable rounding for division.</P>
+<H4 ALIGN="LEFT"><A NAME="Heading7"></A>Having a Ball</H4>
 <P>So far in our exploration of 3-D animation, we&rsquo;ve had nothing to look at but triangles and cubes. It&rsquo;s time for something a little more visually appealing, so the demonstration program now features a 72-sided ball. What&rsquo;s particularly interesting about this ball is that it&rsquo;s created by the GENBALL.C program in the BALL subdirectory of X-Sharp, and both the size of the ball and the number of bands of faces are programmable. GENBALL.C spits out to a file all the arrays of vertices and faces needed to create the ball, ready for inclusion in INITBALL.C. True, if you change the number of bands, you must change the Colors array in INITBALL.C to match, but that&rsquo;s a tiny detail; by and large, the process of generating a ball-shaped object is now automated. In fact, we&rsquo;re not limited to ball-shaped objects; substitute a different vertex and face generation program for GENBALL.C, and you can make whatever convex polyhedron you want; again, all you have to do is change the <B>Colors</B> array correspondingly. You can easily create multiple versions of the base object, too; INITCUBE.C is an example of this, creating 11 different cubes.</P>
 <P>What we have here is the first glimmer of an object-editing system. GENBALL.C is the prototype for object definition, and INITBALL.C is the prototype for general-purpose object instantiation. Certainly, it would be nice to someday have an interactive 3-D object editing tool and resource management setup. We have our hands full with the drawing end of things at the moment, though, and for now it&rsquo;s enough to be able to create objects in a semiautomated way.</P><P><BR></P>
 <CENTER>
@@ -141,7 +141,7 @@ void SortObjects()
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

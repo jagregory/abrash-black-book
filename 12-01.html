@@ -24,7 +24,7 @@
 <!--CHAPTER=12//-->
 <!--PAGES=233-237//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,25 +36,24 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 12<BR>Pushing the 486
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">It&rsquo;s Not Just a Bigger 386</FONT></H3>
+<H2><A NAME="Heading1"></A>Chapter 12<BR>Pushing the 486</H2>
+<H3><A NAME="Heading2"></A>It&rsquo;s Not Just a Bigger 386</H3>
 <P>So this traveling salesman is walking down a road, and he sees a group of men digging a ditch with their bare hands. &ldquo;Whoa, there!&rdquo; he says. &ldquo;What you guys need is a Model 8088 ditch digger!&rdquo; And he whips out a trowel and sells it to them.
 </P>
 <P>A few days later, he stops back around. They&rsquo;re happy with the trowel, but he sells them the latest ditch-digging technology, the Model 80286 spade. That keeps them content until he stops by again with a Model 80386 shovel (a full 32 inches wide, with a narrow point to emulate the trowel), and <I>that</I> holds them until he comes back around with what they really need: a Model 80486 bulldozer.</P>
 <P>Having reached the top of the line, the salesman doesn&rsquo;t pay them a call for a while. When he does, not only are they none too friendly, but they&rsquo;re digging with the 80386 shovel; the bulldozer is sitting off to one side. &ldquo;Why on earth are you using that shovel?&rdquo; the salesman asks. &ldquo;Why aren&rsquo;t you digging with the bulldozer?&rdquo;</P>
 <P>&ldquo;Well, Lord knows we tried,&rdquo; says the foreman, &ldquo;but it was all we could do just to lift the damn thing!&rdquo;</P>
 <P>Substitute &ldquo;processor&rdquo; for the various digging implements, and you get an idea of just how different the optimization rules for the 486 are from what you&rsquo;re used to. Okay, it&rsquo;s not quite <I>that</I> bad&mdash;but upon encountering a processor where string instructions are often to be avoided and memory-to-register <B>MOV</B>s are frequently as fast as register-to-register <B>MOV</B>s, Dorothy was heard to exclaim (before she sank out of sight in a swirl of hopelessly mixed metaphors), &ldquo;I don&rsquo;t think we&rsquo;re in Kansas anymore, Toto.&rdquo;</P>
-<H4 ALIGN="LEFT"><A NAME="Heading3"></A><FONT COLOR="#000077">Enter the 486</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading3"></A>Enter the 486</H4>
 <P>No chip that is a direct, fully compatible descendant of the 8088, 286, and 386 could ever be called a RISC chip, but the 486 certainly contains RISC elements, and it&rsquo;s those elements that are most responsible for making 486 optimization unique. Simple, common instructions are executed in a single cycle by a RISC-like core processor, but other instructions are executed pretty much as they were on the 386, where every instruction takes at least 2 cycles. For example, <B>MOV AL, [TestChar]</B> takes only 1 cycle on the 486, assuming both instruction and data are in the cache&mdash;3 cycles faster than the 386&mdash;but <B>STOSB</B> takes 5 cycles, 1 cycle <I>slower</I> than on the 386. The floating-point execution unit inside the 486 is also much faster than the 387 math coprocessor, largely because, being in the same silicon as the CPU (the 486 has a math coprocessor built in), it is more tightly coupled. The results are sometimes startling: <B>FMUL</B> (floating point multiply) is usually faster on the 486 than <B>IMUL</B> (integer multiply)!</P>
 <P>An encyclopedic approach to 486 optimization would take a book all by itself, so in this chapter I&rsquo;m only going to hit the highlights of 486 optimization, touching on several optimization rules, some documented, some not. You might also want to check out the following sources of 486 information: <I>i486 Microprocessor Programmer&rsquo;s Reference Manual,</I> from Intel; &ldquo;8086 Optimization: Aim Down the Middle and Pray,&rdquo; in the March, 1991 <I>Dr. Dobb&rsquo;s Journal</I>; and &ldquo;Peak Performance: On to the 486,&rdquo; in the November, 1990 <I>Programmer&rsquo;s Journal.</I></P>
-<H3><A NAME="Heading4"></A><FONT COLOR="#000077">Rules to Optimize By</FONT></H3>
+<H3><A NAME="Heading4"></A>Rules to Optimize By</H3>
 <P>In Appendix G of the <I>i486 Microprocessor Programmer</I>&rsquo;<I>s</I> <I>Reference Manual</I>, Intel lists a number of optimization techniques for the 486. While neither exhaustive (we&rsquo;ll look at two undocumented optimizations shortly) nor entirely accurate (we&rsquo;ll correct two of the rules here), Intel&rsquo;s list is certainly a good starting point. In particular, the list conveys the extent to which 486 optimization differs from optimization for earlier x86 processors. Generally, I&rsquo;ll be discussing optimization for real mode (it being the most widely used mode at the moment), although many of the rules should apply to protected mode as well.</P>
 <TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>486 optimization is generally more precise and less frustrating than optimization for other x86 processors because every 486 has an identical internal cache. Whenever both the instructions being executed and the data the instructions access are in the cache, those instructions will run in a consistent and calculatable number of cycles on all 486s, with little chance of interference from the prefetch queue and without regard to the speed of external memory.</I></SMALL>
 </TABLE>
 <P>In other words, for cached code (which time-critical code almost always is), performance is predictable and can be calculated with good precision, and those calculations will apply on any 486. However, &ldquo;predictable&rdquo; doesn&rsquo;t mean &ldquo;trivial&rdquo;; the cycle times printed for the various instructions are not the whole story. You must be aware of all the rules, documented and undocumented, that go into calculating actual execution times&mdash;and uncovering some of those rules is exactly what this chapter is about.
 </P>
-<H4 ALIGN="LEFT"><A NAME="Heading5"></A><FONT COLOR="#000077">The Hazards of Indexed Addressing</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading5"></A>The Hazards of Indexed Addressing</H4>
 <P>Rule #1: Avoid indexed addressing (that is, try not to use either two registers or scaled addressing to point to memory).
 </P>
 <P>Intel cautions against using indexing to address memory because there&rsquo;s a one-cycle penalty for indexed addressing. True enough&mdash;but &ldquo;indexed addressing&rdquo; might not mean what you expect.</P>
@@ -98,7 +97,7 @@ LoopTop:
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

@@ -24,7 +24,7 @@
 <!--CHAPTER=51//-->
 <!--PAGES=951-955//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,9 +36,8 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 51<BR>Sneakers in Space
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Using Backface Removal to Eliminate Hidden Surfaces</FONT></H3>
+<H2><A NAME="Heading1"></A>Chapter 51<BR>Sneakers in Space</H2>
+<H3><A NAME="Heading2"></A>Using Backface Removal to Eliminate Hidden Surfaces</H3>
 <P>As I&rsquo;m fond of pointing out, computer animation isn&rsquo;t a matter of mathematically exact modeling or raw technical prowess, but rather of fooling the eye and the mind. That&rsquo;s especially true for 3-D animation, where we&rsquo;re not only trying to convince viewers that they&rsquo;re seeing objects on a screen&mdash;when in truth that screen contains no objects at all, only gaggles of pixels&mdash;but we&rsquo;re also trying to create the illusion that the objects exist in three-space, possessing four dimensions (counting movement over time as a fourth dimension) of their own. To make this magic happen, we must provide cues for the eye not only to pick out boundaries, but also to detect depth, orientation, and motion. This involves perspective, shading, proper handling of hidden surfaces, and rapid and smooth screen updates; the whole deal is considerably more difficult to pull off on a PC than 2-D animation.
 </P>
 <TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="95%" VALIGN="TOP"><SMALL><I>In some senses, however, 3-D animation is easier than 2-D. Because there&rsquo;s more going on in 3-D animation, the eye and brain tend to make more assumptions, and so are more apt to see what they expect to see, rather than what&rsquo;s actually there.</I></SMALL>
@@ -47,7 +46,7 @@
 </P>
 <P>To what extent can you rely on the eye and mind to make up for imperfections in the 3-D animation process? In some areas, hardly at all; for example, jaggies crawling along edges stick out like red flags, and likewise for flicker. In other areas, though, the human perceptual system is more forgiving than you&rsquo;d think. Consider this: At the end of <I>Return of the Jedi</I>, in the battle to end all battles around the Death Star, there is a sequence of about five seconds in which several spaceships are visible in the background. One of those spaceships (and it&rsquo;s not very far in the background, either) looks a bit unusual. What it looks like is a sneaker. In fact, it <I>is</I> a sneaker&mdash;but unless you know to look for it, you&rsquo;ll never notice it, because your mind is busy making simplifying assumptions about the complex scene it&rsquo;s seeing&mdash;and one of those assumptions is that medium-sized objects floating in space are spaceships, unless proven otherwise. (Thanks to Chris Hecker for pointing this out. I&rsquo;d never have noticed the sneaker, myself, without being tipped off&mdash;which is, of course, the whole point.)</P>
 <P>If it&rsquo;s good enough for George Lucas, it&rsquo;s good enough for us. And with that, let&rsquo;s resume our quest for realtime 3-D animation on the PC.</P>
-<H3><A NAME="Heading3"></A><FONT COLOR="#000077">One-sided Polygons: Backface Removal</FONT></H3>
+<H3><A NAME="Heading3"></A>One-sided Polygons: Backface Removal</H3>
 <P>In the previous chapter, we implemented the basic polygon drawing pipeline, transforming a polygon all the way from its basic definition in object space, through the shared 3-D world space, and into the 3-D space as seen from the viewpoint, called <I>view space</I>. From view space, we performed a perspective projection to convert the polygon into screen space, then mapped the transformed and projected vertices to the nearest screen coordinates and filled the polygon. Armed with code that implemented this pipeline, we were able to watch as a polygon rotated about its Y axis, and were able to move the polygon around in space freely.</P>
 <P>One of the drawbacks of the previous chapter&rsquo;s approach was that the polygon had two visible sides. Why is that a drawback? It isn&rsquo;t, necessarily, but in our case we want to use polygons to build solid objects with continuous surfaces, and in that context, only one side of a polygon is visible; the other side always faces the inside of the object, and can never be seen. It would save time and simplify the process of hidden surface removal if we could quickly and easily determine whether the inside or outside face of each polygon was facing us, so that we could draw each polygon only if it were visible (that is, had the outside face pointing toward the viewer). On average, half the polygons in an object could be instantly rejected by a test of this sort. Such testing of polygon visibility goes by a number of names in the literature, including backplane culling, backface removal, and assorted variations thereon; I&rsquo;ll refer to it as <I>backface removal</I>.</P><P><BR></P>
 <CENTER>
@@ -62,7 +61,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

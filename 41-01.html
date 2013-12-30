@@ -24,7 +24,7 @@
 <!--CHAPTER=41//-->
 <!--PAGES=757-761//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,16 +36,15 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 41<BR>Those Way-Down Polygon Nomenclature Blues
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Names Do Matter when You Conceptualize a Data Structure</FONT></H3>
+<H2><A NAME="Heading1"></A>Chapter 41<BR>Those Way-Down Polygon Nomenclature Blues</H2>
+<H3><A NAME="Heading2"></A>Names Do Matter when You Conceptualize a Data Structure</H3>
 <P>After I wrote the columns on polygons in <I>Dr. Dobb&rsquo;s Journal</I> that became Chapters 38-40, long-time reader Bill Huber wrote to take me to task&mdash;and a well-deserved kick in the fanny it was, I might add&mdash;for my use of non-standard polygon terminology in those columns. Unix&rsquo;s X-Window System (XWS) defines three categories of polygons: complex, nonconvex, and convex. These three categories, each a specialized subset of the preceding category, not-so-coincidentally map quite nicely to three increasingly fast polygon filling techniques. Therefore, I used the XWS names to describe the sorts of polygons that can be drawn with each of the polygon filling techniques.</P>
 <P>The problem is that those names don&rsquo;t accurately describe all the sorts of polygons that the techniques are capable of drawing. Convex polygons are those for which no interior angle is greater than 180 degrees. The &ldquo;convex&rdquo; drawing approach described in the previous few chapters actually handles a number of polygons that are not convex; in fact, it can draw any polygon through which no horizontal line can be drawn that intersects the boundary more than twice. (In other words, the boundary reverses the Y direction exactly twice, disregarding polygons that have degenerated into horizontal lines, which I&rsquo;m going to ignore.)</P>
 <P>Bill was kind enough to send me the pages out of <I>Computational Geometry, An Introduction</I> (Springer-Verlag, 1988) that describe the correct terminology; such polygons are, in fact, &ldquo;monotone with respect to a vertical line&rdquo; (which unfortunately makes a rather long <B>#define</B> variable). Actually, to be a tad more precise, I&rsquo;d call them &ldquo;monotone with respect to a vertical line and simple,&rdquo; where &ldquo;simple&rdquo; means &ldquo;not self-intersecting.&rdquo; Similarly, the polygon type I called &ldquo;nonconvex&rdquo; is actually &ldquo;simple,&rdquo; and I suppose what I called &ldquo;complex&rdquo; should be referred to as &ldquo;nonsimple,&rdquo; or maybe just &ldquo;none of the above.&rdquo;</P>
 <TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="95%"><SMALL><I>This may seem like nit-picking, but actually, it isn&rsquo;t; what it&rsquo;s really about is the tremendous importance of having a shared language. In one of his books, Richard Feynman describes having developed his own mathematical framework, complete with his own notation and terminology, in high school. When he got to college and started working with other people who were at his level, he suddenly understood that people can&rsquo;t share ideas effectively unless they speak the same language; otherwise, they waste a great deal of time on misunderstandings and explanation.</I></SMALL>
 </TABLE>
 <P>Or, as Bill Huber put it, &ldquo;You are free to adopt your own terminology when it suits your purposes well. But you risk losing or confusing those who could be among your most astute readers&mdash;those who already have been trained in the same or a related field.&rdquo; Ditto. Likewise. <I>D&rsquo;accord</I>. And <I>mea culpa</I> ; I shall endeavor to watch my language in the future.</P>
-<H3><A NAME="Heading3"></A><FONT COLOR="#000077">Nomenclature in Action</FONT></H3>
+<H3><A NAME="Heading3"></A>Nomenclature in Action</H3>
 <P>Just to show you how much difference proper description and interchange of ideas can make, consider the case of identifying convex polygons. When I was writing about polygons in my column in <I>DDJ</I>, a nonfunctional method for identifying such polygons&mdash;checking for exactly two X direction changes and two Y direction changes around the perimeter of the polygon&mdash;crept into the column by accident. That method, as I noted in a later column, does not work. (That&rsquo;s why you won&rsquo;t find it in this book.) Still, a fast method of checking for convex polygons would be highly desirable, because such polygons can be drawn with the fast code from Chapter 39, rather than the relatively slow, general-purpose code from Chapter 40.</P>
 <P>Now consider Bill&rsquo;s point that we&rsquo;re not limited to drawing convex polygons in our &ldquo;convex fill&rdquo; code, but can actually handle any simple polygon that&rsquo;s monotone with respect to a vertical line. Additionally, consider Anton Treuenfels&rsquo;s point, made back in Chapter 40, that life gets simpler if we stop worrying about which edge of a polygon is the left edge and which is the right, and instead just scan out each raster line starting at whichever edge is left-most. Now, what do we have?</P>
 <P>What we have is an approach passed along by Jim Kent, of Autodesk Animator fame. If we modify the low-level code to check which edge is left-most on each scan line and start drawing there, as just described, then we can handle any polygon that&rsquo;s monotone with respect to a vertical line regardless of whether the edges cross. (I&rsquo;ll call this &ldquo;monotone-vertical&rdquo; from now on; if anyone wants to correct that terminology, jump right in.) In other words, we can then handle nonsimple polygons that are monotone-vertical; self-intersection is no longer a problem. We just scan around the polygon&rsquo;s perimeter looking for exactly two direction reversals along the Y axis only, and if that proves to be the case, we can handle the polygon at high speed. Figure 41.1 shows polygons that can be drawn by a monotone-vertical capable filler; Figure 41.2 shows some that cannot. Listing 41.1 shows code to test whether a polygon is appropriately monotone.</P>
@@ -109,7 +108,7 @@ int PolygonIsMonotoneVertical(struct PointListHeader * VertexList)
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

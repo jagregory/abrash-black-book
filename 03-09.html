@@ -24,7 +24,7 @@
 <!--CHAPTER=03//-->
 <!--PAGES=067-070//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -145,7 +145,7 @@ lztime lst3-8.asm
 <!-- END CODE SNIP //-->
 <P>the result is 72,544 &micro;s, or about 3.63 &micro;s per load of AL from memory. This is just slightly longer than the time per load of AL measured by the precision Zen timer, as we would expect given that interrupts are left enabled by the long-period Zen timer. The extra fraction of a microsecond measured per <B>MOV</B> reflects the time required to execute the BIOS code that handles the 18.2 timer interrupts that occur each second.</P>
 <P>Note that the command can take as much as 10 minutes to finish on a slow PC if you are using MASM, with most of that time spent assembling Listing 3.8. Why? Because MASM is notoriously slow at assembling <B>REPT</B> blocks, and the block in Listing 3.8 is repeated 20,000 times.</P>
-<H3><A NAME="Heading15"></A><FONT COLOR="#000077">Using the Zen Timer from C</FONT></H3>
+<H3><A NAME="Heading15"></A>Using the Zen Timer from C</H3>
 <P>The Zen timer can be used to measure code performance when programming in C&mdash;but not right out of the box. As presented earlier, the timer is designed to be called from assembly language; some relatively minor modifications are required before the <B>ZTimerOn</B> (start timer), <B>ZTimerOff</B> (stop timer), and <B>ZTimerReport</B> (display timing results) routines can be called from C. There are two separate cases to be dealt with here: small code model and large; I&rsquo;ll tackle the simpler one, the small code model, first.</P>
 <P>Altering the Zen timer for linking to a small code model C program involves the following steps: <B> C</B> hange <B>ZTimerOn</B> to <B>_ZTimerOn</B>, change <B>ZTimerOff</B> to <B>_ZTimerOff</B>, change <B>ZTimerReport</B> to <B>_ZTimerReport</B>, and change <B>Code</B> to <B>_TEXT</B> . Figure 3.2 shows the line numbers and new states of all lines from Listing 3.1 that must be changed. These changes convert the code to use C-style external label names and the small model C code segment. (In C<SMALL>++</SMALL>, use the &ldquo;C&rdquo; specifier, as in</P>
 <!-- CODE SNIP //-->
@@ -166,7 +166,7 @@ extern &ldquo;C&rdquo; ZTimerOn(void);
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

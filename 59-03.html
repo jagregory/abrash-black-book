@@ -24,7 +24,7 @@
 <!--CHAPTER=59//-->
 <!--PAGES=1102-1106//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -39,34 +39,34 @@
 <P>Creating a BSP tree is a recursive process, so we&rsquo;ll perform the first split and go from there. Figure 59.3 shows the world carved along the line of wall C into two parts: walls that are in front of wall C, and walls that are behind. (Any of the walls would have been an equally valid choice for the initial split; we&rsquo;ll return to the issue of choosing splitting walls in the next chapter.) This splitting into front and back is the essential dualism of BSP trees.
 </P>
 <P><A NAME="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/59-03.jpg',409,192 )"> --><IMG SRC="images/59-03.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/59-03.jpg',409,192)"> --><FONT COLOR="#000077"><B>Figure 59.3</B></FONT></A>&nbsp;&nbsp;<I>Initial split along the line of wall C.</I>
+<BR><A HREF="javascript:displayWindow('images/59-03.jpg',409,192)"> --><B>Figure 59.3</B></A>&nbsp;&nbsp;<I>Initial split along the line of wall C.</I>
 </P>
 <P>Next, in Figure 59.4, the front subspace of wall C is split by wall D. This is the only wall in that subspace, so we&rsquo;re done with wall C&rsquo;s front subspace.
 </P>
 <P>Figure 59.5 shows the back subspace of wall C being split by wall B. There&rsquo;s a difference here, though: Wall A straddles the splitting line generated from wall B. Does wall A belong in the front or back subspace of wall B?</P>
 <P><A NAME="Fig4"><!-- </A><A HREF="javascript:displayWindow('images/59-04.jpg',408,193 )"> --><IMG SRC="images/59-04.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/59-04.jpg',408,193)"> --><FONT COLOR="#000077"><B>Figure 59.4</B></FONT></A>&nbsp;&nbsp;<I>Split of wall C&rsquo;s front subspace along the line of wall D.</I>
+<BR><A HREF="javascript:displayWindow('images/59-04.jpg',408,193)"> --><B>Figure 59.4</B></A>&nbsp;&nbsp;<I>Split of wall C&rsquo;s front subspace along the line of wall D.</I>
 </P>
 <P><A NAME="Fig5"><!-- </A><A HREF="javascript:displayWindow('images/59-05.jpg',407,177 )"> --><IMG SRC="images/59-05.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/59-05.jpg',407,177)"> --><FONT COLOR="#000077"><B>Figure 59.5</B></FONT></A>&nbsp;&nbsp;<I>Split of wall C&rsquo;s back subspace along the line of wall B.</I>
+<BR><A HREF="javascript:displayWindow('images/59-05.jpg',407,177)"> --><B>Figure 59.5</B></A>&nbsp;&nbsp;<I>Split of wall C&rsquo;s back subspace along the line of wall B.</I>
 </P>
 <P>Both, actually. Wall A gets split into two pieces, which I&rsquo;ll call wall A and wall E; each piece is assigned to the appropriate subspace and treated as a separate wall. As shown in Figure 59.6, each of the split pieces then has a subspace to itself, and each becomes a leaf of the tree. The BSP tree is now complete.
 </P>
-<H4 ALIGN="LEFT"><A NAME="Heading7"></A><FONT COLOR="#000077">Visibility Ordering</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading7"></A>Visibility Ordering</H4>
 <P>Now that we&rsquo;ve successfully built a BSP tree, you might justifiably be a little puzzled as to how any of this helps with visibility ordering. The answer is that each BSP node can definitively determine which of its child trees is nearer and which is farther from any and all viewpoints; applied throughout the tree, this principle makes it possible to establish visibility ordering for all the line segments or planes in a BSP tree, no matter what the viewing angle.
 </P>
 <P>Consider the world of Figure 59.2 viewed from an arbitrary angle, as shown in Figure 59.7. The viewpoint is in front of wall C; this tells us that all walls belonging to the front tree that descends from wall C are nearer along every ray from the viewpoint than wall C is (that is, they can&rsquo;t be occluded by wall C). All the walls in wall C&rsquo;s back tree are likewise farther away than wall C along any ray. Thus, for this viewpoint, we know for sure that if we&rsquo;re using the painter&rsquo;s algorithm, we want to draw all the walls in the back tree first, then wall C, and then the walls in the front tree. If the viewpoint had been on the back side of wall C, this order would have been reversed.</P>
 <P>Of course, we need more ordering information than wall C alone can give us, but we get that by traversing the tree recursively, making the same far-near decision at each node. Figure 59.8 shows the painter&rsquo;s algorithm (back-to-front) traversal order of the tree for the viewpoint of Figure 59.7. At each node, we decide whether we&rsquo;re seeing the front or back side of that node&rsquo;s wall, then visit whichever of the wall&rsquo;s children is on the far side from the viewpoint, draw the wall, and then visit the node&rsquo;s nearer child, in that order. Visiting a child is recursive, involving the same far-near visiting order.</P>
 <P><A NAME="Fig6"><!-- </A><A HREF="javascript:displayWindow('images/59-06.jpg',406,174 )"> --><IMG SRC="images/59-06.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/59-06.jpg',406,174)"> --><FONT COLOR="#000077"><B>Figure 59.6</B></FONT></A>&nbsp;&nbsp;<I>The final BSP tree.</I>
+<BR><A HREF="javascript:displayWindow('images/59-06.jpg',406,174)"> --><B>Figure 59.6</B></A>&nbsp;&nbsp;<I>The final BSP tree.</I>
 </P>
 <P><A NAME="Fig7"><!-- </A><A HREF="javascript:displayWindow('images/59-07.jpg',408,184 )"> --><IMG SRC="images/59-07.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/59-07.jpg',408,184)"> --><FONT COLOR="#000077"><B>Figure 59.7</B></FONT></A>&nbsp;&nbsp;<I>Viewing the BSP tree from an arbitrary angle.</I>
+<BR><A HREF="javascript:displayWindow('images/59-07.jpg',408,184)"> --><B>Figure 59.7</B></A>&nbsp;&nbsp;<I>Viewing the BSP tree from an arbitrary angle.</I>
 </P>
 <P>The key is that each BSP splitting line separates all the walls in the current subspace into two groups relative to the viewpoint, and every single member of the farther group is guaranteed not to occlude every single member of the nearer. By applying this ordering recursively, the BSP tree can be traversed to provide back-to-front or front-to-back ordering, with each node being visited only once.
 </P>
 <P><A NAME="Fig8"><!-- </A><A HREF="javascript:displayWindow('images/59-08.jpg',409,185 )"> --><IMG SRC="images/59-08.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/59-08.jpg',409,185)"> --><FONT COLOR="#000077"><B>Figure 59.8</B></FONT></A>&nbsp;&nbsp;<I>Back-to-front traversal of the BSP tree as viewed in Figure 59.7.</I>
+<BR><A HREF="javascript:displayWindow('images/59-08.jpg',409,185)"> --><B>Figure 59.8</B></A>&nbsp;&nbsp;<I>Back-to-front traversal of the BSP tree as viewed in Figure 59.7.</I>
 </P>
 <P>The type of tree walk used to produce front-to-back or back-to-front BSP traversal is known as an <I>inorder</I> walk. More on this very shortly; you&rsquo;re also likely to find a discussion of inorder walking in any good data structures book. The only special aspect of BSP walks is that a decision has to be made at each node about which way the node&rsquo;s wall is facing relative to the viewpoint, so we know which child tree is nearer and which is farther.</P>
 <P>Listing 59.1 shows a function that draws a BSP tree back-to-front. The decision whether a node&rsquo;s wall is facing forward, made by <B>WallFacingForward()</B> in Listing 59.1, can, in general, be made by generating a normal to the node&rsquo;s wall in screenspace (perspective-corrected space as seen from the viewpoint) and checking whether the z component of the normal is positive or negative, or by checking the sign of the dot product of a viewspace (non-perspective corrected space as seen from the viewpoint) normal and a ray from the viewpoint to the wall. In 2-D, the decision can be made by enforcing the convention that when a wall is viewed from the front, the start vertex is leftmost; then a simple screenspace comparison of the x coordinates of the left and right vertices indicates which way the wall is facing.</P>
@@ -112,7 +112,7 @@ void WalkBSPTree(NODE *pNode)
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

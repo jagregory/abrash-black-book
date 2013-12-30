@@ -24,7 +24,7 @@
 <!--CHAPTER=30//-->
 <!--PAGES=584-585//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,12 +36,12 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H3><A NAME="Heading11"></A><FONT COLOR="#000077">Split Screens in Other Modes</FONT></H3>
+<H3><A NAME="Heading11"></A>Split Screens in Other Modes</H3>
 <P>So far we&rsquo;ve only discussed the split screen in mode 10H. What about other modes? Generally, the split screen works in any mode; the basic rule is that when a scan line on the screen matches the split screen scan line, the internal display memory pointer is reset to zero. I&rsquo;ve found this to be true even in oddball modes, such as line-doubled CGA modes and the 320x200 256-color mode (which is really a 320x400 mode with each line repeated. For split-screen purposes, the VGA and EGA seem to count purely in scan lines, not in rows or doubled scan lines or the like. However, I have run into small anomalies in those modes on clones, and I haven&rsquo;t tested all modes (nor, lord knows, all clones!) so be careful when using the split screen in modes other than modes 0DH-12H, and test your code on a variety of hardware.
 </P>
 <P>Come to think of it, I warn you about the hazards of running fancy VGA code on clones pretty often, don&rsquo;t I? Ah, well&mdash;just one of the hazards of the diversity and competition of the PC market! It is a fact of life, though&mdash;if you&rsquo;re a commercial developer and don&rsquo;t test your video code on at least half a dozen VGAs, you&rsquo;re living dangerously.</P>
 <P>What of the split screen in text mode? It works fine; in fact, it not only resets the internal memory pointer to zero, but also resets the text scan line counter&mdash;which marks which line within the font you&rsquo;re on&mdash;to zero, so the split screen starts out with a full row of text. There&rsquo;s only one trick with text mode: When split screen pel panning suppression is on, the pel panning setting is forced to 0 for the rest of the frame. Unfortunately, 0 is <I>not</I> the &ldquo;no-panning&rdquo; setting for 9-dot-wide text; 8 is. The result is that when you turn on split screen pel panning suppression, the text in the split screen won&rsquo;t pan with the normal screen, as intended, but will also display the undesirable characteristic of moving one pixel to the left. Whether this causes any noticeable on-screen effects depends on the text displayed by a particular application; for example, there should be no problem if the split screen has a border of blanks on the left side.</P>
-<H3><A NAME="Heading12"></A><FONT COLOR="#000077">How Safe?</FONT></H3>
+<H3><A NAME="Heading12"></A>How Safe?</H3>
 <P>So, how safe <I>is</I> it to use the split screen? My opinion is that it&rsquo;s perfectly safe, although I&rsquo;d welcome input from people with extensive split screen experience&mdash;and the effects are striking enough that the split screen is well worth using in certain applications.</P>
 <P>I&rsquo;m a little more leery of horizontal smooth scrolling, with or without the split screen. Still, the Wilton book doesn&rsquo;t advise any particular caution, and I haven&rsquo;t heard any horror stories from the field lately, so the clone manufacturers must finally have gotten it right. (I vividly remember some early clones years back that <I>didn&rsquo;t</I> quite get it right.) So, on balance, I&rsquo;d say to use horizontal smooth scrolling if you really need it; on the other hand, in fast animation you can often get away with byte scrolling, which is easier, faster, and safer. (I recently saw a game that scrolled as smoothly as you could ever want. It was only by stopping it with Ctrl-NumLock that I was able to be sure that it was, in fact, byte panning, not pel panning.)</P>
 <P>In short, use the fancy stuff&mdash;but only when you have</P><P><BR></P>
@@ -57,7 +57,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

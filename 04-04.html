@@ -24,7 +24,7 @@
 <!--CHAPTER=04//-->
 <!--PAGES=087-090//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,7 +36,7 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H4 ALIGN="LEFT"><A NAME="Heading10"></A><FONT COLOR="#000077">Official Execution Times Are Only Part of the Story</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading10"></A>Official Execution Times Are Only Part of the Story</H4>
 <P>The sequence of 5 <B>SHR</B> instructions in the last example is 10 bytes long. That means that it can never execute in less than 24 cycles even if the 4-byte prefetch queue is full when it starts, since 6 instruction bytes would still remain to be fetched, at 4 cycles per fetch. If the prefetch queue is empty at the start, the sequence <I>could</I> take 40 cycles. In short, thanks to instruction fetching, the code won&rsquo;t run at its documented speed, and could take up to four times longer than it is supposed to.</P>
 <P>Why does Intel document Execution Unit execution time rather than overall instruction execution time, which includes both instruction fetch time and Execution Unit (EU) execution time? Well, instruction fetching isn&rsquo;t performed as part of instruction execution by the Execution Unit, but instead is carried on in parallel by the Bus Interface Unit (BIU) whenever the external data bus isn&rsquo;t in use or whenever the EU runs out of instruction bytes to execute. Sometimes the BIU is able to use spare bus cycles to prefetch instruction bytes before the EU needs them, so in those cases instruction fetching takes no time at all, practically speaking. At other times the EU executes instructions faster than the BIU can fetch them, and instruction fetching then becomes a significant part of overall execution time. As a result, <I>the effective fetch time for a given instruction varies greatly depending on the code mix preceding that instruction.</I> Similarly, the state in which a given instruction leaves the prefetch queue affects the overall execution time of the following instructions.</P>
 <TABLE WIDTH="100%"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><SMALL><I>In other words, while the execution time for a given instruction is constant, the fetch time for that instruction depends heavily on the context in which the instruction is executing&mdash;the amount of prefetching the preceding instructions allowed&mdash;and can vary from a full 4 cycles per instruction byte to no time at all.</I></SMALL>
@@ -44,7 +44,7 @@
 <P>As we&rsquo;ll see later, other cycle-eaters, such as DRAM refresh and display memory wait states, can cause prefetching variations even during different executions of the same code sequence. Given that, it&rsquo;s meaningless to talk about the prefetch time of a given instruction except in the context of a specific code sequence.
 </P>
 <P>So now you know why the official instruction execution times are often wrong, and why Intel can&rsquo;t provide better specifications. You also know now why it is that you must time your code if you want to know how fast it really is.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading11"></A><FONT COLOR="#000077">There Is No Such Beast as a True Instruction Execution Time</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading11"></A>There Is No Such Beast as a True Instruction Execution Time</H4>
 <P>The effect of the code preceding an instruction on the execution time of that instruction makes the Zen timer trickier to use than you might expect, and complicates the interpretation of the results reported by the Zen timer. For one thing, the Zen timer is best used to time code sequences that are more than a few instructions long; below 10&micro;s or so, prefetch queue effects and the limited resolution of the clock driving the timer can cause problems.
 </P>
 <P>Some slight prefetch queue-induced inaccuracy usually exists even when the Zen timer is used to time longer code sequences, since the calls to the Zen timer usually alter the code&rsquo;s prefetch queue from its normal state. (Branches&mdash;jumps, calls, returns and the like&mdash;empty the prefetch queue.) Ideally, the Zen timer is used to measure the performance of an entire subroutine, so the prefetch queue effects of the branches at the start and end of the subroutine are similar to the effects of the calls to the Zen timer when you&rsquo;re measuring the subroutine&rsquo;s performance.</P>
@@ -84,7 +84,7 @@
 </PRE>
 <!-- END CODE //-->
 <P><A NAME="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/04-03.jpg',414,337 )"> --><IMG SRC="images/04-03.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/04-03.jpg',414,337)"> --><FONT COLOR="#000077"><B>Figure 4.3</B></FONT></A>&nbsp;&nbsp;<I>Execution and instruction prefetching sequence for Listing 4.5.</I>
+<BR><A HREF="javascript:displayWindow('images/04-03.jpg',414,337)"> --><B>Figure 4.3</B></A>&nbsp;&nbsp;<I>Execution and instruction prefetching sequence for Listing 4.5.</I>
 </P>
 <P>Now let&rsquo;s examine Listing 4.6. Here each <B>SHR</B> follows a <B>MUL</B> instruction. Since <B>MUL</B> instructions take so long to execute that the prefetch queue is always full when they finish, each <B>SHR</B> should be ready and waiting in the prefetch queue when the preceding <B>MUL</B> ends. As a result, we&rsquo;d expect that each <B>SHR</B> would execute in 2 cycles; together with the 118-cycle execution time of multiplying 0 times 0, the total execution time should come to 120 cycles per <B>SHR/MUL</B> pair, as shown in Figure 4.4. And, by God, when we run Listing 4.6 we get an execution time of 25.14 &micro;s per <B>SHR/MUL</B> pair, or <I>exactly</I> 120 cycles! According to these results, the &ldquo;true&rdquo; execution time of <B>SHR</B> would seem to be 2 cycles, quite a change from the conclusion we drew from Listing 4.5.</P>
 <P>The key point is this: We&rsquo;ve seen one code sequence in which <B>SHR</B> took 8-plus cycles to execute, and another in which it took only 2 cycles. Are we talking about two different forms of <B>SHR</B> here? Of course not&mdash;the difference is purely a reflection of the differing states in which the preceding code left the prefetch queue. In Listing 4.5, each <B>SHR</B> after the first few follows a slew of other <B>SHR</B> instructions which have sucked the prefetch queue dry, so overall performance reflects instruction fetch time. By contrast, each <B>SHR</B> in Listing 4.6 follows a <B>MUL</B> instruction which leaves the prefetch queue full, so overall performance reflects Execution Unit execution time.</P><P><BR></P>
@@ -100,7 +100,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

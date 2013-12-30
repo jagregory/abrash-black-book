@@ -24,7 +24,7 @@
 <!--CHAPTER=01//-->
 <!--PAGES=013-015//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -78,14 +78,14 @@ main(int argc, char *argv[]) {
 }
 </PRE>
 <!-- END CODE //-->
-<H4 ALIGN="LEFT"><A NAME="Heading10"></A><FONT COLOR="#000077">Know When It Matters</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading10"></A>Know When It Matters</H4>
 <P>The last section contained a particularly interesting phrase: <I>the time-critical portions of your code</I>. Time-critical portions of your code are those portions in which the speed of the code makes a significant difference in the overall performance of your program&mdash;and by &ldquo;significant,&rdquo; I don&rsquo;t mean that it makes the code 100 percent faster, or 200 percent, or any particular amount at all, but rather that it makes the program more responsive and/or usable <I>from the user&rsquo;s perspective</I>.</P>
 <P>Don&rsquo;t waste time optimizing non-time-critical code: set-up code, initialization code, and the like. Spend your time improving the performance of the code inside heavily-used loops and in the portions of your programs that directly affect response time. Notice, for example, that I haven&rsquo;t bothered to implement a version of the checksum program entirely in assembly; Listings 1.2 and 1.6 call assembly subroutines that handle the time-critical operations, but C is still used for checking command-line parameters, operning files, printing, and the like.</P>
 <TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="95%"><SMALL><I>If you were to implement any of the listings in this chapter entirely in hand-optimized assembly, I suppose you might get a performance improvement of a few percent&mdash;but I rather doubt you&rsquo;d get even that much, and you&rsquo;d sure as heck spend an awful lot of time for whatever meager improvement does result. Let C do what it does well, and use assembly only when it makes a perceptible difference.</I></SMALL>
 </TABLE>
 <P>Besides, we don&rsquo;t want to optimize until the design is refined to our satisfaction, and that won&rsquo;t be the case until we&rsquo;ve thought about other approaches.
 </P>
-<H4 ALIGN="LEFT"><A NAME="Heading11"></A><FONT COLOR="#000077">Always Consider the Alternatives</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading11"></A>Always Consider the Alternatives</H4>
 <P>Listing 1.4 is good, but let&rsquo;s see if there are other&mdash;perhaps less obvious&mdash;ways to get the same results faster. Let&rsquo;s start by considering why Listing 1.4 is so much better than Listing 1.1. Like <B>read()</B>, <B>getc()</B> calls DOS to read from the file; the speed improvement of Listing 1.4 over Listing 1.1 occurs because <B>getc()</B> eads many bytes at once via DOS, then manages those bytes for us. That&rsquo;s faster than reading them one at a time using <B>read()</B>&mdash;but there&rsquo;s no reason to think that it&rsquo;s faster than having our program read and manage blocks itself. Easier, yes, but not faster.</P>
 <P>Consider this: Every invocation of <B>getc()</B> involves pushing a parameter, executing a call to the C library function, getting the parameter (in the C library code), looking up information about the desired stream, unbuffering the next byte from the stream, and returning to the calling code. That takes a considerable amount of time, especially by contrast with simply maintaining a pointer to a buffer and whizzing through the data in the buffer inside a single loop.</P>
 <P>There are four reasons that many programmers would give for not trying to improve on Listing 1.4:</P>
@@ -109,7 +109,7 @@ main(int argc, char *argv[]) {
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

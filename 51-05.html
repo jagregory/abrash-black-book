@@ -24,7 +24,7 @@
 <!--CHAPTER=51//-->
 <!--PAGES=963-965//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -39,7 +39,7 @@
 </P>
 <P>With the above optimizations, the sample program is certainly adequately responsive on a 20 MHz 386 (sans 387; I&rsquo;m sure it&rsquo;s wonderfully responsive with a math coprocessor). Still, it couldn&rsquo;t quite keep up with the keyboard when I modified it to read only one key each time through the loop&mdash;and we&rsquo;re talking about only eight vertices here. This indicates that we&rsquo;re already near the limit of animation complexity possible with our current approach. It&rsquo;s time to start rethinking that approach; over two-thirds of the overall time is spent in floating-point calculations, and it&rsquo;s there that we&rsquo;ll begin to attack the performance bottleneck we find ourselves up against.
 </P>
-<H3><A NAME="Heading5"></A><FONT COLOR="#000077">Incremental Transformation</FONT></H3>
+<H3><A NAME="Heading5"></A>Incremental Transformation</H3>
 <P>Listing 51.4 contains three functions; each concatenates an additional rotation around one of the three axes to an existing rotation. To improve performance, only the matrix entries that are affected in a rotation around each particular axis are recalculated (all but four of the entries in a single-axis rotation matrix are either 0 or 1, as shown in Chapter 50). This cuts the number of floating-point multiplies from the 64 required for the multiplication of two 4x4 matrices to just 12, and floating point adds from 48 to 6.
 </P>
 <P>Be aware that Listing 51.4 performs an incremental rotation on top of whatever rotation is already in the matrix. The cube may already have been turned left, right, up, down, and sideways; regardless, Listing 51.4 just tacks the specified rotation onto whatever already exists. In this way, the object-to-world transformation matrix contains a history of all the rotations ever specified by the user, concatenated one after another onto the original matrix. Potential loss of precision is a problem associated with using such an approach to represent a very long concatenation of transformations, especially with fixed-point arithmetic; that&rsquo;s not a problem for us yet, but we&rsquo;ll run into it eventually.</P>
@@ -122,7 +122,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

@@ -24,7 +24,7 @@
 <!--CHAPTER=22//-->
 <!--PAGES=413-417//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,12 +36,11 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 22<BR>Zenning and the Flexible Mind
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Taking a Spin through What You&rsquo;ve Learned</FONT></H3>
+<H2><A NAME="Heading1"></A>Chapter 22<BR>Zenning and the Flexible Mind</H2>
+<H3><A NAME="Heading2"></A>Taking a Spin through What You&rsquo;ve Learned</H3>
 <P>And so we come to the end of our journey; for now, at least. What follows is a modest bit of optimization, one which originally served to show readers of <I>Zen of Assembly Language</I> that they had learned more than just bits and pieces of knowledge; that they had also begun to learn how to apply the flexible mind&mdash;unconventional, broadly integrative thinking&mdash;to approaching high-level optimization at the algorithmic and program design levels. You, of course, need no such reassurance, having just spent 21 chapters learning about the flexible mind in many guises, but I think you&rsquo;ll find this example instructive nonetheless. Try to stay ahead as the level of optimization rises from instruction elimination to instruction substitution to more creative solutions that involve broader understanding and redesign. We&rsquo;ll start out by compacting individual instructions and bits of code, but by the end we&rsquo;ll come up with a solution that involves the very structure of the subroutine, with each instruction carefully integrated into a remarkably compact whole. It&rsquo;s a neat example of how optimization operates at many levels, some much less determininstic than others&mdash;and besides, it&rsquo;s just plain fun.</P>
 <P>Enjoy!</P>
-<H3><A NAME="Heading3"></A><FONT COLOR="#000077">Zenning</FONT></H3>
+<H3><A NAME="Heading3"></A>Zenning</H3>
 <P>In Jeff Duntemann&rsquo;s excellent book <I>Borland Pascal From Square One</I> (Random House, 1993), there&rsquo;s a small assembly subroutine that&rsquo;s designed to be called from a Turbo Pascal program in order to fill the screen or a systemscreen buffer with a specified character/attribute pair in text mode. This subroutine involves only 21 instructions and works perfectly well; however, with what we know, we can compact the subroutine tremendously and speed it up a bit as well. To coin a verb, we can &ldquo;Zen&rdquo; this already-tight assembly code to an astonishing degree. In the process, I hope you&rsquo;ll get a feel for how advanced your assembly skills have become.</P>
 <P>Jeff&rsquo;s original code follows as Listing 22.1 (with some text converted to lowercase in order to match the style of this book), but the comments are mine.</P>
 <P><B>LISTING 22.1 L22-1.ASM</B></P>
@@ -99,7 +98,7 @@ ClearS       endp
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

@@ -24,7 +24,7 @@
 <!--CHAPTER=70//-->
 <!--PAGES=1284-1286//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,15 +36,15 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H3><A NAME="Heading9"></A><FONT COLOR="#000077">Entities</FONT></H3>
+<H3><A NAME="Heading9"></A>Entities</H3>
 <P>So far, all we&rsquo;ve drawn is the static, unchanging (apart from dynamic lighting) world. That&rsquo;s an important foundation, but it&rsquo;s certainly not a game; now we need to add moving objects. These objects fall into four very different categories: BSP models, polygon models, sprites, and particles.
 </P>
-<H4 ALIGN="LEFT"><A NAME="Heading10"></A><FONT COLOR="#000077">BSP Models</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading10"></A>BSP Models</H4>
 <P>BSP models are just like the world, except that they can move. Examples include doors, moving bridges, and health and ammo boxes. The way these are rendered is by clipping their polygons into the world BSP tree, so each polygon fragment is in only one leaf. Then these fragments are added to the edge list, just like world polygons, and scanned out, along with the rest of the world, when the edge list is processed. The only trick here is front-to-back ordering. Each BSP model polygon fragment is given the BSP sorting order of the leaf in which it resides, allowing it to sort properly versus the world polygons. If two or more polygons from different BSP models are in the same leaf, however, BSP ordering is no longer useful, so we then sort those polygons by 1/z, calculated from the polygons&rsquo; plane equations.
 </P>
 <P>Interesting note: We originally tried to sort all world polygons on 1/z as well, the reason being that we could then avoid splitting polygons except when they actually intersected, rather than having to split them along the lines of parent nodes. This would result in fewer edges, and faster edge list processing and rasterization. Unfortunately, we found that precision errors and special cases such as seamlessly abutting objects made it difficult to get global 1/z sorting to work completely reliably, and the code that we had to add to work around these problems slowed things up to the point where we were getting no extra performance for all the extra code complexity. This is not to say that 1/z sorting can&rsquo;t work (especially in something like a flight sim, where objects never abut), but BSP sorting order can be a wonderful thing, partly because it always works perfectly, and partly because it&rsquo;s simpler and faster to sort on integer node and leaf orders than on floating-point 1/z values.</P>
 <P>BSP models take some extra time because of the cost of clipping them into the world BSP tree, but render just as fast as the rest of the world, again with no overdraw, so closed doors, for example, block drawing of whatever&rsquo;s on the other side (although it&rsquo;s still necessary to transform, project, and add to the edge list the polygons the door occludes, because they&rsquo;re still in the PVS&mdash;they&rsquo;re potentially visible if the door opens). This makes BSP models most suitable for fairly simple structures, such as boxes, which have relatively few polygons to clip, and cause relatively few edges to be added to the edge list.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading11"></A><FONT COLOR="#000077">Polygon Models and Z-Buffering</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading11"></A>Polygon Models and Z-Buffering</H4>
 <P>Polygon models, such as monsters, weapons, and projectiles, consist of a triangle mesh with front and back skins stretched over the model. For speed, the triangles are drawn with affine texture mapping; the triangles are small enough, and the models are generally distant enough, that affine distortion isn&rsquo;t visible. (However, it is visible on the player&rsquo;s weapon; this caused a lot of extra work for the artists, and we will probably implement a perspective-correct polygon-model rasterizer in Quake 2 for this specific purpose.) The triangles are also Gouraud shaded; interestingly, the light vector used to shade the models is always from the same direction, and has no relation to any actual lights in the world (although it does vary in intensity, along with the model&rsquo;s ambient lighting, to match the brightness of the spot the player is standing above in the world). Even this highly inaccurate lighting works well, though; the Gouraud shading makes models look much more three-dimensional, and varying the lighting in even so crude a way allows hiding in shadows and illumination by explosions and muzzle flashes.
 </P>
 <P>One issue with polygon models was how to handle occlusion issues; that is, what parts of models were visible, and what surfaces they were in front of. We couldn&rsquo;t add models to the edge list, because the hundreds of polygons per model would overwhelm the edge list. Our initial occlusion solution was to sort polygon-model polygons into the world BSP, drawing the portions in each leaf at the right points as we drew the world in BSP order. That worked reasonably well with respect to the world (not perfectly, though, because it would have been too expensive to clip all the polygon-model polygons into the world, so there was some occlusion error), but didn&rsquo;t handle the case of sorting polygon models in the same leaf against each other, and also didn&rsquo;t help the polygons in a given polygon model sort properly against each other.</P>
@@ -63,7 +63,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

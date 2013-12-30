@@ -24,7 +24,7 @@
 <!--CHAPTER=69//-->
 <!--PAGES=1257-1261//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,9 +36,8 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 69<BR>Surface Caching and Quake&rsquo;s Triangle Models
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Probing Hardware-Assisted Surfaces and Fast Model Animation Without Sprites</FONT></H3>
+<H2><A NAME="Heading1"></A>Chapter 69<BR>Surface Caching and Quake&rsquo;s Triangle Models</H2>
+<H3><A NAME="Heading2"></A>Probing Hardware-Assisted Surfaces and Fast Model Animation Without Sprites</H3>
 <P>In the late &rsquo;70s, I spent a summer doing contract programming at a government-funded installation called the Northeast Solar Energy Center (NESEC). Those were heady times for solar energy, what with the oil shortages, and there was lots of money being thrown at places like NESEC, which was growing fast.
 </P>
 <P>NESEC was across the street from MIT, which made for good access to resources. Unfortunately, it also meant that NESEC was in a severely parking-impaired part of the world, what with the student population and Boston&rsquo;s chronic parking shortage. The NESEC building did have its own parking lot, but it wasn&rsquo;t nearly big enough, because students parked in it at every opportunity. The lot was posted, and cars periodically got towed, but King Canute stood a better chance against the tide than NESEC did against the student hordes, and late arrivals to work often had to park blocks away and hike to work, to their considerable displeasure.</P>
@@ -47,7 +46,7 @@
 <P>The interesting point is that there was really no useful outcome that could have resulted from his outburst. Suppose I had been a student&mdash;what would he have accomplished by yelling at me? He let his emotions overrule his common sense, and as a result, did something he later wished he hadn&rsquo;t. I&rsquo;ve seen many programmers do the same thing, especially when they&rsquo;re working long hours and not feeling adequately appreciated. For example, some time back I got mail from a programmer who complained bitterly that although he was critical to his company&rsquo;s success, management didn&rsquo;t appreciate his hard work and talent, and asked if I could help him find a better job. I suggested several ways that he might look for another job, but also asked if he had tried working his problems out with his employers; if he really was that valuable, what did he have to lose? He admitted he hadn&rsquo;t, and recently he wrote back and said that he had talked to his boss, and now he was getting paid a lot more money, was getting credit for his work, and was just flat-out happy.</P>
 <P>We programmers think of ourselves as rational creatures, but most of us get angry at times, and when we do, like everyone else, we tend to be driven by our emotions instead of our minds. It&rsquo;s my experience that thinking rationally under those circumstances can be difficult, but produces better long-term results every time&mdash;so if you find yourself in that situation, stay cool and think your way through it, and odds are you&rsquo;ll be happier down the road.</P>
 <P>Of course, most of the time programmers really <I>are</I> rational creatures, and the more information we have, the better. In that spirit, let&rsquo;s look at more of the stuff that makes Quake tick, starting with what I&rsquo;ve recently learned about surface caching.</P>
-<H3><A NAME="Heading3"></A><FONT COLOR="#000077">Surface Caching with Hardware Assistance</FONT></H3>
+<H3><A NAME="Heading3"></A>Surface Caching with Hardware Assistance</H3>
 <P>In Chapter 68, I discussed in detail the surface caching technique that Quake uses to do detailed, high-quality lighting without lots of polygons. Since writing that chapter, I&rsquo;ve gone further, and spent a considerable amount of time working on the port of Quake to Rendition&rsquo;s Verite 3-D accelerator chip. So let me start off this chapter by discussing what I&rsquo;ve learned about using surface caching in conjunction with hardware.
 </P>
 <P>As you&rsquo;ll recall, the key to surface caching is that lighting information and polygon detail are stored separately, with lighting not tied to polygon vertices, then combined on demand into what I call <I>surfaces</I>: lit, textured rectangles that are used as the input to the texture mapper. Building surfaces takes time, so performance is enhanced by caching the surfaces from one frame to the next. As I pointed out in Chapter 68, 3-D hardware accelerators are designed to optimize Gouraud shading, but surface caching can also work on hardware accelerators, with some significant quality advantages.</P>
@@ -66,7 +65,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

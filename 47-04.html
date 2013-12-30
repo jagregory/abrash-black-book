@@ -24,7 +24,7 @@
 <!--CHAPTER=47//-->
 <!--PAGES=885-887//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,7 +36,7 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H3><A NAME="Heading5"></A><FONT COLOR="#000077">Designing from a Mode X Perspective</FONT></H3>
+<H3><A NAME="Heading5"></A>Designing from a Mode X Perspective</H3>
 <P>Listing 47.4 shows Mode X rectangle fill code. The plane is selected for each pixel in turn, with drawing cycling from plane 0 to plane 3, then wrapping back to plane 0. This is the sort of code that stems from a write-pixel line of thinking; it reflects not a whit of the unique perspective that Mode X demands, and although it looks reasonably efficient, it is in fact some of the slowest graphics code you will ever see. I&rsquo;ve provided Listing 47.4 partly for illustrative purposes, but mostly so we&rsquo;ll have a point of reference for the substantial speed-up that&rsquo;s possible with code that&rsquo;s designed from a Mode X perspective.
 </P>
 <P><B>LISTING 47.4 L47-4.ASM</B></P>
@@ -148,7 +148,7 @@ _FillRectangleX endp
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

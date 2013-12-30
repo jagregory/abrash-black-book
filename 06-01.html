@@ -24,7 +24,7 @@
 <!--CHAPTER=06//-->
 <!--PAGES=125-129//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,9 +36,8 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 6<BR>Looking Past Face Value
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">How Machine Instructions May Do More Than You Think</FONT></H3>
+<H2><A NAME="Heading1"></A>Chapter 6<BR>Looking Past Face Value</H2>
+<H3><A NAME="Heading2"></A>How Machine Instructions May Do More Than You Think</H3>
 <P>I first met Jeff Duntemann at an authors&rsquo; dinner hosted by <I>PC Tech Journal</I> at Fall Comdex, back in 1985. Jeff was already reasonably well-known as a computer editor and writer, although not as famous as <I>Complete Turbo Pascal</I>, editions 1 through 672 (or thereabouts), <I>TURBO TECHNIX</I>, and <I>PC TECHNIQUES</I> would soon make him. I was fortunate enough to be seated next to Jeff at the dinner table, and, not surprisingly, our often animated conversation revolved around computers, computer writing, and more computers (not necessarily in that order).</P>
 <P>Although I was making a living at computer work and enjoying it at the time, I nonetheless harbored vague ambitions of being a science-fiction writer when I grew up. (I have since realized that this hardly puts me in elite company, especially in the computer world, where it seems that every other person has told me they plan to write science fiction &ldquo;someday.&rdquo; Given that probably fewer than 500&mdash;I&rsquo;m guessing here&mdash;original science fiction and fantasy short stories, and perhaps a few more novels than that, are published each year in this country, I see a few mid-life crises coming.)</P>
 <P>At any rate, I had accumulated a small collection of rejection slips, and fancied myself something of an old hand in the field. At the end of the dinner, as the other writers complained half-seriously about how little they were paid for writing for <I>Tech Journal</I>, I leaned over to Jeff and whispered, &ldquo;You know, the pay isn&rsquo;t so bad here. You should see what they pay for science fiction&mdash;even to the guys who win awards!&rdquo;</P>
@@ -51,7 +50,7 @@
 <P>To produce the best code, you must decide precisely what you need to accomplish, then put together the sequence of instructions that accomplishes that end most efficiently, regardless of what the instructions are usually used for. That&rsquo;s why optimization for the PC is an art, and it&rsquo;s why the best assembly language for the x86 family will almost always handily outperform compiled code. With that in mind, let&rsquo;s look past face value&mdash;and while we&rsquo;re at it, I&rsquo;ll toss in a few examples of not judging a book by its cover.</P>
 <P>The point to all this: You must come to regard the x86 family instructions for what they do, not what you&rsquo;re used to thinking they do. Yes, <B>SHL</B> shifts a pattern left&mdash;but a look-up table can do the same thing, and can often do it faster. <B>ADD</B> can indeed add two operands, but it can&rsquo;t put the result in a third register; <B>LEA</B> can. The instruction set is your raw material for writing high-performance code. By limiting yourself to thinking only in certain well-established ways about the various instructions, you&rsquo;re putting yourself at a substantial disadvantage every time you sit down to program.</P>
 <P>In short, the x86 family can do much more than you think&mdash;if you&rsquo;ll use everything it has to offer. Give it a shot!</P>
-<H4 ALIGN="LEFT"><A NAME="Heading3"></A><FONT COLOR="#000077">Memory Addressing and Arithmetic</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading3"></A>Memory Addressing and Arithmetic</H4>
 <P>Years ago, I saw a clip on the David Letterman show in which Letterman walked into a store by the name of &ldquo;Just Lamps&rdquo; and asked, &ldquo;So what do you sell here?&rdquo;
 </P>
 <P>&ldquo;Lamps,&rdquo; he was told. &ldquo;Just lamps. Can&rsquo;t you read?&rdquo;</P>
@@ -87,7 +86,7 @@ mov  al,[bx+si]
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

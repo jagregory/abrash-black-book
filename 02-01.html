@@ -24,7 +24,7 @@
 <!--CHAPTER=02//-->
 <!--PAGES=021-025//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,13 +36,12 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 2<BR>A World Apart
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">The Unique Nature of Assembly Language Optimization</FONT></H3>
+<H2><A NAME="Heading1"></A>Chapter 2<BR>A World Apart</H2>
+<H3><A NAME="Heading2"></A>The Unique Nature of Assembly Language Optimization</H3>
 <P>As I showed in the previous chapter, optimization is by no means always a matter of &ldquo;dropping into assembly.&rdquo; In fact, in performance tuning high-level language code, assembly should be used rarely, and then only after you&rsquo;ve made sure a badly chosen or clumsily implemented algorithm isn&rsquo;t eating you alive. Certainly if you use assembly at all, make absolutely sure you use it <I>right</I>. The potential of assembly code to run <I>slowly</I> is poorly understood by a lot of people, but that potential is great, especially in the hands of the ignorant.</P>
 <P>Truly great optimization, however, happens <I>only</I> at the assembly level, and it happens in response to a set of dynamics that is totally different from that governing C/C<SMALL>++</SMALL> or Pascal optimization. I&rsquo;ll be speaking of assembly-level optimization time and again in this book, but when I do, I think it will be helpful if you have a grasp of those assembly specific dynamics.</P>
 <P>As usual, the best way to wade in is to present a real-world example.</P>
-<H3><A NAME="Heading3"></A><FONT COLOR="#000077">Instructions: The Individual versus the Collective</FONT></H3>
+<H3><A NAME="Heading3"></A>Instructions: The Individual versus the Collective</H3>
 <P>Some time ago, I was asked to work over a critical assembly subroutine in order to make it run as fast as possible. The task of the subroutine was to construct a nibble out of four bits read from different bytes, rotating and combining the bits so that they ultimately ended up neatly aligned in bits 3-0 of a single byte. (In case you&rsquo;re curious, the object was to construct a 16-color pixel from bits scattered over 4 bytes.) I examined the subroutine line by line, saving a cycle here and a cycle there, until the code truly seemed to be optimized. When I was done, the key part of the code looked something like this:
 </P>
 <!-- CODE SNIP //-->
@@ -78,7 +77,7 @@ LoopTop:
 <!-- END CODE //-->
 <P>This moved the costly multibit rotation out of the loop so that it was performed just once, rather than four times. While the code may not look much different from the original, and in fact still contains exactly the same number of instructions, the performance of the entire subroutine improved by about 10 percent from just this one change. (Incidentally, that wasn&rsquo;t the end of the optimization; I eliminated the <B>DEC</B> and <B>JNJ</B> instructions by expanding the four iterations of the loop&mdash;but that&rsquo;s a tale for another chapter.)</P>
 <P>The point is this: To write truly superior assembly programs, you need to know what the various instructions do and which instructions execute fastest...and more. You must also learn to look at your programming problems from a variety of perspectives so that you can put those fast instructions to work in the most effective ways.</P>
-<H3><A NAME="Heading4"></A><FONT COLOR="#000077">Assembly Is Fundamentally Different</FONT></H3>
+<H3><A NAME="Heading4"></A>Assembly Is Fundamentally Different</H3>
 <P>Is it really so hard as all that to write good assembly code for the PC? Yes! Thanks to the decidedly quirky nature of the x86 family CPUs, assembly language differs fundamentally from other languages, and is undeniably harder to work with. On the other hand, the potential of assembly code is much greater than that of other languages, as well.
 </P>
 <P>To understand why this is so, consider how a program gets written. A programmer examines the requirements of an application, designs a solution at some level of abstraction, and then makes that design come alive in a code implementation. If not handled properly, the transformation that takes place between conception and implementation can reduce performance tremendously; for example, a programmer who implements a routine to search a list of 100,000 sorted items with a linear rather than binary search will end up with a disappointingly slow program.</P><P><BR></P>
@@ -94,7 +93,7 @@ LoopTop:
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

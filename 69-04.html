@@ -24,7 +24,7 @@
 <!--CHAPTER=69//-->
 <!--PAGES=1266-1271//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -158,9 +158,9 @@ D_PolysetRecursiveTriangle (lp3, new, lp2);
 </PRE>
 <!-- END CODE //-->
 <P><A NAME="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/69-02.jpg',407,511 )"> --><IMG SRC="images/69-02.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/69-02.jpg',407,511)"> --><FONT COLOR="#000077"><B>Figure 69.2</B></FONT></A>&nbsp;&nbsp;<I>One recursive subdivision triangle-drawing step.</I>
+<BR><A HREF="javascript:displayWindow('images/69-02.jpg',407,511)"> --><B>Figure 69.2</B></A>&nbsp;&nbsp;<I>One recursive subdivision triangle-drawing step.</I>
 </P>
-<H4 ALIGN="LEFT"><A NAME="Heading11"></A><FONT COLOR="#000077">More Ideas that Might Work</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading11"></A>More Ideas that Might Work</H4>
 <P>Useful as subdivision rasterization proved to be, we by no means think that we&rsquo;ve maxed out triangle-model drawing, if only because we spent far less design and development time on subdivision than on the affine rasterizer, so it&rsquo;s likely that there&rsquo;s quite a bit more performance to be found for drawing small triangles. For example, it could be faster to precalculate drawing masks or even precompile drawing code for all possible small triangles (say, up to 4x4 or 5x5), and the memory footprint looks reasonable. (It&rsquo;s worth noting that both precalculated drawing and subdivision rasterization are only possible because we snap to integer coordinates; none of this stuff works with fixed-point vertices.)
 </P>
 <P>More interesting still is the stack-based rendering described in the article &ldquo;Time/Space Tradeoffs for Polygon Mesh Rendering,&rdquo; by Bar-Yehuda and Gotsman, in the April, 1996 <I>ACM Transactions on Graphics</I>. Unfortunately, the article is highly abstract and slow going, but the bottom line is that it&rsquo;s possible to represent a triangle mesh as a stream of commands that place vertices in a stack, remove them from the stack, and draw triangles using the vertices in the stack. This results in excellent CPU cache coherency, because rather than indirecting all over a vertex pool to retrieve vertex data, all vertices reside in a tiny stack that&rsquo;s guaranteed to be in the cache. Local variables used while drawing can be stored in a small block next to the stack, and the stream of commands representing the model is accessed sequentially from start to finish, so cache utilization should be very high. As processors speed up at a much faster rate than main memory access, cache optimizations of this sort will become steadily more important in improving drawing performance.</P>
@@ -177,7 +177,7 @@ D_PolysetRecursiveTriangle (lp3, new, lp2);
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

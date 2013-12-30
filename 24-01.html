@@ -24,7 +24,7 @@
 <!--CHAPTER=24//-->
 <!--PAGES=449-453//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,19 +36,18 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 24<BR>Parallel Processing with the VGA
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Taking on Graphics Memory Four Bytes at a Time</FONT></H3>
+<H2><A NAME="Heading1"></A>Chapter 24<BR>Parallel Processing with the VGA</H2>
+<H3><A NAME="Heading2"></A>Taking on Graphics Memory Four Bytes at a Time</H3>
 <P>This heading refers to the ability of the VGA chip to manipulate up to four bytes of display memory at once. In particular, the VGA provides four ALUs (Arithmetic Logic Units) to assist the CPU during display memory writes, and this hardware is a tremendous resource in the task of manipulating the VGA&rsquo;s sizable frame buffer. The ALUs are actually only one part of the surprisingly complex data flow architecture of the VGA, but since they&rsquo;re involved in almost all memory access operations, they&rsquo;re a good place to begin.
 </P>
-<H3><A NAME="Heading3"></A><FONT COLOR="#000077">VGA Programming: ALUs and Latches</FONT></H3>
+<H3><A NAME="Heading3"></A>VGA Programming: ALUs and Latches</H3>
 <P>I&rsquo;m going to begin our detailed tour of the VGA at the heart of the flow of data through the VGA: the four ALUs built into the VGA&rsquo;s Graphics Controller (GC) circuitry. The ALUs (one for each display memory plane) are capable of ORing, ANDing, and XORing CPU data and display memory data together, as well as masking off some or all of the bits in the data from affecting the final result. All the ALUs perform the same logical operation at any given time, but each ALU operates on a different display memory byte.
 </P>
 <P>Recall that the VGA has four display memory planes, with one byte in each plane at any given display memory address. All four display memory bytes operated on are read from and written to the same address, but each ALU operates on a byte that was read from a different plane and writes the result to that plane. This arrangement allows four display memory bytes to be modified by a single CPU write (which must often be preceded by a single CPU read, as we will see). The benefit is vastly improved performance; if the CPU had to select each of the four planes in turn via <B>OUT</B>s and perform the four logical operations itself, VGA performance would slow to a crawl.</P>
 <P>Figure 24.1 is a simplified depiction of data flow around the ALUs. Each ALU has a matching latch, which holds the byte read from the corresponding plane during the last CPU read from display memory, even if that particular plane wasn&rsquo;t the plane that the CPU actually read on the last read access. (Only one byte can be read by the CPU with a single display memory read; the plane supplying the byte is selected by the Read Map register. However, the bytes at the specified address in all four planes are always read when the CPU reads display memory, and those four bytes are stored in their respective latches.)</P>
 <P>Each ALU logically combines the byte written by the CPU and the byte stored in the matching latch, according to the settings of bits 3 and 4 of the Data Rotate register (and the Bit Mask register as well, which I&rsquo;ll cover next time), and then writes the result to display memory. It is most important to understand that neither ALU operand comes directly from display memory. The temptation is to think of the ALUs as combining CPU data and the contents of the display memory address being written to, but they actually combine CPU data and the contents of the last display memory location read, which need not be the location being modified. The most common application of the ALUs is indeed to modify a given display memory location, but doing so requires a read from that location to load the latches before the write that modifies it. Omission of the read results in a write operation that logically combines CPU data n with whatever data happens to be in the latches from the last read, which is normally undesirable.</P>
 <P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/24-01.jpg',411,237 )"> --><IMG SRC="images/24-01.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/24-01.jpg',411,237)"> --><FONT COLOR="#000077"><B>Figure 24.1</B></FONT></A>&nbsp;&nbsp;<I>VGA ALU data flow.</I>
+<BR><A HREF="javascript:displayWindow('images/24-01.jpg',411,237)"> --><B>Figure 24.1</B></A>&nbsp;&nbsp;<I>VGA ALU data flow.</I>
 </P>
 <P>Occasionally, however, the independence of the latches from the display memory location being written to can be used to great advantage. The latches can be used to perform 4-byte-at-a-time (one byte from each plane) block copying; in this application, the latches are loaded with a read from the source area and written unmodified to the destination area. The latches can be written unmodified in one of two ways: By selecting write mode 1 (for an example of this, see the last chapter), or by setting the Bit Mask register to 0 so only the latched bits are written.
 </P>
@@ -67,7 +66,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

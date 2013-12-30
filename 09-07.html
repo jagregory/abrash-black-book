@@ -24,7 +24,7 @@
 <!--CHAPTER=09//-->
 <!--PAGES=185-188//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,15 +36,15 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H4 ALIGN="LEFT"><A NAME="Heading10"></A><FONT COLOR="#000077">Hard-Core Cycle Counting</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading10"></A>Hard-Core Cycle Counting</H4>
 <P>Next, we come to an item that cycle counters will love, especially since it involves apparently incorrect documentation on Intel&rsquo;s part. According to Intel&rsquo;s documents, all <B>RCR</B> and <B>RCL</B> instructions, which perform rotations through the Carry flag, as shown in Figure 9.4, take 9 cycles on the 386 when working with a register operand. My measurements indicate that the 9-cycle execution time almost holds true for <I>multibit</I> rotate-through-carries, which I&rsquo;ve timed at 8 cycles apiece; for example, <B>RCR AX,CL</B> takes 8 cycles on <I>my</I> 386, as does <B>RCL DX,2</B>. Contrast that with <B>ROR</B> and <B>ROL</B>, which can rotate the contents of a register any number of bits in just 3 cycles.</P>
 <P>However, rotating by one bit through the Carry flag does <I>not</I> take 9 cycles, contrary to Intel&rsquo;s <I>80386 Programmer&rsquo;s Reference Manual</I>, or even 8 cycles. In fact, <B>RCR</B> <I>reg</I>,1 and <B>RCL</B> <I>reg</I>,1 take 3 cycles, just like <B>ROR, ROL, SHR,</B> and <B>SHL</B>. At least, that&rsquo;s how fast they run on my 386, and I very much doubt that you&rsquo;ll find different execution times on other 386s. (Please let me know if you do, though!)</P>
 <P><A NAME="Fig4"><!-- </A><A HREF="javascript:displayWindow('images/09-04.jpg',413,249 )"> --><IMG SRC="images/09-04.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/09-04.jpg',413,249)"> --><FONT COLOR="#000077"><B>Figure 9.4</B></FONT></A>&nbsp;&nbsp;<I>Performing rotate instructions using the Carry flag.</I>
+<BR><A HREF="javascript:displayWindow('images/09-04.jpg',413,249)"> --><B>Figure 9.4</B></A>&nbsp;&nbsp;<I>Performing rotate instructions using the Carry flag.</I>
 </P>
 <P>Interestingly, according to Intel&rsquo;s <I>i486 Microprocessor Programmer&rsquo;s Reference Manual</I>, the 486 can <B>RCR</B> or <B>RCL</B> a register by one bit in 3 cycles, but takes between 8 and 30 cycles to perform a multibit register <B>RCR</B> or <B>RCL</B>!</P>
 <P>No great lesson here, just a caution to be leery of multibit <B>RCR</B> and <B>RCL</B> when performance matters&mdash;and to take cycle-time documentation with a grain of salt.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading11"></A><FONT COLOR="#000077">Hardwired Far Jumps</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading11"></A>Hardwired Far Jumps</H4>
 <P>Did you ever wonder how to code a far jump to an absolute address in assembly language? Probably not, but if you ever do, you&rsquo;re going to be glad for this next item, because the obvious solution doesn&rsquo;t work. You might think all it would take to jump to, say, 1000:5 would be <B>JMP FAR PTR 1000:5</B>, but you&rsquo;d be wrong. That won&rsquo;t even assemble. You might then think to construct in memory a far pointer containing 1000:5, as in the following:</P>
 <!-- CODE SNIP //-->
 <PRE>
@@ -82,7 +82,7 @@ start:
 <P>By the way, if you&rsquo;re wondering how I figured this out, I merely applied my good friend Dan Illowsky&rsquo;s long-standing rule for dealing with MASM:
 </P>
 <P>If the obvious doesn&rsquo;t work (and it usually doesn&rsquo;t), just try everything you can think of, no matter how ridiculous, until you find something that does&mdash;a rule with plenty of history on its side.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading12"></A><FONT COLOR="#000077">Setting 32-Bit Registers: Time versus Space</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading12"></A>Setting 32-Bit Registers: Time versus Space</H4>
 <P>To finish up this chapter, consider these two items. First, in 32-bit protected mode,
 </P>
 <!-- CODE SNIP //-->
@@ -125,7 +125,7 @@ move  bx,-1
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

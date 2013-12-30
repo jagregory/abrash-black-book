@@ -24,7 +24,7 @@
 <!--CHAPTER=19//-->
 <!--PAGES=375-377//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,7 +36,7 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H3><A NAME="Heading7"></A><FONT COLOR="#000077">Faster Addressing and More</FONT></H3>
+<H3><A NAME="Heading7"></A>Faster Addressing and More</H3>
 <P>I&rsquo;ll spend the rest of this chapter covering a variety of Pentium optimization tips. For starters, effective address calculations (that is, the addition and scaling required to calculate a memory operand&rsquo;s address, as for example in <B>MOV EAX,[EBX+ECX*2+4]</B>) never take any extra cycles on the Pentium (other than possibly an AGI cycle), even for the use of base+index addressing (as in <B>MOV [ESI+EDI],EAX</B>) or scaling (*2, *4, or *8, as in <B>INC ARRAY[ESI*4]</B>). On the 486, both of the latter cases cause a 1-cycle penalty. The faster effective address calculations have the side effect of making <B>LEA</B> very attractive as an arithmetic instruction. <B>LEA</B> can add any two registers, one of which can be multiplied by one, two, four, or eight, plus a constant value, and can store the result in any register&mdash;all in one cycle, apart from AGIs. Not only that, but as we&rsquo;ll see in the next chapter, <B>LEA</B> can go through either pipe, whereas <B>SHL</B> can only go through the U-pipe, so <B>LEA</B> is often a superior choice for multiplication by three, four, five, eight, or nine. (<B>ADD</B> is the best choice for multiplication by two.) If you use <B>LEA</B> for arithmetic, do remember that unlike <B>ADD</B> and <B>SHL</B>, it doesn&rsquo;t modify any flags.</P>
 <P>As on the 486, memory operands should not cross any more alignment boundaries than absolutely necessary. Word operands should be word-aligned, dword operands should be dword-aligned, and qword operands (double-precision variables) should be qword-aligned. Spanning a dword boundary, as in</P>
 <!-- CODE SNIP //-->
@@ -67,7 +67,7 @@ mov eax,[ebx]
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

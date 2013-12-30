@@ -24,7 +24,7 @@
 <!--CHAPTER=34//-->
 <!--PAGES=650-652//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -42,18 +42,18 @@
 <P>Yet another approach to color cycling is that of loading a bit of the DAC during each horizontal blanking period. Combine that with counting scan lines, and you could vastly expand the number of simultaneous on-screen colors by cycling colors <I>as a frame is displayed</I>, so that the color set changes from scan line to scan line down the screen.</P>
 <P>The possibilities are endless. However, were I to be writing 256-color software that used color cycling, I&rsquo;d find out how many colors could be cycled after the start of vertical sync on the slowest computer I expected the software to run on, I&rsquo;d lop off at least 10 percent for a safety margin, and I&rsquo;d structure my program so that no color cycling set exceeded that size, interleaving several color cycling sets if necessary.</P>
 <P>That&rsquo;s what <I>I&rsquo;d</I> do. Don&rsquo;t let yourself be held back by my limited imagination, though! Color cycling may be the most complicated of all the color control techniques, but it&rsquo;s also the most powerful.</P>
-<H3><A NAME="Heading9"></A><FONT COLOR="#000077">Odds and Ends</FONT></H3>
+<H3><A NAME="Heading9"></A>Odds and Ends</H3>
 <P>In my experience, when relying on the autoincrementing feature while loading the DAC, the Write Index register wraps back from 255 to 0, and likewise when you load a block of registers through the BIOS. So far as I know, this is a characteristic of the hardware, and should be consistent; also, Richard Wilton documents this behavior for the BIOS in the VGA bible, <I>Programmer&rsquo;s Guide to PC Video Systems, Second Edition</I> (Microsoft Press), so you should be able to count on it. Not that I see that DAC index wrapping is especially useful, but it never hurts to understand exactly how your resources behave, and I never know when one of you might come up with a serviceable application for any particular quirk.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading10"></A><FONT COLOR="#000077">The DAC Mask</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading10"></A>The DAC Mask</H4>
 <P>There&rsquo;s one register in the DAC that I haven&rsquo;t mentioned yet, the DAC Mask register at 03C6H. The operation of this register is simple but powerful; it can mask off any or all of the 8 bits of pixel information coming into the DAC from the VGA. Whenever a bit of the DAC Mask register is 1, the corresponding bit of pixel information is passed along to the DAC to be used in looking up the RGB triplet to be sent to the screen. Whenever a bit of the DAC Mask register is 0, the corresponding pixel bit is ignored, and a 0 is used for that bit position in all look-ups of RGB triplets. At the extreme, a DAC Mask setting of 0 causes all 8 bits of pixel information to be ignored, so DAC location 0 is looked up for every pixel, and the entire screen displays the color stored in DAC location 0. This makes setting the DAC Mask register to 0 a quick and easy way to blank the screen.
 </P>
-<H4 ALIGN="LEFT"><A NAME="Heading11"></A><FONT COLOR="#000077">Reading the DAC</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading11"></A>Reading the DAC</H4>
 <P>The DAC can be read directly, via the DAC Read Index register at 3C7H and the DAC Data register at 3C9H, in much the same way as it can be written directly by way of the DAC Write Index register&mdash;complete with autoincrementing the DAC Read Index register after every three reads. Everything I&rsquo;ve said about writing to the DAC applies to reading from the DAC. In fact, reading from the DAC can even cause snow, just as loading the DAC does, so it should ideally be performed during vertical blanking.
 </P>
 <P>The DAC can also be read by way of the BIOS in either of two ways. <B>INT</B> 10H, function 10H (AH=10H), subfunction 15H (AL=15H) reads out a single DAC location, specified by BX; this function returns the RGB triplet stored in the specified location with the red component in the lower 6 bits of DH, the green component in the lower 6 bits of CH, and the blue component in the lower 6 bits of CL.</P>
 <P><B>INT</B> 10H, function 10H (AH=10H), subfunction 17H (AL=17H) reads out a block of DAC locations of length CX, starting with the location specified by BX. ES:DX must point to the buffer in which the RGB values from the specified block of DAC locations are to be stored. The form of this buffer (RGB, RGB, RGB ..., with three bytes per RGB triple) is exactly the same as that of the buffer used when calling the BIOS to load a block of registers.</P>
 <P>Listing 34.1 illustrates reading the DAC both through the BIOS block-read function and directly, with the direct-read code capable of conditionally assembling to either guard against interrupts or not and to use <B>REP INSB</B> or not. As you can see, reading the DAC settings is very much symmetric with setting the DAC.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading12"></A><FONT COLOR="#000077">Cycling Down</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading12"></A>Cycling Down</H4>
 <P>And so, at long last, we come to the end of our discussion of color control on the VGA. If it has been more complex than anyone might have imagined, it has also been most rewarding. There&rsquo;s as much obscure but very real potential in color control as there is anywhere on the VGA, which is to say that there&rsquo;s a very great deal of potential indeed. Put color cycling or color paging together with the page flipping and image drawing techniques explored elsewhere in this book, and you&rsquo;ll leave the audience gasping and wondering &ldquo;How the heck did they <I>do</I> that?&rdquo;</P><P><BR></P>
 <CENTER>
 <TABLE BORDER>
@@ -67,7 +67,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

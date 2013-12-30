@@ -24,7 +24,7 @@
 <!--CHAPTER=03//-->
 <!--PAGES=051-053//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -121,7 +121,7 @@ pztime &ltfilename&gt
 </PRE>
 <!-- END CODE SNIP //-->
 <P>In fact, that&rsquo;s exactly how I timed each of the listings in this book. Code fragments you write yourself can be timed in just the same way. If you wish to time code directly in place in your programs, rather than in the test-bed program of Listing 3.2, simply insert calls to <B>ZTimerOn, ZTimerOff</B>, and <B>ZTimerReport</B> in the appropriate places and link PZTIMER to your program.</P>
-<H3><A NAME="Heading12"></A><FONT COLOR="#000077">The Long-Period Zen Timer</FONT></H3>
+<H3><A NAME="Heading12"></A>The Long-Period Zen Timer</H3>
 <P>With a few exceptions, the Zen timer presented above will serve us well for the remainder of this book since we&rsquo;ll be focusing on relatively short code sequences that generally take much less than 54 ms to execute. Occasionally, however, we will need to time longer intervals. What&rsquo;s more, it is very likely that you will want to time code sequences longer than 54  ms at some point in your programming career. Accordingly, I&rsquo;ve also developed a Zen timer for periods longer than 54  ms. The long-period Zen timer (so named by contrast with the precision Zen timer just presented) shown in Listing 3.5 can measure periods up to one hour in length.
 </P>
 <P>The key difference between the long-period Zen timer and the precision Zen timer is that the long-period timer leaves interrupts enabled during the timing period. As a result, timer interrupts are recognized by the PC, allowing the BIOS to maintain an accurate system clock time over the timing period. Theoretically, this enables measurement of arbitrarily long periods. Practically speaking, however, there is no need for a timer that can measure more than a few minutes, since the DOS time of day and date functions (or, indeed, the DATE and TIME commands in a batch file) serve perfectly well for longer intervals. Since very long timing intervals aren&rsquo;t needed, the long-period Zen timer uses a simplified means of calculating elapsed time that is limited to measuring intervals of an hour or less. If a period longer than an hour is timed, the long-period Zen timer prints a message to the effect that it is unable to time an interval of that length.</P>
@@ -139,7 +139,7 @@ pztime &ltfilename&gt
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

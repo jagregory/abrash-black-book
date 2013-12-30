@@ -24,7 +24,7 @@
 <!--CHAPTER=11//-->
 <!--PAGES=226-231//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -39,7 +39,7 @@
 <P>Well, there&rsquo;s only one instruction other than <B>POPF</B> that loads the FLAGS register directly from the stack, and that&rsquo;s <B>IRET</B>, which loads the FLAGS register from the stack as it branches, as shown in Figure 11.5. iret has no known bugs of the sort that plague <B>POPF</B>, so it&rsquo;s certainly a candidate to replace popf in non-interruptible applications. Unfortunately, <B>IRET</B> loads the FLAGS register with the <I>third</I> word down on the stack, not the word on top of the stack, as is the case with <B>POPF</B>; the far return address that <B>IRET</B> pops into CS:IP lies between the top of the stack and the word popped into the FLAGS register.</P>
 <P>Obviously, the segment:offset that <B>IRET</B> expects to find on the stack above the pushed flags isn&rsquo;t present when the stack is set up for <B>POPF</B>, so we&rsquo;ll have to adjust the stack a bit before we can substitute <B>IRET</B> for <B>POPF</B>. What we&rsquo;ll have to do is push the segment:offset of the instruction after our workaround code onto the stack right above the pushed flags. <B>IRET</B> will then branch to that address and pop the flags, ending up at the instruction after the workaround code with the flags popped. That&rsquo;s just the result that would have occurred had we executed <B>POPF</B>&mdash;WITH the bonus that no interrupts can accidentally occur when the Interrupt flag is 0 both before and after the pop.</P>
 <P><A NAME="Fig4"><!-- </A><A HREF="javascript:displayWindow('images/11-04.jpg',412,383 )"> --><IMG SRC="images/11-04.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/11-04.jpg',412,383)"> --><FONT COLOR="#000077"><B>Figure 11.4</B></FONT></A>&nbsp;&nbsp;<I>The operation of POPF.</I>
+<BR><A HREF="javascript:displayWindow('images/11-04.jpg',412,383)"> --><B>Figure 11.4</B></A>&nbsp;&nbsp;<I>The operation of POPF.</I>
 </P>
 <P>How can we push the segment:offset of the next instruction? Well, finding the offset of the next instruction by performing a near call to that instruction is a tried-and-true trick. We can do something similar here, but in this case we need a far call, since <B>IRET</B> requires both a segment and an offset. We&rsquo;ll also branch backward so that the address pushed on the stack will point to the instruction we want to continue with. The code works out like this:</P>
 <!-- CODE //-->
@@ -63,7 +63,7 @@ popfskip:
 </PRE>
 <!-- END CODE //-->
 <P><A NAME="Fig5"><!-- </A><A HREF="javascript:displayWindow('images/11-05.jpg',410,520 )"> --><IMG SRC="images/11-05.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/11-05.jpg',410,520)"> --><FONT COLOR="#000077"><B>Figure 11.5</B></FONT></A>&nbsp;&nbsp;<I>The operation of IRET.</I>
+<BR><A HREF="javascript:displayWindow('images/11-05.jpg',410,520)"> --><B>Figure 11.5</B></A>&nbsp;&nbsp;<I>The operation of IRET.</I>
 </P>
 <P>The operation of this code is illustrated in Figure 11.6.
 </P>
@@ -105,7 +105,7 @@ EMULATE_POPFmacro
 </PRE>
 <!-- END CODE SNIP //-->
 <P><A NAME="Fig6"><!-- </A><A HREF="javascript:displayWindow('images/11-06.jpg',409,447 )"> --><IMG SRC="images/11-06.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/11-06.jpg',409,447)"> --><FONT COLOR="#000077"><B>Figure 11.6</B></FONT></A>&nbsp;&nbsp;<I>Workaround code for the POPF bug.</I>
+<BR><A HREF="javascript:displayWindow('images/11-06.jpg',409,447)"> --><B>Figure 11.6</B></A>&nbsp;&nbsp;<I>Workaround code for the POPF bug.</I>
 </P>
 <P>The standard version of <B>EMULATE_POPF</B> is 6 bytes longer than <B>POPF</B> and much slower, as you&rsquo;d expect given that it involves three branches. Anyone in his/her right mind would prefer <B>POPF</B> to a larger, slower, three-branch macro&mdash;given a choice. In noncode, however, there&rsquo;s no choice here; the safer&mdash;if slower&mdash;approach is the best. (Having people associate your programs with crashed computers is <I>not</I> a desirable situation, no matter how unfair the circumstances under which it occurs.)</P>
 <P>And now you know the nature of and the workaround for the <B>POPF</B> bug. Whether you ever need the workaround or not, it&rsquo;s a neatly packaged example of the tremendous flexibility of the x86 instruction set.</P><P><BR></P>
@@ -121,7 +121,7 @@ EMULATE_POPFmacro
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

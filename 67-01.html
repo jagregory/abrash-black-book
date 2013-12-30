@@ -24,7 +24,7 @@
 <!--CHAPTER=67//-->
 <!--PAGES=1223-1227//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,14 +36,13 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 67<BR>Sorted Spans in Action
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Implementing Independent Span Sorting for Rendering without Overdraw</FONT></H3>
+<H2><A NAME="Heading1"></A>Chapter 67<BR>Sorted Spans in Action</H2>
+<H3><A NAME="Heading2"></A>Implementing Independent Span Sorting for Rendering without Overdraw</H3>
 <P>In Chapter 66, we dove headlong into the intricacies of hidden surface removal by way of z-sorted (actually, 1/z-sorted) spans. At the end of that chapter, I noted that we were currently using 1/z-sorted spans in Quake, but it was unclear whether we&rsquo;d switch back to BSP order. Well, some time after that writing, it&rsquo;s become clear: We&rsquo;re back to sorting spans by BSP order.
 </P>
 <P>In Robert A. Heinlein&rsquo;s wonderful story &ldquo;The Man Who Sold the Moon,&rdquo; the chief engineer of the Moon rocket project tries to figure out how to get a payload of three astronauts to the Moon and back. He starts out with a four-stage rocket design, but finds that it won&rsquo;t do the job, so he adds a fifth stage. The fifth stage helps, but not quite enough, &ldquo;Because,&rdquo; he explains, &ldquo;I&rsquo;ve had to add in too much dead weight, that&rsquo;s why.&rdquo; (The dead weight is the control and safety equipment that goes with the fifth stage.) He then tries adding yet another stage, only to find that the sixth stage actually results in a net slowdown. In the end, he has to give up on the three-person design and build a one-person spacecraft instead.</P>
 <P>1/z-sorted spans in Quake turned out pretty much the same way, as we&rsquo;ll see in a moment. First, though, I&rsquo;d like to note up front that this chapter is very technical and builds heavily on material I covered earlier in this section of the book; if you haven&rsquo;t already read Chapters 59 through 66, you really should. Make no mistake about it, this is commercial-quality stuff; in fact, the code in this chapter uses the same sorting technique as the test version of Quake, QTEST1.ZIP, that id Software placed on the Internet in early March 1996. This material is the Real McCoy, true reports from the leading edge, and I trust that you&rsquo;ll be patient if careful rereading and some occasional catch-up reading of earlier chapters are required to absorb everything contained herein. Besides, the ultimate reference for any design is working code, which you&rsquo;ll find, in part, in Listing 67.1, and in its entirety in the file DDJZSORT.ZIP on the CD-ROM.</P>
-<H3><A NAME="Heading3"></A><FONT COLOR="#000077">Quake and Sorted Spans</FONT></H3>
+<H3><A NAME="Heading3"></A>Quake and Sorted Spans</H3>
 <P>As you&rsquo;ll recall from Chapter 66, Quake uses sorted spans to get zero overdraw while rendering the world, thereby both improving overall performance and leveling frame rates by speeding up scenes that would otherwise experience heavy overdraw. Our original design used spans sorted by BSP order; because we traverse the world BSP tree from front-to-back relative to the viewpoint, the order in which BSP nodes are visited is a guaranteed front-to-back sorting order. We simply gave each node an increasing BSP sequence number as it was visited, set each polygon&rsquo;s sort key to the BSP sequence number of the node (BSP splitting plane) it lay on, and used those sort keys when generating spans.
 </P>
 <P>(In a change from earlier designs, polygons now are stored on nodes, rather than leaves, which are the convex subspaces carved out by the BSP tree. Visits to potentially visible leaves are used only to mark that the polygons that touch those leaves are visible and need to be drawn, and each marked-visible polygon is then drawn after everything in front of its node has been drawn. This results in less BSP splitting of polygons, which is A Good Thing, as explained below.)</P>
@@ -64,7 +63,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

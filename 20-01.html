@@ -24,7 +24,7 @@
 <!--CHAPTER=20//-->
 <!--PAGES=381-386//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,21 +36,20 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 20<BR>Pentium Rules
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">How Your Carbon-Based Optimizer Can Put the &ldquo;Super&rdquo; in Superscalar</FONT></H3>
+<H2><A NAME="Heading1"></A>Chapter 20<BR>Pentium Rules</H2>
+<H3><A NAME="Heading2"></A>How Your Carbon-Based Optimizer Can Put the &ldquo;Super&rdquo; in Superscalar</H3>
 <P>At the 1983 West Coast Computer Faire, my friend Dan Illowsky, Andy Greenberg (co-author of Wizardry, at that time the best-selling computer game ever), and I had an animated discussion about starting a company in the then-budding world of microcomputer software. One hot new software category at the time was educational software, and one of the hottest new educational software companies was Spinnaker Software. Andy used Spinnaker as an example of a company that had been aimed at a good market and started up properly, and was succeeding as a result. Dan didn&rsquo;t buy this; his point was that Spinnaker had been given a bundle of money to get off the ground, and was growing only by spending a lot of that money in order to move its products. &ldquo;Heck,&rdquo; said Dan, &ldquo;I could get that kind of market share too if I gave away a fifty-dollar bill with each of my games.&rdquo;
 </P>
 <P>Remember, this was a time when a program, two diskette drives (for duplicating disks), and a couple of ads were enough to start a company, and, in fact, Dan built a very successful game company out of not much more than that. (I&rsquo;ll never forget coming to visit one day and finding his apartment stuffed literally to the walls and ceiling with boxes of diskettes and game packages; he had left a narrow path to the computer so his wife and his mother could get in there to duplicate disks.) Back then, the field was wide open, with just about every competent programmer thinking of striking out on his or her own to try to make their fortune, and Dan and Andy and I were no exceptions. In short, we were having a perfectly normal conversation, and Dan&rsquo;s comment was both appropriate, and, in retrospect, accurate.</P>
 <P>Appropriate, save for one thing: We were having this conversation while walking through a low-rent section of Market Street in San Francisco at night. A bum sitting against a nearby building overheard Dan, and rose up, shouting in a quavering voice loud enough to wake the dead, &ldquo;Fifty-dollar bill! Fifty-dollar bill! He&rsquo;s giving away fifty-dollar bills!&rdquo; We ignored him; undaunted, he followed us for a good half mile, stopping every few feet to bellow &ldquo;fifty-dollar bill!&rdquo; No one else seemed to notice, and no one hassled us, but I was mighty happy to get to the sanctuary of the Fairmont Hotel and slip inside.</P>
 <P>The point is, most actions aren&rsquo;t inherently good or bad; it&rsquo;s all a matter of context. If Dan had uttered the words &ldquo;fifty-dollar bill&rdquo; on the West Coast Faire&rsquo;s show floor, no one would have batted an eye. If he had said it in a slightly worse part of town than he did, we might have learned just how fast the three of us could run.</P>
 <P>Similarly, there&rsquo;s no such thing as inherently fast code, only fast code in context. At the moment, the context is the Pentium, and the truth is that a sizable number of the x86 optimization tricks that you and I have learned over the past ten years are obsolete on the Pentium. True, the Pentium contains what amounts to about one-and-a-half 486s, but, as we&rsquo;ll see shortly, that doesn&rsquo;t mean that optimized Pentium code looks much like optimized 486 code, or that fast 486 code runs particularly well on a Pentium. (Fast Pentium code, on the other hand, does tend to run well on the 486; the only major downsides are that it&rsquo;s larger, and that the <B>FXCH</B> instruction, which is largely free on the Pentium, is expensive on the 486.) So discard your x86 preconceptions as we delve into superscalar optimization for this one-of-a-kind processor.</P>
-<H3><A NAME="Heading3"></A><FONT COLOR="#000077">An Instruction in Every Pipe</FONT></H3>
+<H3><A NAME="Heading3"></A>An Instruction in Every Pipe</H3>
 <P>In the last chapter, we took a quick tour of the Pentium&rsquo;s architecture, and started to look into the Pentium&rsquo;s optimization rules. Now we&rsquo;re ready to get to the key rules, those having to do with the Pentium&rsquo;s most unique and powerful feature, the ability to execute more than one instruction per cycle. This is known as <I>superscalar execution</I>, and has heretofore been the sole province of fast RISC CPUs. The Pentium has two integer execution units, called the <I>U-pipe</I> and the <I>V-pipe</I>, which can execute two separate instructions simultaneously, potentially doubling performance&mdash;but only under the proper conditions. (There is also a separate floating-point execution unit that I won&rsquo;t have the space to cover in this book.) Your job, as a performance programmer, is to understand the conditions needed for superscalar performance and make sure they&rsquo;re met, and that&rsquo;s what this and the next chapters are all about.</P>
 <P>The two pipes are not independent processors housed in a single chip; that is, the Pentium is not like having two 486s in a single computer. Rather, the two pipes are integral, parallel parts of the same processor. They operate on the same instruction stream, with the V-pipe simply executing the next instruction that the U-pipe would have handled, as shown in Figure 20.1. What the Pentium does, pure and simple, is execute a single instruction stream and, whenever possible, take the next two waiting instructions and execute both at once, rather than one after the other.</P>
 <P>The U-pipe is the more capable of the two pipes, able to execute any instruction in the Pentium&rsquo;s instruction set. (A number of instructions actually use both pipes at once. Logically, though, you can think of such instructions as U-pipe instructions, and of the Pentium optimization model as one in which the U-pipe is able to execute all instructions and is always active, with the objective being to keep the V-pipe also working as much of the time as possible.) The U-pipe is generally similar to a full 486 in terms of both capabilities and instruction cycle counts. The V-pipe is a 486 subset, able to execute simple instructions such as <B>MOV</B> and <B>ADD</B>, but unable to handle <B>MUL, DIV</B>, string instructions, any sort of rotation or shift, or even <B>ADC</B> or <B>SBB</B>.</P>
 <P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/20-01.jpg',407,335 )"> --><IMG SRC="images/20-01.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/20-01.jpg',407,335)"> --><FONT COLOR="#000077"><B>Figure 20.1</B></FONT></A>&nbsp;&nbsp;<I>The Pentium&rsquo;s two pipes.</I>
+<BR><A HREF="javascript:displayWindow('images/20-01.jpg',407,335)"> --><B>Figure 20.1</B></A>&nbsp;&nbsp;<I>The Pentium&rsquo;s two pipes.</I>
 </P>
 <P>Getting two instructions executing simultaneously in the two pipes is trickier than it sounds, not only because the V-pipe can handle only a relatively small subset of the Pentium&rsquo;s instruction set, but also because those instructions that the V-pipe can handle are able to pair only with certain U-pipe instructions. For example, <B>MOVSD</B> uses both pipes, so no instruction can be executed in parallel with <B>MOVSD</B>.</P>
 <TABLE WIDTH="100%"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><SMALL><I>The use of both pipes does make <B>MOVSD</B> nearly twice as fast on the Pentium as on the 486, but it&rsquo;s nonetheless slower than using equivalent simpler instructions that allow for superscalar execution. Stick to the Pentium&rsquo;s RISC-like instructions&mdash;the pairable instructions I&rsquo;ll discuss next&mdash;when you&rsquo;re seeking maximum performance, with just a few exceptions such as <B>REP MOVS</B> and <B>REP STOS</B>.</I></SMALL>
@@ -70,7 +69,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

@@ -24,7 +24,7 @@
 <!--CHAPTER=16//-->
 <!--PAGES=295-300//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,9 +36,8 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 16<BR>There Ain&rsquo;t No Such Thing as the Fastest Code
-</FONT></H2>
-<H3><A NAME="Heading2"></A><FONT COLOR="#000077">Lessons Learned in the Pursuit of the Ultimate Word Counter</FONT></H3>
+<H2><A NAME="Heading1"></A>Chapter 16<BR>There Ain&rsquo;t No Such Thing as the Fastest Code</H2>
+<H3><A NAME="Heading2"></A>Lessons Learned in the Pursuit of the Ultimate Word Counter</H3>
 <P>I remember reading an overview of C<SMALL>++</SMALL> development tools for Windows in a past issue of <I>PC Week</I>. In the lower left corner was the familiar box listing the 10 leading concerns of corporate buyers when it comes to C<SMALL>++</SMALL>. Boiled down, the list looked like this, in order of descending importance to buyers:</P>
 <DL>
 <DD><B>1.</B>&nbsp;&nbsp;Debugging
@@ -53,7 +52,7 @@
 <DD><B>10.</B>&nbsp;&nbsp;Windows development cycle automation
 </DL>
 <P>Is something missing here? You bet your maximum <I>gluteus</I> something&rsquo;s missing&mdash;nowhere on that list is there so much as one word about how fast the compiled code runs! I&rsquo;m not saying that performance is everything, but optimization isn&rsquo;t even down there at number 10, below online help! Ye gods and little fishes! We are talking here about people who would take a bus from LA to New York instead of a plane because it had a cleaner bathroom; who would choose a painting from a Holiday Inn over a Matisse because it had a fancier frame; who would buy a Yugo instead of&mdash;well, hell, anything&mdash;because it had a nice owner&rsquo;s manual and particularly attractive keys. We are talking about people who are focusing on means, and have forgotten about ends. We are talking about people with no programming souls.</P>
-<H3><A NAME="Heading3"></A><FONT COLOR="#000077">Counting Words in a Hurry</FONT></H3>
+<H3><A NAME="Heading3"></A>Counting Words in a Hurry</H3>
 <P>What are we to make of this? At the very least, we can safely guess that very few corporate buyers ever enter optimization contests. Most of my readers do, however; in fact, far more than I thought ever would, but that gladdens me to no end. I issued my first optimization challenge in a &ldquo;Pushing the Envelope&rdquo; column in <I>PC TECHNIQUES</I> back in 1991, and was deluged by respondents who, one might also gather, do not live by <I>PC Week</I>.</P>
 <P>That initial challenge was sparked by a column David Gerrold wrote (also in <I>PC TECHNIQUES</I> ) concerning the matter of counting the number of words in a document; David turned up some pretty interesting optimization issues along the way. David did all his coding in Pascal, pointing out that while an assembly language version would probably be faster, his Pascal utility worked properly and was fast enough for him.</P>
 <P>It wasn&rsquo;t, however, fast enough for me. The logical starting place for speeding up word counting would be David&rsquo;s original Pascal code, but I&rsquo;m much more comfortable with C, so Listing 16.1 is a loose approximation of David&rsquo;s word count program, translated to C. I left out a few details, such as handling comment blocks, partly because I don&rsquo;t use such blocks myself, and partly so we can focus on optimizing the core word-counting code. As Table 16.1 indicates, Listing 16.1 counts the words in a 104,448-word file in 4.6 seconds. The file was stored on a RAM disk, and Listing 16.1 was compiled with Borland C<SMALL>++</SMALL> with all optimization enabled. A RAM disk was used partly because it returns consistent times&mdash;no seek times, rotational latency, or cache to muddy the waters&mdash;and partly to highlight word-counting speed rather than disk access speed.</P>
@@ -171,7 +170,7 @@
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

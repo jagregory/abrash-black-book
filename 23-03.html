@@ -24,7 +24,7 @@
 <!--CHAPTER=23//-->
 <!--PAGES=430-441//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -36,7 +36,7 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<H4 ALIGN="LEFT"><A NAME="Heading6"></A><FONT COLOR="#000077">Linear Planes and True VGA Modes</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading6"></A>Linear Planes and True VGA Modes</H4>
 <P>The VGA&rsquo;s memory is organized as four 64K planes. Each of these planes is a linear bitmap; that is, each byte from a given plane controls eight adjacent pixels on the screen, the next byte controls the next eight pixels, and so on to the end of the scan line. The next byte then controls the first eight pixels of the next scan line, and so on to the end of the screen.
 </P>
 <P>The VGA adds a powerful twist to linear addressing; the logical width of the screen in VGA memory need not be the same as the physical width of the display. The programmer is free to define all or part of the VGA&rsquo;s large memory map as a logical screen of up to 4,080 pixels in width, and then use the physical screen as a window onto any part of the logical screen. What&rsquo;s more, a virtual screen can have any logical height up to the capacity of VGA memory. Such a virtual screen could be used to store a spreadsheet or a CAD/CAM drawing, for instance. As we will see shortly, the VGA provides excellent hardware for moving around the virtual screen; taken together, the virtual screen and the VGA&rsquo;s smooth panning capabilities can generate very impressive effects.</P>
@@ -44,7 +44,7 @@
 <P>Each memory plane provides one bit of data for each pixel. The bits for a given pixel from each of the four planes are combined into a nibble that serves as an address into the VGA&rsquo;s palette RAM, which maps the one of 16 colors selected by display memory into any one of 64 colors, as shown in Figure 23.1. All sixty-four mappings for all 16 colors are independently programmable. (We&rsquo;ll discuss the VGA&rsquo;s color capabilities in detail starting in Chapter 33.)</P>
 <P>The VGA BIOS supports several graphics modes (modes 4, 5, and 6) in which VGA memory appears not to be organized as four linear planes. These modes exist for CGA compatibility only, and are not true VGA graphics modes; use them when you need CGA-type operation and ignore them the rest of the time. The VGA&rsquo;s special features are most powerful in true VGA modes, and it is on the 16-color true-VGA modes (modes 0DH (320x200), 0EH (640x200), 10H (640x350), and 12H (640x480)) that I will concentrate in this part of the book. There is also a 256-color mode, mode 13H, that appears to be a single linear plane, but, as we will see in Chapters 31-34 and 47-49 of this book, that&rsquo;s a polite fiction&mdash;and discarding that fiction gives us an opportunity to unleash the power of the VGA&rsquo;s hardware for vastly better performance. VGA text modes, which feature soft fonts, are another matter entirely, upon which we&rsquo;ll touch from time to time.</P>
 <P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/23-01.jpg',409,240 )"> --><IMG SRC="images/23-01.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/23-01.jpg',409,240)"> --><FONT COLOR="#000077"><B>Figure 23.1</B></FONT></A>&nbsp;&nbsp;<I>Video data from memory to pixel.</I>
+<BR><A HREF="javascript:displayWindow('images/23-01.jpg',409,240)"> --><B>Figure 23.1</B></A>&nbsp;&nbsp;<I>Video data from memory to pixel.</I>
 </P>
 <P>With that background out of the way, we can get on to the sample VGA program shown in Listing 23.1. I suggest you run the program before continuing, since the explanations will mean far more to you if you&rsquo;ve seen the features in action.
 </P>
@@ -621,7 +621,7 @@ cseg    ends
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

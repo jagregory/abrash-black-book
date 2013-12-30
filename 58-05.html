@@ -24,7 +24,7 @@
 <!--CHAPTER=58//-->
 <!--PAGES=1091-1093//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -82,7 +82,7 @@ SCANOFFSET = SCANOFFSET + SCANWIDTH
 <!-- END CODE //-->
 <P>And there you have it: A five to 10-times speedup of a decent assembly language texture mapper. All it took was some help from my friends, a good, stiff jolt of right-brain thinking, and some solid left-brain polishing&mdash;plus the knowledge that such a speedup was possible. Treat every optimization task as if John Miles has just written to inform you that he&rsquo;s made it faster than your wildest dreams, and you&rsquo;ll be amazed at what you can do!
 </P>
-<H3><A NAME="Heading8"></A><FONT COLOR="#000077">Texture Mapping Notes</FONT></H3>
+<H3><A NAME="Heading8"></A>Texture Mapping Notes</H3>
 <P>Listing 58.3 contains no 486 pipeline stalls; it has Pentium stalls, but not much can be done for them because of the size prefix on <B>ADD EDX,ECX</B>, which takes 1 cycle to go through the U-pipe, and shuts down the V-pipe for that cycle. Listing 58.4, on the other hand, has been rearranged to eliminate all Pentium stalls save one. When the Y coordinate fractional part carries and ESI advances, the code executes as follows:</P>
 <!-- CODE SNIP //-->
 <PRE>
@@ -112,7 +112,7 @@ ADD EDX,EBP     ;cycle 3 V-pipe
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

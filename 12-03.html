@@ -24,7 +24,7 @@
 <!--CHAPTER=12//-->
 <!--PAGES=241-243//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -38,7 +38,7 @@
 <P><BR></P>
 <P>There is, of course, no guarantee that I&rsquo;m entirely correct about the optimizations discussed in this chapter. Without knowing the internals of the 486, all I can do is time code and make inferences from the results; I invite you to deduce your own rules and cross-check them against mine. Also, most likely there are other optimizations that I&rsquo;m unaware of. If you have further information on these or any other undocumented optimizations, please write and let me know. And, of course, if anyone from Intel is reading this and wants to give us the gospel truth, please do!
 </P>
-<H4 ALIGN="LEFT"><A NAME="Heading8"></A><FONT COLOR="#000077">Stack Addressing and Address Pipelining</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading8"></A>Stack Addressing and Address Pipelining</H4>
 <P>Rule #2A: Rule #2 sometimes, but not always, applies to the stack pointer when it is implicitly used to point to memory.
 </P>
 <P>Intel states that the stack pointer is an implied destination register for <B>CALL</B>, <B>ENTER</B>, <B>LEAVE</B>, <B>RET</B>, <B>PUSH</B>, and <B>POP</B> (which alter (E)SP), and that it is the implied base addressing register for <B>PUSH</B>, <B>POP</B>, and <B>RET</B> (which use (E)SP to address memory). Intel then implies that the aforementioned addressing pipeline penalty is incurred whenever the stack pointer is used as a destination by one of the first set of instructions and is then immediately used to address memory by one of the second set. This raises the specter of unpleasant programming contortions such as intermixing <B>PUSH</B>es and <B>POP</B>s with other instructions to avoid interrupting the addressing pipeline. Fortunately, matters are actually not so grim as Intel&rsquo;s documentation would indicate; my tests indicate that the addressing pipeline penalty pops up only spottily when the stack pointer is involved.</P>
@@ -82,7 +82,7 @@ pop    ax
 <P>loses two cycles for the same reason.
 </P>
 <P>I certainly haven&rsquo;t tried all possible combinations, but the results so far indicate that the stack pointer incurs the addressing pipeline penalty only if (E)SP is the <I>explicit</I> destination of one instruction and is then used by one of the two following instructions to address memory. So, for instance, SP isn&rsquo;t the explicit operand of <B>POP AX&mdash;</B>AX is&mdash;and no cycles are lost if <B>POP AX</B> is followed by <B>POP</B> or <B>RET</B>. Happily, then, we need not worry about the sequence in which we use <B>PUSH</B> and <B>POP</B>. However, adding to, moving to, or subtracting from the stack pointer should ideally be done at least two cycles before <B>PUSH</B>, <B>POP</B>, <B>RET</B>, or any other instruction that uses the stack pointer to address memory.</P>
-<H4 ALIGN="LEFT"><A NAME="Heading9"></A><FONT COLOR="#000077">Problems with Byte Registers</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading9"></A>Problems with Byte Registers</H4>
 <P>There are two ways to lose cycles by using byte registers, and neither of them is documented by Intel, so far as I know. Let&rsquo;s start with the lesser and simpler of the two.
 </P>
 <P>Rule #3: Do not load a byte portion of a register during one instruction, then use that register in its entirety as a source register during the next instruction.</P>
@@ -133,7 +133,7 @@ xlat
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->

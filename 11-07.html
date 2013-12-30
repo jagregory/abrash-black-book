@@ -24,7 +24,7 @@
 <!--CHAPTER=11//-->
 <!--PAGES=224-226//-->
 <!--UNASSIGNED1//-->
-<!--UNASSIGNED2//--></HEAD><BODY LINK=#0000FF ALINK=#000099 VLINK=#0000FF BGCOLOR=#FFFFFF>
+<!--UNASSIGNED2//--></HEAD><body>
 
 <CENTER>
 <TABLE BORDER>
@@ -64,7 +64,7 @@ Skip:
 <P>Is this always the case? No. When the prefetch queue is full, memory-accessing instructions on the 286 and 386 are much faster (relative to register-only instructions) than they are on the 8088. Given the system wait states prevalent on 286 and 386 computers, however, the prefetch queue is likely to be empty quite a bit, especially when code consisting of instructions with short EU execution times is executed. Of course, that&rsquo;s just the sort of code we&rsquo;re likely to write when we&rsquo;re optimizing, so the performance of high-speed code is more likely to be controlled by instruction size than by EU execution time on most 286 and 386 computers, just as it is on the PC.</P>
 <P>All of which is just a way of saying that faster memory access and EA calculation notwithstanding, it&rsquo;s just as desirable to keep instructions short and memory accesses to a minimum on the 286 and 386 as it is on the 8088. And the way to do that is to use the registers as heavily as possible, use string instructions, use short forms of instructions, and the like.</P>
 <P>The more things change, the more they remain the same....</P>
-<H4 ALIGN="LEFT"><A NAME="Heading17"></A><FONT COLOR="#000077">POPF and the 286</FONT></H4>
+<H4 ALIGN="LEFT"><A NAME="Heading17"></A>POPF and the 286</H4>
 <P>We&rsquo;ve one final 286-related item to discuss: the hardware malfunction of <B>POPF</B> under certain circumstances on the 286.</P>
 <P>The problem is this: Sometimes <B>POPF</B> permits interrupts to occur when interrupts are initially off and the setting popped into the Interrupt flag from the stack keeps interrupts off. In other words, an interrupt can happen even though the Interrupt flag is never set to 1. Now, I don&rsquo;t want to blow this particular bug out of proportion. It only causes problems in code that cannot tolerate interrupts under any circumstances, and that&rsquo;s a rare sort of code, especially in user programs. However, some code really does need to have interrupts absolutely disabled, with no chance of an interrupt sneaking through. For example, a critical portion of a disk BIOS might need to retrieve data from the disk controller the instant it becomes available; even a few hundred microseconds of delay could result in a sector&rsquo;s worth of data misread. In this case, one misplaced interrupt during a <B>POPF</B> could result in a trashed hard disk if that interrupt occurs while the disk BIOS is reading a sector of the File Allocation Table.</P>
 <P>There is a workaround for the <B>POPF</B> bug. While the workaround is easy to use, it&rsquo;s considerably slower than <B>POPF</B>, and costs a few bytes as well, so you won&rsquo;t want to use it in code that can tolerate interrupts. On the other hand, in code that truly cannot be interrupted, you should view those extra cycles and bytes as cheap insurance against mysterious and erratic program crashes.</P>
@@ -82,7 +82,7 @@ Skip:
 
 <hr width="90%" size="1" noshade>
 <div align="center">
-<font face="Verdana,sans-serif" size="1">Graphics Programming Black Book &copy; 2001 Michael Abrash</font>
+Graphics Programming Black Book &copy; 2001 Michael Abrash
 </div>
 <!-- all of the reference materials (books) have the footer and subfoot reveresed -->
 <!-- reference_subfoot = footer -->
