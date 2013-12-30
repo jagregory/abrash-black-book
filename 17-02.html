@@ -39,9 +39,9 @@
 <P><B>LISTING 17.1 L17-1.CPP</B></P>
 <!-- CODE //-->
 <PRE>
-/* C&#43;&#43; Game of Life implementation for any mode for which mode set
+/* C++ Game of Life implementation for any mode for which mode set
    and draw pixel functions can be provided.
-   Tested with Borland C&#43;&#43; in the small model. */
+   Tested with Borland C++ in the small model. */
 #include &ltstdlib.h&gt
 #include &ltstdio.h&gt
 #include &ltiostream.h&gt
@@ -100,30 +100,30 @@ void main()
    cellmap next_map(cellmap_height, cellmap_width);
 
    // Get the seed; seed randomly if 0 entered
-   cout &lt&lt &#147;Seed (0 for random seed): &#148;;
+   cout &lt&lt &ldquo;Seed (0 for random seed): &rdquo;;
    cin &gt&gt seed;
    if (seed == 0) seed = (unsigned) time(NULL);
 
    // Randomly initialize the initial cell map
-   cout &lt&lt &#147;Initializing...&#148;;
+   cout &lt&lt &ldquo;Initializing...&rdquo;;
    srand(seed);
    init_length = (cellmap_height * cellmap_width) / 2;
    do {
       x = random(cellmap_width);
       y = random(cellmap_height);
       next_map.set_cell(x, y);
-   } while (&#151;init_length);
+   } while (&mdash;init_length);
    current_map.copy_cells(next_map); // put init map in current_map
 
    enter_display_mode();
 
    // Keep recalculating and redisplaying generations until a key
    // is pressed
-   show_text(0, MSG_LINE, &#147;Generation: &#148;);
+   show_text(0, MSG_LINE, &ldquo;Generation: &rdquo;);
    start_bios_time = _bios_timeofday(_TIME_GETCLOCK, &ampbios_time);
    do {
-      generation&#43;&#43;;
-      sprintf(gen_text, &#147;%10lu&#148;, generation);
+      generation++;
+      sprintf(gen_text, &ldquo;%10lu&rdquo;, generation);
       show_text(1, GENERATION_LINE, gen_text);
       // Recalculate and draw the next generation
       current_map.next_generation(next_map);
@@ -139,15 +139,15 @@ void main()
    } while (!kbhit());
    getch();    // clear keypress
    exit_display_mode();
-   cout &lt&lt &#147;Total generations: &#148; &lt&lt generation &lt&lt &#147;\nSeed: &#148; &lt&lt
-         seed &lt&lt &#147;\n&#148;;
+   cout &lt&lt &ldquo;Total generations: &rdquo; &lt&lt generation &lt&lt &ldquo;\nSeed: &rdquo; &lt&lt
+         seed &lt&lt &ldquo;\n&rdquo;;
 }
 
 /* cellmap constructor. */
 cellmap::cellmap(unsigned int h, unsigned int w)
 {
    width = w;
-   width_in_bytes = (w &#43; 7) / 8;
+   width_in_bytes = (w + 7) / 8;
    height = h;
    length_in_bytes = width_in_bytes * h;
    cells = new unsigned char[length_in_bytes];  // cell storage
@@ -160,7 +160,7 @@ cellmap::~cellmap(void)
    delete[] cells;
 }
 
-/* Copies one cellmap&#146;s cells to another cellmap. Both cellmaps are
+/* Copies one cellmap&rsquo;s cells to another cellmap. Both cellmaps are
    assumed to be the same size.  */
 void cellmap::copy_cells(cellmap &ampsourcemap)
 {
@@ -171,7 +171,7 @@ void cellmap::copy_cells(cellmap &ampsourcemap)
 void cellmap::set_cell(unsigned int x, unsigned int y)
 {
    unsigned char *cell_ptr =
-         cells &#43; (y * width_in_bytes) &#43; (x / 8);
+         cells + (y * width_in_bytes) + (x / 8);
 
    *(cell_ptr) |= 0x80 &gt&gt (x &amp 0x07);
 }
@@ -180,7 +180,7 @@ void cellmap::set_cell(unsigned int x, unsigned int y)
 void cellmap::clear_cell(unsigned int x, unsigned int y)
 {
    unsigned char *cell_ptr =
-         cells &#43; (y * width_in_bytes) &#43; (x / 8);
+         cells + (y * width_in_bytes) + (x / 8);
 
    *(cell_ptr) &amp= ~(0x80 &gt&gt (x &amp 0x07));
 }
@@ -192,15 +192,15 @@ int cellmap::cell_state(int x, int y)
    unsigned char *cell_ptr;
 
 #if WRAP_EDGES
-   while (x &lt 0) x &#43;= width;     // wrap, if necessary
+   while (x &lt 0) x += width;     // wrap, if necessary
    while (x &gt= width) x -= width;
-   while (y &lt 0) y &#43;= height;
+   while (y &lt 0) y += height;
    while (y &gt= height) y -= height;
 #else
    if ((x &lt 0) || (x &gt= width) || (y &lt 0) || (y &gt= height))
       return 0;   // return 0 for off edges if no wrapping
 #endif
-   cell_ptr = cells &#43; (y * width_in_bytes) &#43; (x / 8);
+   cell_ptr = cells + (y * width_in_bytes) + (x / 8);
    return (*cell_ptr &amp (0x80 &gt&gt (x &amp 0x07))) ? 1 : 0;
 }
 
@@ -210,13 +210,13 @@ void cellmap::next_generation(cellmap&amp next_map)
 {
    unsigned int x, y, neighbor_count;
 
-   for (y=0; y&ltheight; y&#43;&#43;) {
-      for (x=0; x&ltwidth; x&#43;&#43;) {
+   for (y=0; y&ltheight; y++) {
+      for (x=0; x&ltwidth; x++) {
          // Figure out how many neighbors this cell has
-         neighbor_count = cell_state(x-1, y-1) &#43; cell_state(x, y-1) &#43;
-               cell_state(x&#43;1, y-1) &#43; cell_state(x-1, y) &#43;
-               cell_state(x&#43;1, y) &#43; cell_state(x-1, y&#43;1) &#43;
-               cell_state(x, y&#43;1) &#43; cell_state(x&#43;1, y&#43;1);
+         neighbor_count = cell_state(x-1, y-1) + cell_state(x, y-1) +
+               cell_state(x+1, y-1) + cell_state(x-1, y) +
+               cell_state(x+1, y) + cell_state(x-1, y+1) +
+               cell_state(x, y+1) + cell_state(x+1, y+1);
          if (cell_state(x, y) == 1) {
             // The cell is on; does it stay on?
             if ((neighbor_count != 2) &amp&amp (neighbor_count != 3)) {
@@ -239,7 +239,7 @@ void cellmap::next_generation(cellmap&amp next_map)
 <!-- CODE //-->
 <PRE>
 /* VGA mode 13h functions for Game of Life.
-   Tested with Borland C&#43;&#43;. */
+   Tested with Borland C++. */
 #include &ltstdio.h&gt
 #include &ltconio.h&gt
 #include &ltdos.h&gt
@@ -260,12 +260,12 @@ void draw_pixel(unsigned int x, unsigned int y, unsigned int color)
 
    FP_SEG(screen_ptr) = SCREEN_SEGMENT;
    FP_OFF(screen_ptr) =
-         y * magnifier * SCREEN_WIDTH_IN_BYTES &#43; x * magnifier;
-   for (i=0; i&ltmagnifier; i&#43;&#43;) {
-      for (j=0; j&ltmagnifier; j&#43;&#43;) {
-         *(screen_ptr&#43;j) = color;
+         y * magnifier * SCREEN_WIDTH_IN_BYTES + x * magnifier;
+   for (i=0; i&ltmagnifier; i++) {
+      for (j=0; j&ltmagnifier; j++) {
+         *(screen_ptr+j) = color;
       }
-      screen_ptr &#43;= SCREEN_WIDTH_IN_BYTES;
+      screen_ptr += SCREEN_WIDTH_IN_BYTES;
    }
 }
 
@@ -291,7 +291,7 @@ void exit_display_mode()
    screen. */
 void show_text(int x, int y, char *text)
 {
-   gotoxy(TEXT_X_OFFSET &#43; x, y);
+   gotoxy(TEXT_X_OFFSET + x, y);
    puts(text);
 }
 </PRE>

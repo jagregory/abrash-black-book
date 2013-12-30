@@ -50,7 +50,7 @@
 #include &ltalloc.h&gt   /* alloc.h for Borland compilers,
                         malloc.h for Microsoft compilers */
 
-#define BLOCK_SIZE  0x4000   /* we&#146;ll process the file in 16K blocks */
+#define BLOCK_SIZE  0x4000   /* we&rsquo;ll process the file in 16K blocks */
 
 /* Searches the specified number of sequences in the specified
    buffer for matches to SearchString of SearchStringLength. Note
@@ -77,19 +77,19 @@ int SearchForString(unsigned char *Buffer, int SearchLength,
          also matches */
       if ( SearchStringLength == 1 ) {
          return(1);  /* That one matching character was the whole
-                        search string, so we&#146;ve got a match */
+                        search string, so we&rsquo;ve got a match */
       }
       else {
          /* Check whether the remaining characters match */
-         if ( !memcmp(PotentialMatch &#43; 1, SearchString &#43; 1,
+         if ( !memcmp(PotentialMatch + 1, SearchString + 1,
                SearchStringLength - 1) ) {
-            return(1);  /* We&#146;ve got a match */
+            return(1);  /* We&rsquo;ve got a match */
          }
       }
-      /* The string doesn&#146;t match; keep going by pointing past the
+      /* The string doesn&rsquo;t match; keep going by pointing past the
          potential match location we just rejected */
-      SearchLength -= PotentialMatch - Buffer &#43; 1;
-      Buffer = PotentialMatch &#43; 1;
+      SearchLength -= PotentialMatch - Buffer + 1;
+      Buffer = PotentialMatch + 1;
    }
 
    return(0);  /* No match found */
@@ -114,13 +114,13 @@ main(int argc, char *argv[]) {
 
    /* Check for the proper number of arguments */
    if ( argc != 3 ) {
-      printf(&#147;usage: search filename search-string\n&#148;);
+      printf(&ldquo;usage: search filename search-string\n&rdquo;);
       exit(1);
    }
 
    /* Try to open the file to be searched */
    if ( (Handle = open(argv[1], O_RDONLY | O_BINARY)) == -1 ) {
-      printf(&#147;Can&#146;t open file: %s\n&#148;, argv[1]);
+      printf(&ldquo;Can&rsquo;t open file: %s\n&rdquo;, argv[1]);
       exit(1);
    }
    /* Calculate the length of text to search for */
@@ -128,7 +128,7 @@ main(int argc, char *argv[]) {
    SearchStringLength = strlen(SearchString);
    /* Try to get memory in which to buffer the data */
    if ( (WorkingBlock = malloc(BLOCK_SIZE)) == NULL ) {
-      printf(&#147;Can&#146;t get enough memory\n&#148;);
+      printf(&ldquo;Can&rsquo;t get enough memory\n&rdquo;);
       exit(1);
    }
 
@@ -137,7 +137,7 @@ main(int argc, char *argv[]) {
    NextLoadPtr = WorkingBlock;
    NextLoadCount = BLOCK_SIZE;
    Done = 0;      /* Not done with search yet */
-   Found = 0;     /* Assume we won&#146;t find a match */
+   Found = 0;     /* Assume we won&rsquo;t find a match */
    /* Search the file in BLOCK_SIZE chunks */
    do {
       /* Read in however many bytes are needed to fill out the block
@@ -145,10 +145,10 @@ main(int argc, char *argv[]) {
          the rest of the bytes in the file, whichever is less */
       if ( (WorkingLength = read(Handle, NextLoadPtr,
             NextLoadCount)) == -1 ) {
-         printf(&#147;Error reading file %s\n&#148;, argv[1]);
+         printf(&ldquo;Error reading file %s\n&rdquo;, argv[1]);
          exit(1);
       }
-      /* If we didn&#146;t read all the bytes we requested, we&#146;re done
+      /* If we didn&rsquo;t read all the bytes we requested, we&rsquo;re done
          after this block, whether we find a match or not */
       if ( WorkingLength != NextLoadCount ) {
          Done = 1;
@@ -156,7 +156,7 @@ main(int argc, char *argv[]) {
 
       /* Account for any bytes we copied from the end of the last
          block in the total length of this block */
-      WorkingLength &#43;= NextLoadPtr - WorkingBlock;
+      WorkingLength += NextLoadPtr - WorkingBlock;
       /* Calculate the number of bytes in this block that could
          possibly be the start of a matching sequence that lies
          entirely in this block (sequences that run off the end of
@@ -164,10 +164,10 @@ main(int argc, char *argv[]) {
          when that block is searched)
       */
       if ( (BlockSearchLength =
-               WorkingLength - SearchStringLength &#43; 1) &lt= 0 ) {
+               WorkingLength - SearchStringLength + 1) &lt= 0 ) {
             Done = 1;  /* Too few characters in this block for
                           there to be any possible matches, so this
-                          is the final block and we&#146;re done without
+                          is the final block and we&rsquo;re done without
                           finding a match
                        */
       }
@@ -175,7 +175,7 @@ main(int argc, char *argv[]) {
          /* Search this block */
          if ( SearchForString(WorkingBlock, BlockSearchLength,
                SearchString, SearchStringLength) ) {
-            Found = 1;     /* We&#146;ve found a match */
+            Found = 1;     /* We&rsquo;ve found a match */
             Done = 1;
          }
          else {
@@ -184,22 +184,22 @@ main(int argc, char *argv[]) {
                the end of the block over to the next block */
             if ( SearchStringLength &gt 1 ) {
                memcpy(WorkingBlock,
-                  WorkingBlock&#43;BLOCK_SIZE - SearchStringLength &#43; 1,
+                  WorkingBlock+BLOCK_SIZE - SearchStringLength + 1,
                   SearchStringLength - 1);
             }
             /* Set up to load the next bytes from the file after the
                bytes copied from the end of the current block */
-            NextLoadPtr = WorkingBlock &#43; SearchStringLength - 1;
-            NextLoadCount = BLOCK_SIZE - SearchStringLength &#43; 1;
+            NextLoadPtr = WorkingBlock + SearchStringLength - 1;
+            NextLoadCount = BLOCK_SIZE - SearchStringLength + 1;
          }
       }
    } while ( !Done );
 
    /* Report the results */
    if ( Found ) {
-      printf(&#147;String found\n&#148;);
+      printf(&ldquo;String found\n&rdquo;);
    } else {
-      printf(&#147;String not found\n&#148;);
+      printf(&ldquo;String not found\n&rdquo;);
    }
    exit(Found);   /* Return the found/not found status as the
                      DOS errorlevel */

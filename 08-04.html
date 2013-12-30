@@ -36,7 +36,7 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<P>It&#146;s hard to squeeze much more performance from this code by tweaking it, as exemplified by Listing 8.3, a fine-tuned assembly version of <B>FindIDAverage</B> that was produced by looking at the assembly output of MS C/C<SMALL>&#43;&#43;</SMALL> and tightening it. Listing 8.3 eliminates all stack frame access in the inner loop, but that&#146;s about all the tightening there is to do. The result, as shown in Table 8.1, is that Listing 8.3 runs a modest 11 percent faster than Listing 8.1 on a 386. The results could vary considerably, depending on the nature of the data set searched through (average block size and frequency of matches). But, then, understanding the typical and worst case conditions is part of optimization, isn&#146;t it?</P>
+<P>It&rsquo;s hard to squeeze much more performance from this code by tweaking it, as exemplified by Listing 8.3, a fine-tuned assembly version of <B>FindIDAverage</B> that was produced by looking at the assembly output of MS C/C<SMALL>++</SMALL> and tightening it. Listing 8.3 eliminates all stack frame access in the inner loop, but that&rsquo;s about all the tightening there is to do. The result, as shown in Table 8.1, is that Listing 8.3 runs a modest 11 percent faster than Listing 8.1 on a 386. The results could vary considerably, depending on the nature of the data set searched through (average block size and frequency of matches). But, then, understanding the typical and worst case conditions is part of optimization, isn&rsquo;t it?</P>
 <P><B>LISTING 8.3  L8-3.ASM</B></P>
 <!-- CODE //-->
 <PRE>
@@ -107,51 +107,51 @@ DATA_ELEMENT_SIZE equ   4      ;Number of bytes in struct DataElement
 <!-- CODE //-->
 <PRE>
 _FindIDAverage  proc    near
-        push    bp              ;Save caller&#146;s stack frame
+        push    bp              ;Save caller&rsquo;s stack frame
         mov     bp,sp           ;Point to our stack frame
         push    di              ;Preserve C register variables
         push    si
         sub     dx,dx           ;IDMatchSum = 0
         mov     bx,dx           ;IDMatchCount = 0
-        mov     si,[bp&#43;BlockPointer]    ;Pointer to first block
-        mov     ax,[bp&#43;SearchedForID]   ;ID we&#146;re looking for
+        mov     si,[bp+BlockPointer]    ;Pointer to first block
+        mov     ax,[bp+SearchedForID]   ;ID we&rsquo;re looking for
 ; Search through all the linked blocks until the last block
 ; (marked with a NULL pointer to the next block) has been searched.
 BlockLoop:
 ; Point to the first DataElement entry within this block.
-        lea     di,[si&#43;BLOCK_HEADER_SIZE]
+        lea     di,[si+BLOCK_HEADER_SIZE]
 ; Search through all the DataElement entries within this block
 ; and accumulate data from all that match the desired ID.
-        mov     cx,[si&#43;BlockCount]
+        mov     cx,[si+BlockCount]
         jcxz    DoNextBlock     ;No data in this block
 IntraBlockLoop:
-        cmp     [di&#43;ID],ax      ;Do we have an ID match?
+        cmp     [di+ID],ax      ;Do we have an ID match?
         jnz     NoMatch         ;No match
-        inc     bx              ;We have a match; IDMatchCount&#43;&#43;;
-        add     dx,[di&#43;Value]   ;IDMatchSum &#43;= DataPointer-&gtValue;
+        inc     bx              ;We have a match; IDMatchCount++;
+        add     dx,[di+Value]   ;IDMatchSum += DataPointer-&gtValue;
 NoMatch:
         add     di,DATA_ELEMENT_SIZE ;point to the next element
         loop    IntraBlockLoop
-; Point to the next block and continue if that pointer isn&#146;t NULL.
+; Point to the next block and continue if that pointer isn&rsquo;t NULL.
 DoNextBlock:
-        mov     si,[si&#43;NextBlock] ;Get pointer to the next block
+        mov     si,[si+NextBlock] ;Get pointer to the next block
         and     si,si           ;Is it a NULL pointer?
         jnz     BlockLoop       ;No, continue
 ; Calculate the average of all matches.
         sub     ax,ax           ;Assume we found no matches
         and     bx,bx
-        jz      Done            ;We didn&#146;t find any matches, return 0
+        jz      Done            ;We didn&rsquo;t find any matches, return 0
         xchg    ax,dx           ;Prepare for division
         div     bx              ;Return IDMatchSum / IDMatchCount
 Done:   pop     si              ;Restore C register variables
         pop     di
-        pop     bp              ;Restore caller&#146;s stack frame
+        pop     bp              ;Restore caller&rsquo;s stack frame
         ret
 _FindIDAverage  ENDP
         end
 </PRE>
 <!-- END CODE //-->
-<P>Listing 8.4 tosses some sophisticated optimization techniques into the mix. The loop is unrolled eight times, eliminating a good deal of branching, and <B>SCASW</B> is used instead of <B>CMP [DI],AX.</B> (Note, however, that <B>SCASW</B> is in fact slower than <B>CMP [DI],AX</B> on the 386 and 486, and is sometimes faster on the 286 and 8088 only because it&#146;s shorter and therefore may prefetch faster.) This advanced tweaking produces a 39 percent improvement over the original C code&#151;substantial, but not a tremendous return for the optimization effort invested.</P>
+<P>Listing 8.4 tosses some sophisticated optimization techniques into the mix. The loop is unrolled eight times, eliminating a good deal of branching, and <B>SCASW</B> is used instead of <B>CMP [DI],AX.</B> (Note, however, that <B>SCASW</B> is in fact slower than <B>CMP [DI],AX</B> on the 386 and 486, and is sometimes faster on the 286 and 8088 only because it&rsquo;s shorter and therefore may prefetch faster.) This advanced tweaking produces a 39 percent improvement over the original C code&mdash;substantial, but not a tremendous return for the optimization effort invested.</P>
 <P><B>LISTING 8.4  L8-4.ASM</B></P>
 <!-- CODE //-->
 <PRE>
@@ -170,7 +170,7 @@ DATA_ELEMENT_SIZE equ   4       ;Number of bytes in struct DataElement
         .code
         public  _FindIDAverage
 _FindIDAverage  proc    near
-        push    bp              ;Save caller&#146;s stack frame
+        push    bp              ;Save caller&rsquo;s stack frame
         mov     bp,sp           ;Point to our stack frame
         push    di              ;Preserve C register variables
         push    si
@@ -179,25 +179,25 @@ _FindIDAverage  proc    near
         cld
         sub     dx,dx           ;IDMatchSum = 0
         mov     bx,dx           ;IDMatchCount = 0
-        mov     si,[bp&#43;BlockPointer]    ;Pointer to first block
-        mov     ax,[bp&#43;SearchedForID]   ;ID we&#146;re looking for
+        mov     si,[bp+BlockPointer]    ;Pointer to first block
+        mov     ax,[bp+SearchedForID]   ;ID we&rsquo;re looking for
 ; Search through all of the linked blocks until the last block
 ; (marked with a NULL pointer to the next block) has been searched.
 BlockLoop:
 ; Point to the first DataElement entry within this block.
-        lea     di,[si&#43;BLOCK_HEADER_SIZE]
+        lea     di,[si+BLOCK_HEADER_SIZE]
 ; Search through all the DataElement entries within this block
 ; and accumulate data from all that match the desired ID.
-        mov     cx,[si&#43;BlockCount] ;Number of elements in this block
-        jcxz    DoNextBlock     ;Skip this block if it&#146;s empty
+        mov     cx,[si+BlockCount] ;Number of elements in this block
+        jcxz    DoNextBlock     ;Skip this block if it&rsquo;s empty
         mov     bp,cx           ;***stack frame no longer available***
         add     cx,7
         shr     cx,1            ;Number of repetitions of the unrolled
-        shr     cx,1            ; loop = (BlockCount &#43; 7) / 8
+        shr     cx,1            ; loop = (BlockCount + 7) / 8
         shr     cx,1
         and     bp,7            ;Generate the entry point for the
         shl     bp,1            ; first, possibly partial pass through
-        jmp     cs:[LoopEntryTable&#43;bp] ; the unrolled loop and
+        jmp     cs:[LoopEntryTable+bp] ; the unrolled loop and
                                 ; vector to that entry point
         align   2
 LoopEntryTable  label   word
@@ -209,8 +209,8 @@ LoopEntry&ampP1&amp:
         scasw                   ;Do we have an ID match?
         jnz     NoMatch         ;No match
                                 ;We have a match
-        inc     bx              ;IDMatchCount&#43;&#43;;
-        add     dx,[di]         ;IDMatchSum &#43;= DataPointer-&gtValue;
+        inc     bx              ;IDMatchCount++;
+        add     dx,[di]         ;IDMatchSum += DataPointer-&gtValue;
 NoMatch:
         add     di,DATA_ELEMENT_SIZE-2 ;point to the next element
                                 ; (SCASW advanced 2 bytes already)
@@ -226,20 +226,20 @@ IntraBlockLoop:
         M_IBL   2
         M_IBL   1
         loop    IntraBlockLoop
-; Point to the next block and continue if that pointer isn&#146;t NULL.
+; Point to the next block and continue if that pointer isn&rsquo;t NULL.
 DoNextBlock:
-        mov     si,[si&#43;NextBlock] ;Get pointer to the next block
+        mov     si,[si+NextBlock] ;Get pointer to the next block
         and     si,si           ;Is it a NULL pointer?
         jnz     BlockLoop       ;No, continue
 ; Calculate the average of all matches.
         sub     ax,ax           ;Assume we found no matches
         and     bx,bx
-        jz      Done            ;We didn&#146;t find any matches, return 0
+        jz      Done            ;We didn&rsquo;t find any matches, return 0
         xchg    ax,dx           ;Prepare for division
         div     bx              ;Return IDMatchSum / IDMatchCount
 Done:   pop     si              ;Restore C register variables
         pop     di
-        pop     bp              ;Restore caller&#146;s stack frame
+        pop     bp              ;Restore caller&rsquo;s stack frame
         ret
 _FindIDAverage  ENDP
         end

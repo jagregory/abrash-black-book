@@ -36,17 +36,17 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<P>Listing 10.2 repeatedly subtracts iS from iL until iL becomes less than or equal to iS. If iL becomes equal to iS, then that&#146;s the GCD; alternatively, if iL becomes <I>less</I> than iS, iL and iS switch values, and the process is repeated, as shown in Figure 10.2. The number of iterations this approach requires relative to Listing 10.1 depends heavily on the values of iL and iS, so it&#146;s not always faster, but, as Table 10.1 indicates, Listing 10.2 is generally much better code.</P>
+<P>Listing 10.2 repeatedly subtracts iS from iL until iL becomes less than or equal to iS. If iL becomes equal to iS, then that&rsquo;s the GCD; alternatively, if iL becomes <I>less</I> than iS, iL and iS switch values, and the process is repeated, as shown in Figure 10.2. The number of iterations this approach requires relative to Listing 10.1 depends heavily on the values of iL and iS, so it&rsquo;s not always faster, but, as Table 10.1 indicates, Listing 10.2 is generally much better code.</P>
 <P><A NAME="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/10-02.jpg',415,306 )"> --><IMG SRC="images/10-02.jpg"><BR><!-- </A>
 <BR><A HREF="javascript:displayWindow('images/10-02.jpg',415,306)"> --><FONT COLOR="#000077"><B>Figure 10.2</B></FONT></A>&nbsp;&nbsp;<I>Using repeated subtraction algorithm to find a GCD.</I>
 </P>
-<P>Listing 10.2 is a far graver misstep than Listing 10.1, for all that it&#146;s faster. Listing 10.1 is obviously a hacked-up, brute-force approach; no one could mistake it for anything else. It could be speeded up in any of a number of ways with a little thought. (Simply skipping testing all the divisors between iS and iS/2, not inclusive, would cut the worst-case time in half, for example; that&#146;s not a particularly <I>good</I> optimization, but it illustrates how easily Listing 10.1 can be improved.) Listing 10.1 is a hack job, crying out for inspiration.</P>
-<P>Listing 10.2, on the other hand, has gotten the inspiration&#151;and largely wasted it through haste. Had Sedgewick not told me otherwise, I might well have assumed that Listing 10.2 was optimized, a mistake I would never have made with Listing 10.1. I experienced a conceptual breakthrough when I understood Sedgewick&#146;s point: A smaller number can be subtracted from a larger number without affecting their GCD, thereby inexpensively reducing the scale of the problem. And, in my hurry to make this breakthrough reality, I missed its full scope. As Sedgewick says on the very next page, the number that one gets by subtracting iS from iL until iL is less than iS is precisely the same as the remainder that one gets by dividing iL by iS&#151;again, this is inherent in the nature of division&#151;and <I>that</I> is the basis for Euclid&#146;s algorithm, shown in Figure 10.3. Listing 10.3 is an implementation of Euclid&#146;s algorithm.</P>
+<P>Listing 10.2 is a far graver misstep than Listing 10.1, for all that it&rsquo;s faster. Listing 10.1 is obviously a hacked-up, brute-force approach; no one could mistake it for anything else. It could be speeded up in any of a number of ways with a little thought. (Simply skipping testing all the divisors between iS and iS/2, not inclusive, would cut the worst-case time in half, for example; that&rsquo;s not a particularly <I>good</I> optimization, but it illustrates how easily Listing 10.1 can be improved.) Listing 10.1 is a hack job, crying out for inspiration.</P>
+<P>Listing 10.2, on the other hand, has gotten the inspiration&mdash;and largely wasted it through haste. Had Sedgewick not told me otherwise, I might well have assumed that Listing 10.2 was optimized, a mistake I would never have made with Listing 10.1. I experienced a conceptual breakthrough when I understood Sedgewick&rsquo;s point: A smaller number can be subtracted from a larger number without affecting their GCD, thereby inexpensively reducing the scale of the problem. And, in my hurry to make this breakthrough reality, I missed its full scope. As Sedgewick says on the very next page, the number that one gets by subtracting iS from iL until iL is less than iS is precisely the same as the remainder that one gets by dividing iL by iS&mdash;again, this is inherent in the nature of division&mdash;and <I>that</I> is the basis for Euclid&rsquo;s algorithm, shown in Figure 10.3. Listing 10.3 is an implementation of Euclid&rsquo;s algorithm.</P>
 <P><B>LISTING 10.3 L10-3.C</B></P>
 <!-- CODE //-->
 <PRE>
 /* Finds and returns the greatest common divisor of two integers.
-   Uses Euclid&#146;s algorithm: divides the larger integer by the
+   Uses Euclid&rsquo;s algorithm: divides the larger integer by the
    smaller; if the remainder is 0, the smaller integer is the GCD,
    otherwise the smaller integer becomes the larger integer, the
    remainder becomes the smaller integer, and the process is
@@ -56,7 +56,7 @@ static unsigned int gcd_recurs(unsigned int, unsigned int);
 
 unsigned int gcd(unsigned int int1, unsigned int int2) {
    unsigned int temp;
-   /* If the two integers are the same, that&#146;s the GCD and we&#146;re
+   /* If the two integers are the same, that&rsquo;s the GCD and we&rsquo;re
       done */
    if (int1 == int2) {
       return(int1);
@@ -90,22 +90,22 @@ static unsigned int gcd_recurs(unsigned int larger_int,
 }
 </PRE>
 <!-- END CODE //-->
-<P>As you can see from Table 10.1, Euclid&#146;s algorithm is superior, especially for large numbers (and imagine if we were working with large <I>longs!</I>).</P>
-<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="95%"><SMALL><I>Had I been implementing GCD determination without Sedgewick&#146;s help, I would surely not have settled for Listing 10.1&#151;but I might well have ended up with Listing 10.2 in my enthusiasm over the &#147;brilliant&#148; discovery of subtracting the lesser Using Euclid&#146;s algorithm to find a GCD number from the greater. In a commercial product, my lack of patience and discipline could have been costly indeed.</I></SMALL>
+<P>As you can see from Table 10.1, Euclid&rsquo;s algorithm is superior, especially for large numbers (and imagine if we were working with large <I>longs!</I>).</P>
+<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="95%"><SMALL><I>Had I been implementing GCD determination without Sedgewick&rsquo;s help, I would surely not have settled for Listing 10.1&mdash;but I might well have ended up with Listing 10.2 in my enthusiasm over the &ldquo;brilliant&rdquo; discovery of subtracting the lesser Using Euclid&rsquo;s algorithm to find a GCD number from the greater. In a commercial product, my lack of patience and discipline could have been costly indeed.</I></SMALL>
 </TABLE>
 <P><A NAME="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/10-03.jpg',411,279 )"> --><IMG SRC="images/10-03.jpg"><BR><!-- </A>
-<BR><A HREF="javascript:displayWindow('images/10-03.jpg',411,279)"> --><FONT COLOR="#000077"><B>Figure 10.3</B></FONT></A>&nbsp;&nbsp;<I>Using Euclid&#146;s algorithm to find a GCD.</I>
+<BR><A HREF="javascript:displayWindow('images/10-03.jpg',411,279)"> --><FONT COLOR="#000077"><B>Figure 10.3</B></FONT></A>&nbsp;&nbsp;<I>Using Euclid&rsquo;s algorithm to find a GCD.</I>
 </P>
-<P>Give your mind time and space to wander around the edges of important programming problems before you settle on any one approach. I titled this book&#146;s first chapter &#147;The Best Optimizer Is between Your Ears,&#148; and that&#146;s still true; what&#146;s even more true is that the optimizer between your ears does its best work not at the implementation stage, but at the very beginning, when you try to imagine how what you want to do and what a computer is capable of doing can best be brought together.
+<P>Give your mind time and space to wander around the edges of important programming problems before you settle on any one approach. I titled this book&rsquo;s first chapter &ldquo;The Best Optimizer Is between Your Ears,&rdquo; and that&rsquo;s still true; what&rsquo;s even more true is that the optimizer between your ears does its best work not at the implementation stage, but at the very beginning, when you try to imagine how what you want to do and what a computer is capable of doing can best be brought together.
 </P>
 <H3><A NAME="Heading6"></A><FONT COLOR="#000077">Recursion</FONT></H3>
-<P>Euclid&#146;s algorithm lends itself to recursion beautifully, so much so that an implementation like Listing 10.3 comes almost without thought. Again, though, take a moment to stop and consider what&#146;s really going on, at the assembly language level, in Listing 10.3. There&#146;s recursion and then there&#146;s recursion; code recursion and data recursion, to be exact. Listing 10.3 is code recursion&#151;recursion through calls&#151;the sort most often used because it is conceptually simplest. However, code recursion tends to be slow because it pushes parameters and calls a subroutine for every iteration. Listing 10.4, which uses data recursion, is much faster and no more complicated than Listing 10.3. Actually, you could just say that Listing 10.4 uses a loop and ignore any mention of recursion; conceptually, though, Listing 10.4 performs the same recursive operations that Listing 10.3 does.
+<P>Euclid&rsquo;s algorithm lends itself to recursion beautifully, so much so that an implementation like Listing 10.3 comes almost without thought. Again, though, take a moment to stop and consider what&rsquo;s really going on, at the assembly language level, in Listing 10.3. There&rsquo;s recursion and then there&rsquo;s recursion; code recursion and data recursion, to be exact. Listing 10.3 is code recursion&mdash;recursion through calls&mdash;the sort most often used because it is conceptually simplest. However, code recursion tends to be slow because it pushes parameters and calls a subroutine for every iteration. Listing 10.4, which uses data recursion, is much faster and no more complicated than Listing 10.3. Actually, you could just say that Listing 10.4 uses a loop and ignore any mention of recursion; conceptually, though, Listing 10.4 performs the same recursive operations that Listing 10.3 does.
 </P>
 <P><B>LISTING 10.4 L10-4.C</B></P>
 <!-- CODE //-->
 <PRE>
 /* Finds and returns the greatest common divisor of two integers.
-   Uses Euclid&#146;s algorithm: divides the larger integer by the
+   Uses Euclid&rsquo;s algorithm: divides the larger integer by the
    smaller; if the remainder is 0, the smaller integer is the GCD,
    otherwise the smaller integer becomes the larger integer, the
    remainder becomes the smaller integer, and the process is
@@ -121,7 +121,7 @@ unsigned int gcd(unsigned int int1, unsigned int int2) {
       int2 = temp;
    }
    /* Now loop, dividing int1 by int2 and checking the remainder,
-      until the remainder is 0. At each step, if the remainder isn&#146;t
+      until the remainder is 0. At each step, if the remainder isn&rsquo;t
       0, assign int2 to int1, and the remainder to int2, then
       repeat */
    for (;;) {
@@ -139,7 +139,7 @@ unsigned int gcd(unsigned int int1, unsigned int int2) {
 </PRE>
 <!-- END CODE //-->
 <H4 ALIGN="LEFT"><A NAME="Heading7"></A><FONT COLOR="#000077">Patient Optimization</FONT></H4>
-<P>At long last, we&#146;re ready to optimize GCD determination in the classic sense. Table 10.1 shows the performance of Listing 10.4 with and without Microsoft C/C<SMALL>&#43;&#43;</SMALL>&#146;s maximum optimization, and also shows the performance of Listing 10.5, an assembly language version of Listing 10.4. Sure, the optimized versions are faster than the unoptimized version of Listing 10.4&#151;but the gains are small compared to those realized from the higher-level optimizations in Listings 10.2 through 10.4.</P><P><BR></P>
+<P>At long last, we&rsquo;re ready to optimize GCD determination in the classic sense. Table 10.1 shows the performance of Listing 10.4 with and without Microsoft C/C<SMALL>++</SMALL>&rsquo;s maximum optimization, and also shows the performance of Listing 10.5, an assembly language version of Listing 10.4. Sure, the optimized versions are faster than the unoptimized version of Listing 10.4&mdash;but the gains are small compared to those realized from the higher-level optimizations in Listings 10.2 through 10.4.</P><P><BR></P>
 <CENTER>
 <TABLE BORDER>
 <TR>

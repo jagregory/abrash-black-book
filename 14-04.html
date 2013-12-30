@@ -44,7 +44,7 @@
    potential match locations as possible (partial Boyer-Moore).
    Returns start offset of first match searching forward, or NULL if
    no match is found.
-   Tested with Borland C&#43;&#43; in C mode and the small model. */
+   Tested with Borland C++ in C mode and the small model. */
 
 #include &ltstdio.h&gt
 
@@ -65,24 +65,24 @@ unsigned char * FindString(unsigned char * BufferPtr,
    /* Create the table of distances by which to skip ahead on
       mismatches for every possible byte value */
    /* Initialize all skips to the pattern length; this is the skip
-      distance for bytes that don&#146;t appear in the pattern */
-   for (i = 0; i &lt 256; i&#43;&#43;) SkipTable[i] = PatternLength;
+      distance for bytes that don&rsquo;t appear in the pattern */
+   for (i = 0; i &lt 256; i++) SkipTable[i] = PatternLength;
    /*Set the skip values for the bytes that do appear in the pattern
      to the distance from the byte location to the end of the
      pattern. When there are multiple instances of the same byte,
-     the rightmost instance&#146;s skip value is used. Note that the
-     rightmost byte of the pattern isn&#146;t entered in the skip table;
+     the rightmost instance&rsquo;s skip value is used. Note that the
+     rightmost byte of the pattern isn&rsquo;t entered in the skip table;
      if we get that value for a mismatch, we know for sure that the
      right end of the pattern has already passed the mismatch
      location, so this is not a relevant byte for skipping purposes */
-   for (i = 0; i &lt (PatternLength - 1); i&#43;&#43;)
+   for (i = 0; i &lt (PatternLength - 1); i++)
       SkipTable[PatternPtr[i]] = PatternLength - i - 1;
 
    /* Point to rightmost byte of the pattern */
-   PatternPtr &#43;= PatternLength - 1;
+   PatternPtr += PatternLength - 1;
    /* Point to last (rightmost) byte of the first potential pattern
       match location in the buffer */
-   BufferPtr &#43;= PatternLength - 1;
+   BufferPtr += PatternLength - 1;
    /* Count of number of potential pattern match locations in
       buffer */
    BufferLength -= PatternLength - 1;
@@ -95,33 +95,33 @@ unsigned char * FindString(unsigned char * BufferPtr,
       CompCount = PatternLength;
       /* Compare the pattern and the buffer location, searching from
          high memory toward low (right to left) */
-      while (*WorkingPatternPtr&#151; == *WorkingBufferPtr&#151;) {
-         /* If we&#146;ve matched the entire pattern, it&#146;s a match */
-         if (&#150;CompCount == 0)
+      while (*WorkingPatternPtr&mdash; == *WorkingBufferPtr&mdash;) {
+         /* If we&rsquo;ve matched the entire pattern, it&rsquo;s a match */
+         if (-CompCount == 0)
            /* Return a pointer to the start of the match location */
-            return(BufferPtr - PatternLength &#43; 1);
+            return(BufferPtr - PatternLength + 1);
       }
-      /* It&#146;s a mismatch; let&#146;s see what we can learn from it */
-      WorkingBufferPtr&#43;&#43;;  /* point back to the mismatch location */
+      /* It&rsquo;s a mismatch; let&rsquo;s see what we can learn from it */
+      WorkingBufferPtr++;  /* point back to the mismatch location */
       /* # of bytes that did match */
       DistanceMatched = BufferPtr - WorkingBufferPtr;
-      /*If, based on the mismatch character, we can&#146;t even skip ahead
+      /*If, based on the mismatch character, we can&rsquo;t even skip ahead
             as far as where we started this particular comparison, then
             just advance by 1 to the next potential match; otherwise,
             skip ahead from the mismatch location by the skip distance
             for the mismatch character */
       if (SkipTable[*WorkingBufferPtr] &lt= DistanceMatched)
-      Skip = 1;   /* skip doesn&#146;t do any good, advance by 1 */
+      Skip = 1;   /* skip doesn&rsquo;t do any good, advance by 1 */
       else
          /* Use skip value, accounting for distance covered by the
             partial match */
          Skip = SkipTable[*WorkingBufferPtr] - DistanceMatched;
-      /* If skipping ahead would exhaust the buffer, we&#146;re done
+      /* If skipping ahead would exhaust the buffer, we&rsquo;re done
          without a match */
       if (Skip &gt= BufferLength) return(NULL);
       /* Skip ahead and perform the next comparison */
       BufferLength -= Skip;
-      BufferPtr &#43;= Skip;
+      BufferPtr += Skip;
    }
 }
 </PRE>
@@ -145,39 +145,39 @@ extern unsigned char * FindString(unsigned char *, unsigned int,
 void main(void);
 
 void main() {
-   unsigned char TempBuffer[DISPLAY_LENGTH&#43;1];
+   unsigned char TempBuffer[DISPLAY_LENGTH+1];
    unsigned char Filename[150], Pattern[150], *MatchPtr, *TestBuffer;
    int Handle;
    unsigned int WorkingLength;
 
-   printf(&#147;File to search:&#148;);
+   printf(&ldquo;File to search:&rdquo;);
    gets(Filename);
-   printf(&#147;Pattern for which to search:&#148;);
+   printf(&ldquo;Pattern for which to search:&rdquo;);
    gets(Pattern);
 
    if ( (Handle = open(Filename, O_RDONLY | O_BINARY)) == -1 ) {
-      printf(&#147;Can&#146;t open file: %s\n&#148;, Filename); exit(1);
+      printf(&ldquo;Can&rsquo;t open file: %s\n&rdquo;, Filename); exit(1);
    }
    /* Get memory in which to buffer the data */
-   if ( (TestBuffer=(unsigned char *)malloc(BUFFER_SIZE&#43;1)) == NULL) {
-      printf(&#147;Can&#146;t get enough memory\n&#148;); exit(1);
+   if ( (TestBuffer=(unsigned char *)malloc(BUFFER_SIZE+1)) == NULL) {
+      printf(&ldquo;Can&rsquo;t get enough memory\n&rdquo;); exit(1);
    }
    /* Process a BUFFER_SIZE chunk */
    if ( (int)(WorkingLength =
          read(Handle, TestBuffer, BUFFER_SIZE)) == -1 ) {
-      printf(&#147;Error reading file %s\n&#148;, Filename); exit(1);
+      printf(&ldquo;Error reading file %s\n&rdquo;, Filename); exit(1);
    }
    TestBuffer[WorkingLength] = 0; /* 0-terminate buffer for printf */
    /* Search for the pattern and report the results */
    if ((MatchPtr = FindString(TestBuffer, WorkingLength, Pattern,
          (unsigned int) strlen(Pattern))) == NULL) {
-      /* Pattern wasn&#146;t found */
-      printf(&#147;\&#147;%s\&#148; not found\n&#148;, Pattern);
+      /* Pattern wasn&rsquo;t found */
+      printf(&ldquo;\&ldquo;%s\&rdquo; not found\n&rdquo;, Pattern);
    } else {
       /* Pattern was found. Zero-terminate TempBuffer; strncpy
-         won&#146;t do it if DISPLAY_LENGTH characters are copied */
+         won&rsquo;t do it if DISPLAY_LENGTH characters are copied */
       TempBuffer[DISPLAY_LENGTH] = 0;
-      printf(&#147;\&#147;%s\&#148; found. Next %d characters at match:\n\&#148;%s\&#147;\n&#148;,
+      printf(&ldquo;\&ldquo;%s\&rdquo; found. Next %d characters at match:\n\&rdquo;%s\&ldquo;\n&rdquo;,
             Pattern, DISPLAY_LENGTH,
             strncpy(TempBuffer, MatchPtr, DISPLAY_LENGTH));
    }
@@ -185,7 +185,7 @@ void main() {
 }
 </PRE>
 <!-- END CODE //-->
-<P>Well, architecture carries a lot of weight, but it sure as heck isn&#146;t destiny. I had simply fallen into the trap of figuring that the algorithm was so clever that I didn&#146;t have to do any thinking myself. The path leading to <B>REPNZ SCASB</B> from the original brute-force approach of <B>REPZ CMPSB</B> at every location had been based on my observation that the first character comparison at each buffer location usually fails. Why not apply the same concept to Boyer-Moore? Listing 14.3 is just like the standard implementation&#151;except that it&#146;s optimized to handle a first-comparison mismatch as quickly as possible in the loop at <B>QuickSearchLoop</B>, much as <B>REPNZ SCASB</B> optimizes first-comparison mismatches for the brute-force approach. The results in Table 14.1 speak for themselves; Listing 14.3 is more than twice as fast as what I assure you was already a nice, tight assembly implementation (and unrolling <B>QuickSearchLoop</B> could boost performance by up to 10 percent more). Listing 14.3 is also <I>four times</I> faster than <B>REPNZ SCASB</B> in one case.</P><P><BR></P>
+<P>Well, architecture carries a lot of weight, but it sure as heck isn&rsquo;t destiny. I had simply fallen into the trap of figuring that the algorithm was so clever that I didn&rsquo;t have to do any thinking myself. The path leading to <B>REPNZ SCASB</B> from the original brute-force approach of <B>REPZ CMPSB</B> at every location had been based on my observation that the first character comparison at each buffer location usually fails. Why not apply the same concept to Boyer-Moore? Listing 14.3 is just like the standard implementation&mdash;except that it&rsquo;s optimized to handle a first-comparison mismatch as quickly as possible in the loop at <B>QuickSearchLoop</B>, much as <B>REPNZ SCASB</B> optimizes first-comparison mismatches for the brute-force approach. The results in Table 14.1 speak for themselves; Listing 14.3 is more than twice as fast as what I assure you was already a nice, tight assembly implementation (and unrolling <B>QuickSearchLoop</B> could boost performance by up to 10 percent more). Listing 14.3 is also <I>four times</I> faster than <B>REPNZ SCASB</B> in one case.</P><P><BR></P>
 <CENTER>
 <TABLE BORDER>
 <TR>

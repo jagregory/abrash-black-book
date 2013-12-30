@@ -40,12 +40,12 @@
 <!-- CODE //-->
 <PRE>
 ; Program to illustrate operation of data rotate and bit mask
-;  features of Graphics Controller. Draws 8&#215;8 character at
-;  specified location, using VGA&#146;s 8&#215;8 ROM font. Designed
+;  features of Graphics Controller. Draws 8x8 character at
+;  specified location, using VGA&rsquo;s 8x8 ROM font. Designed
 ;  for use with modes 0Dh, 0Eh, 0Fh, 10h, and 12h.
 ; By Michael Abrash.
 ;
-stack   segment para stack &#145;STACK&#146;
+stack   segment para stack &lsquo;STACK&rsquo;
         db      512 dup(?)
 stack   ends
 ;
@@ -60,13 +60,13 @@ GC_ROTATE       equ     3       ;GC data rotate/logical function
                                 ; register index
 GC_BIT_MASK     equ     8       ;GC bit mask register index
 ;
-dseg    segment para common &#145;DATA&#146;
+dseg    segment para common &lsquo;DATA&rsquo;
 TEST_TEXT_ROW   equ     69      ;row to display test text at
 TEST_TEXT_COL   equ     17      ;column to display test text at
 TEST_TEXT_WIDTH equ     8       ;width of a character in pixels
 
 TestString      label   byte
-        db      &#145;Hello, world!&#146;,0       ;test string to print.
+        db      &lsquo;Hello, world!&rsquo;,0       ;test string to print.
 FontPointer     dd      ?               ;font offset
 dseg    ends
 ;
@@ -78,22 +78,22 @@ SETGC   macro   INDEX, SETTING
         out     dx,ax
         endm
 ;
-cseg    segment para public &#145;CODE&#146;
+cseg    segment para public &lsquo;CODE&rsquo;
         assume  cs:cseg, ds:dseg
 start   proc    near
         mov     ax,dseg
         mov     ds,ax
 ;
-; Select 640&#215;480 graphics mode.
+; Select 640x480 graphics mode.
 ;
         mov     ax,012h
         int     10h
 ;
-; Set driver to use the 8&#215;8 font.
+; Set driver to use the 8x8 font.
 ;
          mov     ah,11h  ;VGA BIOS character generator function,
          mov     al,30h  ; return info subfunction
-         mov     bh,3;get 8&#215;8 font pointer
+         mov     bh,3;get 8x8 font pointer
          int     10h
          call    SelectFont
 ;
@@ -141,7 +141,7 @@ Start   endp
 ;  BX = row to draw text character at
 ;  CX = column to draw text character at
 ;
-;  Forces ALU function to &#147;move&#148;.
+;  Forces ALU function to &ldquo;move&rdquo;.
 ;
 DrawChar        proc    near
         push    ax
@@ -263,7 +263,7 @@ DrawChar        endp
 ;
 SelectFont      proc    near
         mov     word ptr [FontPointer],bp       ;save pointer
-        mov     word ptr [FontPointer&#43;2],es
+        mov     word ptr [FontPointer+2],es
         ret
 SelectFont      endp
 ;
@@ -271,9 +271,9 @@ cseg    ends
         end     start
 </PRE>
 <!-- END CODE //-->
-<P>The bit mask can be used for much more than bit-aligned fonts. For example, the bit mask is useful for fast pixel drawing, such as that performed when drawing lines, as we&#146;ll see in Chapter 35. It&#146;s also useful for drawing the edges of primitives, such as filled polygons, that potentially involve modifying some but not all of the pixels controlled by a single byte of display memory.
+<P>The bit mask can be used for much more than bit-aligned fonts. For example, the bit mask is useful for fast pixel drawing, such as that performed when drawing lines, as we&rsquo;ll see in Chapter 35. It&rsquo;s also useful for drawing the edges of primitives, such as filled polygons, that potentially involve modifying some but not all of the pixels controlled by a single byte of display memory.
 </P>
-<P>Basically, the bit mask is handy whenever only <I>some</I> of the eight pixels in a byte of display memory need to be changed, because it allows full use of the VGA&#146;s four-way parallel processing capabilities for the pixels that are to be drawn, without interfering with the pixels that are to be left unchanged. The alternative would be plane-by-plane processing, which from a performance perspective would be undesirable indeed.</P><P><BR></P>
+<P>Basically, the bit mask is handy whenever only <I>some</I> of the eight pixels in a byte of display memory need to be changed, because it allows full use of the VGA&rsquo;s four-way parallel processing capabilities for the pixels that are to be drawn, without interfering with the pixels that are to be left unchanged. The alternative would be plane-by-plane processing, which from a performance perspective would be undesirable indeed.</P><P><BR></P>
 <CENTER>
 <TABLE BORDER>
 <TR>

@@ -39,14 +39,14 @@
 <P><B>LISTING 24.1 L24-1.ASM</B></P>
 <!-- CODE //-->
 <PRE>
-; Program to illustrate operation of ALUs and latches of the VGA&#146;s
+; Program to illustrate operation of ALUs and latches of the VGA&rsquo;s
 ;  Graphics Controller.  Draws a variety of patterns against
 ;  a horizontally striped background, using each of the 4 available
 ;  logical functions (data unmodified, AND, OR, XOR) in turn to combine
 ;  the images with the background.
 ; By Michael Abrash.
 ;
-stack   segment para stack &#145;STACK&#146;
+stack   segment para stack &lsquo;STACK&rsquo;
         db      512 dup(?)
 stack   ends
 ;
@@ -69,23 +69,23 @@ GC_ROTATE       equ     3       ;GC data rotate/logical function
                                 ; register index
 GC_MODE         equ     5       ;GC mode register index
 ;
-dseg    segment para common &#145;DATA&#146;
+dseg    segment para common &lsquo;DATA&rsquo;
 ;
 ; String used to label logical functions.
 ;
 LabelString     label   byte
-        db      &#145;UNMODIFIED    AND       OR        XOR   &#146;
+        db      &lsquo;UNMODIFIED    AND       OR        XOR   &rsquo;
 LABEL_STRING_LENGTH     equ     $-LabelString
 ;
 ; Strings used to label fill patterns.
 ;
-FillPatternFF   db      &#145;Fill Pattern: 0FFh&#146;
+FillPatternFF   db      &lsquo;Fill Pattern: 0FFh&rsquo;
 FILL_PATTERN_FF_LENGTH  equ     $ - FillPatternFF
-FillPattern00   db      &#145;Fill Pattern: 000h&#146;
+FillPattern00   db      &lsquo;Fill Pattern: 000h&rsquo;
 FILL_PATTERN_00_LENGTH  equ     $ - FillPattern00
-FillPatternVert db      &#145;Fill Pattern: Vertical Bar&#146;
+FillPatternVert db      &lsquo;Fill Pattern: Vertical Bar&rsquo;
 FILL_PATTERN_VERT_LENGTH        equ     $ - FillPatternVert
-FillPatternHorz db      &#145;Fill Pattern: Horizontal Bar&#146;
+FillPatternHorz db      &lsquo;Fill Pattern: Horizontal Bar&rsquo;
 FILL_PATTERN_HORZ_LENGTH equ    $ - FillPatternHorz
 ;
 dseg    ends
@@ -112,7 +112,7 @@ TEXT_UP macro   TEXT_STRING, TEXT_LENGTH, ROW, COLUMN
         int     10h
         endm
 ;
-cseg    segment para public &#145;CODE&#146;
+cseg    segment para public &lsquo;CODE&rsquo;
         assume  cs:cseg, ds:dseg
 start   proc    near
         mov     ax,dseg
@@ -174,15 +174,15 @@ BackgroundLoop:
 ; Label the screen.
 ;
         push    ds
-        pop     es      ;strings we&#146;ll display are passed to BIOS
+        pop     es      ;strings we&rsquo;ll display are passed to BIOS
                         ; by pointing ES:BP to them
 ;
-; Label the logical functions, using the VGA BIOS&#146;s
+; Label the logical functions, using the VGA BIOS&rsquo;s
 ;  write string function.
 ;
         TEXT_UP LabelString, LABEL_STRING_LENGTH, 24, 0
 ;
-; Label the fill patterns, using the VGA BIOS&#146;s
+; Label the fill patterns, using the VGA BIOS&rsquo;s
 ;  write string function.
 ;
         TEXT_UP FillPatternFF, FILL_PATTERN_FF_LENGTH, 3, 42
@@ -190,7 +190,7 @@ BackgroundLoop:
         TEXT_UP FillPatternVert, FILL_PATTERN_VERT_LENGTH, 15, 42
         TEXT_UP FillPatternHorz, FILL_PATTERN_HORZ_LENGTH, 21, 42
 ;
-; Wait until a key&#146;s been hit to reset screen mode &amp exit.
+; Wait until a key&rsquo;s been hit to reset screen mode &amp exit.
 ;
 WaitForKey:
         mov     ah,1
@@ -230,7 +230,7 @@ RowLoop:
         mov     cx,WIDTH
 ColumnLoop:
         mov     ah,es:[di]      ;load display memory contents into
-                                ; GC latches (we don&#146;t actually care
+                                ; GC latches (we don&rsquo;t actually care
                                 ; about value read into AH)
         stosb                   ;write pattern, which is logically
                                 ; combined with latch contents for each
@@ -260,7 +260,7 @@ HorzBarLoop:
         dec     ax              ;0ffh fill (smaller to do word than byte DEC)
         mov     cx,si           ;width to fill
 HBLoop1:
-        mov     bl,es:[di]      ;load latches (don&#146;t care about value)
+        mov     bl,es:[di]      ;load latches (don&rsquo;t care about value)
         stosb                   ;write solid pattern, through ALUs
         loop    HBLoop1
         add     di,SCREEN_WIDTH_IN_BYTES - VERTICAL_BOX_WIDTH_IN_BYTES

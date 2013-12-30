@@ -41,7 +41,7 @@
 <PRE>
 /* Function to draw a non-antialiased line from (X0,Y0) to (X1,Y1), using a
  * simple fixed-point error accumulation approach.
- * Tested with Borland C&#43;&#43; in C compilation mode and the small model.
+ * Tested with Borland C++ in C compilation mode and the small model.
  */
 extern void DrawPixel(int, int, int);
 
@@ -74,46 +74,46 @@ void DrawLine(int X0, int Y0, int X1, int Y1, int Color)
    if (DeltaY &gt; DeltaX) {
       /* Y-major line; calculate 16-bit fixed-point fractional part of a
          pixel that X advances each time Y advances 1 pixel */
-      ErrorAdj = ((((unsigned long)DeltaX &lt;&lt; 17) / (unsigned long)DeltaY) &#43;
+      ErrorAdj = ((((unsigned long)DeltaX &lt;&lt; 17) / (unsigned long)DeltaY) +
             1) &gt;&gt; 1;
       /* Draw all pixels between the first and last */
       do {
-         ErrorAcc &#43;= ErrorAdj;      /* calculate error for this pixel */
+         ErrorAcc += ErrorAdj;      /* calculate error for this pixel */
          if (ErrorAcc &amp ~0xFFFFL) {
             /* The error accumulator turned over, so advance the X coord */
-            X0 &#43;= XDir;
+            X0 += XDir;
             ErrorAcc &amp= 0xFFFFL;    /* clear integer part of result */
          }
-         Y0&#43;&#43;;                      /* Y-major, so always advance Y */
+         Y0++;                      /* Y-major, so always advance Y */
          DrawPixel(X0, Y0, Color);
       } while (--DeltaY);
       return;
    }
    /* It's an X-major line; calculate 16-bit fixed-point fractional part of a
       pixel that Y advances each time X advances 1 pixel */
-   ErrorAdj = ((((unsigned long)DeltaY &lt;&lt; 17) / (unsigned long)DeltaX) &#43;
+   ErrorAdj = ((((unsigned long)DeltaY &lt;&lt; 17) / (unsigned long)DeltaX) +
          1) &gt;&gt; 1;
    /* Draw all remaining pixels */
    do {
-      ErrorAcc &#43;= ErrorAdj;      /* calculate error for this pixel */
+      ErrorAcc += ErrorAdj;      /* calculate error for this pixel */
       if (ErrorAcc &amp ~0xFFFFL) {
          /* The error accumulator turned over, so advance the Y coord */
-         Y0&#43;&#43;;
+         Y0++;
          ErrorAcc &amp= 0xFFFFL;    /* clear integer part of result */
       }
-      X0 &#43;= XDir;                /* X-major, so always advance X */
+      X0 += XDir;                /* X-major, so always advance X */
       DrawPixel(X0, Y0, Color);
    } while (--DeltaX);
 }
 </PRE>
 <!-- END CODE //-->
-<P>Listing 42.1 isn&#146;t particularly fast, because it calls <B>DrawPixel()</B> for each pixel. On the other hand, <B>DrawPixel()</B> makes it easy to try out Wu antialiasing in a variety of modes; just adapt the code in Listing 42.3 for the 256-color mode you want to support. For example, Listing 42.5 shows code to draw Wu-antialiased lines in 640&#215;480 256-color mode on SuperVGAs built around the Tseng Labs ET4000 chip with at least 512K of display memory installed. It&#146;s well worth checking out Wu antialiasing at 640&#215;480. Although antialiased lines look much smoother than normal lines at 320&#215;200 resolution, they&#146;re far from perfect, because the pixels are so big that the eye can&#146;t blend them properly. At 640&#215;480, however, Wu-antialiased lines look fabulous; from a couple of feet away, they look as straight and smooth as if they were drawn with a ruler.</P>
+<P>Listing 42.1 isn&rsquo;t particularly fast, because it calls <B>DrawPixel()</B> for each pixel. On the other hand, <B>DrawPixel()</B> makes it easy to try out Wu antialiasing in a variety of modes; just adapt the code in Listing 42.3 for the 256-color mode you want to support. For example, Listing 42.5 shows code to draw Wu-antialiased lines in 640x480 256-color mode on SuperVGAs built around the Tseng Labs ET4000 chip with at least 512K of display memory installed. It&rsquo;s well worth checking out Wu antialiasing at 640x480. Although antialiased lines look much smoother than normal lines at 320x200 resolution, they&rsquo;re far from perfect, because the pixels are so big that the eye can&rsquo;t blend them properly. At 640x480, however, Wu-antialiased lines look fabulous; from a couple of feet away, they look as straight and smooth as if they were drawn with a ruler.</P>
 <P><B>LISTING 42.5 L42-5.C</B></P>
 <!-- CODE //-->
 <PRE>
 /* Mode set and pixel-drawing functions for the 640x480 256-color mode of
  * Tseng Labs ET4000-based SuperVGAs.
- * Tested with Borland C&#43;&#43; in C compilation mode and the small model.
+ * Tested with Borland C++ in C compilation mode and the small model.
  */
 #include &lt;dos.h&gt;
 
@@ -131,7 +131,7 @@ void DrawPixel(int X, int Y, int Color)
    unsigned long BitmapAddress;
 
    /* full bitmap address of pixel, as measured from address 0 to 0xFFFFF */
-   BitmapAddress = (unsigned long) Y * ScreenWidthInPixels &#43; X;
+   BitmapAddress = (unsigned long) Y * ScreenWidthInPixels + X;
    /* Bank # is upper word of bitmap addr */
    Bank = BitmapAddress &gt;&gt; 16;
    /* Upper nibble is read bank #, lower nibble is write bank # */
@@ -153,8 +153,8 @@ void SetMode()
 }
 </PRE>
 <!-- END CODE //-->
-<P>Listing 42.1 requires that the DAC palette be set up so that a <B>NumLevel</B>-long block of palette entries contains linearly decreasing intensities of the drawing color. The size of the block is programmable, but must be a power of two. The more intensity levels, the better. Wu says that 32 intensities are enough; on my system, eight and even four levels looked pretty good. I found that gamma correction, which gives linearly spaced intensity steps, improved antialiasing quality significantly. Fortunately, we can program the palette with gamma-corrected values, so our drawing code doesn&#146;t have to do any extra work.</P>
-<P>Listing 42.1 isn&#146;t very fast, so I implemented Wu antialiasing in assembly, hard-coded for mode 13H. The implementation is shown in full in Listing 42.6. High-speed graphics code and fast VGAs go together like peanut butter and jelly, which is to say very well indeed; the assembly implementation ran more than twice as fast as the C code on my 486. Enough said!</P><P><BR></P>
+<P>Listing 42.1 requires that the DAC palette be set up so that a <B>NumLevel</B>-long block of palette entries contains linearly decreasing intensities of the drawing color. The size of the block is programmable, but must be a power of two. The more intensity levels, the better. Wu says that 32 intensities are enough; on my system, eight and even four levels looked pretty good. I found that gamma correction, which gives linearly spaced intensity steps, improved antialiasing quality significantly. Fortunately, we can program the palette with gamma-corrected values, so our drawing code doesn&rsquo;t have to do any extra work.</P>
+<P>Listing 42.1 isn&rsquo;t very fast, so I implemented Wu antialiasing in assembly, hard-coded for mode 13H. The implementation is shown in full in Listing 42.6. High-speed graphics code and fast VGAs go together like peanut butter and jelly, which is to say very well indeed; the assembly implementation ran more than twice as fast as the C code on my 486. Enough said!</P><P><BR></P>
 <CENTER>
 <TABLE BORDER>
 <TR>

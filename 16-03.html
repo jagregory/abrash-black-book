@@ -80,27 +80,27 @@
          .code
          public  _ScanBuffer
  _ScanBuffer     proc    near
-         push    bp              ;preserve caller&#146;s stack frame
+         push    bp              ;preserve caller&rsquo;s stack frame
          mov     bp,sp           ;set up local stack frame
-         push    si              ;preserve caller&#146;s register vars
+         push    si              ;preserve caller&rsquo;s register vars
          push    di
  
-         mov     si,[bp&#43;Buffer]  ;point to buffer to scan
-         mov     bx,[bp&#43;WordCount]
+         mov     si,[bp+Buffer]  ;point to buffer to scan
+         mov     bx,[bp+WordCount]
          mov     di,[bx]         ;get current 32-bit word count
-         mov     dx,[bx&#43;2]
-         mov     bx,[bp&#43;CharFlag]
+         mov     dx,[bx+2]
+         mov     bx,[bp+CharFlag]
          mov     al,[bx]         ;get current CharFlag
-         mov     cx,[bp&#43;BufferLength] ;get # of bytes to scan
+         mov     cx,[bp+BufferLength] ;get # of bytes to scan
          mov     bx,offset CharStatusTable
  ScanLoop:
          and     al,al           ;ZF=0 if last byte was a char,
                                  ; ZF=1 if not
          lodsb                   ;get the next byte
-                                 ;***doesn&#146;t change flags***
+                                 ;***doesn&rsquo;t change flags***
          xlat                    ;look up its char/not status
-                                 ;***doesn&#146;t change flags***
-         jz      ScanLoopBottom  ;don&#146;t count a word if last byte was
+                                 ;***doesn&rsquo;t change flags***
+         jz      ScanLoopBottom  ;don&rsquo;t count a word if last byte was
                                  ; not a character
          and     al,al           ;last byte was a character; is the
                                  ; current byte a character?
@@ -109,15 +109,15 @@
          dec     cx              ;count down buffer length
          jnz     ScanLoop
  Done:
-         mov     si,[bp&#43;CharFlag]
+         mov     si,[bp+CharFlag]
          mov     [si],al         ;set new CharFlag
-         mov     bx,[bp&#43;WordCount]
+         mov     bx,[bp+WordCount]
          mov     [bx],di         ;set new word count
-         mov     [bx&#43;2],dx
+         mov     [bx+2],dx
  
-         pop     di              ;restore caller&#146;s register vars
+         pop     di              ;restore caller&rsquo;s register vars
          pop     si
-         pop     bp              ;restore caller&#146;s stack frame
+         pop     bp              ;restore caller&rsquo;s stack frame
          ret
  
          align   2
@@ -132,15 +132,15 @@
  
 </PRE>
 <!-- END CODE //-->
-<P>Listing 16.4 features several interesting tricks. First, it uses <B>LODSB</B> and <B>XLAT</B> in succession, a very neat way to get a pointed-to byte, advance the pointer, and look up the value indexed by the byte in a table, all with just two instruction bytes. (Interestingly, Listing 16.4 would probably run quite a bit better still on an 8088, where <B>LODSB</B> and <B>XLAT</B> have a greater advantage over conventional instructions. On the 486 and Pentium, however, <B>LODSB</B> and <B>XLAT</B> lose much of their appeal, and should be replaced with <B>MOV</B> instructions.) Better yet, <B>LODSB</B> and <B>XLAT</B> don&#146;t alter the flags, so the Zero flag status set before <B>LODSB</B> is still around to be tested after <B>XLAT</B> .</P>
-<P>Finally, if you look closely, you will see that Listing 16.4 jumps out of the loop to increment the word count in the case where a word is actually found, with a duplicate of the loop-bottom code placed after the code that increments the word count, to avoid an extra branch back into the loop; this replaces the more intuitive approach of jumping around the incrementing code to the loop bottom when a word isn&#146;t found. Although this incurs a branch every time a word is found, a word is typically found only once every 5 or 6 bytes; on average, then, a branch is saved about two-thirds of the time. This is an excellent example of how understanding the nature of the data you&#146;re processing allows you to optimize in ways the compiler can&#146;t. <I>Know your data!</I></P>
-<P>So, gosh, Listing 16.4 is the best word-counting code in the universe, right? Not hardly. If there&#146;s one thing my years of toil in this vale of silicon have taught me, it&#146;s that there&#146;s never a lack of potential for further optimization. <I>Never!</I> Off the top of my head, I can think of at least three ways to speed up Listing 16.4; and, since Turbo Profiler reports that even in Listing 16.4, 88 percent of the time is spent scanning the buffer (as opposed to reading the file), there&#146;s potential for those further optimizations to improve performance significantly. (However, it is true that when access is performed to a hard rather than RAM disk, disk access jumps to about half of overall execution time.) One possible optimization is unrolling the loop, although that is truly a last resort because it tends to make further changes extremely difficult.</P>
+<P>Listing 16.4 features several interesting tricks. First, it uses <B>LODSB</B> and <B>XLAT</B> in succession, a very neat way to get a pointed-to byte, advance the pointer, and look up the value indexed by the byte in a table, all with just two instruction bytes. (Interestingly, Listing 16.4 would probably run quite a bit better still on an 8088, where <B>LODSB</B> and <B>XLAT</B> have a greater advantage over conventional instructions. On the 486 and Pentium, however, <B>LODSB</B> and <B>XLAT</B> lose much of their appeal, and should be replaced with <B>MOV</B> instructions.) Better yet, <B>LODSB</B> and <B>XLAT</B> don&rsquo;t alter the flags, so the Zero flag status set before <B>LODSB</B> is still around to be tested after <B>XLAT</B> .</P>
+<P>Finally, if you look closely, you will see that Listing 16.4 jumps out of the loop to increment the word count in the case where a word is actually found, with a duplicate of the loop-bottom code placed after the code that increments the word count, to avoid an extra branch back into the loop; this replaces the more intuitive approach of jumping around the incrementing code to the loop bottom when a word isn&rsquo;t found. Although this incurs a branch every time a word is found, a word is typically found only once every 5 or 6 bytes; on average, then, a branch is saved about two-thirds of the time. This is an excellent example of how understanding the nature of the data you&rsquo;re processing allows you to optimize in ways the compiler can&rsquo;t. <I>Know your data!</I></P>
+<P>So, gosh, Listing 16.4 is the best word-counting code in the universe, right? Not hardly. If there&rsquo;s one thing my years of toil in this vale of silicon have taught me, it&rsquo;s that there&rsquo;s never a lack of potential for further optimization. <I>Never!</I> Off the top of my head, I can think of at least three ways to speed up Listing 16.4; and, since Turbo Profiler reports that even in Listing 16.4, 88 percent of the time is spent scanning the buffer (as opposed to reading the file), there&rsquo;s potential for those further optimizations to improve performance significantly. (However, it is true that when access is performed to a hard rather than RAM disk, disk access jumps to about half of overall execution time.) One possible optimization is unrolling the loop, although that is truly a last resort because it tends to make further changes extremely difficult.</P>
 <TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>Exhaust all other optimizations before unrolling loops.</I></SMALL>
 </TABLE>
 <H3><A NAME="Heading5"></A><FONT COLOR="#000077">Challenges and Hazards</FONT></H3>
 <P>The challenge I put to the readers of <I>PC TECHNIQUES</I> was to write a faster module to replace Listing 16.4. The author of the code that counted the words in my secret test file fastest on my 20 MHz cached 386 would be the winner and receive Numerous Valuable Prizes.</P>
-<P>No listings were to be longer than 200 lines. No complete programs were to be accepted; submissions had to be plug-compatible with Listing 16.4. (This was to encourage people not to waste time optimizing outside the inner loop.) Finally, the code had to produce the same results as Listing 16.4; I didn&#146;t want to see functions that approximated the word count by dividing the number of characters by six instead of counting actual words!</P>
-<P>So how did the entrants in this particular challenge stack up? More than one claimed a speed-up over my assembly word-counting code of more than three times. On top of the three-times speedup over the original C code that I had already realized, we&#146;re almost up to an order of magnitude faster. You are, of course, entitled to your own opinion, but <I>I</I> consider an order of magnitude to be significant.</P><P><BR></P>
+<P>No listings were to be longer than 200 lines. No complete programs were to be accepted; submissions had to be plug-compatible with Listing 16.4. (This was to encourage people not to waste time optimizing outside the inner loop.) Finally, the code had to produce the same results as Listing 16.4; I didn&rsquo;t want to see functions that approximated the word count by dividing the number of characters by six instead of counting actual words!</P>
+<P>So how did the entrants in this particular challenge stack up? More than one claimed a speed-up over my assembly word-counting code of more than three times. On top of the three-times speedup over the original C code that I had already realized, we&rsquo;re almost up to an order of magnitude faster. You are, of course, entitled to your own opinion, but <I>I</I> consider an order of magnitude to be significant.</P><P><BR></P>
 <CENTER>
 <TABLE BORDER>
 <TR>

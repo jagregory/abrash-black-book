@@ -49,21 +49,21 @@
         .data
 ; Sample string to search through.
 SampleString        labelbyte
-        db   &#145;This is a sample string of a long enough length &#146;
-        db   &#145;so that raw searching speed can outweigh any &#146;
-        db   &#145;extra set-up time that may be required.&#146;,0
+        db   &lsquo;This is a sample string of a long enough length &rsquo;
+        db   &lsquo;so that raw searching speed can outweigh any &rsquo;
+        db   &lsquo;extra set-up time that may be required.&rsquo;,0
 SAMPLE_STRING_LENGTH  equ  $-SampleString
 
 ; User prompt.
-Prompt     db      &#145;Enter character to search for:$&#146;
+Prompt     db      &lsquo;Enter character to search for:$&rsquo;
 
 ; Result status messages.
 ByteFoundMsg         db    0dh,0ah
-                     db    &#145;Specified byte found.&#146;,0dh,0ah,&#145;$&#146;
+                     db    &lsquo;Specified byte found.&rsquo;,0dh,0ah,&lsquo;$&rsquo;
 ZeroByteFoundMsg db  0dh, 0ah
-                     db    &#145;Zero byte encountered.&#146;,0dh,0ah,&#145;$&#146;
+                     db    &lsquo;Zero byte encountered.&rsquo;,0dh,0ah,&lsquo;$&rsquo;
 NoByteFoundMsg       db    0dh,0ah
-                     db    &#145;Buffer exhausted with no match.&#146;, 0dh, 0ah, &#145;$&#146;
+                     db    &lsquo;Buffer exhausted with no match.&rsquo;, 0dh, 0ah, &lsquo;$&rsquo;
 
     .code
 Startprocnear
@@ -80,12 +80,12 @@ Startprocnear
     call SearchMaxLength                ;search the buffer
     mov  dx,offset ByteFoundMsg         ;assume we found the byte
     jc   PrintStatus                    ;we did find the byte
-                                        ;we didn&#146;t find the byte, figure out
+                                        ;we didn&rsquo;t find the byte, figure out
                                         ;whether we found a zero byte or
                                         ;ran out of buffer
     mov dx,offset NoByteFoundMsg
-                                        ;assume we didn&#146;t find a zero byte
-    jcxz PrintStatus                    ;we didn&#146;t find a zero byte
+                                        ;assume we didn&rsquo;t find a zero byte
+    jcxz PrintStatus                    ;we didn&rsquo;t find a zero byte
     mov  dx,offset ZeroByteFoundMsg     ;we found a zero byte
 PrintStatus:
     mov  ah,9             ;DOS print string function
@@ -114,25 +114,25 @@ SearchMaxLengthprocnear
 SearchMaxLengthLoop:
       lodsb                        ;get the next byte
       cmp   al,ah                  ;is this the byte we want?
-      jz    ByteFound              ;yes, we&#146;re done with success
+      jz    ByteFound              ;yes, we&rsquo;re done with success
       and   al,al                  ;is this the terminating 0 byte?
-      jz    ByteNotFound           ;yes, we&#146;re done with failure
-      loop  SearchMaxLengthLoop    ;it&#146;s neither, so check the next
+      jz    ByteNotFound           ;yes, we&rsquo;re done with failure
+      loop  SearchMaxLengthLoop    ;it&rsquo;s neither, so check the next
                                    ;byte, if any
 ByteNotFound:
-      clc                          ;return &#147;not found&#148; status
+      clc                          ;return &ldquo;not found&rdquo; status
       ret
 ByteFound:
       dec   si                     ;point back to the location at which
                                    ;we found the searched-for byte
-      stc                          ;return &#147;found&#148; status
+      stc                          ;return &ldquo;found&rdquo; status
       ret
 SearchMaxLengthendp
       end   Start
 </PRE>
 <!-- END CODE //-->
 <H3><A NAME="Heading7"></A><FONT COLOR="#000077">Unrolling Loops</FONT></H3>
-<P>Listing 7.2 takes a different tack, unrolling the loop so that four bytes are checked for each <B>LOOP</B> performed. The same instructions are used inside the loop in each listing, but Listing 7.2 is arranged so that three-quarters of the <B>LOOP</B>s are eliminated. Listings 7.1 and 7.2 perform exactly the same task, and they use the same instructions in the loop&#151;the searching algorithm hasn&#146;t changed in any way&#151;but we have sequenced the instructions differently in Listing 7.2, and that makes all the difference.</P><P><BR></P>
+<P>Listing 7.2 takes a different tack, unrolling the loop so that four bytes are checked for each <B>LOOP</B> performed. The same instructions are used inside the loop in each listing, but Listing 7.2 is arranged so that three-quarters of the <B>LOOP</B>s are eliminated. Listings 7.1 and 7.2 perform exactly the same task, and they use the same instructions in the loop&mdash;the searching algorithm hasn&rsquo;t changed in any way&mdash;but we have sequenced the instructions differently in Listing 7.2, and that makes all the difference.</P><P><BR></P>
 <CENTER>
 <TABLE BORDER>
 <TR>

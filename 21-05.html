@@ -48,10 +48,10 @@
 ; in length, and length &gt 0.
 
         sub     eax,eax         ;initialize the checksum
-        shr     ecx,1           ;we&#146;ll do two words per loop
+        shr     ecx,1           ;we&rsquo;ll do two words per loop
         mov     edx,[esi]       ;preload the first dword
         add     esi,4           ;point to the next dword
-        dec     ecx             ;we&#146;ll do 1 checksum outside the loop
+        dec     ecx             ;we&rsquo;ll do 1 checksum outside the loop
         jz      short ckloopend ;only 1 checksum to do
 
 ckloop:
@@ -71,7 +71,7 @@ ckloopend:
         adc     eax,0
 </PRE>
 <!-- END CODE //-->
-<P>Listing 21.5 improves upon Listing 21.4 by processing 2 dwords per loop, thereby bringing the time per checksummed word down to exactly 1 cycle. Listing 21.5 basically does nothing but unroll Listing 21.4&#146;s loop one time, demonstrating that the venerable optimization technique of loop unrolling still has some life left in it on the Pentium. The cost for this is, as usual, increased code size and complexity, and the use of more registers.
+<P>Listing 21.5 improves upon Listing 21.4 by processing 2 dwords per loop, thereby bringing the time per checksummed word down to exactly 1 cycle. Listing 21.5 basically does nothing but unroll Listing 21.4&rsquo;s loop one time, demonstrating that the venerable optimization technique of loop unrolling still has some life left in it on the Pentium. The cost for this is, as usual, increased code size and complexity, and the use of more registers.
 </P>
 <P><B>LISTING 21.5 L21-5.ASM</B></P>
 <!-- CODE //-->
@@ -85,15 +85,15 @@ ckloopend:
 ;  in length, and length &gt 0.
 
         sub     eax,eax          ;initialize the checksum
-        shr     ecx,2            ;we&#146;ll do two dwords per loop
+        shr     ecx,2            ;we&rsquo;ll do two dwords per loop
         jnc     short noodddword ;is there an odd dword in buffer?
         mov     eax,[esi]        ;checksum the odd dword
         jz      short ckloopdone ;no, done
         add     esi,4            ;point to the next dword
 noodddword:
         mov     edx,[esi]       ;preload the first dword
-        mov     ebx,[esi&#43;4]     ;preload the second dword
-        dec     ecx             ;we&#146;ll do 1 checksum outside the loop
+        mov     ebx,[esi+4]     ;preload the second dword
+        dec     ecx             ;we&rsquo;ll do 1 checksum outside the loop
         jz      short ckloopend ;only 1 checksum to do
         add     esi,8           ;point to the next dword
 
@@ -101,7 +101,7 @@ ckloop:
         add     eax,edx         ;cycle 1 U-pipe
         mov     edx,[esi]       ;cycle 1 V-pipe
         adc     eax,ebx         ;cycle 2 U-pipe
-        mov     ebx,[esi&#43;4]     ;cycle 2 V-pipe
+        mov     ebx,[esi+4]     ;cycle 2 V-pipe
         adc     eax,0           ;cycle 3 U-pipe
         add     esi,8           ;cycle 3 V-pipe
         dec     ecx             ;cycle 4 U-pipe
@@ -118,11 +118,11 @@ ckloopdone:
         adc     eax,0
 </PRE>
 <!-- END CODE //-->
-<P>Listing 21.5 is undeniably intricate code, and not the sort of thing one would choose to write as a matter of course. On the other hand, it&#146;s five times as fast as the tight, seemingly-speedy loop in Listing 21.1 (and six times as fast as Listing 21.1 would have been if the prefix byte had behaved as expected). That&#146;s an awful lot of speed to wring out of a five-instruction loop, and the TCP/IP checksum is, in fact, used by network software, an area in which a five-times speedup might make a significant difference in overall system performance.
+<P>Listing 21.5 is undeniably intricate code, and not the sort of thing one would choose to write as a matter of course. On the other hand, it&rsquo;s five times as fast as the tight, seemingly-speedy loop in Listing 21.1 (and six times as fast as Listing 21.1 would have been if the prefix byte had behaved as expected). That&rsquo;s an awful lot of speed to wring out of a five-instruction loop, and the TCP/IP checksum is, in fact, used by network software, an area in which a five-times speedup might make a significant difference in overall system performance.
 </P>
-<P>I don&#146;t claim that Listing 21.5 is the fastest possible way to do a TCP/IP checksum on a Pentium; in fact, it isn&#146;t. Unrolling the loop one more time, together with a trick of Terje&#146;s that uses <B>LEA</B> to advance ESI (neither <B>LEA</B> nor <B>DEC</B> affects the carry flag, allowing Terje to add the carry from the previous loop iteration into the next iteration&#146;s checksum via <B>ADC</B>), produces a version that&#146;s a full 33 percent faster. Nonetheless, Listings 21.1 through 21.5 illustrate many of the techniques and considerations in Pentium optimization. Hand-optimization for the Pentium isn&#146;t simple, and requires careful measurement to check the efficacy of your optimizations, so reserve it for when you really, really need it&#151;but when you need it, you need it <I>bad</I>.</P>
+<P>I don&rsquo;t claim that Listing 21.5 is the fastest possible way to do a TCP/IP checksum on a Pentium; in fact, it isn&rsquo;t. Unrolling the loop one more time, together with a trick of Terje&rsquo;s that uses <B>LEA</B> to advance ESI (neither <B>LEA</B> nor <B>DEC</B> affects the carry flag, allowing Terje to add the carry from the previous loop iteration into the next iteration&rsquo;s checksum via <B>ADC</B>), produces a version that&rsquo;s a full 33 percent faster. Nonetheless, Listings 21.1 through 21.5 illustrate many of the techniques and considerations in Pentium optimization. Hand-optimization for the Pentium isn&rsquo;t simple, and requires careful measurement to check the efficacy of your optimizations, so reserve it for when you really, really need it&mdash;but when you need it, you need it <I>bad</I>.</P>
 <H4 ALIGN="LEFT"><A NAME="Heading8"></A><FONT COLOR="#000077">A Quick Note on the 386 and 486</FONT></H4>
-<P>I&#146;ve mentioned that Pentium-optimized code does fine on the 486, but not always so well on the 386. On a 486, Listing 21.1 runs at 9 cycles per checksummed word, and Listing 21.5 runs at 2.5 cycles per checksummed word, a healthy 3.6-times speedup. On a 386, Listing 21.1 runs at 22 cycles per word; Listing 21.5 runs at 7 cycles per word, a 3.1-times speedup. As is often the case, Pentium optimization helped the other processors, but not as much as it helped the Pentium, and less on the 386 than on the 486.
+<P>I&rsquo;ve mentioned that Pentium-optimized code does fine on the 486, but not always so well on the 386. On a 486, Listing 21.1 runs at 9 cycles per checksummed word, and Listing 21.5 runs at 2.5 cycles per checksummed word, a healthy 3.6-times speedup. On a 386, Listing 21.1 runs at 22 cycles per word; Listing 21.5 runs at 7 cycles per word, a 3.1-times speedup. As is often the case, Pentium optimization helped the other processors, but not as much as it helped the Pentium, and less on the 386 than on the 486.
 </P><P><BR></P>
 <CENTER>
 <TABLE BORDER>

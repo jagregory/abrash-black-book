@@ -57,7 +57,7 @@ bcc -v -D%1=%2;%2=%3;%3=%4;%4=%5;%5=%6;%6=%7;%7=%8;%8 qlife.obj main.c video.c
 
 #include &lt;stdio.h&gt;
 #include &lt;stdlib.h&gt;
-#include &#147;life.h&#148;
+#include &ldquo;life.h&rdquo;
 
 #define LIST_LIMIT (46 * 138)  // when we need to use es:
 
@@ -66,82 +66,82 @@ char Buf[ 20 ];
 
 void Next1( void )
   {
-  char *Seg = &#147;&#148;;
+  char *Seg = &ldquo;&rdquo;;
 
-  if( WIDTH * HEIGHT &gt; LIST_LIMIT )  Seg = &#147;es:&#148;;
+  if( WIDTH * HEIGHT &gt; LIST_LIMIT )  Seg = &ldquo;es:&rdquo;;
 
-  printf( &#147;mov  bp,%s[si]\n&#148;, Seg );
-  printf( &#147;add  si,2\n&#148; );
-  printf( &#147;mov  dh,[bp&#43;1]\n&#148; );
-  printf( &#147;and  dh,0FEh\n&#148; );
-  printf( &#147;jmp  dx\n&#148; );
+  printf( &ldquo;mov  bp,%s[si]\n&rdquo;, Seg );
+  printf( &ldquo;add  si,2\n&rdquo; );
+  printf( &ldquo;mov  dh,[bp+1]\n&rdquo; );
+  printf( &ldquo;and  dh,0FEh\n&rdquo; );
+  printf( &ldquo;jmp  dx\n&rdquo; );
   }
 
 void Next2( void )
   {
-  printf( &#147;mov  bp,es:[si]\n&#148; );
-  printf( &#147;add  si,2\n&#148; );
-  printf( &#147;mov  dh,[bp&#43;1]\n&#148; );
-  printf( &#147;or   dh,1\n&#148; );
-  printf( &#147;jmp  dx\n&#148; );
+  printf( &ldquo;mov  bp,es:[si]\n&rdquo; );
+  printf( &ldquo;add  si,2\n&rdquo; );
+  printf( &ldquo;mov  dh,[bp+1]\n&rdquo; );
+  printf( &ldquo;or   dh,1\n&rdquo; );
+  printf( &ldquo;jmp  dx\n&rdquo; );
   }
 
 void BuildMaps( void )
   {
   unsigned short i, j, Size, x = 0, y, N1, N2, N3, C1, C2, C3;
 
-  printf( &#147;_DATA segment &#145;DATA&#146;\nalign 2\n&#148; );
-  printf( &#147;public _CellMap\n&#148; );
-  printf( &#147;_CellMap label word\n&#148; );
+  printf( &ldquo;_DATA segment &lsquo;DATA&rsquo;\nalign 2\n&rdquo; );
+  printf( &ldquo;public _CellMap\n&rdquo; );
+  printf( &ldquo;_CellMap label word\n&rdquo; );
 
-  for( j = 0; j &lt; HEIGHT; j&#43;&#43; )
+  for( j = 0; j &lt; HEIGHT; j++ )
     {
-    for( i = 0; i &lt; WIDTH; i&#43;&#43; )
+    for( i = 0; i &lt; WIDTH; i++ )
       {
       if( i == 0 || i == WIDTH-1 || j == 0 || j == HEIGHT-1 )
         {
-        printf( &#147;dw 8000h\n&#148; );
+        printf( &ldquo;dw 8000h\n&rdquo; );
         }
       else
         {
-        printf( &#147;dw 0\n&#148; );
+        printf( &ldquo;dw 0\n&rdquo; );
         }
       }
     }
 
-  printf( &#147;ChangeCell dw 0\n&#148; );
-  printf( &#147;_RowColMap label word\n&#148; );
+  printf( &ldquo;ChangeCell dw 0\n&rdquo; );
+  printf( &ldquo;_RowColMap label word\n&rdquo; );
 
-  for( j = 0; j &lt; HEIGHT; j&#43;&#43; )
+  for( j = 0; j &lt; HEIGHT; j++ )
     {
-    for( i = 0; i &lt; WIDTH; i&#43;&#43; )
+    for( i = 0; i &lt; WIDTH; i++ )
       {
-      printf( &#147;dw 0%02x%02xh\n&#148;, j, i * 3 );
+      printf( &ldquo;dw 0%02x%02xh\n&rdquo;, j, i * 3 );
       }
     }
 
   if( WIDTH * HEIGHT &gt; LIST_LIMIT )
     {
-    printf( &#147;Change1 dw offset _CHANGE:_ChangeList1\n&#148; );
-    printf( &#147;Change2 dw offset _CHANGE:_ChangeList2\n&#148; );
-    printf( &#147;ends\n\n&#148; );
-    printf( &#147;_CHANGE segment para public &#145;FAR_DATA&#146;\n&#148; );
+    printf( &ldquo;Change1 dw offset _CHANGE:_ChangeList1\n&rdquo; );
+    printf( &ldquo;Change2 dw offset _CHANGE:_ChangeList2\n&rdquo; );
+    printf( &ldquo;ends\n\n&rdquo; );
+    printf( &ldquo;_CHANGE segment para public &lsquo;FAR_DATA&rsquo;\n&rdquo; );
     }
   else
     {
-    printf( &#147;Change1 dw offset DGROUP:_ChangeList1\n&#148; );
-    printf( &#147;Change2 dw offset DGROUP:_ChangeList2\n&#148; );
+    printf( &ldquo;Change1 dw offset DGROUP:_ChangeList1\n&rdquo; );
+    printf( &ldquo;Change2 dw offset DGROUP:_ChangeList2\n&rdquo; );
     }
 
-  Size = WIDTH * HEIGHT &#43; 1;
+  Size = WIDTH * HEIGHT + 1;
 
-  printf( &#147;public _ChangeList1\n_ChangeList1 label word\n&#148; );
-  printf( &#147;dw %d dup (offset DGROUP:ChangeCell)\n&#148;, Size );
-  printf( &#147;public _ChangeList2\n_ChangeList2 label word\n&#148; );
-  printf( &#147;dw %d dup (offset DGROUP:ChangeCell)\n&#148;, Size );
-  printf( &#147;ends\n\n&#148; );
+  printf( &ldquo;public _ChangeList1\n_ChangeList1 label word\n&rdquo; );
+  printf( &ldquo;dw %d dup (offset DGROUP:ChangeCell)\n&rdquo;, Size );
+  printf( &ldquo;public _ChangeList2\n_ChangeList2 label word\n&rdquo; );
+  printf( &ldquo;dw %d dup (offset DGROUP:ChangeCell)\n&rdquo;, Size );
+  printf( &ldquo;ends\n\n&rdquo; );
 
-  printf( &#147;_LDMAP segment para public &#145;FAR_DATA&#146;\n&#148; );
+  printf( &ldquo;_LDMAP segment para public &lsquo;FAR_DATA&rsquo;\n&rdquo; );
 
   do
     {
@@ -157,55 +157,55 @@ void BuildMaps( void )
 
     y = x &amp 0x8FFF;  // Preserve all but the next generation states
 
-    if(  C1 &amp&amp ((N1 &#43; C2 == 2) || (N1 &#43; C2 == 3)) )
+    if(  C1 &amp&amp ((N1 + C2 == 2) || (N1 + C2 == 3)) )
       {
       y |= 0x4000;
       }
 
-    if( !C1 &amp&amp  (N1 &#43; C2 == 3) )
+    if( !C1 &amp&amp  (N1 + C2 == 3) )
       {
       y |= 0x4000;
       }
 
-    if(  C2 &amp&amp ((N2 &#43; C1 &#43; C3 == 2) || (N2 &#43; C1 &#43; C3 == 3)) )
+    if(  C2 &amp&amp ((N2 + C1 + C3 == 2) || (N2 + C1 + C3 == 3)) )
       {
       y |= 0x2000;
       }
 
-    if( !C2 &amp&amp  (N2 &#43; C1 &#43; C3 == 3) )
+    if( !C2 &amp&amp  (N2 + C1 + C3 == 3) )
       {
       y |= 0x2000;
       }
 
-    if(  C3 &amp&amp ((N3 &#43; C2 == 2) || (N3 &#43; C2 == 3)) )
+    if(  C3 &amp&amp ((N3 + C2 == 2) || (N3 + C2 == 3)) )
       {
       y |= 0x1000;
       }
 
-    if( !C3 &amp&amp  (N3 &#43; C2 == 3) )
+    if( !C3 &amp&amp  (N3 + C2 == 3) )
       {
       y |= 0x1000;
       }
 
-    printf( &#147;db 0%02xh\n&#148;, y &gt;&gt; 8 );
+    printf( &ldquo;db 0%02xh\n&rdquo;, y &gt;&gt; 8 );
     }
-  while( &#43;&#43;x != 0 );
+  while( ++x != 0 );
 
-  printf( &#147;ends\n\n&#148; );
+  printf( &ldquo;ends\n\n&rdquo; );
   }
 
 void GetUpAndDown( void )
   {
-  printf( &#147;mov  ax,[bp&#43;_RowColMap-_CellMap]\n&#148; );
-  printf( &#147;or   ah,ah\n&#148; );
-  printf( &#147;mov  dx,%d\n&#148;, DOWN );
-  printf( &#147;mov  cx,%d\n&#148;, WRAPUP );
-  printf( &#147;jz   short D%d\n&#148;, Label );
-  printf( &#147;cmp  ah,%d\n&#148;, HEIGHT - 1 );
-  printf( &#147;mov  cx,%d\n&#148;, UP );
-  printf( &#147;jb   short D%d\n&#148;, Label );
-  printf( &#147;mov  dx,%d\n&#148;, WRAPDOWN );
-  printf( &#147;D%d:\n&#148;, Label );
+  printf( &ldquo;mov  ax,[bp+_RowColMap-_CellMap]\n&rdquo; );
+  printf( &ldquo;or   ah,ah\n&rdquo; );
+  printf( &ldquo;mov  dx,%d\n&rdquo;, DOWN );
+  printf( &ldquo;mov  cx,%d\n&rdquo;, WRAPUP );
+  printf( &ldquo;jz   short D%d\n&rdquo;, Label );
+  printf( &ldquo;cmp  ah,%d\n&rdquo;, HEIGHT - 1 );
+  printf( &ldquo;mov  cx,%d\n&rdquo;, UP );
+  printf( &ldquo;jb   short D%d\n&rdquo;, Label );
+  printf( &ldquo;mov  dx,%d\n&rdquo;, WRAPDOWN );
+  printf( &ldquo;D%d:\n&rdquo;, Label );
   }
 
 void FirstPass( void )
@@ -213,37 +213,37 @@ void FirstPass( void )
   char *Op;
   unsigned short UpDown = 0;
 
-  printf( &#147;org 0%02x00h\n&#148;, (Edge &lt;&lt; 7) &#43; (New &lt;&lt; 4) &#43; (Old &lt;&lt; 1) );
+  printf( &ldquo;org 0%02x00h\n&rdquo;, (Edge &lt;&lt; 7) + (New &lt;&lt; 4) + (Old &lt;&lt; 1) );
 
   // reset cell
-  printf( &#147;xor  byte ptr [bp&#43;1],0%02xh\n&#148;, (New ^ Old) &lt;&lt; 1 );
+  printf( &ldquo;xor  byte ptr [bp+1],0%02xh\n&rdquo;, (New ^ Old) &lt;&lt; 1 );
 
   // get the screen address and update the display
   #ifndef NODRAW
-  printf( &#147;mov  al,160\n&#148; );
-  printf( &#147;mov  bx,[bp&#43;_RowColMap-_CellMap]\n&#148; );
-  printf( &#147;mul  bh\n&#148; );
-  printf( &#147;add  ax,ax\n&#148; );
-  printf( &#147;mov  bh,0\n&#148; );
-  printf( &#147;add  bx,ax\n&#148; );    // bx = screen offset
+  printf( &ldquo;mov  al,160\n&rdquo; );
+  printf( &ldquo;mov  bx,[bp+_RowColMap-_CellMap]\n&rdquo; );
+  printf( &ldquo;mul  bh\n&rdquo; );
+  printf( &ldquo;add  ax,ax\n&rdquo; );
+  printf( &ldquo;mov  bh,0\n&rdquo; );
+  printf( &ldquo;add  bx,ax\n&rdquo; );    // bx = screen offset
 
   if( ((New ^ Old) &amp 6) == 6 )
     {
-    printf( &#147;mov  word ptr fs:[bx],0%02x%02xh\n&#148;,
+    printf( &ldquo;mov  word ptr fs:[bx],0%02x%02xh\n&rdquo;,
             (New &amp 2) ? 15 : 0,
             (New &amp 4) ? 15 : 0 );
 
     if( (New ^ Old) &amp 1 )
       {
-      printf( &#147;mov  byte ptr fs:[bx&#43;2],%s\n&#148;,
-              (New &amp 1) ? &#147;15&#148; : &#147;dl&#148; );
+      printf( &ldquo;mov  byte ptr fs:[bx+2],%s\n&rdquo;,
+              (New &amp 1) ? &ldquo;15&rdquo; : &ldquo;dl&rdquo; );
       }
     }
   else
     {
     if( ((New ^ Old) &amp 3) == 3 )
       {
-      printf( &#147;mov  word ptr fs:[bx&#43;1],0%02x%02xh\n&#148;,
+      printf( &ldquo;mov  word ptr fs:[bx+1],0%02x%02xh\n&rdquo;,
               (New &amp 1) ? 15 : 0,
               (New &amp 2) ? 15 : 0 );
       }
@@ -251,28 +251,28 @@ void FirstPass( void )
       {
       if( (New ^ Old) &amp 2 )
         {
-        printf( &#147;mov  byte ptr fs:[bx&#43;1],%s\n&#148;,
-                (New &amp 2) ? &#147;15&#148; : &#147;dl&#148; );
+        printf( &ldquo;mov  byte ptr fs:[bx+1],%s\n&rdquo;,
+                (New &amp 2) ? &ldquo;15&rdquo; : &ldquo;dl&rdquo; );
         }
 
       if( (New ^ Old) &amp 1 )
         {
-        printf( &#147;mov  byte ptr fs:[bx&#43;2],%s\n&#148;,
-                (New &amp 1) ? &#147;15&#148; : &#147;dl&#148; );
+        printf( &ldquo;mov  byte ptr fs:[bx+2],%s\n&rdquo;,
+                (New &amp 1) ? &ldquo;15&rdquo; : &ldquo;dl&rdquo; );
         }
       }
 
     if( (New ^ Old) &amp 4 )
       {
-      printf( &#147;mov  byte ptr fs:[bx],%s\n&#148;,
-              (New &amp 4) ? &#147;15&#148; : &#147;dl&#148; );
+      printf( &ldquo;mov  byte ptr fs:[bx],%s\n&rdquo;,
+              (New &amp 4) ? &ldquo;15&rdquo; : &ldquo;dl&rdquo; );
       }
     }
   #endif
 
-  if( (New ^ Old) &amp 4 )  UpDown &#43;= (New &amp 4) ? 0x48 : -0x48;
-  if( (New ^ Old) &amp 2 )  UpDown &#43;= (New &amp 2) ? 0x49 : -0x49;
-  if( (New ^ Old) &amp 1 )  UpDown &#43;= (New &amp 1) ? 0x09 : -0x09;
+  if( (New ^ Old) &amp 4 )  UpDown += (New &amp 4) ? 0x48 : -0x48;
+  if( (New ^ Old) &amp 2 )  UpDown += (New &amp 2) ? 0x49 : -0x49;
+  if( (New ^ Old) &amp 1 )  UpDown += (New &amp 1) ? 0x09 : -0x09;
 
   if( Edge )
     {
@@ -280,83 +280,83 @@ void FirstPass( void )
 
     if( (New ^ Old) &amp 4 )
       {
-      printf( &#147;mov  di,%d\n&#148;, WRAPLEFT );      // di = left
-      printf( &#147;cmp  al,0\n&#148; );
-      printf( &#147;je   short L%d\n&#148;, Label );
-      printf( &#147;mov  di,%d\n&#148;, LEFT );
-      printf( &#147;L%d:\n&#148;, Label );
+      printf( &ldquo;mov  di,%d\n&rdquo;, WRAPLEFT );      // di = left
+      printf( &ldquo;cmp  al,0\n&rdquo; );
+      printf( &ldquo;je   short L%d\n&rdquo;, Label );
+      printf( &ldquo;mov  di,%d\n&rdquo;, LEFT );
+      printf( &ldquo;L%d:\n&rdquo;, Label );
 
-      if( New &amp 4 )  Op = &#147;inc&#148;;
-      else           Op = &#147;dec&#148;;
+      if( New &amp 4 )  Op = &ldquo;inc&rdquo;;
+      else           Op = &ldquo;dec&rdquo;;
 
-      printf( &#147;%s  word ptr [bp&#43;di]\n&#148;, Op );
-      printf( &#147;add  di,cx\n&#148; );
-      printf( &#147;%s  word ptr [bp&#43;di]\n&#148;, Op );
-      printf( &#147;sub  di,cx\n&#148; );
-      printf( &#147;add  di,dx\n&#148; );
-      printf( &#147;%s  word ptr [bp&#43;di]\n&#148;, Op );
+      printf( &ldquo;%s  word ptr [bp+di]\n&rdquo;, Op );
+      printf( &ldquo;add  di,cx\n&rdquo; );
+      printf( &ldquo;%s  word ptr [bp+di]\n&rdquo;, Op );
+      printf( &ldquo;sub  di,cx\n&rdquo; );
+      printf( &ldquo;add  di,dx\n&rdquo; );
+      printf( &ldquo;%s  word ptr [bp+di]\n&rdquo;, Op );
       }
 
     if( (New ^ Old) &amp 1 )
       {
-      printf( &#147;mov  di,%d\n&#148;, WRAPRIGHT );      // di = right
-      printf( &#147;cmp  al,%d\n&#148;, (WIDTH - 1) * 3 );
-      printf( &#147;je   short R%d\n&#148;, Label );
-      printf( &#147;mov  di,%d\n&#148;, RIGHT );
-      printf( &#147;R%d:\n&#148;, Label );
+      printf( &ldquo;mov  di,%d\n&rdquo;, WRAPRIGHT );      // di = right
+      printf( &ldquo;cmp  al,%d\n&rdquo;, (WIDTH - 1) * 3 );
+      printf( &ldquo;je   short R%d\n&rdquo;, Label );
+      printf( &ldquo;mov  di,%d\n&rdquo;, RIGHT );
+      printf( &ldquo;R%d:\n&rdquo;, Label );
 
-      if( New &amp 1 )  Op = &#147;add&#148;;
-      else           Op = &#147;sub&#148;;
+      if( New &amp 1 )  Op = &ldquo;add&rdquo;;
+      else           Op = &ldquo;sub&rdquo;;
 
-      printf( &#147;%s   word ptr [bp&#43;di],40h\n&#148;, Op );
-      printf( &#147;add  di,cx\n&#148; );
-      printf( &#147;%s   word ptr [bp&#43;di],40h\n&#148;, Op );
-      printf( &#147;sub  di,cx\n&#148; );
-      printf( &#147;add  di,dx\n&#148; );
-      printf( &#147;%s   word ptr [bp&#43;di],40h\n&#148;, Op );
+      printf( &ldquo;%s   word ptr [bp+di],40h\n&rdquo;, Op );
+      printf( &ldquo;add  di,cx\n&rdquo; );
+      printf( &ldquo;%s   word ptr [bp+di],40h\n&rdquo;, Op );
+      printf( &ldquo;sub  di,cx\n&rdquo; );
+      printf( &ldquo;add  di,dx\n&rdquo; );
+      printf( &ldquo;%s   word ptr [bp+di],40h\n&rdquo;, Op );
       }
 
-    printf( &#147;mov  di,cx\n&#148; );
-    printf( &#147;add  word ptr [bp&#43;di],%d\n&#148;, UpDown );
-    printf( &#147;mov  di,dx\n&#148; );
-    printf( &#147;add  word ptr [bp&#43;di],%d\n&#148;, UpDown );
+    printf( &ldquo;mov  di,cx\n&rdquo; );
+    printf( &ldquo;add  word ptr [bp+di],%d\n&rdquo;, UpDown );
+    printf( &ldquo;mov  di,dx\n&rdquo; );
+    printf( &ldquo;add  word ptr [bp+di],%d\n&rdquo;, UpDown );
 
-    printf( &#147;mov  dl,0\n&#148; );
+    printf( &ldquo;mov  dl,0\n&rdquo; );
     }
   else
     {
     if( (New ^ Old) &amp 4 )
       {
-      if( New &amp 4 )  Op = &#147;inc&#148;;
-      else           Op = &#147;dec&#148;;
+      if( New &amp 4 )  Op = &ldquo;inc&rdquo;;
+      else           Op = &ldquo;dec&rdquo;;
 
-      printf( &#147;%s  byte ptr [bp&#43;%d]\n&#148;, Op, LEFT );
-      printf( &#147;%s  byte ptr [bp&#43;%d]\n&#148;, Op, UPPERLEFT );
-      printf( &#147;%s  byte ptr [bp&#43;%d]\n&#148;, Op, LOWERLEFT );
+      printf( &ldquo;%s  byte ptr [bp+%d]\n&rdquo;, Op, LEFT );
+      printf( &ldquo;%s  byte ptr [bp+%d]\n&rdquo;, Op, UPPERLEFT );
+      printf( &ldquo;%s  byte ptr [bp+%d]\n&rdquo;, Op, LOWERLEFT );
       }
 
     if( (New ^ Old) &amp 1 )
       {
-      if( New &amp 1 )  Op = &#147;add&#148;;
-      else           Op = &#147;sub&#148;;
+      if( New &amp 1 )  Op = &ldquo;add&rdquo;;
+      else           Op = &ldquo;sub&rdquo;;
 
-      printf( &#147;%s  word ptr [bp&#43;%d],40h\n&#148;, Op, RIGHT );
-      printf( &#147;%s  word ptr [bp&#43;%d],40h\n&#148;, Op, UPPERRIGHT );
-      printf( &#147;%s  word ptr [bp&#43;%d],40h\n&#148;, Op, LOWERRIGHT );
+      printf( &ldquo;%s  word ptr [bp+%d],40h\n&rdquo;, Op, RIGHT );
+      printf( &ldquo;%s  word ptr [bp+%d],40h\n&rdquo;, Op, UPPERRIGHT );
+      printf( &ldquo;%s  word ptr [bp+%d],40h\n&rdquo;, Op, LOWERRIGHT );
       }
 
     if( abs( UpDown ) &gt; 1 )
       {
-      printf( &#147;add  word ptr [bp&#43;%d],%d\n&#148;, UP, UpDown );
-      printf( &#147;add  word ptr [bp&#43;%d],%d\n&#148;, DOWN, UpDown );
+      printf( &ldquo;add  word ptr [bp+%d],%d\n&rdquo;, UP, UpDown );
+      printf( &ldquo;add  word ptr [bp+%d],%d\n&rdquo;, DOWN, UpDown );
       }
     else
       {
-      if( UpDown == 1 )  Op = &#147;inc&#148;;
-      else               Op = &#147;dec&#148;;
+      if( UpDown == 1 )  Op = &ldquo;inc&rdquo;;
+      else               Op = &ldquo;dec&rdquo;;
 
-      printf( &#147;%s  byte ptr [bp&#43;%d]\n&#148;, Op, UP   );
-      printf( &#147;%s  byte ptr [bp&#43;%d]\n&#148;, Op, DOWN );
+      printf( &ldquo;%s  byte ptr [bp+%d]\n&rdquo;, Op, UP   );
+      printf( &ldquo;%s  byte ptr [bp+%d]\n&rdquo;, Op, DOWN );
       }
     }
 
@@ -365,181 +365,181 @@ void FirstPass( void )
 
 void Test( char *Offset, char *Str )
   {
-  printf( &#147;mov  bx,[bp&#43;%s]\n&#148;, Offset );
-  printf( &#147;cmp  bh,[bx]\n&#148; );
-  printf( &#147;jnz  short FIX_%s%d\n&#148;, Str, Label );
-  printf( &#147;%s%d:\n&#148;, Str, Label );
+  printf( &ldquo;mov  bx,[bp+%s]\n&rdquo;, Offset );
+  printf( &ldquo;cmp  bh,[bx]\n&rdquo; );
+  printf( &ldquo;jnz  short FIX_%s%d\n&rdquo;, Str, Label );
+  printf( &ldquo;%s%d:\n&rdquo;, Str, Label );
   }
 
 void Fix( char *Offset, char *Str, int JumpBack )
   {
-  printf( &#147;FIX_%s%d:\n&#148;, Str, Label );
-  printf( &#147;mov  bh,[bx]\n&#148; );
-  printf( &#147;mov  [bp&#43;%s],bx\n&#148;, Offset );
+  printf( &ldquo;FIX_%s%d:\n&rdquo;, Str, Label );
+  printf( &ldquo;mov  bh,[bx]\n&rdquo; );
+  printf( &ldquo;mov  [bp+%s],bx\n&rdquo;, Offset );
 
-  if( *Offset != &#145;0&#146; )  printf( &#147;lea  ax,[bp&#43;%s]\n&#148;, Offset );
-  else                  printf( &#147;mov  ax,bp\n&#148; );
+  if( *Offset != &lsquo;0&rsquo; )  printf( &ldquo;lea  ax,[bp+%s]\n&rdquo;, Offset );
+  else                  printf( &ldquo;mov  ax,bp\n&rdquo; );
 
-  printf( &#147;stosw\n&#148; );
+  printf( &ldquo;stosw\n&rdquo; );
 
-  if( JumpBack )  printf( &#147;jmp  short %s%d\n&#148;, Str, Label );
+  if( JumpBack )  printf( &ldquo;jmp  short %s%d\n&rdquo;, Str, Label );
   }
 
 void SecondPass( void )
   {
-  printf( &#147;org 0%02x00h\n&#148;,
-          (Edge &lt;&lt; 7) &#43; (New &lt;&lt; 4) &#43; (Old &lt;&lt; 1) &#43; 1 );
+  printf( &ldquo;org 0%02x00h\n&rdquo;,
+          (Edge &lt;&lt; 7) + (New &lt;&lt; 4) + (Old &lt;&lt; 1) + 1 );
 
   if( Edge )
     {
     // finished with second pass
     if( New == 7 &amp&amp Old == 0 )
       {
-      printf( &#147;cmp  bp,offset DGROUP:ChangeCell\n&#148; );
-      printf( &#147;jne  short NotEnd\n&#148; );
-      printf( &#147;mov  word ptr es:[di],offset DGROUP:ChangeCell\n&#148; );
-      printf( &#147;pop  di si bp ds\n&#148; );
-      printf( &#147;mov  ChangeCell,0\n&#148; );
-      printf( &#147;retf\n&#148; );
-      printf( &#147;NotEnd:\n&#148; );
+      printf( &ldquo;cmp  bp,offset DGROUP:ChangeCell\n&rdquo; );
+      printf( &ldquo;jne  short NotEnd\n&rdquo; );
+      printf( &ldquo;mov  word ptr es:[di],offset DGROUP:ChangeCell\n&rdquo; );
+      printf( &ldquo;pop  di si bp ds\n&rdquo; );
+      printf( &ldquo;mov  ChangeCell,0\n&rdquo; );
+      printf( &ldquo;retf\n&rdquo; );
+      printf( &ldquo;NotEnd:\n&rdquo; );
       }
 
     GetUpAndDown();  // ah = row, al = col, cx = up, dx = down
 
-    printf( &#147;push si\n&#148; );
-    printf( &#147;mov  si,%d\n&#148;, WRAPLEFT );    // si = left
-    printf( &#147;cmp  al,0\n&#148; );
-    printf( &#147;je   short L%d\n&#148;, Label );
-    printf( &#147;mov  si,%d\n&#148;, LEFT );
-    printf( &#147;L%d:\n&#148;, Label );
+    printf( &ldquo;push si\n&rdquo; );
+    printf( &ldquo;mov  si,%d\n&rdquo;, WRAPLEFT );    // si = left
+    printf( &ldquo;cmp  al,0\n&rdquo; );
+    printf( &ldquo;je   short L%d\n&rdquo;, Label );
+    printf( &ldquo;mov  si,%d\n&rdquo;, LEFT );
+    printf( &ldquo;L%d:\n&rdquo;, Label );
 
-    Test( &#147;si&#148;, &#147;LEFT&#148; );
-    printf( &#147;add  si,cx\n&#148; );
-    Test( &#147;si&#148;, &#147;UPPERLEFT&#148; );
-    printf( &#147;sub  si,cx\n&#148; );
-    printf( &#147;add  si,dx\n&#148; );
-    Test( &#147;si&#148;, &#147;LOWERLEFT&#148; );
+    Test( &ldquo;si&rdquo;, &ldquo;LEFT&rdquo; );
+    printf( &ldquo;add  si,cx\n&rdquo; );
+    Test( &ldquo;si&rdquo;, &ldquo;UPPERLEFT&rdquo; );
+    printf( &ldquo;sub  si,cx\n&rdquo; );
+    printf( &ldquo;add  si,dx\n&rdquo; );
+    Test( &ldquo;si&rdquo;, &ldquo;LOWERLEFT&rdquo; );
 
-    printf( &#147;mov  si,cx\n&#148; );
-    Test( &#147;si&#148;, &#147;UP&#148; );
-    printf( &#147;mov  si,dx\n&#148; );
-    Test( &#147;si&#148;, &#147;DOWN&#148; );
+    printf( &ldquo;mov  si,cx\n&rdquo; );
+    Test( &ldquo;si&rdquo;, &ldquo;UP&rdquo; );
+    printf( &ldquo;mov  si,dx\n&rdquo; );
+    Test( &ldquo;si&rdquo;, &ldquo;DOWN&rdquo; );
 
-    printf( &#147;cmp  byte ptr [bp&#43;_RowColMap-_CellMap],%d\n&#148;,
+    printf( &ldquo;cmp  byte ptr [bp+_RowColMap-_CellMap],%d\n&rdquo;,
             (WIDTH - 1) * 3 );
 
-    printf( &#147;mov  si,%d\n&#148;, WRAPRIGHT );    // si = right
-    printf( &#147;je   short R%d\n&#148;, Label );
-    printf( &#147;mov  si,%d\n&#148;, RIGHT );
-    printf( &#147;R%d:\n&#148;, Label );
+    printf( &ldquo;mov  si,%d\n&rdquo;, WRAPRIGHT );    // si = right
+    printf( &ldquo;je   short R%d\n&rdquo;, Label );
+    printf( &ldquo;mov  si,%d\n&rdquo;, RIGHT );
+    printf( &ldquo;R%d:\n&rdquo;, Label );
 
-    Test( &#147;si&#148;, &#147;RIGHT&#148; );
-    printf( &#147;add  si,cx\n&#148; );
-    Test( &#147;si&#148;, &#147;UPPERRIGHT&#148; );
-    printf( &#147;sub  si,cx\n&#148; );
-    printf( &#147;add  si,dx\n&#148; );
-    Test( &#147;si&#148;, &#147;LOWERRIGHT&#148; );
+    Test( &ldquo;si&rdquo;, &ldquo;RIGHT&rdquo; );
+    printf( &ldquo;add  si,cx\n&rdquo; );
+    Test( &ldquo;si&rdquo;, &ldquo;UPPERRIGHT&rdquo; );
+    printf( &ldquo;sub  si,cx\n&rdquo; );
+    printf( &ldquo;add  si,dx\n&rdquo; );
+    Test( &ldquo;si&rdquo;, &ldquo;LOWERRIGHT&rdquo; );
     }
   else
     {
-    Test( itoa( LEFT, Buf, 10 ), &#147;LEFT&#148; );
-    Test( itoa( UPPERLEFT, Buf, 10 ), &#147;UPPERLEFT&#148; );
-    Test( itoa( LOWERLEFT, Buf, 10 ), &#147;LOWERLEFT&#148; );
-    Test( itoa( UP, Buf, 10 ), &#147;UP&#148; );
-    Test( itoa( DOWN, Buf, 10 ), &#147;DOWN&#148; );
-    Test( itoa( RIGHT, Buf, 10 ), &#147;RIGHT&#148; );
-    Test( itoa( UPPERRIGHT, Buf, 10 ), &#147;UPPERRIGHT&#148; );
-    Test( itoa( LOWERRIGHT, Buf, 10 ), &#147;LOWERRIGHT&#148; );
+    Test( itoa( LEFT, Buf, 10 ), &ldquo;LEFT&rdquo; );
+    Test( itoa( UPPERLEFT, Buf, 10 ), &ldquo;UPPERLEFT&rdquo; );
+    Test( itoa( LOWERLEFT, Buf, 10 ), &ldquo;LOWERLEFT&rdquo; );
+    Test( itoa( UP, Buf, 10 ), &ldquo;UP&rdquo; );
+    Test( itoa( DOWN, Buf, 10 ), &ldquo;DOWN&rdquo; );
+    Test( itoa( RIGHT, Buf, 10 ), &ldquo;RIGHT&rdquo; );
+    Test( itoa( UPPERRIGHT, Buf, 10 ), &ldquo;UPPERRIGHT&rdquo; );
+    Test( itoa( LOWERRIGHT, Buf, 10 ), &ldquo;LOWERRIGHT&rdquo; );
     }
 
-  if( New == Old )  Test( &#147;0&#148;, &#147;CENTER&#148; );
+  if( New == Old )  Test( &ldquo;0&rdquo;, &ldquo;CENTER&rdquo; );
 
-  if( Edge )  printf( &#147;pop  si\n&#148; &#147;mov  dl,0\n&#148; );
+  if( Edge )  printf( &ldquo;pop  si\n&rdquo; &ldquo;mov  dl,0\n&rdquo; );
 
   Next2();
 
   if( Edge )
     {
-    Fix( &#147;si&#148;, &#147;LEFT&#148;,       1 );
-    Fix( &#147;si&#148;, &#147;UPPERLEFT&#148;,  1 );
-    Fix( &#147;si&#148;, &#147;LOWERLEFT&#148;,  1 );
-    Fix( &#147;si&#148;, &#147;UP&#148;,         1 );
-    Fix( &#147;si&#148;, &#147;DOWN&#148;,       1 );
-    Fix( &#147;si&#148;, &#147;RIGHT&#148;,      1 );
-    Fix( &#147;si&#148;, &#147;UPPERRIGHT&#148;, 1 );
-    Fix( &#147;si&#148;, &#147;LOWERRIGHT&#148;, New == Old );
+    Fix( &ldquo;si&rdquo;, &ldquo;LEFT&rdquo;,       1 );
+    Fix( &ldquo;si&rdquo;, &ldquo;UPPERLEFT&rdquo;,  1 );
+    Fix( &ldquo;si&rdquo;, &ldquo;LOWERLEFT&rdquo;,  1 );
+    Fix( &ldquo;si&rdquo;, &ldquo;UP&rdquo;,         1 );
+    Fix( &ldquo;si&rdquo;, &ldquo;DOWN&rdquo;,       1 );
+    Fix( &ldquo;si&rdquo;, &ldquo;RIGHT&rdquo;,      1 );
+    Fix( &ldquo;si&rdquo;, &ldquo;UPPERRIGHT&rdquo;, 1 );
+    Fix( &ldquo;si&rdquo;, &ldquo;LOWERRIGHT&rdquo;, New == Old );
     }
   else
     {
-    Fix( itoa( LEFT, Buf, 10 ),       &#147;LEFT&#148;,       1 );
-    Fix( itoa( UPPERLEFT, Buf, 10 ),  &#147;UPPERLEFT&#148;,  1 );
-    Fix( itoa( LOWERLEFT, Buf, 10 ),  &#147;LOWERLEFT&#148;,  1 );
-    Fix( itoa( UP, Buf, 10 ),         &#147;UP&#148;,         1 );
-    Fix( itoa( DOWN, Buf, 10 ),       &#147;DOWN&#148;,       1 );
-    Fix( itoa( RIGHT, Buf, 10 ),      &#147;RIGHT&#148;,      1 );
-    Fix( itoa( UPPERRIGHT, Buf, 10 ), &#147;UPPERRIGHT&#148;, 1 );
-    Fix( itoa( LOWERRIGHT, Buf, 10 ), &#147;LOWERRIGHT&#148;, New == Old );
+    Fix( itoa( LEFT, Buf, 10 ),       &ldquo;LEFT&rdquo;,       1 );
+    Fix( itoa( UPPERLEFT, Buf, 10 ),  &ldquo;UPPERLEFT&rdquo;,  1 );
+    Fix( itoa( LOWERLEFT, Buf, 10 ),  &ldquo;LOWERLEFT&rdquo;,  1 );
+    Fix( itoa( UP, Buf, 10 ),         &ldquo;UP&rdquo;,         1 );
+    Fix( itoa( DOWN, Buf, 10 ),       &ldquo;DOWN&rdquo;,       1 );
+    Fix( itoa( RIGHT, Buf, 10 ),      &ldquo;RIGHT&rdquo;,      1 );
+    Fix( itoa( UPPERRIGHT, Buf, 10 ), &ldquo;UPPERRIGHT&rdquo;, 1 );
+    Fix( itoa( LOWERRIGHT, Buf, 10 ), &ldquo;LOWERRIGHT&rdquo;, New == Old );
     }
 
-  if( New == Old )  Fix( &#147;0&#148;, &#147;CENTER&#148;, 0 );
+  if( New == Old )  Fix( &ldquo;0&rdquo;, &ldquo;CENTER&rdquo;, 0 );
 
-  if( Edge )  printf( &#147;pop  si\n&#148; &#147;mov  dl,0\n&#148; );
+  if( Edge )  printf( &ldquo;pop  si\n&rdquo; &ldquo;mov  dl,0\n&rdquo; );
 
   Next2();
   }
 
 void main( void )
   {
-  char *Seg = &#147;ds&#148;;
+  char *Seg = &ldquo;ds&rdquo;;
 
   BuildMaps();
 
-  printf( &#147;DGROUP group _DATA\n&#148; );
-  printf( &#147;LIFE segment &#145;CODE&#146;\n&#148; );
-  printf( &#147;assume cs:LIFE,ds:DGROUP,ss:DGROUP,es:NOTHING\n&#148; );
-  printf( &#147;.386C\n&#148; &#147;public _NextGen\n\n&#148; );
+  printf( &ldquo;DGROUP group _DATA\n&rdquo; );
+  printf( &ldquo;LIFE segment &lsquo;CODE&rsquo;\n&rdquo; );
+  printf( &ldquo;assume cs:LIFE,ds:DGROUP,ss:DGROUP,es:NOTHING\n&rdquo; );
+  printf( &ldquo;.386C\n&rdquo; &ldquo;public _NextGen\n\n&rdquo; );
 
-  for( Edge = 0; Edge &lt;= 1; Edge&#43;&#43; )
+  for( Edge = 0; Edge &lt;= 1; Edge++ )
     {
-    for( New = 0; New &lt; 8; New&#43;&#43; )
+    for( New = 0; New &lt; 8; New++ )
       {
-      for( Old = 0; Old &lt; 8; Old&#43;&#43; )
+      for( Old = 0; Old &lt; 8; Old++ )
         {
-        if( New != Old )  FirstPass();  Label&#43;&#43;;
-        SecondPass();                   Label&#43;&#43;;
+        if( New != Old )  FirstPass();  Label++;
+        SecondPass();                   Label++;
         }
       }
     }
 
   // finished with first pass
-  printf( &#147;org  0\n&#148; );
-  printf( &#147;mov  si,Change1\n&#148; );
-  printf( &#147;mov  di,Change2\n&#148; );
-  printf( &#147;mov  Change1,di\n&#148; );
-  printf( &#147;mov  Change2,si\n&#148; );
-  printf( &#147;mov  ChangeCell,0F000h\n&#148; );
-  printf( &#147;mov  ax,seg _LDMAP\n&#148; );
-  printf( &#147;mov  ds,ax\n&#148; );
+  printf( &ldquo;org  0\n&rdquo; );
+  printf( &ldquo;mov  si,Change1\n&rdquo; );
+  printf( &ldquo;mov  di,Change2\n&rdquo; );
+  printf( &ldquo;mov  Change1,di\n&rdquo; );
+  printf( &ldquo;mov  Change2,si\n&rdquo; );
+  printf( &ldquo;mov  ChangeCell,0F000h\n&rdquo; );
+  printf( &ldquo;mov  ax,seg _LDMAP\n&rdquo; );
+  printf( &ldquo;mov  ds,ax\n&rdquo; );
   Next2();
 
   // entry point
-  printf( &#147;_NextGen: push ds bp si di\n&#148; &#147;cld\n&#148; );
+  printf( &ldquo;_NextGen: push ds bp si di\n&rdquo; &ldquo;cld\n&rdquo; );
 
-  if( WIDTH * HEIGHT &gt; LIST_LIMIT )  Seg = &#147;seg _CHANGE&#148;;
+  if( WIDTH * HEIGHT &gt; LIST_LIMIT )  Seg = &ldquo;seg _CHANGE&rdquo;;
 
-  printf( &#147;mov  ax,%s\n&#148;, Seg );
-  printf( &#147;mov  es,ax\n&#148; );
+  printf( &ldquo;mov  ax,%s\n&rdquo;, Seg );
+  printf( &ldquo;mov  es,ax\n&rdquo; );
 
   #ifndef NODRAW
-  printf( &#147;mov  ax,0A000h\n&#148; );
-  printf( &#147;mov  fs,ax\n&#148; );
+  printf( &ldquo;mov  ax,0A000h\n&rdquo; );
+  printf( &ldquo;mov  fs,ax\n&rdquo; );
   #endif
 
-  printf( &#147;mov  si,Change1\n&#148; );
-  printf( &#147;mov  dl,0\n&#148; );
+  printf( &ldquo;mov  si,Change1\n&rdquo; );
+  printf( &ldquo;mov  dl,0\n&rdquo; );
   Next1();
 
-  printf( &#147;LIFE ends\nend\n&#148; );
+  printf( &ldquo;LIFE ends\nend\n&rdquo; );
   }
 </PRE>
 <!-- END CODE //-->

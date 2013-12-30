@@ -38,7 +38,7 @@
 <P><BR></P>
 <P>And indeed it does. When the test program is modified to draw to a local buffer, both the C and assembly language versions get 0.29 seconds faster, that being a measure of the time taken by display memory wait states. With those wait states factored out, the assembly language version of <B>DrawHorizontalLineList</B> becomes almost three times as fast as the C code.</P>
 <TABLE WIDTH="100%"><TR>
-<TD WIDTH="5%" ALIGN="LEFT" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="90%" VALIGN="TOP" ALIGN="LEFT"><SMALL><I>There is a lesson here. An optimization has no fixed payoff; its value fluctuates according to the context in which it is used. There&#146;s relatively little benefit to further optimizing code that already spends half its time waiting for display memory; no matter how good your optimizations, you&#146;ll get only a two-times speedup at best, and generally much less than that. There is, on the other hand, potential for tremendous improvement when drawing to system memory, so if that&#146;s where most of your drawing will occur, optimizations such as Listing 39.3 are well worth the effort.</I></SMALL>
+<TD WIDTH="5%" ALIGN="LEFT" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="90%" VALIGN="TOP" ALIGN="LEFT"><SMALL><I>There is a lesson here. An optimization has no fixed payoff; its value fluctuates according to the context in which it is used. There&rsquo;s relatively little benefit to further optimizing code that already spends half its time waiting for display memory; no matter how good your optimizations, you&rsquo;ll get only a two-times speedup at best, and generally much less than that. There is, on the other hand, potential for tremendous improvement when drawing to system memory, so if that&rsquo;s where most of your drawing will occur, optimizations such as Listing 39.3 are well worth the effort.</I></SMALL>
 <TR>
 <TD VALIGN="TOP" ALIGN="LEFT">
 <TD VALIGN="TOP" ALIGN="LEFT"><SMALL><I>Know the environments in which your code will run, and know where the cycles go in those environments.</I></SMALL>
@@ -48,7 +48,7 @@
 <!-- CODE //-->
 <PRE>
 ; Draws all pixels in the list of horizontal lines passed in, in
-; mode 13h, the VGA&#146;s 320&#215;200 256-color mode. Uses REP STOS to fill
+; mode 13h, the VGA&rsquo;s 320x200 256-color mode. Uses REP STOS to fill
 ; each line.
 ; C near-callable as:
 ;     void DrawHorizontalLineList(struct HLineList * HLineListPtr,
@@ -80,30 +80,30 @@ Parms         ends
       public _DrawHorizontalLineList
       align   2
 _DrawHorizontalLineList   proc
-   push bp                    ;preserve caller&#146;s stack frame
+   push bp                    ;preserve caller&rsquo;s stack frame
    mov  bp,sp                 ;point to our stack frame
-   push   si                  ;preserve caller&#146;s register variables
+   push   si                  ;preserve caller&rsquo;s register variables
    push   di
    cld                        ;make string instructions inc pointers
 
    mov   ax,SCREEN_SEGMENT
    mov   es,ax                ;point ES to display memory for REP STOS
 
-   mov   si,[bp&#43;HLineListPtr] ;point to the line list
+   mov   si,[bp+HLineListPtr] ;point to the line list
    mov   ax,SCREEN_WIDTH      ;point to the start of the first scan
-   mul   [si&#43;YStart]          ; line in which to draw
+   mul   [si+YStart]          ; line in which to draw
    mov   dx,ax                ;ES:DX points to first scan line to
                               ; draw
-   mov   bx,[si&#43;HLinePtr]     ;point to the XStart/XEnd descriptor
+   mov   bx,[si+HLinePtr]     ;point to the XStart/XEnd descriptor
                               ; for the first (top) horizontal line
-   mov   si,[si&#43;Lngth]        ;# of scan lines to draw
+   mov   si,[si+Lngth]        ;# of scan lines to draw
    and   si,si                ;are there any lines to draw?
-   jz    FillDone             ;no, so we&#146;re done
-   mov   al,byte ptr [bp&#43;Color];color with which to fill
+   jz    FillDone             ;no, so we&rsquo;re done
+   mov   al,byte ptr [bp+Color];color with which to fill
    mov   ah,al                ;duplicate color for STOSW
 FillLoop:
-   mov   di,[bx&#43;XStart]       ;left edge of fill on this line
-   mov   cx,[bx&#43;XEnd]         ;right edge of fill
+   mov   di,[bx+XStart]       ;left edge of fill on this line
+   mov   cx,[bx+XEnd]         ;right edge of fill
    sub   cx,di
    js    LineFillDone         ;skip if negative width
    inc   cx                   ;width of fill on this line
@@ -117,7 +117,7 @@ FillLoop:
 MainFill:
    shr   cx,1                 ;# of words in fill
    rep   stosw                ;fill as many words as possible
-   adc   cx,cx                ;1 if there&#146;s an odd trailing byte to
+   adc   cx,cx                ;1 if there&rsquo;s an odd trailing byte to
                               ; do, 0 otherwise
    rep   stosb                ;fill any odd trailing byte
 LineFillDone:
@@ -126,22 +126,22 @@ LineFillDone:
    dec   si                   ;count off lines to fill
    jnz   FillLoop
 FillDone:
-   pop   di                   ;restore caller&#146;s register variables
+   pop   di                   ;restore caller&rsquo;s register variables
    pop   si
-   pop   bp                   ;restore caller&#146;s stack frame
+   pop   bp                   ;restore caller&rsquo;s stack frame
    ret
 _DrawHorizontalLineList   endp
    end
 </PRE>
 <!-- END CODE //-->
 <H4 ALIGN="LEFT"><A NAME="Heading7"></A><FONT COLOR="#000077">Maximizing REP STOS</FONT></H4>
-<P>Listing 39.3 doesn&#146;t take the easy way out and use <B>REP STOSB</B> to fill each scan line; instead, it uses <B>REP STOSW</B> to fill as many pixel pairs as possible via word-sized accesses, using <B>STOSB</B> only to do odd bytes. Word accesses to odd addresses are always split by the processor into 2-byte accesses. Such word accesses take twice as long as word accesses to even addresses, so Listing 39.3 makes sure that all word accesses occur at even addresses, by performing a leading <B>STOSB</B> first if necessary.</P>
-<P>Listing 39.3 is another case in which it&#146;s worth knowing the environment in which your code will run. Extra code is required to perform aligned word-at-a-time filling, resulting in extra overhead. For very small or narrow polygons, that overhead might overwhelm the advantage of drawing a word at a time, making plain old <B>REP STOSB</B> faster.</P>
+<P>Listing 39.3 doesn&rsquo;t take the easy way out and use <B>REP STOSB</B> to fill each scan line; instead, it uses <B>REP STOSW</B> to fill as many pixel pairs as possible via word-sized accesses, using <B>STOSB</B> only to do odd bytes. Word accesses to odd addresses are always split by the processor into 2-byte accesses. Such word accesses take twice as long as word accesses to even addresses, so Listing 39.3 makes sure that all word accesses occur at even addresses, by performing a leading <B>STOSB</B> first if necessary.</P>
+<P>Listing 39.3 is another case in which it&rsquo;s worth knowing the environment in which your code will run. Extra code is required to perform aligned word-at-a-time filling, resulting in extra overhead. For very small or narrow polygons, that overhead might overwhelm the advantage of drawing a word at a time, making plain old <B>REP STOSB</B> faster.</P>
 <H3><A NAME="Heading8"></A><FONT COLOR="#000077">Faster Edge Tracing</FONT></H3>
 <P>Finally, Listing 39.4 is an assembly language version of <B>ScanEdge</B>. Listing 39.4 is a relatively straightforward translation from C to assembly, but is nonetheless about twice as fast as Listing 39.2.</P>
-<P>The version of <B>ScanEdge</B> in Listing 39.4 could certainly be sped up still further by unrolling the loops. <B>FillConvexPolygon</B>, the overall coordination routine, hasn&#146;t even been converted to assembly language, so that could be sped up as well. I haven&#146;t bothered with these optimizations because all code other than <B>DrawHorizontalLineList</B> takes only 14 percent of the overall polygon filling time when drawing to display memory; the potential return on optimizing nondrawing code simply isn&#146;t great enough to justify the effort. Part of the value of a profiler is being able to tell when to stop optimizing; with Listings 39.3 and 39.4 in use, more than two-thirds of the time taken to draw polygons is spent waiting for display memory, so optimization is pretty much maxed out. However, further optimization might be worthwhile when drawing to system memory, where wait states are out of the picture and the nondrawing code takes a significant portion (46 percent) of the overall time.</P>
+<P>The version of <B>ScanEdge</B> in Listing 39.4 could certainly be sped up still further by unrolling the loops. <B>FillConvexPolygon</B>, the overall coordination routine, hasn&rsquo;t even been converted to assembly language, so that could be sped up as well. I haven&rsquo;t bothered with these optimizations because all code other than <B>DrawHorizontalLineList</B> takes only 14 percent of the overall polygon filling time when drawing to display memory; the potential return on optimizing nondrawing code simply isn&rsquo;t great enough to justify the effort. Part of the value of a profiler is being able to tell when to stop optimizing; with Listings 39.3 and 39.4 in use, more than two-thirds of the time taken to draw polygons is spent waiting for display memory, so optimization is pretty much maxed out. However, further optimization might be worthwhile when drawing to system memory, where wait states are out of the picture and the nondrawing code takes a significant portion (46 percent) of the overall time.</P>
 <P>Again, <I>know where the cycles go</I> .</P>
-<P>By the way, note that all the versions of <B>ScanEdge</B> and <B>FillConvexPolygon</B> that we&#146;ve looked at are adapter-independent, and that the C code is also machine-independent; all adapter-specific code is isolated in <B>DrawHorizontalLineList</B>. This makes it easy to add support for other graphics systems, such as the 8514/A, the XGA, or, for that matter, a completely non-PC system.</P><P><BR></P>
+<P>By the way, note that all the versions of <B>ScanEdge</B> and <B>FillConvexPolygon</B> that we&rsquo;ve looked at are adapter-independent, and that the C code is also machine-independent; all adapter-specific code is isolated in <B>DrawHorizontalLineList</B>. This makes it easy to add support for other graphics systems, such as the 8514/A, the XGA, or, for that matter, a completely non-PC system.</P><P><BR></P>
 <CENTER>
 <TABLE BORDER>
 <TR>

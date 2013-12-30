@@ -68,7 +68,7 @@ static int NumCompiledLinesegs = 0;
 static LINESEG *pCompiledLinesegs;
 // Builds a BSP tree from the specified line list. List must contain
 // at least one entry. If pCurrentTree is NULL, then this is the root
-// node, otherwise pCurrentTree is the tree that&#146;s been build so far.
+// node, otherwise pCurrentTree is the tree that&rsquo;s been build so far.
 // Returns NULL for errors.
 LINESEG * SelectBSPTree(LINESEG * plineseghead,
     LINESEG * pCurrentTree, LINESEG ** pParentsChildPointer)
@@ -80,7 +80,7 @@ LINESEG * SelectBSPTree(LINESEG * plineseghead,
     LINESEG *pcurrentline;
     double nx, ny, numer, denom, t;
     // Pick a line as the root, and remove it from the list of lines
-    // to be categorized. The line we&#146;ll select is the one of those in
+    // to be categorized. The line we&rsquo;ll select is the one of those in
     // the list that splits the fewest of the other lines in the list
     minsplits = MAX_INT;
     prootline = plineseghead;
@@ -93,7 +93,7 @@ LINESEG * SelectBSPTree(LINESEG * plineseghead,
                     pvertexlist[prootline-&gt;endvertex].y;
             ny = -(pvertexlist[prootline-&gt;startvertex].x -
                     pvertexlist[prootline-&gt;endvertex].x);
-            // Calculate the dot products we&#146;ll need for line
+            // Calculate the dot products we&rsquo;ll need for line
             // intersection and spatial relationship
             numer = (nx * (pvertexlist[pcurrentline-&gt;startvertex].x -
                     pvertexlist[prootline-&gt;startvertex].x)) +
@@ -137,7 +137,7 @@ LINESEG * SelectBSPTree(LINESEG * plineseghead,
     // appropriate
     pminsplit-&gt;pfronttree = NULL;
     pminsplit-&gt;pbacktree = NULL;
-    // Point the parent&#146;s child pointer to this node, so we can
+    // Point the parent&rsquo;s child pointer to this node, so we can
     // track the currently-build tree
     *pParentsChildPointer = pminsplit;
     return BuildBSPTree(plineseghead, pminsplit, pCurrentTree);
@@ -154,9 +154,9 @@ LINESEG * BuildBSPTree(LINESEG * plineseghead, LINESEG * prootline,
     LINESEG *psplitline;
     double nx, ny, numer, denom, t;
     int Done;
-    // Categorize all non-root lines as either in front of the root&#146;s
-    // infinite line, behind the root&#146;s infinite line, or split by the
-    // root&#146;s infinite line, in which case we split it into two lines
+    // Categorize all non-root lines as either in front of the root&rsquo;s
+    // infinite line, behind the root&rsquo;s infinite line, or split by the
+    // root&rsquo;s infinite line, in which case we split it into two lines
     pfrontlines = NULL;
     pbacklines = NULL;
     pcurrentline = plineseghead;
@@ -170,7 +170,7 @@ LINESEG * BuildBSPTree(LINESEG * plineseghead, LINESEG * prootline,
                 pvertexlist[prootline-&gt;endvertex].y;
         ny = -(pvertexlist[prootline-&gt;startvertex].x -
                 pvertexlist[prootline-&gt;endvertex].x);
-        // Calculate the dot products we&#146;ll need for line intersection
+        // Calculate the dot products we&rsquo;ll need for line intersection
         // and spatial relationship
         numer = (nx * (pvertexlist[pcurrentline-&gt;startvertex].x -
                  pvertexlist[prootline-&gt;startvertex].x)) +
@@ -209,8 +209,8 @@ LINESEG * BuildBSPTree(LINESEG * plineseghead, LINESEG * prootline,
                 // The line segment must be split; add one split
                 // segment to each list
                 if (NumCompiledLinesegs &gt; (MAX_NUM_LINESEGS - 1)) {
-                    DisplayMessageBox(&#147;Out of space for line segs;&#148;
-                                 &#147;increase MAX_NUM_LINESEGS&#148;);
+                    DisplayMessageBox(&ldquo;Out of space for line segs;&rdquo;
+                                 &ldquo;increase MAX_NUM_LINESEGS&rdquo;);
                     return NULL;
                 }
                 // Make a new line entry for the split part of line

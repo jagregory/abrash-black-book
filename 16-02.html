@@ -36,13 +36,13 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<P>Listing 16.2 is Listing 16.1 modified to call a function that scans each block for words, and Listing 16.3 contains an assembly function that counts words. Used together, Listings 16.2 and 16.3 are just about twice as fast as Listing 16.1, a good return for a little assembly language. Listing 16.3 is a pretty straightforward translation from C to assembly; the new code makes good use of registers, but the key code&#151;determining whether each byte is a character or not&#151;is still done with the same multiple-sequential-tests approach used by the code that the C compiler generates.
+<P>Listing 16.2 is Listing 16.1 modified to call a function that scans each block for words, and Listing 16.3 contains an assembly function that counts words. Used together, Listings 16.2 and 16.3 are just about twice as fast as Listing 16.1, a good return for a little assembly language. Listing 16.3 is a pretty straightforward translation from C to assembly; the new code makes good use of registers, but the key code&mdash;determining whether each byte is a character or not&mdash;is still done with the same multiple-sequential-tests approach used by the code that the C compiler generates.
 </P>
 <P><B>LISTING 16.2 L16-2.C</B></P>
 <!-- CODE //-->
 <PRE>
  /* Word-counting program incorporating assembly language. Tested
-    with Borland C<SMALL>&#43;&#43;</SMALL> in C compilation mode &amp the small model. */
+    with Borland C<SMALL>++</SMALL> in C compilation mode &amp the small model. */
  
  #include &ltstdio.h&gt
  #include &ltfcntl.h&gt
@@ -63,22 +63,22 @@
     char *Buffer, CharFlag = 0;
  
     if (argc != 2) {
-       printf(&#147;usage: wc &ltfilename&gt\n&#148;);
+       printf(&ldquo;usage: wc &ltfilename&gt\n&rdquo;);
        exit(1);
     }
  
     if ((Buffer = malloc(BUFFER_SIZE)) == NULL) {
-       printf(&#147;Can&#146;t allocate adequate memory\n&#148;);
+       printf(&ldquo;Can&rsquo;t allocate adequate memory\n&rdquo;);
        exit(1);
     }
  
     if ((Handle = open(argv[1], O_RDONLY | O_BINARY)) == -1) {
-       printf(&#147;Can&#146;t open file %s\n&#148;, argv[1]);
+       printf(&ldquo;Can&rsquo;t open file %s\n&rdquo;, argv[1]);
        exit(1);
     }
  
     if ((FileSize = filelength(Handle)) == -1) {
-       printf(&#147;Error sizing file %s\n&#148;, argv[1]);
+       printf(&ldquo;Error sizing file %s\n&rdquo;, argv[1]);
        exit(1);
     }
  
@@ -86,7 +86,7 @@
     while (FileSize &gt 0) {
        FileSize -= (BlockSize = min(FileSize, BUFFER_SIZE));
        if (read(Handle, Buffer, BlockSize) == -1) {
-          printf(&#147;Error reading file %s\n&#148;, argv[1]);
+          printf(&ldquo;Error reading file %s\n&rdquo;, argv[1]);
           exit(1);
        }
        ScanBuffer(Buffer, BlockSize, &ampCharFlag, &ampWordCount);
@@ -94,9 +94,9 @@
  
     /* Catch the last word, if any */
     if (CharFlag) {
-       WordCount&#43;&#43;;
+       WordCount++;
     }
-    printf(&#147;\nTotal words in file: %lu\n&#148;, WordCount);
+    printf(&ldquo;\nTotal words in file: %lu\n&rdquo;, WordCount);
     return(0);
  }
 </PRE>
@@ -127,37 +127,37 @@
          .code
          public  _ScanBuffer
  _ScanBuffer     proc    near
-         push    bp              ;preserve caller&#146;s stack frame
+         push    bp              ;preserve caller&rsquo;s stack frame
          mov     bp,sp           ;set up local stack frame
-         push    si              ;preserve caller&#146;s register vars
+         push    si              ;preserve caller&rsquo;s register vars
          push    di
  
-         mov     si,[bp&#43;Buffer]  ;point to buffer to scan
-         mov     bx,[bp&#43;WordCount]
+         mov     si,[bp+Buffer]  ;point to buffer to scan
+         mov     bx,[bp+WordCount]
          mov     cx,[bx]         ;get current 32-bit word count
-         mov     dx,[bx&#43;2]
-         mov     bx,[bp&#43;CharFlag]
+         mov     dx,[bx+2]
+         mov     bx,[bp+CharFlag]
          mov     bl,[bx]            ;get current CharFlag
-         mov     di,[bp&#43;BufferLength];get # of bytes to scan
+         mov     di,[bp+BufferLength];get # of bytes to scan
  ScanLoop:
          mov     bh,bl           ;PredCharFlag = CharFlag;
-         lodsb                   ;Ch = *BufferPtr&#43;&#43; &amp 0x7F;
+         lodsb                   ;Ch = *BufferPtr++ &amp 0x7F;
          and     al,7fh          ;strip high bit for word processors
                                  ; that set it as an internal flag
          mov     bl,1            ;assume this is a char; CharFlag = 1;
-         cmp     al,&#145;a&#146;          ;it is a char if between a and z
+         cmp     al,&lsquo;a&rsquo;          ;it is a char if between a and z
          jb      CheckAZ
-         cmp     al,&#145;z&#146;
+         cmp     al,&lsquo;z&rsquo;
          jna     IsAChar
  CheckAZ:
-         cmp     al,&#145;A&#146;          ;it is a char if between A and Z
+         cmp     al,&lsquo;A&rsquo;          ;it is a char if between A and Z
          jb      Check09
-         cmp     al,&#145;Z&#146;
+         cmp     al,&lsquo;Z&rsquo;
          jna     IsAChar
  Check09:
-         cmp     al,&#145;0&#146;          ;it is a char if between 0 and 9
+         cmp     al,&lsquo;0&rsquo;          ;it is a char if between 0 and 9
          jb      CheckApostrophe
-         cmp     al,&#145;9&#146;
+         cmp     al,&lsquo;9&rsquo;
          jna     IsAChar
  CheckApostrophe:
          cmp      al,27h           ;it is a char if an apostrophe 
@@ -165,29 +165,29 @@
          sub     bl,bl           ;not a char; CharFlag = 0;
          and     bh,bh
          jz      ScanLoopBottom  ;if ((!CharFlag) &amp&amp PredCharFlag) {
-         add     cx,1            ;    (WordCount)&#43;&#43;;
+         add     cx,1            ;    (WordCount)++;
          adc     dx,0            ;}
  IsAChar:
  ScanLoopBottom:
-         dec     di              ;} while (&#151;BufferLength);
+         dec     di              ;} while (&mdash;BufferLength);
          jnz     ScanLoop
  
-         mov     si,[bp&#43;CharFlag]
+         mov     si,[bp+CharFlag]
          mov     [si],bl         ;set new CharFlag
-         mov     bx,[bp&#43;WordCount]
+         mov     bx,[bp+WordCount]
          mov     [bx],cx         ;set new word count
-         mov     [bx&#43;2],dx
+         mov     [bx+2],dx
  
-         pop     di              ;restore caller&#146;s register vars
+         pop     di              ;restore caller&rsquo;s register vars
          pop     si
-         pop     bp              ;restore caller&#146;s stack frame
+         pop     bp              ;restore caller&rsquo;s stack frame
          ret
  _ScanBuffer     endp
          end
 </PRE>
 <!-- END CODE //-->
 <H4 ALIGN="LEFT"><A NAME="Heading4"></A><FONT COLOR="#000077">Which Way to Go from Here?</FONT></H4>
-<P>We could rearrange the tests in light of the nature of the data being scanned; for example, we could perform the tests more efficiently by taking advantage of the knowledge that if a byte is less than &#145;0,&#146; it&#146;s either an apostrophe or not a character at all. However, that sort of fine-tuning is typically good for speedups of only 10 to 20 percent, and I&#146;ve intentionally refrained from implementing this in Listing 16.3 to avoid pointing you down the wrong path; what we need is a different tack altogether. Ponder this. What we <I>really</I> want to know is nothing more than whether a byte is a character, not what sort of character it is. For each byte value, we want a yes/no status, and nothing else&#151;and that description practically begs for a lookup table. Listing 16.4 uses a lookup table approach to boost performance another 50 percent, to three times the performance of the original C code. On a 20 MHz 386, this represents a change from 4.6 to 1.6 seconds, which could be significant&#151;who likes to wait? On an 8088, the improvement in word-counting a large file could easily be 10 or 20 seconds, which is <I>definitely</I> significant.</P><P><BR></P>
+<P>We could rearrange the tests in light of the nature of the data being scanned; for example, we could perform the tests more efficiently by taking advantage of the knowledge that if a byte is less than &lsquo;0,&rsquo; it&rsquo;s either an apostrophe or not a character at all. However, that sort of fine-tuning is typically good for speedups of only 10 to 20 percent, and I&rsquo;ve intentionally refrained from implementing this in Listing 16.3 to avoid pointing you down the wrong path; what we need is a different tack altogether. Ponder this. What we <I>really</I> want to know is nothing more than whether a byte is a character, not what sort of character it is. For each byte value, we want a yes/no status, and nothing else&mdash;and that description practically begs for a lookup table. Listing 16.4 uses a lookup table approach to boost performance another 50 percent, to three times the performance of the original C code. On a 20 MHz 386, this represents a change from 4.6 to 1.6 seconds, which could be significant&mdash;who likes to wait? On an 8088, the improvement in word-counting a large file could easily be 10 or 20 seconds, which is <I>definitely</I> significant.</P><P><BR></P>
 <CENTER>
 <TABLE BORDER>
 <TR>

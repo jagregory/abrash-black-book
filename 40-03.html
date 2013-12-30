@@ -44,11 +44,11 @@
 <PRE>
  /* Draws all pixels in the horizontal line segment passed in, from
     (LeftX,Y) to (RightX,Y), in the specified color in mode 13h, the
-    VGA&#146;s 320x200 256-color mode. Both LeftX and RightX are drawn. No
+    VGA&rsquo;s 320x200 256-color mode. Both LeftX and RightX are drawn. No
     drawing will take place if LeftX &gt; RightX. */
 
  #include &lt;dos.h&gt;
- #include &#147;polygon.h&#148;
+ #include &ldquo;polygon.h&rdquo;
 
  #define SCREEN_WIDTH    320
  #define SCREEN_SEGMENT  0xA000
@@ -60,7 +60,7 @@
 
     /* Draw each pixel in the horizontal line segment, starting with
        the leftmost one */
-    for (X = LeftX; X &lt;= RightX; X&#43;&#43;)
+    for (X = LeftX; X &lt;= RightX; X++)
        DrawPixel(X, Y, Color);
  }
 
@@ -69,10 +69,10 @@
     unsigned char far *ScreenPtr;
 
  #ifdef __TURBOC__
-    ScreenPtr = MK_FP(SCREEN_SEGMENT, Y * SCREEN_WIDTH &#43; X);
+    ScreenPtr = MK_FP(SCREEN_SEGMENT, Y * SCREEN_WIDTH + X);
  #else    /* MSC 5.0 */
     FP_SEG(ScreenPtr) = SCREEN_SEGMENT;
-    FP_OFF(ScreenPtr) = Y * SCREEN_WIDTH &#43; X;
+    FP_OFF(ScreenPtr) = Y * SCREEN_WIDTH + X;
  #endif
     *ScreenPtr = (unsigned char) Color;
  }
@@ -124,7 +124,7 @@
 
  #include &lt;conio.h&gt;
  #include &lt;dos.h&gt;
- #include &#147;polygon.h&#148;
+ #include &ldquo;polygon.h&rdquo;
 
  #define DRAW_POLYGON(PointList,Color,Shape,X,Y)             \
     Polygon.Length = sizeof(PointList)/sizeof(struct Point); \
@@ -153,8 +153,8 @@
     static struct Point Triangle4[] = {{20,20},{20,0},{0,10}};
     union REGS regset;
 
-    /* Set the display to VGA mode 13h, 320&#215;200 256-color mode */
-    regset.x.ax = 0&#215;0013;
+    /* Set the display to VGA mode 13h, 320x200 256-color mode */
+    regset.x.ax = 0x0013;
     int86(0x10, &regset, &regset);
 
     /* Draw three complex polygons */
@@ -166,30 +166,30 @@
     getch();    /* wait for a keypress */
 
     /* Draw some adjacent nonconvex polygons */
-    for (i=0; i&lt;5; i&#43;&#43;) {
-       for (j=0; j&lt;8; j&#43;&#43;) {
-          DRAW_POLYGON(Polygon4, 16&#43;i*8&#43;j, NONCONVEX, 40&#43;(i*60),
-                30&#43;(j*20));
+    for (i=0; i&lt;5; i++) {
+       for (j=0; j&lt;8; j++) {
+          DRAW_POLYGON(Polygon4, 16+i*8+j, NONCONVEX, 40+(i*60),
+                30+(j*20));
        }
     }
     getch();    /* wait for a keypress */
 
     /* Draw adjacent triangles across the screen */
-    for (j=0; j&lt;=80; j&#43;=20) {
-       for (i=0; i&lt;290; i &#43;= 30) {
+    for (j=0; j&lt;=80; j+=20) {
+       for (i=0; i&lt;290; i += 30) {
           DRAW_POLYGON(Triangle1, 2, CONVEX, i, j);
-          DRAW_POLYGON(Triangle2, 4, CONVEX, i&#43;15, j);
+          DRAW_POLYGON(Triangle2, 4, CONVEX, i+15, j);
        }
     }
-    for (j=100; j&lt;=170; j&#43;=20) {
+    for (j=100; j&lt;=170; j+=20) {
        /* Do a row of pointing-right triangles */
-       for (i=0; i&lt;290; i &#43;= 20) {
+       for (i=0; i&lt;290; i += 20) {
           DRAW_POLYGON(Triangle3, 40, CONVEX, i, j);
        }
        /* Do a row of pointing-left triangles halfway between one row
           of pointing-right triangles and the next, to fit between */
-       for (i=0; i&lt;290; i &#43;= 20) {
-          DRAW_POLYGON(Triangle4, 1, CONVEX, i, j&#43;10);
+       for (i=0; i&lt;290; i += 20) {
+          DRAW_POLYGON(Triangle4, 1, CONVEX, i, j+10);
        }
     }
     getch();    /* wait for a keypress */

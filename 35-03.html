@@ -37,15 +37,15 @@
 </CENTER>
 <P><BR></P>
 <H3><A NAME="Heading6"></A><FONT COLOR="#000077">An Implementation in C</FONT></H3>
-<P>It&#146;s time to get down and look at some actual working code. Listing 35.1 is a C implementation of Bresenham&#146;s line-drawing algorithm for modes 0EH, 0FH, 10H, and 12H of the VGA, called as function <B>EVGALine</B>. Listing 35.2 is a sample program to demonstrate the use of <B>EVGALine</B>.</P>
+<P>It&rsquo;s time to get down and look at some actual working code. Listing 35.1 is a C implementation of Bresenham&rsquo;s line-drawing algorithm for modes 0EH, 0FH, 10H, and 12H of the VGA, called as function <B>EVGALine</B>. Listing 35.2 is a sample program to demonstrate the use of <B>EVGALine</B>.</P>
 <P><B>LISTING 35.1 L35-1.C</B></P>
 <!-- CODE //-->
 <PRE>
 /*
- * C implementation of Bresenham&#146;s line drawing algorithm
- * for the EGA and VGA. Works in modes 0&#215;E, 0&#215;F, 0&#215;10, and 0&#215;12.
+ * C implementation of Bresenham&rsquo;s line drawing algorithm
+ * for the EGA and VGA. Works in modes 0xE, 0xF, 0x10, and 0x12.
  *
- * Compiled with Borland C&#43&#43;
+ * Compiled with Borland C++
  *
  * By Michael Abrash
  */
@@ -55,12 +55,12 @@
 #define EVGA_SCREEN_WIDTH_IN_BYTES     80
                                        /* memory offset from start of
                                           one row to start of next */
-#define EVGA_SCREEN_SEGMENT            0&#215;A000
+#define EVGA_SCREEN_SEGMENT            0xA000
                                        /* display memory segment */
-#define GC_INDEX                       0&#215;3CE
+#define GC_INDEX                       0x3CE
                                        /* Graphics Controller
                                           Index register port */
-#define GC_DATA                        0&#215;3CF
+#define GC_DATA                        0x3CF
                                        /* Graphics Controller
                                           Data register port */
 #define SET_RESET_INDEX                0  /* indexes of needed */
@@ -82,23 +82,23 @@ unsigned int Y0;     /* (0,0) at the upper left of the screen */
    /* Calculate the offset in the screen segment of the byte in
       which the pixel lies */
    PixelBytePtr = MK_FP(EVGA_SCREEN_SEGMENT,
-      ( Y0 * EVGA_SCREEN_WIDTH_IN_BYTES ) &#43; ( X0 / 8 ));
+      ( Y0 * EVGA_SCREEN_WIDTH_IN_BYTES ) + ( X0 / 8 ));
 
-   /* Generate a mask with a 1 bit in the pixel&#146;s position within the
+   /* Generate a mask with a 1 bit in the pixel&rsquo;s position within the
       screen byte */
-   PixelMask = 0&#215;80 &gt;&gt; ( X0 &amp 0&#215;07 );
+   PixelMask = 0x80 &gt;&gt; ( X0 &amp 0x07 );
 
-   /* Set up the Graphics Controller&#146;s Bit Mask register to allow
+   /* Set up the Graphics Controller&rsquo;s Bit Mask register to allow
       only the bit corresponding to the pixel being drawn to
       be modified */
    outportb(GC_INDEX, BIT_MASK_INDEX);
    outportb(GC_DATA, PixelMask);
 
    /* Draw the pixel. Because of the operation of the set/reset
-      feature of the EGA/VGA, the value written doesn&#146;t matter.
+      feature of the EGA/VGA, the value written doesn&rsquo;t matter.
       The screen byte is ORed in order to perform a read to latch the
       display memory, then perform a write in order to modify it. */
-   *PixelBytePtr |= 0&#215;FE;
+   *PixelBytePtr |= 0xFE;
 }
 
 /*
@@ -121,18 +121,18 @@ int XDirection;               /* 1 if line is drawn left to right,
 
    /* Draw the line */
    EVGADot(X0, Y0);              /* draw the first pixel */
-   while ( DeltaX&#151; ) {
-      /* See if it&#146;s time to advance the Y coordinate */
+   while ( DeltaX&mdash; ) {
+      /* See if it&rsquo;s time to advance the Y coordinate */
       if ( ErrorTerm &gt;= 0 ) {
          /* Advance the Y coordinate &amp adjust the error term
             back down */
-         Y0&#43;&#43;;
-         ErrorTerm &#43;= DeltaYx2MinusDeltaXx2;
+         Y0++;
+         ErrorTerm += DeltaYx2MinusDeltaXx2;
       } else {
          /* Add to the error term */
-         ErrorTerm &#43;= DeltaYx2;
+         ErrorTerm += DeltaYx2;
       }
-      X0 &#43;= XDirection;          /* advance the X coordinate */
+      X0 += XDirection;          /* advance the X coordinate */
       EVGADot(X0, Y0);           /* draw a pixel */
    }
 }
@@ -156,18 +156,18 @@ int XDirection;               /* 1 if line is drawn left to right,
    ErrorTerm = DeltaXx2 - (int) DeltaY;
 
    EVGADot(X0, Y0);           /* draw the first pixel */
-   while ( DeltaY&#151; ) {
-      /* See if it&#146;s time to advance the X coordinate */
+   while ( DeltaY&mdash; ) {
+      /* See if it&rsquo;s time to advance the X coordinate */
       if ( ErrorTerm &gt;= 0 ) {
          /* Advance the X coordinate &amp adjust the error term
             back down */
-         X0 &#43;= XDirection;
-         ErrorTerm &#43;= DeltaXx2MinusDeltaYx2;
+         X0 += XDirection;
+         ErrorTerm += DeltaXx2MinusDeltaYx2;
       } else {
          /* Add to the error term */
-         ErrorTerm &#43;= DeltaXx2;
+         ErrorTerm += DeltaXx2;
       }
-      Y0&#43;&#43;;                   /* advance the Y coordinate */
+      Y0++;                   /* advance the Y coordinate */
       EVGADot(X0, Y0);        /* draw a pixel */
    }
 }
@@ -190,7 +190,7 @@ char Color;    /* color to draw line in */
    outportb(GC_DATA, Color);
    /* Cause all planes to be forced to the Set/Reset color */
    outportb(GC_INDEX, ENABLE_SET_RESET_INDEX);
-   outportb(GC_DATA, 0&#215;F);
+   outportb(GC_DATA, 0xF);
 
    /* Save half the line-drawing cases by swapping Y0 with Y1
       and X0 with X1 if Y0 is greater than Y1. As a result, DeltaY
@@ -229,7 +229,7 @@ char Color;    /* color to draw line in */
    outportb(GC_INDEX, ENABLE_SET_RESET_INDEX);
    outportb(GC_DATA, 0);
    outportb(GC_INDEX, BIT_MASK_INDEX);
-   outportb(GC_DATA, 0&#215;FF);
+   outportb(GC_DATA, 0xFF);
 }
 </PRE>
 <!-- END CODE //-->

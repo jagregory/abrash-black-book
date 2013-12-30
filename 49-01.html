@@ -39,13 +39,13 @@
 <H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 49<BR>Mode X 256-Color Animation
 </FONT></H2>
 <H3><A NAME="Heading2"></A><FONT COLOR="#000077">How to Make the VGA Really Get up and Dance</FONT></H3>
-<P>Okay&#151;no amusing stories or informative anecdotes to kick off this chapter; lotta ground to cover, gotta hurry&#151;you&#146;re impatient, I can smell it. I won&#146;t talk about the time a friend made the mistake of loudly saying &#147;$100 bill&#148; during an animated discussion while walking among the bums on Market Street in San Francisco one night, thereby graphically illustrating that context is everything. I can&#146;t spare a word about how my daughter thinks my 11-year-old floppy-disk-based CP/M machine is more powerful than my 386 with its 100-MB hard disk because the CP/M machine&#146;s word processor loads and runs twice as fast as the 386&#146;s Windows-based word processor, demonstrating that progress is not the neat exponential curve we&#146;d like to think it is, and that features and performance are often conflicting notions. And, lord knows, I can&#146;t take the time to discuss the habits of small white dogs, notwithstanding that such dogs seem to be relevant to just about every aspect of computing, as Jeff Duntemann&#146;s writings make manifest. No lighthearted fluff for us; we have real work to do, for today we animate with 256 colors in Mode X.
+<P>Okay&mdash;no amusing stories or informative anecdotes to kick off this chapter; lotta ground to cover, gotta hurry&mdash;you&rsquo;re impatient, I can smell it. I won&rsquo;t talk about the time a friend made the mistake of loudly saying &ldquo;$100 bill&rdquo; during an animated discussion while walking among the bums on Market Street in San Francisco one night, thereby graphically illustrating that context is everything. I can&rsquo;t spare a word about how my daughter thinks my 11-year-old floppy-disk-based CP/M machine is more powerful than my 386 with its 100-MB hard disk because the CP/M machine&rsquo;s word processor loads and runs twice as fast as the 386&rsquo;s Windows-based word processor, demonstrating that progress is not the neat exponential curve we&rsquo;d like to think it is, and that features and performance are often conflicting notions. And, lord knows, I can&rsquo;t take the time to discuss the habits of small white dogs, notwithstanding that such dogs seem to be relevant to just about every aspect of computing, as Jeff Duntemann&rsquo;s writings make manifest. No lighthearted fluff for us; we have real work to do, for today we animate with 256 colors in Mode X.
 </P>
 <H3><A NAME="Heading3"></A><FONT COLOR="#000077">Masked Copying</FONT></H3>
-<P>Over the past two chapters, we&#146;ve put together most of the tools needed to implement animation in the VGA&#146;s undocumented 320&#215;240 256-color Mode X. We now have mode set code, solid and 4&#215;4 pattern fills, system memory-to-display memory block copies, and display memory-to-display memory block copies. The final piece of the puzzle is the ability to copy a nonrectangular image to display memory. I call this <I>masked copying</I>.</P>
+<P>Over the past two chapters, we&rsquo;ve put together most of the tools needed to implement animation in the VGA&rsquo;s undocumented 320x240 256-color Mode X. We now have mode set code, solid and 4x4 pattern fills, system memory-to-display memory block copies, and display memory-to-display memory block copies. The final piece of the puzzle is the ability to copy a nonrectangular image to display memory. I call this <I>masked copying</I>.</P>
 <P>Masked copying is sort of like drawing through a stencil, in that only certain pixels within the destination rectangle are drawn. The objective is to fit the image seamlessly into the background, without the rectangular fringe that results when nonrectangular images are drawn by block copying their bounding rectangle. This is accomplished by using a second rectangular bitmap, separate from the image but corresponding to it on a pixel-by-pixel basis, to control which destination pixels are set from the source and which are left unchanged. With a masked copy, only those pixels properly belonging to an image are drawn, and the image fits perfectly into the background, with no rectangular border. In fact, masked copying even makes it possible to have transparent areas within images.</P>
-<P>Note that another way to achieve this effect is to implement copying code that supports a transparent color; that is, a color that doesn&#146;t get copied but rather leaves the destination unchanged. Transparent copying makes for more compact images, because no separate mask is needed, and is generally faster in a software-only implementation. However, Mode X supports masked copying but not transparent copying in hardware, so we&#146;ll use masked copying in this chapter.</P>
-<P>The system memory to display memory masked copy routine in Listing 49.1 implements masked copying in a straightforward fashion. In the main drawing loop, the corresponding mask byte is consulted as each image pixel is encountered, and the image pixel is copied only if the mask byte is nonzero. As with most of the system-to-display code I&#146;ve presented, Listing 49.1 is not heavily optimized, because it&#146;s inherently slow; there&#146;s a better way to go when performance matters, and that&#146;s to use the VGA&#146;s hardware.</P>
+<P>Note that another way to achieve this effect is to implement copying code that supports a transparent color; that is, a color that doesn&rsquo;t get copied but rather leaves the destination unchanged. Transparent copying makes for more compact images, because no separate mask is needed, and is generally faster in a software-only implementation. However, Mode X supports masked copying but not transparent copying in hardware, so we&rsquo;ll use masked copying in this chapter.</P>
+<P>The system memory to display memory masked copy routine in Listing 49.1 implements masked copying in a straightforward fashion. In the main drawing loop, the corresponding mask byte is consulted as each image pixel is encountered, and the image pixel is copied only if the mask byte is nonzero. As with most of the system-to-display code I&rsquo;ve presented, Listing 49.1 is not heavily optimized, because it&rsquo;s inherently slow; there&rsquo;s a better way to go when performance matters, and that&rsquo;s to use the VGA&rsquo;s hardware.</P>
 <P><B>LISTING 49.1 L49-1.ASM</B></P>
 <!-- CODE //-->
 <PRE>
@@ -87,7 +87,7 @@ SourceBitmapWidth   dw ?  ;# of pixels across source bitmap (also must
 DestBitmapWidth     dw ?  ;# of pixels across dest bitmap (must be multiple of 4)
 MaskPtr             dw ?  ;pointer in DS to start of bitmap in which mask
                           ; resides (byte-per-pixel format, just like the source
-                          ; image; 0-bytes mean don&#146;t copy corresponding source
+                          ; image; 0-bytes mean don&rsquo;t copy corresponding source
                           ; pixel, 1-bytes mean do copy)
 parms   ends
 
@@ -99,62 +99,62 @@ STACK_FRAME_SIZE equ 6
         .code
         public  _CopySystemToScreenMaskedX
 _CopySystemToScreenMaskedX proc    near
-        push    bp                       ;preserve caller&#146;s stack frame
+        push    bp                       ;preserve caller&rsquo;s stack frame
         mov     bp,sp                    ;point to local stack frame
         sub     sp,STACK_FRAME_SIZE      ;allocate space for local vars
-        push    si                       ;preserve caller&#146;s register variables
+        push    si                       ;preserve caller&rsquo;s register variables
         push    di
 
         mov     ax,SCREEN_SEG            ;point ES to display memory
         mov     es,ax
-        mov     ax,[bp&#43;SourceBitmapWidth]
-        mul     [bp&#43;SourceStartY]    ;top source rect scan line
-        add     ax,[bp&#43;SourceStartX]
+        mov     ax,[bp+SourceBitmapWidth]
+        mul     [bp+SourceStartY]    ;top source rect scan line
+        add     ax,[bp+SourceStartX]
         mov     bx,ax
-        add     ax,[bp&#43;SourcePtr]    ;offset of first source rect pixel
+        add     ax,[bp+SourcePtr]    ;offset of first source rect pixel
         mov     si,ax                    ; in DS
-        add     bx,[bp&#43;MaskPtr]      ;offset of first mask pixel in DS
+        add     bx,[bp+MaskPtr]      ;offset of first mask pixel in DS
 
-        mov     ax,[bp&#43;DestBitmapWidth]
+        mov     ax,[bp+DestBitmapWidth]
         shr     ax,1                     ;convert to width in addresses
         shr     ax,1
-        mov     [bp&#43;DestBitmapWidth],ax ;remember address width
-        mul     [bp&#43;DestStartY]         ;top dest rect scan line
-        mov     di,[bp&#43;DestStartX]
+        mov     [bp+DestBitmapWidth],ax ;remember address width
+        mul     [bp+DestStartY]         ;top dest rect scan line
+        mov     di,[bp+DestStartX]
         mov     cx,di
         shr     di,1                        ;X/4 = offset of first dest rect pixel in
         shr     di,1                        ; scan line
         add     di,ax                       ;offset of first dest rect pixel in page
-        add     di,[bp&#43;DestPageBase]    ;offset of first dest rect pixel
+        add     di,[bp+DestPageBase]    ;offset of first dest rect pixel
                                             ; in display memory
-        and     cl,011b                        ;CL = first dest pixel&#146   ;s plane
+        and     cl,011b                        ;CL = first dest pixel&rsquo;s plane
         mov     al,11h                      ;upper nibble comes into play when plane wraps
                                             ; from 3 back to 0
-        shl     al,cl                       ;set the bit for the first dest pixel&#146;s plane
-        mov     [bp&#43;LeftMask],al        ; in each nibble to 1
+        shl     al,cl                       ;set the bit for the first dest pixel&rsquo;s plane
+        mov     [bp+LeftMask],al        ; in each nibble to 1
 
-        mov     ax,[bp&#43;SourceEndX]      ;calculate # of pixels across
-        sub     ax,[bp&#43;SourceStartX]    ; rect
+        mov     ax,[bp+SourceEndX]      ;calculate # of pixels across
+        sub     ax,[bp+SourceStartX]    ; rect
         jle     CopyDone                    ;skip if 0 or negative width
-        mov     [bp&#43;RectWidth],ax
-        sub     word ptr [bp&#43;SourceBitmapWidth],ax
+        mov     [bp+RectWidth],ax
+        sub     word ptr [bp+SourceBitmapWidth],ax
                                             ;distance from end of one source scan line
                                             to start of next
-        mov     ax,[bp&#43;SourceEndY]
-        sub     ax,[bp&#43;SourceStartY]    ;height of rectangle
+        mov     ax,[bp+SourceEndY]
+        sub     ax,[bp+SourceStartY]    ;height of rectangle
         jle     CopyDone                    ;skip if 0 or negative height
-        mov     [bp&#43;RectHeight],ax
+        mov     [bp+RectHeight],ax
         mov     dx,SC_INDEX                 ;point to SC Index register
         mov     al,MAP_MASK
         out     dx,al                      ;point SC Index reg to the Map Mask
         inc     dx                         ;point DX to SC Data reg
 CopyRowsLoop:
-        mov     al,[bp&#43;LeftMask]
-        mov     cx,[bp&#43;RectWidth]
+        mov     al,[bp+LeftMask]
+        mov     cx,[bp+RectWidth]
         push    di                         ;remember the start offset in the dest
 CopyScanLineLoop:
         cmp     byte ptr [bx],0            ;is this pixel mask-enabled?
-        jz      MaskOff                    ;no, so don&#146;t draw it
+        jz      MaskOff                    ;no, so don&rsquo;t draw it
                                            ;yes, draw the pixel
         out     dx,al                      ;set the plane for this pixel
         mov     ah,[si]                    ;get the pixel from the source
@@ -162,24 +162,24 @@ CopyScanLineLoop:
 MaskOff:
         inc     bx                         ;advance the mask pointer
         inc     si                         ;advance the source pointer
-        rol     al,1                       ;set mask for next pixel&#146;s plane
+        rol     al,1                       ;set mask for next pixel&rsquo;s plane
         adc     di,0                       ;advance destination address only when
                                            ;wrapping from plane 3 to plane 0
         loop    CopyScanLineLoop
         pop     di                         ;retrieve the dest start offset
-        add     di,[bp&#43;DestBitmapWidth];point to the start of the
+        add     di,[bp+DestBitmapWidth];point to the start of the
                                            ; next scan line of the dest
-        add     si,[bp&#43;SourceBitmapWidth] ;point to the start of the
+        add     si,[bp+SourceBitmapWidth] ;point to the start of the
                                            ;next scan line of the source
-        add     bx,[bp&#43;SourceBitmapWidth] ;point to the start of the
+        add     bx,[bp+SourceBitmapWidth] ;point to the start of the
                                            ;next scan line of the mask
-        dec     word ptr [bp&#43;RectHeight] ;count down scan lines
+        dec     word ptr [bp+RectHeight] ;count down scan lines
         jnz     CopyRowsLoop
 CopyDone:
-        pop     di                          ;restore caller&#146;s register variables
+        pop     di                          ;restore caller&rsquo;s register variables
         pop     si
         mov     sp,bp                       ;discard storage for local variables
-        pop     bp                          ;restore caller&#146;s stack frame
+        pop     bp                          ;restore caller&rsquo;s stack frame
         ret
 _CopySystemToScreenMaskedX endp
         end

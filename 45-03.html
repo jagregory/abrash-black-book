@@ -36,17 +36,17 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<P>Also, page flipping wastes a good deal of time waiting for the page to flip at the end of the frame. Dirty-rectangle animation never needs to wait for anything because partially drawn images are never present in display memory. Actually, in one sense, partially drawn images are sometimes present because it&#146;s possible for a rectangle to be partially drawn when the scanning raster beam reaches that part of the screen. This causes the rectangle to appear partially drawn for one frame, producing a phenomenon I call &#147;shearing.&#148; Fortunately, shearing tends not to be particularly distracting, especially for fairly small images, but it can be a problem when copying large areas. This is one area in which dirty-rectangle animation falls short of page flipping, because page flipping has perfect display quality, never showing anything other than a completely finished frame. Similarly, dirty-rectangle copying may take two or more frame times to finish, so even if shearing doesn&#146;t happen, it&#146;s still possible to have the images in the various dirty rectangles show up non-simultaneously. In my experience, this latter phenomenon is not a serious problem, but do be aware of it.
+<P>Also, page flipping wastes a good deal of time waiting for the page to flip at the end of the frame. Dirty-rectangle animation never needs to wait for anything because partially drawn images are never present in display memory. Actually, in one sense, partially drawn images are sometimes present because it&rsquo;s possible for a rectangle to be partially drawn when the scanning raster beam reaches that part of the screen. This causes the rectangle to appear partially drawn for one frame, producing a phenomenon I call &ldquo;shearing.&rdquo; Fortunately, shearing tends not to be particularly distracting, especially for fairly small images, but it can be a problem when copying large areas. This is one area in which dirty-rectangle animation falls short of page flipping, because page flipping has perfect display quality, never showing anything other than a completely finished frame. Similarly, dirty-rectangle copying may take two or more frame times to finish, so even if shearing doesn&rsquo;t happen, it&rsquo;s still possible to have the images in the various dirty rectangles show up non-simultaneously. In my experience, this latter phenomenon is not a serious problem, but do be aware of it.
 </P>
 <H3><A NAME="Heading7"></A><FONT COLOR="#000077">Dirty Rectangles in Action</FONT></H3>
-<P>Listing 45.1 demonstrates dirty-rectangle animation. This is a very simple implementation, in several respects. For one thing, it&#146;s written entirely in C, and animation fairly cries out for assembly language. For another thing, it uses far pointers, which C often handles with less than optimal efficiency, especially because I haven&#146;t used library functions to copy and fill memory. (I did this so the code would work in any memory model.) Also, Listing 45.1 doesn&#146;t attempt to coalesce rectangles so as to perform a minimum number of display-memory accesses; instead, it copies each dirty rectangle to the screen, even if it overlaps with another rectangle, so some pixels are copied multiple times. Listing 45.1 runs pretty well, considering all of its failings; on my 486/33, 10 11&#215;11 images animate at a very respectable clip.
+<P>Listing 45.1 demonstrates dirty-rectangle animation. This is a very simple implementation, in several respects. For one thing, it&rsquo;s written entirely in C, and animation fairly cries out for assembly language. For another thing, it uses far pointers, which C often handles with less than optimal efficiency, especially because I haven&rsquo;t used library functions to copy and fill memory. (I did this so the code would work in any memory model.) Also, Listing 45.1 doesn&rsquo;t attempt to coalesce rectangles so as to perform a minimum number of display-memory accesses; instead, it copies each dirty rectangle to the screen, even if it overlaps with another rectangle, so some pixels are copied multiple times. Listing 45.1 runs pretty well, considering all of its failings; on my 486/33, 10 11x11 images animate at a very respectable clip.
 </P>
 <P><B>LISTING 45.1 L45-1.C</B></P>
 <!-- CODE //-->
 <PRE>
-/* Sample simple dirty-rectangle animation program. Doesn&#146;t attempt to coalesce
+/* Sample simple dirty-rectangle animation program. Doesn&rsquo;t attempt to coalesce
    rectangles to minimize display memory accesses. Not even vaguely optimized!
-   Tested with Borland C&#43;&#43; in the small model. */
+   Tested with Borland C++ in the small model. */
 
 #include &lt;stdlib.h&gt;
 #include &lt;conio.h&gt;
@@ -56,7 +56,7 @@
 
 #define SCREEN_WIDTH  320
 #define SCREEN_HEIGHT 200
-#define SCREEN_SEGMENT 0&#215;A000
+#define SCREEN_SEGMENT 0xA000
 
 /* Describes a rectangle */
 typedef struct {
@@ -82,7 +82,7 @@ Rectangle DirtyRectangles[MAX_DIRTY_RECTANGLES];
 /* If set to 1, ignore dirty rectangle list and copy the whole screen. */
 int DrawWholeScreen = 0;
 
-/* Pixels for image we&#146;ll animate */
+/* Pixels for image we&rsquo;ll animate */
 #define IMAGE_WIDTH  11
 #define IMAGE_HEIGHT 11
 char ImagePixels[] = {
@@ -102,7 +102,7 @@ char ImagePixels[] = {
 #define NUM_ENTITIES 10
 Entity Entities[NUM_ENTITIES];
 
-/* pointer to system buffer into which we&#146;ll draw */
+/* pointer to system buffer into which we&rsquo;ll draw */
 char far *SystemBufferPtr;
 
 /* pointer to screen */
@@ -118,31 +118,31 @@ void main()
    unsigned int TempCount;
    char far *TempPtr;
    union REGS regs;
-   /* Allocate memory for the system buffer into which we&#146;ll draw */
+   /* Allocate memory for the system buffer into which we&rsquo;ll draw */
    if (!(SystemBufferPtr = farmalloc((unsigned int)SCREEN_WIDTH*
          SCREEN_HEIGHT))) {
-      printf("Couldn&#146;t get memory\n");
+      printf("Couldn&rsquo;t get memory\n");
       exit(1);
    }
    /* Clear the system buffer */
    TempPtr = SystemBufferPtr;
    for (TempCount = ((unsigned)SCREEN_WIDTH*SCREEN_HEIGHT); TempCount--; ) {
-      *TempPtr&#43;&#43; = 0;
+      *TempPtr++ = 0;
    }
    /* Point to the screen */
    ScreenPtr = MK_FP(SCREEN_SEGMENT, 0);
 
-   /* Set up the entities we&#146;ll animate, at random locations */
+   /* Set up the entities we&rsquo;ll animate, at random locations */
    randomize();
-   for (i = 0; i &lt; NUM_ENTITIES; i&#43;&#43;) {
+   for (i = 0; i &lt; NUM_ENTITIES; i++) {
       Entities[i].X = random(SCREEN_WIDTH - IMAGE_WIDTH);
       Entities[i].Y = random(SCREEN_HEIGHT - IMAGE_HEIGHT);
       Entities[i].XDirection = 1;
       Entities[i].YDirection = -1;
    }
-   /* Set 320&#215;200 256-color graphics mode */
-   regs.x.ax = 0&#215;0013;
-   int86(0&#215;10, &ampregs, &ampregs);
+   /* Set 320x200 256-color graphics mode */
+   regs.x.ax = 0x0013;
+   int86(0x10, &ampregs, &ampregs);
 
    /* Loop and draw until a key is pressed */
    do {
@@ -162,16 +162,16 @@ void main()
       EraseEntities();
 
       /* Move the entities, bouncing off the edges of the screen */
-      for (i = 0; i &lt; NUM_ENTITIES; i&#43;&#43;) {
-         XTemp = Entities[i].X &#43; Entities[i].XDirection;
-         YTemp = Entities[i].Y &#43; Entities[i].YDirection;
-         if ((XTemp &lt; 0) || ((XTemp &#43; IMAGE_WIDTH) &gt; SCREEN_WIDTH)) {
+      for (i = 0; i &lt; NUM_ENTITIES; i++) {
+         XTemp = Entities[i].X + Entities[i].XDirection;
+         YTemp = Entities[i].Y + Entities[i].YDirection;
+         if ((XTemp &lt; 0) || ((XTemp + IMAGE_WIDTH) &gt; SCREEN_WIDTH)) {
             Entities[i].XDirection = -Entities[i].XDirection;
-            XTemp = Entities[i].X &#43; Entities[i].XDirection;
+            XTemp = Entities[i].X + Entities[i].XDirection;
          }
-         if ((YTemp &lt; 0) || ((YTemp &#43; IMAGE_HEIGHT) &gt; SCREEN_HEIGHT)) {
+         if ((YTemp &lt; 0) || ((YTemp + IMAGE_HEIGHT) &gt; SCREEN_HEIGHT)) {
             Entities[i].YDirection = -Entities[i].YDirection;
-            YTemp = Entities[i].Y &#43; Entities[i].YDirection;
+            YTemp = Entities[i].Y + Entities[i].YDirection;
          }
          Entities[i].X = XTemp;
          Entities[i].Y = YTemp;
@@ -180,8 +180,8 @@ void main()
    } while (!kbhit());
    getch();    /* clear the keypress */
    /* Back to text mode */
-   regs.x.ax = 0&#215;0003;
-   int86(0&#215;10, &ampregs, &ampregs);
+   regs.x.ax = 0x0003;
+   int86(0x10, &ampregs, &ampregs);
 }
 /* Draw entities at current locations, updating dirty rectangle list. */
 void DrawEntities()
@@ -190,7 +190,7 @@ void DrawEntities()
    char far *RowPtrBuffer;
    char far *TempPtrBuffer;
    char far *TempPtrImage;
-   for (i = 0; i &lt; NUM_ENTITIES; i&#43;&#43;) {
+   for (i = 0; i &lt; NUM_ENTITIES; i++) {
       /* Remember the dirty rectangle info for this entity */
       if (NumDirtyRectangles &gt;= MAX_DIRTY_RECTANGLES) {
          /* Too many dirty rectangles; just redraw the whole screen */
@@ -200,23 +200,23 @@ void DrawEntities()
          DirtyRectangles[NumDirtyRectangles].Left = Entities[i].X;
          DirtyRectangles[NumDirtyRectangles].Top = Entities[i].Y;
          DirtyRectangles[NumDirtyRectangles].Right =
-               Entities[i].X &#43; IMAGE_WIDTH;
-         DirtyRectangles[NumDirtyRectangles&#43;&#43;].Bottom =
-               Entities[i].Y &#43; IMAGE_HEIGHT;
+               Entities[i].X + IMAGE_WIDTH;
+         DirtyRectangles[NumDirtyRectangles++].Bottom =
+               Entities[i].Y + IMAGE_HEIGHT;
       }
       /* Point to the destination in the system buffer */
-      RowPtrBuffer = SystemBufferPtr &#43; (Entities[i].Y * SCREEN_WIDTH) &#43;
+      RowPtrBuffer = SystemBufferPtr + (Entities[i].Y * SCREEN_WIDTH) +
             Entities[i].X;
       /* Point to the image to draw */
       TempPtrImage = ImagePixels;
       /* Copy the image to the system buffer */
-      for (j = 0; j &lt; IMAGE_HEIGHT; j&#43;&#43;) {
+      for (j = 0; j &lt; IMAGE_HEIGHT; j++) {
          /* Copy a row */
-         for (k = 0, TempPtrBuffer = RowPtrBuffer; k &lt; IMAGE_WIDTH; k&#43;&#43;) {
-            *TempPtrBuffer&#43;&#43; = *TempPtrImage&#43;&#43;;
+         for (k = 0, TempPtrBuffer = RowPtrBuffer; k &lt; IMAGE_WIDTH; k++) {
+            *TempPtrBuffer++ = *TempPtrImage++;
          }
          /* Point to the next system buffer row */
-         RowPtrBuffer &#43;= SCREEN_WIDTH;
+         RowPtrBuffer += SCREEN_WIDTH;
       }
    }
 }
@@ -236,32 +236,32 @@ void CopyDirtyRectanglesToScreen()
       TempPtrScreen = ScreenPtr;
       TempPtrBuffer = SystemBufferPtr;
       for (TempCount = ((unsigned)SCREEN_WIDTH*SCREEN_HEIGHT); TempCount--; ) {
-         *TempPtrScreen&#43;&#43; = *TempPtrBuffer&#43;&#43;;
+         *TempPtrScreen++ = *TempPtrBuffer++;
       }
    } else {
       /* Copy only the dirty rectangles */
-      for (i = 0; i &lt; NumDirtyRectangles; i&#43;&#43;) {
+      for (i = 0; i &lt; NumDirtyRectangles; i++) {
          /* Offset in both system buffer and screen of image */
-         Offset = (unsigned int) (DirtyRectangles[i].Top * SCREEN_WIDTH) &#43;
+         Offset = (unsigned int) (DirtyRectangles[i].Top * SCREEN_WIDTH) +
                DirtyRectangles[i].Left;
          /* Dimensions of dirty rectangle */
          RectWidth = DirtyRectangles[i].Right - DirtyRectangles[i].Left;
          RectHeight = DirtyRectangles[i].Bottom - DirtyRectangles[i].Top;
          /* Copy a dirty rectangle */
-         for (j = 0; j &lt; RectHeight; j&#43;&#43;) {
+         for (j = 0; j &lt; RectHeight; j++) {
 
             /* Point to the start of row on screen */
-            TempPtrScreen = ScreenPtr &#43; Offset;
+            TempPtrScreen = ScreenPtr + Offset;
 
             /* Point to the start of row in system buffer */
-            TempPtrBuffer = SystemBufferPtr &#43; Offset;
+            TempPtrBuffer = SystemBufferPtr + Offset;
 
             /* Copy a row */
-            for (k = 0; k &lt; RectWidth; k&#43;&#43;) {
-               *TempPtrScreen&#43;&#43; = *TempPtrBuffer&#43;&#43;;
+            for (k = 0; k &lt; RectWidth; k++) {
+               *TempPtrScreen++ = *TempPtrBuffer++;
             }
             /* Point to the next row */
-            Offset &#43;= SCREEN_WIDTH;
+            Offset += SCREEN_WIDTH;
          }
       }
    }
@@ -274,7 +274,7 @@ void EraseEntities()
    char far *RowPtr;
    char far *TempPtr;
 
-   for (i = 0; i &lt; NUM_ENTITIES; i&#43;&#43;) {
+   for (i = 0; i &lt; NUM_ENTITIES; i++) {
       /* Remember the dirty rectangle info for this entity */
       if (NumDirtyRectangles &gt;= MAX_DIRTY_RECTANGLES) {
          /* Too many dirty rectangles; just redraw the whole screen */
@@ -284,21 +284,21 @@ void EraseEntities()
          DirtyRectangles[NumDirtyRectangles].Left = Entities[i].X;
          DirtyRectangles[NumDirtyRectangles].Top = Entities[i].Y;
          DirtyRectangles[NumDirtyRectangles].Right =
-               Entities[i].X &#43; IMAGE_WIDTH;
-         DirtyRectangles[NumDirtyRectangles&#43;&#43;].Bottom =
-               Entities[i].Y &#43; IMAGE_HEIGHT;
+               Entities[i].X + IMAGE_WIDTH;
+         DirtyRectangles[NumDirtyRectangles++].Bottom =
+               Entities[i].Y + IMAGE_HEIGHT;
       }
       /* Point to the destination in the system buffer */
-      RowPtr = SystemBufferPtr &#43; (Entities[i].Y*SCREEN_WIDTH) &#43; Entities[i].X;
+      RowPtr = SystemBufferPtr + (Entities[i].Y*SCREEN_WIDTH) + Entities[i].X;
 
-      /* Clear the entity&#146;s rectangle */
-      for (j = 0; j &lt; IMAGE_HEIGHT; j&#43;&#43;) {
+      /* Clear the entity&rsquo;s rectangle */
+      for (j = 0; j &lt; IMAGE_HEIGHT; j++) {
          /* Clear a row */
-         for (k = 0, TempPtr = RowPtr; k &lt; IMAGE_WIDTH; k&#43;&#43;) {
-            *TempPtr&#43;&#43; = 0;
+         for (k = 0, TempPtr = RowPtr; k &lt; IMAGE_WIDTH; k++) {
+            *TempPtr++ = 0;
          }
          /* Point to the next row */
-         RowPtr &#43;= SCREEN_WIDTH;
+         RowPtr += SCREEN_WIDTH;
       }
    }
 }

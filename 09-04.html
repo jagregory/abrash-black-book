@@ -67,15 +67,15 @@ Parmsends
       .code
       public _FindString
 _FindStringprocnear
-      push     bp      ;preserve caller&#146;s stack frame
+      push     bp      ;preserve caller&rsquo;s stack frame
       mov      bp,sp   ;point to our stack frame
-      push     si      ;preserve caller&#146;s register variables
+      push     si      ;preserve caller&rsquo;s register variables
       push     di
       cld              ;make string instructions increment pointers
-      mov      si,[bp&#43;SearchString]       ;pointer to string to search for
-      mov      cx,[bp&#43;SearchStringLength] ;length of string
+      mov      si,[bp+SearchString]       ;pointer to string to search for
+      mov      cx,[bp+SearchStringLength] ;length of string
       jcxz     FindStringNotFound         ;no match if string is 0 length
-      mov      dx,[bp&#43;BufferLength]       ;length of buffer
+      mov      dx,[bp+BufferLength]       ;length of buffer
       sub      dx,cx                      ;difference between buffer and search
                                           ; lengths
       jc        FindStringNotFound ;no match if search string is
@@ -85,11 +85,11 @@ _FindStringprocnear
                     ; locations to check in the buffer)
       mov       di,ds
       mov       es,di
-      mov       di,[bp&#43;Buffer]         ;point ES:DI to buffer to search thru
-      mov       bx,[bp&#43;ScanCharOffset] ;offset in string of character
+      mov       di,[bp+Buffer]         ;point ES:DI to buffer to search thru
+      mov       bx,[bp+ScanCharOffset] ;offset in string of character
                                        ; on which to scan
       add       di,bx         ;point ES:DI to first buffer byte to scan
-      mov       al,[si&#43;bx]    ;put the scan character in AL
+      mov       al,[si+bx]    ;put the scan character in AL
       inc       bx            ;set BX to the offset back to the start of the
                               ; potential full match after a scan match,
                               ; accounting for the 1-byte overrun of
@@ -97,7 +97,7 @@ _FindStringprocnear
 FindStringLoop:
       mov       cx,dx              ;put remaining buffer search length in CX
       repnz     scasb              ;scan for the scan byte
-      jnz       FindStringNotFound ;not found, so there&#146;s no match
+      jnz       FindStringNotFound ;not found, so there&rsquo;s no match
                                    ;found, so we have a potential match-check the
                                    ; rest of this candidate location
       push       di                ;remember the address of the next byte to scan
@@ -105,18 +105,18 @@ FindStringLoop:
                                    ; the buffer
       sub        di,bx             ;point back to the potential start of the
                                    ; match in the buffer
-      mov        si,[bp&#43;SearchString]       ;point to the start of the string
-      mov        cx,[bp&#43;SearchStringLength] ;string length
+      mov        si,[bp+SearchString]       ;point to the start of the string
+      mov        cx,[bp+SearchStringLength] ;string length
       shr        cx,1                       ;convert to word for faster search
       jnc        FindStringWord             ;do word search if no odd byte
       cmpsb                                 ;compare the odd byte
-      jnz        FindStringNoMatch          ;odd byte doesn&#146;t match, so we
-                                            ; haven&#146;t found the search string here
+      jnz        FindStringNoMatch          ;odd byte doesn&rsquo;t match, so we
+                                            ; haven&rsquo;t found the search string here
 FindStringWord:
       jcxz       FindStringFound        ;if the string is only 1 byte long,
-                                        ; we&#146;ve found a match
+                                        ; we&rsquo;ve found a match
       repz       cmpsw                  ;check the rest of the string a word at a time
-      jz         FindStringFound        ;it&#146;s a match
+      jz         FindStringFound        ;it&rsquo;s a match
 FindStringNoMatch:
       pop        di                     ;get back pointer to the next byte to scan
       and        dx,dx                  ;is there anything left to check?
@@ -129,9 +129,9 @@ FindStringFound:
       sub         ax,bx      ; string was found (earlier we pushed the
                              ; address of the byte after the scan match)
 FindStringDone:
-      pop         di         ;restore caller&#146;s register variables
+      pop         di         ;restore caller&rsquo;s register variables
       pop         si
-      pop         bp         ;restore caller&#146;s stack frame
+      pop         bp         ;restore caller&rsquo;s stack frame
       ret
 _FindStringendp
       end
@@ -148,26 +148,26 @@ _FindStringendp
 extern unsigned char * FindString(unsigned char *, unsigned int,
       unsigned char *, unsigned int, unsigned int);
 void main(void);
-static unsigned char TestBuffer[] = &#147;When, in the course of human \
+static unsigned char TestBuffer[] = &ldquo;When, in the course of human \
 events, it becomes necessary for one people to dissolve the \
 political bands which have connected them with another, and to \
 assume among the powers of the earth the separate and equal station \
-to which the laws of nature and of nature&#146;s God entitle them...&#148;;
+to which the laws of nature and of nature&rsquo;s God entitle them...&rdquo;;
 void main() {
-   static unsigned char TestString[] = &#147;equal&#148;;
-   unsigned char TempBuffer[DISPLAY_LENGTH&#43;1];
+   static unsigned char TestString[] = &ldquo;equal&rdquo;;
+   unsigned char TempBuffer[DISPLAY_LENGTH+1];
    unsigned char *MatchPtr;
    /* Search for TestString and report the results */
    if ((MatchPtr = FindString(TestBuffer,
          (unsigned int) strlen(TestBuffer), TestString,
          (unsigned int) strlen(TestString), 1)) == NULL) {
-      /* TestString wasn&#146;t found */
-      printf(&#147;\&#148;%s\&#147; not found\n&#148;, TestString);
+      /* TestString wasn&rsquo;t found */
+      printf(&ldquo;\&rdquo;%s\&ldquo; not found\n&rdquo;, TestString);
    } else {
       /* TestString was found. Zero-terminate TempBuffer; strncpy
-         won&#146;t do it if DISPLAY_LENGTH characters are copied */
+         won&rsquo;t do it if DISPLAY_LENGTH characters are copied */
       TempBuffer[DISPLAY_LENGTH] = 0;
-      printf(&#147;\&#148;%s\&#147; found. Next %d characters at match:\n\&#148;%s\&#147;\n&#148;,
+      printf(&ldquo;\&rdquo;%s\&ldquo; found. Next %d characters at match:\n\&rdquo;%s\&ldquo;\n&rdquo;,
             TestString, DISPLAY_LENGTH,
             strncpy(TempBuffer, MatchPtr, DISPLAY_LENGTH));
    }

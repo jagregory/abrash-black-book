@@ -64,7 +64,7 @@ SCANOFFSET=0
      adc   esi,eax                     ;advance source pointer by integral
                                        ; X &amp Y amount, also accounting for
                                        ; carry from X fractional addition
-     mov   [edi&#43;SCANOFFSET],bl         ;set screen pixel
+     mov   [edi+SCANOFFSET],bl         ;set screen pixel
                                        ; (located here to avoid 486
                                        ; AGI from previous byte op)
      test  dh,80h                      ;carry from Y fractional addition?
@@ -74,13 +74,13 @@ SCANOFFSET=0
      and   dh,not 80h                  ;reset the Y fractional carry bit
 @@:
 
-SCANOFFSET = SCANOFFSET &#43; SCANWIDTH
+SCANOFFSET = SCANOFFSET + SCANWIDTH
 
      ENDM
 
 </PRE>
 <!-- END CODE //-->
-<P>And there you have it: A five to 10-times speedup of a decent assembly language texture mapper. All it took was some help from my friends, a good, stiff jolt of right-brain thinking, and some solid left-brain polishing&#151;plus the knowledge that such a speedup was possible. Treat every optimization task as if John Miles has just written to inform you that he&#146;s made it faster than your wildest dreams, and you&#146;ll be amazed at what you can do!
+<P>And there you have it: A five to 10-times speedup of a decent assembly language texture mapper. All it took was some help from my friends, a good, stiff jolt of right-brain thinking, and some solid left-brain polishing&mdash;plus the knowledge that such a speedup was possible. Treat every optimization task as if John Miles has just written to inform you that he&rsquo;s made it faster than your wildest dreams, and you&rsquo;ll be amazed at what you can do!
 </P>
 <H3><A NAME="Heading8"></A><FONT COLOR="#000077">Texture Mapping Notes</FONT></H3>
 <P>Listing 58.3 contains no 486 pipeline stalls; it has Pentium stalls, but not much can be done for them because of the size prefix on <B>ADD EDX,ECX</B>, which takes 1 cycle to go through the U-pipe, and shuts down the V-pipe for that cycle. Listing 58.4, on the other hand, has been rearranged to eliminate all Pentium stalls save one. When the Y coordinate fractional part carries and ESI advances, the code executes as follows:</P>
@@ -95,11 +95,11 @@ ADD EDX,EBP     ;cycle 3 V-pipe
 
 </PRE>
 <!-- END CODE SNIP //-->
-<P>However, I don&#146;t see any way to eliminate this last AGI, which happens about half the time; even with it, the Pentium execution time for Listing 58.4 is 5.5 cycles. That&#146;s 61 nanoseconds&#151;a highly respectable 16 million texture-mapped pixels per second&#151;on a 90 MHz Pentium.
+<P>However, I don&rsquo;t see any way to eliminate this last AGI, which happens about half the time; even with it, the Pentium execution time for Listing 58.4 is 5.5 cycles. That&rsquo;s 61 nanoseconds&mdash;a highly respectable 16 million texture-mapped pixels per second&mdash;on a 90 MHz Pentium.
 </P>
-<P>The type of texture mapping discussed in both this and earlier chapters doesn&#146;t do perspective correction when mapping textures. Why that is and how to handle perspective correction is a topic for a whole separate book, but be aware that the textures on some large polygons (not the polygon edges themselves) drawn with the code in this chapter will appear to be unnaturally bowed, although small polygons should look fine.</P>
-<P>Finally, we never did get rid of the last jump in the texture mapper, yet John Miles claimed no jumps at all. How did he do it? I&#146;m not sure, but I&#146;d guess that he used a two-entry look-up table, based on the Y carry, to decide how much to advance the source pointer in Y. However, I couldn&#146;t come up with any implementation of this approach that didn&#146;t take 0.5 to 1 cycle more than the test-and-jump approach, so either I didn&#146;t come up with an adequately efficient implementation of the table, John saved a cycle somewhere else, or perhaps John implemented his code in a 32-bit segment, but used the less-efficient table in his fervor to get rid of the final jump. The knowledge that I apparently came up with a different solution than John highlights that the technical aspects of John&#146;s implementation were, in truth, totally irrelevant to my optimization efforts; the only actual effect John&#146;s code had on me was to make me <I>believe</I> a texture mapper could run that fast.</P>
-<P>Believe it! And while you&#146;re at it, give both halves of your brain equal time&#151;and watch out for aliens in short skirts, 60&#146;s bouffant hairdos, and an undue interest in either half.</P><P><BR></P>
+<P>The type of texture mapping discussed in both this and earlier chapters doesn&rsquo;t do perspective correction when mapping textures. Why that is and how to handle perspective correction is a topic for a whole separate book, but be aware that the textures on some large polygons (not the polygon edges themselves) drawn with the code in this chapter will appear to be unnaturally bowed, although small polygons should look fine.</P>
+<P>Finally, we never did get rid of the last jump in the texture mapper, yet John Miles claimed no jumps at all. How did he do it? I&rsquo;m not sure, but I&rsquo;d guess that he used a two-entry look-up table, based on the Y carry, to decide how much to advance the source pointer in Y. However, I couldn&rsquo;t come up with any implementation of this approach that didn&rsquo;t take 0.5 to 1 cycle more than the test-and-jump approach, so either I didn&rsquo;t come up with an adequately efficient implementation of the table, John saved a cycle somewhere else, or perhaps John implemented his code in a 32-bit segment, but used the less-efficient table in his fervor to get rid of the final jump. The knowledge that I apparently came up with a different solution than John highlights that the technical aspects of John&rsquo;s implementation were, in truth, totally irrelevant to my optimization efforts; the only actual effect John&rsquo;s code had on me was to make me <I>believe</I> a texture mapper could run that fast.</P>
+<P>Believe it! And while you&rsquo;re at it, give both halves of your brain equal time&mdash;and watch out for aliens in short skirts, 60&rsquo;s bouffant hairdos, and an undue interest in either half.</P><P><BR></P>
 <CENTER>
 <TABLE BORDER>
 <TR>

@@ -37,22 +37,22 @@
 </CENTER>
 <P><BR></P>
 <H3><A NAME="Heading5"></A><FONT COLOR="#000077">Stack Frames Slow So Much</FONT></H3>
-<P>C compilers work within the stack frame model, whereby variables reside in a block of stack memory and are accessed via offsets from BP. Compilers may store a couple of variables in registers and may briefly keep other variables in registers when they&#146;re used repeatedly, but the stack frame is the underlying architecture. It&#146;s a nice architecture; it&#146;s flexible, convenient, easy to program, and makes for fairly compact code. However, stack frames have a few drawbacks. They must be constructed and destroyed, which takes both time and code. They are so easy to use that they tend to bias the assembly language programmer in favor of accessing memory variables more often than might be necessary. Finally, you cannot use BP as a general-purpose register if you intend to access a stack frame, and having that seventh register available is sometimes useful indeed.
+<P>C compilers work within the stack frame model, whereby variables reside in a block of stack memory and are accessed via offsets from BP. Compilers may store a couple of variables in registers and may briefly keep other variables in registers when they&rsquo;re used repeatedly, but the stack frame is the underlying architecture. It&rsquo;s a nice architecture; it&rsquo;s flexible, convenient, easy to program, and makes for fairly compact code. However, stack frames have a few drawbacks. They must be constructed and destroyed, which takes both time and code. They are so easy to use that they tend to bias the assembly language programmer in favor of accessing memory variables more often than might be necessary. Finally, you cannot use BP as a general-purpose register if you intend to access a stack frame, and having that seventh register available is sometimes useful indeed.
 </P>
-<P>That doesn&#146;t mean you shouldn&#146;t use stack frames, which are useful and often necessary. Just don&#146;t fall victim to their undeniable charms.</P>
+<P>That doesn&rsquo;t mean you shouldn&rsquo;t use stack frames, which are useful and often necessary. Just don&rsquo;t fall victim to their undeniable charms.</P>
 <H3><A NAME="Heading6"></A><FONT COLOR="#000077">Torn Between Two Segments</FONT></H3>
-<P>C compilers are not terrific at handling segments. Some compilers can efficiently handle a single far pointer used in a loop by leaving ES set for the duration of the loop. But two far pointers used in the same loop confuse every compiler I&#146;ve seen, causing the full segment:offset address to be reloaded each time either pointer is used.
+<P>C compilers are not terrific at handling segments. Some compilers can efficiently handle a single far pointer used in a loop by leaving ES set for the duration of the loop. But two far pointers used in the same loop confuse every compiler I&rsquo;ve seen, causing the full segment:offset address to be reloaded each time either pointer is used.
 </P>
 <TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>This particularly affects performance in 286 protected mode (under OS/2 1.X or the Rational DOS Extender, for example) because segment loads in protected mode take a minimum of 17 cycles, versus a mere 2 cycles in real mode. </I></SMALL>
 </TABLE>
 <P>In assembly language you have full control over segments. Use it, and, if necessary, reorganize your code to minimize segment loading.
 </P>
 <H4 ALIGN="LEFT"><A NAME="Heading7"></A><FONT COLOR="#000077">Why Speeding Up Is Hard to Do</FONT></H4>
-<P>You might think that the most obvious advantage assembly language has over C is that it allows the use of all forms of instructions and all registers in all ways, whereas C compilers tend to use a subset of registers and instructions in a limited number of ways. Yes and no. It&#146;s true that C compilers typically don&#146;t generate instructions such as <B>XLAT,</B> rotates, or the string instructions. On the other hand, <B>XLAT</B> and rotates are useful in a limited set of circumstances, and string instructions <I>are</I> used in the C library functions. In fact, C library code is likely to be carefully optimized by experts, and may be much better than equivalent code you&#146;d produce yourself.</P>
-<P>Am I saying that C compilers produce better code than you do? No, I&#146;m saying that they <I>can,</I> unless you use assembly language properly. Writing code in assembly language rather than C guarantees nothing.</P>
+<P>You might think that the most obvious advantage assembly language has over C is that it allows the use of all forms of instructions and all registers in all ways, whereas C compilers tend to use a subset of registers and instructions in a limited number of ways. Yes and no. It&rsquo;s true that C compilers typically don&rsquo;t generate instructions such as <B>XLAT,</B> rotates, or the string instructions. On the other hand, <B>XLAT</B> and rotates are useful in a limited set of circumstances, and string instructions <I>are</I> used in the C library functions. In fact, C library code is likely to be carefully optimized by experts, and may be much better than equivalent code you&rsquo;d produce yourself.</P>
+<P>Am I saying that C compilers produce better code than you do? No, I&rsquo;m saying that they <I>can,</I> unless you use assembly language properly. Writing code in assembly language rather than C guarantees nothing.</P>
 <TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>You can write good assembly, bad assembly, or assembly that is virtually indistinguishable from compiled code; you are more likely than not to write the latter if you think that optimization consists of tweaking compiled C code. </I></SMALL>
 </TABLE>
-<P>Sure, you can probably use the registers more efficiently and take advantage of an instruction or two that the compiler missed, but the code isn&#146;t going to get a whole lot faster that way.
+<P>Sure, you can probably use the registers more efficiently and take advantage of an instruction or two that the compiler missed, but the code isn&rsquo;t going to get a whole lot faster that way.
 </P>
 <P>True optimization requires rethinking your code to take advantage of assembly language. A C loop that searches through an integer array for matches might compile</P>
 <P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/08-01.jpg',413,198 )"> --><IMG SRC="images/08-01.jpg"><BR><!-- </A>
@@ -60,26 +60,26 @@
 </P>
 <P>to something like Figure 8.1A. You might look at that and tweak it to the code shown in Figure 8.1B.
 </P>
-<P>Congratulations! You&#146;ve successfully eliminated all stack frame access, you&#146;ve used <B>LOOP</B> (although <B>DEC SI/JNZ</B> is actually faster on 386 and later machines, as I explained in the last chapter), and you&#146;ve used a string instruction. Unfortunately, the new code isn&#146;t going to run very much faster. Maybe 25 percent faster, maybe a little more. Big deal. You&#146;ve eliminated the trappings of the compiler&#151;the stack frame and the restricted register usage&#151;but you&#146;re still <I>thinking</I> like the compiler. Try this:</P>
+<P>Congratulations! You&rsquo;ve successfully eliminated all stack frame access, you&rsquo;ve used <B>LOOP</B> (although <B>DEC SI/JNZ</B> is actually faster on 386 and later machines, as I explained in the last chapter), and you&rsquo;ve used a string instruction. Unfortunately, the new code isn&rsquo;t going to run very much faster. Maybe 25 percent faster, maybe a little more. Big deal. You&rsquo;ve eliminated the trappings of the compiler&mdash;the stack frame and the restricted register usage&mdash;but you&rsquo;re still <I>thinking</I> like the compiler. Try this:</P>
 <!-- CODE SNIP //-->
 <PRE>
 repnz scasw
 jz    Match
 </PRE>
 <!-- END CODE SNIP //-->
-<P>It&#146;s a simple example&#151;but, I hope, a convincing one. Stretch your brain when you optimize.
+<P>It&rsquo;s a simple example&mdash;but, I hope, a convincing one. Stretch your brain when you optimize.
 </P>
 <H3><A NAME="Heading8"></A><FONT COLOR="#000077">Taking It to the Limit</FONT></H3>
-<P>The ultimate in assembly language optimization comes when you change the rules; that is, when you reorganize the entire program to allow the use of better assembly language code in the small section of code that most affects overall performance. For example, consider that the data searched in the last example is stored in an array of structures, with each structure in the array containing other information as well. In this situation, <B>REP SCASW</B> couldn&#146;t be used because the data searched through wouldn&#146;t be contiguous.</P>
-<P>However, if the need for performance in searching the array is urgent enough, there&#146;s no reason why you can&#146;t reorganize the data. This might mean removing the array elements from the structures and storing them in their own array so that <B>REP SCASW</B> <I>could</I> be used.</P>
-<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>Organizing a program&#146;s data so that the performance of the critical sections can be optimized is a key part of design, and one that&#146;s easily shortchanged unless, during the design stage, you thoroughly understand and work to bring together your data needs, the critical sections of your program, and potential assembly language optimizations.</I></SMALL>
+<P>The ultimate in assembly language optimization comes when you change the rules; that is, when you reorganize the entire program to allow the use of better assembly language code in the small section of code that most affects overall performance. For example, consider that the data searched in the last example is stored in an array of structures, with each structure in the array containing other information as well. In this situation, <B>REP SCASW</B> couldn&rsquo;t be used because the data searched through wouldn&rsquo;t be contiguous.</P>
+<P>However, if the need for performance in searching the array is urgent enough, there&rsquo;s no reason why you can&rsquo;t reorganize the data. This might mean removing the array elements from the structures and storing them in their own array so that <B>REP SCASW</B> <I>could</I> be used.</P>
+<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>Organizing a program&rsquo;s data so that the performance of the critical sections can be optimized is a key part of design, and one that&rsquo;s easily shortchanged unless, during the design stage, you thoroughly understand and work to bring together your data needs, the critical sections of your program, and potential assembly language optimizations.</I></SMALL>
 </TABLE>
 <P>More on this shortly.
 </P>
 <P>To recap, here are some things to look for when striving to convert C code into optimized assembly language:</P>
 <DL>
 <DD><B>&#149;</B>&nbsp;&nbsp;Move the entire performance-critical section into a single assembly language function.
-<DD><B>&#149;</B>&nbsp;&nbsp;Don&#146;t use calls or stack frame accesses inside the critical code, if possible, and avoid unnecessary memory accesses of any kind.
+<DD><B>&#149;</B>&nbsp;&nbsp;Don&rsquo;t use calls or stack frame accesses inside the critical code, if possible, and avoid unnecessary memory accesses of any kind.
 <DD><B>&#149;</B>&nbsp;&nbsp;Change segments as infrequently as possible.
 <DD><B>&#149;</B>&nbsp;&nbsp;Optimize in terms of what assembly does well, <I>not</I> in terms of fine-tuning compiled C code.
 <DD><B>&#149;</B>&nbsp;&nbsp;Change the rules to the benefit of assembly, if necessary; for example, reorganize data structto allow efficient assembly language processing.
@@ -87,7 +87,7 @@ jz    Match
 <P>That said, let me show some of these precepts in action.
 </P>
 <H4 ALIGN="LEFT"><A NAME="Heading9"></A><FONT COLOR="#000077">A C-to-Assembly Case Study</FONT></H4>
-<P>Listing 8.1 is the sample C application I&#146;m going to use to examine optimization in action. Listing 8.1 isn&#146;t really complete&#151;it doesn&#146;t handle the &#147;no-matches&#148; case well, and it assumes that the sum of all matches will fit into an <B>int&#151;</B>but it will do just fine as an optimization example.</P><P><BR></P>
+<P>Listing 8.1 is the sample C application I&rsquo;m going to use to examine optimization in action. Listing 8.1 isn&rsquo;t really complete&mdash;it doesn&rsquo;t handle the &ldquo;no-matches&rdquo; case well, and it assumes that the sum of all matches will fit into an <B>int&mdash;</B>but it will do just fine as an optimization example.</P><P><BR></P>
 <CENTER>
 <TABLE BORDER>
 <TR>

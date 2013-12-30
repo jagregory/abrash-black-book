@@ -39,7 +39,7 @@
 <H4 ALIGN="LEFT"><A NAME="Heading7"></A><FONT COLOR="#000077">Independent Span Sorting</FONT></H4>
 <P>Finally, we come to independent span sorting, the simplest and fastest of the three, and the type the sample code in Listing 67.1 uses. Here, polygons never intersect or touch any other polygons except adjacent polygons with which they form a continuous mesh. This means that when a polygon starts on a scan line, a single 1/z comparison between that polygon and the polygons it overlaps on the screen is guaranteed to produce correct sorting, with no extra calculations or tricky cases to worry about.
 </P>
-<P>Independent span sorting is ideal for scenes with lots of moving objects that never actually touch each other, such as a space battle. Next, we&#146;ll look at an implementation of independent 1/z span sorting.</P>
+<P>Independent span sorting is ideal for scenes with lots of moving objects that never actually touch each other, such as a space battle. Next, we&rsquo;ll look at an implementation of independent 1/z span sorting.</P>
 <H3><A NAME="Heading8"></A><FONT COLOR="#000077">1/z Span Sorting in Action</FONT></H3>
 <P>Listing 67.1 is a portion of a program that demonstrates independent 1/z span sorting. This program is based on the sample 3-D clipping program from Chapter 65; however, the earlier program did hidden surface removal (HSR) by simply z-sorting whole objects and drawing them back-to-front, while Listing 67.1 draws all polygons by way of a 1/z-sorted edge list. Consequently, where the earlier program worked only so long as object centers correctly described sorting order, Listing 67.1 works properly for all combinations of non-intersecting and non-abutting polygons. In particular, Listing 67.1 correctly handles concave polyhedra; a new L-shaped object (the data for which is not included in Listing 67.1) has been added to the sample program to illustrate this capability. The ability to handle complex shapes makes Listing 67.1 vastly more useful for real-world applications than the 3-D clipping demo from Chapter 65.
 </P>
@@ -81,7 +81,7 @@ edge_t  *removeedges[MAX_SCREEN_HEIGHT];
 edge_t  edgehead, edgetail;
 
 // Edge used as sentinel of new edge lists
-edge_t  maxedge = {0&#215;7FFFFFFF};
+edge_t  maxedge = {0x7FFFFFFF};
 
 // Head/tail/sentinel/background surface of active surface stack
 surf_t  surfstack;
@@ -98,9 +98,9 @@ int PolyFacesViewer(polygon_t *ppoly, plane_t *pplane)
     int     i;
     point_t viewvec;
 
-    for (i=0 ; i&lt;3 ; i&#43;&#43;)
+    for (i=0 ; i&lt;3 ; i++)
         viewvec.v[i] = ppoly-&gt;verts[0].v[i] - currentpos.v[i];
-    // Use an epsilon here so we don&#146;t get polygons tilted so
+    // Use an epsilon here so we don&rsquo;t get polygons tilted so
     // sharply that the gradients are unusable or invalid
     if (DotProduct (&ampviewvec, &amppplane-&gt;normal) &lt; -0.01)
         return 1;
@@ -108,7 +108,7 @@ int PolyFacesViewer(polygon_t *ppoly, plane_t *pplane)
 }
 
 
-// Add the polygon&#146;s edges to the global edge table.
+// Add the polygon&rsquo;s edges to the global edge table.
 void AddPolygonEdges (plane_t *plane, polygon2D_t *screenpoly)
 {
     double  distinv, deltax, deltay, slope;
@@ -117,10 +117,10 @@ void AddPolygonEdges (plane_t *plane, polygon2D_t *screenpoly)
 
     numverts = screenpoly-&gt;numverts;
 
-    // Clamp the polygon&#146;s vertices just in case some very near
+    // Clamp the polygon&rsquo;s vertices just in case some very near
     // points have wandered out of range due to floating-point
     // imprecision
-    for (i=0 ; i&lt;numverts ; i&#43;&#43;) {
+    for (i=0 ; i&lt;numverts ; i++) {
         if (screenpoly-&gt;verts[i].x &lt; -0.5)
             screenpoly-&gt;verts[i].x = -0.5;
         if (screenpoly-&gt;verts[i].x &gt; ((double)DIBWidth - 0.5))
@@ -132,15 +132,15 @@ void AddPolygonEdges (plane_t *plane, polygon2D_t *screenpoly)
     }
 
     // Add each edge in turn
-    for (i=0 ; i&lt;numverts ; i&#43;&#43;) {
-        nextvert = i &#43; 1;
+    for (i=0 ; i&lt;numverts ; i++) {
+        nextvert = i + 1;
         if (nextvert &gt;= numverts)
             nextvert = 0;
         topy = (int)ceil(screenpoly-&gt;verts[i].y);
         bottomy = (int)ceil(screenpoly-&gt;verts[nextvert].y);
         height = bottomy - topy;
         if (height == 0)
-            continue;       // doesn&#146;t cross any scan lines
+            continue;       // doesn&rsquo;t cross any scan lines
         if (height &lt; 0) {
             // Leading edge
             temp = topy;
@@ -153,10 +153,10 @@ void AddPolygonEdges (plane_t *plane, polygon2D_t *screenpoly)
                      screenpoly-&gt;verts[nextvert].y;
             slope = deltax / deltay;
             // Edge coordinates are in 16.16 fixed point
-            pavailedge-&gt;xstep = (int)(slope * (float)0&#215;10000);
-            pavailedge-&gt;x = (int)((screenpoly-&gt;verts[nextvert].x &#43;
+            pavailedge-&gt;xstep = (int)(slope * (float)0x10000);
+            pavailedge-&gt;x = (int)((screenpoly-&gt;verts[nextvert].x +
                 ((float)topy - screenpoly-&gt;verts[nextvert].y) *
-                slope) * (float)0&#215;10000);
+                slope) * (float)0x10000);
         } else {
             // Trailing edge
             pavailedge-&gt;leading = 0;
@@ -166,10 +166,10 @@ void AddPolygonEdges (plane_t *plane, polygon2D_t *screenpoly)
                      screenpoly-&gt;verts[i].y;
             slope = deltax / deltay;
             // Edge coordinates are in 16.16 fixed point
-            pavailedge-&gt;xstep = (int)(slope * (float)0&#215;10000);
-            pavailedge-&gt;x = (int)((screenpoly-&gt;verts[i].x &#43;
+            pavailedge-&gt;xstep = (int)(slope * (float)0x10000);
+            pavailedge-&gt;x = (int)((screenpoly-&gt;verts[i].x +
                 ((float)topy - screenpoly-&gt;verts[i].y) * slope) *
-                (float)0&#215;10000);
+                (float)0x10000);
         }
 
         // Put the edge on the list to be added on top scan
@@ -183,16 +183,16 @@ void AddPolygonEdges (plane_t *plane, polygon2D_t *screenpoly)
         pavailedge-&gt;pnextremove = removeedges[bottomy - 1];
         removeedges[bottomy - 1] = pavailedge;
 
-        // Associate the edge with the surface we&#146;ll create for
+        // Associate the edge with the surface we&rsquo;ll create for
         // this polygon
         pavailedge-&gt;psurf = pavailsurf;
 
-        // Make sure we don&#146;t overflow the edge array
+        // Make sure we don&rsquo;t overflow the edge array
         if (pavailedge &lt; &ampedges[MAX_EDGES])
-            pavailedge&#43;&#43;;
+            pavailedge++;
     }
 
-    // Create the surface, so we&#146;ll know how to sort and draw from
+    // Create the surface, so we&rsquo;ll know how to sort and draw from
     // the edges
     pavailsurf-&gt;state = 0;
     pavailsurf-&gt;color = currentcolor;
@@ -209,9 +209,9 @@ void AddPolygonEdges (plane_t *plane, polygon2D_t *screenpoly)
             xcenter * pavailsurf-&gt;zinvstepx -
             ycenter * pavailsurf-&gt;zinvstepy;
 
-    // Make sure we don&#146;t overflow the surface array
+    // Make sure we don&rsquo;t overflow the surface array
     if (pavailsurf &lt; &ampsurfs[MAX_SURFS])
-        pavailsurf&#43;&#43;;
+        pavailsurf++;
 }
 
 
@@ -231,7 +231,7 @@ void ScanEdges (void)
     // of these fields could be set up just once at start-up
     edgehead.pnext = &ampedgetail;
     edgehead.pprev = NULL;
-    edgehead.x = -0&#215;FFFF;           // left edge of screen
+    edgehead.x = -0xFFFF;           // left edge of screen
     edgehead.leading = 1;
     edgehead.psurf = &ampsurfstack;
     edgetail.pnext = NULL;          // mark edge of list
@@ -247,7 +247,7 @@ void ScanEdges (void)
     surfstack.color = 0;
     surfstack.zinv00 = -999999.0;
     surfstack.zinvstepx = surfstack.zinvstepy = 0.0;
-    for (y=0 ; y&lt;DIBHeight ; y&#43;&#43;) {
+    for (y=0 ; y&lt;DIBHeight ; y++) {
         fy = (double)y;
         // Sort in any edges that start on this scan
         pedge = newedges[y].pnext;
@@ -272,33 +272,33 @@ void ScanEdges (void)
         for (pedge=edgehead.pnext ; pedge ; pedge=pedge-&gt;pnext) {
             psurf = pedge-&gt;psurf;
             if (pedge-&gt;leading) {
-                // It&#146;s a leading edge. Figure out where it is
+                // It&rsquo;s a leading edge. Figure out where it is
                 // relative to the current surfaces and insert in
-                // the surface stack; if it&#146;s on top, emit the span
+                // the surface stack; if it&rsquo;s on top, emit the span
                 // for the current top.
-                // First, make sure the edges don&#146;t cross
-                if (&#43;&#43;psurf-&gt;state == 1) {
-                    fx = (double)pedge-&gt;x * (1.0 / (double)0&#215;10000);
-                    // Calculate the surface&#146;s 1/z value at this pixel
-                    zinv = psurf-&gt;zinv00 &#43; psurf-&gt;zinvstepx * fx &#43;
+                // First, make sure the edges don&rsquo;t cross
+                if (++psurf-&gt;state == 1) {
+                    fx = (double)pedge-&gt;x * (1.0 / (double)0x10000);
+                    // Calculate the surface&rsquo;s 1/z value at this pixel
+                    zinv = psurf-&gt;zinv00 + psurf-&gt;zinvstepx * fx +
                             psurf-&gt;zinvstepy * fy;
                     // See if that makes it a new top surface
                     psurf2 = surfstack.pnext;
-                    zinv2 = psurf2-&gt;zinv00 &#43; psurf2-&gt;zinvstepx * fx &#43;
+                    zinv2 = psurf2-&gt;zinv00 + psurf2-&gt;zinvstepx * fx +
                             psurf2-&gt;zinvstepy * fy;
                     if (zinv &gt;= zinv2) {
-                        // It&#146;s a new top surface
+                        // It&rsquo;s a new top surface
                         // emit the span for the current top
-                        x = (pedge-&gt;x &#43; 0&#215;FFFF) &gt;&gt; 16;
+                        x = (pedge-&gt;x + 0xFFFF) &gt;&gt; 16;
                         pspan-&gt;count = x - psurf2-&gt;visxstart;
                         if (pspan-&gt;count &gt; 0) {
                             pspan-&gt;y = y;
                             pspan-&gt;x = psurf2-&gt;visxstart;
                             pspan-&gt;color = psurf2-&gt;color;
-                            // Make sure we don&#146;t overflow
+                            // Make sure we don&rsquo;t overflow
                             // the span array
                             if (pspan &lt; &ampspans[MAX_SPANS])
-                                pspan&#43;&#43;;
+                                pspan++;
                         }
                         psurf-&gt;visxstart = x;
                         // Add the edge to the stack
@@ -312,8 +312,8 @@ void ScanEdges (void)
                         // background surface
                         do {
                             psurf2 = psurf2-&gt;pnext;
-                            zinv2 = psurf2-&gt;zinv00 &#43;
-                                    psurf2-&gt;zinvstepx * fx &#43;
+                            zinv2 = psurf2-&gt;zinv00 +
+                                    psurf2-&gt;zinvstepx * fx +
                                     psurf2-&gt;zinvstepy * fy;
                         } while (zinv &lt; zinv2);
                         // Insert the surface into the stack
@@ -324,22 +324,22 @@ void ScanEdges (void)
                     }
                 }
             } else {
-                // It&#146;s a trailing edge; if this was the top surface,
+                // It&rsquo;s a trailing edge; if this was the top surface,
                 // emit the span and remove it.
-                // First, make sure the edges didn&#146;t cross
-                if (&#151;psurf-&gt;state == 0) {
+                // First, make sure the edges didn&rsquo;t cross
+                if (&mdash;psurf-&gt;state == 0) {
                     if (surfstack.pnext == psurf) {
-                        // It&#146;s on top, emit the span
-                        x = ((pedge-&gt;x &#43; 0&#215;FFFF) &gt;&gt; 16);
+                        // It&rsquo;s on top, emit the span
+                        x = ((pedge-&gt;x + 0xFFFF) &gt;&gt; 16);
                         pspan-&gt;count = x - psurf-&gt;visxstart;
                         if (pspan-&gt;count &gt; 0) {
                             pspan-&gt;y = y;
                             pspan-&gt;x = psurf-&gt;visxstart;
                             pspan-&gt;color = psurf-&gt;color;
-                            // Make sure we don&#146;t overflow
+                            // Make sure we don&rsquo;t overflow
                             // the span array
                             if (pspan &lt; &ampspans[MAX_SPANS])
-                                pspan&#43;&#43;;
+                                pspan++;
                         }
                         psurf-&gt;pnext-&gt;visxstart = x;
                     }
@@ -362,7 +362,7 @@ void ScanEdges (void)
         for (pedge=edgehead.pnext ; pedge != &ampedgetail ; ) {
             ptemp = pedge-&gt;pnext;
             // Step the edge
-            pedge-&gt;x &#43;= pedge-&gt;xstep;
+            pedge-&gt;x += pedge-&gt;xstep;
             // Move the edge back to the proper sorted location,
             // if necessary
             while (pedge-&gt;x &lt; pedge-&gt;pprev-&gt;x) {
@@ -384,8 +384,8 @@ void ScanEdges (void)
 void DrawSpans (void)
 {
     span_t  *pspan;
-    for (pspan=spans ; pspan-&gt;x != -1 ; pspan&#43;&#43;)
-        memset (pDIB &#43; (DIBPitch * pspan-&gt;y) &#43; pspan-&gt;x,
+    for (pspan=spans ; pspan-&gt;x != -1 ; pspan++)
+        memset (pDIB + (DIBPitch * pspan-&gt;y) + pspan-&gt;x,
                 pspan-&gt;color,
                 pspan-&gt;count);
 }
@@ -395,7 +395,7 @@ void DrawSpans (void)
 void ClearEdgeLists(void)
 {
     int i;
-    for (i=0 ; i&lt;DIBHeight ; i&#43;&#43;) {
+    for (i=0 ; i&lt;DIBHeight ; i++) {
         newedges[i].pnext = &ampmaxedge;
         removeedges[i] = NULL;
     }
@@ -424,12 +424,12 @@ void UpdateWorld()
     pobject = objecthead.pnext;
     while (pobject != &ampobjecthead) {
         ppoly = pobject-&gt;ppoly;
-        for (i=0 ; i&lt;pobject-&gt;numpolys ; i&#43;&#43;) {
+        for (i=0 ; i&lt;pobject-&gt;numpolys ; i++) {
             // Move the polygon relative to the object center
             tpoly0.numverts = ppoly[i].numverts;
-            for (j=0 ; j&lt;tpoly0.numverts ; j&#43;&#43;) {
-                for (k=0 ; k&lt;3 ; k&#43;&#43;)
-                    tpoly0.verts[j].v[k] = ppoly[i].verts[j].v[k] &#43;
+            for (j=0 ; j&lt;tpoly0.numverts ; j++) {
+                for (k=0 ; k&lt;3 ; k++)
+                    tpoly0.verts[j].v[k] = ppoly[i].verts[j].v[k] +
                             pobject-&gt;center.v[k];
             }
             if (PolyFacesViewer(&amptpoly0, &ampppoly[i].plane)) {
@@ -438,10 +438,10 @@ void UpdateWorld()
                     TransformPolygon (&amptpoly1, &amptpoly2);
                     ProjectPolygon (&amptpoly2, &ampscreenpoly);
 
-                    // Move the polygon&#146;s plane into viewspace
+                    // Move the polygon&rsquo;s plane into viewspace
                     // First move it into worldspace (object relative)
                     tnormal = ppoly[i].plane.normal;
-                    plane.distance = ppoly[i].plane.distance &#43;
+                    plane.distance = ppoly[i].plane.distance +
                         DotProduct (&amppobject-&gt;center, &amptnormal);
 
                     // Now transform it into viewspace
@@ -465,7 +465,7 @@ void UpdateWorld()
     ScanEdges ();
     DrawSpans ();
 
-    // We&#146;ve drawn the frame; copy it to the screen
+    // We&rsquo;ve drawn the frame; copy it to the screen
     hdcScreen = GetDC(hwndOutput);
     holdpal = SelectPalette(hdcScreen, hpalDIB, FALSE);
     RealizePalette(hdcScreen);

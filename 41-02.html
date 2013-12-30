@@ -48,47 +48,47 @@
 <!-- CODE //-->
 <PRE>
 /* Color-fills a convex polygon. All vertices are offset by (XOffset, YOffset).
-&#147;Convex&#148; means &#147;monotone with respect to a vertical line&#148;; that is, every 
+&ldquo;Convex&rdquo; means &ldquo;monotone with respect to a vertical line&rdquo;; that is, every 
 horizontal line drawn through the polygon at any point would cross exactly two 
 active edges (neither horizontal lines nor zero-length edges count as active 
 edges; both are acceptable anywhere in the polygon). Right & left edges may 
 cross (polygons may be nonsimple). Polygons that are not convex according to 
-this definition won&#146;t be drawn properly. (Yes, &#147;convex&#148; is a lousy name for 
-this type of polygon, but it&#146;s convenient; use &#147;monotone-vertical&#148; if it makes 
+this definition won&rsquo;t be drawn properly. (Yes, &ldquo;convex&rdquo; is a lousy name for 
+this type of polygon, but it&rsquo;s convenient; use &ldquo;monotone-vertical&rdquo; if it makes 
 you happier!)
 *******************************************************************
 NOTE: the low-level drawing routine, DrawHorizontalLineList, must be able to
 reverse the edges, if necessary to make the correct edge left edge. It must 
-also expect right edge to be specified in &#43;1 format (the X coordinate is 1 past
+also expect right edge to be specified in +1 format (the X coordinate is 1 past
 highest coordinate to draw). In both respects, this differs from low-level 
 drawing routines presented in earlier columns; changes are necessary to make it
 possible to draw nonsimple monotone-vertical polygons; that in turn makes it 
-possible to use Jim Kent&#146;s test for monotone-vertical polygons.
+possible to use Jim Kent&rsquo;s test for monotone-vertical polygons.
 *******************************************************************
 Returns 1 for success, 0 if memory allocation failed */
 
 #include &lt;stdio.h&gt;
 #include &lt;math.h&gt;
 #include &lt;stdlib.h&gt;
-#include &#147;polygon.h&#148;
+#include &ldquo;polygon.h&rdquo;
 
 /* Advances the index by one vertex forward through the vertex list,
 wrapping at the end of the list */
 #define INDEX_FORWARD(Index) \
-   Index = (Index &#43; 1) % VertexList-&gt;Length;
+   Index = (Index + 1) % VertexList-&gt;Length;
 
 /* Advances the index by one vertex backward through the vertex list,
 wrapping at the start of the list */
 #define INDEX_BACKWARD(Index) \
-   Index = (Index - 1 &#43; VertexList-&gt;Length) % VertexList-&gt;Length;
+   Index = (Index - 1 + VertexList-&gt;Length) % VertexList-&gt;Length;
 
 /* Advances the index by one vertex either forward or backward through
 the vertex list, wrapping at either end of the list */
 #define INDEX_MOVE(Index,Direction)                                  \
    if (Direction &gt; 0)                                                \
-      Index = (Index &#43; 1) % VertexList-&gt;Length;                      \
+      Index = (Index + 1) % VertexList-&gt;Length;                      \
    else                                                              \
-      Index = (Index - 1 &#43; VertexList-&gt;Length) % VertexList-&gt;Length;
+      Index = (Index - 1 + VertexList-&gt;Length) % VertexList-&gt;Length;
 
 extern void ScanEdge(int, int, int, int, int, int, struct HLine **);
 extern void DrawHorizontalLineList(struct HLineList *, int);
@@ -109,7 +109,7 @@ int FillMonotoneVerticalPolygon(struct PointListHeader * VertexList,
    if (VertexList-&gt;Length == 0)
       return(1);  /* reject null polygons */
    MaxPoint_Y = MinPoint_Y = VertexPtr[MinIndex = MaxIndex = 0].Y;
-   for (i = 1; i &lt; VertexList-&gt;Length; i&#43;&#43;) {
+   for (i = 1; i &lt; VertexList-&gt;Length; i++) {
       if (VertexPtr[i].Y &lt; MinPoint_Y)
          MinPoint_Y = VertexPtr[MinIndex = i].Y; /* new top */
       else if (VertexPtr[i].Y &gt; MaxPoint_Y)
@@ -118,14 +118,14 @@ int FillMonotoneVerticalPolygon(struct PointListHeader * VertexList,
 
    /* Set the # of scan lines in the polygon, skipping the bottom edge */
    if ((WorkingHLineList.Length = MaxPoint_Y - MinPoint_Y) &lt;= 0)
-      return(1);  /* there&#146;s nothing to draw, so we&#146;re done */
-   WorkingHLineList.YStart = YOffset &#43; MinPoint_Y;
+      return(1);  /* there&rsquo;s nothing to draw, so we&rsquo;re done */
+   WorkingHLineList.YStart = YOffset + MinPoint_Y;
 
    /* Get memory in which to store the line list we generate */
    if ((WorkingHLineList.HLinePtr =
          (struct HLine *) (malloc(sizeof(struct HLine) *
          WorkingHLineList.Length))) == NULL)
-      return(0);  /* couldn&#146;t get memory for the line list */
+      return(0);  /* couldn&rsquo;t get memory for the line list */
 
    /* Scan the first edge and store the boundary points in the list */
    /* Initial pointer for storing scan converted first-edge coords */
@@ -135,9 +135,9 @@ int FillMonotoneVerticalPolygon(struct PointListHeader * VertexList,
    /* Scan convert each line in the first edge from top to bottom */
    do {
       INDEX_BACKWARD(CurrentIndex);
-      ScanEdge(VertexPtr[PreviousIndex].X &#43; XOffset,
+      ScanEdge(VertexPtr[PreviousIndex].X + XOffset,
             VertexPtr[PreviousIndex].Y,
-            VertexPtr[CurrentIndex].X &#43; XOffset,
+            VertexPtr[CurrentIndex].X + XOffset,
             VertexPtr[CurrentIndex].Y, 1, 0, &EdgePointPtr);
       PreviousIndex = CurrentIndex;
    } while (CurrentIndex != MaxIndex);
@@ -148,9 +148,9 @@ int FillMonotoneVerticalPolygon(struct PointListHeader * VertexList,
    /* Scan convert the second edge, top to bottom */
    do {
       INDEX_FORWARD(CurrentIndex);
-      ScanEdge(VertexPtr[PreviousIndex].X &#43; XOffset,
+      ScanEdge(VertexPtr[PreviousIndex].X + XOffset,
             VertexPtr[PreviousIndex].Y,
-            VertexPtr[CurrentIndex].X &#43; XOffset,
+            VertexPtr[CurrentIndex].X + XOffset,
             VertexPtr[CurrentIndex].Y, 0, 0, &EdgePointPtr);
       PreviousIndex = CurrentIndex;
    } while (CurrentIndex != MaxIndex);
@@ -158,7 +158,7 @@ int FillMonotoneVerticalPolygon(struct PointListHeader * VertexList,
    /* Draw the line list representing the scan converted polygon */
    DrawHorizontalLineList(&WorkingHLineList, Color);
 
-   /* Release the line list&#146;s memory and we&#146;re successfully done */
+   /* Release the line list&rsquo;s memory and we&rsquo;re successfully done */
    free(WorkingHLineList.HLinePtr);
    return(1);
 }

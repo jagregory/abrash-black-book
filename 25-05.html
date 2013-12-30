@@ -43,7 +43,7 @@
 ;  setting of memory that already contains data.
 ; By Michael Abrash.
 ;
-stack   segment para stack &#145;STACK#146;
+stack   segment para stack &lsquo;STACK#146;
         db      512 dup(?)
 stack   ends
 ;
@@ -81,11 +81,11 @@ SETGC   macro   INDEX, SETTING
         dec     dx
         endm
 ;
-cseg    segment para public &#145;CODE#146;
+cseg    segment para public &lsquo;CODE#146;
         assume  cs:cseg
 start   proc    near
 ;
-; Select 640&#215;480 graphics mode.
+; Select 640x480 graphics mode.
 ;
         mov     ax,012h
         int     10h
@@ -160,7 +160,7 @@ cseg    ends
 ;  with CPU data to modify setting of memory that already contains data.
 ; By Michael Abrash.
 ;
-stack   segment para stack &#145;STACK#146;
+stack   segment para stack &lsquo;STACK#146;
         db      512 dup(?)
 stack   ends
 ;
@@ -198,11 +198,11 @@ SETGC   macro   INDEX, SETTING
         dec     dx
         endm
 ;
-cseg    segment para public &#145;CODE#146;
+cseg    segment para public &lsquo;CODE#146;
         assume  cs:cseg
 start   proc    near
 ;
-; Select 640&#215;350 graphics mode.
+; Select 640x350 graphics mode.
 ;
         mov     ax,010h
         int     10h

@@ -37,13 +37,13 @@
 </CENTER>
 <P><BR></P>
 <H3><A NAME="Heading5"></A><FONT COLOR="#000077">Sample Wu Antialiasing</FONT></H3>
-<P>The true test of any antialiasing technique is how good it looks, so let&#146;s have a look at Wu antialiasing in action. Listing 42.1 is a C implementation of Wu antialiasing. Listing 42.2 is a sample program that draws a variety of Wu-antialiased lines, followed by non-antialiased lines, for comparison. Listing 42.3 contains <B>DrawPixel()</B> and <B>SetMode()</B> functions for mode 13H, the VGA&#146;s 320&#215;200 256-color mode. Finally, Listing 42.4 is a simple, non-antialiased line-drawing routine. Link these four listings together and run the resulting program to see both Wu-antialiased and non-antialiased lines.</P>
+<P>The true test of any antialiasing technique is how good it looks, so let&rsquo;s have a look at Wu antialiasing in action. Listing 42.1 is a C implementation of Wu antialiasing. Listing 42.2 is a sample program that draws a variety of Wu-antialiased lines, followed by non-antialiased lines, for comparison. Listing 42.3 contains <B>DrawPixel()</B> and <B>SetMode()</B> functions for mode 13H, the VGA&rsquo;s 320x200 256-color mode. Finally, Listing 42.4 is a simple, non-antialiased line-drawing routine. Link these four listings together and run the resulting program to see both Wu-antialiased and non-antialiased lines.</P>
 <P><B>LISTING 42.2 L42-2.C</B></P>
 <!-- CODE //-->
 <PRE>
 /* Sample line-drawing program to demonstrate Wu antialiasing. Also draws
  * non-antialiased lines for comparison.
- * Tested with Borland C&#43;&#43; in C compilation mode and the small model.
+ * Tested with Borland C++ in C compilation mode and the small model.
  */
 #include &lt;dos.h&gt;
 #include &lt;conio.h&gt;
@@ -76,24 +76,24 @@ void main()
    /* Draw Wu-antialiased lines in all directions */
    SetMode();
    SetPalette(WuColors);
-   for (i=5; i&lt;ScreenWidthInPixels; i &#43;= 10) {
-      DrawWuLine(ScreenWidthInPixels/2-ScreenWidthInPixels/10&#43;i/5,
+   for (i=5; i&lt;ScreenWidthInPixels; i += 10) {
+      DrawWuLine(ScreenWidthInPixels/2-ScreenWidthInPixels/10+i/5,
             ScreenHeightInPixels/5, i, ScreenHeightInPixels-1,
             WuColors[WU_BLUE].BaseColor, WuColors[WU_BLUE].NumLevels,
             WuColors[WU_BLUE].IntensityBits);
    }
-   for (i=0; i&lt;ScreenHeightInPixels; i &#43;= 10) {
+   for (i=0; i&lt;ScreenHeightInPixels; i += 10) {
       DrawWuLine(ScreenWidthInPixels/2-ScreenWidthInPixels/10, i/5, 0, i,
             WuColors[WU_BLUE].BaseColor, WuColors[WU_BLUE].NumLevels,
             WuColors[WU_BLUE].IntensityBits);
    }
-   for (i=0; i&lt;ScreenHeightInPixels; i &#43;= 10) {
-      DrawWuLine(ScreenWidthInPixels/2&#43;ScreenWidthInPixels/10, i/5,
+   for (i=0; i&lt;ScreenHeightInPixels; i += 10) {
+      DrawWuLine(ScreenWidthInPixels/2+ScreenWidthInPixels/10, i/5,
             ScreenWidthInPixels-1, i, WuColors[WU_BLUE].BaseColor,
             WuColors[WU_BLUE].NumLevels, WuColors[WU_BLUE].IntensityBits);
    }
-   for (i=0; i&lt;ScreenWidthInPixels; i &#43;= 10) {
-      DrawWuLine(ScreenWidthInPixels/2-ScreenWidthInPixels/10&#43;i/5,
+   for (i=0; i&lt;ScreenWidthInPixels; i += 10) {
+      DrawWuLine(ScreenWidthInPixels/2-ScreenWidthInPixels/10+i/5,
             ScreenHeightInPixels, i, 0, WuColors[WU_WHITE].BaseColor,
             WuColors[WU_WHITE].NumLevels,
             WuColors[WU_WHITE].IntensityBits);
@@ -103,21 +103,21 @@ void main()
    /* Now clear the screen and draw non-antialiased lines */
    SetMode();
    SetPalette(WuColors);
-   for (i=0; i&lt;ScreenWidthInPixels; i &#43;= 10) {
-      DrawLine(ScreenWidthInPixels/2-ScreenWidthInPixels/10&#43;i/5,
+   for (i=0; i&lt;ScreenWidthInPixels; i += 10) {
+      DrawLine(ScreenWidthInPixels/2-ScreenWidthInPixels/10+i/5,
             ScreenHeightInPixels/5, i, ScreenHeightInPixels-1,
             WuColors[WU_BLUE].BaseColor);
    }
-   for (i=0; i&lt;ScreenHeightInPixels; i &#43;= 10) {
+   for (i=0; i&lt;ScreenHeightInPixels; i += 10) {
       DrawLine(ScreenWidthInPixels/2-ScreenWidthInPixels/10, i/5, 0, i,
             WuColors[WU_BLUE].BaseColor);
    }
-   for (i=0; i&lt;ScreenHeightInPixels; i &#43;= 10) {
-      DrawLine(ScreenWidthInPixels/2&#43;ScreenWidthInPixels/10, i/5,
+   for (i=0; i&lt;ScreenHeightInPixels; i += 10) {
+      DrawLine(ScreenWidthInPixels/2+ScreenWidthInPixels/10, i/5,
             ScreenWidthInPixels-1, i, WuColors[WU_BLUE].BaseColor);
    }
-   for (i=0; i&lt;ScreenWidthInPixels; i &#43;= 10) {
-      DrawLine(ScreenWidthInPixels/2-ScreenWidthInPixels/10&#43;i/5,
+   for (i=0; i&lt;ScreenWidthInPixels; i += 10) {
+      DrawLine(ScreenWidthInPixels/2-ScreenWidthInPixels/10+i/5,
             ScreenHeightInPixels, i, 0, WuColors[WU_WHITE].BaseColor);
    }
    getch();                /* wait for a key press */
@@ -147,14 +147,14 @@ void SetPalette(struct WuColor * WColors)
       47, 48, 48, 49, 49, 50, 51, 51, 52, 52, 53, 53, 54, 54, 55, 55,
       56, 56, 57, 57, 58, 58, 59, 59, 60, 60, 61, 61, 62, 62, 63, 63};
 
-   for (i=0; i&lt;NUM_WU_COLORS; i&#43;&#43;) {
-      for (j=0; j&lt;WColors[i].NumLevels; j&#43;&#43;) {
+   for (i=0; i&lt;NUM_WU_COLORS; i++) {
+      for (j=0; j&lt;WColors[i].NumLevels; j++) {
          PaletteBlock[j][0] = GammaTable[((double)WColors[i].MaxRed * (1.0 -
-               (double)j / (double)(WColors[i].NumLevels - 1))) &#43; 0.5];
+               (double)j / (double)(WColors[i].NumLevels - 1))) + 0.5];
          PaletteBlock[j][1] = GammaTable[((double)WColors[i].MaxGreen * (1.0 -
-               (double)j / (double)(WColors[i].NumLevels - 1))) &#43; 0.5];
+               (double)j / (double)(WColors[i].NumLevels - 1))) + 0.5];
          PaletteBlock[j][2] = GammaTable[((double)WColors[i].MaxBlue * (1.0 -
-               (double)j / (double)(WColors[i].NumLevels - 1))) &#43; 0.5];
+               (double)j / (double)(WColors[i].NumLevels - 1))) + 0.5];
       }
       /* Now set up the palette to do Wu antialiasing for this color */
       regset.x.ax = 0x1012;   /* set block of DAC registers function */
@@ -172,7 +172,7 @@ void SetPalette(struct WuColor * WColors)
 <!-- CODE //-->
 <PRE>
 /* VGA mode 13h pixel-drawing and mode set functions.
- * Tested with Borland C&#43;&#43; in C compilation mode and the small model.
+ * Tested with Borland C++ in C compilation mode and the small model.
  */
 #include &lt;dos.h&gt;
 
@@ -187,7 +187,7 @@ void DrawPixel(int X, int Y, int Color)
    unsigned char far *ScreenPtr;
 
    FP_SEG(ScreenPtr) = SCREEN_SEGMENT;
-   FP_OFF(ScreenPtr) = (unsigned int) Y * ScreenWidthInPixels &#43; X;
+   FP_OFF(ScreenPtr) = (unsigned int) Y * ScreenWidthInPixels + X;
    *ScreenPtr = Color;
 }
 

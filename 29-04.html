@@ -37,21 +37,21 @@
 </CENTER>
 <P><BR></P>
 </P>
-<P>How does one go about setting the palette registers? Well, it&#146;s certainly possible to set the palette registers directly by addressing them at registers 0 through 0FH of the Attribute Controller. However, setting the palette registers is a bit tricky&#151;bit 5 of the Attribute Controller Index register must be 0 while the palette registers are written to, and glitches can occur if the updating doesn&#146;t take place during the blanking interval&#151;and besides, it turns out that there&#146;s no need at all to go straight to the hardware on this one. Conveniently, the EGA BIOS provides us with video function 10H, which supports setting either any one palette register or all 16 palette registers (and the overscan register as well) with a single video interrupt.
+<P>How does one go about setting the palette registers? Well, it&rsquo;s certainly possible to set the palette registers directly by addressing them at registers 0 through 0FH of the Attribute Controller. However, setting the palette registers is a bit tricky&mdash;bit 5 of the Attribute Controller Index register must be 0 while the palette registers are written to, and glitches can occur if the updating doesn&rsquo;t take place during the blanking interval&mdash;and besides, it turns out that there&rsquo;s no need at all to go straight to the hardware on this one. Conveniently, the EGA BIOS provides us with video function 10H, which supports setting either any one palette register or all 16 palette registers (and the overscan register as well) with a single video interrupt.
 </P>
-<P>Video function 10H is invoked by performing an <B>INT</B> 10H with AH set to 10H. If AL is 0 (subfunction 0), then BL contains the number of the palette register to set, and BH contains the value to set that register to. If AL is 1 (subfunction 1), then BH contains the value to set the overscan (border) color to. Finally, if AL is 2 (subfunction 2), then ES:DX points to a 17-byte array containing the values to set palette registers 0-15 and the overscan register to. (For completeness, although it&#146;s unrelated to the palette registers, there is one more subfunction of video function 10H. If AL = 3 (subfunction 3), bit 0 of BL is set to 1 to cause bit 7 of text attributes to select blinking, or set to 0 to cause bit 7 of text attributes to select highreverse video.)</P>
+<P>Video function 10H is invoked by performing an <B>INT</B> 10H with AH set to 10H. If AL is 0 (subfunction 0), then BL contains the number of the palette register to set, and BH contains the value to set that register to. If AL is 1 (subfunction 1), then BH contains the value to set the overscan (border) color to. Finally, if AL is 2 (subfunction 2), then ES:DX points to a 17-byte array containing the values to set palette registers 0-15 and the overscan register to. (For completeness, although it&rsquo;s unrelated to the palette registers, there is one more subfunction of video function 10H. If AL = 3 (subfunction 3), bit 0 of BL is set to 1 to cause bit 7 of text attributes to select blinking, or set to 0 to cause bit 7 of text attributes to select highreverse video.)</P>
 <P><A NAME="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/29-03.jpg',407,152 )"> --><IMG SRC="images/29-03.jpg"><BR><!-- </A>
 <BR><A HREF="javascript:displayWindow('images/29-03.jpg',407,152)"> --><FONT COLOR="#000077"><B>Figure 29.3</B></FONT></A>&nbsp;&nbsp;<I>Bit organization within a palette register.</I>
 </P>
-<P>Listing 29.3 uses video function 10H, subfunction 2 to step through all 64 possible colors. This is accomplished by putting up 16 color bars, one for each of the 16 possible 4-bit pixel values, then changing the mapping provided by the palette registers to select a different group of 16 colors from the set of 64 each time a key is pressed. Initially, colors 0-15 are displayed, then 1-16, then 2-17, and so on up to color 3FH wrapping around to colors 0-14, and finally back to colors 0-15. (By the way, at mode set time the 16 palette registers are not set to colors 0-15, but rather to 0H, 1H, 2H, H, 4H, 5H, 14H, 7H, 38H, 39H, 3AH, 3BH, 3CH, 3DH, 3EH, and 3FH, respectively. Bits 6, 5, and 4&#151;secondary red, green, and blue&#151;are all set to 1 in palette registers 8-15 in order to produce high-intensity colors. Palette register 6 is set to 14H to produce brown, rather than the yellow that the expected value of 6H would produce.)
+<P>Listing 29.3 uses video function 10H, subfunction 2 to step through all 64 possible colors. This is accomplished by putting up 16 color bars, one for each of the 16 possible 4-bit pixel values, then changing the mapping provided by the palette registers to select a different group of 16 colors from the set of 64 each time a key is pressed. Initially, colors 0-15 are displayed, then 1-16, then 2-17, and so on up to color 3FH wrapping around to colors 0-14, and finally back to colors 0-15. (By the way, at mode set time the 16 palette registers are not set to colors 0-15, but rather to 0H, 1H, 2H, H, 4H, 5H, 14H, 7H, 38H, 39H, 3AH, 3BH, 3CH, 3DH, 3EH, and 3FH, respectively. Bits 6, 5, and 4&mdash;secondary red, green, and blue&mdash;are all set to 1 in palette registers 8-15 in order to produce high-intensity colors. Palette register 6 is set to 14H to produce brown, rather than the yellow that the expected value of 6H would produce.)
 </P>
-<P>When you run Listing 29.3, you&#146;ll see that the whole screen changes color as each new color set is selected. This occurs because most of the pixels on the screen have a value of 0, selecting the background color stored in palette register 0, and we&#146;re reprogramming palette register 0 right along with the other 15 palette registers.</P>
-<P>It&#146;s important to understand that in Listing 29.3 the contents of display memory are never changed after initialization. The only change is the mapping from the 4-bit pixel data coming out of display memory to the 6-bit data going to the monitor. For this reason, it&#146;s technically inaccurate to speak of bits in display memory as representing colors; more accurately, they represent attributes in the range 0-15, which are mapped to colors 0-3FH by the palette registers.</P>
+<P>When you run Listing 29.3, you&rsquo;ll see that the whole screen changes color as each new color set is selected. This occurs because most of the pixels on the screen have a value of 0, selecting the background color stored in palette register 0, and we&rsquo;re reprogramming palette register 0 right along with the other 15 palette registers.</P>
+<P>It&rsquo;s important to understand that in Listing 29.3 the contents of display memory are never changed after initialization. The only change is the mapping from the 4-bit pixel data coming out of display memory to the 6-bit data going to the monitor. For this reason, it&rsquo;s technically inaccurate to speak of bits in display memory as representing colors; more accurately, they represent attributes in the range 0-15, which are mapped to colors 0-3FH by the palette registers.</P>
 <P><B>LISTING 29.3 L29-3.ASM</B></P>
 <!-- CODE //-->
 <PRE>
 ; Program to illustrate the color mapping capabilities of the
-; EGA&#146;s palette registers.
+; EGA&rsquo;s palette registers.
 ;
 VGA_SEGMENT            equ  0a000h
 SC_INDEX               equ  3c4h         ;Sequence Controller Index register
@@ -60,16 +60,16 @@ BAR_HEIGHT             equ  14           ;height of each bar
 TOP_BAR                equ  BAR_HEIGHT*6 ;start the bars down a bit to
                                          ; leave room for text
 ;
-stack    segment para stack &#145;STACK&#146;
+stack    segment para stack &lsquo;STACK&rsquo;
               db                  512 dup (?)
 stack    ends
 ;
-Data     segment    word &#145;DATA&#146;
-KeyMsg   db         &#145;Press any key to see the next color set. &#146;
-         db         &#145;There are 64 color sets in all.&#146;
+Data     segment    word &lsquo;DATA&rsquo;
+KeyMsg   db         &lsquo;Press any key to see the next color set. &rsquo;
+         db         &lsquo;There are 64 color sets in all.&rsquo;
          db         0dh, 0ah, 0ah, 0ah, 0ah
-         db         13 dup (&#145; &#146;), &#145;Attribute&#146;
-         db         38 dup (&#145; &#146;), &#145;Color$&#146;
+         db         13 dup (&lsquo; &rsquo;), &lsquo;Attribute&rsquo;
+         db         38 dup (&lsquo; &rsquo;), &lsquo;Color$&rsquo;
 ;
 ; Used to label the attributes of the color bars.
 ;
@@ -77,27 +77,27 @@ AttributeNumbers    label byte
 x=         0
            rept     16
 if x lt 10
-           db       &#145;0&#146;, x&#43;&#145;0&#146;, &#145;h&#146;, 0ah, 8, 8, 8
+           db       &lsquo;0&rsquo;, x+&lsquo;0&rsquo;, &lsquo;h&rsquo;, 0ah, 8, 8, 8
 else
-           db       &#145;0&#146;, x&#43;&#145;A&#146;-10, &#145;h&#146;, 0ah, 8, 8, 8
+           db       &lsquo;0&rsquo;, x+&lsquo;A&rsquo;-10, &lsquo;h&rsquo;, 0ah, 8, 8, 8
 endif
-x=         x&#43;1
+x=         x+1
            endm
-           db       &#145;$&#146;
+           db       &lsquo;$&rsquo;
 ;
 ; Used to label the colors of the color bars. (Color values are
 ; filled in on the fly.)
 ;
 ColorNumberslabelbyte
            rept    16
-           db      &#145;000h&#146;, 0ah, 8, 8, 8, 8
+           db      &lsquo;000h&rsquo;, 0ah, 8, 8, 8, 8
            endm
 COLOR_ENTRY_LENGTHequ($-ColorNumbers)/16
-           db      &#145;$&#146;
+           db      &lsquo;$&rsquo;
 ;
 CurrentColordb?
 ;
-; Space for the array of 16 colors we&#146;ll pass to the BIOS, plus
+; Space for the array of 16 colors we&rsquo;ll pass to the BIOS, plus
 ; an overscan setting of black.
 ;
 ColorTable    db         16 dup (?), 0
@@ -123,9 +123,9 @@ Start         procnear
               int        21h
 ;
 ; Put up the color bars, one in each of the 16 possible pixel values
-; (which we&#146;ll call attributes).
+; (which we&rsquo;ll call attributes).
 ;
-              mov        cx,16            ;we&#146;ll put up 16 color bars
+              mov        cx,16            ;we&rsquo;ll put up 16 color bars
               sub        al,al            ;start with attribute 0
 BarLoop:
               push       ax
@@ -155,7 +155,7 @@ BarLoop:
 ColorLoop:
 ;
 ; Set the palette registers to the current color set, consisting
-; of the current color mapped to attribute 0, current color &#43; 1
+; of the current color mapped to attribute 0, current color + 1
 ; mapped to attribute 1, and so on.
 ;
               mov        al,[CurrentColor]
@@ -249,10 +249,10 @@ BarUp         endp
 BinToHexDigit proc        near
               cmp         al,9
               ja                IsHex
-              add         al,&#145;0&#146;
+              add         al,&lsquo;0&rsquo;
               ret
 IsHex:
-              add         al,&#145;A&#146;-10
+              add         al,&lsquo;A&rsquo;-10
               ret
 BinToHexDigit endp
 ;
@@ -266,12 +266,12 @@ ColorNumbersUp proc       near
                mov        dh,TOP_BAR/14    ;counting in character rows, match to
                                            ; top of first bar, counting in
                                            ; scan lines
-               mov        dl,20&#43;40&#43;1       ;just to right of bars
+               mov        dl,20+40+1       ;just to right of bars
                int        10h
                mov        al,[CurrentColor] ;start with the current color
-               mov        bx,offset ColorNumbers&#43;1
+               mov        bx,offset ColorNumbers+1
                                             ;build color number text string on the fly
-               mov        cx,16             ;we&#146;ve got 16 colors to do
+               mov        cx,16             ;we&rsquo;ve got 16 colors to do
 ColorNumberLoop:
                pus        hax;save the color #
                and        al,3fh;limit to 6-bit color values
@@ -286,7 +286,7 @@ ColorNumberLoop:
                and        al,0fh            ;isolate the low color # nibble
                call       BinToHexDigit     ;convert the low nibble of the
                                             ; color # to ASCII
-               mov        [bx&#43;1],al         ; and put it into the text
+               mov        [bx+1],al         ; and put it into the text
                add        bx,COLOR_ENTRY_LENGTH     ;point to the next entry
                pop        ax                ;get back the color #
                inc        ax                ;next color #

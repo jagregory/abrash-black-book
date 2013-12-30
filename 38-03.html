@@ -45,7 +45,7 @@
 
  #include &lt;conio.h&gt;
  #include &lt;dos.h&gt;
- #include &#147;polygon.h&#148;
+ #include &ldquo;polygon.h&rdquo;
 
  /* Draws the polygon described by the point list PointList in color
     Color with all vertices offset by (X,Y) */
@@ -74,11 +74,11 @@
     static struct Point Triangle4[] = {{20,20},{20,0},{0,10}};
     union REGS regset;
 
-    /* Set the display to VGA mode 13h, 320&#215;200 256-color mode */
-    regset.x.ax = 0&#215;0013;   /* AH = 0 selects mode set function,
-                               AL = 0&#215;13 selects mode 0&#215;13
-                               when set as parameters for INT 0&#215;10 */
-    int86(0&#215;10, &ampregset, &ampregset);
+    /* Set the display to VGA mode 13h, 320x200 256-color mode */
+    regset.x.ax = 0x0013;   /* AH = 0 selects mode set function,
+                               AL = 0x13 selects mode 0x13
+                               when set as parameters for INT 0x10 */
+    int86(0x10, &ampregset, &ampregset);
 
     /* Clear the screen to cyan */
     DRAW_POLYGON(ScreenRectangle, 3, 0, 0);
@@ -89,32 +89,32 @@
     getch();    /* wait for a keypress */
 
     /* Draw adjacent triangles across the top half of the screen */
-    for (j=0; j&lt;=80; j&#43;=20) {
-       for (i=0; i&lt;290; i &#43;= 30) {
+    for (j=0; j&lt;=80; j+=20) {
+       for (i=0; i&lt;290; i += 30) {
           DRAW_POLYGON(Triangle1, 2, i, j);
-          DRAW_POLYGON(Triangle2, 4, i&#43;15, j);
+          DRAW_POLYGON(Triangle2, 4, i+15, j);
        }
     }
 
     /* Draw adjacent triangles across the bottom half of the screen */
-    for (j=100; j&lt;=170; j&#43;=20) {
+    for (j=100; j&lt;=170; j+=20) {
        /* Do a row of pointing-right triangles */
-       for (i=0; i&lt;290; i &#43;= 20) {
+       for (i=0; i&lt;290; i += 20) {
           DRAW_POLYGON(Triangle3, 40, i, j);
        }
        /* Do a row of pointing-left triangles halfway between one row
           of pointing-right triangles and the next, to fit between */
-       for (i=0; i&lt;290; i &#43;= 20) {
-          DRAW_POLYGON(Triangle4, 1, i, j&#43;10);
+       for (i=0; i&lt;290; i += 20) {
+          DRAW_POLYGON(Triangle4, 1, i, j+10);
        }
     }
     getch();    /* wait for a keypress */
 
     /* Finally, draw a series of concentric hexagons of approximately
        the same proportions in the center of the screen */
-    for (i=0; i&lt;16; i&#43;&#43;) {
+    for (i=0; i&lt;16; i++) {
        DRAW_POLYGON(Hexagon, i, 160, 100);
-       for (j=0; j&lt;sizeof(Hexagon)/sizeof(struct Point); j&#43;&#43;) {
+       for (j=0; j&lt;sizeof(Hexagon)/sizeof(struct Point); j++) {
           /* Advance each vertex toward the center */
           if (Hexagon[j].X != 0) {
              Hexagon[j].X -= Hexagon[j].X &gt;= 0 ? 3 : -3;
@@ -127,8 +127,8 @@
     getch();    /* wait for a keypress */
 
     /* Return to text mode and exit */
-    regset.x.ax = 0&#215;0003;   /* AL = 3 selects 80&#215;25 text mode */
-    int86(0&#215;10, &ampregset, &ampregset);
+    regset.x.ax = 0x0003;   /* AL = 3 selects 80x25 text mode */
+    int86(0x10, &ampregset, &ampregset);
  }
 </PRE>
 <!-- END CODE //-->

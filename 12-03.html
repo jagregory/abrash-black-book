@@ -36,13 +36,13 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<P>There is, of course, no guarantee that I&#146;m entirely correct about the optimizations discussed in this chapter. Without knowing the internals of the 486, all I can do is time code and make inferences from the results; I invite you to deduce your own rules and cross-check them against mine. Also, most likely there are other optimizations that I&#146;m unaware of. If you have further information on these or any other undocumented optimizations, please write and let me know. And, of course, if anyone from Intel is reading this and wants to give us the gospel truth, please do!
+<P>There is, of course, no guarantee that I&rsquo;m entirely correct about the optimizations discussed in this chapter. Without knowing the internals of the 486, all I can do is time code and make inferences from the results; I invite you to deduce your own rules and cross-check them against mine. Also, most likely there are other optimizations that I&rsquo;m unaware of. If you have further information on these or any other undocumented optimizations, please write and let me know. And, of course, if anyone from Intel is reading this and wants to give us the gospel truth, please do!
 </P>
 <H4 ALIGN="LEFT"><A NAME="Heading8"></A><FONT COLOR="#000077">Stack Addressing and Address Pipelining</FONT></H4>
 <P>Rule #2A: Rule #2 sometimes, but not always, applies to the stack pointer when it is implicitly used to point to memory.
 </P>
-<P>Intel states that the stack pointer is an implied destination register for <B>CALL</B>, <B>ENTER</B>, <B>LEAVE</B>, <B>RET</B>, <B>PUSH</B>, and <B>POP</B> (which alter (E)SP), and that it is the implied base addressing register for <B>PUSH</B>, <B>POP</B>, and <B>RET</B> (which use (E)SP to address memory). Intel then implies that the aforementioned addressing pipeline penalty is incurred whenever the stack pointer is used as a destination by one of the first set of instructions and is then immediately used to address memory by one of the second set. This raises the specter of unpleasant programming contortions such as intermixing <B>PUSH</B>es and <B>POP</B>s with other instructions to avoid interrupting the addressing pipeline. Fortunately, matters are actually not so grim as Intel&#146;s documentation would indicate; my tests indicate that the addressing pipeline penalty pops up only spottily when the stack pointer is involved.</P>
-<P>For example, you&#146;d certainly expect a sequence such as</P>
+<P>Intel states that the stack pointer is an implied destination register for <B>CALL</B>, <B>ENTER</B>, <B>LEAVE</B>, <B>RET</B>, <B>PUSH</B>, and <B>POP</B> (which alter (E)SP), and that it is the implied base addressing register for <B>PUSH</B>, <B>POP</B>, and <B>RET</B> (which use (E)SP to address memory). Intel then implies that the aforementioned addressing pipeline penalty is incurred whenever the stack pointer is used as a destination by one of the first set of instructions and is then immediately used to address memory by one of the second set. This raises the specter of unpleasant programming contortions such as intermixing <B>PUSH</B>es and <B>POP</B>s with other instructions to avoid interrupting the addressing pipeline. Fortunately, matters are actually not so grim as Intel&rsquo;s documentation would indicate; my tests indicate that the addressing pipeline penalty pops up only spottily when the stack pointer is involved.</P>
+<P>For example, you&rsquo;d certainly expect a sequence such as</P>
 <!-- CODE SNIP //-->
 <PRE>
 :
@@ -64,7 +64,7 @@ pop    ax
 <!-- END CODE SNIP //-->
 <P>runs in one cycle per instruction, just as it should.
 </P>
-<P>On the other hand, performing arithmetic directly on SP as an <I>explicit</I> destination&#151;for example, to deallocate local variables&#151;and then using <B>PUSH</B>, <B>POP</B>, or <B>RET</B>, definitely can interrupt the addressing pipeline. For example</P>
+<P>On the other hand, performing arithmetic directly on SP as an <I>explicit</I> destination&mdash;for example, to deallocate local variables&mdash;and then using <B>PUSH</B>, <B>POP</B>, or <B>RET</B>, definitely can interrupt the addressing pipeline. For example</P>
 <!-- CODE SNIP //-->
 <PRE>
 add    sp,10h
@@ -81,9 +81,9 @@ pop    ax
 <!-- END CODE SNIP //-->
 <P>loses two cycles for the same reason.
 </P>
-<P>I certainly haven&#146;t tried all possible combinations, but the results so far indicate that the stack pointer incurs the addressing pipeline penalty only if (E)SP is the <I>explicit</I> destination of one instruction and is then used by one of the two following instructions to address memory. So, for instance, SP isn&#146;t the explicit operand of <B>POP AX&#151;</B>AX is&#151;and no cycles are lost if <B>POP AX</B> is followed by <B>POP</B> or <B>RET</B>. Happily, then, we need not worry about the sequence in which we use <B>PUSH</B> and <B>POP</B>. However, adding to, moving to, or subtracting from the stack pointer should ideally be done at least two cycles before <B>PUSH</B>, <B>POP</B>, <B>RET</B>, or any other instruction that uses the stack pointer to address memory.</P>
+<P>I certainly haven&rsquo;t tried all possible combinations, but the results so far indicate that the stack pointer incurs the addressing pipeline penalty only if (E)SP is the <I>explicit</I> destination of one instruction and is then used by one of the two following instructions to address memory. So, for instance, SP isn&rsquo;t the explicit operand of <B>POP AX&mdash;</B>AX is&mdash;and no cycles are lost if <B>POP AX</B> is followed by <B>POP</B> or <B>RET</B>. Happily, then, we need not worry about the sequence in which we use <B>PUSH</B> and <B>POP</B>. However, adding to, moving to, or subtracting from the stack pointer should ideally be done at least two cycles before <B>PUSH</B>, <B>POP</B>, <B>RET</B>, or any other instruction that uses the stack pointer to address memory.</P>
 <H4 ALIGN="LEFT"><A NAME="Heading9"></A><FONT COLOR="#000077">Problems with Byte Registers</FONT></H4>
-<P>There are two ways to lose cycles by using byte registers, and neither of them is documented by Intel, so far as I know. Let&#146;s start with the lesser and simpler of the two.
+<P>There are two ways to lose cycles by using byte registers, and neither of them is documented by Intel, so far as I know. Let&rsquo;s start with the lesser and simpler of the two.
 </P>
 <P>Rule #3: Do not load a byte portion of a register during one instruction, then use that register in its entirety as a source register during the next instruction.</P>
 <P>So, for example, it would be a bad idea to do this</P>
@@ -96,7 +96,7 @@ mov    al,[MemVar2]
 add    cx,ax
 </PRE>
 <!-- END CODE SNIP //-->
-<P>because AL is loaded by one instruction, then AX is used as the source register for the next instruction. A cycle can be saved simply by rearranging the instructions so that the byte register load isn&#146;t immediately followed by the word register usage, like so:
+<P>because AL is loaded by one instruction, then AX is used as the source register for the next instruction. A cycle can be saved simply by rearranging the instructions so that the byte register load isn&rsquo;t immediately followed by the word register usage, like so:
 </P>
 <!-- CODE SNIP //-->
 <PRE>
@@ -107,8 +107,8 @@ mov    cx,[MemVar1]
 add    cx,ax
 </PRE>
 <!-- END CODE SNIP //-->
-<P>Strange as it may seem, this rule is neither arbitrary nor nonsensical. Basically, when a byte destination register is part of a word source register for the next instruction, the 486 is unable to directly use the result from the first instruction as the source for the second instruction, because only part of the register required by the second instruction is contained in the first instruction&#146;s result. The full, updated register value must be read from the register file, and that value can&#146;t be read out until the result from the first instruction has been written <I>into</I> the register file, a process that takes an extra cycle. I&#146;m not going to explain this in great detail because it&#146;s not important that you understand why this rule exists (only that it <I>does</I> in fact exist), but it is an interesting window on the way the 486 works.</P>
-<P>In case you&#146;re curious, there&#146;s no such penalty for the typical <B>XLAT</B> sequence like</P>
+<P>Strange as it may seem, this rule is neither arbitrary nor nonsensical. Basically, when a byte destination register is part of a word source register for the next instruction, the 486 is unable to directly use the result from the first instruction as the source for the second instruction, because only part of the register required by the second instruction is contained in the first instruction&rsquo;s result. The full, updated register value must be read from the register file, and that value can&rsquo;t be read out until the result from the first instruction has been written <I>into</I> the register file, a process that takes an extra cycle. I&rsquo;m not going to explain this in great detail because it&rsquo;s not important that you understand why this rule exists (only that it <I>does</I> in fact exist), but it is an interesting window on the way the 486 works.</P>
+<P>In case you&rsquo;re curious, there&rsquo;s no such penalty for the typical <B>XLAT</B> sequence like</P>
 <!-- CODE SNIP //-->
 <PRE>
 mov    bx,offset MemTable
@@ -117,10 +117,10 @@ mov    al,[si]
 xlat
 </PRE>
 <!-- END CODE SNIP //-->
-<P>even though AL must be converted to a word by <B>XLAT</B> before it can be added to BX and used to address memory. In fact, none of the penalties mentioned in this chapter apply to <B>XLAT</B>, apparently because <B>XLAT</B> is so slow&#151;4 cycles&#151;that it gives the 486 time to perform addressing calculations during the course of the instruction.</P>
-<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>While it&#146;s nice that <B>XLAT</B> doesn&#146;t suffer from the various 486 addressing penalties, the reason for that is basically that <B>XLAT</B> is slow, so there&#146;s still no compelling reason to use <B>XLAT</B> on the 486.</I></SMALL>
+<P>even though AL must be converted to a word by <B>XLAT</B> before it can be added to BX and used to address memory. In fact, none of the penalties mentioned in this chapter apply to <B>XLAT</B>, apparently because <B>XLAT</B> is so slow&mdash;4 cycles&mdash;that it gives the 486 time to perform addressing calculations during the course of the instruction.</P>
+<TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>While it&rsquo;s nice that <B>XLAT</B> doesn&rsquo;t suffer from the various 486 addressing penalties, the reason for that is basically that <B>XLAT</B> is slow, so there&rsquo;s still no compelling reason to use <B>XLAT</B> on the 486.</I></SMALL>
 </TABLE>
-<P>In general, penalties for interrupting the 486&#146;s pipeline apply primarily to the fast core instructions of the 486, most notably register-only instructions and <B>MOV</B>, although arithmetic and logical operations that access memory are also often affected. I don&#146;t know all the performance dependencies, and I don&#146;t plan to; figuring all of them out would be a big, boring job of little value. Basically, on the 486 you should concentrate on using those fast core instructions when performance matters, and all the rules I&#146;ll discuss do indeed apply to those instructions.</P><P><BR></P>
+<P>In general, penalties for interrupting the 486&rsquo;s pipeline apply primarily to the fast core instructions of the 486, most notably register-only instructions and <B>MOV</B>, although arithmetic and logical operations that access memory are also often affected. I don&rsquo;t know all the performance dependencies, and I don&rsquo;t plan to; figuring all of them out would be a big, boring job of little value. Basically, on the 486 you should concentrate on using those fast core instructions when performance matters, and all the rules I&rsquo;ll discuss do indeed apply to those instructions.</P><P><BR></P>
 <CENTER>
 <TABLE BORDER>
 <TR>

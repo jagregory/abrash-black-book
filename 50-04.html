@@ -36,15 +36,15 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<P>The other 2-D element we need is some way to erase the polygon at its old location before it&#146;s moved and redrawn. We&#146;ll do that by remembering the bounding rectangle of the polygon each time it&#146;s drawn, then erasing by clearing that area with a rectangle fill.
+<P>The other 2-D element we need is some way to erase the polygon at its old location before it&rsquo;s moved and redrawn. We&rsquo;ll do that by remembering the bounding rectangle of the polygon each time it&rsquo;s drawn, then erasing by clearing that area with a rectangle fill.
 </P>
-<P>With the 2-D side of the picture well under control, we&#146;re ready to concentrate on the good stuff. Listings 50.2 through 50.5 are the sample 3-D animation program. Listing 50.2 provides matrix multiplication functions in a straightforward fashion. Listing 50.3 transforms, projects, and draws polygons. Listing 50.4 is the general header file for the program, and Listing 50.5 is the main animation program.</P>
+<P>With the 2-D side of the picture well under control, we&rsquo;re ready to concentrate on the good stuff. Listings 50.2 through 50.5 are the sample 3-D animation program. Listing 50.2 provides matrix multiplication functions in a straightforward fashion. Listing 50.3 transforms, projects, and draws polygons. Listing 50.4 is the general header file for the program, and Listing 50.5 is the main animation program.</P>
 <P>Other modules required are: Listings 47.1 and 47.6 from Chapter 47 (Mode X mode set, rectangle fill); Listing 49.6 from Chapter 49; Listing 39.4 from Chapter 39 (polygon edge scan); and the <B>FillConvexPolygon()</B> function from Listing 38.1 in Chapter 38. All necessary code modules, along with a project file, are present in the subdirectory for this chapter on the listings disk, whether they were presented in this chapter or some earlier chapter. This will be the case for the next several chapters as well, where listings from previous chapters are referenced. This scheme may crowd the listings diskette a little bit, but it will certainly reduce confusion!</P>
 <P><B>LISTING 50.2  L50-2.C</B></P>
 <!-- CODE //-->
 <PRE>
 /* Matrix arithmetic functions.
-   Tested with Borland C&#43;&#43; in the small model. */
+   Tested with Borland C++ in the small model. */
 
 /* Matrix multiplies Xform by SourceVec, and stores the result in
    DestVec. Multiplies a 4x4 matrix times a 4x1 matrix; the result
@@ -59,10 +59,10 @@ void XformVec(double Xform[4][4], double * SourceVec,
 {
    int i,j;
 
-   for (i=0; i&lt4; i&#43;&#43;) {
+   for (i=0; i&lt4; i++) {
       DestVec[i] = 0;
-      for (j=0; j&lt4; j&#43;&#43;)
-         DestVec[i] &#43;= Xform[i][j] * SourceVec[j];
+      for (j=0; j&lt4; j++)
+         DestVec[i] += Xform[i][j] * SourceVec[j];
    }
 }
 
@@ -79,11 +79,11 @@ void ConcatXforms(double SourceXform1[4][4], double SourceXform2[4][4],
 {
    int i,j,k;
 
-   for (i=0; i&lt4; i&#43;&#43;) {
-      for (j=0; j&lt4; j&#43;&#43;) {
+   for (i=0; i&lt4; i++) {
+      for (j=0; j&lt4; j++) {
          DestXform[i][j] = 0;
-         for (k=0; k&lt4; k&#43;&#43;)
-            DestXform[i][j] &#43;= SourceXform1[i][k] * SourceXform2[k][j];
+         for (k=0; k&lt4; k++)
+            DestXform[i][j] += SourceXform1[i][k] * SourceXform2[k][j];
       }
    }
 }
@@ -97,9 +97,9 @@ void ConcatXforms(double SourceXform1[4][4], double SourceXform2[4][4],
    represents a transformation from object space through world space
    to view space), then projects the transformed polygon onto the
    screen and draws it in color ???Color. Also updates the extent of the
-   rectangle (EraseRect) that&#146;s used to erase the screen later.
-   Tested with Borland C&#43;&#43; in the small model. */
-#include &#147;polygon.h&#148;
+   rectangle (EraseRect) that&rsquo;s used to erase the screen later.
+   Tested with Borland C++ in the small model. */
+#include &ldquo;polygon.h&rdquo;
 
 void XformAndProjectPoly(double Xform[4][4], struct Point3 * Poly,
    int PolyLength, int Color)
@@ -110,7 +110,7 @@ void XformAndProjectPoly(double Xform[4][4], struct Point3 * Poly,
    struct PointListHeader Polygon;
 
    /* Transform to view space, then project to the screen */
-   for (i=0; i&ltPolyLength; i&#43;&#43;) {
+   for (i=0; i&ltPolyLength; i++) {
       /* Transform to view space */
       XformVec(Xform, (double *)&ampPoly[i], (double *)&ampXformedPoly[i]);
       /* Project the X &amp Y coordinates to the screen, rounding to the
@@ -119,9 +119,9 @@ void XformAndProjectPoly(double Xform[4][4], struct Point3 * Poly,
          space, where increasing Y is down. Add in half the screen
          width and height to center on the screen */
       ProjectedPoly[i].X = ((int) (XformedPoly[i].X/XformedPoly[i].Z *
-            PROJECTION_RATIO*(SCREEN_WIDTH/2.0)&#43;0.5))&#43;SCREEN_WIDTH/2;
+            PROJECTION_RATIO*(SCREEN_WIDTH/2.0)+0.5))+SCREEN_WIDTH/2;
       ProjectedPoly[i].Y = ((int) (XformedPoly[i].Y/XformedPoly[i].Z *
-            -1.0 * PROJECTION_RATIO * (SCREEN_WIDTH / 2.0) &#43; 0.5)) &#43;
+            -1.0 * PROJECTION_RATIO * (SCREEN_WIDTH / 2.0) + 0.5)) +
             SCREEN_HEIGHT/2;
       /* Appropriately adjust the extent of the rectangle used to
          erase this page later */

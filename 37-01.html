@@ -39,21 +39,21 @@
 <H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 37<BR>Dead Cats and Lightning Lines
 </FONT></H2>
 <H3><A NAME="Heading2"></A><FONT COLOR="#000077">Optimizing Run-Length Slice Line Drawing in a Major Way</FONT></H3>
-<P>As I write this, the wife, the kid, and I are in the throes of yet another lightning-quick transcontinental move, this time to Redmond, Washington, to work for You Know Who. Moving is never fun, but what makes it worse for us is the pets. Getting them into kennels and to the airport is hard; there&#146;s always the possibility that they might not be allowed to fly because of the weather; and, worst of all, they might not make it. Animals don&#146;t usually end up injured or dead, but it does happen.
+<P>As I write this, the wife, the kid, and I are in the throes of yet another lightning-quick transcontinental move, this time to Redmond, Washington, to work for You Know Who. Moving is never fun, but what makes it worse for us is the pets. Getting them into kennels and to the airport is hard; there&rsquo;s always the possibility that they might not be allowed to fly because of the weather; and, worst of all, they might not make it. Animals don&rsquo;t usually end up injured or dead, but it does happen.
 </P>
-<P>In a (not notably successful) effort to cheer me up about the prospect of shipping my animals, a friend told me the following story, which he swears actually happened to a friend of his. I don&#146;t know&#151;to me, it has the ring of an urban legend, which is to say it makes a good story, but you can never track down the person it really happened to; it&#146;s always a friend of a friend. But maybe it is true, and anyway, it&#146;s a good story.</P>
-<P>This friend of a friend (henceforth referred to as FOF), worked in an air-freight terminal. Consequently, he handled a lot of animals, which was fine by him, because he liked animals; in fact, he had quite a few cats at home. You can imagine his dismay when, one day, he took a kennel off the plane to find that the cat it carried was quite thoroughly dead. (No, it wasn&#146;t resting, nor pining for the fjords; this cat was bloody <I>deceased</I>.)</P>
-<P>FOF knew how upset the owner would be, and came up with a plan to make everything better. At home, he had a cat of the same size, shape, and markings. He would substitute that cat, and since all cats treat all humans with equal disdain, the owner would never know the difference, and would never suffer the trauma of the loss of her cat. So FOF drove home, got his cat, put it in the kennel, and waited for the owner to show up&#151;at which point, she took one look at the kennel and said, &#147;This isn&#146;t my cat. My cat is dead.&#148;</P>
+<P>In a (not notably successful) effort to cheer me up about the prospect of shipping my animals, a friend told me the following story, which he swears actually happened to a friend of his. I don&rsquo;t know&mdash;to me, it has the ring of an urban legend, which is to say it makes a good story, but you can never track down the person it really happened to; it&rsquo;s always a friend of a friend. But maybe it is true, and anyway, it&rsquo;s a good story.</P>
+<P>This friend of a friend (henceforth referred to as FOF), worked in an air-freight terminal. Consequently, he handled a lot of animals, which was fine by him, because he liked animals; in fact, he had quite a few cats at home. You can imagine his dismay when, one day, he took a kennel off the plane to find that the cat it carried was quite thoroughly dead. (No, it wasn&rsquo;t resting, nor pining for the fjords; this cat was bloody <I>deceased</I>.)</P>
+<P>FOF knew how upset the owner would be, and came up with a plan to make everything better. At home, he had a cat of the same size, shape, and markings. He would substitute that cat, and since all cats treat all humans with equal disdain, the owner would never know the difference, and would never suffer the trauma of the loss of her cat. So FOF drove home, got his cat, put it in the kennel, and waited for the owner to show up&mdash;at which point, she took one look at the kennel and said, &ldquo;This isn&rsquo;t my cat. My cat is dead.&rdquo;</P>
 <P>As it turned out, she had shipped her recently deceased feline home to be buried. History does not record how our FOF dug himself out of this one.</P>
-<P>Okay, but what&#146;s the point? The point is, if it isn&#146;t broken, don&#146;t fix it. And if it is broken, maybe that&#146;s all right, too. Which brings us, neat as a pin, to the topic of drawing lines in a serious hurry.</P>
+<P>Okay, but what&rsquo;s the point? The point is, if it isn&rsquo;t broken, don&rsquo;t fix it. And if it is broken, maybe that&rsquo;s all right, too. Which brings us, neat as a pin, to the topic of drawing lines in a serious hurry.</P>
 <H3><A NAME="Heading3"></A><FONT COLOR="#000077">Fast Run-Length Slice Line Drawing</FONT></H3>
-<P>In the last chapter, we examined the principles of run-length slice line drawing, which draws lines a run at a time rather than a pixel at a time, a run being a series of pixels along the major (longer) axis. It&#146;s time to turn theory into useful practice by developing a fast assembly version. Listing 37.1 is the assembly version, in a form that&#146;s plug-compatible with the C code from the previous chapter.
+<P>In the last chapter, we examined the principles of run-length slice line drawing, which draws lines a run at a time rather than a pixel at a time, a run being a series of pixels along the major (longer) axis. It&rsquo;s time to turn theory into useful practice by developing a fast assembly version. Listing 37.1 is the assembly version, in a form that&rsquo;s plug-compatible with the C code from the previous chapter.
 </P>
 <P><B>LISTING 37.1 L37-1.ASM</B></P>
 <!-- CODE //-->
 <PRE>
-; Fast run-length slice line drawing implementation for mode 0&#215;13, the VGA&#146;s
-; 320&#215;200 256-color mode.
+; Fast run-length slice line drawing implementation for mode 0x13, the VGA&rsquo;s
+; 320x200 256-color mode.
 ; Draws a line between the specified endpoints in color Color.
 ; C near-callable as:
 ;  void LineDraw(int XStart, int YStart, int XEnd, int YEnd, int Color)
@@ -85,13 +85,13 @@ LOCAL_SIZE     equ  8
     public  _LineDraw
 _LineDraw   proc  near
       cld
-      push        bp                  ;preserve caller&#146;s stack frame
+      push        bp                  ;preserve caller&rsquo;s stack frame
       mov         bp,sp               ;point to our stack frame
       sub sp,     LOCAL_SIZE          ;allocate space for local variables
       push        si                  ;preserve C register variables
       push        di
-      push        ds                  ;preserve caller&#146;s DS
-; We&#146;ll draw top to bottom, to reduce the number of cases we have to handle,
+      push        ds                  ;preserve caller&rsquo;s DS
+; We&rsquo;ll draw top to bottom, to reduce the number of cases we have to handle,
 ; and to make lines between the same endpoints always draw the same pixels.
       mov         ax,[bp].YStart
       cmp         ax,[bp].YEnd
@@ -107,12 +107,12 @@ LineIsTopToBottom:
       mul         dx                    ;YStart * SCREEN_WIDTH
       mov         si,[bp].XStart
       mov         di,si
-      add         di,ax                 ;DI = YStart * SCREEN_WIDTH &#43; XStart
+      add         di,ax                 ;DI = YStart * SCREEN_WIDTH + XStart
                                         ; = offset of initial pixel
-; Figure out how far we&#146;re going vertically (guaranteed to be positive).
+; Figure out how far we&rsquo;re going vertically (guaranteed to be positive).
       mov         cx,[bp].YEnd
       sub         cx,[bp].YStart        ;CX = YDelta
-; Figure out whether we&#146;re going left or right, and how far we&#146;re going
+; Figure out whether we&rsquo;re going left or right, and how far we&rsquo;re going
 ; horizontally. In the process, special-case vertical lines, for speed and
 ; to avoid nasty boundary conditions and division by 0.
       mov         dx,[bp].XEnd
@@ -217,15 +217,15 @@ DFSet:
       mov         si,cx                 ;SI = YDelta
       mov         cx,ax                 ;whole step (minimum run length)
       shr         cx,1
-      inc         cx                    ;initial pixel count = (whole step / 2) &#43; 1;
+      inc         cx                    ;initial pixel count = (whole step / 2) + 1;
                                         ; (may be adjusted later). This is also the
                                         ; final run pixel count
       push        cx                    ;remember final run pixel count for later
-; If the basic run length is even and there&#146;s no fractional advance, we have
+; If the basic run length is even and there&rsquo;s no fractional advance, we have
 ; one pixel that could go to either the initial or last partial run, which
-; we&#146;ll arbitrarily allocate to the last run.
-; If there is an odd number of pixels per run, we have one pixel that can&#146;t
-; be allocated to either the initial or last partial run, so we&#146;ll add 0.5 to
+; we&rsquo;ll arbitrarily allocate to the last run.
+; If there is an odd number of pixels per run, we have one pixel that can&rsquo;t
+; be allocated to either the initial or last partial run, so we&rsquo;ll add 0.5 to
 ; the error term so this pixel will be handled by the normal full-run loop.
       add         dx,si                 ;assume odd length, add YDelta to error term
                                         ; (add 0.5 of a pixel to the error term)
@@ -233,7 +233,7 @@ DFSet:
       jnz         XMajorAdjustDone      ;no, already did work for odd case, all set
       sub         dx,si                 ;length is even, undo odd stuff we just did
       and         bx,bx                 ;is the adjust up equal to 0?
-      jnz         XMajorAdjustDone      ;no (don&#146;t need to check for odd length,
+      jnz         XMajorAdjustDone      ;no (don&rsquo;t need to check for odd length,
                                         ; because of the above test)
       dec         cx                    ;both conditions met; make initial run 1
                                         ; shorter
@@ -259,7 +259,7 @@ XMajorFullRunsLoop:
       inc         cx                    ;one extra pixel in run
       sub         dx,[bp].AdjDown       ;reset the error term
 XMajorNoExtra:
-      rep         stosb                 ;draw this scan line&#146;s run
+      rep         stosb                 ;draw this scan line&rsquo;s run
       add         di,SCREEN_WIDTH       ;advance along the minor axis (Y)
 XMajorFullRunsOddEntry:                 ;enter loop here if there is an odd number
                                         ; of full runs
@@ -269,7 +269,7 @@ XMajorFullRunsOddEntry:                 ;enter loop here if there is an odd numb
       inc         cx                    ;one extra pixel in run
       sub         dx,[bp].AdjDown       ;reset the error term
 XMajorNoExtra2:
-      rep         stosb                 ;draw this scan line&#146;s run
+      rep         stosb                 ;draw this scan line&rsquo;s run
       add         di,SCREEN_WIDTH       ;advance along the minor axis (Y)
 
       dec         si
@@ -311,22 +311,22 @@ YMajor:
       mov         si,cx                 ;SI = XDelta
       mov         cx,ax                 ;whole step (minimum run length)
       shr         cx,1
-      inc         cx                    ;initial pixel count = (whole step / 2) &#43; 1;
+      inc         cx                    ;initial pixel count = (whole step / 2) + 1;
                                         ; (may be adjusted later)
       push         cx                   ;remember final run pixel count for later
 
-; If the basic run length is even and there&#146;s no fractional advance, we have
+; If the basic run length is even and there&rsquo;s no fractional advance, we have
 ; one pixel that could go to either the initial or last partial run, which
-; we&#146;ll arbitrarily allocate to the last run.
-; If there is an odd number of pixels per run, we have one pixel that can&#146;t
-; be allocated to either the initial or last partial run, so we&#146;ll add 0.5 to
+; we&rsquo;ll arbitrarily allocate to the last run.
+; If there is an odd number of pixels per run, we have one pixel that can&rsquo;t
+; be allocated to either the initial or last partial run, so we&rsquo;ll add 0.5 to
 ; the error term so this pixel will be handled by the normal full-run loop.
       add         dx,si                 ;assume odd length, add XDelta to error term
       test        al,1                  ;is run length even?
       jnz         YMajorAdjustDone      ;no, already did work for odd case, all set
       sub         dx,si                 ;length is even, undo odd stuff we just did
       and         bx,bx                 ;is the adjust up equal to 0?
-      jnz         YMajorAdjustDone      ;no (don&#146;t need to check for odd length,
+      jnz         YMajorAdjustDone      ;no (don&rsquo;t need to check for odd length,
                                         ; because of the above test)
       dec         cx                    ;both conditions met; make initial run 1
                                         ; shorter
@@ -392,11 +392,11 @@ YMajorLastLoop:
       dec         cx
       jnz         YMajorLastLoop
 Done:
-      pop         ds                    ;restore caller&#146;s DS
+      pop         ds                    ;restore caller&rsquo;s DS
       pop         di
       pop         si                    ;restore C register variables
       mov         sp,bp                 ;deallocate local variables
-      pop         bp                    ;restore caller&#146;s stack frame
+      pop         bp                    ;restore caller&rsquo;s stack frame
       ret
 _LineDraw   endp
       end

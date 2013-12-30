@@ -39,10 +39,10 @@
 <P><B>LISTING 32.2 L32-2.C</B></P>
 <!-- CODE //-->
 <PRE>
- * Sample program to illustrate VGA line drawing in 360&#215;480
+ * Sample program to illustrate VGA line drawing in 360x480
  * 256-color mode.
  *
- * Compiled with Borland C/C&#43;&#43;.
+ * Compiled with Borland C/C++.
  *
  * Must be linked with Listing 32.1 with a command line like:
  *
@@ -52,17 +52,17 @@
  */
 #include &lt;dos.h&gt;                 /* contains geninterrupt */
 
-#define TEXT_MODE       0&#215;03
-#define BIOS_VIDEO_INT  0&#215;10
+#define TEXT_MODE       0x03
+#define BIOS_VIDEO_INT  0x10
 #define X_MAX           360      /* working screen width */
 #define Y_MAX           480      /* working screen height */
 
-extern void Draw360&#215;480Dot();
-extern void Set360&#215;480Mode();
+extern void Draw360x480Dot();
+extern void Set360x480Mode();
 
 /*
  * Draws a line in octant 0 or 3 ( |DeltaX| &gt;= DeltaY ).
- * |DeltaX|&#43;1 points are drawn.
+ * |DeltaX|+1 points are drawn.
  */
 void Octant0(X0, Y0, DeltaX, DeltaY, XDirection, Color)
 unsigned int X0, Y0;          /* coordinates of start of the line */
@@ -81,26 +81,26 @@ int Color;                    /* color in which to draw line */
    ErrorTerm = DeltaYx2 - (int) DeltaX;
 
    /* Draw the line */
-   Draw360&#215;480Dot(X0, Y0, Color);   /* draw the first pixel */
+   Draw360x480Dot(X0, Y0, Color);   /* draw the first pixel */
    while ( DeltaX-- ) {
-      /* See if it&#146;s time to advance the Y coordinate */
+      /* See if it&rsquo;s time to advance the Y coordinate */
       if ( ErrorTerm &gt;= 0 ) {
          /* Advance the Y coordinate &amp adjust the error term
             back down */
-         Y0&#43;&#43;;
-         ErrorTerm &#43;= DeltaYx2MinusDeltaXx2;
+         Y0++;
+         ErrorTerm += DeltaYx2MinusDeltaXx2;
       } else {
          /* Add to the error term */
-         ErrorTerm &#43;= DeltaYx2;
+         ErrorTerm += DeltaYx2;
       }
-      X0 &#43;= XDirection;          /* advance the X coordinate */
-      Draw360&#215;480Dot(X0, Y0, Color);    /* draw a pixel */
+      X0 += XDirection;          /* advance the X coordinate */
+      Draw360x480Dot(X0, Y0, Color);    /* draw a pixel */
    }
 }
 
 /*
  * Draws a line in octant 1 or 2 ( |DeltaX| &lt; DeltaY ).
- * |DeltaY|&#43;1 points are drawn.
+ * |DeltaY|+1 points are drawn.
  */
 void Octant1(X0, Y0, DeltaX, DeltaY, XDirection, Color)
 unsigned int X0, Y0;          /* coordinates of start of the line */
@@ -118,20 +118,20 @@ int Color;                    /* color in which to draw line */
    DeltaXx2MinusDeltaYx2 = DeltaXx2 - (int) ( DeltaY * 2 );
    ErrorTerm = DeltaXx2 - (int) DeltaY;
 
-   Draw360&#215;480Dot(X0, Y0, Color);/* draw the first pixel */
+   Draw360x480Dot(X0, Y0, Color);/* draw the first pixel */
    while ( DeltaY-- ) {
-      /* See if it&#146;s time to advance the X coordinate */
+      /* See if it&rsquo;s time to advance the X coordinate */
       if ( ErrorTerm &gt;= 0 ) {
          /* Advance the X coordinate &amp adjust the error term
             back down */
-         X0 &#43;= XDirection;
-         ErrorTerm &#43;= DeltaXx2MinusDeltaYx2;
+         X0 += XDirection;
+         ErrorTerm += DeltaXx2MinusDeltaYx2;
       } else {
          /* Add to the error term */
-         ErrorTerm &#43;= DeltaXx2;
+         ErrorTerm += DeltaXx2;
       }
-      Y0&#43;&#43;;                   /* advance the Y coordinate */
-      Draw360&#215;480Dot(X0, Y0,Color);  /* draw a pixel */
+      Y0++;                   /* advance the Y coordinate */
+      Draw360x480Dot(X0, Y0,Color);  /* draw a pixel */
    }
 }
 
@@ -195,26 +195,26 @@ int XLength, YLength;   /* distance from center to edge
    /* Lines from center to top of rectangle */
    WorkingX = XCenter - XLength;
    WorkingY = YCenter - YLength;
-   for ( ; WorkingX &lt; ( XCenter &#43; XLength ); WorkingX&#43;&#43; )
-      EVGALine(XCenter, YCenter, WorkingX, WorkingY, Color&#43;&#43;);
+   for ( ; WorkingX &lt; ( XCenter + XLength ); WorkingX++ )
+      EVGALine(XCenter, YCenter, WorkingX, WorkingY, Color++);
 
    /* Lines from center to right of rectangle */
-   WorkingX = XCenter &#43; XLength - 1;
+   WorkingX = XCenter + XLength - 1;
    WorkingY = YCenter - YLength;
-   for ( ; WorkingY &lt; ( YCenter &#43; YLength ); WorkingY&#43;&#43; )
-      EVGALine(XCenter, YCenter, WorkingX, WorkingY, Color&#43;&#43;);
+   for ( ; WorkingY &lt; ( YCenter + YLength ); WorkingY++ )
+      EVGALine(XCenter, YCenter, WorkingX, WorkingY, Color++);
 
    /* Lines from center to bottom of rectangle */
-   WorkingX = XCenter &#43; XLength - 1;
-   WorkingY = YCenter &#43; YLength - 1;
+   WorkingX = XCenter + XLength - 1;
+   WorkingY = YCenter + YLength - 1;
    for ( ; WorkingX &gt;= ( XCenter - XLength ); WorkingX-- )
-      EVGALine(XCenter, YCenter, WorkingX, WorkingY, Color&#43;&#43;);
+      EVGALine(XCenter, YCenter, WorkingX, WorkingY, Color++);
 
    /* Lines from center to left of rectangle */
    WorkingX = XCenter - XLength;
-   WorkingY = YCenter &#43; YLength - 1;
+   WorkingY = YCenter + YLength - 1;
    for ( ; WorkingY &gt;= ( YCenter - YLength ); WorkingY-- )
-      EVGALine(XCenter, YCenter, WorkingX, WorkingY, Color&#43;&#43;);
+      EVGALine(XCenter, YCenter, WorkingX, WorkingY, Color++);
 }
 
 /*
@@ -233,7 +233,7 @@ void main()
    VectorsUp(X_MAX * 3 / 4, Y_MAX * 3 / 4, X_MAX / 4, Y_MAX / 4, 4);
 
    /* Wait for the enter key to be pressed */
-   scanf(&#147;%c&#148;, &amptemp);
+   scanf(&ldquo;%c&rdquo;, &amptemp);
 
    /* Back to text mode */
    _AX = TEXT_MODE;
@@ -241,9 +241,9 @@ void main()
 }
 </PRE>
 <!-- END CODE //-->
-<P>The first thing you&#146;ll notice when you run this code is that the speed of 360&#215;480 256-color mode is pretty good, especially considering that most of the program is im-plemented in C.
+<P>The first thing you&rsquo;ll notice when you run this code is that the speed of 360x480 256-color mode is pretty good, especially considering that most of the program is im-plemented in C.
 </P>
-<TABLE WIDTH="100%"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><SMALL><I>Drawing in 360&#215;480 256-color mode can sometimes actually be faster than in the 16-color modes, because the byte-per-pixel display memory organization of 256-color mode eliminates the need to read display memory before writing to it in order to isolate individual pixels coexisting within a single byte. In addition, 360&#215;480 256-color mode is a variant of Mode X, which we&#146;ll encounter in detail in Chapter 47, and supports all the high-performance features of Mode X.</I></SMALL>
+<TABLE WIDTH="100%"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><SMALL><I>Drawing in 360x480 256-color mode can sometimes actually be faster than in the 16-color modes, because the byte-per-pixel display memory organization of 256-color mode eliminates the need to read display memory before writing to it in order to isolate individual pixels coexisting within a single byte. In addition, 360x480 256-color mode is a variant of Mode X, which we&rsquo;ll encounter in detail in Chapter 47, and supports all the high-performance features of Mode X.</I></SMALL>
 </TABLE>
 <P><BR></P>
 <CENTER>

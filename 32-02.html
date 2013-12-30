@@ -39,15 +39,15 @@
 <P><B>LISTING 32.1 L32-1.ASM</B></P>
 <!-- CODE //-->
 <PRE>
-; Borland C/C&#43;&#43; tiny/small/medium model-callable assembler
+; Borland C/C++ tiny/small/medium model-callable assembler
 ; subroutines to:
-;* Set 360&#215;480 256-color VGA mode
-;* Draw a dot in 360&#215;480 256-color VGA mode
-;* Read the color of a dot in 360&#215;480 256-color VGA mode
+;* Set 360x480 256-color VGA mode
+;* Draw a dot in 360x480 256-color VGA mode
+;* Read the color of a dot in 360x480 256-color VGA mode
 ;
 ; Assembled with TASM
 ;
-; The 360&#215;480 256-color mode set code and parameters were provided
+; The 360x480 256-color mode set code and parameters were provided
 ; by John Bridges, who has placed them into the public domain.
 ;
 VGA_SEGMENT     equ    0a000h      ;display memory segment
@@ -57,12 +57,12 @@ MAP_MASK        equ    2           ;Map Mask register index in SC
 READ_MAP        equ    4           ;Read Map register index in GC
 SCREEN_WIDTH    equ    360         ;# of pixels across screen
 WORD_OUTS_OK    equ    1           ;set to 0 to assemble for
-                                   ; computers that can&#146;t handle
+                                   ; computers that can&rsquo;t handle
                                    ; word outs to indexed VGA registers
 ;
-_DATAsegmentpublic byte &#145;DATA&#146;
+_DATAsegmentpublic byte &lsquo;DATA&rsquo;
 ;
-; 360&#215;480 256-color mode CRT Controller register settings.
+; 360x480 256-color mode CRT Controller register settings.
 ; (Courtesy of John Bridges.)
 ;
 vptbl   dw      06b00h  ; horz total
@@ -100,18 +100,18 @@ else
 endif
       endm
 ;
-_TEXTsegment byte public &#145;CODE&#146;
+_TEXTsegment byte public &lsquo;CODE&rsquo;
        assumecs:_TEXT, ds:_DATA
 ;
-; Sets up 360&#215;480 256-color mode.
+; Sets up 360x480 256-color mode.
 ; (Courtesy of John Bridges.)
 ;
 ; Call as: void Set360By480Mode()
 ;
 ; Returns: nothing
 ;
-      public _Set360&#215;480Mode
-_Set360&#215;480Modeprocnear
+      public _Set360x480Mode
+_Set360x480Modeprocnear
       push   si                 ;preserve C register vars
       push   di
       mov    ax,12h             ; start with mode 12h
@@ -154,9 +154,9 @@ _Set360&#215;480Modeprocnear
 _Set360x480Modeendp
 ;
 ; Draws a pixel in the specified color at the specified
-; location in 360&#215;480 256-color mode.
+; location in 360x480 256-color mode.
 ;
-; Call as: void Draw360&#215;480Dot(int X, int Y, int Color)
+; Call as: void Draw360x480Dot(int X, int Y, int Color)
 ;
 ; Returns: nothing
 ;
@@ -169,9 +169,9 @@ Color dw   ?            ;color in which to draw (in the
                         ; range 0-255; upper byte ignored)
 DParms     ends
 ;
-      public _Draw360&#215;480Dot
-_Draw360&#215;480Dotprocnear
-      push  bp            ;preserve caller&#146;s BP
+      public _Draw360x480Dot
+_Draw360x480Dotprocnear
+      push  bp            ;preserve caller&rsquo;s BP
       mov   bp,sp         ;point to stack frame
       push  si            ;preserve C register vars
       push  di
@@ -181,12 +181,12 @@ _Draw360&#215;480Dotprocnear
                           ;there are 4 pixels at each address, so
                            ; each 360-pixel row is 90 bytes wide
                            ; in each plane
-      mul   [bp&#43;DrawY] ;point to start of desired row
-      mov   di,[bp&#43;DrawX] ;get the X coordinate
+      mul   [bp+DrawY] ;point to start of desired row
+      mov   di,[bp+DrawX] ;get the X coordinate
       shr   di,1           ;there are 4 pixels at each address
       shr   di,1           ; so divide the X coordinate by 4
-      add   di,ax          ;point to the pixel&#146;s address
-      mov   cl,byte ptr [bp&#43;DrawX] ;get the X coordinate again
+      add   di,ax          ;point to the pixel&rsquo;s address
+      mov   cl,byte ptr [bp+DrawX] ;get the X coordinate again
       and   cl,3           ;get the plane # of the pixel
       mov   ah,1
       shl   ah,cl          ;set the bit corresponding to the plane
@@ -195,18 +195,18 @@ _Draw360&#215;480Dotprocnear
       mov   dx,SC_INDEX
       OUT_WORD             ;set to write to the proper plane for
                            ; the pixel
-      mov   al,byte ptr [bp&#43;Color] ;get the color
+      mov   al,byte ptr [bp+Color] ;get the color
       stosb                ;draw the pixel
       pop   di             ;restore C register vars
       pop   si
-      pop   bp             ;restore caller&#146;s BP
+      pop   bp             ;restore caller&rsquo;s BP
       ret
-_Draw360&#215;480Dotendp
+_Draw360x480Dotendp
 ;
 ; Reads the color of the pixel at the specified
-; location in 360&#215;480 256-color mode.
+; location in 360x480 256-color mode.
 ;
-; Call as: int Read360&#215;480Dot(int X, int Y)
+; Call as: int Read360x480Dot(int X, int Y)
 ;
 ; Returns: pixel color
 ;
@@ -217,9 +217,9 @@ ReadX dw   ?                ;X coordinate from which to read
 ReadY dw   ?                ;Y coordinate from which to read
 RParms     ends
 ;
-      public _Read360&#215;480Dot
-_Read360&#215;480Dotprocnear
-      push  bp              ;preserve caller&#146;s BP
+      public _Read360x480Dot
+_Read360x480Dotprocnear
+      push  bp              ;preserve caller&rsquo;s BP
       mov   bp,sp           ;point to stack frame
       push  si              ;preserve C register vars
       push  di
@@ -229,12 +229,12 @@ _Read360&#215;480Dotprocnear
                             ; each 360-pixel row is 90 bytes wide
                             ; in each plane
 
-       mul  [bp&#43;DrawY] ;point to start of desired row
-       mov  si,[bp&#43;DrawX] ;get the X coordinate
+       mul  [bp+DrawY] ;point to start of desired row
+       mov  si,[bp+DrawX] ;get the X coordinate
        shr  si,1            ;there are 4 pixels at each address
        shr  si,1            ; so divide the X coordinate by 4
-       add  si,ax           ;point to the pixel&#146;s address
-       mov  ah,byte ptr [bp&#43;DrawX] ;get the X coordinate again
+       add  si,ax           ;point to the pixel&rsquo;s address
+       mov  ah,byte ptr [bp+DrawX] ;get the X coordinate again
        and  ah,3
                             ;get the plane # of the pixel
        mov  al,READ_MAP
@@ -245,9 +245,9 @@ _Read360&#215;480Dotprocnear
        sub  ah,ah           ;make the return value a word for C
        pop  di              ;restore C register vars
        pop  si
-       pop  bp              ;restore caller&#146;s BP
+       pop  bp              ;restore caller&rsquo;s BP
        ret
-_Read360&#215;480Dot  endp
+_Read360x480Dot  endp
 _TEX   Tends
        end
 </PRE>

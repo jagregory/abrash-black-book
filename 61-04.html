@@ -49,19 +49,19 @@
 <P>This unlocks all sorts of neat stuff. Want to know the distance from a point to a plane? Just dot the vector from the point <B>P</B> to the plane origin <B>O</B><SUB>p</SUB> with the plane unit normal <B>N</B><SUB>p</SUB>, to project the vector onto the normal, then take the absolute value</P>
 <!-- CODE SNIP //-->
 <PRE>
-distance = |(<B>P</B> - <B>O</B><SUB>p</SUB>) &#8226; <B>N</B><SUB>p</SUB>|
+distance = |(<B>P</B> - <B>O</B><SUB>p</SUB>) &bull; <B>N</B><SUB>p</SUB>|
 </PRE>
 <!-- END CODE SNIP //-->
 <P>as shown in Figure 61.7.
 </P>
-<P>Want to clip a line to a plane? Calculate the distance from one endpoint to the plane, as just described, and dot the whole line segment with the plane normal, to get the full length of the line along the plane normal. The ratio of the two dot products is then how far along the line from the endpoint the intersection point is; just move along the line segment by that distance from the endpoint, and you&#146;re at the intersection point, as shown in Listing 61.1.</P>
+<P>Want to clip a line to a plane? Calculate the distance from one endpoint to the plane, as just described, and dot the whole line segment with the plane normal, to get the full length of the line along the plane normal. The ratio of the two dot products is then how far along the line from the endpoint the intersection point is; just move along the line segment by that distance from the endpoint, and you&rsquo;re at the intersection point, as shown in Listing 61.1.</P>
 <P><B>LISTING 61.1 L61_1.C</B></P>
 <!-- CODE //-->
 <PRE>
 // Given two line endpoints, a point on a plane, and a unit normal
 // for the plane, returns the point of intersection of the line
 // and the plane in intersectpoint.
-#define DOT_PRODUCT(x,y)   (x[0]*y[0]&#43;x[1]*y[1]&#43;x[2]*y[2])
+#define DOT_PRODUCT(x,y)   (x[0]*y[0]+x[1]*y[1]+x[2]*y[2])
 void LineIntersectPlane (float *linestart, float *lineend,
    float *planeorigin, float *planenormal, float *intersectpoint)
 {
@@ -90,16 +90,16 @@ void LineIntersectPlane (float *linestart, float *lineend,
 </PRE>
 <!-- END CODE //-->
 <H3><A NAME="Heading10"></A><FONT COLOR="#000077">Rotation by Projection</FONT></H3>
-<P>We can use the dot product&#146;s projection capability to look at rotation in an interesting way. Typically, rotations are represented by matrices. This is certainly a workable representation that encapsulates all aspects of transformation in a single object, and is ideal for concatenations of rotations and translations. One problem with matrices, though, is that many people, myself included, have a hard time looking at a matrix of sines and cosines and visualizing what&#146;s actually going on. So when two 3-D experts, John Carmack and Billy Zelsnack, mentioned that they think of rotation differently, in a way that seemed more intuitive to me, I thought it was worth passing on.
+<P>We can use the dot product&rsquo;s projection capability to look at rotation in an interesting way. Typically, rotations are represented by matrices. This is certainly a workable representation that encapsulates all aspects of transformation in a single object, and is ideal for concatenations of rotations and translations. One problem with matrices, though, is that many people, myself included, have a hard time looking at a matrix of sines and cosines and visualizing what&rsquo;s actually going on. So when two 3-D experts, John Carmack and Billy Zelsnack, mentioned that they think of rotation differently, in a way that seemed more intuitive to me, I thought it was worth passing on.
 </P>
 <P><A NAME="Fig7"><!-- </A><A HREF="javascript:displayWindow('images/61-07.jpg',406,222 )"> --><IMG SRC="images/61-07.jpg"><BR><!-- </A>
 <BR><A HREF="javascript:displayWindow('images/61-07.jpg',406,222)"> --><FONT COLOR="#000077"><B>Figure 61.7</B></FONT></A>&nbsp;&nbsp;<I>Using the dot product to get the distance from a point to a plane.</I>
 </P>
 <P>Their approach is this: Think of rotation as projecting coordinates onto new axes. That is, given that you have points in, say, worldspace, define the new coordinate space (viewspace, for example) you want to rotate to by a set of three orthogonal unit vectors defining the new axes, and then project each point onto each of the three axes to get the coordinates in the new coordinate space, as shown for the 2-D case in Figure 61.8. In 3-D, this involves three dot products per point, one to project the point onto each axis. Translation can be done separately from rotation by simple addition.
 </P>
-<TABLE WIDTH="100%"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><SMALL><I>Rotation by projection is exactly the same as rotation via matrix multiplication; in fact, the rows of a rotation matrix <I>are</I> the orthogonal unit vectors pointing along the new axes. Rotation by projection buys us no technical advantages, so that&#146;s not what&#146;s important here; the key is that the concept of rotation by projection, together with a separate translation step, gives us a new way to look at transformation that I, for one, find easier to visualize and experiment with. A new frame of reference for how we think about 3-D frames of reference, if you will.</SMALL></I>
+<TABLE WIDTH="100%"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><SMALL><I>Rotation by projection is exactly the same as rotation via matrix multiplication; in fact, the rows of a rotation matrix <I>are</I> the orthogonal unit vectors pointing along the new axes. Rotation by projection buys us no technical advantages, so that&rsquo;s not what&rsquo;s important here; the key is that the concept of rotation by projection, together with a separate translation step, gives us a new way to look at transformation that I, for one, find easier to visualize and experiment with. A new frame of reference for how we think about 3-D frames of reference, if you will.</SMALL></I>
 </TABLE>
-<P>Three things I&#146;ve learned over the years are that it never hurts to learn a new way of looking at things, that it helps to have a clearer, more intuitive model in your head of whatever it is you&#146;re working on, and that new tools, or new ways to use old tools, are Good Things. My experience has been that rotation by projection, and dot product tricks in general, offer those sorts of benefits for 3-D.
+<P>Three things I&rsquo;ve learned over the years are that it never hurts to learn a new way of looking at things, that it helps to have a clearer, more intuitive model in your head of whatever it is you&rsquo;re working on, and that new tools, or new ways to use old tools, are Good Things. My experience has been that rotation by projection, and dot product tricks in general, offer those sorts of benefits for 3-D.
 </P>
 <P><A NAME="Fig8"><!-- </A><A HREF="javascript:displayWindow('images/61-08.jpg',407,198 )"> --><IMG SRC="images/61-08.jpg"><BR><!-- </A>
 <BR><A HREF="javascript:displayWindow('images/61-08.jpg',407,198)"> --><FONT COLOR="#000077"><B>Figure 61.8</B></FONT></A>&nbsp;&nbsp;<I>Rotation to a new coordinate space by projection onto new axes.</I>

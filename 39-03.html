@@ -36,21 +36,21 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<P>Listing 39.2 shows a C implementation of integer edge tracing. Vertical and diagonal lines, which are trivial to trace, are special-cased. Other lines are broken into two categories: Y-major (closer to vertical) and X-major (closer to horizontal). The handlers for the Y-major and X-major cases operate on the principle of similar triangles: The number of X pixels advanced per scan line is the same as the ratio of the X delta of the edge to the Y delta. Listing 39.2 is more complex than the original floating point implementation, but not painfully so. In return for that complexity, Listing 39.2 is more than 80 times faster at scanning edges&#151;and, as just mentioned, it&#146;s actually more accurate than the floating point code.
+<P>Listing 39.2 shows a C implementation of integer edge tracing. Vertical and diagonal lines, which are trivial to trace, are special-cased. Other lines are broken into two categories: Y-major (closer to vertical) and X-major (closer to horizontal). The handlers for the Y-major and X-major cases operate on the principle of similar triangles: The number of X pixels advanced per scan line is the same as the ratio of the X delta of the edge to the Y delta. Listing 39.2 is more complex than the original floating point implementation, but not painfully so. In return for that complexity, Listing 39.2 is more than 80 times faster at scanning edges&mdash;and, as just mentioned, it&rsquo;s actually more accurate than the floating point code.
 </P>
 <P>Ya gotta love that integer arithmetic.</P>
 <P><B>LISTING 39.2 L39-2.C</B></P>
 <!-- CODE //-->
 <PRE>
 /* Scan converts an edge from (X1,Y1) to (X2,Y2), not including the
-   point at (X2,Y2). If SkipFirst == 1, the point at (X1,Y1) isn&#146;t
+   point at (X2,Y2). If SkipFirst == 1, the point at (X1,Y1) isn&rsquo;t
    drawn; if SkipFirst == 0, it is. For each scan line, the pixel
    closest to the scanned edge without being to the left of the
    scanned edge is chosen. Uses an all-integer approach for speed and
    precision. */
 
 #include &ltmath.h&gt
-#include &#147;polygon.h&#148;
+#include &ldquo;polygon.h&rdquo;
 
 void ScanEdge(int X1, int Y1, int X2, int Y2, int SetXStart,
       int SkipFirst, struct HLine **EdgePointPtr)
@@ -74,7 +74,7 @@ void ScanEdge(int X1, int Y1, int X2, int Y2, int SetXStart,
       /* The edge is vertical; special-case by just storing the same
          X coordinate for every scan line */
       /* Scan the edge for each scan line in turn */
-      for (i = Height - SkipFirst; i-- &gt 0; WorkingEdgePointPtr&#43;&#43;) {
+      for (i = Height - SkipFirst; i-- &gt 0; WorkingEdgePointPtr++) {
          /* Store the X coordinate in the appropriate edge list */
          if (SetXStart == 1)
             WorkingEdgePointPtr-&gtXStart = X1;
@@ -85,39 +85,39 @@ void ScanEdge(int X1, int Y1, int X2, int Y2, int SetXStart,
       /* The edge is diagonal; special-case by advancing the X
          coordinate 1 pixel for each scan line */
       if (SkipFirst) /* skip the first point if so indicated */
-         X1 &#43;= AdvanceAmt; /* move 1 pixel to the left or right */
+         X1 += AdvanceAmt; /* move 1 pixel to the left or right */
       /* Scan the edge for each scan line in turn */
-      for (i = Height - SkipFirst; i-- &gt 0; WorkingEdgePointPtr&#43;&#43;) {
+      for (i = Height - SkipFirst; i-- &gt 0; WorkingEdgePointPtr++) {
          /* Store the X coordinate in the appropriate edge list */
          if (SetXStart == 1)
             WorkingEdgePointPtr-&gtXStart = X1;
          else
             WorkingEdgePointPtr-&gtXEnd = X1;
-         X1 &#43;= AdvanceAmt; /* move 1 pixel to the left or right */
+         X1 += AdvanceAmt; /* move 1 pixel to the left or right */
       }
    } else if (Height &gt Width) {
       /* Edge is closer to vertical than horizontal (Y-major) */
       if (DeltaX &gt= 0)
          ErrorTerm = 0; /* initial error term going left-&gtright */
       else
-         ErrorTerm = -Height &#43; 1;   /* going right-&gtleft */
+         ErrorTerm = -Height + 1;   /* going right-&gtleft */
       if (SkipFirst) {   /* skip the first point if so indicated */
-         /* Determine whether it&#146;s time for the X coord to advance */
-         if ((ErrorTerm &#43;= Width) &gt 0) {
-            X1 &#43;= AdvanceAmt; /* move 1 pixel to the left or right */
+         /* Determine whether it&rsquo;s time for the X coord to advance */
+         if ((ErrorTerm += Width) &gt 0) {
+            X1 += AdvanceAmt; /* move 1 pixel to the left or right */
             ErrorTerm -= Height; /* advance ErrorTerm to next point */
          }
       }
       /* Scan the edge for each scan line in turn */
-      for (i = Height - SkipFirst; i-- &gt 0; WorkingEdgePointPtr&#43;&#43;) {
+      for (i = Height - SkipFirst; i-- &gt 0; WorkingEdgePointPtr++) {
          /* Store the X coordinate in the appropriate edge list */
          if (SetXStart == 1)
             WorkingEdgePointPtr-&gtXStart = X1;
          else
             WorkingEdgePointPtr-&gtXEnd = X1;
-         /* Determine whether it&#146;s time for the X coord to advance */
-         if ((ErrorTerm &#43;= Width) &gt 0) {
-            X1 &#43;= AdvanceAmt; /* move 1 pixel to the left or right */
+         /* Determine whether it&rsquo;s time for the X coord to advance */
+         if ((ErrorTerm += Width) &gt 0) {
+            X1 += AdvanceAmt; /* move 1 pixel to the left or right */
             ErrorTerm -= Height; /* advance ErrorTerm to correspond */
          }
       }
@@ -130,38 +130,38 @@ void ScanEdge(int X1, int Y1, int X2, int Y2, int SetXStart,
       if (DeltaX &gt= 0)
          ErrorTerm = 0; /* initial error term going left-&gtright */
       else
-         ErrorTerm = -Height &#43; 1;   /* going right-&gtleft */
+         ErrorTerm = -Height + 1;   /* going right-&gtleft */
       if (SkipFirst) {   /* skip the first point if so indicated */
-         X1 &#43;= XMajorAdvanceAmt;    /* move X minimum distance */
-         /* Determine whether it&#146;s time for X to advance one extra */
-         if ((ErrorTerm &#43;= ErrorTermAdvance) &gt 0) {
-            X1 &#43;= AdvanceAmt;       /* move X one more */
+         X1 += XMajorAdvanceAmt;    /* move X minimum distance */
+         /* Determine whether it&rsquo;s time for X to advance one extra */
+         if ((ErrorTerm += ErrorTermAdvance) &gt 0) {
+            X1 += AdvanceAmt;       /* move X one more */
             ErrorTerm -= Height; /* advance ErrorTerm to correspond */
          }
       }
       /* Scan the edge for each scan line in turn */
-      for (i = Height - SkipFirst; i-- &gt 0; WorkingEdgePointPtr&#43;&#43;) {
+      for (i = Height - SkipFirst; i-- &gt 0; WorkingEdgePointPtr++) {
          /* Store the X coordinate in the appropriate edge list */
          if (SetXStart == 1)
             WorkingEdgePointPtr-&gtXStart = X1;
          else
             WorkingEdgePointPtr-&gtXEnd = X1;
-         X1 &#43;= XMajorAdvanceAmt;    /* move X minimum distance */
-         /* Determine whether it&#146;s time for X to advance one extra */
-         if ((ErrorTerm &#43;= ErrorTermAdvance) &gt 0) {
-            X1 &#43;= AdvanceAmt;       /* move X one more */
+         X1 += XMajorAdvanceAmt;    /* move X minimum distance */
+         /* Determine whether it&rsquo;s time for X to advance one extra */
+         if ((ErrorTerm += ErrorTermAdvance) &gt 0) {
+            X1 += AdvanceAmt;       /* move X one more */
             ErrorTerm -= Height; /* advance ErrorTerm to correspond */
          }
       }
    }
 
-   *EdgePointPtr = WorkingEdgePointPtr;   /* advance caller&#146;s ptr */
+   *EdgePointPtr = WorkingEdgePointPtr;   /* advance caller&rsquo;s ptr */
 }
 </PRE>
 <!-- END CODE //-->
 <H3><A NAME="Heading6"></A><FONT COLOR="#000077">The Finishing Touch: Assembly Language</FONT></H3>
-<P>The C implementation in Listing 39.2 is now nearly 20 times as fast as the original, which is good enough for most purposes. Still, it requires that one of the large data models be used (for <B>memset</B> ), and it&#146;s certainly not the fastest possible code. The obvious next step is assembly language.</P>
-<P>Listing 39.3 is an assembly language version of <B>DrawHorizontalLineList</B> . In actual use, it proved to be about 36 percent faster than Listing 39.1; better than a poke in the eye with a sharp stick, but just barely. There&#146;s more to these timing results than meets that eye, though. Display memory generally responds much more slowly than system memory, especially in 386 and 486 systems. That means that much of the time taken by Listing 39.3 is actually spent waiting for display memory accesses to complete, with the processor forced to idle by wait states. If, instead, Listing 39.3 drew to a local buffer in system memory or to a particularly fast VGA, the assembly implementation might well display a far more substantial advantage over the C code.</P><P><BR></P>
+<P>The C implementation in Listing 39.2 is now nearly 20 times as fast as the original, which is good enough for most purposes. Still, it requires that one of the large data models be used (for <B>memset</B> ), and it&rsquo;s certainly not the fastest possible code. The obvious next step is assembly language.</P>
+<P>Listing 39.3 is an assembly language version of <B>DrawHorizontalLineList</B> . In actual use, it proved to be about 36 percent faster than Listing 39.1; better than a poke in the eye with a sharp stick, but just barely. There&rsquo;s more to these timing results than meets that eye, though. Display memory generally responds much more slowly than system memory, especially in 386 and 486 systems. That means that much of the time taken by Listing 39.3 is actually spent waiting for display memory accesses to complete, with the processor forced to idle by wait states. If, instead, Listing 39.3 drew to a local buffer in system memory or to a particularly fast VGA, the assembly implementation might well display a far more substantial advantage over the C code.</P><P><BR></P>
 <CENTER>
 <TABLE BORDER>
 <TR>

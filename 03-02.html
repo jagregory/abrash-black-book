@@ -70,10 +70,10 @@
 ;
 ; Note: These routines can introduce slight inaccuracies into the
 ;    system clock count for each code section timed even if
-;    timer 0 doesn&#146;t overflow. If timer 0 does overflow, the
+;    timer 0 doesn&rsquo;t overflow. If timer 0 does overflow, the
 ;    system clock can become slow by virtually any amount of
-;    time, since the system clock can&#146;t advance while the
-;    precison timer is timing. Consequently, it&#146;s a good idea
+;    time, since the system clock can&rsquo;t advance while the
+;    precison timer is timing. Consequently, it&rsquo;s a good idea
 ;    to reboot at the end of each timing session. (The
 ;    battery-backed clock, if any, is not affected by the Zen
 ;    timer.)
@@ -84,7 +84,7 @@
 ; in when ZTimerOn was called.
 ;
 
-Code segment word public &#145;CODE&#146;
+Code segment word public &lsquo;CODE&rsquo;
      assumecs:    Code, ds:nothing
      public       ZTimerOn, ZTimerOff, ZTimerReport
 
@@ -95,11 +95,11 @@ BASE_8253equ40h
 ;
 ; The address of the timer 0 count registers in the 8253.
 ;
-TIMER_0_8253     equBASE_8253 &#43; 0
+TIMER_0_8253     equBASE_8253 + 0
 ;
 ; The address of the mode register in the 8253.
 ;
-MODE_8253        equBASE_8253 &#43; 3
+MODE_8253        equBASE_8253 + 3
 ;
 ; The address of Operation Command Word 3 in the 8259 Programmable
 ; Interrupt Controller (PIC) (write only, and writable only when
@@ -131,9 +131,9 @@ p2:   push cs          ; construct far return address to
 ; can respond to both accesses even on a very fast PC.
 ;
 DELAY macro
-      jmp     $&#43;2
-      jmp     $&#43;2
-      jmp     $&#43;2
+      jmp     $+2
+      jmp     $+2
+      jmp     $+2
       endm
 
 OriginalFlags   db    ?    ; storage for upper byte of
@@ -150,28 +150,28 @@ OverflowFlag    db    ?    ; used to indicate whether the
 ; String printed to report results.
 ;
 OutputStr  label byte
-           db    0dh, 0ah, &#145;Timed count: &#145;, 5 dup (?)
+           db    0dh, 0ah, &lsquo;Timed count: &lsquo;, 5 dup (?)
 ASCIICountEnd    labelbyte
-           db    &#145; microseconds&#146;, 0dh, 0ah
-           db    &#145;$&#146;
+           db    &lsquo; microseconds&rsquo;, 0dh, 0ah
+           db    &lsquo;$&rsquo;
 ;
 ; String printed to report timer overflow.
 ;
 OverflowStr label byte
       db    0dh, 0ah
-      db    &#145;****************************************************&#146;
+      db    &lsquo;****************************************************&rsquo;
       db    0dh, 0ah
-      db    &#145;* The timer overflowed, so the interval timed was  *&#146;
+      db    &lsquo;* The timer overflowed, so the interval timed was  *&rsquo;
       db    0dh, 0ah
-      db    &#145;* too long for the precision timer to measure.     *&#146;
+      db    &lsquo;* too long for the precision timer to measure.     *&rsquo;
       db    0dh, 0ah
-      db    &#145;* Please perform the timing test again with the    *&#146;
+      db    &lsquo;* Please perform the timing test again with the    *&rsquo;
 db0dh, 0ah
-      db    &#145;* long-period timer.                               *&#146;    
+      db    &lsquo;* long-period timer.                               *&rsquo;    
       db    0dh, 0ah
-      db    &#145;****************************************************&#146;
+      db    &lsquo;****************************************************&rsquo;
       db    0dh, 0ah
-      db    &#145;$&#146;
+      db    &lsquo;$&rsquo;
 
 ; ********************************************************************
 ; * Routine called to start timing.                                  *
@@ -193,7 +193,7 @@ ZTimerOn    proc   near
                                    ; to 0
    push   ax
 ;
-; Turn on interrupts, so the timer interrupt can occur if it&#146;s
+; Turn on interrupts, so the timer interrupt can occur if it&rsquo;s
 ; pending.
 ;
      sti
@@ -206,7 +206,7 @@ ZTimerOn    proc   near
      mov  al,00110100b               ;mode 2
      out  MODE_8253,al
 ;
-; Set the timer count to 0, so we know we won&#146;t get another
+; Set the timer count to 0, so we know we won&rsquo;t get another
 ; timer interrupt right away.
 ; Note: this introduces an inaccuracy of up to 54 ms in the system
 ; clock count each time it is executed.
@@ -224,7 +224,7 @@ ZTimerOn    proc   near
 ; delay time will be more than long enough even on a very fast PC.
 ;
     rept 10
-    jmp   $&#43;2
+    jmp   $+2
     endm
 ;
 ; Disable interrupts to get an accurate count.
@@ -308,9 +308,9 @@ ZTimerOff proc     near
      call   ReferenceZTimerOff
      loop   RefLoop
      sti
-     add    cs:[ReferenceCount],8; total &#43; (0.5 * 16)
+     add    cs:[ReferenceCount],8; total + (0.5 * 16)
      mov    cl,4
-     shr    cs:[ReferenceCount],cl; (total) / 16 &#43; 0.5
+     shr    cs:[ReferenceCount],cl; (total) / 16 + 0.5
 ;
 ; Restore original interrupt state.
 ;
@@ -453,7 +453,7 @@ PrintGoodCount:
 CTSLoop:
      sub   dx, dx
      div   bx
-      add  dl,&#146;0&#146;
+      add  dl,&rsquo;0&rsquo;
      mov   [si],dl
      dec   si
      loop  CTSLoop

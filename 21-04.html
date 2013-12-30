@@ -36,8 +36,8 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<P>The first, obvious thing we can do to Listing 21.1 is change <B>ADC AX,0</B> to <B>ADC EAX,0</B>, eliminating a prefix byte and saving a full cycle. Now we&#146;re down from five to four cycles. What next?</P>
-<P>Listing 21.2 shows one interesting alternative that doesn&#146;t really buy us anything. Here, we&#146;ve eliminated all size prefixes by doing byte-sized <B>MOVs</B> and <B>ADDs</B>, but because the size prefix on <B>ADD AX,[ESI]</B>, for whatever reason, didn&#146;t cost anything in Listing 21.1, our efforts are to no avail&#151;Listing 21.2 still takes 4 cycles per checksummed word. What&#146;s worth noting about Listing 21.2 is the extent to which the code is broken into simple instructions and reordered so as to avoid size prefixes, register contention, AGIs, and data bank conflicts (the latter because both <B>[ESI]</B> and <B>[ESI&#43;1]</B> are in the same cache data bank, as discussed in the last chapter).</P>
+<P>The first, obvious thing we can do to Listing 21.1 is change <B>ADC AX,0</B> to <B>ADC EAX,0</B>, eliminating a prefix byte and saving a full cycle. Now we&rsquo;re down from five to four cycles. What next?</P>
+<P>Listing 21.2 shows one interesting alternative that doesn&rsquo;t really buy us anything. Here, we&rsquo;ve eliminated all size prefixes by doing byte-sized <B>MOVs</B> and <B>ADDs</B>, but because the size prefix on <B>ADD AX,[ESI]</B>, for whatever reason, didn&rsquo;t cost anything in Listing 21.1, our efforts are to no avail&mdash;Listing 21.2 still takes 4 cycles per checksummed word. What&rsquo;s worth noting about Listing 21.2 is the extent to which the code is broken into simple instructions and reordered so as to avoid size prefixes, register contention, AGIs, and data bank conflicts (the latter because both <B>[ESI]</B> and <B>[ESI+1]</B> are in the same cache data bank, as discussed in the last chapter).</P>
 <P><B>LISTING 21.2 L21-2.ASM</B></P>
 <!-- CODE //-->
 <PRE>
@@ -50,7 +50,7 @@
 
         sub     eax,eax         ;initialize the checksum
         mov     dx,[esi]        ;first word to checksum
-        dec     ecx             ;we&#146;ll do 1 checksum outside the loop
+        dec     ecx             ;we&rsquo;ll do 1 checksum outside the loop
         jz      short ckloopend ;only 1 checksum to do
         add     esi,2           ;point to the next word to checksum
 
@@ -58,7 +58,7 @@ ckloop:
         add     al,dl           ;cycle 1 U-pipe
         mov     dl,[esi]        ;cycle 1 V-pipe
         adc     ah,dh           ;cycle 2 U-pipe
-        mov     dh,[esi&#43;1]      ;cycle 2 V-pipe
+        mov     dh,[esi+1]      ;cycle 2 V-pipe
         adc     eax,0           ;cycle 3 U-pipe
         add     esi,2           ;cycle 3 V-pipe
         dec     ecx             ;cycle 4 U-pipe
@@ -69,7 +69,7 @@ ckloopend:
         adc     eax,0
 </PRE>
 <!-- END CODE //-->
-<P>Listing 21.3 is a more sophisticated attempt to speed up the checksum calculation. Here we see a hallmark of Pentium optimization: two operations (the checksumming of the current and next pair of words) interleaved together to allow both pipes to run at near maximum capacity. Another hallmark that&#146;s apparent in Listing 21.3 is that Pentium-optimized code tends to use more registers and require more instructions than 486-optimized code. Again, note the careful mixing of byte-sized reads to avoid AGIs, register contention, and cache bank collisions, in particular the way in which the byte reads of memory are interspersed with the additions to avoid register contention, and the placement of <B>ADD ESI,4</B> to avoid an AGI.</P>
+<P>Listing 21.3 is a more sophisticated attempt to speed up the checksum calculation. Here we see a hallmark of Pentium optimization: two operations (the checksumming of the current and next pair of words) interleaved together to allow both pipes to run at near maximum capacity. Another hallmark that&rsquo;s apparent in Listing 21.3 is that Pentium-optimized code tends to use more registers and require more instructions than 486-optimized code. Again, note the careful mixing of byte-sized reads to avoid AGIs, register contention, and cache bank collisions, in particular the way in which the byte reads of memory are interspersed with the additions to avoid register contention, and the placement of <B>ADD ESI,4</B> to avoid an AGI.</P>
 <P><B>LISTING 21.3 L21-3.ASM</B></P>
 <!-- CODE //-->
 <PRE>
@@ -82,19 +82,19 @@ ckloopend:
 
         sub     eax,eax            ;initialize the checksum
         sub     edx,edx            ;prepare for later ORing
-        shr     ecx,1              ;we&#146;ll do two words per loop
+        shr     ecx,1              ;we&rsquo;ll do two words per loop
         jnc     short ckloopsetup  ;even number of words
         mov     ax,[esi]           ;do the odd word
         jz      short ckloopdone   ;no more words to checksum
         add     esi,2              ;point to the next word
 ckloopsetup:
         mov     dx,[esi]           ;load most of 1st word to
-        mov     bl,[esi&#43;2]         ; checksum (last byte loaded in loop)
+        mov     bl,[esi+2]         ; checksum (last byte loaded in loop)
         dec     ecx                ;any more dwords to checksum?
         jz    short ckloopend      ;no
 
 ckloop:
-        mov     bh,[esi&#43;3]      ;cycle 1 U-pipe
+        mov     bh,[esi+3]      ;cycle 1 U-pipe
         add     esi,4           ;cycle 1 V-pipe
         shl     ebx,16          ;cycle 2 U-pipe
                                 ;cycle 2 V-pipe idle
@@ -102,14 +102,14 @@ ckloop:
         or      ebx,edx         ;cycle 3 U-pipe
         mov     dl,[esi]        ;cycle 3 V-pipe
         add     eax,ebx         ;cycle 4 U-pipe
-        mov     bl,[esi&#43;2]      ;cycle 4 V-pipe
+        mov     bl,[esi+2]      ;cycle 4 V-pipe
         adc     eax,0           ;cycle 5 U-pipe
-        mov     dh,[esi&#43;1]      ;cycle 5 V-pipe
+        mov     dh,[esi+1]      ;cycle 5 V-pipe
         dec     ecx             ;cycle 6 U-pipe
         jnz     ckloop          ;cycle 6 V-pipe
 
 ckloopend:
-        mov     bh,[esi&#43;3]      ;checksum the last dword
+        mov     bh,[esi+3]      ;checksum the last dword
            add   ax,dx
            adc   ax,bx
            adc   ax,0
@@ -121,9 +121,9 @@ ckloopend:
 ckloopdone:
 </PRE>
 <!-- END CODE //-->
-<P>The checksum loop in Listing 21.3 takes longer than the loop in Listing 21.2, at 6 cycles versus 4 cycles for Listing 21.2&#151;but Listing 21.3 does two checksum operations in those 6 cycles, so we&#146;ve cut the time per checksum addition from 4 to 3 cycles. You might think that this small an improvement doesn&#146;t justify the additional complexity of Listing 21.3, but it is a one-third speedup, well worth it if this is a critical loop&#151;and, in general, if it isn&#146;t critical, there&#146;s no point in hand-tuning it. That&#146;s why I haven&#146;t bothered to try to optimize the non-inner-loop code in Listing 21.3; it&#146;s only executed once per checksum, so it&#146;s unlikely that a cycle or two saved there would make any real-world difference.
+<P>The checksum loop in Listing 21.3 takes longer than the loop in Listing 21.2, at 6 cycles versus 4 cycles for Listing 21.2&mdash;but Listing 21.3 does two checksum operations in those 6 cycles, so we&rsquo;ve cut the time per checksum addition from 4 to 3 cycles. You might think that this small an improvement doesn&rsquo;t justify the additional complexity of Listing 21.3, but it is a one-third speedup, well worth it if this is a critical loop&mdash;and, in general, if it isn&rsquo;t critical, there&rsquo;s no point in hand-tuning it. That&rsquo;s why I haven&rsquo;t bothered to try to optimize the non-inner-loop code in Listing 21.3; it&rsquo;s only executed once per checksum, so it&rsquo;s unlikely that a cycle or two saved there would make any real-world difference.
 </P>
-<P>Listing 21.3 could be made a bit faster yet with some loop unrolling, but that would make the code quite a bit more complex for relatively little return. Instead, why not make the code more complex and get a <I>big</I> return? Listing 21.4 does exactly that by loading one dword at a time to eliminate both the word prefix of Listing 21.1 and the multiple byte-sized accesses of Listing 21.3. An obvious drawback to this is the considerable complexity needed to ensure that the dword accesses are dword-aligned (remember that unaligned dword accesses cost three cycles each), and to handle buffer lengths that aren&#146;t dword multiples. I&#146;ve handled these problems by requiring that the buffer be dword-aligned and a dword multiple in length, which is of course not always the case in the real world. However, the point of these listings is to illustrate Pentium optimization&#151;dword issues, being non-inner-loop stuff, are solvable details that aren&#146;t germane to the main focus. In any case, the complexity and assumptions are well justified by the performance of this code: three cycles per loop, or 1.5 cycles per checksummed word, more than three times the speed of the original code. Again, note that the actual order in which the instructions are arranged is dictated by the various optimization hazards of the Pentium.</P><P><BR></P>
+<P>Listing 21.3 could be made a bit faster yet with some loop unrolling, but that would make the code quite a bit more complex for relatively little return. Instead, why not make the code more complex and get a <I>big</I> return? Listing 21.4 does exactly that by loading one dword at a time to eliminate both the word prefix of Listing 21.1 and the multiple byte-sized accesses of Listing 21.3. An obvious drawback to this is the considerable complexity needed to ensure that the dword accesses are dword-aligned (remember that unaligned dword accesses cost three cycles each), and to handle buffer lengths that aren&rsquo;t dword multiples. I&rsquo;ve handled these problems by requiring that the buffer be dword-aligned and a dword multiple in length, which is of course not always the case in the real world. However, the point of these listings is to illustrate Pentium optimization&mdash;dword issues, being non-inner-loop stuff, are solvable details that aren&rsquo;t germane to the main focus. In any case, the complexity and assumptions are well justified by the performance of this code: three cycles per loop, or 1.5 cycles per checksummed word, more than three times the speed of the original code. Again, note that the actual order in which the instructions are arranged is dictated by the various optimization hazards of the Pentium.</P><P><BR></P>
 <CENTER>
 <TABLE BORDER>
 <TR>

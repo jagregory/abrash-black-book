@@ -41,20 +41,20 @@
 <!-- CODE //-->
 <PRE>
 ; Inner loop to draw a single texture-mapped horizontal scanline in
-; Mode X, the VGA&#146;s page-flipped 256-color mode. Because adjacent
+; Mode X, the VGA&rsquo;s page-flipped 256-color mode. Because adjacent
 ; pixels lie in different planes in Mode X, an OUT must be performed
 ; to select the proper plane before drawing each pixel.
 ;
 ; At this point:
-;       AL = initial pixel&#146;s plane mask
+;       AL = initial pixel&rsquo;s plane mask
 ;       DS:BX = initial source texture pointer
-;       DX = pointer to VGA&#146;s Sequencer Data register
+;       DX = pointer to VGA&rsquo;s Sequencer Data register
 ;       SI = # of pixels to fill
 ;       ES:DI = pointer to initial destination pixel
 
 TexScanLoop:
 
-; Set the Map Mask for this pixel&#146;s plane, then draw the pixel.
+; Set the Map Mask for this pixel&rsquo;s plane, then draw the pixel.
 
         out     dx,al
         mov     ah,[bx]         ;get texture pixel
@@ -65,14 +65,14 @@ TexScanLoop:
         add     bx,[bp].lXBaseAdvance     ;advance the minimum # of pixels in X
         mov     cx,word ptr [bp].lSourceStepX
         add     word ptr [bp].lSourceX,cx ;step the source X fractional part
-        jnc     NoExtraXAdvance           ;didn&#146;t turn over; no extra advance
+        jnc     NoExtraXAdvance           ;didn&rsquo;t turn over; no extra advance
         add     bx,[bp].lXAdvanceByOne    ;did turn over; advance X one extra
 NoExtraXAdvance:
 
         add     bx,[bp].lYBaseAdvance     ;advance the minimum # of pixels in Y
         mov     cx,word ptr [bp].lSourceStepY
         add     word ptr [bp].lSourceY,cx ;step the source Y fractional part
-        jnc     NoExtraYAdvance           ;didn&#146;t turn over; no extra advance
+        jnc     NoExtraYAdvance           ;didn&rsquo;t turn over; no extra advance
         add     bx,[bp].lYAdvanceByOne    ;did turn over; advance Y one extra
 NoExtraYAdvance:
 
@@ -89,17 +89,17 @@ NoExtraYAdvance:
 
 </PRE>
 <!-- END CODE //-->
-<P>Figure 58.2 shows why this cycling is necessary. In Mode X, the page-flipped 256-color mode of the VGA, each successive pixel across a scanline is stored in a different hardware plane, and an <B>OUT</B> to the VGA&#146;s hardware is needed to select the plane being drawn to. (See Chapters 47, 48, and 49 for details.) An <B>OUT</B> instruction <I>by itself</I> takes 16 cycles (and in the neighborhood of 30 cycles in virtual-86 or non-privileged protected mode), and an <B>ROL</B> takes 2 more, for a total of 18 cycles, double John&#146;s 9 cycles, just to handle plane management. Clearly, getting plane control out of the inner loop was absolutely necessary.</P>
+<P>Figure 58.2 shows why this cycling is necessary. In Mode X, the page-flipped 256-color mode of the VGA, each successive pixel across a scanline is stored in a different hardware plane, and an <B>OUT</B> to the VGA&rsquo;s hardware is needed to select the plane being drawn to. (See Chapters 47, 48, and 49 for details.) An <B>OUT</B> instruction <I>by itself</I> takes 16 cycles (and in the neighborhood of 30 cycles in virtual-86 or non-privileged protected mode), and an <B>ROL</B> takes 2 more, for a total of 18 cycles, double John&rsquo;s 9 cycles, just to handle plane management. Clearly, getting plane control out of the inner loop was absolutely necessary.</P>
 <P><A NAME="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/58-02.jpg',406,209 )"> --><IMG SRC="images/58-02.jpg"><BR><!-- </A>
 <BR><A HREF="javascript:displayWindow('images/58-02.jpg',406,209)"> --><FONT COLOR="#000077"><B>Figure 58.2</B></FONT></A>&nbsp;&nbsp;<I>Display memory organization in Mode X.</I>
 </P>
-<P>I must confess, with some embarrassment, that at this point I threw myself into designing a solution that involved executing the texture mapping code up to four times per scanline, once for the pixels in each plane. It&#146;s hard to overstate the complexity of this approach, which involves quadrupling the normal pixel-to-pixel increments, adjusting the start value for each of the passes, and dealing with some nasty boundary cases. Make no mistake, the code was perfectly doable, and would in fact have gotten plane control out of the inner loop, but would have been very difficult to get exactly right, and would have suffered from substantial overhead.
+<P>I must confess, with some embarrassment, that at this point I threw myself into designing a solution that involved executing the texture mapping code up to four times per scanline, once for the pixels in each plane. It&rsquo;s hard to overstate the complexity of this approach, which involves quadrupling the normal pixel-to-pixel increments, adjusting the start value for each of the passes, and dealing with some nasty boundary cases. Make no mistake, the code was perfectly doable, and would in fact have gotten plane control out of the inner loop, but would have been very difficult to get exactly right, and would have suffered from substantial overhead.
 </P>
-<P>Fortunately, in the last sentence I was able to say &#147;would have,&#148; not &#147;was,&#148; because my friend Chris Hecker (checker@bix.com) came along to toss a figurative bucket of cold water on my right brain, which was evidently asleep. (Or possibly stolen by scantily-clad, attractive aliens; remember &#147;Spock&#146;s Brain&#148;?) Chris is the author of the WinG Windows game graphics package, available from Microsoft via FTP, CompuServe, or MSDN Level 2; if, like me, you were at the Game Developers Conference in April 1994, you, along with everyone else, were stunned to see Id&#146;s megahit DOOM running at full speed in a window, thanks to WinG. If you write games for a living, run, don&#146;t walk, to check WinG out!</P>
-<P>Chris listened to my proposed design for all of maybe 30 seconds, growing visibly more horrified by the moment, before he said, &#147;But why don&#146;t you just draw vertical rather than horizontal scanlines?&#148;</P>
+<P>Fortunately, in the last sentence I was able to say &ldquo;would have,&rdquo; not &ldquo;was,&rdquo; because my friend Chris Hecker (checker@bix.com) came along to toss a figurative bucket of cold water on my right brain, which was evidently asleep. (Or possibly stolen by scantily-clad, attractive aliens; remember &ldquo;Spock&rsquo;s Brain&rdquo;?) Chris is the author of the WinG Windows game graphics package, available from Microsoft via FTP, CompuServe, or MSDN Level 2; if, like me, you were at the Game Developers Conference in April 1994, you, along with everyone else, were stunned to see Id&rsquo;s megahit DOOM running at full speed in a window, thanks to WinG. If you write games for a living, run, don&rsquo;t walk, to check WinG out!</P>
+<P>Chris listened to my proposed design for all of maybe 30 seconds, growing visibly more horrified by the moment, before he said, &ldquo;But why don&rsquo;t you just draw vertical rather than horizontal scanlines?&rdquo;</P>
 <P>Why indeed?</P>
 <H4 ALIGN="LEFT"><A NAME="Heading5"></A><FONT COLOR="#000077">A 90-Degree Shift in Perspective</FONT></H4>
-<P>As I said earlier, how you look at an optimization problem defines how you&#146;ll be able to solve it. In order to boost performance, sometimes it&#146;s necessary to look at things from a different angle&#151;and for texture mapping this was literally as well as figuratively true. Chris suggested nothing more nor less than scanning out polygons at a 90-degree angle to normal, starting, say, at the left edge of the polygon, and texture-mapping vertically along each column of pixels, as shown in Figure 58.3. That way, all the pixels in each texture-mapped column would be in the same plane, and I would need to change planes only between columns&#151;outside the inner loop. A trivial change, not fundamental in any sense&#151;and yet just that one change, plus unrolling the loop, reduced the inner loop to the 22-cycles-per-pixel version shown in Listing 58.2. That&#146;s exactly twice as fast as Listing 58.1&#151;and given how incredibly slow most VGAs are at completing <B>OUT</B>s, the real-world speedup should be considerably greater still. (The fastest byte <B>OUT</B> I&#146;ve ever measured for a VGA is 29 cycles, the slowest more than 60 cycles; in the latter case, Listing 58.2 would be on the order of <I>four</I> times faster than Listing 58.1.)</P>
+<P>As I said earlier, how you look at an optimization problem defines how you&rsquo;ll be able to solve it. In order to boost performance, sometimes it&rsquo;s necessary to look at things from a different angle&mdash;and for texture mapping this was literally as well as figuratively true. Chris suggested nothing more nor less than scanning out polygons at a 90-degree angle to normal, starting, say, at the left edge of the polygon, and texture-mapping vertically along each column of pixels, as shown in Figure 58.3. That way, all the pixels in each texture-mapped column would be in the same plane, and I would need to change planes only between columns&mdash;outside the inner loop. A trivial change, not fundamental in any sense&mdash;and yet just that one change, plus unrolling the loop, reduced the inner loop to the 22-cycles-per-pixel version shown in Listing 58.2. That&rsquo;s exactly twice as fast as Listing 58.1&mdash;and given how incredibly slow most VGAs are at completing <B>OUT</B>s, the real-world speedup should be considerably greater still. (The fastest byte <B>OUT</B> I&rsquo;ve ever measured for a VGA is 29 cycles, the slowest more than 60 cycles; in the latter case, Listing 58.2 would be on the order of <I>four</I> times faster than Listing 58.1.)</P>
 <P><B>LISTING 58.2 L58-2.ASM</B></P>
 <!-- CODE //-->
 <PRE>
@@ -118,7 +118,7 @@ NoExtraYAdvance:
 
      REPTLOOP_UNROLL
 
-; Set the Map Mask for this pixel&#146;s plane, then draw the pixel.
+; Set the Map Mask for this pixel&rsquo;s plane, then draw the pixel.
 
         mov     ah,[bx]         ;get texture pixel
         mov     es:[di],ah      ;set screen pixel
@@ -128,14 +128,14 @@ NoExtraYAdvance:
         add     bx,[bp].lXBaseAdvance     ;advance the minimum # of pixels in X
         mov     cx,word ptr [bp].lSourceStepX
         add     word ptr [bp].lSourceX,cx ;step the source X fractional part
-        jnc     NoExtraXAdvance           ;didn&#146;t turn over; no extra advance
+        jnc     NoExtraXAdvance           ;didn&rsquo;t turn over; no extra advance
         add     bx,[bp].lXAdvanceByOne    ;did turn over; advance X one extra
 NoExtraXAdvance:
 
         add     bx,[bp].lYBaseAdvance     ;advance the minimum # of pixels in Y
         mov     cx,word ptr [bp].lSourceStepY
         add     word ptr [bp].lSourceY,cx ;step the source Y fractional part
-        jnc     NoExtraYAdvance           ;didn&#146;t turn over; no extra advance
+        jnc     NoExtraYAdvance           ;didn&rsquo;t turn over; no extra advance
         add     bx,[bp].lYAdvanceByOne    ;did turn over; advance Y one extra
 NoExtraYAdvance:
 

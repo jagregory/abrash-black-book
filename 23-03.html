@@ -37,16 +37,16 @@
 </CENTER>
 <P><BR></P>
 <H4 ALIGN="LEFT"><A NAME="Heading6"></A><FONT COLOR="#000077">Linear Planes and True VGA Modes</FONT></H4>
-<P>The VGA&#146;s memory is organized as four 64K planes. Each of these planes is a linear bitmap; that is, each byte from a given plane controls eight adjacent pixels on the screen, the next byte controls the next eight pixels, and so on to the end of the scan line. The next byte then controls the first eight pixels of the next scan line, and so on to the end of the screen.
+<P>The VGA&rsquo;s memory is organized as four 64K planes. Each of these planes is a linear bitmap; that is, each byte from a given plane controls eight adjacent pixels on the screen, the next byte controls the next eight pixels, and so on to the end of the scan line. The next byte then controls the first eight pixels of the next scan line, and so on to the end of the screen.
 </P>
-<P>The VGA adds a powerful twist to linear addressing; the logical width of the screen in VGA memory need not be the same as the physical width of the display. The programmer is free to define all or part of the VGA&#146;s large memory map as a logical screen of up to 4,080 pixels in width, and then use the physical screen as a window onto any part of the logical screen. What&#146;s more, a virtual screen can have any logical height up to the capacity of VGA memory. Such a virtual screen could be used to store a spreadsheet or a CAD/CAM drawing, for instance. As we will see shortly, the VGA provides excellent hardware for moving around the virtual screen; taken together, the virtual screen and the VGA&#146;s smooth panning capabilities can generate very impressive effects.</P>
-<P>All four linear planes are addressed in the same 64K memory space starting at A000:0000. Consequently, there are four bytes at any given address in VGA memory. The VGA provides special hardware to assist the CPU in manipulating all four planes, in parallel, with a single memory access, so that the programmer doesn&#146;t have to spend a great deal of time switching between planes. Astute use of this VGA hardware allows VGA software to as much as quadruple performance by processing the data for all the planes in parallel.</P>
-<P>Each memory plane provides one bit of data for each pixel. The bits for a given pixel from each of the four planes are combined into a nibble that serves as an address into the VGA&#146;s palette RAM, which maps the one of 16 colors selected by display memory into any one of 64 colors, as shown in Figure 23.1. All sixty-four mappings for all 16 colors are independently programmable. (We&#146;ll discuss the VGA&#146;s color capabilities in detail starting in Chapter 33.)</P>
-<P>The VGA BIOS supports several graphics modes (modes 4, 5, and 6) in which VGA memory appears not to be organized as four linear planes. These modes exist for CGA compatibility only, and are not true VGA graphics modes; use them when you need CGA-type operation and ignore them the rest of the time. The VGA&#146;s special features are most powerful in true VGA modes, and it is on the 16-color true-VGA modes (modes 0DH (320&#215;200), 0EH (640&#215;200), 10H (640&#215;350), and 12H (640&#215;480)) that I will concentrate in this part of the book. There is also a 256-color mode, mode 13H, that appears to be a single linear plane, but, as we will see in Chapters 31&#150;34 and 47&#150;49 of this book, that&#146;s a polite fiction&#151;and discarding that fiction gives us an opportunity to unleash the power of the VGA&#146;s hardware for vastly better performance. VGA text modes, which feature soft fonts, are another matter entirely, upon which we&#146;ll touch from time to time.</P>
+<P>The VGA adds a powerful twist to linear addressing; the logical width of the screen in VGA memory need not be the same as the physical width of the display. The programmer is free to define all or part of the VGA&rsquo;s large memory map as a logical screen of up to 4,080 pixels in width, and then use the physical screen as a window onto any part of the logical screen. What&rsquo;s more, a virtual screen can have any logical height up to the capacity of VGA memory. Such a virtual screen could be used to store a spreadsheet or a CAD/CAM drawing, for instance. As we will see shortly, the VGA provides excellent hardware for moving around the virtual screen; taken together, the virtual screen and the VGA&rsquo;s smooth panning capabilities can generate very impressive effects.</P>
+<P>All four linear planes are addressed in the same 64K memory space starting at A000:0000. Consequently, there are four bytes at any given address in VGA memory. The VGA provides special hardware to assist the CPU in manipulating all four planes, in parallel, with a single memory access, so that the programmer doesn&rsquo;t have to spend a great deal of time switching between planes. Astute use of this VGA hardware allows VGA software to as much as quadruple performance by processing the data for all the planes in parallel.</P>
+<P>Each memory plane provides one bit of data for each pixel. The bits for a given pixel from each of the four planes are combined into a nibble that serves as an address into the VGA&rsquo;s palette RAM, which maps the one of 16 colors selected by display memory into any one of 64 colors, as shown in Figure 23.1. All sixty-four mappings for all 16 colors are independently programmable. (We&rsquo;ll discuss the VGA&rsquo;s color capabilities in detail starting in Chapter 33.)</P>
+<P>The VGA BIOS supports several graphics modes (modes 4, 5, and 6) in which VGA memory appears not to be organized as four linear planes. These modes exist for CGA compatibility only, and are not true VGA graphics modes; use them when you need CGA-type operation and ignore them the rest of the time. The VGA&rsquo;s special features are most powerful in true VGA modes, and it is on the 16-color true-VGA modes (modes 0DH (320x200), 0EH (640x200), 10H (640x350), and 12H (640x480)) that I will concentrate in this part of the book. There is also a 256-color mode, mode 13H, that appears to be a single linear plane, but, as we will see in Chapters 31-34 and 47-49 of this book, that&rsquo;s a polite fiction&mdash;and discarding that fiction gives us an opportunity to unleash the power of the VGA&rsquo;s hardware for vastly better performance. VGA text modes, which feature soft fonts, are another matter entirely, upon which we&rsquo;ll touch from time to time.</P>
 <P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/23-01.jpg',409,240 )"> --><IMG SRC="images/23-01.jpg"><BR><!-- </A>
 <BR><A HREF="javascript:displayWindow('images/23-01.jpg',409,240)"> --><FONT COLOR="#000077"><B>Figure 23.1</B></FONT></A>&nbsp;&nbsp;<I>Video data from memory to pixel.</I>
 </P>
-<P>With that background out of the way, we can get on to the sample VGA program shown in Listing 23.1. I suggest you run the program before continuing, since the explanations will mean far more to you if you&#146;ve seen the features in action.
+<P>With that background out of the way, we can get on to the sample VGA program shown in Listing 23.1. I suggest you run the program before continuing, since the explanations will mean far more to you if you&rsquo;ve seen the features in action.
 </P>
 <P><B>LISTING 23.1 L23-1.ASM</B></P>
 <!-- CODE //-->
@@ -78,7 +78,7 @@ BALL_WIDTH      equ     24/8    ;width of ball in display memory bytes
 BALL_HEIGHT     equ     24      ;height of ball in scan lines
 BLANK_OFFSET    equ     PAGE1_OFFSET * 2        ;start of blank image
                                                 ; in VGA memory
-BALL_OFFSET     equ     BLANK_OFFSET &#43; (BALL_WIDTH * BALL_HEIGHT)
+BALL_OFFSET     equ     BLANK_OFFSET + (BALL_WIDTH * BALL_HEIGHT)
                                 ;start offset of ball image in VGA memory
 NUM_BALLS       equ     4       ;number of balls to animate
 ;
@@ -271,11 +271,11 @@ endif
         mov     al,GC_MODE
         out     dx,al           ;point GC Index to GC Mode register
         inc     dx              ;point to GC Data register
-        jmp     $&#43;2             ;delay to let bus settle
+        jmp     $+2             ;delay to let bus settle
         in      al,dx           ;get current state of GC Mode
         and     al,not 3        ;clear the write mode bits
         or      al,1            ;set the write mode field to 1
-        jmp     $&#43;2             ;delay to let bus settle
+        jmp     $+2             ;delay to let bus settle
         out     dx,al
 ;
 ; Set VGA offset register in words to define logical screen width.
@@ -293,49 +293,49 @@ EachBallLoop:
 ; Erase old image of ball in this page (at location from one more earlier).
 ;
         mov     si,BLANK_OFFSET ;point to blank image
-        mov     cx,[LastBallX&#43;bx]
-        mov     dx,[LastBallY&#43;bx]
+        mov     cx,[LastBallX+bx]
+        mov     dx,[LastBallY+bx]
         call    DrawBall
 ;
 ; Set new last ball location.
 ;
-        mov     ax,[BallX&#43;bx]
-        mov     [LastballX&#43;bx],ax
-        mov     ax,[BallY&#43;bx]
-        mov     [LastballY&#43;bx],ax
+        mov     ax,[BallX+bx]
+        mov     [LastballX+bx],ax
+        mov     ax,[BallY+bx]
+        mov     [LastballY+bx],ax
 ;
 ; Change the ball movement values if it's time to do so.
 ;
-        dec     [BallRep&#43;bx]           ;has current repeat factor run out?
+        dec     [BallRep+bx]           ;has current repeat factor run out?
         jnz     MoveBall
-        mov     si,[BallControl&#43;bx]    ;it's time to change movement values
+        mov     si,[BallControl+bx]    ;it's time to change movement values
         lodsw                          ;get new repeat factor from
                                        ; control string
         and     ax,ax                  ;at end of control string?
         jnz     SetNewMove
-        mov     si,[BallControlString&#43;bx]       ;reset control string
+        mov     si,[BallControlString+bx]       ;reset control string
         lodsw                           ;get new repeat factor
 SetNewMove:
-        mov     [BallRep&#43;bx],ax         ;set new movement repeat factor
+        mov     [BallRep+bx],ax         ;set new movement repeat factor
         lodsw                           ;set new x movement increment
-        mov     [BallXInc&#43;bx],ax
+        mov     [BallXInc+bx],ax
         lodsw                           ;set new y movement increment
-        mov     [BallYInc&#43;bx],ax
-        mov     [BallControl&#43;bx],si     ;save new control string pointer
+        mov     [BallYInc+bx],ax
+        mov     [BallControl+bx],si     ;save new control string pointer
 ;
 ; Move the ball.
 ;
 MoveBall:
-        mov     ax,[BallXInc&#43;bx]
-        add     [BallX&#43;bx],ax           ;move in x direction
-        mov     ax,[BallYInc&#43;bx]
-        add     [BallY&#43;bx],ax           ;move in y direction
+        mov     ax,[BallXInc+bx]
+        add     [BallX+bx],ax           ;move in x direction
+        mov     ax,[BallYInc+bx]
+        add     [BallY+bx],ax           ;move in y direction
 ;
 ; Draw ball at new location.
 ;
         mov     si,BALL_OFFSET  ;point to ball's image
-        mov     cx,[BallX&#43;bx]
-        mov     dx,[BallY&#43;bx]
+        mov     cx,[BallX+bx]
+        mov     dx,[BallY+bx]
         call    DrawBall
 ;
         dec     bx
@@ -361,7 +361,7 @@ MoveBall:
         add     ax,[PanningStartOffset]
         push    ax
         SETREG  CRTC_INDEX, START_ADDRESS_LOW
-        mov     al,byte ptr [CurrentPageOffset&#43;1]
+        mov     al,byte ptr [CurrentPageOffset+1]
         pop     ax
         mov     al,ah
         SETREG  CRTC_INDEX, START_ADDRESS_HIGH

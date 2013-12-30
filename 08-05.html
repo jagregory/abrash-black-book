@@ -81,17 +81,17 @@ void main(void) {
    int *WorkingDataPointer;
    struct BlockHeader **LastBlockPointer;
 
-   printf(&#148;ID # for which to find average: &#147;);
-   scanf(&#148;%d&#148;,&ampIDToFind);
+   printf(&rdquo;ID # for which to find average: &ldquo;);
+   scanf(&rdquo;%d&rdquo;,&ampIDToFind);
 
    /* Build an array across 5 blocks, for testing */
    /* Anchor the linked list to BaseArrayBlockPointer */
    LastBlockPointer = &ampBaseArrayBlockPointer;
    /* Create 5 blocks of varying sizes */
-   for (i = 1; i &lt 6; i&#43;&#43;) {
+   for (i = 1; i &lt 6; i++) {
       /* Try to get memory for the next block */
       if ((WorkingBlockPointer =
-          (struct BlockHeader *) malloc(sizeof(struct BlockHeader) &#43;
+          (struct BlockHeader *) malloc(sizeof(struct BlockHeader) +
            sizeof(int) * 2 * i * 10)) == NULL) {
          exit(1);
       }
@@ -100,20 +100,20 @@ void main(void) {
       /* Link the new block into the chain */
       *LastBlockPointer = WorkingBlockPointer;
       /* Point to the first data field */
-      WorkingDataPointer = (int *) ((char *)WorkingBlockPointer &#43;
+      WorkingDataPointer = (int *) ((char *)WorkingBlockPointer +
             sizeof(struct BlockHeader));
       /* Fill the data fields with ID numbers and values */
-      for (j = 0; j &lt (i * 10); j&#43;&#43;, WorkingDataPointer&#43;&#43;) {
+      for (j = 0; j &lt (i * 10); j++, WorkingDataPointer++) {
          *WorkingDataPointer = j;
-         *(WorkingDataPointer &#43; i * 10) = i * 1000 &#43; j;
+         *(WorkingDataPointer + i * 10) = i * 1000 + j;
       }
       /* Remember where to set link from this block to the next */
       LastBlockPointer = &ampWorkingBlockPointer-&gtNextBlock;
    }
-   /* Set the last block&#146;s &#147;next block&#148; pointer to NULL to indicate
+   /* Set the last block&rsquo;s &ldquo;next block&rdquo; pointer to NULL to indicate
       that there are no more blocks */
    WorkingBlockPointer-&gtNextBlock = NULL;
-   printf(&#148;Average of all elements with ID %d: %u\n&#148;,
+   printf(&rdquo;Average of all elements with ID %d: %u\n&rdquo;,
          IDToFind, FindIDAverage2(IDToFind, BaseArrayBlockPointer));
    exit(0);
 }
@@ -138,15 +138,15 @@ BLOCK_HEADER_SIZEequ4           ;Number of bytes in struct BlockHeader
         .code
         public  _FindIDAverage2
 _FindIDAverage2 proc    near
-        push    bp              ;Save caller&#146;s stack frame
+        push    bp              ;Save caller&rsquo;s stack frame
         mov     bp,sp           ;Point to our stack frame
         push    di              ;Preserve C register variables
         push    si
         mov     di,ds           ;Prepare for SCASW
         mov     es,di
         cld
-        mov     si,[bp&#43;BlockPointer]    ;Pointer to first block
-        mov     ax,[bp&#43;SearchedForID]   ;ID we&#146;re looking for
+        mov     si,[bp+BlockPointer]    ;Pointer to first block
+        mov     ax,[bp+SearchedForID]   ;ID we&rsquo;re looking for
         sub     dx,dx                       ;IDMatchSum = 0
         mov     bp,dx                       ;IDMatchCount = 0
                                             ;***stack frame no longer available***
@@ -155,44 +155,44 @@ _FindIDAverage2 proc    near
 BlockLoop:
 ; Search through all the DataElement entries within this block
 ; and accumulate data from all that match the desired ID.
-        mov     cx,[si&#43;BlockCount]
-        jcxz    DoNextBlock;Skip this block if there&#146;s no data
+        mov     cx,[si+BlockCount]
+        jcxz    DoNextBlock;Skip this block if there&rsquo;s no data
                                    ; to search through
-        mov     bx,cx              ;We&#146;ll use BX to point to the
+        mov     bx,cx              ;We&rsquo;ll use BX to point to the
         shl     bx,1               ; corresponding value entry in the
 ; case of an ID match (BX is the
 ; length in bytes of the ID array)
 ; Point to the first DataElement entry within this block.
-        lea     di,[si&#43;BLOCK_HEADER_SIZE]
+        lea     di,[si+BLOCK_HEADER_SIZE]
 IntraBlockLoop:
         repnz   scasw              ;Search for the ID
         jnz     DoNextBlock        ;No match, the block is done
-        inc     bp                 ;We have a match; IDMatchCount&#43;&#43;;
-        add     dx,[di&#43;bx-2];IDMatchSum &#43;= DataPointer-&gtValue;
+        inc     bp                 ;We have a match; IDMatchCount++;
+        add     dx,[di+bx-2];IDMatchSum += DataPointer-&gtValue;
 ; (SCASW has advanced DI 2 bytes)
         and     cx,cx              ;Is there more data to search through?
         jnz     IntraBlockLoop     ;yes
-; Point to the next block and continue if that pointer isn&#146;t NULL.
+; Point to the next block and continue if that pointer isn&rsquo;t NULL.
 DoNextBlock:
-        mov     si,[si&#43;NextBlock] ;Get pointer to the next block
+        mov     si,[si+NextBlock] ;Get pointer to the next block
         and     si,si           ;Is it a NULL pointer?
         jnz     BlockLoop       ;No, continue
 ; Calculate the average of all matches.
         sub     ax,ax           ;Assume we found no matches
         and     bp,bp
-        jz      Done            ;We didn&#146;t find any matches, return 0
+        jz      Done            ;We didn&rsquo;t find any matches, return 0
         xchg    ax,dx           ;Prepare for division
         div     bp              ;Return IDMatchSum / IDMatchCount
 Done:   pop     si              ;Restore C register variables
         pop     di
-        pop     bp              ;Restore caller&#146;s stack frame
+        pop     bp              ;Restore caller&rsquo;s stack frame
         ret
 _FindIDAverage2 ENDP
         end
 </PRE>
 <!-- END CODE //-->
-<P>The whole point of this rearrangement is to allow us to use <B>REP SCASW</B> to search through each block, and that&#146;s exactly what <B>FindIDAverage2</B> in Listing 8.6 does. The result: Listing 8.6 calculates the average about <I>three times</I> as fast as the original C implementation and more than twice as fast as Listing 8.4, heavily optimized as the latter code is.</P>
-<P>I trust you get the picture. The sort of instruction-by-instruction optimization that so many of us love to do as a kind of puzzle is fun, but compilers can do it nearly as well as you can, and in the future will surely do it better. What a compiler <I>can&#146;t</I> do is tie together the needs of the program specification on the high end and the processor on the low end, resulting in critical code that runs just about as fast as the hardware permits. The only software that can do that is located north of your sternum and slightly aft of your nose. Dust it off and put it to work&#151;and your code will never again be confused with anything by Hamilton, Joe, Frank, eynolds or Bo Donaldson and the Heywoods.</P><P><BR></P>
+<P>The whole point of this rearrangement is to allow us to use <B>REP SCASW</B> to search through each block, and that&rsquo;s exactly what <B>FindIDAverage2</B> in Listing 8.6 does. The result: Listing 8.6 calculates the average about <I>three times</I> as fast as the original C implementation and more than twice as fast as Listing 8.4, heavily optimized as the latter code is.</P>
+<P>I trust you get the picture. The sort of instruction-by-instruction optimization that so many of us love to do as a kind of puzzle is fun, but compilers can do it nearly as well as you can, and in the future will surely do it better. What a compiler <I>can&rsquo;t</I> do is tie together the needs of the program specification on the high end and the processor on the low end, resulting in critical code that runs just about as fast as the hardware permits. The only software that can do that is located north of your sternum and slightly aft of your nose. Dust it off and put it to work&mdash;and your code will never again be confused with anything by Hamilton, Joe, Frank, eynolds or Bo Donaldson and the Heywoods.</P><P><BR></P>
 <CENTER>
 <TABLE BORDER>
 <TR>

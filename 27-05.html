@@ -36,10 +36,10 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<P>Another interesting point about flipping from graphics to text and back is that the standard mode 3 character/attribute map doesn&#146;t actually take up every byte of the first 4000 bytes of planes 0 and 1. The standard mode 3 character/attribute map actually only takes up every even byte of the first 4000 in each plane; the odd bytes are left untouched. This means that only about 12K bytes actually have to be saved when going to text mode. The code in Listing 27.3 flips from graphics mode to text mode and back, saving only those 12K bytes that actually have to be saved. This code saves and restores the first 8K of plane 2 (the font area) while in graphics mode, but performs the save and restore of the 4000 bytes used for the character/attribute map while in text mode, because the characters and attributes, which are actually stored in the even bytes of planes 0 and 1, respectively, appear to be contiguous bytes in memory in text mode and so are easily saved as a single block.
+<P>Another interesting point about flipping from graphics to text and back is that the standard mode 3 character/attribute map doesn&rsquo;t actually take up every byte of the first 4000 bytes of planes 0 and 1. The standard mode 3 character/attribute map actually only takes up every even byte of the first 4000 in each plane; the odd bytes are left untouched. This means that only about 12K bytes actually have to be saved when going to text mode. The code in Listing 27.3 flips from graphics mode to text mode and back, saving only those 12K bytes that actually have to be saved. This code saves and restores the first 8K of plane 2 (the font area) while in graphics mode, but performs the save and restore of the 4000 bytes used for the character/attribute map while in text mode, because the characters and attributes, which are actually stored in the even bytes of planes 0 and 1, respectively, appear to be contiguous bytes in memory in text mode and so are easily saved as a single block.
 </P>
-<P>Explaining why only every other byte of planes 0 and 1 is used in text mode and why characters and attributes appear to be contiguous bytes when they are actually in different planes is a large part of the explanation I&#146;m not going to go into now. One bit of fallout from this, however, is that if you flip to text mode and preserve the graphics bitmap using the mechanism illustrated in Listing 27.3, you shouldn&#146;t write to any text page other than page 0 (that is, don&#146;t write to any offset in display memory above 3999 in text mode) or alter the Page Select bit in the Miscellaneous Output register (3C2H) while in text mode. In order to allow completely unfettered access to text pages, it would be necessary to save every byte in the first 32K of each of planes 0 and 1. (On the other hand, this <I>would</I> allow up to 16 text screens to be stored simultaneously, with any one displayable instantly.) Moreover, if any fonts other than the default font are loaded, the portions of plane 2 that those particular fonts are loaded into would have to be saved, up to a maximum of all 64K of plane 2. In the worst case, a full 128K would have to be saved in order to preserve all the memory potentially used by text mode.</P>
-<P>As I said, Phil Coleman&#146;s question is an interesting one, and I&#146;ve only touched on the intriguing possibilities arising from the various configurations of display memory in VGA graphics and text modes. Right now, though, we&#146;ve still got the basics of the remarkably complex (but rewarding!) VGA to cover.</P>
+<P>Explaining why only every other byte of planes 0 and 1 is used in text mode and why characters and attributes appear to be contiguous bytes when they are actually in different planes is a large part of the explanation I&rsquo;m not going to go into now. One bit of fallout from this, however, is that if you flip to text mode and preserve the graphics bitmap using the mechanism illustrated in Listing 27.3, you shouldn&rsquo;t write to any text page other than page 0 (that is, don&rsquo;t write to any offset in display memory above 3999 in text mode) or alter the Page Select bit in the Miscellaneous Output register (3C2H) while in text mode. In order to allow completely unfettered access to text pages, it would be necessary to save every byte in the first 32K of each of planes 0 and 1. (On the other hand, this <I>would</I> allow up to 16 text screens to be stored simultaneously, with any one displayable instantly.) Moreover, if any fonts other than the default font are loaded, the portions of plane 2 that those particular fonts are loaded into would have to be saved, up to a maximum of all 64K of plane 2. In the worst case, a full 128K would have to be saved in order to preserve all the memory potentially used by text mode.</P>
+<P>As I said, Phil Coleman&rsquo;s question is an interesting one, and I&rsquo;ve only touched on the intriguing possibilities arising from the various configurations of display memory in VGA graphics and text modes. Right now, though, we&rsquo;ve still got the basics of the remarkably complex (but rewarding!) VGA to cover.</P>
 <P><B>LISTING 27.3 L27-3.ASM</B></P>
 <!-- CODE //-->
 <PRE>
@@ -50,7 +50,7 @@
 ;
 ; By Michael Abrash
 ;
-Stack   segment para stack &#145;STACK&#146;
+Stack   segment para stack &lsquo;STACK&rsquo;
         db      512 dup(0)
 Stack   ends
 
@@ -61,19 +61,19 @@ MAP_MASK        equ     2       ;index of Map Mask register
 GC_INDEX        equ     3ceh    ;Graphics Controller Index register
 READ_MAP        equ     4       ;index of Read Map register
 
-Data    segment para common &#145;DATA&#146;
+Data    segment para common &lsquo;DATA&rsquo;
 
 GStrikeAnyKeyMsg0       label   byte
-        db      0dh, 0ah, &#145;Graphics mode&#146;, 0dh, 0ah
-        db      &#145;Strike any key to continue...&#146;, 0dh, 0ah, &#145;$&#146;
+        db      0dh, 0ah, &lsquo;Graphics mode&rsquo;, 0dh, 0ah
+        db      &lsquo;Strike any key to continue...&rsquo;, 0dh, 0ah, &lsquo;$&rsquo;
 
 GStrikeAnyKeyMsg1       label   byte
-        db      0dh, 0ah, &#145;Graphics mode again&#146;, 0dh, 0ah
-        db      &#145;Strike any key to continue...&#146;, 0dh, 0ah, &#145;$&#146;
+        db      0dh, 0ah, &lsquo;Graphics mode again&rsquo;, 0dh, 0ah
+        db      &lsquo;Strike any key to continue...&rsquo;, 0dh, 0ah, &lsquo;$&rsquo;
 
 TStrikeAnyKeyMsg        label   byte
-        db      0dh, 0ah, &#145;Text mode&#146;, 0dh, 0ah
-        db      &#145;Strike any key to continue...&#146;, 0dh, 0ah, &#145;$&#146;
+        db      0dh, 0ah, &lsquo;Text mode&rsquo;, 0dh, 0ah
+        db      &lsquo;Strike any key to continue...&rsquo;, 0dh, 0ah, &lsquo;$&rsquo;
 
 Plane2Save      db      2000h dup (?)   ;save area for plane 2 data
                                         ; where font gets loaded
@@ -82,11 +82,11 @@ CharAttSave     db      4000 dup (?)    ;save area for memory wiped
                                         ; data in text mode
 Data    ends
 
-Code    segment para public &#145;CODE&#146;
+Code    segment para public &lsquo;CODE&rsquo;
         assume  cs:Code, ds:Data
 Start   proc    near
         mov     ax,10h
-        int     10h             ;select video mode 10h (640&#215;350)
+        int     10h             ;select video mode 10h (640x350)
 ;
 ; Fill the graphics bit-map with a colored pattern.
 ;
@@ -114,7 +114,7 @@ FillBitMap:
         shl     ah,1
         loop    FillBitMap
 ;
-; Put up &#147;strike any key&#148; message.
+; Put up &ldquo;strike any key&rdquo; message.
 ;
         mov     ax,Data
         mov     ds,ax
@@ -160,13 +160,13 @@ FillBitMap:
         mov     cx,4000/2       ;length of one text screen in words
         rep movsw
 ;
-; Fill the text mode screen with dots and put up &#147;strike any key&#148;
+; Fill the text mode screen with dots and put up &ldquo;strike any key&rdquo;
 ; message.
 ;
         mov     ax,TEXT_SEGMENT
         mov     es,ax
         sub     di,di
-        mov     al,&#145;.&#146;          ;fill character
+        mov     al,&lsquo;.&rsquo;          ;fill character
         mov     ah,7            ;fill attribute
         mov     cx,4000/2       ;length of one text screen in words
         rep stosw
@@ -215,7 +215,7 @@ FillBitMap:
         mov     cx,2000h/2      ;restore 8K (length of default font)
         rep movsw
 ;
-; Put up &#147;strike any key&#148; message.
+; Put up &ldquo;strike any key&rdquo; message.
 ;
         mov     ax,Data
         mov     ds,ax

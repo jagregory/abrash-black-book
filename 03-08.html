@@ -36,15 +36,15 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<P>Moreover, because it uses an undocumented feature, the timer-stop approach could conceivably cause erratic 8253 operation, which could in turn seriously affect your computer&#146;s operation until the next reboot. In non-8253-compatible systems, I&#146;ve observed not only wildly incorrect timing results, but also failure of a diskette drive to operate properly after the long-period Zen timer with <B>PS2</B> set to 0 has run, so be alert for signs of trouble if you do set <B>PS2</B> to 0.</P>
-<P>Rebooting should clear up any timer-related problems of the sort described above. (This gives us another reason to reboot at the end of each code-timing session.) You should <I>immediately</I> reboot and set the <B>PS2</B> equate to 1 if you get erratic or obviously incorrect results with the long-period Zen timer when <B>PS2</B> is set to 0. If you want to set <B>PS2</B> to 0, it would be a good idea to time a few of the listings in this book with <B>PS2</B> set first to 1 and then to 0, to make sure that the results match. If they&#146;re consistently different, you should set <B>PS2</B> to 1.</P>
+<P>Moreover, because it uses an undocumented feature, the timer-stop approach could conceivably cause erratic 8253 operation, which could in turn seriously affect your computer&rsquo;s operation until the next reboot. In non-8253-compatible systems, I&rsquo;ve observed not only wildly incorrect timing results, but also failure of a diskette drive to operate properly after the long-period Zen timer with <B>PS2</B> set to 0 has run, so be alert for signs of trouble if you do set <B>PS2</B> to 0.</P>
+<P>Rebooting should clear up any timer-related problems of the sort described above. (This gives us another reason to reboot at the end of each code-timing session.) You should <I>immediately</I> reboot and set the <B>PS2</B> equate to 1 if you get erratic or obviously incorrect results with the long-period Zen timer when <B>PS2</B> is set to 0. If you want to set <B>PS2</B> to 0, it would be a good idea to time a few of the listings in this book with <B>PS2</B> set first to 1 and then to 0, to make sure that the results match. If they&rsquo;re consistently different, you should set <B>PS2</B> to 1.</P>
 <P>While the the non-PS/2 version is more dangerous than the PS/2 version, it also produces more accurate results when it does work. If you have a non-PS/2 PC-compatible computer, the choice between the two timing approaches is yours.</P>
-<P>If you do leave the <B>PS2</B> equate at 1 in Listing 3.5, you should repeat each code-timing run several times before relying on the results to be accurate to more than 54  ms, since variations may result from the possible lack of synchronization between the timer 0 count and the BIOS time-of-day count. In fact, it&#146;s a good idea to time code more than once no matter which version of the long-period Zen timer you&#146;re using, since interrupts, which must be enabled in order for the long-period timer to work properly, may occur at any time and can alter execution time substantially.</P>
-<P>Finally, please note that the <I>precision</I> Zen timer works perfectly well on both PS/2 and non-PS/2 computers. The PS/2 and 8253 considerations we&#146;ve just discussed apply <I>only</I> to the longZen timer.</P>
+<P>If you do leave the <B>PS2</B> equate at 1 in Listing 3.5, you should repeat each code-timing run several times before relying on the results to be accurate to more than 54  ms, since variations may result from the possible lack of synchronization between the timer 0 count and the BIOS time-of-day count. In fact, it&rsquo;s a good idea to time code more than once no matter which version of the long-period Zen timer you&rsquo;re using, since interrupts, which must be enabled in order for the long-period timer to work properly, may occur at any time and can alter execution time substantially.</P>
+<P>Finally, please note that the <I>precision</I> Zen timer works perfectly well on both PS/2 and non-PS/2 computers. The PS/2 and 8253 considerations we&rsquo;ve just discussed apply <I>only</I> to the longZen timer.</P>
 <H3><A NAME="Heading14"></A><FONT COLOR="#000077">Example Use of the Long-Period Zen Timer</FONT></H3>
 <P>The long-period Zen timer has exactly the same calling interface as the precision Zen timer, and can be used in place of the precision Zen timer simply by linking it to the code to be timed in place of linking the precision timer code. Whenever the precision Zen timer informs you that the code being timed takes too long for the precision timer to handle, all you have to do is link in the long-period timer instead.
 </P>
-<P>Listing 3.6 shows a test-bed program for the long-period Zen timer. While this program is similar to Listing 3.2, it&#146;s worth noting that Listing 3.6 waits for a few seconds before calling <B>ZTimerOn</B>, thereby allowing any pending keyboard interrupts to be processed. Since interrupts must be left on in order to time periods longer than 54  ms, the interrupts generated by keystrokes (including the upstroke of the Enter key press that starts the program)&#151;or any other interrupts, for that matter&#151;could incorrectly inflate the time recorded by the long-period Zen timer. In light of this, resist the temptation to type ahead, move the mouse, or the like while the long-period Zen timer is timing.</P>
+<P>Listing 3.6 shows a test-bed program for the long-period Zen timer. While this program is similar to Listing 3.2, it&rsquo;s worth noting that Listing 3.6 waits for a few seconds before calling <B>ZTimerOn</B>, thereby allowing any pending keyboard interrupts to be processed. Since interrupts must be left on in order to time periods longer than 54  ms, the interrupts generated by keystrokes (including the upstroke of the Enter key press that starts the program)&mdash;or any other interrupts, for that matter&mdash;could incorrectly inflate the time recorded by the long-period Zen timer. In light of this, resist the temptation to type ahead, move the mouse, or the like while the long-period Zen timer is timing.</P>
 <P><B>LISTING 3.6 LZTEST.ASM</B></P>
 <!-- CODE //-->
 <PRE>
@@ -58,11 +58,11 @@
 ;
 ; By Michael Abrash
 ;
-mystack   segment    para stack &#145;STACK&#146;
+mystack   segment    para stack &lsquo;STACK&rsquo;
      db         512 dup(?)
 mystack    ends
 ;
-Code  segment   para public &#145;CODE&#146;
+Code  segment   para public &lsquo;CODE&rsquo;
       assume    cs:Code, ds:Code
       extrn ZTimerOn:near, ZTimerOff:near, ZTimerReport:near
 Startproc   near
@@ -88,7 +88,7 @@ DelayLoop:
      add   dh,60              ;yes, a minute must have turned over,
                               ; so add one minute
 CheckDelayTime:
-     sub   dh,bh                 ;get time that&#146;s passed
+     sub   dh,bh                 ;get time that&rsquo;s passed
      cmp   dh,7                  ;has it been more than 6 seconds yet?
      jb    DelayLoop             ;not yet
 ;

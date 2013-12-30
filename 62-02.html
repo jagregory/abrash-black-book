@@ -45,8 +45,8 @@
    Full source code for the BSP-based renderer, and for the
    accompanying BSP compiler, may be downloaded from
    ftp.idsoftware.com/mikeab, in the file ddjbsp2.zip.
-   Tested with VC&#43;&#43; 2.0 running on Windows NT 3.5. */
-#define FIXEDPOINT(x)   ((FIXEDPOINT)(((long)x)*((long)0&#215;10000)))
+   Tested with VC++ 2.0 running on Windows NT 3.5. */
+#define FIXEDPOINT(x)   ((FIXEDPOINT)(((long)x)*((long)0x10000)))
 #define FIXTOINT(x)     ((int)(x &gt;&gt; 16))
 #define ANGLE(x)        ((long)x)
 #define STANDARD_SPEED  (FIXEDPOINT(20))
@@ -78,7 +78,7 @@ typedef struct _NODE {
    FIXEDPOINT  screenytopstart, screenybottomstart;
    FIXEDPOINT  screenytopend, screenybottomend;
 } NODE, *PNODE;
-char * pDIB;            // pointer to DIB section we&#146;ll draw into
+char * pDIB;            // pointer to DIB section we&rsquo;ll draw into
 HBITMAP hDIBSection;    // handle of DIB section
 HPALETTE hpalDIB;
 int iteration = 0, WorldIsRunning = 1;
@@ -106,7 +106,7 @@ int WallFacingViewer(NODE * pwall)
 /*  // equivalent C code
    if (( ((pwall-&gt;pstartvertex-&gt;viewx &gt;&gt; 16) *
          ((pwall-&gt;pendvertex-&gt;viewz -
-          pwall-&gt;pstartvertex-&gt;viewz) &gt;&gt; 16)) &#43;
+          pwall-&gt;pstartvertex-&gt;viewz) &gt;&gt; 16)) +
          ((pwall-&gt;pstartvertex-&gt;viewz &gt;&gt; 16) *
           ((pwall-&gt;pstartvertex-&gt;viewx -
             pwall-&gt;pendvertex-&gt;viewx) &gt;&gt; 16)) )
@@ -138,13 +138,13 @@ WFVDone:
 void UpdateViewPos()
 {
    if (currentspeed != 0) {
-      currentlocation.x &#43;= FixedMul(currentdirection.x,
+      currentlocation.x += FixedMul(currentdirection.x,
                                     currentspeed);
       if (currentlocation.x &lt;= WORLD_MIN_X)
          currentlocation.x = WORLD_MIN_X;
       if (currentlocation.x &gt;= WORLD_MAX_X)
          currentlocation.x = WORLD_MAX_X - 1;
-      currentlocation.z &#43;= FixedMul(currentdirection.z,
+      currentlocation.z += FixedMul(currentdirection.z,
                                     currentspeed);
       if (currentlocation.z &lt;= WORLD_MIN_Z)
          currentlocation.z = WORLD_MIN_Z;
@@ -152,7 +152,7 @@ void UpdateViewPos()
          currentlocation.z = WORLD_MAX_Z - 1;
    }
    if (currentYSpeed != 0) {
-      fxViewerY &#43;= currentYSpeed;
+      fxViewerY += currentYSpeed;
       if (fxViewerY &lt;= WORLD_MIN_Y)
          fxViewerY = WORLD_MIN_Y;
       if (fxViewerY &gt;= WORLD_MAX_Y)
@@ -166,18 +166,18 @@ void TransformVertices()
    FIXEDPOINT tempx, tempz;
    int vertex;
    pvertex = pvertexlist;
-   for (vertex = 0; vertex &lt; numvertices; vertex&#43;&#43;) {
+   for (vertex = 0; vertex &lt; numvertices; vertex++) {
       // Translate the vertex according to the viewpoint
       tempx = pvertex-&gt;x - currentlocation.x;
       tempz = pvertex-&gt;z - currentlocation.z;
       // Rotate the vertex so viewpoint is looking down z axis
       pvertex-&gt;viewx = FixedMul(FixedMul(tempx,
-                                         currentorientation.z) &#43;
+                                         currentorientation.z) +
                    FixedMul(tempz, -currentorientation.x),
                    FIXEDPOINT(PROJECTION_RATIO));
-      pvertex-&gt;viewz = FixedMul(tempx, currentorientation.x) &#43;
+      pvertex-&gt;viewz = FixedMul(tempx, currentorientation.x) +
                    FixedMul(tempz, currentorientation.z);
-      pvertex&#43;&#43;;
+      pvertex++;
    }
 }
 // 3-D clip all walls. If any part of each wall is still visible,
@@ -192,8 +192,8 @@ void ClipWalls()
    VERTEX *pstartvertex, *pendvertex;
    VERTEX *pextravertex = pextravertexlist;
    pwall = pnodelist;
-   for (wall = 0; wall &lt; numnodes; wall&#43;&#43;) {
-      // Assume the wall won&#146;t be visible
+   for (wall = 0; wall &lt; numnodes; wall++) {
+      // Assume the wall won&rsquo;t be visible
       pwall-&gt;isVisible = 0;
       // Generate the wall endpoints, accounting for t values and
       // clipping
@@ -205,13 +205,13 @@ void ClipWalls()
       if (pwall-&gt;tstart == FIXEDPOINT(0))
          tempstartz = pstartvertex-&gt;viewz;
       else
-         tempstartz = pstartvertex-&gt;viewz &#43;
+         tempstartz = pstartvertex-&gt;viewz +
                FixedMul((pendvertex-&gt;viewz-pstartvertex-&gt;viewz),
                pwall-&gt;tstart);
       if (pwall-&gt;tend == FIXEDPOINT(1))
          tempendz = pendvertex-&gt;viewz;
       else
-         tempendz = pstartvertex-&gt;viewz &#43;
+         tempendz = pstartvertex-&gt;viewz +
                FixedMul((pendvertex-&gt;viewz-pstartvertex-&gt;viewz),
                pwall-&gt;tend);
       // Clip to the front plane
@@ -225,7 +225,7 @@ void ClipWalls()
             pwall-&gt;clippedtend =
                   FixedDiv(pstartvertex-&gt;viewz - FrontClipPlane,
                         pstartvertex-&gt;viewz-pendvertex-&gt;viewz);
-            tempendz = pstartvertex-&gt;viewz &#43;
+            tempendz = pstartvertex-&gt;viewz +
                FixedMul((pendvertex-&gt;viewz-pstartvertex-&gt;viewz),
                pwall-&gt;clippedtend);
          }
@@ -236,7 +236,7 @@ void ClipWalls()
             pwall-&gt;clippedtstart =
                   FixedDiv(FrontClipPlane - pstartvertex-&gt;viewz,
                         pendvertex-&gt;viewz-pstartvertex-&gt;viewz);
-            tempstartz = pstartvertex-&gt;viewz &#43;
+            tempstartz = pstartvertex-&gt;viewz +
                FixedMul((pendvertex-&gt;viewz-pstartvertex-&gt;viewz),
                pwall-&gt;clippedtstart);
          } else {
@@ -247,13 +247,13 @@ void ClipWalls()
       if (pwall-&gt;clippedtstart == FIXEDPOINT(0))
          tempstartx = pstartvertex-&gt;viewx;
       else
-         tempstartx = pstartvertex-&gt;viewx &#43;
+         tempstartx = pstartvertex-&gt;viewx +
                FixedMul((pendvertex-&gt;viewx-pstartvertex-&gt;viewx),
                pwall-&gt;clippedtstart);
       if (pwall-&gt;clippedtend == FIXEDPOINT(1))
          tempendx = pendvertex-&gt;viewx;
       else
-         tempendx = pstartvertex-&gt;viewx &#43;
+         tempendx = pstartvertex-&gt;viewx +
                FixedMul((pendvertex-&gt;viewx-pstartvertex-&gt;viewx),
                pwall-&gt;clippedtend);
       // Clip in x as needed
@@ -264,7 +264,7 @@ void ClipWalls()
          // side as the start point
          if (((tempstartx&gt;tempstartz) &amp&amp (tempendx&gt;tempendz)) ||
             ((tempstartx&lt;-tempstartz) &amp&amp (tempendx&lt;-tempendz)))
-            // Fully clipped&#151;trivially reject
+            // Fully clipped&mdash;trivially reject
             goto NextWall;
          // Clip the start point
          if (tempstartx &gt; tempstartz) {
@@ -272,8 +272,8 @@ void ClipWalls()
             pwall-&gt;clippedtstart =
                FixedDiv(pstartvertex-&gt;viewx-pstartvertex-&gt;viewz,
                       pendvertex-&gt;viewz-pstartvertex-&gt;viewz -
-                      pendvertex-&gt;viewx&#43;pstartvertex-&gt;viewx);
-            tempstartx = pstartvertex-&gt;viewx &#43;
+                      pendvertex-&gt;viewx+pstartvertex-&gt;viewx);
+            tempstartx = pstartvertex-&gt;viewx +
                FixedMul((pendvertex-&gt;viewx-pstartvertex-&gt;viewx),
                        pwall-&gt;clippedtstart);
             tempstartz = tempstartx;
@@ -281,9 +281,9 @@ void ClipWalls()
             // Clip the start point on the left side
             pwall-&gt;clippedtstart =
                FixedDiv(-pstartvertex-&gt;viewx-pstartvertex-&gt;viewz,
-                      pendvertex-&gt;viewx&#43;pendvertex-&gt;viewz -
+                      pendvertex-&gt;viewx+pendvertex-&gt;viewz -
                       pstartvertex-&gt;viewz-pstartvertex-&gt;viewx);
-            tempstartx = pstartvertex-&gt;viewx &#43;
+            tempstartx = pstartvertex-&gt;viewx +
                FixedMul((pendvertex-&gt;viewx-pstartvertex-&gt;viewx),
                        pwall-&gt;clippedtstart);
             tempstartz = -tempstartx;
@@ -297,8 +297,8 @@ void ClipWalls()
             pwall-&gt;clippedtend =
                FixedDiv(pstartvertex-&gt;viewx-pstartvertex-&gt;viewz,
                       pendvertex-&gt;viewz-pstartvertex-&gt;viewz -
-                      pendvertex-&gt;viewx&#43;pstartvertex-&gt;viewx);
-            tempendx = pstartvertex-&gt;viewx &#43;
+                      pendvertex-&gt;viewx+pstartvertex-&gt;viewx);
+            tempendx = pstartvertex-&gt;viewx +
                FixedMul((pendvertex-&gt;viewx-pstartvertex-&gt;viewx),
                        pwall-&gt;clippedtend);
             tempendz = tempendx;
@@ -306,9 +306,9 @@ void ClipWalls()
             // Clip the end point on the left side
             pwall-&gt;clippedtend =
                FixedDiv(-pstartvertex-&gt;viewx-pstartvertex-&gt;viewz,
-                      pendvertex-&gt;viewx&#43;pendvertex-&gt;viewz -
+                      pendvertex-&gt;viewx+pendvertex-&gt;viewz -
                       pstartvertex-&gt;viewz-pstartvertex-&gt;viewx);
-            tempendx = pstartvertex-&gt;viewx &#43;
+            tempendx = pstartvertex-&gt;viewx +
                FixedMul((pendvertex-&gt;viewx-pstartvertex-&gt;viewx),
                        pwall-&gt;clippedtend);
             tempendz = -tempendx;
@@ -334,37 +334,37 @@ void ClipWalls()
             // Outside view triangle, trivially clipped
             goto NextWall;
          }
-         // Partially clipped in Y; we&#146;ll do Y clipping at
+         // Partially clipped in Y; we&rsquo;ll do Y clipping at
          // drawing time
       }
       // The wall is visible; mark it as such and project it.
-      // &#43;1 on scaling because of bottom/right exclusive polygon
+      // +1 on scaling because of bottom/right exclusive polygon
       // filling
       pwall-&gt;isVisible = 1;
       pwall-&gt;screenxstart =
-         (FixedMulDiv(tempstartx, fxHalfDIBWidth&#43;FIXEDPOINT(0.5),
-            tempstartz) &#43; fxHalfDIBWidth &#43; FIXEDPOINT(0.5));
+         (FixedMulDiv(tempstartx, fxHalfDIBWidth+FIXEDPOINT(0.5),
+            tempstartz) + fxHalfDIBWidth + FIXEDPOINT(0.5));
       pwall-&gt;screenytopstart =
             (FixedMulDiv(tempstartwalltop,
-            fxHalfDIBHeight &#43; FIXEDPOINT(0.5), tempstartz) &#43;
-            fxHalfDIBHeight &#43; FIXEDPOINT(0.5));
+            fxHalfDIBHeight + FIXEDPOINT(0.5), tempstartz) +
+            fxHalfDIBHeight + FIXEDPOINT(0.5));
       pwall-&gt;screenybottomstart =
             (FixedMulDiv(tempstartwallbottom,
-            fxHalfDIBHeight &#43; FIXEDPOINT(0.5), tempstartz) &#43;
-            fxHalfDIBHeight &#43; FIXEDPOINT(0.5));
+            fxHalfDIBHeight + FIXEDPOINT(0.5), tempstartz) +
+            fxHalfDIBHeight + FIXEDPOINT(0.5));
       pwall-&gt;screenxend =
-            (FixedMulDiv(tempendx, fxHalfDIBWidth&#43;FIXEDPOINT(0.5),
-            tempendz) &#43; fxHalfDIBWidth &#43; FIXEDPOINT(0.5));
+            (FixedMulDiv(tempendx, fxHalfDIBWidth+FIXEDPOINT(0.5),
+            tempendz) + fxHalfDIBWidth + FIXEDPOINT(0.5));
       pwall-&gt;screenytopend =
             (FixedMulDiv(tempendwalltop,
-            fxHalfDIBHeight &#43; FIXEDPOINT(0.5), tempendz) &#43;
-            fxHalfDIBHeight &#43; FIXEDPOINT(0.5));
+            fxHalfDIBHeight + FIXEDPOINT(0.5), tempendz) +
+            fxHalfDIBHeight + FIXEDPOINT(0.5));
       pwall-&gt;screenybottomend =
             (FixedMulDiv(tempendwallbottom,
-            fxHalfDIBHeight &#43; FIXEDPOINT(0.5), tempendz) &#43;
-            fxHalfDIBHeight &#43; FIXEDPOINT(0.5));
+            fxHalfDIBHeight + FIXEDPOINT(0.5), tempendz) +
+            fxHalfDIBHeight + FIXEDPOINT(0.5));
 NextWall:
-      pwall&#43;&#43;;
+      pwall++;
    }
 }
 // Walk the tree back to front; backface cull whenever possible,
@@ -377,29 +377,29 @@ void DrawWallsBackToFront()
    POINT2INT apoint[4];
    pwall = pnodelist;
    pendingnodes[0] = (NODE *)NULL;
-   pendingstackptr = pendingnodes &#43; 1;
+   pendingstackptr = pendingnodes + 1;
    for (;;) {
       for (;;) {
          // Descend as far as possible toward the back,
          // remembering the nodes we pass through on the way.
          // Figure whether this wall is facing frontward or
          // backward; do in viewspace because non-visible walls
-         // aren&#146;t projected into screenspace, and we need to
+         // aren&rsquo;t projected into screenspace, and we need to
          // traverse all walls in the BSP tree, visible or not,
          // in order to find all the visible walls
          if (WallFacingViewer(pwall)) {
-            // We&#146;re on the forward side of this wall, do the back
+            // We&rsquo;re on the forward side of this wall, do the back
             // children first
             pFarChildren = pwall-&gt;backtree;
          } else {
-            // We&#146;re on the back side of this wall, do the front
+            // We&rsquo;re on the back side of this wall, do the front
             // children first
             pFarChildren = pwall-&gt;fronttree;
          }
          if (pFarChildren == NULL)
             break;
          *pendingstackptr = pwall;
-         pendingstackptr&#43;&#43;;
+         pendingstackptr++;
          pwall = pFarChildren;
       }
       for (;;) {
@@ -419,21 +419,21 @@ void DrawWallsBackToFront()
                FillConvexPolygon(apoint, pwall-&gt;color);
             }
          }
-         // If there&#146;s a near tree from this node, draw it;
+         // If there&rsquo;s a near tree from this node, draw it;
          // otherwise, work back up to the last-pushed parent
-         // node of the branch we just finished; we&#146;re done if
+         // node of the branch we just finished; we&rsquo;re done if
          // there are no pending parent nodes.
          // Figure whether this wall is facing frontward or
          // backward; do in viewspace because non-visible walls
-         // aren&#146;t projected into screenspace, and we need to
+         // aren&rsquo;t projected into screenspace, and we need to
             // traverse all walls in the BSP tree, visible or not,
             // in order to find all the visible walls
          if (WallFacingViewer(pwall)) {
-            // We&#146;re on the forward side of this wall, do the
+            // We&rsquo;re on the forward side of this wall, do the
             // front children now
             pNearChildren = pwall-&gt;fronttree;
          } else {
-            // We&#146;re on the back side of this wall, do the back
+            // We&rsquo;re on the back side of this wall, do the back
             // children now
             pNearChildren = pwall-&gt;backtree;
          }
@@ -441,7 +441,7 @@ void DrawWallsBackToFront()
          if (pNearChildren != NULL)
             goto WalkNearTree;
          // Pop the last-pushed wall
-         pendingstackptr&#151;;
+         pendingstackptr&mdash;;
          pwall = *pendingstackptr;
          if (pwall == NULL)
             goto NodesDone;
@@ -464,7 +464,7 @@ void UpdateWorld()
    TransformVertices();
    ClipWalls();
    DrawWallsBackToFront();
-   // We&#146;ve drawn the frame; copy it to the screen
+   // We&rsquo;ve drawn the frame; copy it to the screen
    hdcScreen = GetDC(hwndOutput);
    holdpal = SelectPalette(hdcScreen, hpalDIB, FALSE);
    RealizePalette(hdcScreen);
@@ -476,7 +476,7 @@ void UpdateWorld()
    ReleaseDC(hwndOutput, hdcScreen);
    SelectObject(hdcDIBSection, holdbitmap);
    ReleaseDC(hwndOutput, hdcDIBSection);
-   iteration&#43;&#43;;
+   iteration++;
 }
 </PRE>
 <!-- END CODE //-->

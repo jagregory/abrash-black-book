@@ -48,21 +48,21 @@
        .data
 ; Sample string to search through.
 SampleStringlabelbyte
-        db     &#145;This is a sample string of a long enough length &#146;
-        db     &#145;so that raw searching speed can outweigh any &#146;
-        db     &#145;extra set-up time that may be required.&#146;,0
+        db     &lsquo;This is a sample string of a long enough length &rsquo;
+        db     &lsquo;so that raw searching speed can outweigh any &rsquo;
+        db     &lsquo;extra set-up time that may be required.&rsquo;,0
 SAMPLE_STRING_LENGTH  equ  $-SampleString
 
 ; User prompt.
-Prompt  db        &#145;Enter character to search for:$&#146;
+Prompt  db        &lsquo;Enter character to search for:$&rsquo;
 
 ; Result status messages.
 ByteFoundMsg          db      0dh,0ah
-                      db      &#145;Specified byte found.&#146;,0dh,0ah,&#145;$&#146;
+                      db      &lsquo;Specified byte found.&rsquo;,0dh,0ah,&lsquo;$&rsquo;
 ZeroByteFoundMsg db   0dh,0ah
-                      db      &#145;Zero byte encountered.&#146;, 0dh, 0ah, &#145;$&#146;
+                      db      &lsquo;Zero byte encountered.&rsquo;, 0dh, 0ah, &lsquo;$&rsquo;
 NoByteFoundMsg        db      0dh,0ah
-                      db      &#145;Buffer exhausted with no match.&#146;, 0dh, 0ah, &#145;$&#146;
+                      db      &lsquo;Buffer exhausted with no match.&rsquo;, 0dh, 0ah, &lsquo;$&rsquo;
 
 ; Table of initial, possibly partial loop entry points for
 ; SearchMaxLength.
@@ -87,12 +87,12 @@ Start proc  near
       call  SearchMaxLength               ;search the buffer
       mov   dx,offset ByteFoundMsg        ;assume we found the byte
       jc    PrintStatus      ;we did find the byte
-                             ;we didn&#146;t find the byte, figure out
+                             ;we didn&rsquo;t find the byte, figure out
                              ;whether we found a zero byte or
                              ;ran out of buffer
       mov   dx,offset NoByteFoundMsg
-                             ;assume we didn&#146;t find a zero byte
-      jcxz  PrintStatus      ;we didn&#146;t find a zero byte
+                             ;assume we didn&rsquo;t find a zero byte
+      jcxz  PrintStatus      ;we didn&rsquo;t find a zero byte
       mov   dx,offset ZeroByteFoundMsg  ;we found a zero byte
 PrintStatus:
       mov   ah,9             ;DOS print string function
@@ -134,42 +134,42 @@ SearchMaxLengthLoop:
 SearchMaxLengthEntry4:
      lodsb                    ;get the next byte
      cmp   al,ah              ;is this the byte we want?
-     jz    ByteFound          ;yes, we&#146;re done with success
+     jz    ByteFound          ;yes, we&rsquo;re done with success
      and   al,al              ;is this the terminating 0 byte?
-     jz    ByteNotFound       ;yes, we&#146;re done with failure
+     jz    ByteNotFound       ;yes, we&rsquo;re done with failure
 SearchMaxLengthEntry3:
      lodsb                    ;get the next byte
      cmp   al,ah              ;is this the byte we want?
-     jz    ByteFound          ;yes, we&#146;re done with success
+     jz    ByteFound          ;yes, we&rsquo;re done with success
      and   al,al              ;is this the terminating 0 byte?
-     jz    ByteNotFound       ;yes, we&#146;re done with failure
+     jz    ByteNotFound       ;yes, we&rsquo;re done with failure
 SearchMaxLengthEntry2:
      lodsb                    ;get the next byte
      cmp   al,ah              ;is this the byte we want?
-     jz    ByteFound          ;yes, we&#146;re done with success
+     jz    ByteFound          ;yes, we&rsquo;re done with success
      and   al,al              ;is this the terminating 0 byte?
-     jz    ByteNotFound       ;yes, we&#146;re done with failure
+     jz    ByteNotFound       ;yes, we&rsquo;re done with failure
 SearchMaxLengthEntry1:
      lodsb                          ;get the next byte
      cmp    al,ah                   ;is this the byte we want?
-     jz     ByteFound               ;yes, we&#146;re done with success
+     jz     ByteFound               ;yes, we&rsquo;re done with success
      and    al,al                   ;is this the terminating 0 byte?
-     jz     ByteNotFound            ;yes, we&#146;re done with failure
-     loop   SearchMaxLengthLoop     ;it&#146;s neither, so check the next
+     jz     ByteNotFound            ;yes, we&rsquo;re done with failure
+     loop   SearchMaxLengthLoop     ;it&rsquo;s neither, so check the next
                                     ; four bytes, if any
 ByteNotFound:
-     clc                      ;return &#147;not found&#148; status
+     clc                      ;return &ldquo;not found&rdquo; status
 ret
 ByteFound:
      dec    si                ;point back to the location at which
                               ; we found the searched-for byte
-     stc                      ;return &#147;found&#148; status
+     stc                      ;return &ldquo;found&rdquo; status
      ret
 SearchMaxLengthendp
      end    Start
 </PRE>
 <!-- END CODE //-->
-<P>How much difference? Listing 7.2 runs in 121 &#181;s&#151;40 percent faster than Listing 7.1, even though Listing 7.2 still uses <B>LOOP</B> rather than <B>DEC CX/JNZ.</B> (The loop in Listing 7.2 could be unrolled further, too; it&#146;s just a question of how much more memory you want to trade for ever-decreasing performance benefits.) That&#146;s typical of local optimization; it won&#146;t often yield the order-of-magnitude improvements that algorithmic improvements can produce, but it can get you a critical 50 percent or 100 percent improvement when you&#146;ve exhausted all other avenues.</P>
+<P>How much difference? Listing 7.2 runs in 121 &micro;s&mdash;40 percent faster than Listing 7.1, even though Listing 7.2 still uses <B>LOOP</B> rather than <B>DEC CX/JNZ.</B> (The loop in Listing 7.2 could be unrolled further, too; it&rsquo;s just a question of how much more memory you want to trade for ever-decreasing performance benefits.) That&rsquo;s typical of local optimization; it won&rsquo;t often yield the order-of-magnitude improvements that algorithmic improvements can produce, but it can get you a critical 50 percent or 100 percent improvement when you&rsquo;ve exhausted all other avenues.</P>
 <TABLE WIDTH="100%"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="5%"><IMG SRC="images/i.jpg"><TD ALIGN="LEFT" VALIGN="TOP" WIDTH="95%"><SMALL><I>The point is simply this: You can gain far more by stepping back a bit and thinking of the fastest overall way for the CPU to perform a task than you can by saving a cycle here or there using different instructions. Try to think at the level of sequences of instructions rather than individual instructions, and learn to treat x86 instructions as building blocks with unique characteristics rather than as instructions dedicated to specific tasks.</I></SMALL>
 </TABLE>
 <P><BR></P>

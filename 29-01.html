@@ -39,20 +39,20 @@
 <H2><A NAME="Heading1"></A><FONT COLOR="#000077">Chapter 29<BR>Saving Screens and Other VGA Mysteries
 </FONT></H2>
 <H3><A NAME="Heading2"></A><FONT COLOR="#000077">Useful Nuggets from the VGA Zen File</FONT></H3>
-<P>There are a number of VGA graphics topics that aren&#146;t quite involved enough to warrant their own chapters, yet still cause a fair amount of programmer headscratching&#151;and thus deserve treatment somewhere in this book. This is the place, and during the course of this chapter we&#146;ll touch on saving and restoring 16-color EGA and VGA screens, the 16-out-of-64 colors issue, and techniques involved in reading and writing VGA control registers.
+<P>There are a number of VGA graphics topics that aren&rsquo;t quite involved enough to warrant their own chapters, yet still cause a fair amount of programmer headscratching&mdash;and thus deserve treatment somewhere in this book. This is the place, and during the course of this chapter we&rsquo;ll touch on saving and restoring 16-color EGA and VGA screens, the 16-out-of-64 colors issue, and techniques involved in reading and writing VGA control registers.
 </P>
-<P>That&#146;s a lot of ground to cover, so let&#146;s get started!</P>
+<P>That&rsquo;s a lot of ground to cover, so let&rsquo;s get started!</P>
 <H3><A NAME="Heading3"></A><FONT COLOR="#000077">Saving and Restoring EGA and VGA Screens</FONT></H3>
-<P>The memory architectures of EGAs and VGAs are similar enough to treat both together in this regard. The basic principle for saving EGA and VGA 16-color graphics screens is astonishingly simple: Write each plane to disk separately. Let&#146;s take a look at how this works in the EGA&#146;s hi-res mode 10H, which provides 16 colors at 640&#215;350.
+<P>The memory architectures of EGAs and VGAs are similar enough to treat both together in this regard. The basic principle for saving EGA and VGA 16-color graphics screens is astonishingly simple: Write each plane to disk separately. Let&rsquo;s take a look at how this works in the EGA&rsquo;s hi-res mode 10H, which provides 16 colors at 640x350.
 </P>
-<P>All we need do is enable reads from plane 0 and write the 28,000 bytes of plane 0 that are displayed in mode 10H to disk, then enable reads from plane 1 and write the displayed portion of that plane to disk, and so on for planes 2 and 3. The result is a file that&#146;s 112,000 (28,000 * 4) bytes long, with the planes stored as four distinct 28,000-byte blocks, as shown in Figure 29.1.</P>
-<P>The program shown later on in Listing 29.1 does just what I&#146;ve described here, putting the screen into mode 10H, putting up some bittext so there is something to save, and creating the 112K file SNAPSHOT.SCR, which contains the visible portion of the mode 10H frame buffer.</P>
+<P>All we need do is enable reads from plane 0 and write the 28,000 bytes of plane 0 that are displayed in mode 10H to disk, then enable reads from plane 1 and write the displayed portion of that plane to disk, and so on for planes 2 and 3. The result is a file that&rsquo;s 112,000 (28,000 * 4) bytes long, with the planes stored as four distinct 28,000-byte blocks, as shown in Figure 29.1.</P>
+<P>The program shown later on in Listing 29.1 does just what I&rsquo;ve described here, putting the screen into mode 10H, putting up some bittext so there is something to save, and creating the 112K file SNAPSHOT.SCR, which contains the visible portion of the mode 10H frame buffer.</P>
 <P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/29-01.jpg',406,303 )"> --><IMG SRC="images/29-01.jpg"><BR><!-- </A>
 <BR><A HREF="javascript:displayWindow('images/29-01.jpg',406,303)"> --><FONT COLOR="#000077"><B>Figure 29.1</B></FONT></A>&nbsp;&nbsp;<I>Saving EGA/VGA display memory.</I>
 </P>
-<P>The only part of Listing 29.1 that&#146;s even remotely tricky is the use of the Read Map register (Graphics Controller register 4) to make each of the four planes of display memory readable in turn. The same code is used to write 28,000 bytes of display memory to disk four times, and 28,000 bytes of memory starting at A000:0000 are written to disk each time; however, a different plane is read each time, thanks to the changing setting of the Read Map register. (If this is unclear, refer back to Figure 29.1; you may also want to reread Chapter 28 to brush up on the operation of the Read Map register in particular and reading EGA and VGA memory in general.)
+<P>The only part of Listing 29.1 that&rsquo;s even remotely tricky is the use of the Read Map register (Graphics Controller register 4) to make each of the four planes of display memory readable in turn. The same code is used to write 28,000 bytes of display memory to disk four times, and 28,000 bytes of memory starting at A000:0000 are written to disk each time; however, a different plane is read each time, thanks to the changing setting of the Read Map register. (If this is unclear, refer back to Figure 29.1; you may also want to reread Chapter 28 to brush up on the operation of the Read Map register in particular and reading EGA and VGA memory in general.)
 </P>
-<P>Of course, we&#146;ll want the ability to restore what we&#146;ve saved, and Listing 29.2 does this. Listing 29.2 reverses the action of Listing 29.1, selecting mode 10H and then loading 28,000 bytes from SNAPSHOT.SCR into each plane of display memory. The Map Mask register (Sequence Controller register 2) is used to select the plane to be written to. If your computer is slow enough, you can see the colors of the text change as each plane is loaded when Listing 29.2 runs. Note that Listing 29.2 does not itself draw any text, but rather simply loads the bit map saved by Listing 29.1 back into the mode 10H frame buffer.</P>
+<P>Of course, we&rsquo;ll want the ability to restore what we&rsquo;ve saved, and Listing 29.2 does this. Listing 29.2 reverses the action of Listing 29.1, selecting mode 10H and then loading 28,000 bytes from SNAPSHOT.SCR into each plane of display memory. The Map Mask register (Sequence Controller register 2) is used to select the plane to be written to. If your computer is slow enough, you can see the colors of the text change as each plane is loaded when Listing 29.2 runs. Note that Listing 29.2 does not itself draw any text, but rather simply loads the bit map saved by Listing 29.1 back into the mode 10H frame buffer.</P>
 <P><B>LISTING 29.1 L29-1.ASM</B></P>
 <!-- CODE //-->
 <PRE>
@@ -65,20 +65,20 @@ READ_MAP                    equ   4                ;Read Map register index in G
 DISPLAYED_SCREEN_SIZE       equ  (640/8)*350       ;# of displayed bytes per plane in a
                                                    ; hi-res graphics screen
 ;
-stack      segment para stack &#145;STACK&#146;
+stack      segment para stack &lsquo;STACK&rsquo;
                  db                  512 dup (?)
 stack      ends
 ;
-Data       segment     word &#145;DATA&#146;
-SampleText       db    &#145;This is bit-mapped text, drawn in hi-res &#146;
-                 db    &#145;EGA graphics mode 10h.&#146;, 0dh, 0ah, 0ah
-                 db    &#145;Saving the screen (including this text)...&#146;
-                 db    0dh, 0ah, &#145;$&#146;
-Filename         db    &#145;SNAPSHOT.SCR&#146;,0   ;name of file we&#146;re saving to
-ErrMsg1          db    &#145;*** Couldn&#146;t open SNAPSHOT.SCR ***&#146;,0dh,0ah,&#145;$&#146;
-ErrMsg2          db    &#145;*** Error writing to SNAPSHOT.SCR ***&#146;,0dh,0ah,&#145;$&#146;
-WaitKeyMsg       db    0dh, 0ah, &#145;Done. Press any key to end...&#146;,0dh,0ah,&#145;$&#146;
-Handle           dw    ?                           ;handle of file we&#146;re saving to
+Data       segment     word &lsquo;DATA&rsquo;
+SampleText       db    &lsquo;This is bit-mapped text, drawn in hi-res &rsquo;
+                 db    &lsquo;EGA graphics mode 10h.&rsquo;, 0dh, 0ah, 0ah
+                 db    &lsquo;Saving the screen (including this text)...&rsquo;
+                 db    0dh, 0ah, &lsquo;$&rsquo;
+Filename         db    &lsquo;SNAPSHOT.SCR&rsquo;,0   ;name of file we&rsquo;re saving to
+ErrMsg1          db    &lsquo;*** Couldn&rsquo;t open SNAPSHOT.SCR ***&rsquo;,0dh,0ah,&lsquo;$&rsquo;
+ErrMsg2          db    &lsquo;*** Error writing to SNAPSHOT.SCR ***&rsquo;,0dh,0ah,&lsquo;$&rsquo;
+WaitKeyMsg       db    0dh, 0ah, &lsquo;Done. Press any key to end...&rsquo;,0dh,0ah,&lsquo;$&rsquo;
+Handle           dw    ?                           ;handle of file we&rsquo;re saving to
 Plane            db    ?                           ;plane being read
 Data  ends
 ;
@@ -94,7 +94,7 @@ Start          proc     near
                                    ; hi-res graphics mode
                int      10h        ;BIOS video interrupt
 ;
-; Put up some text, so the screen isn&#146;t empty.
+; Put up some text, so the screen isn&rsquo;t empty.
 ;
                mov      ah,9       ;DOS print string function
                mov      dx,offset SampleText
@@ -113,7 +113,7 @@ Start          proc     near
                sub      cx,cx         ;make it a normal file
                int      21h
                mov      [Handle],ax   ;save the handle
-               jnc      SaveTheScreen ;we&#146;re ready to save if no error
+               jnc      SaveTheScreen ;we&rsquo;re ready to save if no error
                mov      ah,9          ;DOS print string function
                mov      dx,offset ErrMsg1
                int      21h           ;notify of the error

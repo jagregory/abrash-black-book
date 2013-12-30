@@ -68,28 +68,28 @@ ColorTable label byte
 X=0
        REPT 64
        db    0,63-X,0
-X=X&#43;1
+X=X+1
        ENDM
 
 ; The next 64 entries are increasingly strong pure blue.
 X=0
        REPT 64
        db   0,0,X
-X=X&#43;1
+X=X+1
        ENDM
 
 ; The next 64 entries fade through violet to red.
 X=0
        REPT 64
        db   X,0,63-X
-X=X&#43;1
+X=X+1
        ENDM
 
 ; The last 64 entries are increasingly dim pure red.
 X=0
        REPT 64
        db   63-X,0,0
-X=X&#43;1
+X=X+1
 ENDM
 
        .code
@@ -167,7 +167,7 @@ callFillBlock;draw it
                                    ; one line to the next)
        mov  dx,160                 ;width of rectangle
        mov  si,100                 ;height of rectangle
-       mov  di,199*320&#43;319     ;start at (319,199)
+       mov  di,199*320+319     ;start at (319,199)
        mov  bp,-1                  ;draw right to left (distance from
                                    ; one column to the next)
 callFillBlock;draw it
@@ -216,10 +216,10 @@ FillVertLoop:
         endStart
 </PRE>
 <!-- END CODE //-->
-<P>Note the jagged lines at the corners of the screen when you run Listing 33.1. This shows how coarse the 320&#215;200 resolution of mode 13H actually is. Now look at how smoothly the colors blend together in the rest of the screen. This is an excellent example of how careful color selection can boost perceived resolution, as for example when drawing antialiased lines, as discussed in Chapter 42.
+<P>Note the jagged lines at the corners of the screen when you run Listing 33.1. This shows how coarse the 320x200 resolution of mode 13H actually is. Now look at how smoothly the colors blend together in the rest of the screen. This is an excellent example of how careful color selection can boost perceived resolution, as for example when drawing antialiased lines, as discussed in Chapter 42.
 </P>
-<P>Finally, note that the border of the screen turns green when Listing 33.1 is run. Listing 33.1 reprograms DAC register 0 to green, and the border attribute (in the Overscan register) happens to be 0, so the border comes out green even though we haven&#146;t touched the Overscan register. Normally, attribute 0 is black, causing the border to vanish, but the border is an 8-bit attribute that has to pass through the DAC just like any other pixel value, and it&#146;s just as subject to DAC color translation as the pixels controlled by display memory. However, the border color is not affected by the palette RAM or by the Color Select register.</P>
-<P>In this chapter, we traced the surprisingly complex path by which the VGA turns a pixel value into RGB analog signals headed for the monitor. In the next chapter and Chapter A on the companion CD-ROM, we&#146;ll look at some more code that plays with VGA color. We&#146;ll explore in more detail the process of reading and writing the palette RAM and DAC registers, and we&#146;ll observe color paging and cycling in action.</P><P><BR></P>
+<P>Finally, note that the border of the screen turns green when Listing 33.1 is run. Listing 33.1 reprograms DAC register 0 to green, and the border attribute (in the Overscan register) happens to be 0, so the border comes out green even though we haven&rsquo;t touched the Overscan register. Normally, attribute 0 is black, causing the border to vanish, but the border is an 8-bit attribute that has to pass through the DAC just like any other pixel value, and it&rsquo;s just as subject to DAC color translation as the pixels controlled by display memory. However, the border color is not affected by the palette RAM or by the Color Select register.</P>
+<P>In this chapter, we traced the surprisingly complex path by which the VGA turns a pixel value into RGB analog signals headed for the monitor. In the next chapter and Chapter A on the companion CD-ROM, we&rsquo;ll look at some more code that plays with VGA color. We&rsquo;ll explore in more detail the process of reading and writing the palette RAM and DAC registers, and we&rsquo;ll observe color paging and cycling in action.</P><P><BR></P>
 <CENTER>
 <TABLE BORDER>
 <TR>

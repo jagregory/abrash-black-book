@@ -48,7 +48,7 @@ rem * Batch file LZTIME.BAT, which builds and runs the            *
 rem * long-period Zen timer program LZTEST.EXE to time the code   *
 rem * named as the command-line parameter. Listing 3.5 must be    *
 rem * named LZTIMER.ASM, and Listing 3.6 must be named            *
-rem * LZTEST.ASM. To time the code in LST3-8, you&#146;d type the      *
+rem * LZTEST.ASM. To time the code in LST3-8, you&rsquo;d type the      *
 rem * DOS command:                                                *
 rem *                                                             *
 rem * lztime lst3-8                                               *
@@ -80,7 +80,7 @@ rem
 :ckexist
 if exist %1 goto docopy
 echo ***************************************************************
-echo * The specified file, &#147;%1,&#148; doesn&#146;t exist.                    *
+echo * The specified file, &ldquo;%1,&rdquo; doesn&rsquo;t exist.                    *
 echo ***************************************************************
 goto end
 rem
@@ -91,7 +91,7 @@ masm lztest;
 if errorlevel 1 goto errorend
 masm lztimer;
 if errorlevel 1 goto errorend
-link lztest&#43;lztimer;
+link lztest+lztimer;
 if errorlevel 1 goto errorend
 lztest
 goto end
@@ -143,14 +143,14 @@ callZTimerOff
 lztime lst3-8.asm
 </PRE>
 <!-- END CODE SNIP //-->
-<P>the result is 72,544 &#181;s, or about 3.63 &#181;s per load of AL from memory. This is just slightly longer than the time per load of AL measured by the precision Zen timer, as we would expect given that interrupts are left enabled by the long-period Zen timer. The extra fraction of a microsecond measured per <B>MOV</B> reflects the time required to execute the BIOS code that handles the 18.2 timer interrupts that occur each second.</P>
+<P>the result is 72,544 &micro;s, or about 3.63 &micro;s per load of AL from memory. This is just slightly longer than the time per load of AL measured by the precision Zen timer, as we would expect given that interrupts are left enabled by the long-period Zen timer. The extra fraction of a microsecond measured per <B>MOV</B> reflects the time required to execute the BIOS code that handles the 18.2 timer interrupts that occur each second.</P>
 <P>Note that the command can take as much as 10 minutes to finish on a slow PC if you are using MASM, with most of that time spent assembling Listing 3.8. Why? Because MASM is notoriously slow at assembling <B>REPT</B> blocks, and the block in Listing 3.8 is repeated 20,000 times.</P>
 <H3><A NAME="Heading15"></A><FONT COLOR="#000077">Using the Zen Timer from C</FONT></H3>
-<P>The Zen timer can be used to measure code performance when programming in C&#151;but not right out of the box. As presented earlier, the timer is designed to be called from assembly language; some relatively minor modifications are required before the <B>ZTimerOn</B> (start timer), <B>ZTimerOff</B> (stop timer), and <B>ZTimerReport</B> (display timing results) routines can be called from C. There are two separate cases to be dealt with here: small code model and large; I&#146;ll tackle the simpler one, the small code model, first.</P>
-<P>Altering the Zen timer for linking to a small code model C program involves the following steps: <B> C</B> hange <B>ZTimerOn</B> to <B>_ZTimerOn</B>, change <B>ZTimerOff</B> to <B>_ZTimerOff</B>, change <B>ZTimerReport</B> to <B>_ZTimerReport</B>, and change <B>Code</B> to <B>_TEXT</B> . Figure 3.2 shows the line numbers and new states of all lines from Listing 3.1 that must be changed. These changes convert the code to use C-style external label names and the small model C code segment. (In C<SMALL>&#43;&#43;</SMALL>, use the &#147;C&#148; specifier, as in</P>
+<P>The Zen timer can be used to measure code performance when programming in C&mdash;but not right out of the box. As presented earlier, the timer is designed to be called from assembly language; some relatively minor modifications are required before the <B>ZTimerOn</B> (start timer), <B>ZTimerOff</B> (stop timer), and <B>ZTimerReport</B> (display timing results) routines can be called from C. There are two separate cases to be dealt with here: small code model and large; I&rsquo;ll tackle the simpler one, the small code model, first.</P>
+<P>Altering the Zen timer for linking to a small code model C program involves the following steps: <B> C</B> hange <B>ZTimerOn</B> to <B>_ZTimerOn</B>, change <B>ZTimerOff</B> to <B>_ZTimerOff</B>, change <B>ZTimerReport</B> to <B>_ZTimerReport</B>, and change <B>Code</B> to <B>_TEXT</B> . Figure 3.2 shows the line numbers and new states of all lines from Listing 3.1 that must be changed. These changes convert the code to use C-style external label names and the small model C code segment. (In C<SMALL>++</SMALL>, use the &ldquo;C&rdquo; specifier, as in</P>
 <!-- CODE SNIP //-->
 <PRE>
-extern &#147;C&#148; ZTimerOn(void);
+extern &ldquo;C&rdquo; ZTimerOn(void);
 </PRE>
 <!-- END CODE SNIP //-->
 <P><BR></P>

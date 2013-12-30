@@ -40,7 +40,7 @@
 <!-- CODE //-->
 <PRE>
 ; Draws all pixels in the list of horizontal lines passed in, in
-; Mode X, the VGA&#146;s undocumented 320x240 256-color mode. Clips to
+; Mode X, the VGA&rsquo;s undocumented 320x240 256-color mode. Clips to
 ; the rectangle specified by (ClipMinX,ClipMinY),(ClipMaxX,ClipMaxY).
 ; Draws to the page specified by CurrentPageBase.
 ; C near-callable as:
@@ -85,9 +85,9 @@ ToFillDone:
         public _DrawHorizontalLineList
         align   2
 _DrawHorizontalLineList proc
-        push    bp                 ;preserve caller&#146;s stack frame
+        push    bp                 ;preserve caller&rsquo;s stack frame
         mov     bp,sp              ;point to our stack frame
-        push    si                 ;preserve caller&#146;s register variables
+        push    si                 ;preserve caller&rsquo;s register variables
         push    di
         cld                        ;make string instructions inc pointers
         mov     dx,SC_INDEX
@@ -95,13 +95,13 @@ _DrawHorizontalLineList proc
         out     dx,al              ;point SC Index to the Map Mask
         mov     ax,SCREEN_SEGMENT
         mov     es,ax              ;point ES to display memory for REP STOS
-        mov     si,[bp&#43;HLineListPtr] ;point to the line list
-        mov     bx,[si&#43;HLinePtr]     ;point to the XStart/XEnd descriptor
+        mov     si,[bp+HLineListPtr] ;point to the line list
+        mov     bx,[si+HLinePtr]     ;point to the XStart/XEnd descriptor
                                    ; for the first (top) horizontal line
-        mov     cx,[si&#43;YStart] ;first scan line to draw
-        mov     si,[si&#43;Lngth]  ;# of scan lines to draw
+        mov     cx,[si+YStart] ;first scan line to draw
+        mov     si,[si+Lngth]  ;# of scan lines to draw
         cmp     si,0               ;are there any lines to draw?
-        jle     ToFillDone         ;no, so we&#146;re done
+        jle     ToFillDone         ;no, so we&rsquo;re done
         cmp     cx,[_ClipMinY]     ;clipped at top?
         jge     MinYNotClipped     ;no
         neg     cx                 ;yes, discard however many lines are
@@ -114,7 +114,7 @@ _DrawHorizontalLineList proc
         mov     cx,[_ClipMinY]     ;start at the top clip line
 MinYNotClipped:
         mov     dx,si
-        add     dx,cx              ;bottom row to draw &#43; 1
+        add     dx,cx              ;bottom row to draw + 1
         cmp     dx,[_ClipMaxY]     ;clipped at bottom?
         jle     MaxYNotClipped     ;no
         sub     dx,[_ClipMaxY]     ;# of lines to clip off the bottom
@@ -125,18 +125,18 @@ MaxYNotClipped:
         mul     cx                 ; scan line on which to draw
         add     ax,[_CurrentPageBase] ;offset of first line
         mov     dx,ax              ;ES:DX points to first scan line to draw
-        mov     ah,byte ptr [bp&#43;Color] ;color with which to fill
+        mov     ah,byte ptr [bp+Color] ;color with which to fill
 FillLoop:
         push    bx                 ;remember line list location
         push    dx                 ;remember offset of start of line
         push    si                 ;remember # of lines to draw
-        mov     di,[bx&#43;XStart] ;left edge of fill on this line
+        mov     di,[bx+XStart] ;left edge of fill on this line
         cmp     di,[_ClipMinX]     ;clipped to left edge?
         jge     MinXNotClipped     ;no
         mov     di,[_ClipMinX]     ;yes, clip to the left edge
 MinXNotClipped:
         mov     si,di
-        mov     cx,[bx&#43;XEnd]   ;right edge of fill
+        mov     cx,[bx+XEnd]   ;right edge of fill
         cmp     cx,[_ClipMaxX]     ;clipped to right edge?
         jl      MaxXNotClipped     ;no
         mov     cx,[_ClipMaxX]     ;yes, clip to the right edge
@@ -157,18 +157,18 @@ MaxXNotClipped:
         sub     cx,dx
         shr     cx,1
         shr     cx,1               ;# of addresses across rectangle to fill - 1
-        jnz     MasksSet           ;there&#146;s more than one byte to draw
-        and     bh,bl              ;there&#146;s only one byte, so combine the left
+        jnz     MasksSet           ;there&rsquo;s more than one byte to draw
+        and     bh,bl              ;there&rsquo;s only one byte, so combine the left
                                    ; and right edge clip masks
 MasksSet:
-        mov     dx,SC_INDEX&#43;1  ;already points to the Map Mask reg
+        mov     dx,SC_INDEX+1  ;already points to the Map Mask reg
 FillRowsLoop:
         mov     al,bh              ;put left-edge clip mask in AL
         out     dx,al              ;set the left-edge plane (clip) mask
         mov     al,ah              ;put color in AL
         stosb                      ;draw the left edge
         dec     cx                 ;count off left edge byte
-        js      FillLoopBottom     ;that&#146;s the only byte
+        js      FillLoopBottom     ;that&rsquo;s the only byte
         jz      DoRightEdge        ;there are only two bytes
         mov     al,00fh            ;middle addresses are drawn 4 pixels at a pop
         out     dx,al              ;set the middle pixel mask to no clip
@@ -189,9 +189,9 @@ LineFillDone:
         dec     si                 ;count down lines
         jnz     FillLoop
 FillDone:
-        pop     di                 ;restore caller&#146;s register variables
+        pop     di                 ;restore caller&rsquo;s register variables
         pop     si
-        pop     bp                 ;restore caller&#146;s stack frame
+        pop     bp                 ;restore caller&rsquo;s stack frame
         ret
 _DrawHorizontalLineList endp
         end

@@ -39,9 +39,9 @@
 <P><B>LISTING 35.3 L35-3.ASM</B></P>
 <!-- CODE //-->
 <PRE>
-; Fast assembler implementation of Bresenham&#146;s line-drawing algorithm
+; Fast assembler implementation of Bresenham&rsquo;s line-drawing algorithm
 ; for the EGA and VGA. Works in modes 0Eh, 0Fh, 10h, and 12h.
-; Borland C<SMALL>&#43&#43;</SMALL> near-callable.
+; Borland C<SMALL>++</SMALL> near-callable.
 ; Bit mask accumulation technique when |DeltaX| &gt;= |DeltaY|
 ;  suggested by Jim Mackraz.
 ;
@@ -109,7 +109,7 @@ LINE1   macro   MOVE_LEFT
         local   MoveToNextByte, ResetBitMaskAccumulator
         mov     cx,bx                   ;# of pixels in line
         jcxz    Line1End                ;done if there are no more pixels
-                                        ; (there&#146;s always at least the one pixel
+                                        ; (there&rsquo;s always at least the one pixel
                                         ; at the start location)
         shl     si,1                    ;DeltaY * 2
         mov     bp,si                   ;error term
@@ -122,7 +122,7 @@ LINE1   macro   MOVE_LEFT
                                         ; for the initial pixel
 LineLoop:
 ;
-; See if it&#146;s time to advance the Y coordinate yet.
+; See if it&rsquo;s time to advance the Y coordinate yet.
 ;
         and     bp,bp                   ;see if error term is negative
         js      MoveXCoord              ;yes, stay at the same Y coordinate
@@ -136,7 +136,7 @@ LineLoop:
                                         ;load latches and write pixels, with bit mask
                                         ; preserving other latched bits. Because
                                         ; set/reset is enabled for all planes, the
-                                        ; value written actually doesn&#146;t matter
+                                        ; value written actually doesn&rsquo;t matter
         add     di,EVGA_SCREEN_WIDTH_IN_BYTES   ;increment Y coordinate
         add     bp,si                   ;adjust error term back down
 ;
@@ -148,7 +148,7 @@ if MOVE_LEFT
 else
         ror     ah,1                    ;move pixel mask 1 pixel to the right
 endif
-        jnc     ResetBitMaskAccumulator ;didn&#146;t wrap to next byte
+        jnc     ResetBitMaskAccumulator ;didn&rsquo;t wrap to next byte
         jmp     short MoveToNextByte    ;did wrap to next byte
 ;
 ; Move pixel mask one pixel (either right or left, depending
@@ -169,7 +169,7 @@ endif
                                         ;load latches and write pixels, with bit mask
                                         ; preserving other latched bits. Because
                                         ; set/reset is enabled for all planes, the
-                                        ; value written actually doesn&#146;t matter
+                                        ; value written actually doesn&rsquo;t matter
 MoveToNextByte:
 if MOVE_LEFT
         dec     di                      ;next pixel is in byte to left
@@ -191,7 +191,7 @@ Line1End:
                                         ;load latches and write pixels, with bit mask
                                         ; preserving other latched bits. Because
                                         ; set/reset is enabled for all planes, the
-                                        ; value written actually doesn&#146;t matter
+                                        ; value written actually doesn&rsquo;t matter
         endm
 
 ;
@@ -225,10 +225,10 @@ LINE2   macro   MOVE_LEFT
                                        ;load latches and write pixel, with bit mask
                                        ; preserving other latched bits. Because
                                        ; set/reset is enabled for all planes, the
-                                       ; value written actually doesn&#146;t matter
+                                       ; value written actually doesn&rsquo;t matter
 LineLoop:
 ;
-; See if it&#146;s time to advance the X coordinate yet.
+; See if it&rsquo;s time to advance the X coordinate yet.
 ;
         and     bp,bp                  ;see if error term is negative
         jns     ETermAction            ;no, advance X coordinate
@@ -260,7 +260,7 @@ MoveYCoord:
                                        ;load latches and write pixel, with bit mask
                                        ; preserving other latched bits. Because
                                        ; set/reset is enabled for all planes, the
-                                       ; value written actually doesn&#146;t matter
+                                       ; value written actually doesn&rsquo;t matter
 ;
         loop    LineLoop
 Line2End:
@@ -290,7 +290,7 @@ _EVGALine       proc    near
         mov     al,SET_RESET_INDEX
         out     dx,al
         inc     dx
-        mov     al,[bp&#43;Color]
+        mov     al,[bp+Color]
         out     dx,al
         dec     dx
         mov     al,ENABLE_SET_RESET_INDEX
@@ -301,20 +301,20 @@ _EVGALine       proc    near
 ;
 ; Get DeltaY.
 ;
-        mov     si,[bp&#43;Y1]                 ;line Y start
-        mov     ax,[bp&#43;Y0]                 ;line Y end, used later in
+        mov     si,[bp+Y1]                 ;line Y start
+        mov     ax,[bp+Y0]                 ;line Y end, used later in
                                                ;calculating the start address
         sub     si,ax                          ;calculate DeltaY
-        jns     CalcStartAddress               ;if positive, we&#146;re set
+        jns     CalcStartAddress               ;if positive, we&rsquo;re set
 ;
-; DeltaY is negative &#151; swap coordinates so we&#146;re always working
+; DeltaY is negative &mdash; swap coordinates so we&rsquo;re always working
 ; with a positive DeltaY.
 ;
-        mov     ax,[bp&#43;Y1]                 ;set line start to Y1, for use
+        mov     ax,[bp+Y1]                 ;set line start to Y1, for use
                                                ; in calculating the start address
-        mov     dx,[bp&#43;X0]
-        xchg    dx,[bp&#43;X1]
-        mov     [bp&#43;X0],dx                 ;swap X coordinates
+        mov     dx,[bp+X0]
+        xchg    dx,[bp+X1]
+        mov     [bp+X0],dx                 ;swap X coordinates
         neg     si                             ;convert to positive DeltaY
 ;
 ; Calculate the starting address in display memory of the line.
@@ -329,7 +329,7 @@ CalcStartAddress:
         shl     ax,1                   ;Y0 * 32
         shl     ax,1                   ;Y0 * 64
         add     di,ax                  ;Y0 * 80
-        mov     dx,[bp&#43;X0]
+        mov     dx,[bp+X0]
         mov     cl,dl                  ;set aside lower 3 bits of column for
         and     cl,7                   ; pixel masking
         shr     dx,1
@@ -351,8 +351,8 @@ CalcStartAddress:
 ;
 ; Calculate DeltaX.
 ;
-        mov     bx,[bp&#43;X1]
-        sub     bx,[bp&#43;X0]
+        mov     bx,[bp+X1]
+        sub     bx,[bp+X0]
 ;
 ; Handle correct one of four octants.
 ;
@@ -411,8 +411,8 @@ _EVGALine       endp
 <!-- END CODE //-->
 <P>An explanation of the workings of the code in Listing 35.3 would be a lengthy one, and would be redundant since the basic operation of the code in Listing 35.3 is no different from that of the code in Listing 35.1, although the implementation is much changed due to the nature of assembly language and also due to designing for speed rather than for clarity. Given that you thoroughly understand the C implementation in Listing 35.1, the assembly language implementation in Listing 35.3, which is well-commented, should speak for itself.
 </P>
-<P>One point I do want to make is that Listing 35.3 incorporates a clever notion for which credit is due Jim Mackraz, who described the notion in a letter written in response to an article I wrote long ago in the late and lamented <I>Programmer&#146;s Journal</I>. Jim&#146;s suggestion was that when drawing lines for which |<B>DeltaX</B>| is greater than |<B>DeltaY</B>|, bits set to 1 for each of the pixels controlled by a given byte can be accumulated in a register, rather than drawing each pixel individually. All the pixels controlled by that byte can then be drawn at once, with a single access to display memory, when all pixel processing associated with that byte has been completed. This approach can save many <B>OUT</B>s and many display memory reads and writes when drawing nearly-horizontal lines, and that&#146;s important because EGAs and VGAs hold the CPU up for a considerable period of time on each I/O operation and display memory access.</P>
-<P>All too many PC programmers fall into the high-level-language trap of thinking that a good algorithm guarantees good performance. Not so: As our two implementations of Bresenham&#146;s algorithm graphically illustrate (pun not originally intended, but allowed to stand once recognized), truly great PC code requires both a good algorithm <I>and</I> a good assembly implementation. In Listing 35.3, we&#146;ve got y-oh-my, isn&#146;t it fun?</P><P><BR></P>
+<P>One point I do want to make is that Listing 35.3 incorporates a clever notion for which credit is due Jim Mackraz, who described the notion in a letter written in response to an article I wrote long ago in the late and lamented <I>Programmer&rsquo;s Journal</I>. Jim&rsquo;s suggestion was that when drawing lines for which |<B>DeltaX</B>| is greater than |<B>DeltaY</B>|, bits set to 1 for each of the pixels controlled by a given byte can be accumulated in a register, rather than drawing each pixel individually. All the pixels controlled by that byte can then be drawn at once, with a single access to display memory, when all pixel processing associated with that byte has been completed. This approach can save many <B>OUT</B>s and many display memory reads and writes when drawing nearly-horizontal lines, and that&rsquo;s important because EGAs and VGAs hold the CPU up for a considerable period of time on each I/O operation and display memory access.</P>
+<P>All too many PC programmers fall into the high-level-language trap of thinking that a good algorithm guarantees good performance. Not so: As our two implementations of Bresenham&rsquo;s algorithm graphically illustrate (pun not originally intended, but allowed to stand once recognized), truly great PC code requires both a good algorithm <I>and</I> a good assembly implementation. In Listing 35.3, we&rsquo;ve got y-oh-my, isn&rsquo;t it fun?</P><P><BR></P>
 <CENTER>
 <TABLE BORDER>
 <TR>

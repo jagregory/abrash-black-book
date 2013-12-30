@@ -96,10 +96,10 @@ RightClipPlaneMask      db      00fh,001h,003h,007h
         .code
         public  _CopyScreenToScreenX
 _CopyScreenToScreenX proc    near
-        push    bp      ;preserve caller&#146;s stack frame
+        push    bp      ;preserve caller&rsquo;s stack frame
         mov     bp,sp   ;point to local stack frame
         sub     sp,STACK_FRAME_SIZE ;allocate space for local vars
-        push    si      ;preserve caller&#146;s register variables
+        push    si      ;preserve caller&rsquo;s register variables
         push    di
         push    ds
 
@@ -147,8 +147,8 @@ _CopyScreenToScreenX proc    near
         sub     cx,ax
         shr     cx,1
         shr     cx,1               ;# of addresses across rectangle to copy - 1
-        jnz     MasksSet           ;there&#146;s more than one address to draw
-        and     bh,bl              ;there&#146;s only one address, so combine the 
+        jnz     MasksSet           ;there&rsquo;s more than one address to draw
+        and     bh,bl              ;there&rsquo;s only one address, so combine the 
                                    ; left- and right-edge clip masks
 MasksSet:
         mov     ax,[bp+SourceEndY]
@@ -183,7 +183,7 @@ CopyRowsLoop:
         movsb                      ;copy the left edge (pixels go through
                                    ; latches)
         dec     cx                 ;count off left edge address
-        js      CopyLoopBottom     ;that&#146;s the only address
+        js      CopyLoopBottom     ;that&rsquo;s the only address
         jz      DoRightEdge        ;there are only two addresses
         mov     al,00fh            ;middle addresses are drawn 4 pixels at a pop
         out     dx,al              ;set the middle pixel mask to no clip
@@ -205,10 +205,10 @@ CopyDone:
         out     dx,al               ; and none from the latches (the GC
                                     ; Index still points to Bit Mask)
         pop     ds
-        pop     di                  ;restore caller&#146;s register variables
+        pop     di                  ;restore caller&rsquo;s register variables
         pop     si
         mov     sp,bp               ;discard storage for local variables
-        pop     bp                  ;restore caller&#146;s stack frame
+        pop     bp                  ;restore caller&rsquo;s stack frame
         ret
 _CopyScreenToScreenX endp
         end

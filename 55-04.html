@@ -36,18 +36,18 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<P>This is where it gets a little complicated. In write mode 3 (which incidentally is not available on the EGA), each byte value that the CPU writes to the VGA does not get written to display memory. Instead, it turns into the bit mask. (Actually, it&#146;s ANDed with the Bit Mask register, and the result becomes the bit mask, but we&#146;ll leave the Bit Mask register set to 0xFF, so the CPU value will become the bit mask.) The bit mask selects, on a bit-by-bit basis, between the data in the latches for each plane (the previously loaded background color, in this case) and the foreground color. Where does the foreground color come from, if not from the CPU? From the Set/Reset register, as shown in Figure 55.3. Thus, each byte written by the CPU (font data, presumably) selects foreground or background color for each of eight pixels, all done with a single write to display memory.
+<P>This is where it gets a little complicated. In write mode 3 (which incidentally is not available on the EGA), each byte value that the CPU writes to the VGA does not get written to display memory. Instead, it turns into the bit mask. (Actually, it&rsquo;s ANDed with the Bit Mask register, and the result becomes the bit mask, but we&rsquo;ll leave the Bit Mask register set to 0xFF, so the CPU value will become the bit mask.) The bit mask selects, on a bit-by-bit basis, between the data in the latches for each plane (the previously loaded background color, in this case) and the foreground color. Where does the foreground color come from, if not from the CPU? From the Set/Reset register, as shown in Figure 55.3. Thus, each byte written by the CPU (font data, presumably) selects foreground or background color for each of eight pixels, all done with a single write to display memory.
 </P>
 <P><A NAME="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/55-03.jpg',407,375 )"> --><IMG SRC="images/55-03.jpg"><BR><!-- </A>
 <BR><A HREF="javascript:displayWindow('images/55-03.jpg',407,375)"> --><FONT COLOR="#000077"><B>Figure 55.3</B></FONT></A>&nbsp;&nbsp;<I>The data path in write mode 3.</I>
 </P>
-<P>I know this sounds pretty esoteric, but think of it this way: The latches hold the background color in a form suitable for writing eight background pixels (one full byte) at a pop. Write mode 3 allows each CPU byte to punch holes in the background color provided by the latches, holes through which the foreground color from the Set/Reset register can flow. The result is that a single write draws exactly the combination of foreground and background pixels described by each font byte written by the CPU. It may help to look at Listing 55.4, which shows The BitMan&#146;s technique in action. And yes, this technique is absolutely worth the trouble; it&#146;s about three times faster than the fill-then-draw approach described above, and about twice as fast as transparent text. So far as I know, there is no faster way to draw text on a VGA.
+<P>I know this sounds pretty esoteric, but think of it this way: The latches hold the background color in a form suitable for writing eight background pixels (one full byte) at a pop. Write mode 3 allows each CPU byte to punch holes in the background color provided by the latches, holes through which the foreground color from the Set/Reset register can flow. The result is that a single write draws exactly the combination of foreground and background pixels described by each font byte written by the CPU. It may help to look at Listing 55.4, which shows The BitMan&rsquo;s technique in action. And yes, this technique is absolutely worth the trouble; it&rsquo;s about three times faster than the fill-then-draw approach described above, and about twice as fast as transparent text. So far as I know, there is no faster way to draw text on a VGA.
 </P>
-<P>It&#146;s important to note that the BitMan&#146;s technique only works on full bytes of display memory. There&#146;s no way to clip to finer precision; the background color will inevitably flood all of the eight destination pixels that aren&#146;t selected as foreground pixels. This makes The BitMan&#146;s technique most suitable for monospaced fonts with characters that are multiples of eight pixels in width, and for drawing to byte-aligned addresses; the technique can be used in other situations, but is considerably more difficult to apply.</P>
+<P>It&rsquo;s important to note that the BitMan&rsquo;s technique only works on full bytes of display memory. There&rsquo;s no way to clip to finer precision; the background color will inevitably flood all of the eight destination pixels that aren&rsquo;t selected as foreground pixels. This makes The BitMan&rsquo;s technique most suitable for monospaced fonts with characters that are multiples of eight pixels in width, and for drawing to byte-aligned addresses; the technique can be used in other situations, but is considerably more difficult to apply.</P>
 <P><B>LISTING 55.4 L55-4.ASM</B></P>
 <!-- CODE //-->
 <PRE>
- ; Demonstrates drawing solid text on the VGA, using the BitMan&#146;s write mode
+ ; Demonstrates drawing solid text on the VGA, using the BitMan&rsquo;s write mode
  ; 3-based, one-pass technique.
 
  CHAR_HEIGHT     equ 8                ;# of scan lines per character (must be &lt256)
@@ -69,9 +69,9 @@
  LineWidthBytes  dw ?                ;offset from one scan line to the next
  FontPtr         dd ?                ;pointer to font with which to draw
  SampleString    label              byte
-       db  &#145;ABCDEFGHIJKLMNOPQRSTUVWXYZ&#146;
-       db  &#145;abcdefghijklmnopqrstuvwxyz&#146;
-       db  &#145;0123456789!@#$%^&amp*(),&lt.&gt/?;:&#146;,0
+       db  &lsquo;ABCDEFGHIJKLMNOPQRSTUVWXYZ&rsquo;
+       db  &lsquo;abcdefghijklmnopqrstuvwxyz&rsquo;
+       db  &lsquo;0123456789!@#$%^&amp*(),&lt.&gt/?;:&rsquo;,0
 
       .code
  start:
@@ -86,7 +86,7 @@
         mov  bh,3                       ;get 8x8 ROM font subsubfunction
         int  10h                        ;get the pointer to the BIOS 8x8 font
         mov  word ptr [FontPtr],bp
-        mov  word ptr [FontPtr&#43;2],es
+        mov  word ptr [FontPtr+2],es
 
         mov  bx,CHAR_HEIGHT
         mov  [CharHeight],bx            ;# of scan lines per character
@@ -134,7 +134,7 @@ LineLoop:
 ;    CharHeight must be set to the height of each character
 ;    FontPtr must be set to the font with which to draw
 ;        LineWidthBytes must be set to the scan line width in bytes
-; Don&#146;t count on any registers other than DS, SS, and SP being preserved.
+; Don&rsquo;t count on any registers other than DS, SS, and SP being preserved.
 ; The X coordinate is truncated to a multiple of 8. Characters are
 ; assumed to be 8 pixels wide.
      align 2
@@ -148,17 +148,17 @@ LineLoop:
         mul  bx                  ; start offset of initial scan line
         add  di,ax               ;start offset of initial byte
         mov  ax,SCREEN_SEGMENT
-        mov  es,ax               ;ES:DI = offset of initial character&#146;s
+        mov  es,ax               ;ES:DI = offset of initial character&rsquo;s
                                  ; first scan line
-                                 ;set up the VGA&#146;s hardware so that we can
+                                 ;set up the VGA&rsquo;s hardware so that we can
                                  ; fill the latches with the background color
         mov  dx,GC_INDEX
-        mov  ax,(0ffh SHL 8) &#43; BIT_MASK
-        out  dx,ax               ;set Bit Mask register to 0xFF (that&#146;s the
-                                 ; default, but I&#146;m doing this just to make sure
+        mov  ax,(0ffh SHL 8) + BIT_MASK
+        out  dx,ax               ;set Bit Mask register to 0xFF (that&rsquo;s the
+                                 ; default, but I&rsquo;m doing this just to make sure
                                  ; you understand that Bit Mask register and
                                  ; CPU data are ANDed in write mode 3)
-        mov  ax,(003h SHL 8) &#43; G_MODE
+        mov  ax,(003h SHL 8) + G_MODE
         out  dx,ax               ;select write mode 3
         mov  ah,cl               ;background color
         mov  al,SET_RESET
@@ -169,17 +169,17 @@ LineLoop:
         mov  cl,es:[0ffffh]      ;read the background color back into the
                                  ; latches; the latches are now filled with
                                  ; the background color. The value in CL
-                                 ; doesn&#146;t matter, we just needed a target
+                                 ; doesn&rsquo;t matter, we just needed a target
                                  ; for the read, so we could load the latches
         mov  ah,ch               ;foreground color
         out  dx,ax               ;set the Set/Reset (drawing) color to the
                                  ; foreground color
-                                 ;we&#146;re ready to draw!
+                                 ;we&rsquo;re ready to draw!
 DrawTextLoop:
         lodsb                    ;next character to draw
         and  al,al               ;end of string?
         jz   DrawTextDone                   ;yes
-        push ds                  ;remember string&#146;s segment
+        push ds                  ;remember string&rsquo;s segment
         push si                  ;remember offset of next character in string
         push di                  ;remember drawing offset
                                  ;load these variables before we wipe out DS
@@ -204,14 +204,14 @@ DrawCharLoop:                    ;draw all lines of the character
         pop  di                  ;retrieve initial drawing offset
         inc  di                  ;drawing offset for next char
         pop  si                  ;retrieve offset of next character in string
-        pop  ds                  ;retrieve string&#146;s segment
+        pop  ds                  ;retrieve string&rsquo;s segment
         jmp  DrawTextLoop        ;draw next character, if any
 
         align2
   DrawTextDone:                  ;restore the Graphics Mode register to its
                                  ; default state of write mode 0
         mov  dx,GC_INDEX
-        mov  ax,(000h SHL 8) &#43; G_MODE
+        mov  ax,(000h SHL 8) + G_MODE
         out  dx,ax               ;select write mode 0
         ret
 DrawTextString   endp

@@ -40,7 +40,7 @@
 <!-- CODE //-->
 <PRE>
 ; Scan converts an edge from (X1,Y1) to (X2,Y2), not including the
-; point at (X2,Y2). If SkipFirst == 1, the point at (X1,Y1) isn&#146;t
+; point at (X2,Y2). If SkipFirst == 1, the point at (X1,Y1) isn&rsquo;t
 ; drawn; if SkipFirst == 0, it is. For each scan line, the pixel
 ; closest to the scanned edge without being to the left of the scanned
 ; edge is chosen. Uses an all-integer approach for speed &amp precision.
@@ -81,54 +81,54 @@ LOCAL_SIZE      equ      4         ;total size of local variables
         public _ScanEdge
         align  2
 _ScanEdge   proc
-        push  bp                   ;preserve caller&#146;s stack frame
+        push  bp                   ;preserve caller&rsquo;s stack frame
         mov   bp,sp                ;point to our stack frame
         sub   sp,LOCAL_SIZE        ;allocate space for local variables
-        push  si                   ;preserve caller&#146;s register variables
+        push  si                   ;preserve caller&rsquo;s register variables
         push  di
-        mov   di,[bp&#43;EdgePointPtr]
+        mov   di,[bp+EdgePointPtr]
         mov   di,[di]              ;point to the HLine array
-        cmp   [bp&#43;SetXStart],1     ;set the XStart field of each HLine
+        cmp   [bp+SetXStart],1     ;set the XStart field of each HLine
                                    ; struc?
         jz    HLinePtrSet          ;yes, DI points to the first XStart
         add   di,XEnd              ;no, point to the XEnd field of the
                                    ; first HLine struc
 HLinePtrSet:
-        mov   bx,[bp&#43;Y2]
-        sub   bx,[bp&#43;Y1]           ;edge height
+        mov   bx,[bp+Y2]
+        sub   bx,[bp+Y1]           ;edge height
         jle   ToScanEdgeExit       ;guard against 0-length &amp horz edges
-        mov   [bp&#43;Height],bx       ;Height = Y2 - Y1
+        mov   [bp+Height],bx       ;Height = Y2 - Y1
         sub   cx,cx                ;assume ErrorTerm starts at 0 (true if
-                                   ; we&#146;re moving right as we draw)
+                                   ; we&rsquo;re moving right as we draw)
         mov   dx,1                 ;assume AdvanceAmt = 1 (move right)
-        mov   ax,[bp&#43;X2]
-        sub   ax,[bp&#43;X1]           ;DeltaX = X2 - X1
-        jz    IsVertical           ;it&#146;s a vertical edge--special case it
+        mov   ax,[bp+X2]
+        sub   ax,[bp+X1]           ;DeltaX = X2 - X1
+        jz    IsVertical           ;it&rsquo;s a vertical edge--special case it
         jns   SetAdvanceAmt        ;DeltaX &gt= 0
         mov   cx,1                 ;DeltaX &lt 0 (move left as we draw)
-        sub   cx,bx                ;ErrorTerm = -Height &#43; 1
+        sub   cx,bx                ;ErrorTerm = -Height + 1
         neg   dx                   ;AdvanceAmt = -1 (move left)
         neg   ax                   ;Width = abs(DeltaX)
 SetAdvanceAmt:
-        mov   [bp&#43;AdvanceAmt],dx
+        mov   [bp+AdvanceAmt],dx
 ; Figure out whether the edge is diagonal, X-major (more horizontal),
 ; or Y-major (more vertical) and handle appropriately.
-        cmp   ax,bx                 ;if Width==Height, it&#146;s a diagonal edge
-        jz    IsDiagonal            ;it&#146;s a diagonal edge--special case
-        jb    YMajor                ;it&#146;s a Y-major (more vertical) edge
-                                    ;it&#146;s an X-major (more horz) edge
+        cmp   ax,bx                 ;if Width==Height, it&rsquo;s a diagonal edge
+        jz    IsDiagonal            ;it&rsquo;s a diagonal edge--special case
+        jb    YMajor                ;it&rsquo;s a Y-major (more vertical) edge
+                                    ;it&rsquo;s an X-major (more horz) edge
         sub   dx,dx                 ;prepare DX:AX (Width) for division
         div   bx                    ;Width/Height
                                     ;DX = error term advance per scan line
         mov   si,ax                 ;SI = minimum # of pixels to advance X
                                     ; on each scan line
-        test  [bp&#43;AdvanceAmt],8000h ;move left or right?
+        test  [bp+AdvanceAmt],8000h ;move left or right?
         jz    XMajorAdvanceAmtSet   ;right, already set
         neg   si                    ;left, negate the distance to advance
                                     ; on each scan line
 XMajorAdvanceAmtSet:                ;
-        mov   ax,[bp&#43;X1]            ;starting X coordinate
-        cmp   [bp&#43;SkipFirst],1      ;skip the first point?
+        mov   ax,[bp+X1]            ;starting X coordinate
+        cmp   [bp+SkipFirst],1      ;skip the first point?
         jz    XMajorSkipEntry       ;yes
 XMajorLoop:
         mov   [di],ax               ;store the current X value
@@ -138,8 +138,8 @@ XMajorSkipEntry:
         add   cx,dx                 ;advance error term
         jle   XMajorNoAdvance       ;not time for X coord to advance one
                                     ; extra
-        add   ax,[bp&#43;AdvanceAmt]    ;advance X coord one extra
-        sub   cx,[bp&#43;Height]        ;adjust error term back
+        add   ax,[bp+AdvanceAmt]    ;advance X coord one extra
+        sub   cx,[bp+Height]        ;adjust error term back
 XMajorNoAdvance:
         dec   bx                    ;count off this scan line
         jnz   XMajorLoop
@@ -149,8 +149,8 @@ ToScanEdgeExit:
         jmp   ScanEdgeExit
         align2
 IsVertical:
-        mov   ax,[bp&#43;X1]            ;starting (and only) X coordinate
-        sub   bx,[bp&#43;SkipFirst]     ;loop count = Height - SkipFirst
+        mov   ax,[bp+X1]            ;starting (and only) X coordinate
+        sub   bx,[bp+SkipFirst]     ;loop count = Height - SkipFirst
         jz    ScanEdgeExit          ;no scan lines left after skipping 1st
 VerticalLoop:
         mov   [di],ax               ;store the current X value
@@ -160,8 +160,8 @@ VerticalLoop:
         jmp   ScanEdgeDone
         align 2
 IsDiagonal:
-        mov   ax,[bp&#43;X1]            ;starting X coordinate
-        cmp   [bp&#43;SkipFirst],1      ;skip the first point?
+        mov   ax,[bp+X1]            ;starting X coordinate
+        cmp   [bp+SkipFirst],1      ;skip the first point?
         jz    DiagonalSkipEntry     ;yes
 DiagonalLoop:
         mov   [di],ax               ;store the current X value
@@ -174,8 +174,8 @@ DiagonalSkipEntry:
         align 2
 YMajor:
         pushbp                      ;preserve stack frame pointer
-        mov   si,[bp&#43;X1]            ;starting X coordinate
-        cmp   [bp&#43;SkipFirst],1      ;skip the first point?
+        mov   si,[bp+X1]            ;starting X coordinate
+        cmp   [bp+SkipFirst],1      ;skip the first point?
         mov   bp,bx                 ;put Height in BP for error term calcs
         jz    YMajorSkipEntry       ;yes, skip the first point
 YMajorLoop:
@@ -191,17 +191,17 @@ YMajorNoAdvance:
         jnz   YMajorLoop
         popbp                       ;restore stack frame pointer
 ScanEdgeDone:
-        cmp   [bp&#43;SetXStart],1       ;were we working with XStart field?
+        cmp   [bp+SetXStart],1       ;were we working with XStart field?
         jz    UpdateHLinePtr         ;yes, DI points to the next XStart
         sub   di,XEnd                ;no, point back to the XStart field
 UpdateHLinePtr:
-        mov   bx,[bp&#43;EdgePointPtr]   ;point to pointer to HLine array
-        mov   [bx],di                ;update caller&#146;s HLine array pointer
+        mov   bx,[bp+EdgePointPtr]   ;point to pointer to HLine array
+        mov   [bx],di                ;update caller&rsquo;s HLine array pointer
 ScanEdgeExit:
-        pop   di                     ;restore caller&#146;s register variables
+        pop   di                     ;restore caller&rsquo;s register variables
         pop   si
         mov   sp,bp                  ;deallocate local variables
-        pop   bp                     ;restore caller&#146;s stack frame
+        pop   bp                     ;restore caller&rsquo;s stack frame
         ret
 _ScanEdge   endp
         end

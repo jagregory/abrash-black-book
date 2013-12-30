@@ -93,7 +93,7 @@ if ROUNDING-ON
         mov     eax,[bp+Dividend]
         and     eax,eax         ;positive dividend?
         jns     FDP1            ;yes
-        inc     cx              ;mark it&#146;s a negative dividend
+        inc     cx              ;mark it&rsquo;s a negative dividend
         neg     eax             ;make the dividend positive
 FDP1:   sub     edx,edx         ;make it a 64-bit dividend, then shift
                                 ; left 16 bits so that result will be
@@ -105,7 +105,7 @@ FDP1:   sub     edx,edx         ;make it a 64-bit dividend, then shift
         mov     ebx,dword ptr [bp+Divisor]
         and     ebx,ebx         ;positive divisor?
         jns     FDP2            ;yes
-        dec     cx              ;mark it&#146;s a negative divisor
+        dec     cx              ;mark it&rsquo;s a negative divisor
         neg     ebx             ;make divisor positive
 FDP2:   div     ebx             ;divide
         shr     ebx,1           ;divisor/2, minus 1 if the divisor is
@@ -153,7 +153,7 @@ SCparms ends
      mov   bp,sp               ;set up local stack frame
 
      mov   bx,[bp].Angle
-     and   bx,bx               ;make sure angle&#146;s between 0 and 2*pi
+     and   bx,bx               ;make sure angle&rsquo;s between 0 and 2*pi
 jns  CheckInRange
 MakePos:;less than 0, so make it positive
      add    bx,360*10
@@ -226,7 +226,7 @@ ret
 ; Matrix multiplies Xform by SourceVec, and stores the result in
 ; DestVec. Multiplies a 4x4 matrix times a 4x1 matrix; the result
 ; is a 4x1 matrix. Cheats by assuming the W coord is 1 and the
-; bottom row of the matrix is 0 0 0 1, and doesn&#146;t bother to set
+; bottom row of the matrix is 0 0 0 1, and doesn&rsquo;t bother to set
 ; the W coordinate of the destination.
 ; C near-callable as:
 ;     void XformVec(Xform WorkingXform, Fixedpoint *SourceVec,
@@ -305,7 +305,7 @@ ret
 ; Matrix multiplies SourceXform1 by SourceXform2 and stores the
 ; result in DestXform. Multiplies a 4x4 matrix times a 4x4 matrix;
 ; the result is a 4x4 matrix. Cheats by assuming the bottom row of
-; each matrix is 0 0 0 1, and doesn&#146;t bother to set the bottom row
+; each matrix is 0 0 0 1, and doesn&rsquo;t bother to set the bottom row
 ; of the destination.
 ; C near-callable as:
 ;       void ConcatXforms(Xform SourceXform1, Xform SourceXform2,

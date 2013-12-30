@@ -87,7 +87,7 @@
 <TD VALIGN="BOTTOM" ALIGN="LEFT">48.76
 <TD VALIGN="BOTTOM" ALIGN="LEFT">57.44
 <TR>
-<TD COLSPAN="7"><SMALL><B>Note:</B> The execution times (in seconds) for this chapter&#146;s listings were timed when the compiled listings were run on the WordPerfect 4.2 thesaurus file TH.WP (362,293 bytes in size), as compiled in the small model with Borland and Microsoft compilers with optimization on (opt) and off (no opt). All times were measured with Paradigm Systems&#146; TIMER program on a 10 MHz 1-wait-state AT clone with a 28-ms hard disk, with disk caching turned off.</SMALL>
+<TD COLSPAN="7"><SMALL><B>Note:</B> The execution times (in seconds) for this chapter&rsquo;s listings were timed when the compiled listings were run on the WordPerfect 4.2 thesaurus file TH.WP (362,293 bytes in size), as compiled in the small model with Borland and Microsoft compilers with optimization on (opt) and off (no opt). All times were measured with Paradigm Systems&rsquo; TIMER program on a 10 MHz 1-wait-state AT clone with a 28-ms hard disk, with disk caching turned off.</SMALL>
 <TR>
 <TD COLSPAN="7"><HR>
 <TR>
@@ -115,20 +115,20 @@ main(int argc, char *argv[]) {
       int ReadLength;
 
       if ( argc != 2 ) {
-            printf(&#147;usage: checksum filename\n&#148;);
+            printf(&ldquo;usage: checksum filename\n&rdquo;);
             exit(1);
       }
       if ( (Handle = open(argv[1], O_RDONLY | O_BINARY)) == -1 ) {
-            printf(&#147;Can&#146;t open file: %s\n&#148;, argv[1]);
+            printf(&ldquo;Can&rsquo;t open file: %s\n&rdquo;, argv[1]);
             exit(1);
       }
       if ( !ChecksumFile(Handle, &Checksum) ) {
-            printf(&#147;Error reading file %s\n&#148;, argv[1]);
+            printf(&ldquo;Error reading file %s\n&rdquo;, argv[1]);
             exit(1);
       }
 
       /* Report the result */
-      printf(&#147;The checksum is: %u\n&#148;, Checksum);
+      printf(&ldquo;The checksum is: %u\n&rdquo;, Checksum);
       exit(0);
 }
 </PRE>
@@ -169,9 +169,9 @@ TempByte         db        ?       ;each byte read by DOS will be stored here
 _ChecksumFile    proc near
                  push      bp
                  mov       bp,sp
-                 push      si                  ;save C&#146;s register variable
+                 push      si                  ;save C&rsquo;s register variable
 ;
-                 mov       bx,[bp&#43;Handle]       ;get file handle
+                 mov       bx,[bp+Handle]       ;get file handle
                  sub       si,si                ;zero the checksum ;accumulator
                  mov       cx,1                 ;request one byte on each ;read
                  mov       dx,offset TempByte   ;point DX to the byte in
@@ -182,7 +182,7 @@ ChecksumLoop:
                  int       21h                  ;read the byte
 jcErrorEnd;an error occurred
                  and       ax,ax                ;any bytes read?
-                 jz        Success              ;no-end of file reached-we&#146;re done
+                 jz        Success              ;no-end of file reached-we&rsquo;re done
                  add       si,[TempWord]        ;add the byte into the
                                                 ;checksum total
 jmpChecksumLoop
@@ -190,12 +190,12 @@ ErrorEnd:
                  sub       ax,ax                ;error
                  jmp       short Done
 Success:
-                 mov       bx,[bp&#43;Checksum] ;point to the checksum variable
+                 mov       bx,[bp+Checksum] ;point to the checksum variable
                  mov       [bx],si              ;save the new checksum
                  mov       ax,1                 ;success
 ;
 Done:
-                 pop       si                   ;restore C&#146;s register variable
+                 pop       si                   ;restore C&rsquo;s register variable
                  pop       bp
                  ret
 _ChecksumFileendp
@@ -204,12 +204,12 @@ _ChecksumFileendp
 <!-- END CODE //-->
 <P>The lesson is clear: Optimization makes code faster, but without proper design, optimization just creates fast slow code.
 </P>
-<P>Well, then, how are we going to improve our design? Before we can do that, we have to understand what&#146;s wrong with the current design.</P>
+<P>Well, then, how are we going to improve our design? Before we can do that, we have to understand what&rsquo;s wrong with the current design.</P>
 <H4 ALIGN="LEFT"><A NAME="Heading9"></A><FONT COLOR="#000077">Know the Territory</FONT></H4>
-<P>Just why is Listing 1.1 so slow? In a word: overhead. The C library implements the <B>read()</B> function by calling DOS to read the desired number of bytes. (I figured this out by watching the code execute with a debugger, but you can buy library source code from both Microsoft and Borland.) That means that Listing 1.1 (and Listing 1.3 as well) executes one DOS function per byte processed&#151;and DOS functions, especially this one, come with a lot of overhead.</P>
-<P>For starters, DOS functions are invoked with interrupts, and interrupts are among the slowest instructions of the x86 family CPUs. Then, DOS has to set up internally and branch to the desired function, expending more cycles in the process. Finally, DOS has to search its own buffers to see if the desired byte has already been read, read it from the disk if not, store the byte in the specified location, and return. All of that takes a <I>long</I> time&#151;far, far longer than the rest of the main loop in Listing 1.1. In short, Listing 1.1 spends virtually all of its time executing <B>read(),</B> and most of that time is spent somewhere down in DOS.</P>
-<P>You can verify this for yourself by watching the code with a debugger or using a code profiler, but take my word for it: There&#146;s a great deal of overhead to DOS calls, and that&#146;s what&#146;s draining the life out of Listing 1.1.</P>
-<P>How can we speed up Listing 1.1? It should be clear that we must somehow avoid invoking DOS for every byte in the file, and that means reading more than one byte at a time, then buffering the data and parceling it out for examination one byte at a time. By gosh, that&#146;s a description of C&#146;s stream I/O feature, whereby C reads files in chunks and buffers the bytes internally, doling them out to the application as needed by reading them from memory rather than calling DOS. Let&#146;s try using stream I/O and see what happens.</P>
+<P>Just why is Listing 1.1 so slow? In a word: overhead. The C library implements the <B>read()</B> function by calling DOS to read the desired number of bytes. (I figured this out by watching the code execute with a debugger, but you can buy library source code from both Microsoft and Borland.) That means that Listing 1.1 (and Listing 1.3 as well) executes one DOS function per byte processed&mdash;and DOS functions, especially this one, come with a lot of overhead.</P>
+<P>For starters, DOS functions are invoked with interrupts, and interrupts are among the slowest instructions of the x86 family CPUs. Then, DOS has to set up internally and branch to the desired function, expending more cycles in the process. Finally, DOS has to search its own buffers to see if the desired byte has already been read, read it from the disk if not, store the byte in the specified location, and return. All of that takes a <I>long</I> time&mdash;far, far longer than the rest of the main loop in Listing 1.1. In short, Listing 1.1 spends virtually all of its time executing <B>read(),</B> and most of that time is spent somewhere down in DOS.</P>
+<P>You can verify this for yourself by watching the code with a debugger or using a code profiler, but take my word for it: There&rsquo;s a great deal of overhead to DOS calls, and that&rsquo;s what&rsquo;s draining the life out of Listing 1.1.</P>
+<P>How can we speed up Listing 1.1? It should be clear that we must somehow avoid invoking DOS for every byte in the file, and that means reading more than one byte at a time, then buffering the data and parceling it out for examination one byte at a time. By gosh, that&rsquo;s a description of C&rsquo;s stream I/O feature, whereby C reads files in chunks and buffers the bytes internally, doling them out to the application as needed by reading them from memory rather than calling DOS. Let&rsquo;s try using stream I/O and see what happens.</P>
 <P>Listing 1.4 is similar to Listing 1.1, but uses <B>fopen()</B> and <B>getc()</B> (rather than <B>open()</B> and <B>read()</B>) to access the file being checksummed. The results confirm our theories splendidly, and validate our new design. As shown in Table 1.1, Listing 1.4 runs more than an order of magnitude faster than even the assembly version of Listing 1.1, <I>even though Listing 1.1 and Listing 1.4 look almost the same</I>. To the casual observer, <B>read()</B> and <B>getc()</B> would seem slightly different but pretty much interchangeable, and yet in this application the performance difference between the two is about the same as that between a 4.77 MHz PC and a 16 MHz 386.</P><P><BR></P>
 <CENTER>
 <TABLE BORDER>

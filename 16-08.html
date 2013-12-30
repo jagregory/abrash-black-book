@@ -41,13 +41,13 @@
 <PRE>
  ScanLoop:
          lodsw           ;get the next 2 bytes (AL = first, AH = 2nd)
-         xlat            ;look up first&#146;s char/not status
-         xor     dl,al   ;see if there&#146;s a new char/not status
+         xlat            ;look up first&rsquo;s char/not status
+         xor     dl,al   ;see if there&rsquo;s a new char/not status
          add     di,dx   ;we add 1 for each char/not transition
          mov     dl,al
          mov     al,ah   ;look at the second byte
          xlat            ;look up its char/not status
-         xor     dl,al   ;see if there&#146;s a new char/not status
+         xor     dl,al   ;see if there&rsquo;s a new char/not status
          add     di,dx   ;we add 1 for each char/not transition
          mov     dl,al
          dec     dx
@@ -55,22 +55,22 @@
  
 </PRE>
 <!-- END CODE //-->
-<P>John later divides the transition count by two to get the word count. (Food for thought: It&#146;s also possible to use <B>CMP</B> and <B>ADC</B> to detect words without branching.)</P>
-<P>John&#146;s approach makes it clear that word-counting is nothing more than a fairly simple state machine. The interesting part, of course, is building the fastest state machine.</P>
+<P>John later divides the transition count by two to get the word count. (Food for thought: It&rsquo;s also possible to use <B>CMP</B> and <B>ADC</B> to detect words without branching.)</P>
+<P>John&rsquo;s approach makes it clear that word-counting is nothing more than a fairly simple state machine. The interesting part, of course, is building the fastest state machine.</P>
 <H4 ALIGN="LEFT"><A NAME="Heading12"></A><FONT COLOR="#000077">Level 3: Breakthrough</FONT></H4>
 <P>The boundaries between the levels of optimization are not sharply defined. In a sense, level 3 optimization is just like levels 1 and 2, but more so. At level 3, one takes whatever level 2 perspective seems most promising, and implements it as efficiently as possible on the x86. Even more than at level 2, at level 3 this means breaking out of familiar patterns of thinking.
 </P>
-<P>In the case of word counting, level 3 means building a table-driven state machine dedicated to processing a buffer of bytes into a count of words with a minimum of branching. This level of optimization strips away many of the abstractions we usually use in coding, such as loops, tests, and named variables&#151;look back to Listing 16.5, and you&#146;ll see what I mean. Only a few people reached this level, and I don&#146;t think any of them did it without long, hard thinking; David Stafford&#146;s final entry (that is, the one I present as Listing 16.5) was <I>at least</I> the fifth entry he sent me.</P>
-<P>The key concept at level 3 is the use of a massive (64K) lookup table that processes byte sequences directly into word-count actions. With such a table, it&#146;s possible to look up the appropriate action for two bytes simultaneously in just a few instructions; next, I&#146;m going to look at the inspired and highly unusual way that David&#146;s code, shown in Listing 16.5, does exactly that. (Before assembling Listing 16.5, you must run the C code in Listing 16.8, to generate an include file defining the 64K lookup table. When you assemble Listing 16.5, TASM will report a &#147;location counter overflow&#148; warning; ignore it.)</P>
+<P>In the case of word counting, level 3 means building a table-driven state machine dedicated to processing a buffer of bytes into a count of words with a minimum of branching. This level of optimization strips away many of the abstractions we usually use in coding, such as loops, tests, and named variables&mdash;look back to Listing 16.5, and you&rsquo;ll see what I mean. Only a few people reached this level, and I don&rsquo;t think any of them did it without long, hard thinking; David Stafford&rsquo;s final entry (that is, the one I present as Listing 16.5) was <I>at least</I> the fifth entry he sent me.</P>
+<P>The key concept at level 3 is the use of a massive (64K) lookup table that processes byte sequences directly into word-count actions. With such a table, it&rsquo;s possible to look up the appropriate action for two bytes simultaneously in just a few instructions; next, I&rsquo;m going to look at the inspired and highly unusual way that David&rsquo;s code, shown in Listing 16.5, does exactly that. (Before assembling Listing 16.5, you must run the C code in Listing 16.8, to generate an include file defining the 64K lookup table. When you assemble Listing 16.5, TASM will report a &ldquo;location counter overflow&rdquo; warning; ignore it.)</P>
 <P><B>LISTING 16.8  MAKETAB.C</B></P>
 <!-- CODE //-->
 <PRE>
- //  MAKETAB.C &#151; Build QSCAN3.INC for QSCAN3.ASM
+ //  MAKETAB.C &mdash; Build QSCAN3.INC for QSCAN3.ASM
   
  #include &ltstdio.h&gt
  #include &ltctype.h&gt
   
- #define ChType( c )  (((c) &amp 0x7f) == &#145;\&#146;&#146; || isalnum((c) &amp 0x7f))
+ #define ChType( c )  (((c) &amp 0x7f) == &lsquo;\&rsquo;&rsquo; || isalnum((c) &amp 0x7f))
   
  int NoCarry[ 4 ] = { 0, 0x80, 1, 0x80 };
  int Carry[ 4 ]   = { 1, 0x81, 1, 0x80 };
@@ -78,20 +78,20 @@
  void main( void )
    {
    int ahChar, alChar, i;
-   FILE *t = fopen( &#147;QSCAN3.INC&#148;, &#147;wt&#148; );
+   FILE *t = fopen( &ldquo;QSCAN3.INC&rdquo;, &ldquo;wt&rdquo; );
   
-   printf( &#147;Building table.  Please wait...&#148; );
+   printf( &ldquo;Building table.  Please wait...&rdquo; );
   
-   for( ahChar = 0; ahChar &lt 128; ahChar&#43;&#43; )
+   for( ahChar = 0; ahChar &lt 128; ahChar++ )
      {
-     for( alChar = 0; alChar &lt 256; alChar&#43;&#43; )
+     for( alChar = 0; alChar &lt 256; alChar++ )
        {
-       i = ChType( alChar ) * 2 &#43; ChType( ahChar );
+       i = ChType( alChar ) * 2 + ChType( ahChar );
   
-       if( alChar % 8 == 0 )  fprintf( t, &#147;\ndb %02Xh&#148;, NoCarry[ i ] );
-       else                   fprintf( t, &#147;,%02Xh&#148;, NoCarry[ i ] );
+       if( alChar % 8 == 0 )  fprintf( t, &ldquo;\ndb %02Xh&rdquo;, NoCarry[ i ] );
+       else                   fprintf( t, &ldquo;,%02Xh&rdquo;, NoCarry[ i ] );
   
-       fprintf( t, &#147;,%02Xh&#148;, Carry[ i ] );
+       fprintf( t, &ldquo;,%02Xh&rdquo;, Carry[ i ] );
        }
      }
   
@@ -100,24 +100,24 @@
  
 </PRE>
 <!-- END CODE //-->
-<P>David&#146;s approach is simplicity itself, although his implementation arguably is not. Consider any three sequential bytes in the buffer. Those three bytes define two potential places where a word might be counted, as shown in Figure 16.1. Given the separator/non-separator states of the three bytes, you can instantly determine whether to count a word or not; you count a word if and only if somewhere in the sequence there is a non-separator followed by a separator. Note that a maximum of one word can be counted per three-byte sequence.
+<P>David&rsquo;s approach is simplicity itself, although his implementation arguably is not. Consider any three sequential bytes in the buffer. Those three bytes define two potential places where a word might be counted, as shown in Figure 16.1. Given the separator/non-separator states of the three bytes, you can instantly determine whether to count a word or not; you count a word if and only if somewhere in the sequence there is a non-separator followed by a separator. Note that a maximum of one word can be counted per three-byte sequence.
 </P>
-<P>The trick, then, is to identify the separator/not statuses of each set of three bytes and turn them into a 1 (count word) or 0 (don&#146;t count word), as quickly as possible. Assuming that the separator/not status for the first byte is in the Carry flag, this is easily accomplished by a lookup in a 64K table, based on the Carry flag and the other two bytes, as shown in Figure 16.2. (Remember that we&#146;re counting 7-bit ASCII here, so the high bit is ignored.) Thus, David is able to add the word/not status for each pair of bytes to the main word count simply by getting the two bytes, working in the carry status from the last byte, and using the resulting value to index into the 64K table, adding in the 1 or 0 value found in that table. A sequence of <B>MOV/ADC/ADD</B> suffices to perform all word-counting tasks for a pair of bytes. Three instructions, no branches&#151;pretty nearly perfect code.</P>
+<P>The trick, then, is to identify the separator/not statuses of each set of three bytes and turn them into a 1 (count word) or 0 (don&rsquo;t count word), as quickly as possible. Assuming that the separator/not status for the first byte is in the Carry flag, this is easily accomplished by a lookup in a 64K table, based on the Carry flag and the other two bytes, as shown in Figure 16.2. (Remember that we&rsquo;re counting 7-bit ASCII here, so the high bit is ignored.) Thus, David is able to add the word/not status for each pair of bytes to the main word count simply by getting the two bytes, working in the carry status from the last byte, and using the resulting value to index into the 64K table, adding in the 1 or 0 value found in that table. A sequence of <B>MOV/ADC/ADD</B> suffices to perform all word-counting tasks for a pair of bytes. Three instructions, no branches&mdash;pretty nearly perfect code.</P>
 <P><A NAME="Fig1"><!-- </A><A HREF="javascript:displayWindow('images/16-01.jpg',410,122 )"> --><IMG SRC="images/16-01.jpg"><BR><!-- </A>
 <BR><A HREF="javascript:displayWindow('images/16-01.jpg',410,122)"> --><FONT COLOR="#000077"><B>Figure 16.1</B></FONT></A>&nbsp;&nbsp;<I>The two potential word count locations.</I>
 </P>
-<P>One detail remains to be attended to: setting the Carry flag for next time if the last byte was a non-separator. David does this in a bizarre and incredibly effective way: He presets the high bit of the count, and sets the high bit in the lookup table for those entries looked up by non-separators. When a non-separator&#146;s lookup entry is added to the count, it will produce a carry, as desired. The high bit of the count is masked off before being added to the total count, so David is essentially using different parts of the count variables for different purposes (counting, and setting the Carry flag).
+<P>One detail remains to be attended to: setting the Carry flag for next time if the last byte was a non-separator. David does this in a bizarre and incredibly effective way: He presets the high bit of the count, and sets the high bit in the lookup table for those entries looked up by non-separators. When a non-separator&rsquo;s lookup entry is added to the count, it will produce a carry, as desired. The high bit of the count is masked off before being added to the total count, so David is essentially using different parts of the count variables for different purposes (counting, and setting the Carry flag).
 </P>
 <P><A NAME="Fig2"><!-- </A><A HREF="javascript:displayWindow('images/16-02.jpg',408,232 )"> --><IMG SRC="images/16-02.jpg"><BR><!-- </A>
 <BR><A HREF="javascript:displayWindow('images/16-02.jpg',408,232)"> --><FONT COLOR="#000077"><B>Figure 16.2</B></FONT></A>&nbsp;&nbsp;<I>Looking up a word count status.</I>
 </P>
-<P>There are a number of other interesting details in David&#146;s code, including the unrolling of the loop 64 times, so that 256 bytes in a row are processed without a single branch. Unfortunately, I lack the space to discuss Listing 16.5 any further. Perhaps that&#146;s not so unfortunate, after all; I&#146;d hate to deny you the pleasure of discovering the wonders of this rather remarkable code yourself. I will say one more thing, though. The cycle count for David&#146;s inner loop is 6.5 cycles per byte processed, and the actual measured time for his routine, overhead and all, is 7.9 cycles/byte. The original C code clocked in at around 100 cycles/byte.
+<P>There are a number of other interesting details in David&rsquo;s code, including the unrolling of the loop 64 times, so that 256 bytes in a row are processed without a single branch. Unfortunately, I lack the space to discuss Listing 16.5 any further. Perhaps that&rsquo;s not so unfortunate, after all; I&rsquo;d hate to deny you the pleasure of discovering the wonders of this rather remarkable code yourself. I will say one more thing, though. The cycle count for David&rsquo;s inner loop is 6.5 cycles per byte processed, and the actual measured time for his routine, overhead and all, is 7.9 cycles/byte. The original C code clocked in at around 100 cycles/byte.
 </P>
 <P>Enough said, I trust.</P>
 <H4 ALIGN="LEFT"><A NAME="Heading13"></A><FONT COLOR="#000077">Enough Word Counting Already!</FONT></H4>
-<P>Before I finish up this chapter, I&#146;d like to mention that Terje Mathisen&#146;s WC word-counting program, which I&#146;ve mentioned previously and which is available, with source, on Bix, is in the ballpark with David&#146;s code for performance. What&#146;s more, Terje&#146;s program handles 8-bit ASCII, counts lines as well as words, and supports user-definable separator sets. It&#146;s wonderful code, well worth a look; it also happens to be a great word-counting utility. By the way, Terje builds his 64K table on the fly, at program initialization; this allows for customized tables, shrinks the size of the EXE, and, according to Terje&#146;s calculations, takes less time than loading the table off disk as part of the EXE.
+<P>Before I finish up this chapter, I&rsquo;d like to mention that Terje Mathisen&rsquo;s WC word-counting program, which I&rsquo;ve mentioned previously and which is available, with source, on Bix, is in the ballpark with David&rsquo;s code for performance. What&rsquo;s more, Terje&rsquo;s program handles 8-bit ASCII, counts lines as well as words, and supports user-definable separator sets. It&rsquo;s wonderful code, well worth a look; it also happens to be a great word-counting utility. By the way, Terje builds his 64K table on the fly, at program initialization; this allows for customized tables, shrinks the size of the EXE, and, according to Terje&rsquo;s calculations, takes less time than loading the table off disk as part of the EXE.
 </P>
-<P>So, has David written the fastest possible word-counting code? Well, maybe&#151;but I have a letter from Terry Holmes, of San Rafael, California, that calculates the theoretical maximum performance of native 386 word-counting code at 5.5 cycles/byte, which would be significantly faster than David&#146;s code. Terry, alas, didn&#146;t bother to implement his design, but maybe I&#146;ll take a shot at it someday. It&#146;d be fun, for sure&#151;but jeez, I&#146;ve got <I>real</I> work to do!</P><P><BR></P>
+<P>So, has David written the fastest possible word-counting code? Well, maybe&mdash;but I have a letter from Terry Holmes, of San Rafael, California, that calculates the theoretical maximum performance of native 386 word-counting code at 5.5 cycles/byte, which would be significantly faster than David&rsquo;s code. Terry, alas, didn&rsquo;t bother to implement his design, but maybe I&rsquo;ll take a shot at it someday. It&rsquo;d be fun, for sure&mdash;but jeez, I&rsquo;ve got <I>real</I> work to do!</P><P><BR></P>
 <CENTER>
 <TABLE BORDER>
 <TR>

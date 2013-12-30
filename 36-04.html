@@ -36,13 +36,13 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<P>Notwithstanding that it&#146;s not optimized, Listing 36.1 is reasonably fast. If you run Listing 36.2 (a sample line-drawing program that you can use to test-drive Listing 36.1), you may be as surprised as I was at how quickly the screen fills with vectors, considering that Listing 36.1 is entirely in C and has some redundant divides. Or perhaps you won&#146;t be surprised&#151;in which case I suggest you <I>not</I> miss the next chapter.</P>
+<P>Notwithstanding that it&rsquo;s not optimized, Listing 36.1 is reasonably fast. If you run Listing 36.2 (a sample line-drawing program that you can use to test-drive Listing 36.1), you may be as surprised as I was at how quickly the screen fills with vectors, considering that Listing 36.1 is entirely in C and has some redundant divides. Or perhaps you won&rsquo;t be surprised&mdash;in which case I suggest you <I>not</I> miss the next chapter.</P>
 <P><B>LISTING 36.2 L36-2.C</B></P>
 <!-- CODE //-->
 <PRE>
 /* Sample line-drawing program. Uses the optimized
 line-drawing functions coded in LListing L36.1.C.
-Tested with Borland C&#43;&#43; in the small model. */
+Tested with Borland C++ in the small model. */
 
 #include &ltdos.h&gt
 
@@ -66,27 +66,27 @@ int Color;              /* color to draw lines in */
    /* lines from center to top of rectangle */
    WorkingX = XCenter - XLength;
    WorkingY = YCenter - YLength;
-   for ( ; WorkingX &lt ( XCenter &#43; XLength ); WorkingX&#43;&#43; )
+   for ( ; WorkingX &lt ( XCenter + XLength ); WorkingX++ )
    {
       LineDraw(XCenter, YCenter, WorkingX, WorkingY, Color);
    }
    /* lines from center to right of rectangle */
-   WorkingX = XCenter &#43; XLength - 1;
+   WorkingX = XCenter + XLength - 1;
    WorkingY = YCenter - YLength;
-   for ( ; WorkingY &lt ( YCenter &#43; YLength ); WorkingY&#43;&#43; )
+   for ( ; WorkingY &lt ( YCenter + YLength ); WorkingY++ )
    {
       LineDraw(XCenter, YCenter, WorkingX, WorkingY, Color);
    }
    /* lines from center to bottom of rectangle */
-   WorkingX = XCenter &#43; XLength - 1;
-   WorkingY = YCenter &#43; YLength - 1;
+   WorkingX = XCenter + XLength - 1;
+   WorkingY = YCenter + YLength - 1;
    for ( ; WorkingX &gt= ( XCenter - XLength ); WorkingX-- )
    {
       LineDraw(XCenter, YCenter, WorkingX, WorkingY, Color);
    }
    /* lines from center to left of rectangle */
    WorkingX = XCenter - XLength;
-   WorkingY = YCenter &#43; YLength - 1;
+   WorkingY = YCenter + YLength - 1;
    for ( ; WorkingY &gt= ( YCenter - YLength ); WorkingY-- )
    {
       LineDraw(XCenter, YCenter, WorkingX, WorkingY, Color);

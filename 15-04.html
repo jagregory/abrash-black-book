@@ -49,7 +49,7 @@ SENTINEL equ  32767             ;largest possible Value field
 LinkNode struc
 NextNode dw     ?
 Value    dw     ?
-Text     db     MAX_TEXT_LENGTH&#43;1 dup(?)
+Text     db     MAX_TEXT_LENGTH+1 dup(?)
 ;*** Any number of additional data fields may by present ***
 LinkNode ends
 
@@ -103,74 +103,74 @@ _InsertNodeSorted endp
 <P><B>LISTING 15.8 L15-8.C</B></P>
 <!-- CODE //-->
 <PRE>
-/* Sample linked list program. Tested with Borland C&#43;&#43;. */
+/* Sample linked list program. Tested with Borland C++. */
 #include &ltstdlib.h&gt
 #include &ltstdio.h&gt
 #include &ltconio.h&gt
 #include &ltctype.h&gt
 #include &ltstring.h&gt
-#include &#147;llist.h&#148;
+#include &ldquo;llist.h&rdquo;
 
 void main()
 { int Done = 0, Char, TempValue;
    struct LinkNode *TempPtr, *ListPtr, *TempPtr2;
-   char TempBuffer[MAX_TEXT_LENGTH&#43;3];
+   char TempBuffer[MAX_TEXT_LENGTH+3];
 
    if ((ListPtr = InitLinkedList()) == NULL) {
-       printf(&#147;Out of memory\n&#148;);
+       printf(&ldquo;Out of memory\n&rdquo;);
        exit(1);
    }
    while (!Done) {
-      printf(&#147;\nA=add; D=delete; F=find; L=list all; Q=quit\n&gt&#148;);
+      printf(&ldquo;\nA=add; D=delete; F=find; L=list all; Q=quit\n&gt&rdquo;);
       Char = toupper(getche());
-      printf(&#147;\n&#148;);
+      printf(&ldquo;\n&rdquo;);
       switch (Char) {
          case 'A':               /* add a node */
             if ((TempPtr = malloc(sizeof(struct LinkNode))) == NULL)
             {
-               printf(&#147;Out of memory\n  );
+               printf(&ldquo;Out of memory\n  );
                exit(1);
              }
-            printf(&#147;Node value: &#148;);
-            scanf(&#147;%d&#148;, &ampTempPtr-&gtValue);
+            printf(&ldquo;Node value: &rdquo;);
+            scanf(&ldquo;%d&rdquo;, &ampTempPtr-&gtValue);
             if ((FindNodeBeforeValue(ListPtr,TempPtr-&gtValue))!=NULL)
-            {  printf(&#147;*** value already in list; try again ***\n&#148;);
+            {  printf(&ldquo;*** value already in list; try again ***\n&rdquo;);
                free(TempPtr);
-            } else {printf(&#147;Node text: &#148;);
+            } else {printf(&ldquo;Node text: &rdquo;);
                TempBuffer[0] = MAX_TEXT_LENGTH;
                cgets(TempBuffer);
                strcpy(TempPtr-&gtText, &ampTempBuffer[2]);
                InsertNodeSorted(ListPtr, TempPtr);
-               printf(&#147;\n&#148;);
+               printf(&ldquo;\n&rdquo;);
             }
             break;
          case 'D':               /* delete a node */
-            printf(&#147;Value field of node to delete: &#148;);
-            scanf(&#147;%d&#148;, &ampTempValue);
+            printf(&ldquo;Value field of node to delete: &rdquo;);
+            scanf(&ldquo;%d&rdquo;, &ampTempValue);
             if ((TempPtr = FindNodeBeforeValue(ListPtr, TempValue))
                  != NULL) {
                TempPtr2 = TempPtr-&gtNextNode; /* -&gt node to delete */
                DeleteNodeAfter(TempPtr);     /* delete it */
                free(TempPtr2);               /* free its memory */
             } else {
-               printf(&#147;*** no such value field in list ***\n&#148;)
+               printf(&ldquo;*** no such value field in list ***\n&rdquo;)
             break;
          case 'F':               /* find a node */
-            printf(&#147;Value field of node to find: &#148;);
-            scanf(&#147;%d&#148;, &ampTempValue);
+            printf(&ldquo;Value field of node to find: &rdquo;);
+            scanf(&ldquo;%d&rdquo;, &ampTempValue);
             if ((TempPtr = FindNodeBeforeValue(ListPtr, TempValue))
                   != NULL)
-               printf(&#147;Value: %d\nText: %s\n&#148;,
+               printf(&ldquo;Value: %d\nText: %s\n&rdquo;,
                  TempPtr-&gtNextNode-&gtValue, TempPtr-&gtNextNode-&gtText);
             else
-               printf(&#147;*** no such value field in list ***\n&#148;);
+               printf(&ldquo;*** no such value field in list ***\n&rdquo;);
             break;
          case 'L':               /* list all nodes */
             TempPtr = ListPtr-&gtNextNode;  /* point to first node */
             if (TempPtr == ListPtr) {     /* empty if at sentinel */
-               printf(&#147;*** List is empty ***\n&#148;);
+               printf(&ldquo;*** List is empty ***\n&rdquo;);
             } else {
-               do {printf(&#147;Value: %d\n  Text: %s\n&#148;, TempPtr-&gtValue,
+               do {printf(&ldquo;Value: %d\n  Text: %s\n&rdquo;, TempPtr-&gtValue,
                         TempPtr-&gtText);
                   TempPtr = TempPtr-&gtNextNode;
                } while (TempPtr != ListPtr);
@@ -187,10 +187,10 @@ void main()
 </PRE>
 <!-- END CODE //-->
 <H3><A NAME="Heading6"></A><FONT COLOR="#000077">Hi/Lo in 24 Bytes</FONT></H3>
-<P>In one of my <I>PC TECHNIQUES</I> &#147;Pushing the Envelope&#148; columns, I passed along one of David Stafford&#146;s fiendish programming puzzles: Write a C-callable function to find the greatest or smallest unsigned <B>int</B>. Not a big deal&#151;except that David had <I>already</I> done it in 24 bytes, so the challenge was to do it in 24 bytes or less.</P>
-<P>Such routines soon began coming at me from all angles. However (and I hate to say this because some of my correspondents were <I>very</I> pleased with the thought that they had bested David), no one has yet met the challenge&#151;because most of you folks missed a key point. When David said, &#147;Write a function to find the greatest or smallest unsigned <B>int</B> in 24 bytes or less,&#148; he meant, &#147;Write the <B>hi</B> and the <B>lo</B> functions in 24 bytes or less&#151;<I>combined</I>.&#148;</P>
+<P>In one of my <I>PC TECHNIQUES</I> &ldquo;Pushing the Envelope&rdquo; columns, I passed along one of David Stafford&rsquo;s fiendish programming puzzles: Write a C-callable function to find the greatest or smallest unsigned <B>int</B>. Not a big deal&mdash;except that David had <I>already</I> done it in 24 bytes, so the challenge was to do it in 24 bytes or less.</P>
+<P>Such routines soon began coming at me from all angles. However (and I hate to say this because some of my correspondents were <I>very</I> pleased with the thought that they had bested David), no one has yet met the challenge&mdash;because most of you folks missed a key point. When David said, &ldquo;Write a function to find the greatest or smallest unsigned <B>int</B> in 24 bytes or less,&rdquo; he meant, &ldquo;Write the <B>hi</B> and the <B>lo</B> functions in 24 bytes or less&mdash;<I>combined</I>.&rdquo;</P>
 <P>Oh.</P>
-<P>Yes, a 24-byte hi/lo function is possible, anatomically improbable as it might seem. Which I guess goes to show that when one of David&#146;s puzzles seems less than impossible, odds are you&#146;re missing something. Listing 15.9 is David&#146;s 24-byte solution, from which a lot may be learned if one reads closely enough.</P>
+<P>Yes, a 24-byte hi/lo function is possible, anatomically improbable as it might seem. Which I guess goes to show that when one of David&rsquo;s puzzles seems less than impossible, odds are you&rsquo;re missing something. Listing 15.9 is David&rsquo;s 24-byte solution, from which a lot may be learned if one reads closely enough.</P>
 <P><B>LISTING 15.9 L15-9.ASM</B></P>
 <!-- CODE //-->
 <PRE>
@@ -223,7 +223,7 @@ around:         ja      save
                 ret
 </PRE>
 <!-- END CODE //-->
-<P>Before I end this chapter, let me say that I get a lot of feedback from my readers, and it&#146;s much appreciated. Keep those cards, letters, and email messages coming. And if any of you know Jeannie Schweigert, have her drop me a line and let me know how she&#146;s doing these days....
+<P>Before I end this chapter, let me say that I get a lot of feedback from my readers, and it&rsquo;s much appreciated. Keep those cards, letters, and email messages coming. And if any of you know Jeannie Schweigert, have her drop me a line and let me know how she&rsquo;s doing these days....
 </P><P><BR></P>
 <CENTER>
 <TABLE BORDER>

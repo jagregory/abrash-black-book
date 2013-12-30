@@ -77,10 +77,10 @@
                 mov        bp,sp
                 push       si
                 push       di
-                mov        si,[bp&#43;buffer]
-                mov        bx,[bp&#43;charflag]
+                mov        si,[bp+buffer]
+                mov        bx,[bp+charflag]
                 mov        al,[bx]
-                mov        cx,[bp&#43;bufferlength]
+                mov        cx,[bp+bufferlength]
                 mov        bx,offset charstatustable
                 xor        di,di      ; set wordcount to zero
                 shr        cx,1       ; change count to wordcount
@@ -128,15 +128,15 @@
  done2:         cmp        ax,0100h       ; check for one-letter word
                 jne        done           ; if not, we have finished
                 inc        di             ; increase wordcount
- done:          mov        si,[bp&#43;charflag]
+ done:          mov        si,[bp+charflag]
                 mov        [si],al
-                mov        bx,[bp&#43;wordcount]
+                mov        bx,[bp+wordcount]
                 mov        ax,[bx]
-                mov        dx,[bx&#43;2]
+                mov        dx,[bx+2]
                 add        di,ax
                 adc        dx,0
                 mov        [bx],di
-                mov        [bx&#43;2],dx
+                mov        [bx+2],dx
                 pop        di
                 pop        si
                 pop        bp
@@ -148,11 +148,11 @@
 <H3><A NAME="Heading11"></A><FONT COLOR="#000077">Level 2: A New Perspective</FONT></H3>
 <P>The second level of optimization is one of breaking out of the mode of thinking established by my original code. Some entrants clearly did exactly that. They stepped back, thought about what the code actually needed to do, rather than just improving how it already worked, and implemented code that sprang from that new perspective.
 </P>
-<P>You can see one example of this in Listing 16.6, where Willem uses <B>CMP AX,0101H</B> to check two bytes at once. While you might think of this as nothing more than a doubling up of tests, it&#146;s a little more than that, especially when taken together with the use of two loops. This is a break with the serial nature of the C code, a recognition that word counting is really nothing more than a state machine that transitions from the &#147;in word&#148; state to the &#147;not in word&#148; state and back, counting a word on one but not both of those transitions. Willem says, in effect, &#147;We&#146;re in a word; if the next two bytes are non-separators, then we&#146;re still in a word, else we&#146;re not in a word, so count and change to the appropriate state.&#148; That&#146;s really quite different from saying, as I originally did, &#147;If the last byte was a non-separator, then if the current byte is a separator, then count a word.&#148; Willem has moved away from the all-in-one approach, splitting the code up into state-specific chunks that are more efficient because each does only the work required in a particular state.</P>
+<P>You can see one example of this in Listing 16.6, where Willem uses <B>CMP AX,0101H</B> to check two bytes at once. While you might think of this as nothing more than a doubling up of tests, it&rsquo;s a little more than that, especially when taken together with the use of two loops. This is a break with the serial nature of the C code, a recognition that word counting is really nothing more than a state machine that transitions from the &ldquo;in word&rdquo; state to the &ldquo;not in word&rdquo; state and back, counting a word on one but not both of those transitions. Willem says, in effect, &ldquo;We&rsquo;re in a word; if the next two bytes are non-separators, then we&rsquo;re still in a word, else we&rsquo;re not in a word, so count and change to the appropriate state.&rdquo; That&rsquo;s really quite different from saying, as I originally did, &ldquo;If the last byte was a non-separator, then if the current byte is a separator, then count a word.&rdquo; Willem has moved away from the all-in-one approach, splitting the code up into state-specific chunks that are more efficient because each does only the work required in a particular state.</P>
 <P>Another example of coming at the code from a new perspective is counting a word as soon as a non-separator follows a separator (at the start of the word), rather than waiting for a separator following a non-separator (at the end of the word). My friend Dan Illowsky describes the thought process leading to this approach thusly:</P>
-<P><I>&#147;I try to code as closely as possible to the real world nature of those things my program models. It seems somehow wrong to me to count the end of a word as you do when you look for a transition from a word to a non-word. A word is not a transition, it is the presence of a group of characters. Thought of this way, the code would have counted the word when it first detected the group. Had you done this, your main program would not have needed to look for the possible last transition or deal with the semantics of the value in <B>CharValue</B>.&#148;</I></P>
+<P><I>&ldquo;I try to code as closely as possible to the real world nature of those things my program models. It seems somehow wrong to me to count the end of a word as you do when you look for a transition from a word to a non-word. A word is not a transition, it is the presence of a group of characters. Thought of this way, the code would have counted the word when it first detected the group. Had you done this, your main program would not have needed to look for the possible last transition or deal with the semantics of the value in <B>CharValue</B>.&rdquo;</I></P>
 <P>John Richardson, of New York, contributed a good example of the benefits of a different perspective (in this case, a hardware perspective). John eliminated all branches used for detecting word edges; the inner loop of his code is shown in Listing 16.7. As John explains it:</P>
-<P><I>&#147;My next shot was to get rid of all the branches in the loop. To do that, I reached back to my college hardware courses. I noticed that we were really looking at an edge triggered device we want to count each time the I&#146;m a character state goes from one to zero. Remembering that XOR on two single-bit values will always return whether the bits are different or the same, I implemented a transition counter. The counter triggers every time a word begins or ends.&#148;</I></P><P><BR></P>
+<P><I>&ldquo;My next shot was to get rid of all the branches in the loop. To do that, I reached back to my college hardware courses. I noticed that we were really looking at an edge triggered device we want to count each time the I&rsquo;m a character state goes from one to zero. Remembering that XOR on two single-bit values will always return whether the bits are different or the same, I implemented a transition counter. The counter triggers every time a word begins or ends.&rdquo;</I></P><P><BR></P>
 <CENTER>
 <TABLE BORDER>
 <TR>

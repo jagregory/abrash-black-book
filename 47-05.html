@@ -80,34 +80,34 @@ STACK_FRAME_SIZE  equ  8
         .code
         public  _FillRectangleX
 _FillRectangleX proc    near
-        push    bp                      ;preserve caller&#146;s stack frame
+        push    bp                      ;preserve caller&rsquo;s stack frame
         mov     bp,sp                   ;point to local stack frame
         sub     sp,STACK_FRAME_SIZE     ;allocate space for local vars
-        push    si                      ;preserve caller&#146;s register variables
+        push    si                      ;preserve caller&rsquo;s register variables
         push    di
 
         cld
         mov     ax,SCREEN_WIDTH
-        mul     [bp&#43;StartY]             ;offset in page of top rectangle scan line
-        mov     di,[bp&#43;StartX]
+        mul     [bp+StartY]             ;offset in page of top rectangle scan line
+        mov     di,[bp+StartX]
         shr     di,1
         shr     di,1                    ;X/4 = offset of first rectangle pixel in scan
                                         ; line
         add     di,ax                   ;offset of first rectangle pixel in page
-        add     di,[bp&#43;PageBase]        ;offset of first rectangle pixel in
+        add     di,[bp+PageBase]        ;offset of first rectangle pixel in
                                         ; display memory
         mov     ax,SCREEN_SEG
-        mov     es,ax                   ;point ES:DI to the first rectangle pixel&#146;s
-        mov     [bp&#43;StartOffset],di     ; address
+        mov     es,ax                   ;point ES:DI to the first rectangle pixel&rsquo;s
+        mov     [bp+StartOffset],di     ; address
         mov     dx,SC_INDEX             ;set the Sequence Controller Index to
         mov     al,MAP_MASK             ; point to the Map Mask register
         out     dx,al
-        mov     bx,[bp&#43;EndY]
-        sub     bx,[bp&#43;StartY]          ;BX = height of rectangle
+        mov     bx,[bp+EndY]
+        sub     bx,[bp+StartY]          ;BX = height of rectangle
         jle     FillDone                ;skip if 0 or negative height
-        mov     [bp&#43;Height],bx
-        mov     dx,[bp&#43;EndX]
-        mov     cx,[bp&#43;StartX]
+        mov     [bp+Height],bx
+        mov     dx,[bp+EndX]
+        mov     cx,[bp+StartX]
         cmp     dx,cx
         jle     FillDone                ;skip if 0 or negative width
         dec     dx
@@ -116,17 +116,17 @@ _FillRectangleX proc    near
         shr     dx,1
         shr     dx,1
         inc     dx                      ;# of addresses across rectangle to fill
-        mov     [bp&#43;Width],dx
-        mov     word ptr [bp&#43;PlaneInfo],0001h
+        mov     [bp+Width],dx
+        mov     word ptr [bp+PlaneInfo],0001h
                                         ;lower byte = plane mask for plane 0,
                                         ; upper byte = plane # for plane 0
 FillPlanesLoop:
-        mov     ax,word ptr [bp&#43;PlaneInfo]
-        mov     dx,SC_INDEX&#43;1           ;point DX to the SC Data register
+        mov     ax,word ptr [bp+PlaneInfo]
+        mov     dx,SC_INDEX+1           ;point DX to the SC Data register
         out     dx,al                   ;set the plane for this pixel
-        mov     di,[bp&#43;StartOffset]     ;point ES:DI to rectangle start
-        mov     dx,[bp&#43;Width]
-        mov     cl,byte ptr [bp&#43;StartX]
+        mov     di,[bp+StartOffset]     ;point ES:DI to rectangle start
+        mov     dx,[bp+Width]
+        mov     cl,byte ptr [bp+StartX]
         and     cl,011b                 ;plane # of first pixel in initial byte
         cmp     ah,cl                   ;do we draw this plane in the initial byte?
         jae     InitAddrSet             ;yes
@@ -134,7 +134,7 @@ FillPlanesLoop:
         jz      FillLoopBottom          ;skip this plane if no pixels in it
         inc     di
 InitAddrSet:
-        mov     cl,byte ptr [bp&#43;EndX]
+        mov     cl,byte ptr [bp+EndX]
         dec     cl
         and     cl,011b                 ;plane # of last pixel in final byte
         cmp     ah,cl                   ;do we draw this plane in the final byte?
@@ -145,8 +145,8 @@ WidthSet:
         mov     si,SCREEN_WIDTH
         sub     si,dx                   ;distance from end of one scan line to start
                                         ; of next
-        mov     bx,[bp&#43;Height]          ;# of lines to fill
-        mov     al,byte ptr [bp&#43;Color]  ;color with which to fill
+        mov     bx,[bp+Height]          ;# of lines to fill
+        mov     al,byte ptr [bp+Color]  ;color with which to fill
 FillRowsLoop:
         mov     cx,dx                   ;# of bytes across scan line
         rep     stosb                   ;fill the scan line in this plane
@@ -155,17 +155,17 @@ FillRowsLoop:
         dec     bx                      ;count down scan lines
         jnz     FillRowsLoop
 FillLoopBottom:
-        mov     ax,word ptr [bp&#43;PlaneInfo]
+        mov     ax,word ptr [bp+PlaneInfo]
         shl     al,1                    ;set the plane bit to the next plane
         inc     ah                      ;increment the plane #
-        mov     word ptr [bp&#43;PlaneInfo],ax
+        mov     word ptr [bp+PlaneInfo],ax
         cmp     ah,4                    ;have we done all planes?
         jnz     FillPlanesLoop          ;continue if any more planes
 FillDone:
-        pop     di                      ;restore caller&#146;s register variables
+        pop     di                      ;restore caller&rsquo;s register variables
         pop     si
         mov     sp,bp                   ;discard storage for local variables
-        pop     bp                      ;restore caller&#146;s stack frame
+        pop     bp                      ;restore caller&rsquo;s stack frame
         ret
 _FillRectangleX endp
         end

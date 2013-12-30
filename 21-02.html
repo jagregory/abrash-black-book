@@ -37,7 +37,7 @@
 </CENTER>
 <P><BR></P>
 </P>
-<P>As on the 486, you should keep a careful eye out for AGIs involving the stack pointer. Implicit modifiers of ESP, such as <B>PUSH</B> and <B>POP</B>, are special-cased so you don&#146;t have to worry about AGIs. However, if you explicitly modify ESP with this instruction</P>
+<P>As on the 486, you should keep a careful eye out for AGIs involving the stack pointer. Implicit modifiers of ESP, such as <B>PUSH</B> and <B>POP</B>, are special-cased so you don&rsquo;t have to worry about AGIs. However, if you explicitly modify ESP with this instruction</P>
 <!-- CODE SNIP //-->
 <PRE>
 sub esp,100h
@@ -54,17 +54,17 @@ mov esp,ebp
 </P>
 <!-- CODE SNIP //-->
 <PRE>
-moveax,[esp&#43;20h]
+moveax,[esp+20h]
 </PRE>
 <!-- END CODE SNIP //-->
 <P>or via <B>PUSH</B>, <B>POP</B>, or other instructions that implicitly use ESP as an addressing register.</P>
 <P>On the 486, any instruction that had both a constant value and an addressing displacement, such as</P>
 <!-- CODE SNIP //-->
 <PRE>
-mov dword ptr [ebp&#43;16],1
+mov dword ptr [ebp+16],1
 </PRE>
 <!-- END CODE SNIP //-->
-<P>suffered a 1-cycle penalty, taking a total of 2 cycles. Such instructions take only one cycle on the Pentium, but they cannot pair, so they&#146;re still the most expensive sort of <B>MOV</B>. Knowing this can speed up something as simple as zeroing two memory variables, as in</P>
+<P>suffered a 1-cycle penalty, taking a total of 2 cycles. Such instructions take only one cycle on the Pentium, but they cannot pair, so they&rsquo;re still the most expensive sort of <B>MOV</B>. Knowing this can speed up something as simple as zeroing two memory variables, as in</P>
 <!-- CODE SNIP //-->
 <PRE>
 sub eax,eax        ;U-pipe 1
@@ -83,9 +83,9 @@ mov [MemVar1],0 ;U-pipe 1
 mov [MemVar2],0 ;U-pipe 2
 </PRE>
 <!-- END CODE SNIP //-->
-<P>Note, however, that my experiments thus far indicate that the two writes in the first case don&#146;t actually pair (possibly because the memory variables have never been read into the internal cache), so you might want to insert an instruction between the two <B>MOV</B>s&#151;and, of course, this is yet another reason why you should always measure your code&#146;s actual performance.</P>
+<P>Note, however, that my experiments thus far indicate that the two writes in the first case don&rsquo;t actually pair (possibly because the memory variables have never been read into the internal cache), so you might want to insert an instruction between the two <B>MOV</B>s&mdash;and, of course, this is yet another reason why you should always measure your code&rsquo;s actual performance.</P>
 <H3><A NAME="Heading4"></A><FONT COLOR="#000077">Register Contention</FONT></H3>
-<P>Finally, we come to the last major component of superscalar optimization: register contention. The basic premise here is simple: You can&#146;t use the same register in two inherently sequential ways in a single cycle. For example, you can&#146;t execute
+<P>Finally, we come to the last major component of superscalar optimization: register contention. The basic premise here is simple: You can&rsquo;t use the same register in two inherently sequential ways in a single cycle. For example, you can&rsquo;t execute
 </P>
 <!-- CODE SNIP //-->
 <PRE>
@@ -95,7 +95,7 @@ inc eax     ;U-pipe cycle 1
 and ebx,eax ;U-pipe cycle 2
 </PRE>
 <!-- END CODE SNIP //-->
-<P>in a single cycle; <B>AND EBX,EAX</B> can&#146;t execute until the value in EAX is known, and that can&#146;t happen until <B>INC EAX</B> is done. Consequently, the V-pipe idles while <B>INC EAX</B> executes in the U-pipe. We saw this in the last chapter when we discussed splitting instructions into simple instructions, and it is by far the most common sort of register contention, known as read-after-write register contention. Read-after-write register contention is the primary reason we have to interleave independent operations in order to get maximum V-pipe usage.</P>
+<P>in a single cycle; <B>AND EBX,EAX</B> can&rsquo;t execute until the value in EAX is known, and that can&rsquo;t happen until <B>INC EAX</B> is done. Consequently, the V-pipe idles while <B>INC EAX</B> executes in the U-pipe. We saw this in the last chapter when we discussed splitting instructions into simple instructions, and it is by far the most common sort of register contention, known as read-after-write register contention. Read-after-write register contention is the primary reason we have to interleave independent operations in order to get maximum V-pipe usage.</P>
 <P>The other sort of register contention is known as write-after-write. Write-after-write register contention happens when two instructions try to write to the same register on the same cycle. While that may not seem like a particularly useful operation in general, it can happen when subregisters are being set, as in the following</P>
 <!-- CODE SNIP //-->
 <PRE>
@@ -116,7 +116,7 @@ sub edx,edxX ;V-pipe cycle 1
 <!-- END CODE SNIP //-->
 <P>are free of charge.
 </P>
-<P>Also, stack-related instructions that modify ESP only implicitly (without ESP as part of any explicit operand) do not cause AGIs, and neither do they cause register contention with other instructions that use ESP only implicitly; such instructions include <B>PUSH <I>reg/immed</I>, POP <I>reg</I></B>, and <B>CALL</B>. (However, these instructions do cause register contention on ESP&#151;but not AGIs&#151;with instructions that use ESP explicitly, such as <B>MOV EAX,[ESP&#43;4]</B>.) Without this special case, the following sequence would hardly use the V-pipe at all:</P>
+<P>Also, stack-related instructions that modify ESP only implicitly (without ESP as part of any explicit operand) do not cause AGIs, and neither do they cause register contention with other instructions that use ESP only implicitly; such instructions include <B>PUSH <I>reg/immed</I>, POP <I>reg</I></B>, and <B>CALL</B>. (However, these instructions do cause register contention on ESP&mdash;but not AGIs&mdash;with instructions that use ESP explicitly, such as <B>MOV EAX,[ESP+4]</B>.) Without this special case, the following sequence would hardly use the V-pipe at all:</P>
 <!-- CODE SNIP //-->
 <PRE>
 mov  eax,[MemVar] ;U-pipe cycle 1
@@ -139,8 +139,8 @@ LoopTop:
    jnz LoopTop   ;V-pipe cycle 2
 </PRE>
 <!-- END CODE SNIP //-->
-<P>Branches can&#146;t pair in the U-pipe; a branch that executes in the U-pipe runs alone, with the V-pipe idle. If a call or jump is correctly predicted by the Pentium&#146;s branch prediction circuitry (as discussed in the last chapter), it executes in a single cycle, pairing if it runs in the V-pipe; if mispredicted, conditional jumps take 4 cycles in the U-pipe and 5 cycles in the V-pipe, and mispredicted calls and unconditional jumps take 3 cycles in either pipe. Note that <B>RET</B> can&#146;t pair.</P>
-<H3><A NAME="Heading6"></A><FONT COLOR="#000077">Who&#146;s in First?</FONT></H3>
+<P>Branches can&rsquo;t pair in the U-pipe; a branch that executes in the U-pipe runs alone, with the V-pipe idle. If a call or jump is correctly predicted by the Pentium&rsquo;s branch prediction circuitry (as discussed in the last chapter), it executes in a single cycle, pairing if it runs in the V-pipe; if mispredicted, conditional jumps take 4 cycles in the U-pipe and 5 cycles in the V-pipe, and mispredicted calls and unconditional jumps take 3 cycles in either pipe. Note that <B>RET</B> can&rsquo;t pair.</P>
+<H3><A NAME="Heading6"></A><FONT COLOR="#000077">Who&rsquo;s in First?</FONT></H3>
 <P>One of the trickiest things about superscalar optimization is that a given instruction stream can execute at a different speed depending on the pipe where it starts execution, because which instruction goes through the U-pipe first determines which of the following instructions will be able to pair. If we take the last example and add one more instruction, the other instructions will go through different pipes than previously, and cause the loop as a whole to take 50 percent longer, even though we only added 25 percent more cycles:
 </P>
 <!-- CODE //-->
@@ -152,7 +152,7 @@ LoopTop:
    dec ecx           ;V-pipe cycle 2
    jnz LoopTop       ;U-pipe cycle 3
                      ;V-pipe idle cycle 3
-                     ; because JNZ can&#146;t
+                     ; because JNZ can&rsquo;t
                      ; pair in the U-pipe
 </PRE>
 <!-- END CODE //-->

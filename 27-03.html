@@ -36,12 +36,12 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<P>&#147;That&#146;s an interesting application of write mode 2,&#148; you may well say, &#147;but is it really useful?&#148; While the ability to convert chunky bitmaps into VGA bitmaps does have its uses, Listing 27.1 is primarily intended to illustrate the mechanics of write mode 2.
+<P>&ldquo;That&rsquo;s an interesting application of write mode 2,&rdquo; you may well say, &ldquo;but is it really useful?&rdquo; While the ability to convert chunky bitmaps into VGA bitmaps does have its uses, Listing 27.1 is primarily intended to illustrate the mechanics of write mode 2.
 </P>
-<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="95%"><SMALL><I>For performance, it&#146;s best to store 16-color bitmaps in pre-separated four-plane format in system memory, and copy one plane at a time to the screen. Ideally, such bitmaps should be copied one scan line at a time, with all four planes completed for one scan line before moving on to the next. I say this because when entire images are copied one plane at a time, nasty transient color effects can occur as one plane becomes visibly changed before other planes have been modified.</I></SMALL>
+<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="95%"><SMALL><I>For performance, it&rsquo;s best to store 16-color bitmaps in pre-separated four-plane format in system memory, and copy one plane at a time to the screen. Ideally, such bitmaps should be copied one scan line at a time, with all four planes completed for one scan line before moving on to the next. I say this because when entire images are copied one plane at a time, nasty transient color effects can occur as one plane becomes visibly changed before other planes have been modified.</I></SMALL>
 </TABLE>
 <H4 ALIGN="LEFT"><A NAME="Heading6"></A><FONT COLOR="#000077">Drawing Color-Patterned Lines Using Write Mode 2</FONT></H4>
-<P>A more serviceable use of write mode 2 is shown in the program presented in Listing 27.2. The program draws multicolored horizontal, vertical, and diagonal lines, basing the color patterns on passed color tables. Write mode 2 is ideal because in this application color can vary from one pixel to the next, and in write mode 2 all that&#146;s required to set pixel color is a change of the lower nibble of the byte written by the CPU. Set/reset could be used to achieve the same result, but an index/data pair of <B>OUT</B>s would be required to set the Set/Reset register to each new color. Similarly, the Map Mask register could be used in write mode 0 to set pixel color, but in this case not only would an index/data pair of <B>OUT</B>s be required but there would also be no guarantee that data already in display memory wouldn&#146;t interfere with the color of the pixel being drawn, since the Map Mask register allows only selected planes to be drawn to.</P>
+<P>A more serviceable use of write mode 2 is shown in the program presented in Listing 27.2. The program draws multicolored horizontal, vertical, and diagonal lines, basing the color patterns on passed color tables. Write mode 2 is ideal because in this application color can vary from one pixel to the next, and in write mode 2 all that&rsquo;s required to set pixel color is a change of the lower nibble of the byte written by the CPU. Set/reset could be used to achieve the same result, but an index/data pair of <B>OUT</B>s would be required to set the Set/Reset register to each new color. Similarly, the Map Mask register could be used in write mode 0 to set pixel color, but in this case not only would an index/data pair of <B>OUT</B>s be required but there would also be no guarantee that data already in display memory wouldn&rsquo;t interfere with the color of the pixel being drawn, since the Map Mask register allows only selected planes to be drawn to.</P>
 <P>Listing 27.2 is hardly a comprehensive line drawing program. It draws only a few special line cases, and although it is reasonably fast, it is far from the fastest possible code to handle those cases, because it goes through a dot-plot routine and because it draws horizontal lines a pixel rather than a byte at a time. Write mode 2 would, however, serve just as well in a full-blown line drawing routine. For any type of patterned line drawing on the VGA, the basic approach remains the same: Use the bit mask to select the pixel (or pixels) to be altered and use the CPU byte in write mode 2 to select the color in which to draw.</P>
 <P><B>LISTING 27.2 L27-2.ASM</B></P>
 <!-- CODE //-->
@@ -53,7 +53,7 @@
 ;
 ; By Michael Abrash
 ;
-Stack   segment para stack &#145;STACK&#146;
+Stack   segment para stack &lsquo;STACK&rsquo;
         db      512 dup(0)
 Stack   ends
 
@@ -65,7 +65,7 @@ GC_INDEX              equ     03ceh   ;Graphics Controller Index reg
 GRAPHICS_MODE         equ     5       ;index of Graphics Mode reg
 BIT_MASK              equ     8       ;index of Bit Mask reg
 
-Data    segment para common &#145;DATA&#146;
+Data    segment para common &lsquo;DATA&rsquo;
 Pattern0        db      16
                 db      0, 1, 2, 3, 4, 5, 6, 7, 8
                 db      9, 10, 11, 12, 13, 14, 15
@@ -77,13 +77,13 @@ Pattern3        db      9
                 db      1, 1, 1, 2, 2, 2, 4, 4, 4
 Data    ends
 
-Code    segment para public &#145;CODE&#146;
+Code    segment para public &lsquo;CODE&rsquo;
         assume  cs:Code, ds:Data
 Start   proc    near
         mov     ax,Data
         mov     ds,ax
         mov     ax,10h
-        int     10h             ;select video mode 10h (640&#215;350)
+        int     10h             ;select video mode 10h (640x350)
 ;
 ; Draw 8 radial lines in upper-left quadrant in pattern 0.
 ;
@@ -268,7 +268,7 @@ LineUp  proc    near
         pop     dx              ;get back line length
 
         shl     di,1
-        jmp     cs:[LineUpVectors&#43;di]
+        jmp     cs:[LineUpVectors+di]
 ;
 ; Horizontal line to right.
 ;

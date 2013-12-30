@@ -53,7 +53,7 @@
 ;
 SLOWDOWN        equ     10000
 ;
-; Plane selects for the four colors we&#146;re using.
+; Plane selects for the four colors we&rsquo;re using.
 ;
 RED     equ     01h
 GREEN   equ     02h
@@ -69,15 +69,15 @@ MAP_MASK        equ     2       ;Map Mask register index in
 SCREEN_WIDTH    equ     80      ;# of bytes across screen
 SCREEN_HEIGHT   equ     350     ;# of scan lines on screen
 WORD_OUTS_OK    equ     1       ;set to 0 to assemble for
-                                ; computers that can&#146;t
+                                ; computers that can&rsquo;t
                                 ; handle word outs to
                                 ; indexed VGA regs
                                 ;
-stack segment para stack &#145;STACK&#146;
+stack segment para stack &lsquo;STACK&rsquo;
         db      512 dup (?)
 stack ends
 ;
-; Complete info about one object that we&#146;re animating.
+; Complete info about one object that we&rsquo;re animating.
 ;
 ObjectStructure         struc
 Delay   dw      ?       ;used to delay for n passes
@@ -107,7 +107,7 @@ PlaneSelect db  ?       ;mask to select plane to
                         ; word-aligned)
 ObjectStructure ends
 ;
-Data segment    word &#145;DATA&#146;
+Data segment    word &lsquo;DATA&rsquo;
 ;
 ; Palette settings to give plane 0 precedence, followed by
 ; planes 1, 2, and 3. Plane 3 has the lowest precedence (is
@@ -133,9 +133,9 @@ Colors  db      000h    ;background color=black
         db      000h    ;border color=black
 ;
 ; Image of a hollow square.
-; There&#146;s an 8-pixel-wide blank border around all edges
+; There&rsquo;s an 8-pixel-wide blank border around all edges
 ; so that the image erases the old version of itself as
-; it&#146;s moved and redrawn.
+; it&rsquo;s moved and redrawn.
 ;
 Square  label   byte
         dw 48,6    ;height in pixels, width in bytes
@@ -182,9 +182,9 @@ Square  label   byte
 ;
 ; Image of a hollow diamond with a smaller diamond in the
 ; middle.
-; There&#146;s an 8-pixel-wide blank border around all edges
+; There&rsquo;s an 8-pixel-wide blank border around all edges
 ; so that the image erases the old version of itself as
-; it&#146;s moved and redrawn.
+; it&rsquo;s moved and redrawn.
 ;
 Diamond label byte
         dw      48,6    ;height in pixels, width in bytes
@@ -336,15 +336,15 @@ AnimationLoop:
         mov     bx,offset ObjectList    ;point to the first
                                         ; object in the list
 ;
-; For each object, see if it&#146;s time to move and draw that
+; For each object, see if it&rsquo;s time to move and draw that
 ; object.
 ;
 ObjectLoop:
 ;
-; See if it&#146;s time to move this object.
+; See if it&rsquo;s time to move this object.
 ;
         dec  [bx+Delay]            ;count down delay
-        jnz  DoNextObject          ;still delaying-don&#146;t move
+        jnz  DoNextObject          ;still delaying-don&rsquo;t move
         mov  ax,[bx+BaseDelay]
         mov  [bx+Delay],ax         ;reset delay for next time
 ;
@@ -389,7 +389,7 @@ SetNewY:
 ; above, only one plane will be affected.
 ;
         mov     si,[bx+Image]   ;point to the
-                                ; object&#146;s image
+                                ; object&rsquo;s image
                                 ; info
         call    DrawObject
 ;
@@ -409,7 +409,7 @@ DelayLoop:
         loop    DelayLoop
 endif
 ;
-; If a key&#146;s been pressed, we&#146;re done, otherwise animate
+; If a key&rsquo;s been pressed, we&rsquo;re done, otherwise animate
 ; again.
 ;
 CheckKey:
@@ -471,7 +471,7 @@ DrawGridVert    proc    near
                                 ; solid cross line)
 BackdropRowLoop:
         mov     cx,SCREEN_WIDTH/2
-        rep     stosw           ;draw this scan line&#146;s bit
+        rep     stosw           ;draw this scan line&rsquo;s bit
                                 ; of all the vertical lines
                                 ; on the screen
         dec     dx

@@ -40,15 +40,15 @@
 <!-- CODE //-->
 <PRE>
 ; Program to illustrate operation of write mode 3 of the VGA.
-;  Draws 8&#215;8 characters at arbitrary locations without disturbing
-;  the background, using VGA&#146;s 8&#215;8 ROM font.  Designed
+;  Draws 8x8 characters at arbitrary locations without disturbing
+;  the background, using VGA&rsquo;s 8x8 ROM font.  Designed
 ;  for use with modes 0Dh, 0Eh, 0Fh, 10h, and 12h.
 ; Runs only on VGAs (in Models 50 & up and IBM Display Adapter
 ;  and 100% compatibles).
 ; Assembled with MASM
 ; By Michael Abrash
 ;
-stack   segment para stack &#145;STACK&#146;
+stack   segment para stack &lsquo;STACK&rsquo;
         db      512 dup(?)
 stack   ends
 ;
@@ -68,22 +68,22 @@ GC_ROTATE       equ     3       ;GC data rotate/logical function
 GC_MODE         equ     5       ;GC Mode register
 GC_BIT_MASK     equ     8       ;GC bit mask register index
 ;
-dseg    segment para common &#145;DATA&#146;
+dseg    segment para common &lsquo;DATA&rsquo;
 TEST_TEXT_ROW   equ     69      ;row to display test text at
 TEST_TEXT_COL   equ     17      ;column to display test text at
 TEST_TEXT_WIDTH equ     8       ;width of a character in pixels
 TestString      label   byte
-        db      &#145;Hello, world!&#146;,0       ;test string to print.
+        db      &lsquo;Hello, world!&rsquo;,0       ;test string to print.
 FontPointer     dd      ?               ;font offset
 dseg    ends
 ;
-cseg    segment para public &#145;CODE&#146;
+cseg    segment para public &lsquo;CODE&rsquo;
         assume  cs:cseg, ds:dseg
 start   proc    near
         mov     ax,dseg
         mov     ds,ax
 ;
-; Select 640&#215;480 graphics mode.
+; Select 640x480 graphics mode.
 ;
         mov     ax,012h
         int     10h
@@ -112,14 +112,14 @@ start   proc    near
         mov     di,0
         mov     cx,8000h            ;fill all 32k words
         mov     ax,0ffffh           ;because of set/reset, the value
-                                    ; written actually doesn&#146;t matter
+                                    ; written actually doesn&rsquo;t matter
         rep stosw                   ;fill with blue
 ;
-; Set driver to use the 8&#215;8 font.
+; Set driver to use the 8x8 font.
 ;
         mov     ah,11h          ;VGA BIOS character generator function,
         mov     al,30h          ; return info subfunction
-        mov     bh,3            ;get 8&#215;8 font pointer
+        mov     bh,3            ;get 8x8 font pointer
         int     10h
         call    SelectFont
 ;
@@ -166,7 +166,7 @@ Start   endp
 ;  BX = row to draw text character at
 ;  CX = column to draw text character at
 ;
-;  Forces ALU function to &#147;move&#148;.
+;  Forces ALU function to &ldquo;move&rdquo;.
 ;  Forces write mode 3.
 ;
 DrawChar        proc    near
@@ -240,7 +240,7 @@ DrawChar        proc    near
 ;
 ; Set up the GC rotation. In write mode 3, this is the rotation
 ; of CPU data before it is ANDed with the Bit Mask register to
-; form the bit mask. Force the ALU function to &#147;move&#148;. Uses the
+; form the bit mask. Force the ALU function to &ldquo;move&rdquo;. Uses the
 ; readability of VGA registers to leave reserved bits unchanged.
 ;
         mov     dx,GC_INDEX
@@ -326,7 +326,7 @@ DrawChar        endp
 ;
 SelectFont      proc    near
         mov     word ptr [FontPointer],bp       ;save pointer
-        mov     word ptr [FontPointer&#43;2],es
+        mov     word ptr [FontPointer+2],es
         ret
 SelectFont      endp
 ;

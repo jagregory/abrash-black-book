@@ -40,7 +40,7 @@
 <!-- CODE //-->
 <PRE>
 ; Finds and returns the greatest common divisor of two integers.
-; Uses Euclid&#146;s algorithm: divides the larger integer by the
+; Uses Euclid&rsquo;s algorithm: divides the larger integer by the
 ; smaller; if the remainder is 0, the smaller integer is the GCD,
 ; otherwise the smaller integer becomes the larger integer, the
 ; remainder becomes the smaller integer, and the process is
@@ -64,21 +64,21 @@ parms ends
       public         _gcd
       align 2
 _gcd  proc  near
-      push  bp             ;preserve caller&#146;s stack frame
+      push  bp             ;preserve caller&rsquo;s stack frame
       mov   bp,sp          ;set up our stack frame
-      push  si             ;preserve caller&#146;s register variables
+      push  si             ;preserve caller&rsquo;s register variables
       push  di
 
 ;Swap if necessary to make sure that int1 &gt;= int2
       mov   ax,int1[bp]
       mov   bx,int2[bp]
       cmp   ax,bx          ;is int1 &gt;= int2?
-      jnb   IntsSet        ;yes, so we&#146;re all set
+      jnb   IntsSet        ;yes, so we&rsquo;re all set
       xchg  ax,bx          ;no, so swap int1 and int2
 IntsSet:
 
 ; Now loop, dividing int1 by int2 and checking the remainder, until
-; the remainder is 0. At each step, if the remainder isn&#146;t 0, assign
+; the remainder is 0. At each step, if the remainder isn&rsquo;t 0, assign
 ; int2 to int1, and the remainder to int2, then repeat.
 GCDLoop:
                            ;if the remainder of int1 divided by
@@ -93,47 +93,47 @@ GCDLoop:
       mov   ax,bx          ;int1 = int2;
       mov   bx,dx          ;int2 = remainder from DIV
 
-;&#151;start of loop unrolling; the above is repeated three times&#151;
+;&mdash;start of loop unrolling; the above is repeated three times&mdash;
       sub   dx,dx          ;prepare int1 in DX:AX for division
       div   bx             ;int1/int2; remainder is in DX
       and   dx,dx          ;is the remainder zero?
       jz    Done           ;yes, so int2 (BX) is the gcd
       mov   ax,bx          ;int1 = int2;
       mov   bx,dx          ;int2 = remainder from DIV
-;&#151;
+;&mdash;
       sub   dx,dx          ;prepare int1 in DX:AX for division
       div   bx             ;int1/int2; remainder is in DX
       and   dx,dx          ;is the remainder zero?
       jz    Done           ;yes, so int2 (BX) is the gcd
       mov   ax,bx          ;int1 = int2;
       mov   bx,dx          ;int2 = remainder from DIV
-;&#151;
+;&mdash;
       sub   dx,dx          ;prepare int1 in DX:AX for division
       div   bx             ;int1/int2; remainder is in DX
       and   dx,dx          ;is the remainder zero?
       jz    Done           ;yes, so int2 (BX) is the gcd
       mov   ax,bx          ;int1 = int2;
       mov   bx,dx          ;int2 = remainder from DIV
-;&#151;end of loop unrolling&#151;
+;&mdash;end of loop unrolling&mdash;
       jmp   GCDLoop
 
       align2
 Done:
       mov   ax,bx          ;return the GCD
-      pop   di             ;restore caller&#146;s register variables
+      pop   di             ;restore caller&rsquo;s register variables
       pop   si
-      pop   bp             ;restore caller&#146;s stack frame
+      pop   bp             ;restore caller&rsquo;s stack frame
       ret
 _gcd  endp
       end
 </PRE>
 <!-- END CODE //-->
-<P>Assembly language optimization is pattern matching on a local scale. Frankly, it&#146;s also the sort of boring, brute-force work that people are lousy at; compilers could out-optimize you at this level with one pass tied behind their back <I>if</I> they knew as much about the code you&#146;re writing as you do, which they don&#146;t.</P>
-<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="95%"><SMALL><I>Design optimization&#151;conceptual breakthroughs in understanding the relationships between the needs of an application, the nature of the data the application works with, and what the computer can do&#151;is global pattern matching.</I></SMALL>
+<P>Assembly language optimization is pattern matching on a local scale. Frankly, it&rsquo;s also the sort of boring, brute-force work that people are lousy at; compilers could out-optimize you at this level with one pass tied behind their back <I>if</I> they knew as much about the code you&rsquo;re writing as you do, which they don&rsquo;t.</P>
+<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP"><IMG SRC="images/i.jpg"><TD WIDTH="95%"><SMALL><I>Design optimization&mdash;conceptual breakthroughs in understanding the relationships between the needs of an application, the nature of the data the application works with, and what the computer can do&mdash;is global pattern matching.</I></SMALL>
 </TABLE>
-<P>Computers are <I>much</I> worse at that sort of pattern matching than humans; computers have no way to integrate vast amounts of disparate information, much of it only vaguely defined or subject to change. People, oddly enough, are <I>better</I> at global optimization than at local optimization. For one thing, it&#146;s more interesting. For another, it&#146;s complex and imprecise enough to allow intuition and inspiration, two vastly underrated programming tools, to come to the fore. And, as I pointed out earlier, people tend to perform instantaneous solutions to even the most complex problems, while computers bog down in geometrically or exponentially increasing execution times. Oh, it may take days or weeks for a person to absorb enough information to be able to reach a solution, and the solution may only be near-optimal&#151;but the solution itself (or, at least, each of the pieces of the solution) arrives in a flash.</P>
+<P>Computers are <I>much</I> worse at that sort of pattern matching than humans; computers have no way to integrate vast amounts of disparate information, much of it only vaguely defined or subject to change. People, oddly enough, are <I>better</I> at global optimization than at local optimization. For one thing, it&rsquo;s more interesting. For another, it&rsquo;s complex and imprecise enough to allow intuition and inspiration, two vastly underrated programming tools, to come to the fore. And, as I pointed out earlier, people tend to perform instantaneous solutions to even the most complex problems, while computers bog down in geometrically or exponentially increasing execution times. Oh, it may take days or weeks for a person to absorb enough information to be able to reach a solution, and the solution may only be near-optimal&mdash;but the solution itself (or, at least, each of the pieces of the solution) arrives in a flash.</P>
 <P>Those flashes are your programming pattern matcher doing its job. <I>Your</I> job is to give your pattern matcher the opportunity to get to know each problem and run through it two or three times, from different angles, to see what unexpected solutions it can come up with.</P>
-<P>Pull back the reins a little. Don&#146;t measure progress by lines of code written today; measure it instead by overall progress and by quality. Relax and listen to that quiet inner voice that provides the real breakthroughs. Stop, look, listen&#151;and think. Not only will you find that it&#146;s a more productive and creative way to program&#151;but you&#146;ll also find that it&#146;s more fun.</P>
+<P>Pull back the reins a little. Don&rsquo;t measure progress by lines of code written today; measure it instead by overall progress and by quality. Relax and listen to that quiet inner voice that provides the real breakthroughs. Stop, look, listen&mdash;and think. Not only will you find that it&rsquo;s a more productive and creative way to program&mdash;but you&rsquo;ll also find that it&rsquo;s more fun.</P>
 <P>And think what you could do with all those extra computer years!</P><P><BR></P>
 <CENTER>
 <TABLE BORDER>

@@ -52,13 +52,13 @@ int ClipToPlane(polygon_t *pin, plane_t *pplane, polygon_t *pout)
     curdot = DotProduct(pinvert, &amppplane-&gt;normal);
     curin = (curdot &gt;= pplane-&gt;distance);
 
-    for (i=0 ; i&lt;pin-&gt;numverts ; i&#43;&#43;)
+    for (i=0 ; i&lt;pin-&gt;numverts ; i++)
     {
-        nextvert = (i &#43; 1) % pin-&gt;numverts;
+        nextvert = (i + 1) % pin-&gt;numverts;
 
-        // Keep the current vertex if it&#146;s inside the plane
+        // Keep the current vertex if it&rsquo;s inside the plane
         if (curin)
-            *poutvert&#43;&#43; = *pinvert;
+            *poutvert++ = *pinvert;
 
         nextdot = DotProduct(&amppin-&gt;verts[nextvert], &amppplane-&gt;normal);
         nextin = (nextdot &gt;= pplane-&gt;distance);
@@ -69,18 +69,18 @@ int ClipToPlane(polygon_t *pin, plane_t *pplane, polygon_t *pout)
         {
             scale = (pplane-&gt;distance - curdot) /
                     (nextdot - curdot);
-            for (j=0 ; j&lt;3 ; j&#43;&#43;)
+            for (j=0 ; j&lt;3 ; j++)
             {
-                poutvert-&gt;v[j] = pinvert-&gt;v[j] &#43;
+                poutvert-&gt;v[j] = pinvert-&gt;v[j] +
                     ((pin-&gt;verts[nextvert].v[j] - pinvert-&gt;v[j]) *
                      scale);
             }
-            poutvert&#43;&#43;;
+            poutvert++;
         }
 
         curdot = nextdot;
         curin = nextin;
-        pinvert&#43;&#43;;
+        pinvert++;
     }
 
     pout-&gt;numverts = poutvert - pout-&gt;verts;
@@ -92,11 +92,11 @@ int ClipToPlane(polygon_t *pin, plane_t *pplane, polygon_t *pout)
 }
 </PRE>
 <!-- END CODE //-->
-<P>Believe it or not, this technique, applied in turn to each edge, is all that&#146;s needed to clip a polygon to a plane. Better yet, a polygon can be clipped to multiple planes by repeating the above process once for each clip plane, with each interation trimming away any part of the polygon that&#146;s clipped by that particular plane.
+<P>Believe it or not, this technique, applied in turn to each edge, is all that&rsquo;s needed to clip a polygon to a plane. Better yet, a polygon can be clipped to multiple planes by repeating the above process once for each clip plane, with each interation trimming away any part of the polygon that&rsquo;s clipped by that particular plane.
 </P>
-<P>One particularly useful aspect of 3-D clipping is that if you&#146;re drawing texture mapped polygons, texture coordinates can be clipped in exactly the same way as (x,y,z) coordinates. In fact, the very same fraction that&#146;s used to advance x, y, and z from the inside point to the point of intersection with the clip plane can be used to advance the texture coordinates as well, so only one extra multiply and one extra add are required for each texture coordinate.</P>
+<P>One particularly useful aspect of 3-D clipping is that if you&rsquo;re drawing texture mapped polygons, texture coordinates can be clipped in exactly the same way as (x,y,z) coordinates. In fact, the very same fraction that&rsquo;s used to advance x, y, and z from the inside point to the point of intersection with the clip plane can be used to advance the texture coordinates as well, so only one extra multiply and one extra add are required for each texture coordinate.</P>
 <H4 ALIGN="LEFT"><A NAME="Heading6"></A><FONT COLOR="#000077">Clipping to the Frustum</FONT></H4>
-<P>Given a polygon-clipping function, it&#146;s easy to clip to the frustum: set up the four planes for the sides of the frustum, with another one or two planes for near and far clipping, if desired; next, clip each potentially visible polygon to each plane in turn; then draw whatever polygons emerge from the clipping process. Listing 65.3 is the core code for a simple 3-D clipping example that allows you to move around and look at polygonal models from any angle. The full code for this program is available on the CD-ROM in the file DDJCLIP.ZIP.
+<P>Given a polygon-clipping function, it&rsquo;s easy to clip to the frustum: set up the four planes for the sides of the frustum, with another one or two planes for near and far clipping, if desired; next, clip each potentially visible polygon to each plane in turn; then draw whatever polygons emerge from the clipping process. Listing 65.3 is the core code for a simple 3-D clipping example that allows you to move around and look at polygonal models from any angle. The full code for this program is available on the CD-ROM in the file DDJCLIP.ZIP.
 </P>
 <P><A NAME="Fig3"><!-- </A><A HREF="javascript:displayWindow('images/65-03.jpg',408,197 )"> --><IMG SRC="images/65-03.jpg"><BR><!-- </A>
 <BR><A HREF="javascript:displayWindow('images/65-03.jpg',408,197)"> --><FONT COLOR="#000077"><B>Figure 65.3</B></FONT></A>&nbsp;&nbsp;<I>Clipping a polygon edge.</I>
@@ -130,13 +130,13 @@ void ProjectPolygon (polygon_t *ppoly, polygon2D_t *ppoly2D)
     int     i;
     double  zrecip;
 
-    for (i=0 ; i&lt;ppoly-&gt;numverts ; i&#43;&#43;)
+    for (i=0 ; i&lt;ppoly-&gt;numverts ; i++)
     {
         zrecip = 1.0 / ppoly-&gt;verts[i].v[2];
         ppoly2D-&gt;verts[i].x =
-               ppoly-&gt;verts[i].v[0] * zrecip * maxscale &#43; xcenter;
+               ppoly-&gt;verts[i].v[0] * zrecip * maxscale + xcenter;
         ppoly2D-&gt;verts[i].y = DIBHeight -
-             (ppoly-&gt;verts[i].v[1] * zrecip * maxscale &#43; ycenter);
+             (ppoly-&gt;verts[i].v[1] * zrecip * maxscale + ycenter);
     }
     ppoly2D-&gt;color = ppoly-&gt;color;
     ppoly2D-&gt;numverts = ppoly-&gt;numverts;
@@ -151,12 +151,12 @@ void ZSortObjects(void)
     point_t         dist;
 
     objecthead.pnext = &ampobjecthead;
-    for (i=0 ; i&lt;numobjects ; i&#43;&#43;)
+    for (i=0 ; i&lt;numobjects ; i++)
     {
-        for (j=0 ; j&lt;3 ; j&#43;&#43;)
+        for (j=0 ; j&lt;3 ; j++)
             dist.v[j] = objects[i].center.v[j] - currentpos.v[j];
-        objects[i].vdist = sqrt(dist.v[0] * dist.v[0] &#43;
-                                dist.v[1] * dist.v[1] &#43;
+        objects[i].vdist = sqrt(dist.v[0] * dist.v[0] +
+                                dist.v[1] * dist.v[1] +
                                 dist.v[2] * dist.v[2]);
         pobject = &ampobjecthead;
         vdist = objects[i].vdist;
@@ -182,9 +182,9 @@ void UpdateViewPos()
     motionvec.v[0] = DotProduct(&ampvpn, &ampxaxis);
     motionvec.v[1] = 0.0;
     motionvec.v[2] = DotProduct(&ampvpn, &ampzaxis);
-    for (i=0 ; i&lt;3 ; i&#43;&#43;)
+    for (i=0 ; i&lt;3 ; i++)
     {
-        currentpos.v[i] &#43;= motionvec.v[i] * currentspeed;
+        currentpos.v[i] += motionvec.v[i] * currentspeed;
         if (currentpos.v[i] &gt; MAX_COORD)
             currentpos.v[i] = MAX_COORD;
         if (currentpos.v[i] &lt; -MAX_COORD)
@@ -218,7 +218,7 @@ void UpdateViewPos()
     // Break out the rotation matrix into vright, vup, and vpn.
     // We could work directly with the matrix; breaking it out
     // into three vectors is just to make things clearer
-    for (i=0 ; i&lt;3 ; i&#43;&#43;)
+    for (i=0 ; i&lt;3 ; i++)
     {
         vright.v[i] = mtemp2[0][i];
         vup.v[i] = mtemp2[1][i];
@@ -228,7 +228,7 @@ void UpdateViewPos()
     if (currentspeed &gt; (MOVEMENT_SPEED * speedscale / 2.0))
         currentspeed -= MOVEMENT_SPEED * speedscale / 2.0;
     else if (currentspeed &lt; -(MOVEMENT_SPEED * speedscale / 2.0))
-        currentspeed &#43;= MOVEMENT_SPEED * speedscale / 2.0;
+        currentspeed += MOVEMENT_SPEED * speedscale / 2.0;
     else
         currentspeed = 0.0;
 }
@@ -239,9 +239,9 @@ void BackRotateVector(point_t *pin, point_t *pout)
     int     i;
 
     // Rotate into the world orientation
-    for (i=0 ; i&lt;3 ; i&#43;&#43;)
-        pout-&gt;v[i] = pin-&gt;v[0] * vright.v[i] &#43;
-                     pin-&gt;v[1] * vup.v[i] &#43;
+    for (i=0 ; i&lt;3 ; i++)
+        pout-&gt;v[i] = pin-&gt;v[0] * vright.v[i] +
+                     pin-&gt;v[1] * vup.v[i] +
                      pin-&gt;v[2] * vpn.v[i];
 }
 
@@ -252,7 +252,7 @@ void TransformPoint(point_t *pin, point_t *pout)
     point_t tvert;
 
     // Translate into a viewpoint-relative coordinate
-    for (i=0 ; i&lt;3 ; i&#43;&#43;)
+    for (i=0 ; i&lt;3 ; i++)
         tvert.v[i] = pin-&gt;v[i] - currentpos.v[i];
     // Rotate into the view orientation
     pout-&gt;v[0] = DotProduct(&amptvert, &ampvright);
@@ -265,7 +265,7 @@ void TransformPolygon(polygon_t *pinpoly, polygon_t *poutpoly)
 {
     int         i;
 
-    for (i=0 ; i&lt;pinpoly-&gt;numverts ; i&#43;&#43;)
+    for (i=0 ; i&lt;pinpoly-&gt;numverts ; i++)
         TransformPoint(&amppinpoly-&gt;verts[i], &amppoutpoly-&gt;verts[i]);
     poutpoly-&gt;color = pinpoly-&gt;color;
     poutpoly-&gt;numverts = pinpoly-&gt;numverts;
@@ -278,7 +278,7 @@ int PolyFacesViewer(polygon_t *ppoly)
     int     i;
     point_t viewvec, edge1, edge2, normal;
 
-    for (i=0 ; i&lt;3 ; i&#43;&#43;)
+    for (i=0 ; i&lt;3 ; i++)
     {
         viewvec.v[i] = ppoly-&gt;verts[0].v[i] - currentpos.v[i];
         edge1.v[i] = ppoly-&gt;verts[0].v[i] - ppoly-&gt;verts[1].v[i];
@@ -297,7 +297,7 @@ void SetWorldspaceClipPlane(point_t *normal, plane_t *plane)
 
     // Rotate the plane normal into worldspace
     BackRotateVector(normal, &ampplane-&gt;normal);
-    plane-&gt;distance = DotProduct(&ampcurrentpos, &ampplane-&gt;normal) &#43;
+    plane-&gt;distance = DotProduct(&ampcurrentpos, &ampplane-&gt;normal) +
             CLIP_PLANE_EPSILON;
 }
 
@@ -339,7 +339,7 @@ int ClipToFrustum(polygon_t *pin, polygon_t *pout)
 
     curpoly = 0;
     ppoly = pin;
-    for (i=0 ; i&lt;(NUM_FRUSTUM_PLANES-1); i&#43;&#43;)
+    for (i=0 ; i&lt;(NUM_FRUSTUM_PLANES-1); i++)
     {
         if (!ClipToPlane(ppoly,
                          &ampfrustumplanes[i],
@@ -373,15 +373,15 @@ void UpdateWorld()
     while (pobject != &ampobjecthead)
     {
         ppoly = pobject-&gt;ppoly;
-        for (i=0 ; i&lt;pobject-&gt;numpolys ; i&#43;&#43;)
+        for (i=0 ; i&lt;pobject-&gt;numpolys ; i++)
         {
             // Move the polygon relative to the object center
             tpoly0.color = ppoly-&gt;color;
             tpoly0.numverts = ppoly-&gt;numverts;
-            for (j=0 ; j&lt;tpoly0.numverts ; j&#43;&#43;)
+            for (j=0 ; j&lt;tpoly0.numverts ; j++)
             {
-                for (k=0 ; k&lt;3 ; k&#43;&#43;)
-                    tpoly0.verts[j].v[k] = ppoly-&gt;verts[j].v[k] &#43;
+                for (k=0 ; k&lt;3 ; k++)
+                    tpoly0.verts[j].v[k] = ppoly-&gt;verts[j].v[k] +
                             pobject-&gt;center.v[k];
             }
             if (PolyFacesViewer(&amptpoly0))
@@ -393,11 +393,11 @@ void UpdateWorld()
                     FillPolygon2D (&ampscreenpoly);
                 }
             }
-            ppoly&#43;&#43;;
+            ppoly++;
         }
         pobject = pobject-&gt;pnext;
     }
-    // We&#146;ve drawn the frame; copy it to the screen
+    // We&rsquo;ve drawn the frame; copy it to the screen
     hdcScreen = GetDC(hwndOutput);
     holdpal = SelectPalette(hdcScreen, hpalDIB, FALSE);
     RealizePalette(hdcScreen);

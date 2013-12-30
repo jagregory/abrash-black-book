@@ -37,9 +37,9 @@
 </CENTER>
 <P><BR></P>
 <H3><A NAME="Heading6"></A><FONT COLOR="#000077">Fast Texture Mapping: An Implementation</FONT></H3>
-<P>As you might expect, I&#146;ve implemented DDA texture mapping in X-Sharp, and the changes are reflected in the X-Sharp archive in this chapter&#146;s subdirectory on the listings disk. Listing 56.1 shows the new header file entries, and Listing 56.2 shows the actual texture-mapped polygon drawer. The set-pixel routine that Listing 56.2 calls is a slight modification of the Mode X set-pixel routine from Chapter 47. In addition, INITBALL.C has been modified to create three texture-mapped polygons and define the texture bitmaps, and modifications have been made to allow the user to flip the axis of rotation. You will of course need the complete X-Sharp library to see texture mapping in action, but Listings 56.1 and 56.2 are the actual texture mapping code in its entirety.
+<P>As you might expect, I&rsquo;ve implemented DDA texture mapping in X-Sharp, and the changes are reflected in the X-Sharp archive in this chapter&rsquo;s subdirectory on the listings disk. Listing 56.1 shows the new header file entries, and Listing 56.2 shows the actual texture-mapped polygon drawer. The set-pixel routine that Listing 56.2 calls is a slight modification of the Mode X set-pixel routine from Chapter 47. In addition, INITBALL.C has been modified to create three texture-mapped polygons and define the texture bitmaps, and modifications have been made to allow the user to flip the axis of rotation. You will of course need the complete X-Sharp library to see texture mapping in action, but Listings 56.1 and 56.2 are the actual texture mapping code in its entirety.
 </P>
-<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP" ALIGN="LEFT"><IMG SRC="images/i.jpg"><TD WIDTH="95%" VALIGN="TOP" ALIGN="LEFT"><SMALL><I>Here&#146;s a major tip: DDA texture mapping looks best on fast-moving surfaces, where the eye doesn&#146;t have time to pick nits with the shearing and aliasing that&#146;s an inevi table by-product of such a crude approach. Compile DEMO1 from the X-Sharp archive in this chapter&#146;s subdirectory of the listings disk, and run it. The initial display looks okay, but certainly not great, because the rotational speed is so slow. Now press the S key a few times to speed up the rotation and flip between different rotation axes. I think you&#146;ll be amazed at how much better DDA texture mapping looks at high speed. This technique would be great for mapping textures onto hurtling asteroids or jets, but would come up short for slow, finely detailed movements.</I></SMALL>
+<TABLE WIDTH="100%"><TD WIDTH="5%" VALIGN="TOP" ALIGN="LEFT"><IMG SRC="images/i.jpg"><TD WIDTH="95%" VALIGN="TOP" ALIGN="LEFT"><SMALL><I>Here&rsquo;s a major tip: DDA texture mapping looks best on fast-moving surfaces, where the eye doesn&rsquo;t have time to pick nits with the shearing and aliasing that&rsquo;s an inevi table by-product of such a crude approach. Compile DEMO1 from the X-Sharp archive in this chapter&rsquo;s subdirectory of the listings disk, and run it. The initial display looks okay, but certainly not great, because the rotational speed is so slow. Now press the S key a few times to speed up the rotation and flip between different rotation axes. I think you&rsquo;ll be amazed at how much better DDA texture mapping looks at high speed. This technique would be great for mapping textures onto hurtling asteroids or jets, but would come up short for slow, finely detailed movements.</I></SMALL>
 </TABLE>
 <P><B>LISTING 56.1  L56-1.C</B></P>
 <!-- CODE //-->
@@ -53,15 +53,15 @@
    DrawTexturedPolygon(&ampPolygon, TexVerts, TexMap);
 #define FIXED_TO_INT(FixedVal) ((int) (FixedVal &gt&gt 16))
 #define ROUND_FIXED_TO_INT(FixedVal) \
-   ((int) ((FixedVal &#43; DOUBLE_TO_FIXED(0.5)) &gt&gt 16))
+   ((int) ((FixedVal + DOUBLE_TO_FIXED(0.5)) &gt&gt 16))
 /* Retrieves specified pixel from specified image bitmap of specified width. */
 #define GET_IMAGE_PIXEL(TexMapBits, TexMapWidth, X, Y) \
-   TexMapBits[(Y * TexMapWidth) &#43; X]
+   TexMapBits[(Y * TexMapWidth) + X]
 /* Masks to mark shading types in Face structure */
-#define NO_SHADING      0&#215;0000
-#define AMBIENT_SHADING 0&#215;0001
-#define DIFFUSE_SHADING 0&#215;0002
-#define TEXTURE_MAPPED_SHADING 0&#215;0004
+#define NO_SHADING      0x0000
+#define AMBIENT_SHADING 0x0001
+#define DIFFUSE_SHADING 0x0002
+#define TEXTURE_MAPPED_SHADING 0x0004
 /* Describes a texture map */
 typedef struct {
    int TexMapWidth;  /* texture map width in bytes */
@@ -70,21 +70,21 @@ typedef struct {
 
 /* Structure describing one face of an object (one polygon) */
 typedef struct {
-   int * VertNums;   /* pointer to list of indexes of this polygon&#146;s vertices
-                        in the object&#146;s vertex list. The first two indexes
+   int * VertNums;   /* pointer to list of indexes of this polygon&rsquo;s vertices
+                        in the object&rsquo;s vertex list. The first two indexes
                         must select end and start points, respectively, of this
-                        polygon&#146;s unit normal vector. Second point should also
+                        polygon&rsquo;s unit normal vector. Second point should also
                         be an active polygon vertex */
    int NumVerts;     /* # of verts in face, not including the initial
                         vertex, which must be the end of a unit normal vector
                         that starts at the second index in VertNums */
    int ColorIndex;   /* direct palette index; used only for non-shaded faces */
-   ModelColor FullColor; /* polygon&#146;s color */
+   ModelColor FullColor; /* polygon&rsquo;s color */
    int ShadingType;  /* none, ambient, diffuse, texture mapped, etc. */
    TextureMap * TexMap; /* pointer to bitmap for texture mapping, if any */
-   Point * TexVerts; /* pointer to list of this polygon&#146;s vertices, in
+   Point * TexVerts; /* pointer to list of this polygon&rsquo;s vertices, in
                         TextureMap coordinates. Index n must map to index
-                        n &#43; 1 in VertNums, (the &#43; 1 is to skip over the unit
+                        n + 1 in VertNums, (the + 1 is to skip over the unit
                         normal endpoint in VertNums) */
 } Face;
 extern void DrawTexturedPolygon(PointListHeader *, Point *, TextureMap *);
@@ -94,14 +94,14 @@ extern void DrawTexturedPolygon(PointListHeader *, Point *, TextureMap *);
 <!-- CODE //-->
 <PRE>
 /* Draws a bitmap, mapped to a convex polygon (draws a texture-mapped polygon).
-   &#147;Convex&#148; means that every horizontal line drawn through the polygon at any
+   &ldquo;Convex&rdquo; means that every horizontal line drawn through the polygon at any
    point would cross exactly two active edges (neither horizontal lines nor 
    zero-length edges count as active edges; both are acceptable anywhere in 
    the polygon), and that the right &amp left edges never cross. Nonconvex 
-   polygons won&#146;t be drawn properly. Can&#146;t fail. */
+   polygons won&rsquo;t be drawn properly. Can&rsquo;t fail. */
 #include &ltstdio.h&gt
 #include &ltmath.h&gt
-#include &#147;polygon.h&#148;
+#include &ldquo;polygon.h&rdquo;
 /* Describes the current location and stepping, in both the source and
    the destination, of an edge */
 typedef struct {
@@ -114,7 +114,7 @@ typedef struct {
    Fixedpoint SourceY;    /* current Y location in source for this edge */
    Fixedpoint SourceStepX;/* X step in source for Y step in dest of 1 */
    Fixedpoint SourceStepY;/* Y step in source for Y step in dest of 1 */
-                          /* variables used for all-integer Bresenham&#146;s-type
+                          /* variables used for all-integer Bresenham&rsquo;s-type
                              X stepping through the dest, needed for precise
                              pixel placement to avoid gaps */
    int DestX;             /* current X location in dest for this edge */
@@ -137,7 +137,7 @@ static char * TexMapBits;
 static int TexMapWidth;
 /* Draws a texture-mapped polygon, given a list of destination polygon
    vertices, a list of corresponding source texture polygon vertices, and a
-   pointer to the source texture&#146;s descriptor. */
+   pointer to the source texture&rsquo;s descriptor. */
 void DrawTexturedPolygon(PointListHeader * Polygon, Point * TexVerts,
    TextureMap * TexMap)
 {
@@ -154,11 +154,11 @@ void DrawTexturedPolygon(PointListHeader * Polygon, Point * TexVerts,
    }
    /* Scan through the destination polygon vertices and find the top of the
       left and right edges, taking advantage of our knowledge that vertices run
-      in a clockwise direction (else this polygon wouldn&#146;t be visible due to 
+      in a clockwise direction (else this polygon wouldn&rsquo;t be visible due to 
       backface removal) */
    MinY = 32767;
    MaxY = -32768;
-   for (i=0; i&ltNumVerts; i&#43;&#43;) {
+   for (i=0; i&ltNumVerts; i++) {
       if (VertexPtr[i].Y &lt MinY) {
          MinY = VertexPtr[i].Y;
          MinVert = i;
@@ -200,7 +200,7 @@ void DrawTexturedPolygon(PointListHeader * Polygon, Point * TexVerts,
          /* Draw the scan line between the two current edges */
          ScanOutLine(&ampLeftEdge, &ampRightEdge);
       }
-      /* Advance the source and destination polygon edges, ending if we&#146;ve
+      /* Advance the source and destination polygon edges, ending if we&rsquo;ve
          scanned all the way to the bottom of the polygon */
       if (!StepEdge(&ampLeftEdge)) {
          break;
@@ -208,7 +208,7 @@ void DrawTexturedPolygon(PointListHeader * Polygon, Point * TexVerts,
       if (!StepEdge(&ampRightEdge)) {
          break;
       }
-      DestY&#43;&#43;;
+      DestY++;
    }
 }
 /* Steps an edge one scan line in the destination, and the corresponding
@@ -226,14 +226,14 @@ int StepEdge(EdgeScan * Edge)
       return(1);     /* all set to draw the new edge */
    }
    /* Step the current source edge */
-   Edge-&gtSourceX &#43;= Edge-&gtSourceStepX;
-   Edge-&gtSourceY &#43;= Edge-&gtSourceStepY;
+   Edge-&gtSourceX += Edge-&gtSourceStepX;
+   Edge-&gtSourceY += Edge-&gtSourceStepY;
    /* Step dest X with Bresenham-style variables, to get precise dest pixel
       placement and avoid gaps */
-   Edge-&gtDestX &#43;= Edge-&gtDestXIntStep;  /* whole pixel step */
+   Edge-&gtDestX += Edge-&gtDestXIntStep;  /* whole pixel step */
    /* Do error term stuff for fractional pixel X step handling */
-   if ((Edge-&gtDestXErrTerm &#43;= Edge-&gtDestXAdjUp) &gt 0) {
-      Edge-&gtDestX &#43;= Edge-&gtDestXDirection;
+   if ((Edge-&gtDestXErrTerm += Edge-&gtDestXAdjUp) &gt 0) {
+      Edge-&gtDestX += Edge-&gtDestXDirection;
       Edge-&gtDestXErrTerm -= Edge-&gtDestXAdjDown;
    }
    return(1);
@@ -255,7 +255,7 @@ int SetUpEdge(EdgeScan * Edge, int StartVert)
       }
       /* Advance to the next vertex, wrapping if we run off the start or end
          of the vertex list */
-      NextVert = StartVert &#43; Edge-&gtDirection;
+      NextVert = StartVert + Edge-&gtDirection;
       if (NextVert &gt= NumVerts) {
          NextVert = 0;
       } else if (NextVert &lt 0) {
@@ -329,27 +329,27 @@ void ScanOutLine(EdgeScan * LeftEdge, EdgeScan * RightEdge)
    }
    /* Clip left edge if necssary */
    if (DestX &lt ClipMinX) {
-      SourceX &#43;= SourceXStep * (ClipMinX - DestX);
-      SourceY &#43;= SourceYStep * (ClipMinX - DestX);
+      SourceX += SourceXStep * (ClipMinX - DestX);
+      SourceY += SourceYStep * (ClipMinX - DestX);
       DestX = ClipMinX;
    }
    /* Scan across the destination scan line, updating the source image
       position accordingly */
-   for (; DestX&ltDestXMax; DestX&#43;&#43;) {
+   for (; DestX&ltDestXMax; DestX++) {
       /* Get currently mapped pixel out of image and draw it to screen */
       WritePixelX(DestX, DestY,
             GET_IMAGE_PIXEL(TexMapBits, TexMapWidth,
             FIXED_TO_INT(SourceX), FIXED_TO_INT(SourceY)) );
       /* Point to the next source pixel */
-      SourceX &#43;= SourceXStep;
-      SourceY &#43;= SourceYStep;
+      SourceX += SourceXStep;
+      SourceY += SourceYStep;
    }
 }
 </PRE>
 <!-- END CODE //-->
-<P>No matter how you slice it, DDA texture mapping beats boring, single-color polygons nine ways to Sunday. The big downside is that it&#146;s much slower than a normal polygon fill; move the ball close to the screen in DEMO1, and watch things slow down when one of those big texture maps comes around. Of course, that&#146;s partly because the code is all in C; some well-chosen optimizations would work wonders. In the next chapter we&#146;ll discuss texture mapping further, crank up the speed of our texture mapper, and attend to some rough spots that remain in the DDA texture mapping implementation, most notably in the area of exactly which texture pixels map to which destination pixels as a polygon rotates.
+<P>No matter how you slice it, DDA texture mapping beats boring, single-color polygons nine ways to Sunday. The big downside is that it&rsquo;s much slower than a normal polygon fill; move the ball close to the screen in DEMO1, and watch things slow down when one of those big texture maps comes around. Of course, that&rsquo;s partly because the code is all in C; some well-chosen optimizations would work wonders. In the next chapter we&rsquo;ll discuss texture mapping further, crank up the speed of our texture mapper, and attend to some rough spots that remain in the DDA texture mapping implementation, most notably in the area of exactly which texture pixels map to which destination pixels as a polygon rotates.
 </P>
-<P>And, in case you&#146;re curious, yes, there is a bear in DEMO1. I wouldn&#146;t say he looks much like a Pooh-type bear, but he&#146;s a bear nonetheless. He does tend to look a little startled when you flip the ball around so that he&#146;s zipping by on his head, but, heck, you would too in the same situation. And remember, when you buy the next VGA megahit, <I>Bears in Space</I>, you saw it here first.</P><P><BR></P>
+<P>And, in case you&rsquo;re curious, yes, there is a bear in DEMO1. I wouldn&rsquo;t say he looks much like a Pooh-type bear, but he&rsquo;s a bear nonetheless. He does tend to look a little startled when you flip the ball around so that he&rsquo;s zipping by on his head, but, heck, you would too in the same situation. And remember, when you buy the next VGA megahit, <I>Bears in Space</I>, you saw it here first.</P><P><BR></P>
 <CENTER>
 <TABLE BORDER>
 <TR>

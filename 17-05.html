@@ -36,11 +36,11 @@
 </TABLE>
 </CENTER>
 <P><BR></P>
-<P>In Listing 17.3, note the padded cellmap edges, and the alteration of the member functions to compensate for the padding. Also note that the width now has to be a multiple of eight, to facilitate the process of copying the edges to the opposite padding bytes. We have decreased the generality of our Game of Life implementation in exchange for better performance. That&#146;s a very common trade-off, as common as trading memory for performance. As a rule, the more general a program is, the slower it is. A corollary is that often (not always, but often), the more heavily optimized a program is, the more complex and the more difficult to implement it is. You can often improve performance a good deal by implementing only the level of generality you need, but at the same time decreased generality makes it more difficult to change or port the program at some later date. A Game of Life implementation, such as Listing 17.1, that&#146;s built on <B>set_cell()</B>, <B>clear_cell()</B>, and <B>get_cell()</B> is completely general; you can change the cell storage format simply by changing the constructor and those three functions. Listing 17.3 is harder to change because <B>count_neighbors()</B> would also have to be altered, and it&#146;s more complex than any of the other functions.</P>
-<P>So, in Listing 17.3, we&#146;ve gotten under the hood and changed the cellmap format a little, and gotten impressive results. But now <B>count_neighbors()</B> is hard-wired for optimized counting, and it&#146;s still taking up more than half the time. Maybe now it&#146;s time to go to assembly?</P>
+<P>In Listing 17.3, note the padded cellmap edges, and the alteration of the member functions to compensate for the padding. Also note that the width now has to be a multiple of eight, to facilitate the process of copying the edges to the opposite padding bytes. We have decreased the generality of our Game of Life implementation in exchange for better performance. That&rsquo;s a very common trade-off, as common as trading memory for performance. As a rule, the more general a program is, the slower it is. A corollary is that often (not always, but often), the more heavily optimized a program is, the more complex and the more difficult to implement it is. You can often improve performance a good deal by implementing only the level of generality you need, but at the same time decreased generality makes it more difficult to change or port the program at some later date. A Game of Life implementation, such as Listing 17.1, that&rsquo;s built on <B>set_cell()</B>, <B>clear_cell()</B>, and <B>get_cell()</B> is completely general; you can change the cell storage format simply by changing the constructor and those three functions. Listing 17.3 is harder to change because <B>count_neighbors()</B> would also have to be altered, and it&rsquo;s more complex than any of the other functions.</P>
+<P>So, in Listing 17.3, we&rsquo;ve gotten under the hood and changed the cellmap format a little, and gotten impressive results. But now <B>count_neighbors()</B> is hard-wired for optimized counting, and it&rsquo;s still taking up more than half the time. Maybe now it&rsquo;s time to go to assembly?</P>
 <P>Not hardly.</P>
-<H3><A NAME="Heading7"></A><FONT COLOR="#000077">Heavy-Duty C&#43;&#43; Optimization</FONT></H3>
-<P>Before we get to assembly, we still have to perform C<SMALL>&#43;&#43;</SMALL> optimization, then see if we can find an alternative approach that better fits the application. It would actually have made much more sense if we had looked for a new approach as our first optimization step, but I decided it would be better to cover straightforward C<SMALL>&#43;&#43;</SMALL> optimizations at this point, and the mind-bending stuff a little later. Right now, let&#146;s look at some C<SMALL>&#43;&#43;</SMALL> optimizations; Listing 17.4 is a C<SMALL>&#43;&#43;</SMALL>-optimized version of Listing 17.3.</P>
+<H3><A NAME="Heading7"></A><FONT COLOR="#000077">Heavy-Duty C++ Optimization</FONT></H3>
+<P>Before we get to assembly, we still have to perform C<SMALL>++</SMALL> optimization, then see if we can find an alternative approach that better fits the application. It would actually have made much more sense if we had looked for a new approach as our first optimization step, but I decided it would be better to cover straightforward C<SMALL>++</SMALL> optimizations at this point, and the mind-bending stuff a little later. Right now, let&rsquo;s look at some C<SMALL>++</SMALL> optimizations; Listing 17.4 is a C<SMALL>++</SMALL>-optimized version of Listing 17.3.</P>
 <P><B>LISTING 17.4 L17-4.CPP</B></P>
 <!-- CODE //-->
 <PRE>
@@ -61,11 +61,11 @@ void cellmap::next_generation(cellmap&amp next_map)
    // Process all cells in the current cellmap
    row_cell_ptr = cells;      // point to upper left neighbor of
                               // first cell in cell map
-   for (y=0; y&ltheight; y&#43;&#43;) { // repeat for each row of cells
+   for (y=0; y&ltheight; y++) { // repeat for each row of cells
       // Cell pointer and cell bit mask for first cell in row
       base_cell_ptr = row_cell_ptr; // to access upper left neighbor
       base_mask = 0x01;             // of first cell in row
-      for (x=0; x&ltwidth; x&#43;&#43;) {     // repeat for each cell in row
+      for (x=0; x&ltwidth; x++) {     // repeat for each cell in row
          // First, count neighbors
          // Point to upper left neighbor of current cell
          cell_ptr = base_cell_ptr;  // pointer and bit mask for
@@ -73,44 +73,44 @@ void cellmap::next_generation(cellmap&amp next_map)
          // Count upper left neighbor
          neighbor_count = (*cell_ptr &amp mask) ? 1 : 0;
          // Count left neighbor
-         if ((*(cell_ptr &#43; width_in_bytes) &amp mask)) neighbor_count&#43;&#43;;
+         if ((*(cell_ptr + width_in_bytes) &amp mask)) neighbor_count++;
          // Count lower left neighbor
-         if ((*(cell_ptr &#43; width_in_bytesX2) &amp mask))
-neighbor_count&#43;&#43;;
+         if ((*(cell_ptr + width_in_bytesX2) &amp mask))
+neighbor_count++;
          // Point to upper neighbor
          if ((mask &gt&gt= 1) == 0) {
             mask = 0x80;
-            cell_ptr&#43;&#43;;
+            cell_ptr++;
          }
          // Remember where to find the current cell
-         current_cell_ptr = cell_ptr &#43; width_in_bytes;
+         current_cell_ptr = cell_ptr + width_in_bytes;
          current_mask = mask;
          // Count upper neighbor
-         if ((*cell_ptr &amp mask)) neighbor_count&#43;&#43;;
+         if ((*cell_ptr &amp mask)) neighbor_count++;
          // Count lower neighbor
-         if ((*(cell_ptr &#43; width_in_bytesX2) &amp mask))
-               neighbor_count&#43;&#43;;
+         if ((*(cell_ptr + width_in_bytesX2) &amp mask))
+               neighbor_count++;
          // Point to upper right neighbor
          if ((mask &gt&gt= 1) == 0) {
             mask = 0x80;
-            cell_ptr&#43;&#43;;
+            cell_ptr++;
          }
          // Count upper right neighbor
-         if ((*cell_ptr &amp mask)) neighbor_count&#43;&#43;;
+         if ((*cell_ptr &amp mask)) neighbor_count++;
          // Count right neighbor
-         if ((*(cell_ptr &#43; width_in_bytes) &amp mask))  neighbor_count&#43;&#43;;
+         if ((*(cell_ptr + width_in_bytes) &amp mask))  neighbor_count++;
          // Count lower right neighbor
-         if ((*(cell_ptr &#43; width_in_bytesX2) &amp mask))
-               neighbor_count&#43;&#43;;
+         if ((*(cell_ptr + width_in_bytesX2) &amp mask))
+               neighbor_count++;
          if (*current_cell_ptr &amp current_mask) {
             if ((neighbor_count != 2) &amp&amp (neighbor_count != 3)) {
-               *(dest_cell_ptr &#43; (current_cell_ptr - cells)) &amp=
+               *(dest_cell_ptr + (current_cell_ptr - cells)) &amp=
                      ~current_mask;    // turn off cell
                draw_pixel(x, y, OFF_COLOR);
             }
          } else {
             if (neighbor_count == 3) {
-               *(dest_cell_ptr &#43; (current_cell_ptr - cells)) |=
+               *(dest_cell_ptr + (current_cell_ptr - cells)) |=
                      current_mask;     // turn on cell
                draw_pixel(x, y, ON_COLOR);
             }
@@ -118,19 +118,19 @@ neighbor_count&#43;&#43;;
          // Advance to the next cell on row
          if ((base_mask &gt&gt= 1) == 0) {
             base_mask = 0x80;
-            base_cell_ptr&#43;&#43;;  // advance to the next cell byte
+            base_cell_ptr++;  // advance to the next cell byte
          }
       }
-      row_cell_ptr &#43;= width_in_bytes;  // point to start of next row
+      row_cell_ptr += width_in_bytes;  // point to start of next row
    }
 }
 </PRE>
 <!-- END CODE //-->
 <P>Listing 17.4 and Listing 17.3 are functionally the same; the only difference lies in how <B>next_generation()</B> is implemented. (Only <B>next_generation()</B> is shown in Listing 17.4; the program is otherwise identical to Listing 17.3.) Listing 17.4 applies the following optimizations to <B>next_generation()</B>:</P>
 <P>The neighbor-counting code is brought into <B>next_generation,</B> eliminating many function calls and from-scratch address/mask calculations; all multiplies are eliminated by using pointers and addition; and all cells are accessed directly via pointers and masks, eliminating all remaining function calls and from-scratch address/mask calculations.</P>
-<P>The net effect of these optimizations is that Listing 17.4 is more than twice as fast as Listing 17.3; we&#146;ve achieved the desired 18 generations per second, albeit only on a 486, and only at 96&#215;96. (The <B>#define</B> that enables code limiting the speed to 18 Hz, which seemed ridiculous in Listing 17.1, is actually useful for keeping the generations from iterating too quickly when Listing 17.4 is running on a 486, especially with a small cellmap like 48&#215;48.) We&#146;ve sped things up by about eight times so far; we need to increase our speed another ten times to reach our goal of 200&#215;200 at 18 generations per second on a 20 MHz 386.</P>
-<P>It&#146;s undoubtedly possible to improve the performance of Listing 17.4 further by fine-tuning the code, but no tremendous improvement is possible that way.</P>
-<TABLE WIDTH="100%"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><I><SMALL>Once you&#146;ve reached the point of fine-tuning pointer usage and register variables and the like in C or C<SMALL>&#43;&#43;</SMALL>, you&#146;ve become compiler-dependent; you therefore might as well go to assembly and get the real McCoy.</SMALL></I>
+<P>The net effect of these optimizations is that Listing 17.4 is more than twice as fast as Listing 17.3; we&rsquo;ve achieved the desired 18 generations per second, albeit only on a 486, and only at 96x96. (The <B>#define</B> that enables code limiting the speed to 18 Hz, which seemed ridiculous in Listing 17.1, is actually useful for keeping the generations from iterating too quickly when Listing 17.4 is running on a 486, especially with a small cellmap like 48x48.) We&rsquo;ve sped things up by about eight times so far; we need to increase our speed another ten times to reach our goal of 200x200 at 18 generations per second on a 20 MHz 386.</P>
+<P>It&rsquo;s undoubtedly possible to improve the performance of Listing 17.4 further by fine-tuning the code, but no tremendous improvement is possible that way.</P>
+<TABLE WIDTH="100%"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="5%"><IMG SRC="images/i.jpg"><TD VALIGN="TOP" ALIGN="LEFT" WIDTH="95%"><I><SMALL>Once you&rsquo;ve reached the point of fine-tuning pointer usage and register variables and the like in C or C<SMALL>++</SMALL>, you&rsquo;ve become compiler-dependent; you therefore might as well go to assembly and get the real McCoy.</SMALL></I>
 </TABLE>
 <P><BR></P>
 <CENTER>

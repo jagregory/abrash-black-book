@@ -106,7 +106,7 @@
          COMMENT $
   
 How it works
-&#151;&#151;&#151;&#151;&#151;&#151;
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
 The idea is to go through the buffer fetching each letter-pair (words
 rather than bytes).  The carry flag indicates whether we are
 currently in a (text) word or not.  The letter-pair fetched from the
@@ -127,7 +127,7 @@ repeated.  Finally, the carry flag is saved to indicate the final
 in-a-word/not-in-a-word status.  The count register is masked to
 remove the high bit and the count of words remains in the count
 register.
- Sound complicated?  You&#146;re right!  But it&#146;s fast!
+ Sound complicated?  You&rsquo;re right!  But it&rsquo;s fast!
   
 The beauty of this method is that no jumps are required, the
 operations are fast, it requires only one table and the process can
@@ -139,14 +139,14 @@ jumping.
                  .code
   
  Test1           macro   x,y             ;9 or 10 bytes
- Addr&ampx:         mov     di,[bp&#43;y]       ;3 or 4 bytes
+ Addr&ampx:         mov     di,[bp+y]       ;3 or 4 bytes
                  adc     di,di
                  or      ax,si
                  add     al,[di]
                  endm
   
  Test2           macro   x,y              ;7 or 8 bytes
- Addr&ampx:         mov     di,[bp&#43;y]        ;3 or 4 bytes
+ Addr&ampx:         mov     di,[bp+y]        ;3 or 4 bytes
                  adc     di,di
                  add     ah,[di]
                  endm
@@ -165,18 +165,18 @@ jumping.
                  push    di
   
                  xor     cx,cx
-                 mov     si,[bp&#43;Buffer]       ;si = text buffer
-                 mov     ax,[bp&#43;BufferLength] ;dx = length in bytes
+                 mov     si,[bp+Buffer]       ;si = text buffer
+                 mov     ax,[bp+BufferLength] ;dx = length in bytes
                  shr     ax,1                 ;dx = length in words
                  jnz     NormalBuf
  OneByteBuf:
                  mov     ax,seg WordTable
                  mov     es,ax
   
-                 mov     di,[bp&#43;CharFlag]
+                 mov     di,[bp+CharFlag]
                  mov     bh,[di]             ;bh = old CharFlag
                  mov     bl,[si]             ;bl = character
-                 add     bh,&#145;A&#146;-1            ;make bh into character
+                 add     bh,&lsquo;A&rsquo;-1            ;make bh into character
                  add     bx,bx               ;prepare to index
                  mov     al,es:[bx]
                  cbw                         ;get hi bit in ah (then bh)
@@ -203,7 +203,7 @@ jumping.
                  mov     di,LoopEntry[bx]    ;...address in di
                  xchg    dx,ax               ;dx is the loop counter
                  xor     cx,cx               ;total word count
-                 mov     bx,[bp&#43;CharFlag]
+                 mov     bx,[bp+CharFlag]
                  mov     bl,[bx]             ;bl = old CharFlag
                  mov     bp,seg WordTable
                  mov     ds,bp
@@ -218,12 +218,12 @@ jumping.
  n               =       0
                  rept    Scan/2
                  Test1   %n,%n*2
-                 Test2   %n&#43;1,%n*2&#43;2
- n               =       n&#43;2
+                 Test2   %n+1,%n*2+2
+ n               =       n+2
                  endm
  EndCount:
                  sbb     bx,bx             ;save carry
-  if             Scan ge 128               ;because al&#43;ah may equal 128!
+  if             Scan ge 128               ;because al+ah may equal 128!
                  or      ax,si
                  add     al,ah
                  mov     ah,0
@@ -250,11 +250,11 @@ jumping.
                  pop     ds
                  pop     bp                ;(1)
  CleanUp:
-                 mov     si,[bp&#43;WordCount]
+                 mov     si,[bp+WordCount]
                  add     [si],cx
-                 adc     word ptr [si&#43;2],0
+                 adc     word ptr [si+2],0
                  and     bh,1              ;save only the carry flag
-                 mov     si,[bp&#43;CharFlag]
+                 mov     si,[bp+CharFlag]
                  mov     [si],bh
                  pop     di
                  pop     si

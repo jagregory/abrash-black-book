@@ -255,14 +255,14 @@ void DrawSplitScreen() {
    DrawRect(0,1,3,SPLIT-LINES-1,15,SPLIT-START-OFFSET,SCREEN-SEG);
    DrawRect(SCREEN-PIXWIDTH-4,1,SCREEN-PIXWIDTH-1,SPLIT-LINES-1,15,
          SPLIT-START-OFFSET,SCREEN-SEG);
-   TextUp(&#147;This is the split screen area...&#148;,8,8,SPLIT-START-OFFSET,
+   TextUp(&ldquo;This is the split screen area...&rdquo;,8,8,SPLIT-START-OFFSET,
          SCREEN-SEG);
-   TextUp(&#147;Bounces: &#148;,272,64,SPLIT-START-OFFSET,SCREEN-SEG);
-   TextUp(&#147;\033: nudge left&#148;,520,78,SPLIT-START-OFFSET,SCREEN-SEG);
-   TextUp(&#147;\032: nudge right&#148;,520,90,SPLIT-START-OFFSET,SCREEN-SEG);
-   TextUp(&#147;\031: nudge down&#148;,520,102,SPLIT-START-OFFSET,SCREEN-SEG);
-   TextUp(&#147;\030: nudge up&#148;,520,114,SPLIT-START-OFFSET,SCREEN-SEG);
-   TextUp(&#147;Esc to end&#148;,520,126,SPLIT-START-OFFSET,SCREEN-SEG);
+   TextUp(&ldquo;Bounces: &rdquo;,272,64,SPLIT-START-OFFSET,SCREEN-SEG);
+   TextUp(&ldquo;\033: nudge left&rdquo;,520,78,SPLIT-START-OFFSET,SCREEN-SEG);
+   TextUp(&ldquo;\032: nudge right&rdquo;,520,90,SPLIT-START-OFFSET,SCREEN-SEG);
+   TextUp(&ldquo;\031: nudge down&rdquo;,520,102,SPLIT-START-OFFSET,SCREEN-SEG);
+   TextUp(&ldquo;\030: nudge up&rdquo;,520,114,SPLIT-START-OFFSET,SCREEN-SEG);
+   TextUp(&ldquo;Esc to end&rdquo;,520,126,SPLIT-START-OFFSET,SCREEN-SEG);
 }
 
 /* Turn on the split screen at the desired line (minus 1 because the
@@ -316,7 +316,7 @@ void MoveBouncer(bouncer *Bouncer, bumper *BumperPtr, int NumBumpers) {
          }
          /* Update the bounce count display; turn over at 10000 */
          if (++BounceCount &gt= 10000) {
-            TextUp(&#147;0    &#148;,344,64,SPLIT-START-OFFSET,SCREEN-SEG);
+            TextUp(&ldquo;0    &rdquo;,344,64,SPLIT-START-OFFSET,SCREEN-SEG);
             BounceCount = 0;
          } else {
             ShowBounceCount();
