@@ -1,7 +1,3 @@
-  ------------------------ --------------------------------- -------------------------
-  [Previous](70-09.html)   [Table of Contents](index.html)   [Next](book-index.html)
-  ------------------------ --------------------------------- -------------------------
-
 Afterword {#Heading1}
 ---------
 
@@ -85,11 +81,3 @@ some unexpected success, that not half of the things we call impossible
 have any right at all to wear the label.
 
 —Michael Abrash
-
-  ------------------------ --------------------------------- -------------------------
-  [Previous](70-09.html)   [Table of Contents](index.html)   [Next](book-index.html)
-  ------------------------ --------------------------------- -------------------------
-
-* * * * *
-
-Graphics Programming Black Book © 2001 Michael Abrash

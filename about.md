@@ -1,7 +1,3 @@
-  ------------------------ --------------------------------- ---------------------------
-  [Previous](intro.html)   [Table of Contents](index.html)   [Next](about_author.html)
-  ------------------------ --------------------------------- ---------------------------
-
 Foreword {#Heading1}
 --------
 
@@ -92,11 +88,3 @@ articles can provide similar stepping stones for others.
 
 —*John Carmack*\
  id Software
-
-  ------------------------ --------------------------------- ---------------------------
-  [Previous](intro.html)   [Table of Contents](index.html)   [Next](about_author.html)
-  ------------------------ --------------------------------- ---------------------------
-
-* * * * *
-
-Graphics Programming Black Book © 2001 Michael Abrash

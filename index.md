@@ -1,8 +1,6 @@
 Michael Abrash's Graphics Programming Black Book Special Edition
 ----------------------------------------------------------------
 
-* * * * *
-
 1.  [Introduction](intro.html)
 2.  [Foreword](about.html)
 3.  [About the Author](about_author.html)
@@ -893,7 +891,3 @@ Michael Abrash's Graphics Programming Black Book Special Edition
 
 6.  [Appendix A](appendix-a.html)
 7.  [Index](book-index.html)
-
-* * * * *
-
-Graphics Programming Black Book © 2001 Michael Abrash

@@ -1,7 +1,3 @@
-  ----------------------------- --------------------------------- --------------------
-  [Previous](appendix-a.html)   [Table of Contents](index.html)   [Next](index.html)
-  ----------------------------- --------------------------------- --------------------
-
 Index {#Heading1}
 -----
 
@@ -7060,11 +7056,3 @@ Zen timer, **37-38**, 43
 long-period Zen timer, **63-65**
 
 Zen timer, **41-42**, 47-48
-
-  ----------------------------- --------------------------------- --------------------
-  [Previous](appendix-a.html)   [Table of Contents](index.html)   [Next](index.html)
-  ----------------------------- --------------------------------- --------------------
-
-* * * * *
-
-Graphics Programming Black Book © 2001 Michael Abrash

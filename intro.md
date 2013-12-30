@@ -1,7 +1,3 @@
-  ------------------------ --------------------------------- --------------------
-  [Previous](index.html)   [Table of Contents](index.html)   [Next](about.html)
-  ------------------------ --------------------------------- --------------------
-
 Introduction {#Heading1}
 ------------
 
@@ -81,11 +77,3 @@ And the next decade is shaping up to be just as exciting!
 —*Michael Abrash*\
  Bellevue, Washington\
  May 1997
-
-  ------------------------ --------------------------------- --------------------
-  [Previous](index.html)   [Table of Contents](index.html)   [Next](about.html)
-  ------------------------ --------------------------------- --------------------
-
-* * * * *
-
-Graphics Programming Black Book © 2001 Michael Abrash

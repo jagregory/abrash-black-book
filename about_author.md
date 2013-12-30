@@ -1,7 +1,3 @@
-  ------------------------ --------------------------------- --------------------
-  [Previous](about.html)   [Table of Contents](index.html)   [Next](01-01.html)
-  ------------------------ --------------------------------- --------------------
-
 Acknowledgments {#Heading1}
 ---------------
 
@@ -42,11 +38,3 @@ contributors by name in this book, but if your name is omitted, my
 apologies, and consider yourself thanked; this book could not have
 happened without you. And, of course, thanks to Shay and Emily for their
 generous patience with my passion for writing and computers.
-
-  ------------------------ --------------------------------- --------------------
-  [Previous](about.html)   [Table of Contents](index.html)   [Next](01-01.html)
-  ------------------------ --------------------------------- --------------------
-
-* * * * *
-
-Graphics Programming Black Book © 2001 Michael Abrash
