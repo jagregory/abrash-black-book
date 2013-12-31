@@ -10,33 +10,33 @@ category: 'Web and Software Development: Game Development,Web and Software Devel
 
 # Index {#Heading1}
 
-**Numbers**
+`Numbers`
 
 1/z sorting
 
 abutting span sorting, 1229-1230
 
-**AddPolygonEdges** function, **1232-1233,** 1238
+`AddPolygonEdges` function, **1232-1233,** 1238
 
 vs. BSP-order sorting, 1226-1227
 
 calculating 1/z value, 1220-1222
 
-**ClearEdgeLists** function, **1236-1237**
+`ClearEdgeLists` function, **1236-1237**
 
-**DrawSpans** function, **1236**
+`DrawSpans` function, `1236`
 
 independent span sorting, 1230, **1231-1238,** 1239-1241
 
 intersecting span sorting, 1228-1229
 
-**PolyFacesViewer** function, **1232**
+`PolyFacesViewer` function, `1232`
 
 reliability, 1227
 
-**ScanEdges** function, **1234-1236,** 1238-1239
+`ScanEdges` function, **1234-1236,** 1238-1239
 
-**UpdateWorld** function, 1237-1238
+`UpdateWorld` function, 1237-1238
 
 3-D animation
 
@@ -55,13 +55,13 @@ depth sorting, 1000, **1001-1002**
 
 rotation
 
-**ConcatXforms** function, **944**
+`ConcatXforms` function, `944`
 
 matrix representation, 938-939
 
 multiple axes of rotation, 948
 
-**XformVec** function, **943**
+`XformVec` function, `943`
 
 rounding vs. truncation, 1002-1003
 
@@ -77,35 +77,35 @@ overview, 1195
 
 polygon clipping
 
-**BackRotateVector** function, **1203**
+`BackRotateVector` function, `1203`
 
 clipping to frustum, 1200, **1201-1206,** 1206-1207
 
-**ClipToFrustum** function, **1204**
+`ClipToFrustum` function, `1204`
 
-**ClipToPlane** function, **1199**
+`ClipToPlane` function, `1199`
 
 optimization, 1207
 
 overview, 1197-1200
 
-**PolyFacesViewer** function, **1203**
+`PolyFacesViewer` function, `1203`
 
-**ProjectPolygon** function, **1201**
+`ProjectPolygon` function, `1201`
 
-**SetUpFrustum** function, **1204**
+`SetUpFrustum` function, `1204`
 
-**SetWorldspace** function, **1204**
+`SetWorldspace` function, `1204`
 
-**TransformPoint** function, **1203**
+`TransformPoint` function, `1203`
 
-**TransformPolygon** function, **1203**
+`TransformPolygon` function, `1203`
 
-**UpdateWorld** function, **1205**
+`UpdateWorld` function, `1205`
 
 viewspace clipping, 1207
 
-**ZSortObjects** function, **1201**
+`ZSortObjects` function, `1201`
 
 3-D drawing
 
@@ -168,25 +168,25 @@ rendering BSP trees
 
 clipping, 1158-1159
 
-**ClipWalls** function, **1152-1155,** 1158-1159
+`ClipWalls` function, **1152-1155,** 1158-1159
 
-**DrawWallsBackToFront** function, **1155-1156,** 1160-1161
+`DrawWallsBackToFront` function, **1155-1156,** 1160-1161
 
 overview, 1149
 
 reference materials, 1157
 
-**TransformVertices** function, **1151-1152,** 1158
+`TransformVertices` function, **1151-1152,** 1158
 
-**UpdateViewPos** function, **1151,** 1157
+`UpdateViewPos` function, **1151,** 1157
 
-**UpdateWorld** function, **1156-1157,** 1157
+`UpdateWorld` function, **1156-1157,** 1157
 
 viewspace, transformation of objects to, 1158
 
 wall orientation testing, 1160-1161
 
-**WallFacingViewer** function, **1150-1151,** 1161
+`WallFacingViewer` function, **1150-1151,** 1161
 
 span-based drawing, and beam trees, 1187
 
@@ -345,11 +345,11 @@ palette RAM, 626
 
 *See also* Registers; VGA registers.
 
-adding with **LEA,** 131
+adding with `LEA`, 131
 
-**BSWAP** instruction, 252
+`BSWAP` instruction, 252
 
-multiplying with **LEA,** 132-133
+multiplying with `LEA`, 132-133
 
 386 processor, 222
 
@@ -369,7 +369,7 @@ resolution, 360x480 256-color mode, 619-620
 
 286 processor
 
-**CMP** instruction, 161, 306
+`CMP` instruction, 161, 306
 
 code alignment, 215-218
 
@@ -389,17 +389,17 @@ effective address calculations, 129, 223-225
 
 instruction fetching, 215-218
 
-**LEA** vs. **ADD** instructions, 130
+`LEA` vs. `ADD` instructions, 130
 
 lookup tables, vs. rotating or shifting, 145-146
 
-**LOOP** instruction vs. **DEC/JNZ** sequence, 139
+`LOOP` instruction vs. `DEC/JNZ` sequence, 139
 
 memory access, performance, 223-225
 
 new features, 221
 
-**POPF** instruction, and interrupts, 226
+`POPF` instruction, and interrupts, 226
 
 protected mode, 208-209
 
@@ -427,7 +427,7 @@ pixel drawing demo program, **593-598,** 599-600
 
 display memory, accessing, 621-622
 
-**Draw360x480Dot** subroutine, **613-614**
+`Draw360x480Dot` subroutine, **613-614**
 
 drawing speed, 618
 
@@ -439,7 +439,7 @@ mode set routine (John Bridges), 609, **612,** 620-621
 
 on VGA clones, 610-611
 
-**Read360x480Dot** subroutine, **614-615**
+`Read360x480Dot` subroutine, **614-615**
 
 256-color resolution, 619-620
 
@@ -451,7 +451,7 @@ vertical resolution, 619
 
 alignment, stack pointer, 218-219
 
-**CMP** instruction, 161, 306
+`CMP` instruction, 161, 306
 
 cycle-eaters, 209-210
 
@@ -467,17 +467,17 @@ DRAM refresh cycle-eater, 219
 
 effective address calculations, 129, 223-225
 
-**LEA** instruction, 130-133, 172
+`LEA` instruction, 130-133, 172
 
-**LODSD** vs. **MOV/LEA** sequence, 171
+`LODSD` vs. `MOV/LEA` sequence, 171
 
 lookup tables, vs. rotating or shifting, 145-146
 
-**LOOP** instruction vs. **DEC/JNZ** sequence, 139
+`LOOP` instruction vs. `DEC/JNZ` sequence, 139
 
 memory access, performance, 223-225
 
-**MUL** and **IMUL** instructions, 173-174
+`MUL` and `IMUL` instructions, 173-174
 
 multiplication operations, increasing speed of, 173-174
 
@@ -497,7 +497,7 @@ system wait states, 210-212
 
 using 32-bit register as two 16-bit registers, 253-254
 
-**XCHG** vs. **MOV** instructions, 377, 832
+`XCHG` vs. `MOV` instructions, 377, 832
 
 386SX processor, 16-bit bus cycle-eater, 81
 
@@ -507,11 +507,11 @@ AX register, setting to absolute value, 172
 
 byte registers and lost cycles, 242-245
 
-**CMP** instruction
+`CMP` instruction
 
 operands, order of, 306
 
-vs. **SCASW,** 161
+vs. `SCASW`, 161
 
 copying bytes between registers, 172
 
@@ -525,19 +525,19 @@ effect on code timing, 246
 
 optimization, 236
 
-**LAHF** and **SAHF** instructions, 148
+`LAHF` and `SAHF` instructions, 148
 
-**LEA** instruction, vs. **ADD,** 131
+`LEA` instruction, vs. `ADD`, 131
 
-**LODSB** instruction, 304
+`LODSB` instruction, 304
 
-**LODSD** instruction, vs. **MOV/LEA** sequence, 171
+`LODSD` instruction, vs. `MOV/LEA` sequence, 171
 
 lookup tables, vs. rotating or shifting, 145-146
 
-**LOOP** instruction, vs. **DEC/JNZ** sequence, 139
+`LOOP` instruction, vs. `DEC/JNZ` sequence, 139
 
-**MOV** instruction, vs. **XCHG,** 377
+`MOV` instruction, vs. `XCHG`, 377
 
 n-bit vs. 1-bit shift and rotate instructions, 255-256
 
@@ -559,7 +559,7 @@ timing code, 245-246
 
 using 32-bit register as two 16-bit registers, 253-254
 
-**XCHG** instruction, vs. **MOV,** 377, 832
+`XCHG` instruction, vs. `MOV`, 377, 832
 
 640x400 mode, mode set routine, **852-853**
 
@@ -569,7 +569,7 @@ using 32-bit register as two 16-bit registers, 253-254
 
 8088 processor
 
-**CMP** instruction, 161, 306
+`CMP` instruction, 161, 306
 
 cycle-eaters
 
@@ -591,15 +591,15 @@ effective address calculation options, 129
 
 vs. 8086 processor, 79-81
 
-**LAHF** and **SAHF** instructions, 148
+`LAHF` and `SAHF` instructions, 148
 
-**LEA** vs. **ADD,** 130
+`LEA` vs. `ADD`, 130
 
-**LODSB** instruction, 304
+`LODSB` instruction, 304
 
 lookup tables, vs. rotating or shifting, 145-146
 
-**LOOP** instruction vs. **DEC/JNZ** sequence, 139
+`LOOP` instruction vs. `DEC/JNZ` sequence, 139
 
 memory variables, size of, 83-85
 
@@ -631,7 +631,7 @@ timer operation, 43-45
 
 undocumented features, 54, 65
 
-**A**
+`A`
 
 Absolute value, setting AX register, 171
 
@@ -667,21 +667,21 @@ Active edge table (AET), 744
 
 Adapters, display. *See* Display adapter cycle-eater.
 
-**ADD** instruction
+`ADD` instruction
 
 and Carry flag, 147-148
 
-vs. **INC,** 147-148, 219
+vs. `INC`, 147-148, 219
 
-vs. **LEA,** 130, 170-171
+vs. `LEA`, 130, 170-171
 
-**AddDirtyRect** function, **867-869**
+`AddDirtyRect` function, **867-869**
 
 Addition, using LEA, 130, 131
 
-**AddObject** function, **1001-1002**
+`AddObject` function, **1001-1002**
 
-**AddPolygonEdges** function, **1232-1233,** 1238
+`AddPolygonEdges` function, **1232-1233,** 1238
 
 Addressable memory, protected mode, 221
 
@@ -705,11 +705,11 @@ Addressing pipeline penalty
 
 Pentium processor, 400-403
 
-**AdvanceAET** function
+`AdvanceAET` function
 
 complex polygons, **748-749**
 
-monotone-vertical polygons, **769**
+monotone-vertical polygons, `769`
 
 AET (active edge table), 744
 
@@ -727,7 +727,7 @@ non-alignment penalties, 376
 
 TCP/IP checksum program, 409
 
-**REP STOS** instruction, 735
+`REP STOS` instruction, 735
 
 386 processor, 218
 
@@ -753,11 +753,11 @@ overview, 451-452
 
 Ambient shading, 1023, **1025-1027**
 
-**AND** instruction, Pentium processor
+`AND` instruction, Pentium processor
 
 AGIs (Address Generation Interlocks), 401-402
 
-vs. **TEST,** 377
+vs. `TEST`, 377
 
 Animation
 
@@ -849,11 +849,11 @@ Antialiasing, Wu's algorithm, 776-779, **780-791,** 791-792
 
 Apparent motion, in animation, 1064
 
-**AppendRotationX** function, **964, 975**
+`AppendRotationX` function, **964, 975**
 
-**AppendRotationY** function, **964-965, 975**
+`AppendRotationY` function, **964-965, 975**
 
-**AppendRotationZ** function, **965, 976**
+`AppendRotationZ` function, **965, 976**
 
 Appropriate technology, 775-776
 
@@ -911,7 +911,7 @@ Automatic variables, 184-185
 
 AX register, setting to absolute value, 171
 
-**B**
+`B`
 
 Backface culling. *See* Backface removal.
 
@@ -931,7 +931,7 @@ solid cube rotation demo program, **957-961,** 962-963, **964-966,** 967
 
 Background surfaces, 1240
 
-**BackRotateVector** function, **1203**
+`BackRotateVector` function, `1203`
 
 Ball animation demo program, 431-441
 
@@ -1015,13 +1015,13 @@ Blocks. *See* Restartable blocks.
 
 Borders (overscan), 555-556
 
-**BOUND** instruction, 221
+`BOUND` instruction, 221
 
 Boundary pixels, polygons
 
 rules for selecting, 712
 
-texture mapping, 1049-1052, 1065-1066, **1067**
+texture mapping, 1049-1052, 1065-1066, `1067`
 
 Bounding volumes, 1184
 
@@ -1029,13 +1029,13 @@ Boyer-Moore algorithm
 
 assembly implementations, **271-274, 274-277**
 
-C language implementation, **269**
+C language implementation, `269`
 
 overview, 263-265
 
 performance, 266-268
 
-test-bed program, **270**
+test-bed program, `270`
 
 Branch prediction, Pentium processor, 377-378
 
@@ -1114,15 +1114,15 @@ potentially visible set (PVS), precalculating, 1188-1189
 
 BSP compiler
 
-**BuildBSPTree** function, **1125-1127**
+`BuildBSPTree` function, **1125-1127**
 
-**SelectBSPTree** function, **1124-1125**
+`SelectBSPTree` function, **1124-1125**
 
-**BuildBSPTree** function, **1125-1127**
+`BuildBSPTree` function, **1125-1127**
 
 building, 1101-1104
 
-**BuildTree** function, **1112**
+`BuildTree` function, `1112`
 
 data recursion vs. code recursion, 1108-1113
 
@@ -1156,27 +1156,27 @@ backface removal, 1160-1161
 
 clipping, 1158-1159
 
-**ClipWalls** function, **1152-1155,** 1158-1159
+`ClipWalls` function, **1152-1155,** 1158-1159
 
-**DrawWallsBackToFront** function, **1155-1156,** 1160-1161
+`DrawWallsBackToFront` function, **1155-1156,** 1160-1161
 
 overview, 1149
 
 reference materials, 1157
 
-**TransformVertices** function, **1151-1152,** 1158
+`TransformVertices` function, **1151-1152,** 1158
 
-**UpdateViewPos** function, **1151,** 1157
+`UpdateViewPos` function, **1151,** 1157
 
-**UpdateWorld** function, **1156-1157,** 1157
+`UpdateWorld` function, **1156-1157,** 1157
 
 viewspace, transformation of objects to, 1158
 
 wall orientation testing, 1160-1161
 
-**WallFacingViewer** function, **1150-1151,** 1161
+`WallFacingViewer` function, **1150-1151,** 1161
 
-**SelectBSPTree** function, **1124-1125**
+`SelectBSPTree` function, **1124-1125**
 
 splitting heuristic, 1128-1129
 
@@ -1200,21 +1200,21 @@ polygon culling, 1181-1184
 
 PVS, precalculating, 1188-1189
 
-**WalkBSPTree** function, **1106**
+`WalkBSPTree` function, `1106`
 
-**WalkTree** function, 1109-1110
+`WalkTree` function, 1109-1110
 
 BSP compiler
 
-**BuildBSPTree** function, **1125-1127**
+`BuildBSPTree` function, **1125-1127**
 
 overview, 1123
 
-**SelectBSPTree** function, **1124-1125**
+`SelectBSPTree` function, **1124-1125**
 
 BSP models, Quake 3-D engine, 1284
 
-**BSWAP** instruction, 486 processor
+`BSWAP` instruction, 486 processor
 
 32-bit registers, using as two 16-bit registers, 253-254
 
@@ -1236,15 +1236,15 @@ in 16-bit checksum program, 15-16
 
 in search engine, 114-115
 
-**BuildBSPTree** function, **1125-1127**
+`BuildBSPTree` function, **1125-1127**
 
-**BuildGET** function, **768-769**
+`BuildGET` function, **768-769**
 
-**BuildGETStructure** function, **747-748**
+`BuildGETStructure` function, **747-748**
 
-**BuildMaps** function, **353-355**
+`BuildMaps` function, **353-355**
 
-**BuildTree** function, **1112**
+`BuildTree` function, `1112`
 
 Bus access
 
@@ -1254,29 +1254,29 @@ Pentium processor, 377
 
 Byte registers, 486 processor, 242-245
 
-Byte-**OUT** instruction, 429
+Byte-`OUT` instruction, 429
 
 Byte-per-pixel mode. *See* Mode X.
 
-**C**
+`C`
 
 C library functions
 
-**getc()** function, 12, 14
+`getc()` function, 12, 14
 
-**memchr()** function, 116
+`memchr()` function, 116
 
-**memcmp()** function, 116
+`memcmp()` function, 116
 
-**memcpy()** function, 1147-1148
+`memcpy()` function, 1147-1148
 
-**memset()** function, 727
+`memset()` function, 727
 
 optimization, 15
 
-**read()** function, 12, 121
+`read()` function, 12, 121
 
-**strstr()** function, 115
+`strstr()` function, 115
 
 Cache, internal. *See* Internal cache.
 
@@ -1286,7 +1286,7 @@ Calculations, redundant, and optimization, 682-683
 
 *Calculus and Analytic Geometry* (book), 1135
 
-**CALL** instruction
+`CALL` instruction
 
 486 processor, 241-242
 
@@ -1302,9 +1302,9 @@ subdivision rasterization, 1266-1267, **1267-1270**
 
 Carry flag
 
-**DEC** instruction, 148
+`DEC` instruction, 148
 
-**INC** vs. **ADD** instructions, 147-148
+`INC` vs. `ADD` instructions, 147-148
 
 LOOP instruction, 148
 
@@ -1314,11 +1314,11 @@ in word count program (David Stafford), 317-319
 
 Cats, shipping via air freight, 697-698
 
-**Cellmap** class, **325-329, 333-335, 341-345**
+`Cellmap` class, **325-329, 333-335, 341-345**
 
 Cellmap wrapping, Game of Life, 331-332, **333-335, 336,** 337-338
 
-**Cell\_state** method, **327, 334, 344**
+`Cell_state` method, **327, 334, 344**
 
 CGA (Color/Graphics Adapter)
 
@@ -1335,7 +1335,7 @@ rules, 346, 350
 3-cell-per-word implementation (David Stafford), 351-352, **353-363,**
 363-365
 
-**ScanBuffer** routine, 305, 307-319
+`ScanBuffer` routine, 305, 307-319
 
 Change list, in Game of Life, 363-366
 
@@ -1354,9 +1354,9 @@ Chunky bitmaps, converting to planar, 504-505, **505-508**
 
 Circular linked lists, 288-292
 
-**Clear\_cell** method, **327, 334, 343**
+`Clear_cell` method, **327, 334, 343**
 
-**ClearEdgeLists** function, **1236-1237**
+`ClearEdgeLists` function, **1236-1237**
 
 Clements, Willem, **313-315**
 
@@ -1379,41 +1379,41 @@ overview, 1195
 
 polygon clipping
 
-**BackRotateVector** function, **1203**
+`BackRotateVector` function, `1203`
 
 clipping to frustum, 1200, **1201-1206,** 1206-1207
 
-**ClipToFrustum** function, 1204
+`ClipToFrustum` function, 1204
 
-**ClipToPlane** function, 1199
+`ClipToPlane` function, 1199
 
 optimization, 1207
 
 overview, 1197-1200
 
-**PolyFacesViewer** function, **1203**
+`PolyFacesViewer` function, `1203`
 
-**ProjectPolygon** function, **1201**
+`ProjectPolygon` function, `1201`
 
-**SetUpFrustum** function, **1204**
+`SetUpFrustum` function, `1204`
 
-**SetWorldspace** function, **1204**
+`SetWorldspace` function, `1204`
 
-**TransformPoint** function, **1203**
+`TransformPoint` function, `1203`
 
-**TransformPolygon** function, **1203**
+`TransformPolygon` function, `1203`
 
-**UpdateViewPos** function, **1202**
+`UpdateViewPos` function, `1202`
 
-**UpdateWorld** function, **1205**
+`UpdateWorld` function, `1205`
 
 viewspace clipping, 1207
 
-**ZSortObjects** function, **1201**
+`ZSortObjects` function, `1201`
 
-**ClipToFrustum** function, **1204**
+`ClipToFrustum` function, `1204`
 
-**ClipToPlane** function, **1199**
+`ClipToPlane` function, `1199`
 
 Clock cycles
 
@@ -1461,7 +1461,7 @@ stack addressing, 241-242
 
 32-bit addressing modes, 256-258
 
-**FXCH** instruction, 1170
+`FXCH` instruction, 1170
 
 indexed addressing, 237-238
 
@@ -1479,13 +1479,13 @@ non-word-alignment penalty, 217
 
 1/z value of planes, calculating, 1221
 
-**OUT** instructions, 843, 1082-1083
+`OUT` instructions, 843, 1082-1083
 
 Pentium processor
 
 branch prediction, 377-378
 
-cross product floating point optimization, 1171, **1172**
+cross product floating point optimization, 1171, `1172`
 
 dot product floating point optimization, 1170
 
@@ -1493,7 +1493,7 @@ effective address calculations, 375-376
 
 floating point instructions, 1167-1168
 
-**FXCH** instruction, 1170
+`FXCH` instruction, 1170
 
 initial pipe, effect of, 405
 
@@ -1529,13 +1529,13 @@ effective address calculation, 223-225
 
 system wait states, 211
 
-**CMP** instruction
+`CMP` instruction
 
 operands, order of, 306
 
-vs. **SCASW,** 161
+vs. `SCASW`, 161
 
-**CMPXCHG8B** instruction, Pentium processor, 378
+`CMPXCHG8B` instruction, Pentium processor, 378
 
 Code alignment
 
@@ -1616,7 +1616,7 @@ screen blanking, **556-557**
 
 VGA, 557
 
-**ColorBarsUp** subroutine, **604**
+`ColorBarsUp` subroutine, `604`
 
 Color-forcing demo program, **474-476**
 
@@ -1630,7 +1630,7 @@ cautions for use of, 9
 
 data recursion vs. code recursion, 1112-1113
 
-in **FindIDAverage** function, **159**
+in `FindIDAverage` function, `159`
 
 Compilers
 
@@ -1657,13 +1657,13 @@ polygon-filling programs, **745-752, 754**
 
 *Computer Graphics* (book), 1135, 1157
 
-**ConcatXforms** function
+`ConcatXforms` function
 
 assembly implementation, **997-999, 1019-1022**
 
 C-language implementation, **944, 976**
 
-**CONSTANT\_TO\_INDEXED\_REGISTER** macro, **594**
+`CONSTANT_TO_INDEXED_REGISTER` macro, `594`
 
 Coordinate systems
 
@@ -1671,11 +1671,11 @@ left-handed, 1140
 
 right-handed, 935-937
 
-**Copy\_cells** method, 327, 333
+`Copy_cells` method, 327, 333
 
-**CopyDirtyRectangles** function, 850
+`CopyDirtyRectangles` function, 850
 
-**CopyDirtyRectangleToScreen** function, **866-867**
+`CopyDirtyRectangleToScreen` function, **866-867**
 
 Copying
 
@@ -1683,25 +1683,25 @@ bytes between registers, 172
 
 pixels, using latches (Mode X), **905-907,** 908,
 
-**871**
+`871`
 
-**CopyScreenToScreenMaskedX** subroutine, 918, **919-921**
+`CopyScreenToScreenMaskedX` subroutine, 918, **919-921**
 
-**CopyScreenToScreenX** subroutine, **905-907,** 908
+`CopyScreenToScreenX` subroutine, **905-907,** 908
 
-**CopySystemToScreenMaskedX** subroutine, **916-918**
+`CopySystemToScreenMaskedX` subroutine, **916-918**
 
-**CopySystemToScreenX** subroutine, 908, **909-911**
+`CopySystemToScreenX` subroutine, 908, **909-911**
 
-**CosSin** subroutine, **994-996,** 999, **1013-1015**
+`CosSin` subroutine, **994-996,** 999, **1013-1015**
 
-**Count\_neighbors** method, **334-335**
+`Count_neighbors` method, **334-335**
 
 CPU reads from VGA memory, 526
 
-**CPUID** instruction, Pentium processor, 378
+`CPUID` instruction, Pentium processor, 378
 
-**CreateAlignedMaskedImage** function, 922-923
+`CreateAlignedMaskedImage` function, 922-923
 
 Cross products
 
@@ -1789,7 +1789,7 @@ wait states, 99-101
 
 Cycles. *See* Clock cycles; Cycle-eaters.
 
-**D**
+`D`
 
 DAC (Digital/Analog Converter)
 
@@ -1893,7 +1893,7 @@ C implementation, **1053-1058**
 
 disadvantages, 1052-1053, 1059
 
-**DrawTexturedPolygon,** 1055-1056
+`DrawTexturedPolygon`, 1055-1056
 
 hardware dependence, 1053
 
@@ -1901,13 +1901,13 @@ multiple adjacent polygons, 1068
 
 optimized implementation, **1069-1073,** 1074
 
-orientation independence, 1065-1067, **1067**
+orientation independence, 1065-1067, `1067`
 
 performance, 1074
 
-**ScanOutLine** function, **1058-1059, 1067, 1069-1073,** 1074
+`ScanOutLine` function, **1058-1059, 1067, 1069-1073,** 1074
 
-**SetUpEdge** function, **1057-1058**
+`SetUpEdge` function, **1057-1058**
 
 StepEdge function, 1056-1057
 
@@ -1915,15 +1915,15 @@ techniques, 1048-1051
 
 *DDJ Essential Books on Graphics Programming* (CD), 1157
 
-**DEC** instruction
+`DEC` instruction
 
 and Carry flag, 148
 
 memory accesses, 83
 
-vs. **SUB,** 219
+vs. `SUB`, 219
 
-**DEC/JNZ** sequence, 139
+`DEC/JNZ` sequence, 139
 
 Delay sequences
 
@@ -1931,7 +1931,7 @@ loading palette RAM or DAC registers, 632
 
 VGA programming, 558
 
-**DeleteNodeAfter** function, **284**
+`DeleteNodeAfter` function, `284`
 
 Depth sorting of nonconvex objects, 1000, **1001-1002**
 
@@ -1948,9 +1948,9 @@ Directed lighting, and shading, 1023, 1028
 
 Directives
 
-**EVEN,** 214
+`EVEN`, 214
 
-**NOSMART,** 72
+`NOSMART`, 72
 
 Dirty-rectangle animation
 
@@ -2034,7 +2034,7 @@ wait states, 101-103, 220, 733
 
 Display memory planes. *See* Planes, VGA.
 
-**DIV** instruction, 32-bit division, 181-184, 1008
+`DIV` instruction, 32-bit division, 181-184, 1008
 
 Divide By Zero interrupt, 181
 
@@ -2058,7 +2058,7 @@ calculating, 1135-1137
 
 calculating light intensity, 1137
 
-floating point optimization, 1170, **1171**
+floating point optimization, 1170, `1171`
 
 line segments, clipping to planes, 1196-1197
 
@@ -2075,7 +2075,7 @@ of vectors, 1135-1136
 Double-DDA texture mapping. *See* DDA (digital differential analyzer)
 texture mapping.
 
-**D\_PolysetRecursiveTriangle** function, **1267-1270**
+`D_PolysetRecursiveTriangle` function, **1267-1270**
 
 *Dr. Dobbs Journal,* 1190
 
@@ -2097,43 +2097,43 @@ and 8253 timer chip, 95
 
 and Zen timer, 99
 
-**Draw360x480Dot** subroutine, **613-614**
+`Draw360x480Dot` subroutine, **613-614**
 
-**DrawBackground** function, **928**
+`DrawBackground` function, `928`
 
 Draw-buffers, and beam trees, 1187
 
-**DrawBumperList** function, **823**
+`DrawBumperList` function, `823`
 
-**DrawEntities** function, **849, 866**
+`DrawEntities` function, **849, 866**
 
-**DrawGridCross** subroutine, **808**
+`DrawGridCross` subroutine, `808`
 
-**DrawGridVert** subroutine, **808-809**
+`DrawGridVert` subroutine, **808-809**
 
-**DrawHorizontalLineList** function
+`DrawHorizontalLineList` function
 
-monotone-vertical polygons, filling, **765**
+monotone-vertical polygons, filling, `765`
 
 non-overlapping convex polygon
 
-assembly implementation, **734**
+assembly implementation, `734`
 
 C implementation, **717,** 720-721
 
-using memset() function, 727, **729**
+using memset() function, 727, `729`
 
-**DrawHorizontalLineList** subroutine, **941-943**
+`DrawHorizontalLineList` subroutine, **941-943**
 
-**DrawHorizontalLineSeg** function
+`DrawHorizontalLineSeg` function
 
-assembly implementation, **754**
+assembly implementation, `754`
 
 C implementation, **750-751**
 
-**DrawHorizontalRun** function, **692**
+`DrawHorizontalRun` function, `692`
 
-**DrawImage** subroutine, **828**
+`DrawImage` subroutine, `828`
 
 Drawing
 
@@ -2143,7 +2143,7 @@ fill patterns, using latches, 453
 
 pixel drawing
 
-**EVGADot** function, **661-662,** 669-670
+`EVGADot` function, **661-662,** 669-670
 
 optimization, 1074, 1086
 
@@ -2163,31 +2163,31 @@ solid text using latches, 1039-1041, **1042-1044**
 
 using write mode 0, 832-833
 
-**DrawLine** function, **785**
+`DrawLine` function, `785`
 
-**DrawMasked** subroutine, **870**
+`DrawMasked` subroutine, `870`
 
-**DrawObject** subroutine, **809-810**
+`DrawObject` subroutine, **809-810**
 
-**Draw\_pixel** function, **328, 330**
+`Draw_pixel` function, **328, 330**
 
-**DrawPObject** function, **978-979, 1025-1027**
+`DrawPObject` function, **978-979, 1025-1027**
 
-**DrawRect** subroutine, **826-827**
+`DrawRect` subroutine, **826-827**
 
-**DrawSpans** function, **1236**
+`DrawSpans` function, `1236`
 
-**DrawSplitScreen** function, **824**
+`DrawSplitScreen` function, `824`
 
-**DrawTextString** subroutine, **1043-1044**
+`DrawTextString` subroutine, **1043-1044**
 
-**DrawTexturedPolygon** function, **1055-1056**
+`DrawTexturedPolygon` function, **1055-1056**
 
-**DrawVerticalRun** function, **692**
+`DrawVerticalRun` function, `692`
 
-**DrawVisibleFaces** function, **961**
+`DrawVisibleFaces` function, `961`
 
-**DrawWuLine** function
+`DrawWuLine` function
 
 assembly implementation, **787-791**
 
@@ -2207,7 +2207,7 @@ Dynamic palette adjustment, 1039
 
 Dynamic RAM. *See* DRAM (dynamic RAM) refresh.
 
-**E**
+`E`
 
 EA (effective address) calculations
 
@@ -2231,7 +2231,7 @@ Edge tracing
 
 overview, 711-713
 
-**ScanEdge** function
+`ScanEdge` function
 
 assembly implementation, **735-738,** 735
 
@@ -2295,7 +2295,7 @@ and registers, 85
 
 8088 processor
 
-**CMP** instruction, 161, 306
+`CMP` instruction, 161, 306
 
 cycle-eaters
 
@@ -2317,15 +2317,15 @@ vs. 8086 processor, 79-81
 
 effective address calculation options, 129
 
-**LAHF** and **SAHF** instructions, 148
+`LAHF` and `SAHF` instructions, 148
 
-**LEA** vs. **ADD,** 130
+`LEA` vs. `ADD`, 130
 
-**LODSB** instruction, 304
+`LODSB` instruction, 304
 
 lookup tables, vs. rotating or shifting, 145-146
 
-**LOOP** instruction vs. **DEC/JNZ** sequence, 139
+`LOOP` instruction vs. `DEC/JNZ` sequence, 139
 
 memory variables, size of, 83-85
 
@@ -2365,9 +2365,9 @@ setting drawing color, 666
 
 specifying plane, 474
 
-**EnableSplitScreen** function, 824
+`EnableSplitScreen` function, 824
 
-**ENTER** instruction
+`ENTER` instruction
 
 486 processor, 241-242
 
@@ -2375,7 +2375,7 @@ Pentium processor, 377
 
 286 processor, 221
 
-**Enter\_display\_mode** function, **328, 362**
+`Enter_display_mode` function, **328, 362**
 
 Entities, Quake 3-D engine
 
@@ -2391,7 +2391,7 @@ subdivision rasterization, 1286
 
 z-buffering, 1285-1286
 
-**EraseEntities** function, **850, 867**
+`EraseEntities` function, **850, 867**
 
 Error accumulation, Wu antialiasing algorithm, 778-779, 792
 
@@ -2419,11 +2419,11 @@ optimized assembly implementation, **200-202**
 
 recursive implementations, **198, 200**
 
-**EVEN** directive, 214
+`EVEN` directive, 214
 
-**EVGADot** function, **661-662,** 669-670
+`EVGADot` function, **661-662,** 669-670
 
-**EVGALine** function
+`EVGALine` function
 
 Bresenham's algorithm
 
@@ -2435,15 +2435,15 @@ C-language implementation, **664-665,** 665-668, 670-671
 
 Execution times. *See* Clock cycles; Instruction execution time.
 
-**Exit\_display\_mode** function, **328, 329, 362**
+`Exit_display_mode` function, **328, 329, 362**
 
-**F**
+`F`
 
-**FADD** instruction, Pentium processor, 1167-1170
+`FADD` instruction, Pentium processor, 1167-1170
 
 Far jumps, to absolute addresses, 186-187
 
-**FDIV** instruction, Pentium processor, 1167-1170
+`FDIV` instruction, Pentium processor, 1167-1170
 
 Fetch time
 
@@ -2457,9 +2457,9 @@ Files
 
 reading from
 
-**getc()** function, 12, 14
+`getc()` function, 12, 14
 
-**read()** function, 12
+`read()` function, 12
 
 restartable blocks, 16
 
@@ -2467,21 +2467,21 @@ text, searching for. *See* Search engine.
 
 Fill patterns, drawing using latches, 453
 
-**FillConvexPolygon** function, **714-716**, 720-721
+`FillConvexPolygon` function, **714-716**, 720-721
 
-**FillMonotoneVerticalPolygon** function, **763-764**
+`FillMonotoneVerticalPolygon` function, **763-764**
 
-**FillPatternX** subroutine, 899, **900-903**, 903-904
+`FillPatternX` subroutine, 899, **900-903**, 903-904
 
-**FillPolygon** function
+`FillPolygon` function
 
-complex polygons, **746**
+complex polygons, `746`
 
-monotone-vertical polygons, **767**
+monotone-vertical polygons, `767`
 
-**FillRect** subroutine, **869-870**
+`FillRect` subroutine, **869-870**
 
-**FillRectangleX** subroutine
+`FillRectangleX` subroutine
 
 four-plane parallel processing, 888-891, **891-893**
 
@@ -2489,43 +2489,43 @@ pixel-by-pixel plane selection, **885-887**
 
 plane-by-plane processing, **887-889**
 
-**FindIDAverage** function
+`FindIDAverage` function
 
 assembly implementations
 
-based on compiler optimization, **160**
+based on compiler optimization, `160`
 
 data structure reorganization, 163, **165-166**
 
-unrolled loop, 161, **162**
+unrolled loop, 161, `162`
 
-C language implementation, **158**
+C language implementation, `158`
 
-compiler optimization, **159**
+compiler optimization, `159`
 
-**FindNodeBeforeValue** function, **289**
+`FindNodeBeforeValue` function, `289`
 
-**FindNodeBeforeValueNotLess** function, **286, 287**
+`FindNodeBeforeValueNotLess` function, **286, 287**
 
-**FindString** function
+`FindString` function
 
 Boyer-Moore algorithm, **269, 271-274, 274-277**
 
 overview, 175
 
-scan-on-first-character approach, **176**
+scan-on-first-character approach, `176`
 
-scan-on-specified-character approach, **178**
+scan-on-specified-character approach, `178`
 
-**FirstPass** function, **355-358**
+`FirstPass` function, **355-358**
 
-**Fix** function, **358,** 365
+`Fix` function, **358,** 365
 
-**FixedDiv** subroutine, **982, 993, 1010-1012**
+`FixedDiv` subroutine, **982, 993, 1010-1012**
 
-FIXED\_MUL macro, **1016-1017**
+`FIXED_MUL` macro, **1016-1017**
 
-**FixedMul** subroutine, **981, 993-994, 1009-1010**
+`FixedMul` subroutine, **981, 993-994, 1009-1010**
 
 Fixed-point arithmetic
 
@@ -2537,27 +2537,27 @@ vs. integer arithmetic, 730, 1065
 
 Flags
 
-and **BSWAP** instruction, 254
+and `BSWAP` instruction, 254
 
 Carry flag, 147-148, 185, 317-319
 
-**INC** vs. **ADD,** 147-148
+`INC` vs. `ADD`, 147-148
 
-and **LOOP** instruction, 148
+and `LOOP` instruction, 148
 
-and **NOT** instruction, 146-147
+and `NOT` instruction, 146-147
 
-**FLD** instruction, Pentium processor, 1167-1170
+`FLD` instruction, Pentium processor, 1167-1170
 
 Floating point optimization
 
 clock cycles, core instructions, 1167-1168
 
-cross product optimization, 1171, **1172**
+cross product optimization, 1171, `1172`
 
-dot product optimization, 1170, **1171**
+dot product optimization, 1170, `1171`
 
-**FXCH** instruction, 1169-1170
+`FXCH` instruction, 1169-1170
 
 interleaved instructions, 1169-1170
 
@@ -2577,7 +2577,7 @@ vs. fixed-point calculations, 985, 1206
 
 vs. integer calculations, 730
 
-**FMUL** instruction
+`FMUL` instruction
 
 486 processor, 236
 
@@ -2589,11 +2589,11 @@ AX register, setting to absolute value, 172
 
 byte registers and lost cycles, 242-245
 
-**CMP** instruction
+`CMP` instruction
 
 operands, order of, 306
 
-vs. **SCASW,** 161
+vs. `SCASW`, 161
 
 copying bytes between registers, 172
 
@@ -2607,19 +2607,19 @@ effect on code timing, 246
 
 optimization, 236
 
-**LAHF** and **SAHF** instructions, 148
+`LAHF` and `SAHF` instructions, 148
 
-**LEA** instruction, vs. **ADD,** 131
+`LEA` instruction, vs. `ADD`, 131
 
-**LODSB** instruction, 304
+`LODSB` instruction, 304
 
-**LODSD** instruction, vs. **MOV/LEA** sequence, 171
+`LODSD` instruction, vs. `MOV/LEA` sequence, 171
 
 lookup tables, vs. rotating or shifting, 145-146
 
-**LOOP** instruction, vs. **DEC/JNZ** sequence, 139
+`LOOP` instruction, vs. `DEC/JNZ` sequence, 139
 
-**MOV** instruction, vs. **XCHG,** 377
+`MOV` instruction, vs. `XCHG`, 377
 
 n-bit vs. 1-bit shift and rotate instructions, 255-256
 
@@ -2641,17 +2641,17 @@ timing code, 245-246
 
 using 32-bit register as two 16-bit registers, 253-254
 
-**XCHG** instruction, vs. **MOV,** 377, 832
+`XCHG` instruction, vs. `MOV`, 377, 832
 
 FPU, Pentium processor
 
 clock cycles, core instructions, 1167-1168
 
-cross product optimization, 1171, **1172**
+cross product optimization, 1171, `1172`
 
-dot product optimization, 1170, **1171**
+dot product optimization, 1170, `1171`
 
-**FXCH** instruction, 1169-1170
+`FXCH` instruction, 1169-1170
 
 interleaved instructions, 1169-1170
 
@@ -2667,9 +2667,9 @@ rounding control, 1174-1175
 
 Frustum, clipping to, 1200, **1201-1206,** 1206-1207
 
-**FST** instruction, Pentium processor, 1167-1170
+`FST` instruction, Pentium processor, 1167-1170
 
-**FSUB** instruction, Pentium processor, 1167-1170
+`FSUB` instruction, Pentium processor, 1167-1170
 
 Function 13H, VGA BIOS, 459
 
@@ -2677,9 +2677,9 @@ Function calls, performance, 153
 
 *Fundamentals of Interactive Computer Graphics* (book), 660
 
-**FXCH** instruction, Pentium processor, 1169-1170
+`FXCH` instruction, Pentium processor, 1169-1170
 
-**G**
+`G`
 
 Game of Life
 
@@ -2774,7 +2774,7 @@ planes, specifying to be read, 542
 
 Set/Reset register, 666
 
-**Gcd()** function
+`Gcd()` function
 
 brute-force approach, 195
 
@@ -2794,7 +2794,7 @@ Euclid's algorithm, 197-200
 
 subtraction approach, 196-197
 
-**Gcd\_recurs()** function, **199**
+`Gcd_recurs()` function, `199`
 
 Generality, vs. performance, 335
 
@@ -2802,15 +2802,15 @@ Gerrold, David, 298
 
 GET (global edge table), 744
 
-**Getc()** function
+`Getc()` function
 
 overhead, 14
 
-vs. **read()** function, 12
+vs. `read()` function, 12
 
-**GetNextKey** subroutine, **598, 605**
+`GetNextKey` subroutine, **598, 605**
 
-**GetUpAndDown** function, **355**
+`GetUpAndDown` function, `355`
 
 Global edge table (GET), 744
 
@@ -2844,7 +2844,7 @@ Great Buffalo Sauna Fiasco, 137-138
 
 GUIs, and future of programming profession, 725-726
 
-**H**
+`H`
 
 Hardware dependence, DDA (digital differential analyzer) texture
 mapping, 1053
@@ -2871,13 +2871,13 @@ sorted spans approach
 
 abutting span sorting, 1229-1230
 
-**AddPolygonEdges** function, **1232-1233,** 1238
+`AddPolygonEdges` function, **1232-1233,** 1238
 
 BSP order vs. 1/z order, 1220, 1226
 
-**ClearEdgeLists** function, **1236-1237**
+`ClearEdgeLists` function, **1236-1237**
 
-**DrawSpans** function, **1236**
+`DrawSpans` function, `1236`
 
 edge sorting, 1220-1222
 
@@ -2891,13 +2891,13 @@ intersecting span sorting, 1228-1229
 
 overview, 1214-1215
 
-**PolyFacesViewer** function, **1232**
+`PolyFacesViewer` function, `1232`
 
 rotation instructions, clock cycles, 185-186
 
-**ScanEdges** function, **1234-1236,** 1238-1239
+`ScanEdges` function, **1234-1236,** 1238-1239
 
-**UpdateWorld** function, **1237-1238**
+`UpdateWorld` function, **1237-1238**
 
 High school graduates in Hawaii, 991-992
 
@@ -2907,7 +2907,7 @@ Horizontal resolution, 360x480 256-color mode, 620
 
 Horizontal smooth panning. *See* Panning.
 
-**I**
+`I`
 
 id Software, 1118, 1190
 
@@ -2917,15 +2917,15 @@ Illowsky, Dan, 187, 315
 
 Image precedence. *See* Bit-plane animation.
 
-**IMUL** instruction
+`IMUL` instruction
 
 486 processor, 236
 
 on 386 processor, 173-174
 
-**INC** instruction
+`INC` instruction
 
-vs. **ADD,** 147-148, 219
+vs. `ADD`, 147-148, 219
 
 and Carry flag, 147-148
 
@@ -2933,21 +2933,21 @@ Incremental transformations of 3-D objects, 964
 
 Independent span sorting
 
-**AddPolygonEdges** function, **1232-1233,** 1238
+`AddPolygonEdges` function, **1232-1233,** 1238
 
-**ClearEdgeLists** function, **1236-1237**
+`ClearEdgeLists` function, **1236-1237**
 
-**DrawSpans** function, **1236**
+`DrawSpans` function, `1236`
 
 overview, 1230
 
-**PolyFacesViewer** function, **1232**
+`PolyFacesViewer` function, `1232`
 
-**ScanEdges** function, **1234-1236,** 1238-1239
+`ScanEdges` function, **1234-1236,** 1238-1239
 
 texture mapping, 1238
 
-**UpdateWorld** function, **1237-1238**
+`UpdateWorld` function, **1237-1238**
 
 Index registers, VGA
 
@@ -2961,17 +2961,17 @@ Indirect far jumps, 186
 
 Information, sharing, 1190, 1194
 
-**InitCellmap** function, **361**
+`InitCellmap` function, `361`
 
-**InitializeCubes** function, **980-981**
+`InitializeCubes` function, **980-981**
 
-**InitializeFixedPoint** function, **977**
+`InitializeFixedPoint` function, `977`
 
-**InitializeObjectList** function, **1001**
+`InitializeObjectList` function, `1001`
 
-**InitializePalette** function, **1037**
+`InitializePalette` function, `1037`
 
-**InitLinkedList** function, **289**
+`InitLinkedList` function, `289`
 
 Inorder tree traversal
 
@@ -2981,11 +2981,11 @@ data recursive implementation, 1108, **1109-1110,** 1110
 
 performance, 1111-1113
 
-**INS** instruction, 221
+`INS` instruction, 221
 
-**InsertNodeSorted** assembly routine, **290**
+`InsertNodeSorted` assembly routine, `290`
 
-**InsertNodeSorted** function, **289**
+`InsertNodeSorted` function, `289`
 
 Instruction execution times
 
@@ -3045,13 +3045,13 @@ Interleaved color cycling, 649-650
 
 Interleaved operations, Pentium processor
 
-**FXCH** instruction and floating point operations, 1169-1170
+`FXCH` instruction and floating point operations, 1169-1170
 
 matrix transformation, 1172-1173, **1173-1174**
 
 overview, 394-395
 
-TCP/IP checksum program, **408**
+TCP/IP checksum program, `408`
 
 Internal animation, 872
 
@@ -3093,13 +3093,13 @@ DAC, loading, 643, 648
 
 Divide By Zero interrupt, 181
 
-and **IRET** instruction, 227
+and `IRET` instruction, 227
 
 and long-period Zen timer, 53, 66
 
 and page flipping, 446
 
-and **POPF** instruction, 226
+and `POPF` instruction, 226
 
 and Zen timer, 43, 45-46
 
@@ -3109,23 +3109,23 @@ Intersecting span sorting, 1228-1229
 
 Intuitive leaps, 1098
 
-**IRET** instruction, vs. **POPF** instruction, 226-231
+`IRET` instruction, vs. `POPF` instruction, 226-231
 
 IRQ0 interrupts, and Zen timer, 45
 
-**IS\_VGA** equate, 572, 575
+`IS_VGA` equate, 572, 575
 
-**J**
+`J`
 
 Jet Propulsion Lab, color perception research, 1035
 
 **JMP \$+2** instructions, 558, 632
 
-**JMP DWORD PTR** instruction, 186-187
+`JMP DWORD PTR` instruction, 186-187
 
 Jumps, to absolute addresses, 186-187
 
-**K**
+`K`
 
 Kennedy, John, 171-172
 
@@ -3145,9 +3145,9 @@ Klerings, Peter, 350
 
 Knuth, Donald, 323
 
-**L**
+`L`
 
-**LAHF** instruction, 148
+`LAHF` instruction, 148
 
 Large code model
 
@@ -3179,9 +3179,9 @@ overview, 452-453, 897-898
 
 Latency, in QuakeWorld, 1291-1292
 
-**LEA** instruction
+`LEA` instruction
 
-vs. **ADD,** 130, 170-171
+vs. `ADD`, 130, 170-171
 
 multiplication operations, 132-133, 172, 375-376
 
@@ -3191,7 +3191,7 @@ addition, 131
 
 multiplication, 132-133
 
-**LEAVE** instruction
+`LEAVE` instruction
 
 486 processor, 241-242
 
@@ -3253,13 +3253,13 @@ Line segments
 
 clipping to planes, 1195-1197
 
-representation, 1195, **1196**
+representation, 1195, `1196`
 
 Linear addressing, VGA, 430
 
 Linear-time sorting, 1099
 
-**LineDraw** function
+`LineDraw` function
 
 assembly implementation, **699-704,** 704-706
 
@@ -3283,7 +3283,7 @@ Wu antialiasing algorithm, 776-779, **780-791,** 791-792
 
 Line-drawing demo program, **615-618,** 618-619
 
-**LineIntersectPlane** function, **1142-1143**
+`LineIntersectPlane` function, **1142-1143**
 
 Lines
 
@@ -3315,7 +3315,7 @@ dummy nodes, 285-287
 
 head pointers, 284, 285
 
-**InsertNodeSorted** assembly routine, **290**
+`InsertNodeSorted` assembly routine, `290`
 
 overview, 282
 
@@ -3325,7 +3325,7 @@ sorting techniques, 755
 
 tail nodes, 286
 
-test-bed program, **291**
+test-bed program, `291`
 
 Little endian format, 252
 
@@ -3343,15 +3343,15 @@ lookup tables, 145-146
 
 unrolling loops, 143-145, 305, 312, 377-378, 410
 
-**LOCK** instruction, 377
+`LOCK` instruction, 377
 
 Lockstep execution, Pentium processor, 390-394, 400-403
 
-**LODSB** instruction, 304, 312
+`LODSB` instruction, 304, 312
 
-**LODSD** instruction, 171
+`LODSD` instruction, 171
 
-**LODSW** instruction, 312
+`LODSW` instruction, 312
 
 Logical functions, ALU, 458
 
@@ -3375,19 +3375,19 @@ LZTIMER.ASM listing, **55-65**
 
 overview, 53
 
-**PS2** equate, 65-66
+`PS2` equate, 65-66
 
 system clock inaccuracies, 43, 45-46, 48
 
 test-bed program, 66-69
 
-TESTCODE listing, **69**
+TESTCODE listing, `69`
 
-**ZTimerOff** subroutine, **59-63**
+`ZTimerOff` subroutine, **59-63**
 
-**ZTimerOn** subroutine, **58-59**
+`ZTimerOn` subroutine, **58-59**
 
-**ZTimerReport** subroutine, **63-65**
+`ZTimerReport` subroutine, **63-65**
 
 Lookup tables
 
@@ -3405,17 +3405,17 @@ David Stafford's implementation, **309-311,** 317-319
 
 WC50 (Terje Mathisen), 307
 
-**LOOP** instruction
+`LOOP` instruction
 
 *See also* Loops.
 
-vs. **DEC/JNZ** sequence, 139, 140-141
+vs. `DEC/JNZ` sequence, 139, 140-141
 
 and flags, 148
 
 Loops
 
-*See also* **LOOP** instruction.
+*See also* `LOOP` instruction.
 
 avoiding, 140
 
@@ -3423,7 +3423,7 @@ and branch prediction, Pentium processor, 377-378
 
 unrolling, 143-145, 305, 312, 377-378, 410
 
-**M**
+`M`
 
 Mackraz, Jim, 678
 
@@ -3523,11 +3523,11 @@ transformation, optimized, 1172-1173, **1173-1174**
 
 MDA (Monochrome Display Adapter), 104
 
-**Memchr()** function, 116
+`Memchr()` function, 116
 
-**Memcmp()** function, 116
+`Memcmp()` function, 116
 
-**Memcpy()** function, 1147-1148
+`Memcpy()` function, 1147-1148
 
 Memory access
 
@@ -3535,7 +3535,7 @@ Memory access
 
 clock cycles, bytes vs. words, 82, 83-85
 
-**DEC** instruction, 83
+`DEC` instruction, 83
 
 and DRAM refresh, 98
 
@@ -3569,7 +3569,7 @@ data alignment, 213-215
 
 Memory-addressing instructions, 223-225
 
-**Memset()** C library function, 727
+`Memset()` C library function, 727
 
 Miles, John, 1081, 1093
 
@@ -3601,7 +3601,7 @@ bitmap organization, 882-883
 
 features, 878-879
 
-**FillRectangleX** subroutine
+`FillRectangleX` subroutine
 
 four-plane parallel processing, 888-891, **891-893**
 
@@ -3645,15 +3645,15 @@ pattern fills, 899, **900-903,** 903-904
 
 pixel access and hardware planes, 1082
 
-**ReadPixelX** subroutine, **884-885**
+`ReadPixelX` subroutine, **884-885**
 
 vertical scanlines vs. horizontal, 1084-1086
 
-**WritePixelX** subroutine, **883-884**
+`WritePixelX` subroutine, **883-884**
 
-**ModelColor** structure, **1035**
+`ModelColor` structure, `1035`
 
-**ModelColorToColorIndex** function, 1036, **1038**
+`ModelColorToColorIndex` function, 1036, `1038`
 
 Mod-R/M byte, 257
 
@@ -3665,41 +3665,41 @@ optimizing, 153
 
 Monotone-vertical polygons, filling, 760-761, **761-771,** 771
 
-**MOV** instruction, 236, 377, 832
+`MOV` instruction, 236, 377, 832
 
-**MoveBouncer** function, **824-825**
+`MoveBouncer` function, **824-825**
 
-**MoveObject** function, **929**
+`MoveObject` function, `929`
 
-**MoveXSortedToAET** function
+`MoveXSortedToAET` function
 
-complex polygons, **749**
+complex polygons, `749`
 
-monotone-vertical polygons, **770**
+monotone-vertical polygons, `770`
 
-**MOVSD** instruction, 222, 386
+`MOVSD` instruction, 222, 386
 
-**MUL** instruction, 97, 173-174
+`MUL` instruction, 97, 173-174
 
 Multiplication
 
 increasing speed of, 173-174
 
-using **LEA,** 132-133, 172
+using `LEA`, 132-133, 172
 
 Multi-word arithmetic, 147-148
 
-**N**
+`N`
 
-**NEG** EAX instruction, 222
+`NEG` EAX instruction, 222
 
 Negation, two's complement, 171
 
-**Next1** function, **353**
+`Next1` function, `353`
 
-**Next2** function, **353**
+`Next2` function, `353`
 
-**Next\_generation** method, **327-328,** **335,** 336, 337-338, **344**
+`Next_generation` method, **327-328,** **335,** 336, 337-338, `344`
 
 Nonconvex objects, depth sorting, 1000, **1001-1002**
 
@@ -3713,11 +3713,11 @@ direction of, 1140
 
 Normals. *See* Normal vectors.
 
-**NOSMART** assembler directive, 72
+`NOSMART` assembler directive, 72
 
-**NOT** instruction, 146-147, 147
+`NOT` instruction, 146-147, 147
 
-**O**
+`O`
 
 Object collisions, detecting, **531-534**
 
@@ -3725,15 +3725,15 @@ Object space, 935, 1135
 
 Object-oriented programming, 725-726
 
-**Octant0** function
+`Octant0` function
 
-360x480 256-color mode line drawing demo program, **615**
+360x480 256-color mode line drawing demo program, `615`
 
 Bresenham's line-drawing algorithm, **662,** 668-669
 
-**Octant1** function
+`Octant1` function
 
-360x480 256-color mode line drawing demo program, **616**
+360x480 256-color mode line drawing demo program, `616`
 
 Bresenham's line-drawing algorithm, **663,** 668-669
 
@@ -3743,13 +3743,13 @@ Octants, and line orientations, 666-667
 
 abutting span sorting, 1229-1230
 
-**AddPolygonEdges** function, **1232-1233,** 1238
+`AddPolygonEdges` function, **1232-1233,** 1238
 
 vs. BSP-order sorting, 1226-1227
 
 calculating 1/z value, 1220-1222
 
-**ClearEdgeLists** function, **1236-1237**
+`ClearEdgeLists` function, **1236-1237**
 
 DrawSpans function, 1236
 
@@ -3757,13 +3757,13 @@ independent span sorting, 1230, **1231-1238,** 1239-1241
 
 intersecting span sorting, 1228-1229
 
-**PolyFacesViewer** function, **1232**
+`PolyFacesViewer` function, `1232`
 
 reliability, 1227
 
-**ScanEdges** function, **1234-1236,** 1238-1239
+`ScanEdges` function, **1234-1236,** 1238-1239
 
-**UpdateWorld** function, **1237-1238**
+`UpdateWorld` function, **1237-1238**
 
 On-screen object collisions, detecting, **531-534**
 
@@ -3821,11 +3821,11 @@ floating point operations
 
 clock cycles, core instructions, 1167-1168
 
-cross product optimization, 1171, **1172**
+cross product optimization, 1171, `1172`
 
 dot product optimization, 1170, 1171
 
-**FXCH** instruction, 1169-1170
+`FXCH` instruction, 1169-1170
 
 interleaved instructions, 1169-1170
 
@@ -3973,11 +3973,11 @@ Optimized searching, 174-180
 
 Optimizing assemblers, 71-72
 
-**OR** instruction, 377
+`OR` instruction, 377
 
-Orientation-independent texture mapping, 1065-1066, **1067**
+Orientation-independent texture mapping, 1065-1066, `1067`
 
-**OUT** instruction
+`OUT` instruction
 
 clock cycles, 1082-1083
 
@@ -3987,13 +3987,13 @@ loading palette RAM or DAC registers, 632
 
 performance, 444, 843
 
-word-**OUT** vs. byte-**OUT,** 429, 479
+word-`OUT` vs. byte-`OUT`, 429, 479
 
 vs. write mode 3, 483-484
 
-**OUTS** instruction, 221
+`OUTS` instruction, 221
 
-OUT\_WORD macro, **566,** 594
+`OUT_WORD` macro, **566,** 594
 
 Overdraw problem, VSD
 
@@ -4013,9 +4013,9 @@ in 16-bit checksum program, 12
 
 in search engine, 121
 
-**memcmp()** function, 116
+`memcmp()` function, 116
 
-**strstr()** function, 115
+`strstr()` function, 115
 
 of Zen timer, timing, 46, 72
 
@@ -4023,7 +4023,7 @@ Overlapping rectangles, in dirty-rectangle animation, 872-873
 
 Overscan, 555-556, 641
 
-**P**
+`P`
 
 Page flipping
 
@@ -4103,7 +4103,7 @@ in split screens, 574-575, **575-582,** 582-583
 
 in text mode, 442
 
-**PanRight** subroutine, **582**
+`PanRight` subroutine, `582`
 
 Parametric lines
 
@@ -4149,11 +4149,11 @@ floating point optimization
 
 clock cycles, core instructions, 1167-1168
 
-cross product optimization, 1171, **1172**
+cross product optimization, 1171, `1172`
 
-dot product optimization, 1170, **1171**
+dot product optimization, 1170, `1171`
 
-**FXCH** instruction, 1169-1170
+`FXCH` instruction, 1169-1170
 
 interleaved instructions, 1169-1170
 
@@ -4173,15 +4173,15 @@ instruction fetching, 374
 
 internal cache, 374-375, 396
 
-**LAHF** and **SAHF** instructions, 148
+`LAHF` and `SAHF` instructions, 148
 
-**LEA** vs. **ADD** instructions, 131
+`LEA` vs. `ADD` instructions, 131
 
-**LODSB** instruction, 304
+`LODSB` instruction, 304
 
-**LOOP** instruction vs. **DEC/JNZ** sequence, 139
+`LOOP` instruction vs. `DEC/JNZ` sequence, 139
 
-**MOV** vs. **XCHG** instructions, 377
+`MOV` vs. `XCHG` instructions, 377
 
 optimization
 
@@ -4229,7 +4229,7 @@ U-pipe, 385-386
 
 V-pipe, 385-386, 386-387
 
-**XCHG** vs. **MOV** instructions, 377, 832
+`XCHG` vs. `MOV` instructions, 377, 832
 
 *Pentium Processor Optimization Tools* (book), 1148
 
@@ -4282,9 +4282,9 @@ measuring, importance of, 34, 396
 
 memory access, 223-225
 
-**OUT** instruction, 444
+`OUT` instruction, 444
 
-**OUT** instructions, 843
+`OUT` instructions, 843
 
 PC-compatible computers, 48-49
 
@@ -4347,7 +4347,7 @@ Pixel drawing
 
 *See also* Pixels.
 
-**EVGADot** function, **661-662,** 669-670
+`EVGADot` function, **661-662,** 669-670
 
 optimization, 1074, 1086
 
@@ -4381,7 +4381,7 @@ clipping line segments to, 1195-1197
 
 1/z value, calculating, 1221
 
-representation, **1196**
+representation, `1196`
 
 Planes, VGA
 
@@ -4433,57 +4433,57 @@ Pointer advancement optimization, 1086-1089, **1090-1091,** 1092-1093
 
 Pointer arithmetic, 171
 
-Points, representation of, **1196**
+Points, representation of, `1196`
 
-**PolyFacesViewer** function, **1203,** 1232
+`PolyFacesViewer` function, **1203,** 1232
 
 Polygon clipping
 
-**BackRotateVector** function, **1203**
+`BackRotateVector` function, `1203`
 
 clipping to frustum, 1200, **1201-1206,** 1206-1207
 
-**ClipToFrustum** function, **1204**
+`ClipToFrustum` function, `1204`
 
-**ClipToPlane** function, **1199**
+`ClipToPlane` function, `1199`
 
 optimization, 1207
 
 overview, 1197-1200
 
-**PolyFacesViewer** function, **1203**
+`PolyFacesViewer` function, `1203`
 
-**ProjectPolygon** function, **1201**
+`ProjectPolygon` function, `1201`
 
-**SetUpFrustum** function, **1204**
+`SetUpFrustum` function, `1204`
 
-**SetWorldspace** function, **1204**
+`SetWorldspace` function, `1204`
 
-**TransformPoint** function, **1203**
+`TransformPoint` function, `1203`
 
-**TransformPolygon** function, **1203**
+`TransformPolygon` function, `1203`
 
-**UpdateViewPos** function, **1202**
+`UpdateViewPos` function, `1202`
 
-**UpdateWorld** function, **1205**
+`UpdateWorld` function, `1205`
 
 viewspace clipping, 1207
 
-**ZSortObjects** function, **1201**
+`ZSortObjects` function, `1201`
 
 POLYGON.H header file
 
-complex polygons, **751**
+complex polygons, `751`
 
-monotone-vertical polygons, filling, **771**
+monotone-vertical polygons, filling, `771`
 
 non-overlapping convex polygons, **719-720**
 
-texture mapped polygons, **1054**
+texture mapped polygons, `1054`
 
 3-D polygon rotation, **945-946**
 
-3-D solid cube rotation program, **965**
+3-D solid cube rotation program, `965`
 
 X-Sharp 3-D animation package, **982-984**
 
@@ -4525,7 +4525,7 @@ normal vector, calculating, 955-956
 
 projection in 3-D space, 937, **944-945,** 948
 
-representation, **1196**
+representation, `1196`
 
 3-D polygon rotation demo program
 
@@ -4577,7 +4577,7 @@ edge tracing
 
 overview, 711-713
 
-**ScanEdge** function, **716-717,** 720-721, **730-732,** **735-738**
+`ScanEdge` function, **716-717,** 720-721, **730-732,** **735-738**
 
 fitting adjacent polygons, 712-713
 
@@ -4621,11 +4621,11 @@ incremental transformations, **964-966**
 
 object representation, 967
 
-**POP** instruction, 241-242, 404
+`POP` instruction, 241-242, 404
 
-**POPA** instruction, 221
+`POPA` instruction, 221
 
-**POPF** instruction, 226, 226-231
+`POPF` instruction, 226, 226-231
 
 Popping, memory locations vs. registers, 254-255
 
@@ -4701,17 +4701,17 @@ defined, 1135
 
 floating point optimization, 1174
 
-**LineIntersectPlane** function, **1142-1143**
+`LineIntersectPlane` function, **1142-1143**
 
 overview, 937, 948
 
-**XformAndProjectPoly** function, **944-945**
+`XformAndProjectPoly` function, **944-945**
 
 rotation without matrices, 1143-1144
 
 using dot product, 1141-1142
 
-**ProjectPolygon** function, **1201**
+`ProjectPolygon` function, `1201`
 
 Proportional text, 489
 
@@ -4731,23 +4731,23 @@ overview, 208-209
 
 32-bit addressing modes, 256-258
 
-**PS2** equate, long-period Zen timer, 65-66
+`PS2` equate, long-period Zen timer, 65-66
 
 PS/2 computers, 54, 66
 
-**PUSH** instruction, 222, 241-242, 404
+`PUSH` instruction, 222, 241-242, 404
 
-**PUSHA** instruction, 221
+`PUSHA` instruction, 221
 
 Pushing, memory locations vs. registers, 254-255
 
-PZTEST.ASM listing, Zen timer, **49**
+PZTEST.ASM listing, Zen timer, `49`
 
-PZTIME.BAT listing, Zen timer, **51**
+PZTIME.BAT listing, Zen timer, `51`
 
 PZTIMER.ASM listing, Zen timer, **35-42**
 
-**Q**
+`Q`
 
 QLife program, **352-363**
 
@@ -4791,7 +4791,7 @@ and visible surface determination (VSD), 1181
 
 QuakeWorld, 1291-1292
 
-**R**
+`R`
 
 Radiosity lighting, Quake 2, 1293
 
@@ -4809,15 +4809,15 @@ Rate of divergence, in 3-D drawing, 937
 
 Raycast, subdividing, and beam trees, 1187
 
-**RCL** instruction, 185-186
+`RCL` instruction, 185-186
 
-**RCR** instruction, 185-186
+`RCR` instruction, 185-186
 
-**Read360x480Dot** subroutine, **614-615**
+`Read360x480Dot` subroutine, **614-615**
 
-**Read()** C library function
+`Read()` C library function
 
-vs. **getc()** function, 12
+vs. `getc()` function, 12
 
 overhead, 121
 
@@ -4849,9 +4849,9 @@ Read/write/modify operations, 107
 
 Read-after-write register contention, 404
 
-**ReadPixel** subroutine, **598**, 599
+`ReadPixel` subroutine, `598`, 599
 
-**ReadPixelX** subroutine, **884-885**
+`ReadPixelX` subroutine, **884-885**
 
 Real mode. *See* 386 processor.
 
@@ -4929,9 +4929,9 @@ SVGA programming, 626
 
 VGA registers, 583
 
-**ReferenceZTimerOff** subroutine, 41
+`ReferenceZTimerOff` subroutine, 41
 
-**ReferenceZTimerOn** subroutine, 40
+`ReferenceZTimerOn` subroutine, 40
 
 Reflections, in GLQuake, 1290
 
@@ -4985,43 +4985,43 @@ backface removal, 1160-1161
 
 clipping, 1158-1159
 
-**ClipWalls** function, **1152-1155**, 1158-1159
+`ClipWalls` function, **1152-1155**, 1158-1159
 
-**DrawWallsBackToFront** function, **1155-1156**, 1160-1161
+`DrawWallsBackToFront` function, **1155-1156**, 1160-1161
 
 overview, 1149
 
 reference materials, 1157
 
-**TransformVertices** function, **1151-1152**, 1158
+`TransformVertices` function, **1151-1152**, 1158
 
-**UpdateViewPos** function, **1151**, 1157
+`UpdateViewPos` function, `1151`, 1157
 
-**UpdateWorld** function, **1156-1157**, 1157
+`UpdateWorld` function, **1156-1157**, 1157
 
 viewspace, transformation of objects to, 1158
 
 wall orientation testing, 1160-1161
 
-**WallFacingViewer** function, **1150-1151**, 1161
+`WallFacingViewer` function, **1150-1151**, 1161
 
 *RenderMan Companion* (book), 742
 
-**REP MOVS** instruction, 148
+`REP MOVS` instruction, 148
 
-**REP MOVSW** instruction, 82, 105, 220
+`REP MOVSW` instruction, 82, 105, 220
 
-**REP SCASW** instruction, 166
+`REP SCASW` instruction, 166
 
-**REP STOS** instruction, 727, 735
+`REP STOS` instruction, 727, 735
 
-**REPNZ SCASB** instruction
+`REPNZ SCASB` instruction
 
 vs. Boyer-Moore algorithm, 267-268, 271, 274
 
 in string searching problem, 121-122, 174-175, 262-263
 
-**REPZ CMPS** instruction
+`REPZ CMPS` instruction
 
 vs. Boyer-Moore algorithm, 267-268, 271, 274
 
@@ -5045,7 +5045,7 @@ Results, precalculating
 
 BSP trees and potentially visible set (PVS), 1188-1189
 
-**RET** instruction, 241-242
+`RET` instruction, 241-242
 
 Reusable code, and future of programming profession, 725-726
 
@@ -5059,11 +5059,11 @@ Richardson, John, 316
 
 Right-handed coordinate system, 935-937
 
-**ROL** instruction, 185-186
+`ROL` instruction, 185-186
 
 Roll angle, in polygon clipping, 1206
 
-**ROR** instruction, 185-186
+`ROR` instruction, 185-186
 
 Rotate instructions
 
@@ -5073,11 +5073,11 @@ n-bit vs. 1-bit, 255-256
 
 286 processor, 222
 
-**RotateAndMovePObject** function, 977-978
+`RotateAndMovePObject` function, 977-978
 
 Rotation, 3-D animation
 
-**ConcatXforms** function, 944
+`ConcatXforms` function, 944
 
 matrix representation, 938-939
 
@@ -5085,7 +5085,7 @@ multiple axes of rotation, 948
 
 using dot product, 1143-1144
 
-**XformVec** function, 943
+`XformVec` function, 943
 
 Rotational variance, 1249
 
@@ -5119,9 +5119,9 @@ potential optimizations, 705
 
 Ruts, mental, staying out of, 1147-1148
 
-**S**
+`S`
 
-**SAHF** instruction, 148
+`SAHF` instruction, 148
 
 Sam the Golden Retriever, 841-842
 
@@ -5165,7 +5165,7 @@ in split screens, 564-565, 573
 
 vertical, in texture mapping, 1084-1086
 
-**ScanBuffer** assembly routine
+`ScanBuffer` assembly routine
 
 author's implementation, **301-302**, **303-304**
 
@@ -5173,7 +5173,7 @@ hand-optimized implementation(Willem Clements), **313-315**
 
 lookup table implementation (David Stafford), **309-311**, 317-319
 
-**ScanEdge** function
+`ScanEdge` function
 
 assembly implementation, **735-738**, 735
 
@@ -5181,21 +5181,21 @@ floating-point C implementation, **716-717**, 720-721
 
 integer-based C implementation, **730-732**
 
-**ScanEdges** function, **1234-1236**, 1238-1239
+`ScanEdges` function, **1234-1236**, 1238-1239
 
-**ScanOutAET** function
+`ScanOutAET` function
 
 complex polygons, **749-750**
 
-monotone-vertical polygons, **770**
+monotone-vertical polygons, `770`
 
-**ScanOutLine** function
+`ScanOutLine` function
 
 assembly implementation, **1069-1073**, 1074
 
 C-language implementation, **1058-1059**, **1067-1069**
 
-**SCASW** instruction, 161
+`SCASW` instruction, 161
 
 Screen blanking
 
@@ -5233,7 +5233,7 @@ design considerations, 114
 
 execution profile, 121
 
-**FindString** function, 175, **176**, **178**, **269**
+`FindString` function, 175, `176`, `178`, `269`
 
 optimization, 174-180
 
@@ -5243,7 +5243,7 @@ search space and optimization, 122, 175
 
 search techniques, 115-116, 175
 
-**SearchForString** function, **118**
+`SearchForString` function, `118`
 
 Searching
 
@@ -5255,9 +5255,9 @@ in linked list of arrays, 156-166
 
 for specified byte in buffer, 141-145
 
-using **REP SCASW**, 166
+using `REP SCASW`, 166
 
-**SecondPass** function, **358-360**
+`SecondPass` function, **358-360**
 
 Sedgewick, Robert (*Algorithms*), 192, 196
 
@@ -5271,7 +5271,7 @@ protected mode, 208-209
 
 386 processor, 222
 
-**SelectBSPTree** function, **1124-1125**
+`SelectBSPTree` function, **1124-1125**
 
 Selling ideas, 1193-1194
 
@@ -5279,13 +5279,13 @@ Sentinels, in linked lists, 286
 
 Sequence Controller, VGA. *See* SC (Sequence Controller), VGA.
 
-**Set320x400Mode** subroutine, 593, **596-597**, 599, **602-604**
+`Set320x400Mode` subroutine, 593, **596-597**, 599, **602-604**
 
-**Set320x240Mode** subroutine, **881-882**
+`Set320x240Mode` subroutine, **881-882**
 
-**Set360x480Mode** subroutine, **612**, 620-621
+`Set360x480Mode` subroutine, `612`, 620-621
 
-**Set640x400** function, **855**
+`Set640x400` function, `855`
 
 Set/reset circuitry, VGA
 
@@ -5305,25 +5305,25 @@ and write mode 2, 501-502, 509, 515
 
 Set/Reset register, 666
 
-**SetBIOS8x8Font** subroutine, **830**
+`SetBIOS8x8Font` subroutine, `830`
 
-**Set\_cell** method, **327**, **334**, **342**
+`Set_cell` method, `327`, `334`, `342`
 
 SETGC macro, 454, 475
 
-**SetPalette** function, **783-784**
+`SetPalette` function, **783-784**
 
-**SetPelPan** subroutine, **580**
+`SetPelPan` subroutine, `580`
 
 SETSC macro, 474
 
-**SetSplitScreenScanLine** subroutine, **570-571**, **581**
+`SetSplitScreenScanLine` subroutine, **570-571**, `581`
 
-**SetStartAddress** subroutine, **570**, **580**
+`SetStartAddress` subroutine, `570`, `580`
 
-**SetUpEdge** function, **1057-1058**
+`SetUpEdge` function, **1057-1058**
 
-**SetWorldspace** function, **1204**
+`SetWorldspace` function, `1204`
 
 Shading
 
@@ -5355,19 +5355,19 @@ Shift instructions, 222, 255-256
 
 Shifting bits, vs. lookup tables, 145-146
 
-**SHL** instruction, 376
+`SHL` instruction, 376
 
-**ShowBounceCount** function, **823-824**
+`ShowBounceCount` function, **823-824**
 
-**ShowPage** subroutine
+`ShowPage` subroutine
 
 masked copying animation, Mode X, **929-930**
 
-page flipping animation, **827**
+page flipping animation, `827`
 
-**Show\_text** function, **329**, **363**
+`Show_text` function, `329`, `363`
 
-**SHR** instruction, 88-91, 97
+`SHR` instruction, 88-91, 97
 
 SIB byte, 257
 
@@ -5403,13 +5403,13 @@ Sorted span hidden surface removal
 
 abutting span sorting, 1229-1230
 
-**AddPolygonEdges** function, **1232-1233**, 1238
+`AddPolygonEdges` function, **1232-1233**, 1238
 
 BSP order vs. 1/z order, 1220, 1226
 
-**ClearEdgeLists** function, **1236-1237**
+`ClearEdgeLists` function, **1236-1237**
 
-**DrawSpans** function, **1236**
+`DrawSpans` function, `1236`
 
 edge sorting, 1220-1222
 
@@ -5423,11 +5423,11 @@ intersecting span sorting, 1228-1229
 
 overview, 1214-1215
 
-**PolyFacesViewer** function, **1232**
+`PolyFacesViewer` function, `1232`
 
-**ScanEdges** function, **1234-1236**, 1238-1239
+`ScanEdges` function, **1234-1236**, 1238-1239
 
-**UpdateWorld** function, **1237-1238**
+`UpdateWorld` function, **1237-1238**
 
 Sorting techniques
 
@@ -5443,7 +5443,7 @@ and optimization, 755
 
 z-buffers, 1212-1213
 
-**SortObjects** function, **1002**
+`SortObjects` function, `1002`
 
 Span-based drawing, and beam trees, 1187
 
@@ -5469,9 +5469,9 @@ text mode, 584
 
 turning on and off, 565
 
-**SplitScreenDown** subroutine, **572**
+`SplitScreenDown` subroutine, `572`
 
-**SplitScreenUp** subroutine, **572**
+`SplitScreenUp` subroutine, `572`
 
 Spotlights
 
@@ -5499,7 +5499,7 @@ Stack pointer alignment, 218-219
 
 Stack-based variables, placement of, 184-185
 
-Stacks, **POPF** vs. **IRET**, 226-231
+Stacks, `POPF` vs. `IRET`, 226-231
 
 Stafford, David
 
@@ -5507,7 +5507,7 @@ Stafford, David
 
 Game of Life implementation, 351-352, **353-363**, 363-365
 
-**ScanBuffer** assembly routine, word count program, **309-311**,
+`ScanBuffer` assembly routine, word count program, **309-311**,
 317-319
 
 24-byte hi/lo function, 292-293
@@ -5520,17 +5520,17 @@ State machines
 
 word count program, 315
 
-**StepEdge** function, **1056-1057**
+`StepEdge` function, **1056-1057**
 
-**STOSB** instruction, 236
+`STOSB` instruction, 236
 
 String instructions, 107
 
 String searching. *See* Search engine; Searching.
 
-**Strstr()** function, 115
+`Strstr()` function, 115
 
-**SUB** instruction, 219
+`SUB` instruction, 219
 
 Subdivision rasterization, 1266-1267, **1267-1270**, 1286
 
@@ -5588,7 +5588,7 @@ masked copy to display memory, **916-918**, 916
 
 System wait states, 210-213
 
-**T**
+`T`
 
 Table-driven state machines, 316-319
 
@@ -5598,17 +5598,17 @@ TASM (Turbo Assembler), 71-72
 
 TCP/IP checksum program
 
-basic implementation, **406**
+basic implementation, `406`
 
-dword implementation, **409**
+dword implementation, `409`
 
-interleaved implementation, **408**
+interleaved implementation, `408`
 
-unrolled loop implementation, **410**
+unrolled loop implementation, `410`
 
-**Test** function, **358**, 365
+`Test` function, `358`, 365
 
-**TEST** instruction, 377, 401-402
+`TEST` instruction, 377, 401-402
 
 Texels
 
@@ -5642,15 +5642,15 @@ split screen operations, 584-585
 
 Text pages, flipping from graphics to text, 517
 
-TEXT\_UP macro, **454**, 459
+`TEXT_UP` macro, `454`, 459
 
-**TextUp** subroutine, **829**
+`TextUp` subroutine, `829`
 
 Texture mapping
 
 *See also* DDA (digital differential analyzer) texture mapping.
 
-boundary pixels, polygons, 1049-1052, 1066, **1067**
+boundary pixels, polygons, 1049-1052, 1066, `1067`
 
 C implementation, **1053-1058**
 
@@ -5672,7 +5672,7 @@ pointer advancement optimization, 1086-1089, **1090-1091**
 
 vertical scanlines, 1084-1086
 
-orientation independence, 1065-1066, **1067**
+orientation independence, 1065-1066, `1067`
 
 overview, 1048
 
@@ -5697,11 +5697,11 @@ vertical scanlines, 1084-1086
 
 *See also* Registers; VGA registers.
 
-adding with **LEA**, 131
+adding with `LEA`, 131
 
-**BSWAP** instruction, 252
+`BSWAP` instruction, 252
 
-multiplying with **LEA**, 132-133
+multiplying with `LEA`, 132-133
 
 386 processor, 222
 
@@ -5726,13 +5726,13 @@ depth sorting, 1000, **1001-1002**
 
 rotation
 
-**ConcatXforms** function, **944**
+`ConcatXforms` function, `944`
 
 matrix representation, 938-939
 
 multiple axes of rotation, 948
 
-**XformVec** function, **943**
+`XformVec` function, `943`
 
 rounding vs. truncation, 1002-1003
 
@@ -5748,37 +5748,37 @@ overview, 1195
 
 polygon clipping
 
-**BackRotateVector** function, **1203**
+`BackRotateVector` function, `1203`
 
 clipping to frustum, 1200, **1201-1206**, 1206-1207
 
-**ClipToFrustum** function, **1204**
+`ClipToFrustum` function, `1204`
 
-**ClipToPlane** function, **1199**
+`ClipToPlane` function, `1199`
 
 optimization, 1207
 
 overview, 1197-1200
 
-**PolyFacesViewer** function, **1203**
+`PolyFacesViewer` function, `1203`
 
-**ProjectPolygon** function, **1201**
+`ProjectPolygon` function, `1201`
 
-**SetUpFrustum** function, **1204**
+`SetUpFrustum` function, `1204`
 
-**SetWorldspace** function, **1204**
+`SetWorldspace` function, `1204`
 
-**TransformPoint** function, **1203**
+`TransformPoint` function, `1203`
 
-**TransformPolygon** function, **1203**
+`TransformPolygon` function, `1203`
 
-**UpdateViewPos** function, **1202**
+`UpdateViewPos` function, `1202`
 
-**UpdateWorld** function, **1205**
+`UpdateWorld` function, `1205`
 
 viewspace clipping, 1207
 
-**ZSortObjects** function, **1201**
+`ZSortObjects` function, `1201`
 
 3-D drawing
 
@@ -5843,25 +5843,25 @@ backface removal, 1160-1161
 
 clipping, 1158-1159
 
-**ClipWalls** function, **1152-1155**, 1158-1159
+`ClipWalls` function, **1152-1155**, 1158-1159
 
-**DrawWallsBackToFront** function, **1155-1156**, 1160-1161
+`DrawWallsBackToFront` function, **1155-1156**, 1160-1161
 
 overview, 1149
 
 reference materials, 1157
 
-**TransformVertices** function, **1151-1152**, 1158
+`TransformVertices` function, **1151-1152**, 1158
 
-**UpdateViewPos** function, **1151**, 1157
+`UpdateViewPos` function, `1151`, 1157
 
-**UpdateWorld** function, **1156-1157**, 1157
+`UpdateWorld` function, **1156-1157**, 1157
 
 viewspace, transformation of objects to, 1158
 
 wall orientation testing, 1160-1161
 
-**WallFacingViewer** function, **1150-1151**, 1161
+`WallFacingViewer` function, **1150-1151**, 1161
 
 span-based drawing, and beam trees, 1187
 
@@ -5969,7 +5969,7 @@ object representation, 967
 
 alignment, stack pointer, 218-219
 
-**CMP** instruction, 161, 306
+`CMP` instruction, 161, 306
 
 cycle-eaters, 209-210
 
@@ -5985,17 +5985,17 @@ DRAM refresh cycle-eater, 219
 
 effective address calculations, 129, 223-225
 
-**LEA** instruction, 130-133, 172
+`LEA` instruction, 130-133, 172
 
-**LODSD** vs. **MOV/LEA** sequence, 171
+`LODSD` vs. `MOV/LEA` sequence, 171
 
 lookup tables, vs. rotating or shifting, 145-146
 
-**LOOP** instruction vs. **DEC/JNZ** sequence, 139
+`LOOP` instruction vs. `DEC/JNZ` sequence, 139
 
 memory access, performance, 223-225
 
-**MUL** and **IMUL** instructions, 173-174
+`MUL` and `IMUL` instructions, 173-174
 
 multiplication operations, increasing speed of, 173-174
 
@@ -6015,7 +6015,7 @@ system wait states, 210-212
 
 using 32-bit register as two 16-bit registers, 253-254
 
-**XCHG** vs. **MOV** instructions, 377, 832
+`XCHG` vs. `MOV` instructions, 377, 832
 
 386SX processor, 16-bit bus cycle-eater, 81
 
@@ -6023,7 +6023,7 @@ using 32-bit register as two 16-bit registers, 253-254
 
 display memory, accessing, 621-622
 
-**Draw360x480Dot** subroutine, 613-614
+`Draw360x480Dot` subroutine, 613-614
 
 drawing speed, 618
 
@@ -6031,11 +6031,11 @@ horizontal resolution, 620
 
 line drawing demo program, **615-618**, 618-619
 
-mode set routine (John Bridges), 609, **612**, 620-621
+mode set routine (John Bridges), 609, `612`, 620-621
 
 on VGA clones, 610-611
 
-**Read360x480Dot** subroutine, **614-615**
+`Read360x480Dot` subroutine, **614-615**
 
 256-color resolution, 619-620
 
@@ -6069,7 +6069,7 @@ stopping, 54, 65
 
 Timer modes, 44, 45
 
-**TIMER\_INT** BIOS routine, 44
+`TIMER_INT` BIOS routine, 44
 
 Timers
 
@@ -6101,7 +6101,7 @@ incremental transformations, 964
 
 steps in, 935-936
 
-**TransformPolygon** function, **1203**
+`TransformPolygon` function, `1203`
 
 Translation in 3-D space, 937-938
 
@@ -6147,7 +6147,7 @@ X-Sharp animation package, 972, **973-984**, 984-985
 
 286 processor
 
-**CMP** instruction, 161, 306
+`CMP` instruction, 161, 306
 
 code alignment, 215-218
 
@@ -6167,17 +6167,17 @@ effective address calculations, 129, 223-225
 
 instruction fetching, 215-218
 
-**LEA** vs. **ADD** instructions, 130
+`LEA` vs. `ADD` instructions, 130
 
 lookup tables, vs. rotating or shifting, 145-146
 
-**LOOP** instruction vs. **DEC/JNZ** sequence, 139
+`LOOP` instruction vs. `DEC/JNZ` sequence, 139
 
 memory access, performance, 223-225
 
 new features, 221
 
-**POPF** instruction, and interrupts, 226
+`POPF` instruction, and interrupts, 226
 
 protected mode, 208-209
 
@@ -6199,7 +6199,7 @@ Two-pass lighting, 1262
 
 Two's complement negation, 171
 
-**U**
+`U`
 
 Unifying models, and optimization, 1110-1111
 
@@ -6209,9 +6209,9 @@ Unit vectors, dot product, 1136-1137
 
 Unrolling loops, 143-145, 305, 312, 377-378, 410
 
-**UpdateViewPos** function, **1202**
+`UpdateViewPos` function, `1202`
 
-**UpdateWorld** function, **1205**, **1237-1238**
+`UpdateWorld` function, `1205`, **1237-1238**
 
 U-pipe, Pentium processor
 
@@ -6221,7 +6221,7 @@ overview, 385-386
 
 pairable instructions, 388
 
-**V**
+`V`
 
 Variables, word-sized vs. byte-sized, 82, 83-85
 
@@ -6239,7 +6239,7 @@ optimization of, 986
 
 unit vectors, dot product, 1136-1137
 
-**VectorsUp** function
+`VectorsUp` function
 
 Bresenham's line-drawing algorithm, **664-665**
 
@@ -6347,9 +6347,9 @@ pixel-by-pixel plane selection, **885-887**
 
 plane-by-plane processing, **887-889**
 
-**ReadPixelX** subroutine, **884-885**
+`ReadPixelX` subroutine, **884-885**
 
-**WritePixelX** subroutine, **883-884**
+`WritePixelX` subroutine, **883-884**
 
 and page flipping, 444-445
 
@@ -6645,9 +6645,9 @@ VQuake, 1287-1280
 
 VSD. *See* Visible surface determination (VSD).
 
-**W**
+`W`
 
-**Wait30Frames** function, **854**
+`Wait30Frames` function, `854`
 
 Wait states
 
@@ -6663,15 +6663,15 @@ overview, 99
 
 system memory wait states, 210-213
 
-**WaitForVerticalSyncEnd** subroutine, **569**, **579-580**
+`WaitForVerticalSyncEnd` subroutine, `569`, **579-580**
 
-**WaitForVerticalSyncStart** subroutine, **569**, **579**
+`WaitForVerticalSyncStart` subroutine, `569`, `579`
 
-**WalkBSPTree** function, **1106**
+`WalkBSPTree` function, `1106`
 
-**WalkTree** function
+`WalkTree` function
 
-code recursive version, **1108**
+code recursive version, `1108`
 
 data recursive version, **1109-1110**
 
@@ -6700,11 +6700,11 @@ edge triggered device, 316
 
 fine-tuning optimization, 312-313
 
-initial C implementation, **299**
+initial C implementation, `299`
 
-lookup table, **303**, 304, 317-319
+lookup table, `303`, 304, 317-319
 
-**ScanBuffer** assembly routine
+`ScanBuffer` assembly routine
 
 author's implementation, **301-302**
 
@@ -6716,7 +6716,7 @@ as state machine, 315
 
 theoretical maximum performance, 319
 
-Word-**OUT** instruction, 429
+Word-`OUT` instruction, 429
 
 Word-sized variables, 8088 processor
 
@@ -6796,9 +6796,9 @@ text, drawing, 484, 490, 496
 
 Write-after-write register contention, 404
 
-**WritePixel** subroutine, **597**, 599
+`WritePixel` subroutine, `597`, 599
 
-**WritePixelX** subroutine, **883-884**
+`WritePixelX` subroutine, **883-884**
 
 Writing pixels
 
@@ -6820,7 +6820,7 @@ pixel intensity calculations, 778-779
 
 Wu, Xiaolin. *See* Wu antialiasing algorithm.
 
-**X**
+`X`
 
 X86 family CPUs
 
@@ -6838,7 +6838,7 @@ limitations for assembly programmers, 27
 
 lookup tables, vs. rotating or shifting, 145-146
 
-**LOOP** instruction vs. **DEC/JNZ** sequence, 139
+`LOOP` instruction vs. `DEC/JNZ` sequence, 139
 
 machine instructions, versatility, 128
 
@@ -6848,23 +6848,23 @@ overview, 208
 
 transformation inefficiencies, 26
 
-**XCHG** instruction, 377, 832
+`XCHG` instruction, 377, 832
 
 X-clipping, in BSP tree rendering, 1159
 
-**XformAndProjectPObject** function, **974**
+`XformAndProjectPObject` function, `974`
 
-**XformAndProjectPoints** function, **960**
+`XformAndProjectPoints` function, `960`
 
-**XformAndProjectPoly** function, **944-945**
+`XformAndProjectPoly` function, **944-945**
 
-**XformVec** function
+`XformVec` function
 
 assembly implementation, **996-997**, **1017-1019**
 
-C implementation, **943**, **976**
+C implementation, `943`, `976`
 
-**XLAT** instruction
+`XLAT` instruction
 
 in Boyer-Moore algorithm, 274-277
 
@@ -6872,25 +6872,25 @@ byte registers, 243
 
 with lookup table, 304
 
-**XOR** instruction, vs. **NOT**, 147
+`XOR` instruction, vs. `NOT`, 147
 
 X-Sharp 3-D animation package
 
-**AppendRotationX** function, **975**
+`AppendRotationX` function, `975`
 
-**AppendRotationY** function, **964-965**, **975**
+`AppendRotationY` function, **964-965**, `975`
 
-**AppendRotationZ** function, **965**, **976**
+`AppendRotationZ` function, `965`, `976`
 
 code archives on diskette, 985
 
-**ConcatXforms** function
+`ConcatXforms` function
 
 assembly implementation, **997-999**, **1019-1022**
 
-C implementations, **944**, **976**
+C implementations, `944`, `976`
 
-**CosSin** subroutine, **994-996**, 999, **1013-1015**
+`CosSin` subroutine, **994-996**, 999, **1013-1015**
 
 DDA (digital differential analyzer) texture mapping
 
@@ -6900,7 +6900,7 @@ C implementation, **1053-1058**
 
 disadvantages, 1052-1053, 1059
 
-**DrawTexturedPolygon**, **1055-1056**
+`DrawTexturedPolygon`, **1055-1056**
 
 hardware dependence, 1053
 
@@ -6908,35 +6908,35 @@ multiple adjacent polygons, 1068
 
 optimized implementation, **1069-1073**, 1074
 
-orientation independence, 1065-1067, **1067**
+orientation independence, 1065-1067, `1067`
 
 performance, 1074
 
-**ScanOutLine** function, **1058-1059**, **1067**
+`ScanOutLine` function, **1058-1059**, `1067`
 
-**SetUpEdge** function, **1057-1058**
+`SetUpEdge` function, **1057-1058**
 
-**StepEdge** function, **1056-1057**
+`StepEdge` function, **1056-1057**
 
 techniques, 1048-1051
 
-**DrawPObject** function, **978-979**
+`DrawPObject` function, **978-979**
 
 ambient and diffuse shading support, **1025-1027**
 
-**FixedDiv** subroutine, **982**, **993**, **1010-1012**
+`FixedDiv` subroutine, `982`, `993`, **1010-1012**
 
-FIXED\_MUL macro, 1016-1017
+`FIXED_MUL` macro, 1016-1017
 
-**FixedMul** subroutine, **981**, **993-994**, **1009-1010**
+`FixedMul` subroutine, `981`, **993-994**, **1009-1010**
 
-**InitializeCubes** function, **980-981**
+`InitializeCubes` function, **980-981**
 
-**InitializeFixedPoint** function, **977**
+`InitializeFixedPoint` function, `977`
 
 matrix math, assembly routines, 992, **996-999**
 
-**ModelColorToColorIndex** function, 1036, **1038**
+`ModelColorToColorIndex` function, 1036, `1038`
 
 older processors, support for, 1007-1008, **1008-1023**
 
@@ -6950,29 +6950,29 @@ mapping to 256-color mode, 1036, **1037-1038**, 1039
 
 overview, 1034-1035
 
-**RotateAndMovePObject** function, **977-978**
+`RotateAndMovePObject` function, **977-978**
 
-**XformAndProjectPObject** function, **974**
+`XformAndProjectPObject` function, `974`
 
-**XformVec** function
+`XformVec` function
 
 assembly implementation, **996-997**, **1017-1019**
 
-C implementation, **976**
+C implementation, `976`
 
-**XSortAET** function
+`XSortAET` function
 
-complex polygons, **748**
+complex polygons, `748`
 
-monotone-vertical polygons, **769**
+monotone-vertical polygons, `769`
 
-**Y**
+`Y`
 
 Yaw angle, in polygon clipping, 1206
 
 Y-clipping, in BSP tree rendering, 1159
 
-**Z**
+`Z`
 
 Z-buffers
 
@@ -7010,15 +7010,15 @@ prefetch queue cycle-eater, 88, 92
 
 PS/2 compatibility, 66
 
-PZTEST.ASM listing, **49**
+PZTEST.ASM listing, `49`
 
-PZTIME.BAT listing, **51**
+PZTIME.BAT listing, `51`
 
 PZTIMER.ASM listing, **35-42**
 
-**ReferenceZTimerOff** subroutine, **41**
+`ReferenceZTimerOff` subroutine, `41`
 
-**ReferenceZTimerOn** subroutine, **40**
+`ReferenceZTimerOn` subroutine, `40`
 
 reporting results, 47
 
@@ -7030,15 +7030,15 @@ system clock inaccuracies, 43, 45-46, 48
 
 test-bed program, 48-52
 
-TESTCODE listing, **50**
+TESTCODE listing, `50`
 
 timing 486 code, 245-246
 
-**ZTimerOff** subroutine, **38-41**, 46-47
+`ZTimerOff` subroutine, **38-41**, 46-47
 
-**ZTimerOn** subroutine, **37-38**, 43
+`ZTimerOn` subroutine, **37-38**, 43
 
-**ZTimerReport** subroutine, **41-42**, 47-48
+`ZTimerReport` subroutine, **41-42**, 47-48
 
 Zero-wait-state memory, 211
 
@@ -7046,21 +7046,21 @@ Z-order display, masked images, 872
 
 Z-sorting, for hidden surface removal, 1220-1222
 
-**ZSortObjects** function, **1201**
+`ZSortObjects` function, `1201`
 
-**ZTimerOff** subroutine
+`ZTimerOff` subroutine
 
 long-period Zen timer, **59-63**
 
 Zen timer, **38-41**, 46-47
 
-**ZTimerOn** subroutine
+`ZTimerOn` subroutine
 
 long-period Zen timer, **58-59**
 
 Zen timer, **37-38**, 43
 
-**ZTimerReport** subroutine
+`ZTimerReport` subroutine
 
 long-period Zen timer, **63-65**
 
