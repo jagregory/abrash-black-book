@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-pandoc -S -o main.epub index.md intro.md about.md about_author.md \
+pandoc -S -o black-book.epub --epub-chapter-level=2 \
+ index.md intro.md about.md about_author.md \
  chapter-01.md chapter-02.md chapter-03.md chapter-04.md chapter-05.md \
  chapter-06.md chapter-07.md chapter-08.md chapter-09.md chapter-10.md \
  chapter-11.md chapter-12.md chapter-13.md chapter-14.md chapter-15.md \
