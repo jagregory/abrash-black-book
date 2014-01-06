@@ -10,8 +10,7 @@ chapter: '58'
 pages: 1077-1093
 ---
 
-## Chapter 58\
- Heinlein's Crystal Ball, Spock's Brain, and the 9-Cycle Dare
+## Chapter 58 -- Heinlein's Crystal Ball, Spock's Brain, and the 9-Cycle Dare
 
 ### Using the Whole-Brain Approach to Accelerate Texture Mapping
 

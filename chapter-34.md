@@ -10,8 +10,7 @@ chapter: '34'
 pages: 637-652
 ---
 
-## Chapter 34\
- Changing Colors without Writing Pixels
+## Chapter 34 -- Changing Colors without Writing Pixels
 
 ### Special Effects through Realtime Manipulation of DAC Colors
 

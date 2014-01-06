@@ -10,8 +10,7 @@ chapter: '12'
 pages: 233-246
 ---
 
-## Chapter 12\
- Pushing the 486
+## Chapter 12 -- Pushing the 486
 
 ### It's Not Just a Bigger 386
 

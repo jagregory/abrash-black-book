@@ -10,8 +10,7 @@ chapter: '53'
 pages: 989-1003
 ---
 
-## Chapter 53\
- Raw Speed and More
+## Chapter 53 -- Raw Speed and More
 
 ### The Naked Truth About Speed in 3-D Animation
 

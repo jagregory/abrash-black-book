@@ -10,8 +10,7 @@ chapter: '16'
 pages: 295-319
 ---
 
-## Chapter 16\
- There Ain't No Such Thing as the Fastest Code
+## Chapter 16 -- There Ain't No Such Thing as the Fastest Code
 
 ### Lessons Learned in the Pursuit of the Ultimate Word Counter
 

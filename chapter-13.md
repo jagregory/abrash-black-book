@@ -10,8 +10,7 @@ chapter: '13'
 pages: 248-258
 ---
 
-## Chapter 13\
- Aiming the 486
+## Chapter 13 -- Aiming the 486
 
 ### Pipelines and Other Hazards of the High End
 

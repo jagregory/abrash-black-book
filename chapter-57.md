@@ -10,8 +10,7 @@ chapter: '57'
 pages: 1061-1075
 ---
 
-## Chapter 57\
- 10,000 Freshly Sheared Sheep on the Screen
+## Chapter 57 -- 10,000 Freshly Sheared Sheep on the Screen
 
 ### The Critical Role of Experience in Implementing Fast, Smooth Texture Mapping
 

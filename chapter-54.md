@@ -10,8 +10,7 @@ chapter: '54'
 pages: 1005-1029
 ---
 
-## Chapter 54\
- 3-D Shading
+## Chapter 54 -- 3-D Shading
 
 ### Putting Realistic Surfaces on Animated 3-D Objects
 

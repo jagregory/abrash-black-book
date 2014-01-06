@@ -10,8 +10,7 @@ chapter: '49'
 pages: 913-930
 ---
 
-## Chapter 49\
- Mode X 256-Color Animation
+## Chapter 49 -- Mode X 256-Color Animation
 
 ### How to Make the VGA Really Get up and Dance
 

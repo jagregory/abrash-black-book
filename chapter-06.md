@@ -10,8 +10,7 @@ chapter: '06'
 pages: 125-133
 ---
 
-## Chapter 6\
- Looking Past Face Value
+## Chapter 6 -- Looking Past Face Value
 
 ### How Machine Instructions May Do More Than You Think
 

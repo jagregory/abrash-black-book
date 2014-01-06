@@ -10,8 +10,7 @@ chapter: '56'
 pages: 1046-1059
 ---
 
-## Chapter 56\
- Pooh and the Space Station
+## Chapter 56 -- Pooh and the Space Station
 
 ### Using Fast Texture Mapping to Place Pooh on a Polygon
 

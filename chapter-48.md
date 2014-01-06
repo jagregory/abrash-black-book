@@ -10,8 +10,7 @@ chapter: '48'
 pages: 895-911
 ---
 
-## Chapter 48\
- Mode X Marks the Latch
+## Chapter 48 -- Mode X Marks the Latch
 
 ### The Internals of Animation's Best Video Display Mode
 

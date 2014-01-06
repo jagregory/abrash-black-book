@@ -10,8 +10,7 @@ chapter: '55'
 pages: 1031-1044
 ---
 
-## Chapter 55\
- Color Modeling in 256-Color Mode
+## Chapter 55 -- Color Modeling in 256-Color Mode
 
 ### Pondering X-Sharp's Color Model in an RGB State of Mind
 

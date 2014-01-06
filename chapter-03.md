@@ -10,8 +10,7 @@ chapter: '03'
 pages: 031-073
 ---
 
-## Chapter 3\
- Assume Nothing
+## Chapter 3 -- Assume Nothing
 
 ### Understanding and Using the Zen Timer
 

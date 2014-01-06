@@ -10,8 +10,7 @@ chapter: '28'
 pages: 523-537
 ---
 
-## Chapter 28\
- Reading VGA Memory
+## Chapter 28 -- Reading VGA Memory
 
 ### Read Modes 0 and 1, and the Color Don't Care Register
 

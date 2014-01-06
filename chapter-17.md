@@ -10,8 +10,7 @@ chapter: '17'
 pages: 322-346
 ---
 
-## Chapter 17\
- The Game of Life
+## Chapter 17 -- The Game of Life
 
 ### The Triumph of Algorithmic Optimization in a Cellular Automata Game
 

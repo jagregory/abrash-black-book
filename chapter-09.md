@@ -10,8 +10,7 @@ chapter: 09
 pages: 167-188
 ---
 
-## Chapter 9\
- Hints My Readers Gave Me
+## Chapter 9 -- Hints My Readers Gave Me
 
 ### Optimization Odds and Ends from the Field
 

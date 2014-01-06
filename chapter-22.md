@@ -10,8 +10,7 @@ chapter: '22'
 pages: 413-420
 ---
 
-## Chapter 22\
- Zenning and the Flexible Mind
+## Chapter 22 -- Zenning and the Flexible Mind
 
 ### Taking a Spin through What You've Learned
 

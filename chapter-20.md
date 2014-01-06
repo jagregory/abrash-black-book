@@ -10,8 +10,7 @@ chapter: '20'
 pages: 381-396
 ---
 
-## Chapter 20\
- Pentium Rules
+## Chapter 20 -- Pentium Rules
 
 ### How Your Carbon-Based Optimizer Can Put the "Super" in Superscalar
 

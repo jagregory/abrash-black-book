@@ -10,8 +10,7 @@ chapter: '39'
 pages: 723-738
 ---
 
-## Chapter 39\
- Fast Convex Polygons
+## Chapter 39 -- Fast Convex Polygons
 
 ### Filling Polygons in a Hurry
 

@@ -10,8 +10,7 @@ chapter: '38'
 pages: 707-721
 ---
 
-## Chapter 38\
- The Polygon Primeval
+## Chapter 38 -- The Polygon Primeval
 
 ### Drawing Polygons Efficiently and Quickly
 

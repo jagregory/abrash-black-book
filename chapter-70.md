@@ -10,8 +10,7 @@ chapter: '70'
 pages: 1273-1285
 ---
 
-## Chapter 70\
- Quake: A Post-Mortem and a Glimpse into the Future
+## Chapter 70 -- Quake: A Post-Mortem and a Glimpse into the Future
 
 *Why did not any of the children in the first group think of this faster
 method of going across the room? It is simple. They looked at what they

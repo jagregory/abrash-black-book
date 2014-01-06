@@ -10,8 +10,7 @@ chapter: '04'
 pages: 075-109
 ---
 
-## Chapter 4\
- In the Lair of the Cycle-Eaters
+## Chapter 4 -- In the Lair of the Cycle-Eaters
 
 ### How the PC Hardware Devours Code Performance
 

@@ -10,8 +10,7 @@ chapter: '15'
 pages: 279-293
 ---
 
-## Chapter 15\
- Linked Lists and plain Unintended Challenges
+## Chapter 15 -- Linked Lists and plain Unintended Challenges
 
 ### Unfamiliar Problems with Familiar Data Structures
 

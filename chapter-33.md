@@ -10,8 +10,7 @@ chapter: '33'
 pages: 623-636
 ---
 
-## Chapter 33\
- Yogi Bear and Eurythmics Confront VGA Colors
+## Chapter 33 -- Yogi Bear and Eurythmics Confront VGA Colors
 
 ### The Basics of VGA Color Generation
 

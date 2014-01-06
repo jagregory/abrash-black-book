@@ -10,8 +10,7 @@ chapter: '46'
 pages: 859-874
 ---
 
-## Chapter 46\
- Who Was that Masked Image?
+## Chapter 46 -- Who Was that Masked Image?
 
 ### Optimizing Dirty-Rectangle Animation
 

@@ -10,8 +10,7 @@ chapter: '50'
 pages: 931-949
 ---
 
-## Chapter 50\
- Adding a Dimension
+## Chapter 50 -- Adding a Dimension
 
 ### 3-D Animation Using Mode X
 

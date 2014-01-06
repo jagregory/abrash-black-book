@@ -10,8 +10,7 @@ chapter: '42'
 pages: 773-792
 ---
 
-## Chapter 42\
- Wu'ed in Haste; Fried, Stewed at Leisure
+## Chapter 42 -- Wu'ed in Haste; Fried, Stewed at Leisure
 
 ### Fast Antialiased Lines Using Wu's Algorithm
 

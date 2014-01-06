@@ -10,8 +10,7 @@ chapter: '35'
 pages: 653-678
 ---
 
-## Chapter 35\
- Bresenham Is Fast, and Fast Is Good
+## Chapter 35 -- Bresenham Is Fast, and Fast Is Good
 
 ### Implementing and Optimizing Bresenham's Line-Drawing Algorithm
 

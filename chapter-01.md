@@ -12,8 +12,7 @@ pages: 004-019
 
 # Part I
 
-## Chapter 1\
- The Best Optimizer Is between Your Ears
+## Chapter 1 -- The Best Optimizer Is between Your Ears
 
 ### The Human Element of Code Optimization
 

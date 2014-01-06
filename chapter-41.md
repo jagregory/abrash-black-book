@@ -10,8 +10,7 @@ chapter: '41'
 pages: 757-771
 ---
 
-## Chapter 41\
- Those Way-Down Polygon Nomenclature Blues
+## Chapter 41 -- Those Way-Down Polygon Nomenclature Blues
 
 ### Names Do Matter when You Conceptualize a Data Structure
 

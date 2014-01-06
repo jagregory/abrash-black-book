@@ -10,8 +10,7 @@ chapter: '29'
 pages: 539-559
 ---
 
-## Chapter 29\
- Saving Screens and Other VGA Mysteries
+## Chapter 29 -- Saving Screens and Other VGA Mysteries
 
 ### Useful Nuggets from the VGA Zen File
 

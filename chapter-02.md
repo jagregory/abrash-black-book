@@ -10,8 +10,7 @@ chapter: '02'
 pages: 021-030
 ---
 
-## Chapter 2\
- A World Apart
+## Chapter 2 -- A World Apart
 
 ### The Unique Nature of Assembly Language Optimization
 

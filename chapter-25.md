@@ -10,8 +10,7 @@ chapter: '25'
 pages: 461-479
 ---
 
-## Chapter 25\
- VGA Data Machinery
+## Chapter 25 -- VGA Data Machinery
 
 ### The Barrel Shifter, Bit Mask, and Set/Reset Mechanisms
 

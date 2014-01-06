@@ -10,8 +10,7 @@ chapter: '43'
 pages: 793-815
 ---
 
-## Chapter 43\
- Bit-Plane Animation
+## Chapter 43 -- Bit-Plane Animation
 
 ### A Simple and Extremely Fast Animation Method for Limited Color
 

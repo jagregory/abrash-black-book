@@ -10,8 +10,7 @@ chapter: '67'
 pages: 1223-1241
 ---
 
-## Chapter 67\
- Sorted Spans in Action
+## Chapter 67 -- Sorted Spans in Action
 
 ### Implementing Independent Span Sorting for Rendering without Overdraw
 

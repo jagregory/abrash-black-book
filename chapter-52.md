@@ -10,8 +10,7 @@ chapter: '52'
 pages: 969-987
 ---
 
-## Chapter 52\
- Fast 3-D Animation: Meet X-Sharp
+## Chapter 52 -- Fast 3-D Animation: Meet X-Sharp
 
 ### The First Iteration of a Generalized 3-D Animation Package
 

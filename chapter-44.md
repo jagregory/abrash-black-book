@@ -10,8 +10,7 @@ chapter: '44'
 pages: 817-837
 ---
 
-## Chapter 44\
- Split Screens Save the Page Flipped Day
+## Chapter 44 -- Split Screens Save the Page Flipped Day
 
 ### 640x480 Page Flipped Animation in 64K...Almost
 

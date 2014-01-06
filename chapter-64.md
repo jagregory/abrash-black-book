@@ -10,8 +10,7 @@ chapter: '64'
 pages: 1177-1190
 ---
 
-## Chapter 64\
- Quake's Visible-Surface Determination
+## Chapter 64 -- Quake's Visible-Surface Determination
 
 ### The Challenge of Separating All Things Seen from All Things Unseen
 

@@ -10,8 +10,7 @@ chapter: '26'
 pages: 481-497
 ---
 
-## Chapter 26\
- VGA Write Mode 3
+## Chapter 26 -- VGA Write Mode 3
 
 ### The Write Mode That Grows on You
 

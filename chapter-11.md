@@ -10,8 +10,7 @@ chapter: '11'
 pages: 205-231
 ---
 
-## Chapter 11\
- Pushing the 286 and 386
+## Chapter 11 -- Pushing the 286 and 386
 
 ### New Registers, New Instructions, New Timings, New Complications
 

@@ -10,8 +10,7 @@ chapter: '47'
 pages: 875-893
 ---
 
-## Chapter 47\
- Mode X: 256-Color VGA Magic
+## Chapter 47 -- Mode X: 256-Color VGA Magic
 
 ### Introducing the VGA's Undocumented "Animation-Optimal" Mode
 

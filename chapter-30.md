@@ -10,8 +10,7 @@ chapter: '30'
 pages: 561-585
 ---
 
-## Chapter 30\
- Video Est Omnis Divisa
+## Chapter 30 -- Video Est Omnis Divisa
 
 ### The Joys and Galling Problems of Using Split Screens on the EGA and VGA
 

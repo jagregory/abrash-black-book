@@ -10,8 +10,7 @@ chapter: 08
 pages: 149-166
 ---
 
-## Chapter 8\
- Speeding Up C with Assembly Language
+## Chapter 8 -- Speeding Up C with Assembly Language
 
 ### Jumping Languages When You Know It'll Help
 

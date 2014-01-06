@@ -10,8 +10,7 @@ chapter: '69'
 pages: 1257-1271
 ---
 
-## Chapter 69\
- Surface Caching and Quake's Triangle Models
+## Chapter 69 -- Surface Caching and Quake's Triangle Models
 
 ### Probing Hardware-Assisted Surfaces and Fast Model Animation Without Sprites
 

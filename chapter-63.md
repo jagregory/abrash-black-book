@@ -10,8 +10,7 @@ chapter: '63'
 pages: 1163-1175
 ---
 
-## Chapter 63\
- Floating-Point for Real-Time 3-D
+## Chapter 63 -- Floating-Point for Real-Time 3-D
 
 ### Knowing When to Hurl Conventional Math Wisdom Out the Window
 

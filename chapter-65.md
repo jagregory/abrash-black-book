@@ -10,8 +10,7 @@ chapter: '65'
 pages: 1191-1208
 ---
 
-## Chapter 65\
- 3-D Clipping and Other Thoughts
+## Chapter 65 -- 3-D Clipping and Other Thoughts
 
 ### Determining What's Inside Your Field of View
 

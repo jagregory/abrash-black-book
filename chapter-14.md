@@ -10,8 +10,7 @@ chapter: '14'
 pages: 260-277
 ---
 
-## Chapter 14\
- Boyer-Moore String Searching
+## Chapter 14 -- Boyer-Moore String Searching
 
 ### Optimizing a Pretty Optimum Search Algorithm
 

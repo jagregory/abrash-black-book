@@ -10,8 +10,7 @@ chapter: '37'
 pages: 695-706
 ---
 
-## Chapter 37\
- Dead Cats and Lightning Lines
+## Chapter 37 -- Dead Cats and Lightning Lines
 
 ### Optimizing Run-Length Slice Line Drawing in a Major Way
 

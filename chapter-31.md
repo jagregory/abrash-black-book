@@ -10,8 +10,7 @@ chapter: '31'
 pages: 587-605
 ---
 
-## Chapter 31\
- Higher 256-Color Resolution on the VGA
+## Chapter 31 -- Higher 256-Color Resolution on the VGA
 
 ### When Is 320x200 Really 320x400?
 

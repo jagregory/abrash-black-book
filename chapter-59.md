@@ -10,8 +10,7 @@ chapter: '59'
 pages: 1095-1114
 ---
 
-## Chapter 59\
- The Idea of BSP Trees
+## Chapter 59 -- The Idea of BSP Trees
 
 ### What BSP Trees Are and How to Walk Them
 

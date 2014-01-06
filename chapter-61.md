@@ -10,8 +10,7 @@ chapter: '61'
 pages: 1131-1144
 ---
 
-## Chapter 61\
- Frames of Reference
+## Chapter 61 -- Frames of Reference
 
 ### The Fundamentals of the Math behind 3-D Graphics
 

@@ -10,8 +10,7 @@ chapter: '45'
 pages: 839-857
 ---
 
-## Chapter 45\
- Dog Hair and Dirty Rectangles
+## Chapter 45 -- Dog Hair and Dirty Rectangles
 
 ### Different Angles on Animation
 

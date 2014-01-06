@@ -10,8 +10,7 @@ chapter: '36'
 pages: 679-693
 ---
 
-## Chapter 36\
- The Good, the Bad, and the Run-Sliced
+## Chapter 36 -- The Good, the Bad, and the Run-Sliced
 
 ### Faster Bresenham Lines with Run-Length Slice Line Drawing
 

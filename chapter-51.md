@@ -10,8 +10,7 @@ chapter: '51'
 pages: 951-967
 ---
 
-## Chapter 51\
- Sneakers in Space
+## Chapter 51 -- Sneakers in Space
 
 ### Using Backface Removal to Eliminate Hidden Surfaces
 

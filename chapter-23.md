@@ -12,8 +12,7 @@ pages: 423-448
 
 # Part II
 
-## Chapter 23\
- Bones and Sinew
+## Chapter 23 -- Bones and Sinew
 
 ### At the Very Heart of Standard PC Graphics
 

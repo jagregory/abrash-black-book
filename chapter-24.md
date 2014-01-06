@@ -10,8 +10,7 @@ chapter: '24'
 pages: 449-460
 ---
 
-## Chapter 24\
- Parallel Processing with the VGA
+## Chapter 24 -- Parallel Processing with the VGA
 
 ### Taking on Graphics Memory Four Bytes at a Time
 

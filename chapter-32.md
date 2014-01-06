@@ -10,8 +10,7 @@ chapter: '32'
 pages: 607-622
 ---
 
-## Chapter 32\
- Be It Resolved: 360x480
+## Chapter 32 -- Be It Resolved: 360x480
 
 ### Taking 256-Color Modes About as Far as the Standard VGA Can Take Them
 

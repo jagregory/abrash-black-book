@@ -10,8 +10,7 @@ chapter: '40'
 pages: 739-756
 ---
 
-## Chapter 40\
- Of Songs, Taxes, and the Simplicity of Complex Polygons
+## Chapter 40 -- Of Songs, Taxes, and the Simplicity of Complex Polygons
 
 ### Dealing with Irregular Polygonal Areas
 

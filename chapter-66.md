@@ -10,8 +10,7 @@ chapter: '66'
 pages: 1209-1222
 ---
 
-## Chapter 66\
- Quake's Hidden-Surface Removal
+## Chapter 66 -- Quake's Hidden-Surface Removal
 
 ### Struggling with Z-Order Solutions to the Hidden Surface Problem
 

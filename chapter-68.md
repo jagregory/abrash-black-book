@@ -10,8 +10,7 @@ chapter: '68'
 pages: 1243-1256
 ---
 
-## Chapter 68\
- Quake's Lighting Model
+## Chapter 68 -- Quake's Lighting Model
 
 ### A Radically Different Approach to Lighting Polygons
 

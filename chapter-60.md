@@ -10,8 +10,7 @@ chapter: '60'
 pages: 1115-1129
 ---
 
-## Chapter 60\
- Compiling BSP Trees
+## Chapter 60 -- Compiling BSP Trees
 
 ### Taking BSP Trees from Concept to Reality
 

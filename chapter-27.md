@@ -10,8 +10,7 @@ chapter: '27'
 pages: 499-521
 ---
 
-## Chapter 27\
- Yet Another VGA Write Mode
+## Chapter 27 -- Yet Another VGA Write Mode
 
 ### Write Mode 2, Chunky Bitmaps,and Text-Graphics Coexistence
 

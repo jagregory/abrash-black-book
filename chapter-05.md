@@ -10,8 +10,7 @@ chapter: '05'
 pages: 111-123
 ---
 
-## Chapter 5\
- Crossing the Border
+## Chapter 5 -- Crossing the Border
 
 ### Searching Files with Restartable Blocks
 

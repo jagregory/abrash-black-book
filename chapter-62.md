@@ -10,8 +10,7 @@ chapter: '62'
 pages: 1145-1162
 ---
 
-## Chapter 62\
- One Story, Two Rules, and a BSP Renderer
+## Chapter 62 -- One Story, Two Rules, and a BSP Renderer
 
 ### Taking a Compiled BSP Tree from Logical to Visual Reality
 

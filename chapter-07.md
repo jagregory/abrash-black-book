@@ -10,8 +10,7 @@ chapter: '07'
 pages: 136-148
 ---
 
-## Chapter 7\
- Local Optimization
+## Chapter 7 -- Local Optimization
 
 ### Optimizing Halfway between Algorithms and Cycle Counting
 

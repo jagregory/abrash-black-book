@@ -10,8 +10,7 @@ chapter: '19'
 pages: 369-379
 ---
 
-## Chapter 19\
- Pentium: Not the Same Old Song
+## Chapter 19 -- Pentium: Not the Same Old Song
 
 ### Learning a Whole Different Set of Optimization Rules
 

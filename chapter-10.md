@@ -10,8 +10,7 @@ chapter: '10'
 pages: 190-203
 ---
 
-## Chapter 10\
- Patient Coding, Faster Code
+## Chapter 10 -- Patient Coding, Faster Code
 
 ### How Working Quickly Can Bring Execution to a Crawl
 

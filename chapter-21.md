@@ -10,8 +10,7 @@ chapter: '21'
 pages: 397-411
 ---
 
-## Chapter 21\
- Unleashing the Pentium's V-Pipe
+## Chapter 21 -- Unleashing the Pentium's V-Pipe
 
 ### Focusing on Keeping Both Pentium Pipes Full
 

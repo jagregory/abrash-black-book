@@ -10,8 +10,7 @@ chapter: '18'
 pages: 347-367
 ---
 
-## Chapter 18\
- It's a plain Wonderful Life
+## Chapter 18 -- It's a plain Wonderful Life
 
 ### Optimization beyond the Pale
 
