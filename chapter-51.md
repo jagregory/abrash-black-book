@@ -11,9 +11,9 @@ pages: 951-967
 ---
 
 ## Chapter 51\
- Sneakers in Space {#Heading1}
+ Sneakers in Space
 
-### Using Backface Removal to Eliminate Hidden Surfaces {#Heading2}
+### Using Backface Removal to Eliminate Hidden Surfaces
 
 As I'm fond of pointing out, computer animation isn't a matter of
 mathematically exact modeling or raw technical prowess, but rather of
@@ -68,7 +68,7 @@ being tipped off—which is, of course, the whole point.)
 If it's good enough for George Lucas, it's good enough for us. And with
 that, let's resume our quest for realtime 3-D animation on the PC.
 
-### One-sided Polygons: Backface Removal {#Heading3}
+### One-sided Polygons: Backface Removal
 
 In the previous chapter, we implemented the basic polygon drawing
 pipeline, transforming a polygon all the way from its basic definition
@@ -181,7 +181,7 @@ the reason it's preferable to work in screen space rather than screen
 coordinates (which suffer from rounding problems), speed considerations
 aside.
 
-#### Backface Removal in Action {#Heading4}
+#### Backface Removal in Action
 
 Listings 51.1 through 51.5 together form a program that rotates a solid
 cube in real-time under user control. Listing 51.1 is the main program;
@@ -514,7 +514,7 @@ approach; over two-thirds of the overall time is spent in floating-point
 calculations, and it's there that we'll begin to attack the performance
 bottleneck we find ourselves up against.
 
-### Incremental Transformation {#Heading5}
+### Incremental Transformation
 
 Listing 51.4 contains three functions; each concatenates an additional
 rotation around one of the three axes to an existing rotation. To
@@ -690,7 +690,7 @@ extern int DisplayedPage, NonDisplayedPage;
 extern struct Rect EraseRect[];
 ```
 
-### A Note on Rounding Negative Numbers {#Heading6}
+### A Note on Rounding Negative Numbers
 
 In the previous chapter, I added 0.5 and truncated in order to round
 values from floating-point to integer format. Here, in Listing 51.2,
@@ -698,7 +698,7 @@ I've switched to adding 0.5 and using the `floor()` function. For
 positive values, the two approaches are equivalent; for negative values,
 only the `floor()` approach works properly.
 
-### Object Representation {#Heading7}
+### Object Representation
 
 Each object consists of a list of vertices and a list of faces, with the
 vertices of each face defined by pointers into the vertex list; this

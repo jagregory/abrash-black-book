@@ -11,9 +11,9 @@ pages: 413-420
 ---
 
 ## Chapter 22\
- Zenning and the Flexible Mind {#Heading1}
+ Zenning and the Flexible Mind
 
-### Taking a Spin through What You've Learned {#Heading2}
+### Taking a Spin through What You've Learned
 
 And so we come to the end of our journey; for now, at least. What
 follows is a modest bit of optimization, one which originally served to
@@ -36,7 +36,7 @@ plain fun.
 
 Enjoy!
 
-### Zenning {#Heading3}
+### Zenning
 
 In Jeff Duntemann's excellent book *Borland Pascal From Square One*
 (Random House, 1993), there's a small assembly subroutine that's

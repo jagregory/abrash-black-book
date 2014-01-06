@@ -11,9 +11,9 @@ pages: 295-319
 ---
 
 ## Chapter 16\
- There Ain't No Such Thing as the Fastest Code {#Heading1}
+ There Ain't No Such Thing as the Fastest Code
 
-### Lessons Learned in the Pursuit of the Ultimate Word Counter {#Heading2}
+### Lessons Learned in the Pursuit of the Ultimate Word Counter
 
 I remember reading an overview of C++ development tools for Windows in a
 past issue of *PC Week*. In the lower left corner was the familiar box
@@ -54,7 +54,7 @@ particularly attractive keys. We are talking about people who are
 focusing on means, and have forgotten about ends. We are talking about
 people with no programming souls.
 
-### Counting Words in a Hurry {#Heading3}
+### Counting Words in a Hurry
 
 What are we to make of this? At the very least, we can safely guess that
 very few corporate buyers ever enter optimization contests. Most of my
@@ -331,7 +331,7 @@ _ScanBuffer     endp
         end
 ```
 
-#### Which Way to Go from Here? {#Heading4}
+#### Which Way to Go from Here?
 
 We could rearrange the tests in light of the nature of the data being
 scanned; for example, we could perform the tests more efficiently by
@@ -487,7 +487,7 @@ difficult.
 > ![](images/i.jpg)
 > Exhaust all other optimizations before unrolling loops.
 
-### Challenges and Hazards {#Heading5}
+### Challenges and Hazards
 
 The challenge I put to the readers of *PC TECHNIQUES* was to write a
 faster module to replace Listing 16.4. The author of the code that
@@ -520,7 +520,7 @@ code is the fastest possible is rollescating on a tightrope in a
 hurricane; you're due for a fall, if you catch my drift. Case in point:
 Terje Mathisen's word-counting program.
 
-#### Blinding Yourself to a Better Approach {#Heading6}
+#### Blinding Yourself to a Better Approach
 
 Not so long ago, Terje Mathisen, who I introduced earlier in this book,
 wrote a very fast word-counting program, and posted it on Bix. When I
@@ -561,7 +561,7 @@ enough, by good fortune, to speed up the whole program by 5 percent.
 this case, though, the code was specific to the 386. In case you're
 curious, both forms take 2 cycles on the 486; quite a lot faster, eh?)
 
-#### Watch Out for Luggable Assumptions! {#Heading7}
+#### Watch Out for Luggable Assumptions!
 
 The first lesson to be learned here is not to lug assumptions that may
 no longer be valid from the 8088/286 world into the wonderful new world
@@ -613,7 +613,7 @@ if you're interested in really fast assembly code. I wouldn't call it
 the *fastest* word-counting code, though, because I would of course
 never be so foolish as to call *anything* the fastest.
 
-### The Astonishment of Right-Brain Optimization {#Heading8}
+### The Astonishment of Right-Brain Optimization
 
 As it happened, the challenge I issued to my *PC TECHNIQUES* readers was
 a smashing success, with dozens of good entries. I certainly enjoyed it,
@@ -847,7 +847,7 @@ jumping.
                  end
 ```
 
-### Levels of Optimization {#Heading9}
+### Levels of Optimization
 
 Three levels of optimization were evident in the word-counting entries I
 received in response to my challenge. I'd briefly describe them as
@@ -865,7 +865,7 @@ the code, the greater the chance for obscure bugs.)
 > like buying Telly Savalas a comb; it's not going to do any harm, but
 > it's nonetheless a waste of time.
 
-#### Optimization Level 1: Good Code {#Heading10}
+#### Optimization Level 1: Good Code
 
 The first level of optimization involves fine-tuning and clever use of
 the instruction set. The basic framework is still the same as my code
@@ -1038,7 +1038,7 @@ _ScanBuffer    endp
                end
 ```
 
-### Level 2: A New Perspective {#Heading11}
+### Level 2: A New Perspective
 
 The second level of optimization is one of breaking out of the mode of
 thinking established by my original code. Some entrants clearly did
@@ -1117,7 +1117,7 @@ John's approach makes it clear that word-counting is nothing more than a
 fairly simple state machine. The interesting part, of course, is
 building the fastest state machine.
 
-#### Level 3: Breakthrough {#Heading12}
+#### Level 3: Breakthrough
 
 The boundaries between the levels of optimization are not sharply
 defined. In a sense, level 3 optimization is just like levels 1 and 2,
@@ -1233,7 +1233,7 @@ cycles/byte.
 
 Enough said, I trust.
 
-#### Enough Word Counting Already! {#Heading13}
+#### Enough Word Counting Already!
 
 Before I finish up this chapter, I'd like to mention that Terje
 Mathisen's WC word-counting program, which I've mentioned previously and

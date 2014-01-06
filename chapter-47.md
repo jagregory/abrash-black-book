@@ -11,9 +11,9 @@ pages: 875-893
 ---
 
 ## Chapter 47\
- Mode X: 256-Color VGA Magic {#Heading1}
+ Mode X: 256-Color VGA Magic
 
-### Introducing the VGA's Undocumented "Animation-Optimal" Mode {#Heading2}
+### Introducing the VGA's Undocumented "Animation-Optimal" Mode
 
 At a book signing for my book *Zen of Code Optimization*, an attractive
 young woman came up to me, holding my book, and said, "You're Michael
@@ -60,7 +60,7 @@ two chapters are based on the *DDJ* columns that started it all back in
 spawned a ton of games, and about which I still regularly get letters
 and e-mail. Ladies and gentlemen, I give you...Mode X.
 
-### What Makes Mode X Special? {#Heading3}
+### What Makes Mode X Special?
 
 Consider the strange case of the VGA's 320x256-color mode—Mode X—which
 is undeniably complex to program and isn't even documented by IBM—but
@@ -143,7 +143,7 @@ animation program that shows many of the features of Mode X in action.
 
 The mode set code is the logical place to begin.
 
-### Selecting 320x240 256-Color Mode {#Heading4}
+### Selecting 320x240 256-Color Mode
 
 We could, if we wished, write our own mode set code for Mode X from
 scratch—but why bother? Instead, we'll let the BIOS do most of the work
@@ -440,7 +440,7 @@ _ReadPixelX     endp
         end
 ```
 
-### Designing from a Mode X Perspective {#Heading5}
+### Designing from a Mode X Perspective
 
 Listing 47.4 shows Mode X rectangle fill code. The plane is selected for
 each pixel in turn, with drawing cycling from plane 0 to plane 3, then
@@ -711,7 +711,7 @@ _FillRectangleX endp
         end
 ```
 
-### Hardware Assist from an Unexpected Quarter {#Heading6}
+### Hardware Assist from an Unexpected Quarter
 
 Listing 47.5 illustrates the benefits of designing code from a Mode X
 perspective; this is the software aspect of Mode X optimization, which

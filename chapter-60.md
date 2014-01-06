@@ -11,9 +11,9 @@ pages: 1115-1129
 ---
 
 ## Chapter 60\
- Compiling BSP Trees {#Heading1}
+ Compiling BSP Trees
 
-### Taking BSP Trees from Concept to Reality {#Heading2}
+### Taking BSP Trees from Concept to Reality
 
 As long-time readers of my columns know, I tend to move my family around
 the country quite a bit. Change doesn't come out of the blue, so there's
@@ -103,7 +103,7 @@ optimization.
 
 Onward to compiling BSP trees.
 
-### Compiling BSP Trees {#Heading3}
+### Compiling BSP Trees
 
 As you'll recall from the previous chapter, a BSP tree is nothing more
 than a series of binary subdivisions that partion space into
@@ -139,7 +139,7 @@ choosing splitters shortly, but first let's look at the process of
 splitting and assigning. To do that, we need to understand parametric
 lines.
 
-#### Parametric Lines {#Heading4}
+#### Parametric Lines
 
 We're all familiar with lines described in slope-intercept form, with y
 as a function of x
@@ -190,7 +190,7 @@ indeed.
 
 ![**Figure 60.2**  *Line segment storage in the BSP compiler.*](images/60-02.jpg)
 
-#### Parametric Line Clipping {#Heading5}
+#### Parametric Line Clipping
 
 In order to assign a line segment to one subspace or the other of a
 splitter, we must somehow figure out whether the line segment straddles
@@ -236,7 +236,7 @@ normal; you could calculate the normal as the cross-product of two of
 the polygon's edges, or precalculate it when you build the world
 database.
 
-#### The BSP Compiler {#Heading6}
+#### The BSP Compiler
 
 Listing 60.1 shows the core of a BSP compiler—the code that actually
 builds the BSP tree. (Note that Listing 60.1 is excerpted from a C++
@@ -526,7 +526,7 @@ copying some global variables that it uses.) The complete code is too
 large to print here in its entirety, but it's on the CD-ROM in file
 DDJBSP.ZIP.
 
-### Optimizing the BSP Tree {#Heading7}
+### Optimizing the BSP Tree
 
 In the previous chapter, I promised that I'd discuss how to go about
 deciding which wall to use as the splitter at each node in constructing
@@ -583,7 +583,7 @@ surfaces that are being considered for that node. In other words, I
 choose the wall that splits the fewest of the walls in the subspace it's
 subdividing.
 
-### BSP Optimization: an Undiscovered Country {#Heading8}
+### BSP Optimization: an Undiscovered Country
 
 Although BSP trees have been around for at least 15 years now, they're
 still only partially understood and are a ripe area for applied research

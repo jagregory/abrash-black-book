@@ -11,9 +11,9 @@ pages: 913-930
 ---
 
 ## Chapter 49\
- Mode X 256-Color Animation {#Heading1}
+ Mode X 256-Color Animation
 
-### How to Make the VGA Really Get up and Dance {#Heading2}
+### How to Make the VGA Really Get up and Dance
 
 Okay—no amusing stories or informative anecdotes to kick off this
 chapter; lotta ground to cover, gotta hurry—you're impatient, I can
@@ -33,7 +33,7 @@ computing, as Jeff Duntemann's writings make manifest. No lighthearted
 fluff for us; we have real work to do, for today we animate with 256
 colors in Mode X.
 
-### Masked Copying {#Heading3}
+### Masked Copying
 
 Over the past two chapters, we've put together most of the tools needed
 to implement animation in the VGA's undocumented 320x240 256-color Mode
@@ -212,7 +212,7 @@ _CopySystemToScreenMaskedX endp
         end
 ```
 
-#### Faster Masked Copying {#Heading4}
+#### Faster Masked Copying
 
 In the previous chapter we saw how the VGA's latches can be used to copy
 four pixels at a time from one area of display memory to another in Mode
@@ -511,7 +511,7 @@ typedef struct {
 } MaskedImage;
 ```
 
-#### Notes on Masked Copying {#Heading5}
+#### Notes on Masked Copying
 
 Listings 49.1 and 49.2, like all Mode X code I've presented, perform no
 clipping, because clipping code would complicate the listings too much.
@@ -541,7 +541,7 @@ used separate parameters for simplicity and flexibility.
 > instruction, and most VGAs respond to `OUT`s much more slowly than to
 > display memory writes.)
 
-### Animation {#Heading6}
+### Animation
 
 Gosh. There's just no way I can discuss high-level animation
 fundamentals in any detail here; I could spend an entire (and entirely
@@ -564,7 +564,7 @@ Some of the code in this chapter was adapted for Mode X from the code in
 Chapter 44—yet another reason to read that chapter before finishing this
 one.
 
-### Mode X Animation in Action {#Heading7}
+### Mode X Animation in Action
 
 Listing 49.5 ties together everything I've discussed about Mode X so far
 in a compact but surprisingly powerful animation package. Listing 49.5
@@ -893,7 +893,7 @@ _ShowPage       endp
         end
 ```
 
-### Works Fast, Looks Great {#Heading8}
+### Works Fast, Looks Great
 
 We now end our exploration of Mode X, although we'll use it again
 shortly for 3-D animation. Mode X admittedly has its complexities;

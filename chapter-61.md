@@ -11,9 +11,9 @@ pages: 1131-1144
 ---
 
 ## Chapter 61\
- Frames of Reference {#Heading1}
+ Frames of Reference
 
-### The Fundamentals of the Math behind 3-D Graphics {#Heading2}
+### The Fundamentals of the Math behind 3-D Graphics
 
 Several years ago, I opened a column in *Dr. Dobb's Journal* with a
 story about singing my daughter to sleep with Beatles' songs. Beatles'
@@ -55,7 +55,7 @@ important sort of difference.
 Before we can talk about transforming between coordinate spaces,
 however, we need two building blocks: dot products and cross products.
 
-#### 3-D Math {#Heading3}
+#### 3-D Math
 
 At this point in the book, I was originally going to present a BSP-based
 renderer, to complement the BSP compiler I presented in the previous
@@ -89,7 +89,7 @@ chapter examining these basic tools and some of their 3-D applications.
 If this is old hat to you, my apologies, and I'll return to BSP-based
 rendering in the next chapter.
 
-#### Foundation Definitions {#Heading4}
+#### Foundation Definitions
 
 The dot and cross products themselves are straightforward and require
 almost no context to understand, but I need to define some terms I'll
@@ -142,7 +142,7 @@ For additional information, you might want to check out Foley & van
 Dam's *Computer Graphics* (ISBN 0-201-12110-7), or the chapters in this
 book dealing with my X-Sharp 3-D graphics library.
 
-### The Dot Product {#Heading5}
+### The Dot Product
 
 Now we're ready to move on to the dot product. Given two vectors `U` =
 [u~1~ u~2~ u~3~] and `V` = [v~1~ v~2~ v~3~], their dot product,
@@ -168,7 +168,7 @@ are the lengths of the vectors, as shown in Figure 61.1. Although it's
 not immediately obvious, equation 3 has a wide variety of applications
 in 3-D graphics.
 
-#### Dot Products of Unit Vectors {#Heading6}
+#### Dot Products of Unit Vectors
 
 The simplest case of the dot product is when both vectors are *unit
 vectors*; that is, when their lengths are both one, as calculated as in
@@ -208,7 +208,7 @@ three additions—and no explicit cosine calculations—as
 where `N`~s~ is the surface unit normal and `D`~l~ is the light unit
 direction vector, as shown in Figure 61.2.
 
-### Cross Products and the Generation of Polygon Normals {#Heading7}
+### Cross Products and the Generation of Polygon Normals
 
 One question equation 6 begs is where the surface unit normal comes
 from. One approach is to store the end of a surface normal as an extra
@@ -287,7 +287,7 @@ orthogonal unit vectors, you'll have to normalize the resulting vector;
 that is, divide each of the vector's components by the length of the
 vector, to make it a unit long.
 
-### Using the Sign of the Dot Product {#Heading8}
+### Using the Sign of the Dot Product
 
 The dot product is the cosine of the angle between two vectors, scaled
 by the magnitudes of the vectors. Magnitudes are always positive, so the
@@ -335,7 +335,7 @@ understand the use of the dot product for projection.
 
 ![**Figure 61.5**  *Backface culling with the dot product.*](images/61-05.jpg)
 
-### Using the Dot Product for Projection {#Heading9}
+### Using the Dot Product for Projection
 
 Consider Equation 3 again, but this time make one of the vectors, say
 `V`, a unit vector. Now the equation reduces to:
@@ -407,7 +407,7 @@ void LineIntersectPlane (float *linestart, float *lineend,
 }
 ```
 
-### Rotation by Projection {#Heading10}
+### Rotation by Projection
 
 We can use the dot product's projection capability to look at rotation
 in an interesting way. Typically, rotations are represented by matrices.

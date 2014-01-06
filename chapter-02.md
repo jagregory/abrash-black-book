@@ -11,9 +11,9 @@ pages: 021-030
 ---
 
 ## Chapter 2\
- A World Apart {#Heading1}
+ A World Apart
 
-### The Unique Nature of Assembly Language Optimization {#Heading2}
+### The Unique Nature of Assembly Language Optimization
 
 As I showed in the previous chapter, optimization is by no means always
 a matter of "dropping into assembly." In fact, in performance tuning
@@ -33,7 +33,7 @@ assembly specific dynamics.
 
 As usual, the best way to wade in is to present a real-world example.
 
-### Instructions: The Individual versus the Collective {#Heading3}
+### Instructions: The Individual versus the Collective
 
 Some time ago, I was asked to work over a critical assembly subroutine
 in order to make it run as fast as possible. The task of the subroutine
@@ -97,7 +97,7 @@ fastest...and more. You must also learn to look at your programming
 problems from a variety of perspectives so that you can put those fast
 instructions to work in the most effective ways.
 
-### Assembly Is Fundamentally Different {#Heading4}
+### Assembly Is Fundamentally Different
 
 Is it really so hard as all that to write good assembly code for the PC?
 Yes! Thanks to the decidedly quirky nature of the x86 family CPUs,
@@ -115,7 +115,7 @@ implements a routine to search a list of 100,000 sorted items with a
 linear rather than binary search will end up with a disappointingly slow
 program.
 
-#### Transformation Inefficiencies {#Heading5}
+#### Transformation Inefficiencies
 
 No matter how well an implementation is derived from the corresponding
 design, however, high-level languages like C/C++ and Pascal inevitably
@@ -166,7 +166,7 @@ specification to machine language entirely on his or her own. (The
 assembler merely handles the *direct* translation from assembly to
 machine language.)
 
-#### Self-Reliance {#Heading6}
+#### Self-Reliance
 
 The first part of assembly language optimization, then, is self. An
 assembler is nothing more than a tool to let you design machine-language
@@ -181,7 +181,7 @@ High-level languages handle most of this transparently to the
 programmer, but in assembly everything is fair—and necessary—game, which
 brings us to another aspect of assembly optimization: knowledge.
 
-#### Knowledge {#Heading7}
+#### Knowledge
 
 In the PC world, you can never have enough knowledge, and every item you
 add to your store will make your programs better. Thorough familiarity
@@ -214,7 +214,7 @@ out such knowledge.
 > Be forewarned, though: No matter how much you learn about programming
 > the PC in assembly, there's always more to discover.
 
-### The Flexible Mind {#Heading8}
+### The Flexible Mind
 
 Is the never-ending collection of information all there is to the
 assembly optimization, then? Hardly. Knowledge is simply a necessary
@@ -316,7 +316,7 @@ the context of a solid overall framework unique to each program, and the
 flexible mind is the key to creating that framework and holding it
 together.
 
-#### Where to Begin? {#Heading9}
+#### Where to Begin?
 
 To summarize, the skill of assembly language optimization is a
 combination of knowledge, perspective, and a way of thought that makes

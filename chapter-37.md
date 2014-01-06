@@ -11,9 +11,9 @@ pages: 695-706
 ---
 
 ## Chapter 37\
- Dead Cats and Lightning Lines {#Heading1}
+ Dead Cats and Lightning Lines
 
-### Optimizing Run-Length Slice Line Drawing in a Major Way {#Heading2}
+### Optimizing Run-Length Slice Line Drawing in a Major Way
 
 As I write this, the wife, the kid, and I are in the throes of yet
 another lightning-quick transcontinental move, this time to Redmond,
@@ -56,7 +56,7 @@ Okay, but what's the point? The point is, if it isn't broken, don't fix
 it. And if it is broken, maybe that's all right, too. Which brings us,
 neat as a pin, to the topic of drawing lines in a serious hurry.
 
-### Fast Run-Length Slice Line Drawing {#Heading3}
+### Fast Run-Length Slice Line Drawing
 
 In the last chapter, we examined the principles of run-length slice line
 drawing, which draws lines a run at a time rather than a pixel at a
@@ -418,7 +418,7 @@ _LineDraw   endp
       end
 ```
 
-#### How Fast Is Fast? {#Heading4}
+#### How Fast Is Fast?
 
 Your first question is likely to be the following: Just how fast is
 Listing 37.1? Is it optimized to the hilt or just pretty fast? The quick
@@ -483,7 +483,7 @@ basically a waste of time.
 
 Profile before you optimize.
 
-#### Further Optimizations {#Heading5}
+#### Further Optimizations
 
 Following is a quick tour of some of the many possible further
 optimizations to Listing 37.1.

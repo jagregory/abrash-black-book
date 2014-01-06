@@ -11,9 +11,9 @@ pages: 279-293
 ---
 
 ## Chapter 15\
- Linked Lists and plain Unintended Challenges {#Heading1}
+ Linked Lists and plain Unintended Challenges
 
-### Unfamiliar Problems with Familiar Data Structures {#Heading2}
+### Unfamiliar Problems with Familiar Data Structures
 
 After 21 years, this story still makes me wince. Oh, the humiliations I
 suffer for your enlightenment....
@@ -76,7 +76,7 @@ lifetime at this stuff and happens to be a genius?
 Maybe you can—but I sure can't. For example, consider the evolution of
 my understanding of linked lists.
 
-### Linked Lists {#Heading3}
+### Linked Lists
 
 Linked lists are data structures composed of discrete elements, or
 nodes, joined together with links. In C, the links are typically
@@ -230,7 +230,7 @@ nodes, and in fact in all link manipulation code. It's easy to end up
 working with either pointers to pointers or lots of special-case code,
 and while those approaches work, they're inelegant and inefficient.
 
-### Dummies and Sentinels {#Heading4}
+### Dummies and Sentinels
 
 A far better approach is to use a *dummy node* for the head of the list,
 as shown in Figure 15.2. I invented this one for myself the next time I
@@ -335,7 +335,7 @@ struct LinkNode *FindNodeBeforeValueNotLess(
 
 ![**Figure 15.4**  *List terminated by a sentinel.*](images/15-04.jpg)
 
-### Circular Lists {#Heading5}
+### Circular Lists
 
 One minor but elegant refinement yet remains: Use a single node as both
 the head *and* the tail of the list. We can do this by connecting the
@@ -597,7 +597,7 @@ void main()
 }
 ```
 
-### Hi/Lo in 24 Bytes {#Heading6}
+### Hi/Lo in 24 Bytes
 
 In one of my *PC TECHNIQUES* "Pushing the Envelope" columns, I passed
 along one of David Stafford's fiendish programming puzzles: Write a

@@ -11,9 +11,9 @@ pages: 989-1003
 ---
 
 ## Chapter 53\
- Raw Speed and More {#Heading1}
+ Raw Speed and More
 
-### The Naked Truth About Speed in 3-D Animation {#Heading2}
+### The Naked Truth About Speed in 3-D Animation
 
 Years ago, this friend of mine—let's call him Bert—went to Hawaii with
 three other fellows to celebrate their graduation from high school. This
@@ -52,7 +52,7 @@ elevator doors opened again. On the lobby.
 And with that, we come to this chapter's topics: raw speed and hidden
 surfaces.
 
-### Raw Speed, Part 1: Assembly Language {#Heading3}
+### Raw Speed, Part 1: Assembly Language
 
 I would like to state, here and for the record, that I am not an
 assembly language fanatic. Frankly, I prefer programming in C; assembly
@@ -478,7 +478,7 @@ ret
 end
 ```
 
-### Raw Speed, Part II: Look it Up {#Heading4}
+### Raw Speed, Part II: Look it Up
 
 It's a funny thing about Turbo Profiler: Time spent in the Borland C++
 80x87 emulator doesn't show up directly anywhere that I can see in the
@@ -523,7 +523,7 @@ polygon filling soon, but for the moment, we have more than enough
 horsepower to have some fun with. First, though, we need one more
 feature: hidden surfaces.
 
-#### Hidden Surfaces {#Heading5}
+#### Hidden Surfaces
 
 So far, we've made a number of simplifying assumptions in order to get
 the animation to look good; for example, all objects must currently be
@@ -662,7 +662,7 @@ void SortObjects()
 }
 ```
 
-#### Rounding {#Heading6}
+#### Rounding
 
 FIXED.ASM contains the equate **ROUNDING-ON**. When this equate is 1,
 the results of multiplications and divisions are rounded to the nearest
@@ -689,7 +689,7 @@ division is performed only in the course of projection, and the results
 do not accumulate over time, so it would be reasonable to disable
 rounding for division.
 
-#### Having a Ball {#Heading7}
+#### Having a Ball
 
 So far in our exploration of 3-D animation, we've had nothing to look at
 but triangles and cubes. It's time for something a little more visually

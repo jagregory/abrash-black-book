@@ -11,9 +11,9 @@ pages: 205-231
 ---
 
 ## Chapter 11\
- Pushing the 286 and 386 {#Heading1}
+ Pushing the 286 and 386
 
-### New Registers, New Instructions, New Timings, New Complications {#Heading2}
+### New Registers, New Instructions, New Timings, New Complications
 
 This chapter, adapted from my earlier book *Zen of Assembly Language*
 (1989; now out of print), provides an overview of the 286 and 386, often
@@ -40,7 +40,7 @@ mainstream of computing, this chapter is a useful mix of history lesson,
 x86 overview, and details on two workhorse processors that are still in
 wide use.
 
-#### Family Matters {#Heading3}
+#### Family Matters
 
 While the x86 family is a large one, only a few members of the
 family—which includes the 8088, 8086, 80188, 80186, 286, 386SX, 386DX,
@@ -80,7 +80,7 @@ its lifespan, and it is in even wider use than the 286. The future
 clearly belongs to the 486 and Pentium, but the 286 and 386 are still
 very much a part of the present-day landscape.
 
-#### Crossing the Gulf to the 286 and the 386 {#Heading4}
+#### Crossing the Gulf to the 286 and the 386
 
 Apart from vastly improved performance, the biggest difference between
 the 8088 and the 286 and 386 (as well as the later Intel CPUs) is that
@@ -135,7 +135,7 @@ optimization strategies discussed in this book still hold true in
 protected mode; it's just issues specific to protected mode or a
 particular operating system that we won't discuss.
 
-#### In the Lair of the Cycle-Eaters, Part II {#Heading5}
+#### In the Lair of the Cycle-Eaters, Part II
 
 Under the programming interface, the 286 and 386 differ considerably
 from the 8088. Nonetheless, with one exception and one addition, the
@@ -447,7 +447,7 @@ can literally double the performance of certain code running on the 286.
 Even if it doesn't double performance, word alignment usually helps and
 never hurts.
 
-#### Code Alignment {#Heading8}
+#### Code Alignment
 
 Lack of word alignment can also interfere with instruction fetching on
 the 286, although not to the extent that it interferes with access to
@@ -698,7 +698,7 @@ What can we do about this new, more virulent form of the display adapter
 cycle-eater? The workaround is the same as it was on the PC: Access
 display memory as little as you possibly can.
 
-#### New Instructions and Features: The 286 {#Heading13}
+#### New Instructions and Features: The 286
 
 The 286 and 386 offer a number of new instructions. The 286 has a
 relatively small number of instructions that the 8088 lacks, while the
@@ -731,7 +731,7 @@ For another, the 286 allows all shifts and rotates to be performed for
 not just 1 bit or the number of bits specified by CL, but for *any*
 constant number of bits.
 
-#### New Instructions and Features: The 386 {#Heading14}
+#### New Instructions and Features: The 386
 
 The 386 is somewhat more complex than the 286 regarding new features.
 Once again, we won't discuss protected mode, which on the 386 comes with
@@ -941,7 +941,7 @@ the like.
 
 The more things change, the more they remain the same....
 
-#### POPF and the 286 {#Heading17}
+#### POPF and the 286
 
 We've one final 286-related item to discuss: the hardware malfunction of
 `POPF` under certain circumstances on the 286.

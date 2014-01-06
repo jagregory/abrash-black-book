@@ -11,9 +11,9 @@ pages: 739-756
 ---
 
 ## Chapter 40\
- Of Songs, Taxes, and the Simplicity of Complex Polygons {#Heading1}
+ Of Songs, Taxes, and the Simplicity of Complex Polygons
 
-### Dealing with Irregular Polygonal Areas {#Heading2}
+### Dealing with Irregular Polygonal Areas
 
 Every so often, my daughter asks me to sing her to sleep. (If you've
 ever heard me sing, this may cause you concern about either her hearing
@@ -43,7 +43,7 @@ where everything fits together as if preordained.
 
 Filling arbitrary polygons is such a case.
 
-### Filling Arbitrary Polygons {#Heading3}
+### Filling Arbitrary Polygons
 
 In Chapter 38, I described three types of polygons: convex, nonconvex,
 and complex. *The RenderMan Companion*, a terrific book by Steve Upstill
@@ -73,7 +73,7 @@ all polygons; in such a case, the polygon filler will use the slow
 complex-fill code even if the polygon is, in fact, a convex polygon. In
 Chapter 41, I'll discuss one way to improve this situation.
 
-#### Active Edges {#Heading4}
+#### Active Edges
 
 The basic premise of filling a complex polygon is that for a given scan
 line, we determine all intersections between the polygon's edges and
@@ -459,7 +459,7 @@ static void ScanOutAET(int YToScan, int Color) {
 }
 ```
 
-### Complex Polygon Filling: An Implementation {#Heading5}
+### Complex Polygon Filling: An Implementation
 
 Listing 40.1 just shown presents a function, `FillPolygon()`, that
 fills polygons of all shapes. If `CONVEX_FILL_LINKED` is defined,
@@ -665,7 +665,7 @@ this way elsewhere. The boundary filling approach in Foley and van Dam
 is similar, but seems to me to not draw all boundary and vertex pixels
 once and only once.
 
-#### More on Active Edges {#Heading6}
+#### More on Active Edges
 
 Edges of zero height—horizontal edges and edges defined by two vertices
 at the same location—never even make it into the GET in Listing 40.1. A
@@ -674,7 +674,7 @@ never intersect a scan line; it can only run along the scan line, and
 the span it runs along is defined not by that edge but by the edges that
 connect to its endpoints.
 
-#### Performance Considerations {#Heading7}
+#### Performance Considerations
 
 How fast is Listing 40.1? When drawing triangles on a 20-MHz 386, it's
 less than one-fifth the speed of the fast convex polygon fill code.
@@ -777,7 +777,7 @@ spent sorting the AET.
 > example of the need to keep an overall perspective when comparing the
 > theoretical characteristics of various approaches.
 
-### Nonconvex Polygons {#Heading8}
+### Nonconvex Polygons
 
 Nonconvex polygons can be filled somewhat faster than complex polygons.
 Because edges never cross or switch positions with other edges once
@@ -789,7 +789,7 @@ slopes must be compared to determine which edge is leftmost. This is
 certainly doable, but because of space limitations and limited
 performance returns, I haven't implemented this in Listing 40.1.
 
-#### Details, Details {#Heading9}
+#### Details, Details
 
 Every so often, a programming demon that I'd thought I'd forever laid to
 rest arises to haunt me once again. A minor example of this—an imp, if

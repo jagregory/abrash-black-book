@@ -11,9 +11,9 @@ pages: 167-188
 ---
 
 ## Chapter 9\
- Hints My Readers Gave Me {#Heading1}
+ Hints My Readers Gave Me
 
-### Optimization Odds and Ends from the Field {#Heading2}
+### Optimization Odds and Ends from the Field
 
 Back in high school, I took a pre-calculus class from Mr. Bourgeis,
 whose most notable characteristics were incessant pacing and truly
@@ -76,7 +76,7 @@ and many readers have sent me a slew of those over the years. So in this
 chapter, I think I'll return the favor by devoting a chapter to reader
 feedback.
 
-#### Another Look at LEA {#Heading3}
+#### Another Look at LEA
 
 Several people have pointed out that while `LEA` is great for
 performing certain additions (see Chapter 6), it isn't a perfect
@@ -136,7 +136,7 @@ on what you're trying to do.
 
 But there sure are a lot of interesting options, aren't there?
 
-#### The Kennedy Portfolio {#Heading4}
+#### The Kennedy Portfolio
 
 Reader John Kennedy regularly passes along intriguing assembly
 programming tricks, many of which I've never seen mentioned anywhere
@@ -247,7 +247,7 @@ SHL   AX,2       ;*64
 ADD   AX,BX      ;*80
 ```
 
-#### Speeding Up Multiplication {#Heading5}
+#### Speeding Up Multiplication
 
 That brings us to multiplication, one of the slowest of x86 operations
 and one that allows for considerable optimization. One way to speed up
@@ -302,7 +302,7 @@ that's always in the range of, say, 2 to 10; because the scale value
 will always be small and the array elements may have any value, the
 scale value is the logical choice for the multiplier.
 
-#### Optimizing Optimized Searching {#Heading6}
+#### Optimizing Optimized Searching
 
 Rob Williams writes with a wonderful optimization to the `REPNZ
 SCASB`-based optimized searching routine I discussed in Chapter 5. As a
@@ -617,7 +617,7 @@ the difference lies not in elbow grease or cycle counting but in the
 organic integrating optimizer technology we all carry around in our
 heads.
 
-#### Short Sorts {#Heading7}
+#### Short Sorts
 
 David Stafford (recently of Borland and Borland Japan) who happens to be
 one of the best assembly language programmers I've ever met, has written
@@ -666,7 +666,7 @@ _sort:  pop     dx              ;get return address (entry point)
       end
 ```
 
-#### Full 32-Bit Division {#Heading8}
+#### Full 32-Bit Division
 
 One of the most annoying limitations of the x86 is that while the
 dividend operand to the `DIV` instruction can be 32 bits in size, both
@@ -802,7 +802,7 @@ main() {
 }
 ```
 
-#### Sweet Spot Revisited {#Heading9}
+#### Sweet Spot Revisited
 
 Way back in Volume 1, Number 1 of *PC TECHNIQUES*, (April/May 1990) I
 wrote the very first of that magazine's HAX (\#1), which extolled the
@@ -844,7 +844,7 @@ a large one) by several K—not bad, when you consider that the "sweet
 spot" optimization is essentially free, with no code reorganization,
 change in logic, or heavy thinking involved.
 
-#### Hard-Core Cycle Counting {#Heading10}
+#### Hard-Core Cycle Counting
 
 Next, we come to an item that cycle counters will love, especially since
 it involves apparently incorrect documentation on Intel's part.
@@ -876,7 +876,7 @@ No great lesson here, just a caution to be leery of multibit `RCR` and
 `RCL` when performance matters—and to take cycle-time documentation
 with a grain of salt.
 
-#### Hardwired Far Jumps {#Heading11}
+#### Hardwired Far Jumps
 
 Did you ever wonder how to code a far jump to an absolute address in
 assembly language? Probably not, but if you ever do, you're going to be
@@ -949,7 +949,7 @@ If the obvious doesn't work (and it usually doesn't), just try
 everything you can think of, no matter how ridiculous, until you find
 something that does—a rule with plenty of history on its side.
 
-#### Setting 32-Bit Registers: Time versus Space {#Heading12}
+#### Setting 32-Bit Registers: Time versus Space
 
 To finish up this chapter, consider these two items. First, in 32-bit
 protected mode,

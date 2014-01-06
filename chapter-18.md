@@ -11,9 +11,9 @@ pages: 347-367
 ---
 
 ## Chapter 18\
- It's a plain Wonderful Life {#Heading1}
+ It's a plain Wonderful Life
 
-### Optimization beyond the Pale {#Heading2}
+### Optimization beyond the Pale
 
 When I was in high school, my gym teacher had us run a race around the
 soccer field, or rather, around a course marked with cones that roughly
@@ -51,7 +51,7 @@ programming.
 > will often be unable to change the specifications for the software you
 > implement.
 
-### Breaking the Rules {#Heading3}
+### Breaking the Rules
 
 The other reason for the anecdote has to do with the way my second
 Optimization Challenge worked itself out. If you'll recall from the last
@@ -119,7 +119,7 @@ specific "David Stafford" or "Peter Klerings.")
 
 Onward to the code.
 
-### Table-Driven Magic {#Heading4}
+### Table-Driven Magic
 
 David Stafford won my first Optimization Challenge by means of a huge
 look-up table and an incredible state machine driven by that table. The
@@ -859,7 +859,7 @@ extern unsigned short far ChangeList1[];
 #define WRAPDOWN    (UP    * (HEIGHT - 1))
 ```
 
-### Keeping Track of Change with a Change List {#Heading5}
+### Keeping Track of Change with a Change List
 
 In my earlier optimizations to the Game of Life, described in the last
 chapter, I noted that most cells in a Life cellmap are dead, and in most
@@ -966,7 +966,7 @@ Segment usage in David's assembly code is summarized in Listing 18.6.
     FS : Video segment
     GS : Unused
 
-#### A Layperson's Overview of QLIFE {#Heading6}
+#### A Layperson's Overview of QLIFE
 
 Most likely, you're scratching your head right now in bemusement. I
 don't blame you; I felt the same way myself at first. It's actually

@@ -11,9 +11,9 @@ pages: 260-277
 ---
 
 ## Chapter 14\
- Boyer-Moore String Searching {#Heading1}
+ Boyer-Moore String Searching
 
-### Optimizing a Pretty Optimum Search Algorithm {#Heading2}
+### Optimizing a Pretty Optimum Search Algorithm
 
 When you seem to be stumped, stop for a minute and *think.* All the
 information you need may be right in front of your nose if you just look
@@ -61,7 +61,7 @@ said, "Hey! Did you guys put in a new floor?"
 As I said, sometimes everything you need to know is right in front of
 your nose. Which brings us to Boyer-Moore string searching.
 
-### String Searching Refresher {#Heading3}
+### String Searching Refresher
 
 I've discussed string searching earlier in this book, in Chapters 5 and
 9. You may want to refer back to these chapters for some background on
@@ -132,7 +132,7 @@ matches. Can we?
 
 Actually, yes, we can.
 
-### The Boyer-Moore Algorithm {#Heading4}
+### The Boyer-Moore Algorithm
 
 All our *a priori* knowledge of string searching is stated above, but
 there's another sort of knowledge—knowledge that's generated
@@ -228,7 +228,7 @@ is to it!
 
 ![**Figure 14.2**  *Mismatch on third character checked.*](images/14-02.jpg)
 
-### Boyer-Moore: The Good and the Bad {#Heading5}
+### Boyer-Moore: The Good and the Bad
 
 The worst case for this version of Boyer-Moore is that the pattern
 mismatches on the leftmost character—the last character compared—every
@@ -627,7 +627,7 @@ thereby getting the best of both worlds.)
 Know your data and use your smarts. Don't stop thinking just because
 you're implementing a big-name algorithm; you know more than it does.
 
-### Further Optimization of Boyer-Moore {#Heading6}
+### Further Optimization of Boyer-Moore
 
 We can do substantially better yet than Listing 14.3 if we're willing to
 accept tighter limits on the data. Limiting the length of the
@@ -797,7 +797,7 @@ all but the first search when repeatedly searching for a particular
 pattern, by building the skip table externally and passing a pointer to
 it as a parameter.
 
-### Know What You Know {#Heading7}
+### Know What You Know
 
 Here we've turned up our nose at a repeated string instruction, we've
 gone against the grain by comparing backward, and yet we've speeded up

@@ -11,9 +11,9 @@ pages: 397-411
 ---
 
 ## Chapter 21\
- Unleashing the Pentium's V-Pipe {#Heading1}
+ Unleashing the Pentium's V-Pipe
 
-### Focusing on Keeping Both Pentium Pipes Full {#Heading2}
+### Focusing on Keeping Both Pentium Pipes Full
 
 The other day, my daughter suggested that we each draw the prettiest
 picture we could, then see whose was prettier. I won't comment on who
@@ -52,7 +52,7 @@ written code from taking full advantage of the Pentium's two pipes, and
 can thereby keep your code from pushing the Pentium to maximum
 performance.
 
-### Address Generation Interlocks {#Heading3}
+### Address Generation Interlocks
 
 The Pentium is advertised as having a five-stage pipeline for each of
 its execution units. All this means is that at any given time, up to
@@ -186,7 +186,7 @@ want to insert an instruction between the two `MOV`s—and, of course,
 this is yet another reason why you should always measure your code's
 actual performance.
 
-### Register Contention {#Heading4}
+### Register Contention
 
 Finally, we come to the last major component of superscalar
 optimization: register contention. The basic premise here is simple: You
@@ -228,7 +228,7 @@ instructions comprising the above substitute for `MOVZX` should have
 at least one unrelated instruction between them when `SUB EAX,EAX`
 executes in the V-pipe.
 
-#### Exceptions to Register Contention {#Heading5}
+#### Exceptions to Register Contention
 
 Intel has special-cased some very useful exceptions to register
 contention. Happily, write-after-read operations do *not* cause
@@ -285,7 +285,7 @@ U-pipe and 5 cycles in the V-pipe, and mispredicted calls and
 unconditional jumps take 3 cycles in either pipe. Note that `RET`
 can't pair.
 
-### Who's in First? {#Heading6}
+### Who's in First?
 
 One of the trickiest things about superscalar optimization is that a
 given instruction stream can execute at a different speed depending on
@@ -321,7 +321,7 @@ usage, as discussed below. Shifts, rotates, `ADC, SBB`, and all other
 instructions not listed in Table 20.1 in the last chapter are likewise
 U-pipe markers.
 
-### Pentium Optimization in Action {#Heading7}
+### Pentium Optimization in Action
 
 Now, let's take a look at one of the simplest, tightest pieces of code
 imaginable, and see what our new Pentium perspective reveals. Listing
@@ -646,7 +646,7 @@ measurement to check the efficacy of your optimizations, so reserve it
 for when you really, really need it—but when you need it, you need it
 *bad*.
 
-#### A Quick Note on the 386 and 486 {#Heading8}
+#### A Quick Note on the 386 and 486
 
 I've mentioned that Pentium-optimized code does fine on the 486, but not
 always so well on the 386. On a 486, Listing 21.1 runs at 9 cycles per

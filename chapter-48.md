@@ -11,9 +11,9 @@ pages: 895-911
 ---
 
 ## Chapter 48\
- Mode X Marks the Latch {#Heading1}
+ Mode X Marks the Latch
 
-### The Internals of Animation's Best Video Display Mode {#Heading2}
+### The Internals of Animation's Best Video Display Mode
 
 In the previous chapter, I introduced you to what I call Mode X, an
 undocumented 320x240 256-color mode of the VGA. Mode X is distinguished
@@ -320,7 +320,7 @@ handle, because the latches are four pixels wide; one possible solution
 is expanding such patterns via repetition until they are
 multiple-of-four widths.)
 
-### Allocating Memory in Mode X {#Heading3}
+### Allocating Memory in Mode X
 
 Listing 48.2 raises some interesting questions about the allocation of
 display memory in Mode X. In Listing 48.2, whenever a pattern is to be
@@ -365,7 +365,7 @@ the screen, with the screen becoming a scrolling window onto that larger
 bitmap. This technique has been used to good effect in a number of
 animated games, with and without the use of Mode X.
 
-### Copying Pixel Blocks within Display Memory {#Heading4}
+### Copying Pixel Blocks within Display Memory
 
 Another fine use for the latches is copying pixels from one place in
 display memory to another. Whenever both the source and the destination
@@ -588,7 +588,7 @@ memory-to-display memory copy routine can do us any good, we must have a
 way to get pixel patterns from system memory into display memory, so
 that they can then be copied with the fast copy routine.
 
-#### Copying to Display Memory {#Heading5}
+#### Copying to Display Memory
 
 The final piece of the puzzle is the system memory to
 display-memory-copy-routine shown in Listing 48.4. This routine assumes
@@ -732,7 +732,7 @@ _CopySystemToScreenX endp
         end
 ```
 
-### Who Was that Masked Image Copier? {#Heading6}
+### Who Was that Masked Image Copier?
 
 At this point, it's getting to be time for us to take all the Mode X
 tools we've developed, together with one more tool—masked image

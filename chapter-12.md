@@ -11,9 +11,9 @@ pages: 233-246
 ---
 
 ## Chapter 12\
- Pushing the 486 {#Heading1}
+ Pushing the 486
 
-### It's Not Just a Bigger 386 {#Heading2}
+### It's Not Just a Bigger 386
 
 So this traveling salesman is walking down a road, and he sees a group
 of men digging a ditch with their bare hands. "Whoa, there!" he says.
@@ -45,7 +45,7 @@ register-to-register `MOV`s, Dorothy was heard to exclaim (before she
 sank out of sight in a swirl of hopelessly mixed metaphors), "I don't
 think we're in Kansas anymore, Toto."
 
-#### Enter the 486 {#Heading3}
+#### Enter the 486
 
 No chip that is a direct, fully compatible descendant of the 8088, 286,
 and 386 could ever be called a RISC chip, but the 486 certainly contains
@@ -72,7 +72,7 @@ Intel; "8086 Optimization: Aim Down the Middle and Pray," in the March,
 1991 *Dr. Dobb's Journal*; and "Peak Performance: On to the 486," in the
 November, 1990 *Programmer's Journal.*
 
-### Rules to Optimize By {#Heading4}
+### Rules to Optimize By
 
 In Appendix G of the *i486 Microprocessor Programmer*'*s* *Reference
 Manual*, Intel lists a number of optimization techniques for the 486.
@@ -102,7 +102,7 @@ the rules, documented and undocumented, that go into calculating actual
 execution times—and uncovering some of those rules is exactly what this
 chapter is about.
 
-#### The Hazards of Indexed Addressing {#Heading5}
+#### The Hazards of Indexed Addressing
 
 Rule \#1: Avoid indexed addressing (that is, try not to use either two
 registers or scaled addressing to point to memory).
@@ -176,7 +176,7 @@ makes the *whole loop* more than 14 percent faster.
 
 In a key loop on the 486, 1 cycle can indeed matter.
 
-#### Calculate Memory Pointers Ahead of Time {#Heading6}
+#### Calculate Memory Pointers Ahead of Time
 
 Rule \#2: Don't use a register as a memory pointer during the next two
 cycles after loading it.
@@ -295,7 +295,7 @@ rearrangement of 486 code.
 
 ![**Figure 12.2**  *Two-cycle-ahead address pipelining.*](images/12-02.jpg)
 
-### Caveat Programmor {#Heading7}
+### Caveat Programmor
 
 A caution: I'm quite certain that the 2-cycle-ahead addressing pipeline
 interruption penalty I've described exists in the two 486s I've tested.
@@ -319,7 +319,7 @@ undocumented optimizations, please write and let me know. And, of
 course, if anyone from Intel is reading this and wants to give us the
 gospel truth, please do!
 
-#### Stack Addressing and Address Pipelining {#Heading8}
+#### Stack Addressing and Address Pipelining
 
 Rule \#2A: Rule \#2 sometimes, but not always, applies to the stack
 pointer when it is implicitly used to point to memory.
@@ -396,7 +396,7 @@ from the stack pointer should ideally be done at least two cycles before
 `PUSH`, `POP`, `RET`, or any other instruction that uses the stack
 pointer to address memory.
 
-#### Problems with Byte Registers {#Heading9}
+#### Problems with Byte Registers
 
 There are two ways to lose cycles by using byte registers, and neither
 of them is documented by Intel, so far as I know. Let's start with the
@@ -479,7 +479,7 @@ you're a diehard ASMhead who does this stuff for fun. Just learn enough
 to be able to speed up the key portions of your programs, and spend the
 rest of your time on a fast design and overall implementation.
 
-#### More Fun with Byte Registers {#Heading10}
+#### More Fun with Byte Registers
 
 Rule \#4: Don't load *any* byte register exactly 2 cycles before using
 *any* register to address memory.
@@ -552,7 +552,7 @@ can affect.
 > to address memory, and try not to load a register either one or two
 > cycles before using it to address memory, and you'll be fine.
 
-#### Timing Your Own 486 Code {#Heading11}
+#### Timing Your Own 486 Code
 
 In case you want to do some 486 performance analysis of your own, let me
 show you how I arrived at one of the above conclusions; at the same
@@ -624,7 +624,7 @@ bytes.
 > Whenever you see non-integral timing results of this sort, it's a good
 > bet that the test code or data isn't cached.
 
-### The Story Continues {#Heading12}
+### The Story Continues
 
 There's certainly plenty more 486 lore to explore, including the 486's
 unique prefetch queue, more optimization rules, branching optimizations,

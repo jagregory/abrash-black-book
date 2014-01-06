@@ -11,9 +11,9 @@ pages: 723-738
 ---
 
 ## Chapter 39\
- Fast Convex Polygons {#Heading1}
+ Fast Convex Polygons
 
-### Filling Polygons in a Hurry {#Heading2}
+### Filling Polygons in a Hurry
 
 In the previous chapter, we explored the surprisingly intricate process
 of filling convex polygons. Now we're going to fill them an order of
@@ -92,7 +92,7 @@ to understand how things work, especially when they're very visible
 parts of the software you develop. That said, let's learn more about
 filling convex polygons.
 
-### Fast Convex Polygon Filling {#Heading3}
+### Fast Convex Polygon Filling
 
 In addressing the topic of filling convex polygons in the previous
 chapter, the implementation we came up with met all of our functional
@@ -118,7 +118,7 @@ time was spent drawing and the other half was spent tracing the polygon
 edges (the time spent in `FillConvexPolygon` was relatively
 minuscule), so we have our choice of where to begin optimizing.
 
-#### Fast Drawing {#Heading4}
+#### Fast Drawing
 
 Let's start with drawing, which is easily sped up. The previous
 chapter's code used a double-nested loop that called a draw-pixel
@@ -239,7 +239,7 @@ time. There are cycles yet to be had in the drawing code, but as tracing
 polygon edges now takes 92 percent of the polygon filling time, it's
 logical to optimize the tracing code next.
 
-#### Fast Edge Tracing {#Heading5}
+#### Fast Edge Tracing
 
 There's no secret as to why last chapter's `ScanEdge` was so slow: It
 used floating point calculations. One secret of fast graphics is using
@@ -401,7 +401,7 @@ void ScanEdge(int X1, int Y1, int X2, int Y2, int SetXStart,
 }
 ```
 
-### The Finishing Touch: Assembly Language {#Heading6}
+### The Finishing Touch: Assembly Language
 
 The C implementation in Listing 39.2 is now nearly 20 times as fast as
 the original, which is good enough for most purposes. Still, it requires
@@ -532,7 +532,7 @@ _DrawHorizontalLineList   endp
    end
 ```
 
-#### Maximizing REP STOS {#Heading7}
+#### Maximizing REP STOS
 
 Listing 39.3 doesn't take the easy way out and use `REP STOSB` to fill
 each scan line; instead, it uses `REP STOSW` to fill as many pixel
@@ -549,7 +549,7 @@ word-at-a-time filling, resulting in extra overhead. For very small or
 narrow polygons, that overhead might overwhelm the advantage of drawing
 a word at a time, making plain old `REP STOSB` faster.
 
-### Faster Edge Tracing {#Heading8}
+### Faster Edge Tracing
 
 Finally, Listing 39.4 is an assembly language version of `ScanEdge`.
 Listing 39.4 is a relatively straightforward translation from C to

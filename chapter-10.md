@@ -11,9 +11,9 @@ pages: 190-203
 ---
 
 ## Chapter 10\
- Patient Coding, Faster Code {#Heading1}
+ Patient Coding, Faster Code
 
-### How Working Quickly Can Bring Execution to a Crawl {#Heading2}
+### How Working Quickly Can Bring Execution to a Crawl
 
 My grandfather does *The New York Times* crossword puzzle every Sunday.
 In ink. With nary a blemish.
@@ -84,7 +84,7 @@ will be much better—and you'll never even have the chance to decide
 whether they're better or not if you take the first thing that comes
 into your head and run with it.
 
-#### The Case for Delayed Gratification {#Heading3}
+#### The Case for Delayed Gratification
 
 Once upon a time, I set out to read *Algorithms*, by Robert Sedgewick
 (Addison-Wesley), which turned out to be a wonderful, stimulating, and
@@ -110,7 +110,7 @@ The problem at hand, then, is simply this: Find the largest integer
 value that evenly divides two arbitrary positive integers. That's all
 there is to it. So warm up your pattern matchers...and go!
 
-### The Brute-Force Syndrome {#Heading4}
+### The Brute-Force Syndrome
 
 I have a funny feeling that you'd already figured out how to find the
 GCD before I even said "go." That's what I did when reading
@@ -217,7 +217,7 @@ unsigned int gcd(unsigned int int1, unsigned int int2) {
 }
 ```
 
-#### Wasted Breakthroughs {#Heading5}
+#### Wasted Breakthroughs
 
 Sedgewick's first solution to the GCD problem was pretty much the one I
 came up with. He then pointed out that the GCD of iL and iS is the same
@@ -364,7 +364,7 @@ your ears does its best work not at the implementation stage, but at the
 very beginning, when you try to imagine how what you want to do and what
 a computer is capable of doing can best be brought together.
 
-### Recursion {#Heading6}
+### Recursion
 
 Euclid's algorithm lends itself to recursion beautifully, so much so
 that an implementation like Listing 10.3 comes almost without thought.
@@ -417,7 +417,7 @@ unsigned int gcd(unsigned int int1, unsigned int int2) {
 }
 ```
 
-#### Patient Optimization {#Heading7}
+#### Patient Optimization
 
 At long last, we're ready to optimize GCD determination in the classic
 sense. Table 10.1 shows the performance of Listing 10.4 with and without

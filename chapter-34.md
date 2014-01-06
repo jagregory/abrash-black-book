@@ -11,9 +11,9 @@ pages: 637-652
 ---
 
 ## Chapter 34\
- Changing Colors without Writing Pixels {#Heading1}
+ Changing Colors without Writing Pixels
 
-### Special Effects through Realtime Manipulation of DAC Colors {#Heading2}
+### Special Effects through Realtime Manipulation of DAC Colors
 
 Sometimes, strange as it may seem, the harder you try, the less you
 accomplish. Brute force is fine when it suffices, but it does not always
@@ -31,7 +31,7 @@ by cleaning up some odds and ends about VGA color.
 There's a lot to be said about loading the DAC, so let's dive right in
 and see where the complications lie.
 
-### Color Cycling {#Heading3}
+### Color Cycling
 
 As we've learned in past chapters, the VGA's DAC contains 256 storage
 locations, each holding one 18-bit value representing an RGB color
@@ -78,7 +78,7 @@ In short, color cycling is really the method of choice for dynamic color
 effects only in 256-color mode—but, regrettably, color cycling is at its
 least reliable and capable in that mode, as we'll see next.
 
-### The Heart of the Problem {#Heading4}
+### The Heart of the Problem
 
 Here's the problem with loading the entire DAC repeatedly: The DAC
 contains 256 color storage locations, each loaded via either 3 or 4
@@ -122,7 +122,7 @@ let you explore for yourself the extent of the problem on computers in
 which you're interested. First, though, we must address *another* DAC
 loading problem: the BIOS.
 
-#### Loading the DAC via the BIOS {#Heading5}
+#### Loading the DAC via the BIOS
 
 The DAC can be loaded either directly or through subfunctions 10H (for a
 single DAC register) or 12H (for a block of DAC registers) of the BIOS
@@ -194,7 +194,7 @@ cycle by calling the BIOS.
 Which is not to say that loading the DAC directly is a picnic either, as
 we'll see next.
 
-#### Loading the DAC Directly {#Heading6}
+#### Loading the DAC Directly
 
 So we must load the DAC directly in order to perform color cycling. The
 DAC is loaded directly by sending (with an `OUT` instruction) the
@@ -233,7 +233,7 @@ blame me if you get a call from someone who's claims that your program
 sometimes turns their screen into something resembling month-old yogurt.
 It's not really your fault, of course—but try explaining that to *them!*
 
-### A Test Program for Color Cycling {#Heading7}
+### A Test Program for Color Cycling
 
 Anyway, the choice of how to load the DAC is yours. Given that I'm not
 providing you with any hard-and-fast rules (mainly because there don't
@@ -584,7 +584,7 @@ force isn't appropriate to the task of color cycling. That doesn't mean
 that color cycling can't be used, just that subtler approaches must be
 employed. Let's look at some of those alternatives.
 
-### Color Cycling Approaches that Work {#Heading8}
+### Color Cycling Approaches that Work
 
 First of all, I'd like to point out that when color cycling does work,
 it's a thing of beauty. Assemble Listing 34.1 so that it doesn't use the
@@ -680,7 +680,7 @@ That's what *I'd* do. Don't let yourself be held back by my limited
 imagination, though! Color cycling may be the most complicated of all
 the color control techniques, but it's also the most powerful.
 
-### Odds and Ends {#Heading9}
+### Odds and Ends
 
 In my experience, when relying on the autoincrementing feature while
 loading the DAC, the Write Index register wraps back from 255 to 0, and
@@ -694,7 +694,7 @@ understand exactly how your resources behave, and I never know when one
 of you might come up with a serviceable application for any particular
 quirk.
 
-#### The DAC Mask {#Heading10}
+#### The DAC Mask
 
 There's one register in the DAC that I haven't mentioned yet, the DAC
 Mask register at 03C6H. The operation of this register is simple but
@@ -710,7 +710,7 @@ DAC location 0 is looked up for every pixel, and the entire screen
 displays the color stored in DAC location 0. This makes setting the DAC
 Mask register to 0 a quick and easy way to blank the screen.
 
-#### Reading the DAC {#Heading11}
+#### Reading the DAC
 
 The DAC can be read directly, via the DAC Read Index register at 3C7H
 and the DAC Data register at 3C9H, in much the same way as it can be
@@ -742,7 +742,7 @@ conditionally assembling to either guard against interrupts or not and
 to use `REP INSB` or not. As you can see, reading the DAC settings is
 very much symmetric with setting the DAC.
 
-#### Cycling Down {#Heading12}
+#### Cycling Down
 
 And so, at long last, we come to the end of our discussion of color
 control on the VGA. If it has been more complex than anyone might have

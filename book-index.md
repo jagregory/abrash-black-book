@@ -8,7 +8,7 @@ category: 'Web and Software Development: Game Development,Web and Software Devel
   Graphics and Multimedia Development'
 ---
 
-# Index {#Heading1}
+# Index
 
 `Numbers`
 

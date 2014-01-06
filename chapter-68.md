@@ -11,9 +11,9 @@ pages: 1243-1256
 ---
 
 ## Chapter 68\
- Quake's Lighting Model {#Heading1}
+ Quake's Lighting Model
 
-### A Radically Different Approach to Lighting Polygons {#Heading2}
+### A Radically Different Approach to Lighting Polygons
 
 It was during my senior year in college that I discovered computer
 games. Not Wizardry, or Choplifter, or Ultima, because none of those
@@ -65,7 +65,7 @@ doing, and if it's getting stale, it's time to learn something new;
 there's plenty of interesting programming of all sorts to be done.
 Follow your interests—and don't forget to have fun!
 
-### The Lighting Conundrum {#Heading3}
+### The Lighting Conundrum
 
 I spent about two years working with John Carmack on Quake's 3-D
 graphics engine. John faced several fundamental design issues while
@@ -89,7 +89,7 @@ and rock-solid, complex lighting proved to be difficult to achieve with
 traditional lighting approaches; ultimately, a dramatically different
 approach was required.
 
-### Gouraud Shading {#Heading4}
+### Gouraud Shading
 
 The traditional way to do realistic lighting in polygon pipelines is
 Gouraud shading (also known as *smooth shading*). Gouraud shading
@@ -118,7 +118,7 @@ small amount of calculation and a compact data set that's a simple
 extension of the basic polygon model. However, there are several
 important drawbacks to Gouraud shading, as well.
 
-#### Problems with Gouraud Shading {#Heading5}
+#### Problems with Gouraud Shading
 
 The quality of Gouraud shading depends heavily on the average size of
 the polygons being drawn. Linear interpolation is used, so highlights
@@ -157,7 +157,7 @@ that increases the rasterization load.
 
 ![**Figure 68.1**  *Adding an extra vertex directly beneath a light.*](images/68-01.jpg)
 
-#### Perspective Correctness {#Heading6}
+#### Perspective Correctness
 
 Another problem is that Gouraud shading isn't perspective-correct. With
 Gouraud shading, lighting varies linearly across the face of a polygon,
@@ -229,7 +229,7 @@ not only would the world still be less than totally solid, because of
 the limitations of Gouraud shading, but the engine would also be too
 slow to support the complex worlds we had hoped for in Quake.
 
-### The Quest for Alternative Lighting {#Heading7}
+### The Quest for Alternative Lighting
 
 None of which is to say that Gouraud shading isn't useful in general.
 Descent uses it to excellent effect, and in fact Quake uses Gouraud
@@ -251,7 +251,7 @@ possibilities and continued working with Gouraud shading for lack of a
 better alternative—until the day John came into work and said, "You
 know, I have an idea...."
 
-#### Decoupling Lighting from Rasterization {#Heading8}
+#### Decoupling Lighting from Rasterization
 
 John's idea came to him while was looking at a wall that had been carved
 into several pieces because of a spotlight, with an ugly lighting glitch
@@ -303,7 +303,7 @@ because lighting is unrelated to vertices. In short, surface-based
 lighting meets all of Quake's visual quality goals, which leaves only
 one question: How does it perform?
 
-#### Size and Speed {#Heading9}
+#### Size and Speed
 
 As it turns out, the raw speed of surface-based lighting is pretty good.
 Although an extra step is required to build the surface, moving lighting
@@ -357,7 +357,7 @@ the combination of surface building and unlit texture mapping a
 potential performance problem, but that never posed a problem during the
 development of Quake, thanks to surface caching.
 
-### Surface Caching {#Heading10}
+### Surface Caching
 
 When he thought of surface-based lighting, John immediately realized
 that surface building would be relatively expensive. (In fact, he
@@ -392,7 +392,7 @@ cache initially looked to be very large, on the order of several
 megabytes, even at 320x200—too much for a game intended to run on an 8
 MB machine.
 
-#### Mipmapping To The Rescue {#Heading11}
+#### Mipmapping To The Rescue
 
 Two factors combined to solve this problem. First, polygons are drawn
 through an edge list with no overdraw, as I discussed a few chapters
@@ -433,7 +433,7 @@ of texels, all at the mipmap level of the nearest vertex, and would
 require huge amounts of surface cache space while displaying a great
 deal of aliasing in distant regions due to a high texel:pixel ratio.
 
-#### Two Final Notes on Surface Caching {#Heading12}
+#### Two Final Notes on Surface Caching
 
 Dynamic lighting has a significant impact on the performance of surface
 caching, because whenever the lighting on a surface changes, the surface

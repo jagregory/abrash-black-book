@@ -11,9 +11,9 @@ pages: 523-537
 ---
 
 ## Chapter 28\
- Reading VGA Memory {#Heading1}
+ Reading VGA Memory
 
-### Read Modes 0 and 1, and the Color Don't Care Register {#Heading2}
+### Read Modes 0 and 1, and the Color Don't Care Register
 
 Well, it's taken five chapters, but we've finally covered the data write
 path and all four write modes of the VGA. Now it's time to tackle the
@@ -27,7 +27,7 @@ straightforward? Well...no. But then, clearing up the mysteries of VGA
 programming is what this part of the book is all about, so let's get
 started.
 
-### Read Mode 0 {#Heading3}
+### Read Mode 0
 
 Read mode 0 is actually relatively uncomplicated, given that you
 understand the four-plane nature of the VGA. (If you don't understand
@@ -335,7 +335,7 @@ register affects CPU *writes* to VGA memory in any way.
 > short, whenever the CPU reads VGA memory in any read mode, all four
 > planes are read and all four latches are always loaded.
 
-### Read Mode 1 {#Heading4}
+### Read Mode 1
 
 Read mode 0 is the workhorse read mode, but it's got an annoying
 limitation: Whenever you want to determine the color of a given pixel in
@@ -537,7 +537,7 @@ code ends
 end  Start
 ```
 
-### When all Planes "Don't Care" {#Heading5}
+### When all Planes "Don't Care"
 
 Still and all, there aren't all that many uses for basic color compare
 operations. There is, however, a genuinely odd application of read mode

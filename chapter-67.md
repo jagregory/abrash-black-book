@@ -11,9 +11,9 @@ pages: 1223-1241
 ---
 
 ## Chapter 67\
- Sorted Spans in Action {#Heading1}
+ Sorted Spans in Action
 
-### Implementing Independent Span Sorting for Rendering without Overdraw {#Heading2}
+### Implementing Independent Span Sorting for Rendering without Overdraw
 
 In Chapter 66, we dove headlong into the intricacies of hidden surface
 removal by way of z-sorted (actually, 1/z-sorted) spans. At the end of
@@ -49,7 +49,7 @@ contained herein. Besides, the ultimate reference for any design is
 working code, which you'll find, in part, in Listing 67.1, and in its
 entirety in the file DDJZSORT.ZIP on the CD-ROM.
 
-### Quake and Sorted Spans {#Heading3}
+### Quake and Sorted Spans
 
 As you'll recall from Chapter 66, Quake uses sorted spans to get zero
 overdraw while rendering the world, thereby both improving overall
@@ -152,7 +152,7 @@ For the remainder of this chapter, I'm going to look at the three main
 types of 1/z span sorting, then discuss a sample 3-D app built around
 1/z span sorting.
 
-### Types of 1/z Span Sorting {#Heading4}
+### Types of 1/z Span Sorting
 
 As a quick refresher: With 1/z span sorting, all the polygons in a scene
 are treated as sets of screenspace pixel spans, and 1/z (where z is
@@ -168,7 +168,7 @@ they are: intersecting, abutting, and independent. (These are names of
 my own devising; I haven't come across any standard nomenclature in the
 literature.)
 
-#### Intersecting Span Sorting {#Heading5}
+#### Intersecting Span Sorting
 
 Intersecting span sorting occurs when polygons can interpenetrate. Thus,
 two spans may cross such that part of each span is visible, in which
@@ -183,7 +183,7 @@ detect interpenetration, and additional work must be done to split the
 spans as necessary. Thus, although intersecting span sorting certainly
 works, it's not the first choice for performance.
 
-#### Abutting Span Sorting {#Heading6}
+#### Abutting Span Sorting
 
 Abutting span sorting occurs when polygons that are not part of a
 continuous surface can butt up against one another, but don't
@@ -238,7 +238,7 @@ of caching sort results were outweighed by the additional overhead of
 maintaining the caching information, and every caching variant we tried
 actually slowed Quake down.
 
-#### Independent Span Sorting {#Heading7}
+#### Independent Span Sorting
 
 Finally, we come to independent span sorting, the simplest and fastest
 of the three, and the type the sample code in Listing 67.1 uses. Here,
@@ -253,7 +253,7 @@ Independent span sorting is ideal for scenes with lots of moving objects
 that never actually touch each other, such as a space battle. Next,
 we'll look at an implementation of independent 1/z span sorting.
 
-### 1/z Span Sorting in Action {#Heading8}
+### 1/z Span Sorting in Action
 
 Listing 67.1 is a portion of a program that demonstrates independent 1/z
 span sorting. This program is based on the sample 3-D clipping program
@@ -788,7 +788,7 @@ necessary. As you can see from Listing 67.1, it takes a fair bit of code
 to implement this, but all that's really going on is a surface stack
 driven by edge events.
 
-#### Implementation Notes {#Heading9}
+#### Implementation Notes
 
 Finally, a few notes on Listing 67.1. First, you'll notice that although
 we clip all polygons to the view frustum in worldspace, we nonetheless

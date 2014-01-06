@@ -11,9 +11,9 @@ pages: 381-396
 ---
 
 ## Chapter 20\
- Pentium Rules {#Heading1}
+ Pentium Rules
 
-### How Your Carbon-Based Optimizer Can Put the "Super" in Superscalar {#Heading2}
+### How Your Carbon-Based Optimizer Can Put the "Super" in Superscalar
 
 At the 1983 West Coast Computer Faire, my friend Dan Illowsky, Andy
 Greenberg (co-author of Wizardry, at that time the best-selling computer
@@ -71,7 +71,7 @@ that the `FXCH` instruction, which is largely free on the Pentium, is
 expensive on the 486.) So discard your x86 preconceptions as we delve
 into superscalar optimization for this one-of-a-kind processor.
 
-### An Instruction in Every Pipe {#Heading3}
+### An Instruction in Every Pipe
 
 In the last chapter, we took a quick tour of the Pentium's architecture,
 and started to look into the Pentium's optimization rules. Now we're
@@ -139,7 +139,7 @@ practice, this is not too difficult. The only hard part is keeping in
 mind the long list of rules governing instruction pairing. The place to
 begin is with the set of instructions that can go through the V-pipe.
 
-### V-Pipe-Capable Instructions {#Heading4}
+### V-Pipe-Capable Instructions
 
 Any instruction can go through the U-pipe, and, for practical purposes,
 the U-pipe is always executing instructions. (The exceptions are when
@@ -327,7 +327,7 @@ sequence can be reduced to 1.5 cycles, but it is *14* bytes long.
 > performance and ignore the size, but on a program-wide basis, the size
 > bears watching.
 
-### Lockstep Execution {#Heading5}
+### Lockstep Execution
 
 You may wonder why anyone would bother breaking `ADD [MemVar],EAX`
 into three instructions, given that this instruction can go through
@@ -470,7 +470,7 @@ one-cycle instructions, mixed together so that at least two operations
 are in progress at once. It's not the easiest code to read or write, but
 it's the only way to get both pipes running at capacity.
 
-### Superscalar Notes {#Heading6}
+### Superscalar Notes
 
 You may well ask why it's necessary to interleave operations, as is done
 in Figure 20.7. It seems simpler just to turn
@@ -505,7 +505,7 @@ hazard known as *register contention*. I'll return to the subject of
 register contention in the next chapter; in the remainder of this
 chapter I'd like to cover a few short items about superscalar execution.
 
-#### Register Starvation {#Heading7}
+#### Register Starvation
 
 The above examples should make it pretty clear that effective
 superscalar programming puts a lot of strain on the Pentium's relatively

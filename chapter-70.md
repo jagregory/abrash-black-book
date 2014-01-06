@@ -11,7 +11,7 @@ pages: 1273-1285
 ---
 
 ## Chapter 70\
- Quake: A Post-Mortem and a Glimpse into the Future {#Heading1}
+ Quake: A Post-Mortem and a Glimpse into the Future
 
 *Why did not any of the children in the first group think of this faster
 method of going across the room? It is simple. They looked at what they
@@ -81,7 +81,7 @@ like Knuth, Foley and van Dam, Jim Blinn, Jim Kajiya, and hundreds of
 others—are you ready to take a shot at making your own contribution to
 the future?
 
-### Preprocessing the World {#Heading2}
+### Preprocessing the World
 
 For the most part, I'll discuss Quake's 3-D engine in this chapter,
 although I'll touch on other areas of interest. For 3-D rendering
@@ -146,7 +146,7 @@ player can move, is completely surrounded by a solid region. This
 eliminates a great many irrelevant polygons, and reduces the complexity
 of the next step, calculating the potentially visible set.
 
-### The Potentially Visible Set (PVS) {#Heading3}
+### The Potentially Visible Set (PVS)
 
 After the BSP tree is built, the potentially visible set (PVS) for each
 leaf is calculated. The PVS for a leaf consists of all the leaves that
@@ -229,7 +229,7 @@ radiosity lighting—a considerably more expensive process, but one that
 produces highly realistic lighting—is performed, but I'll save that for
 later.
 
-### Passages: The Last-Minute Change that Didn't Happen {#Heading4}
+### Passages: The Last-Minute Change that Didn't Happen
 
 Earlier, I mentioned that we almost changed 3-D engines again in the
 last month of Quake's development. Here's what happened: One of the
@@ -287,7 +287,7 @@ future engine.
 The more approaches you try, the larger your toolkit and the broader
 your understanding will be when you tackle your next project.
 
-### Drawing the World {#Heading5}
+### Drawing the World
 
 Everything described so far is a preprocessing step. When Quake is
 actually running, the world is drawn as follows: First, the PVS for the
@@ -361,7 +361,7 @@ Quake engine, but remains an inelegant solution, and, in the end, it
 feels like there's something better we didn't hit on. However, as John
 says, "I'm pragmatic above all else"—and the edge list did the job.
 
-### Rasterization {#Heading6}
+### Rasterization
 
 Once the visible spans are scanned out of the edge list, they must still
 be drawn, with perspective-correct texture mapping and lighting. This
@@ -383,7 +383,7 @@ of 1/z is overlapped with drawing 16 pixels, taking advantage of the
 Pentium's ability to perform floating-point in parallel with integer
 instructions, so the FDIV effectively takes only one cycle.
 
-#### Lighting {#Heading7}
+#### Lighting
 
 Lighting is less simple to explain. The traditional way of doing polygon
 lighting is to calculate the correct light at the vertices and linearly
@@ -422,7 +422,7 @@ splattered on a wall could be handled by drawing the splatter image as a
 sprite into the appropriate surface buffer, so that drawing the surface
 would draw the splatter as well.
 
-#### Dynamic Lighting {#Heading8}
+#### Dynamic Lighting
 
 Here we come to a feature added to Quake after last year's Computer Game
 Developer's Conference (CGDC). At that time, Quake did not support
@@ -469,7 +469,7 @@ visually very solid and stable. This was an important design goal from
 the start, both as a point of technical pride and because it greatly
 improves the player's sense of immersion.
 
-### Entities {#Heading9}
+### Entities
 
 So far, all we've drawn is the static, unchanging (apart from dynamic
 lighting) world. That's an important foundation, but it's certainly not
@@ -477,7 +477,7 @@ a game; now we need to add moving objects. These objects fall into four
 very different categories: BSP models, polygon models, sprites, and
 particles.
 
-#### BSP Models {#Heading10}
+#### BSP Models
 
 BSP models are just like the world, except that they can move. Examples
 include doors, moving bridges, and health and ammo boxes. The way these
@@ -518,7 +518,7 @@ if the door opens). This makes BSP models most suitable for fairly
 simple structures, such as boxes, which have relatively few polygons to
 clip, and cause relatively few edges to be added to the edge list.
 
-#### Polygon Models and Z-Buffering {#Heading11}
+#### Polygon Models and Z-Buffering
 
 Polygon models, such as monsters, weapons, and projectiles, consist of a
 triangle mesh with front and back skins stretched over the model. For
@@ -592,7 +592,7 @@ could be sent through a special fast path. The biggest breakthrough,
 though, was a very different sort of rasterizer that John came up with
 for relatively distant models.
 
-#### The Subdivision Rasterizer {#Heading12}
+#### The Subdivision Rasterizer
 
 This rasterizer, which we call the *subdivision rasterizer*, first draws
 all the vertices in the model. Then it takes each front-facing triangle,
@@ -621,7 +621,7 @@ faster ways yet to rasterize distant models adequately well, but the
 subdivider was clearly a win, and is a good example of how thinking in a
 radically different direction can pay off handsomely.
 
-#### Sprites {#Heading13}
+#### Sprites
 
 We had hoped to be able to eliminate sprites completely, making Quake
 100% 3-D, but sprites—although sometimes very visibly 2-D—were used for
@@ -637,7 +637,7 @@ similar to drawing a normal polygon, complete with perspective
 correction, although of course the inner loop must detect and skip over
 transparent pixels, and must also perform z-buffering.
 
-#### Particles {#Heading14}
+#### Particles
 
 The last drawing entity type is particles. Each particle is a
 solid-colored rectangle, scaled by distance from the viewer and drawn
@@ -650,7 +650,7 @@ example, providing a trail of fire behind a polygon-model lava ball that
 flies into the air, or generating an expanding cloud around a sprite
 explosion core.
 
-### How We Spent Our Summer Vacation: After Shipping Quake {#Heading15}
+### How We Spent Our Summer Vacation: After Shipping Quake
 
 Since shipping Quake in the summer of 1996, we've extended it in several
 ways: We've worked with Rendition to port it to the Verite accelerator
@@ -658,7 +658,7 @@ chip, we've ported it to OpenGL, we've ported it to Win32, we've done
 QuakeWorld, and we've added features for Quake 2. I'll discuss each of
 these briefly.
 
-#### Verite Quake {#Heading16}
+#### Verite Quake
 
 Verite Quake (VQuake) was the first hardware-accelerated version of
 Quake. It looks extremely good, due to bilinear texture filtering, which
@@ -719,7 +719,7 @@ it seems most likely that the two approaches will be mixed together,
 with surface caching used for special surfaces, and two-pass alpha
 lighting used for most drawing.
 
-#### GLQuake {#Heading17}
+#### GLQuake
 
 The second (and, according to current plans, last) port of Quake to a
 hardware accelerator was an OpenGL version, GLQuake, a native Win32
@@ -809,7 +809,7 @@ are standard equipment on accelerators, and it's a lot of fun seeing
 what sorts of previously very difficult effects can now be up and
 working in a matter of hours.
 
-#### WinQuake {#Heading18}
+#### WinQuake
 
 I'm not going to spend much time on the Win32 port of Quake; most of
 what I learned doing this consists of tedious details that are doubtless
@@ -833,7 +833,7 @@ Still, when you get down to it, the future of gaming is a networked
 Win32 world, and that's that, so if you haven't already moved to Win32,
 I'd say it's time.
 
-#### QuakeWorld {#Heading19}
+#### QuakeWorld
 
 QuakeWorld is a native Win32 multiplayer-only version of Quake, and was
 done as a learning experience; it is not a commercial product, but is
@@ -941,7 +941,7 @@ tradeoff of smoothness and perceived low latency for the frustration of
 paradoxes—and that's the way it's going to stay until most people are
 connected to the Internet by something better than modems.
 
-#### Quake 2 {#Heading20}
+#### Quake 2
 
 I can't talk in detail about Quake 2 as a game, but I can describe some
 interesting technology features. The Quake 2 rendering engine isn't
@@ -1000,7 +1000,7 @@ considers this the game interface of the future.
 By the way, Quake 2 is currently being developed as a native Win32 app
 only; no DOS version is planned.
 
-### Looking Forward {#Heading21}
+### Looking Forward
 
 In my address to the Computer Game Developer's Conference in 1996, I
 said that it wasn't a bad time to start up a game company aimed at

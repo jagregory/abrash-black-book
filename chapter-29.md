@@ -11,9 +11,9 @@ pages: 539-559
 ---
 
 ## Chapter 29\
- Saving Screens and Other VGA Mysteries {#Heading1}
+ Saving Screens and Other VGA Mysteries
 
-### Useful Nuggets from the VGA Zen File {#Heading2}
+### Useful Nuggets from the VGA Zen File
 
 There are a number of VGA graphics topics that aren't quite involved
 enough to warrant their own chapters, yet still cause a fair amount of
@@ -25,7 +25,7 @@ writing VGA control registers.
 
 That's a lot of ground to cover, so let's get started!
 
-### Saving and Restoring EGA and VGA Screens {#Heading3}
+### Saving and Restoring EGA and VGA Screens
 
 The memory architectures of EGAs and VGAs are similar enough to treat
 both together in this regard. The basic principle for saving EGA and VGA
@@ -400,7 +400,7 @@ directly.
 > VGA, of course, you can just read the registers out before you change
 > them, then put them back the way you found them when you're done.
 
-### 16 Colors out of 64 {#Heading4}
+### 16 Colors out of 64
 
 How does one produce the 64 colors from which the 16 colors displayed by
 the EGA can be chosen? The answer is simple enough: There's a BIOS
@@ -770,7 +770,7 @@ Code           ends
                end       Start
 ```
 
-### Overscan {#Heading5}
+### Overscan
 
 While we're at it, I'm going to touch on overscan. Overscan is the color
 of the border of the display, the rectangular area around the edge of
@@ -789,7 +789,7 @@ subfunction 1.
 > border in all modes; all you need do is set the overscan color on any
 > VGA to see the border.
 
-### A Bonus Blanker {#Heading6}
+### A Bonus Blanker
 
 An interesting bonus: The Attribute Controller provides a very
 convenient way to blank the screen, in the form of the aforementioned
@@ -898,7 +898,7 @@ capabilities, which are supported by another set of BIOS functions, can
 be used to produce stunning color effects, as we'll see when we cover
 them starting in Chapter 33.
 
-### Modifying VGA Registers {#Heading7}
+### Modifying VGA Registers
 
 EGA registers are not readable. VGA registers are readable. This
 revelation will not come as news to most of you, but many programmers

@@ -11,9 +11,9 @@ pages: 969-987
 ---
 
 ## Chapter 52\
- Fast 3-D Animation: Meet X-Sharp {#Heading1}
+ Fast 3-D Animation: Meet X-Sharp
 
-### The First Iteration of a Generalized 3-D Animation Package {#Heading2}
+### The First Iteration of a Generalized 3-D Animation Package
 
 Across the lake from Vermont, a few miles into upstate New York, the
 Ausable River has carved out a fairly impressive gorge known as "Ausable
@@ -68,7 +68,7 @@ easy to add new and different sorts of objects. Taken together, these
 alterations will let us start to do some really interesting real-time
 animation.
 
-### This Chapter's Demo Program {#Heading3}
+### This Chapter's Demo Program
 
 Three-dimensional animation is a complicated business, and it takes an
 astonishing amount of functionality just to get off the launching pad:
@@ -795,7 +795,7 @@ extern Object *ObjectList[];
 extern Point3 CubeVerts[];
 ```
 
-### A New Animation Framework: X-Sharp {#Heading4}
+### A New Animation Framework: X-Sharp
 
 Listings 52.1 through 52.10 shown earlier represent not merely faster
 animation in library form, but also a nearly complete, extensible,
@@ -849,7 +849,7 @@ If you're intending to use X-Sharp in a real project, use the most
 recent version to be sure that you avail yourself of all new features
 and bug fixes.
 
-### Three Keys to Realtime Animation Performance {#Heading5}
+### Three Keys to Realtime Animation Performance
 
 As of the previous chapter, we were at the point where we could rotate,
 move, and draw a solid cube in real time. Not too shabby...but the code
@@ -912,7 +912,7 @@ Borland C++, and we're *still* doing sine and cosine via the
 floating-point emulator. Happily, we're still nowhere near the upper
 limit on the animation potential of the PC.
 
-#### Drawbacks {#Heading6}
+#### Drawbacks
 
 The techniques we've used to turbocharge 3-D animation are very
 powerful, but there's a dark side to them as well. Obviously, native 386
@@ -939,7 +939,7 @@ the viewer moves, so there's no chance for cumulative error. 3-D
 clipping with a front clip plane of -1 or less can prevent divide
 overflow.
 
-#### Where the Time Goes {#Heading7}
+#### Where the Time Goes
 
 The distribution of execution time in the animation code is no longer
 wildly biased toward transformation, but sine and cosine are certainly

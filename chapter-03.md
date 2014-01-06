@@ -11,9 +11,9 @@ pages: 031-073
 ---
 
 ## Chapter 3\
- Assume Nothing {#Heading1}
+ Assume Nothing
 
-### Understanding and Using the Zen Timer {#Heading2}
+### Understanding and Using the Zen Timer
 
 When you're pushing the envelope in writing optimized PC code, you're
 likely to become more than a little compulsive about finding approaches
@@ -40,7 +40,7 @@ with the optimized version of the routine....
 
 It ran slower than the original version!
 
-### The Costs of Ignorance {#Heading3}
+### The Costs of Ignorance
 
 As diligent as the author had been, he had nonetheless committed a
 cardinal sin of x86 assembly language programming: He had assumed that
@@ -94,7 +94,7 @@ video wait states as well, so the code they discussed was actually
 have been to run the code to see if snow resulted, since the only true
 measure of code performance is observing it in action.
 
-### The Zen Timer {#Heading4}
+### The Zen Timer
 
 Clearly, one key to mastering Zen-class optimization is a tool with
 which to measure code performance. The most accurate way to measure
@@ -558,7 +558,7 @@ Code   ends
        end
 ```
 
-#### The Zen Timer Is a Means, Not an End {#Heading5}
+#### The Zen Timer Is a Means, Not an End
 
 We're going to spend the rest of this chapter seeing what the Zen timer
 can do, examining how it works, and learning how to use it. I'll be
@@ -573,7 +573,7 @@ Consequently, you shouldn't worry if you don't fully grasp the inner
 workings of the Zen timer. Instead, focus on learning how to *use* it,
 and you'll be on the right road.
 
-#### Starting the Zen Timer {#Heading6}
+#### Starting the Zen Timer
 
 `ZTimerOn` is called at the start of a segment of code to be timed.
 `ZTimerOn` saves the context of the calling code, disables interrupts,
@@ -596,7 +596,7 @@ any hardware interrupts to occur during the interval between any call to
 `ZTimerOn` and the corresponding call to `ZTimerOff`, and should not
 enable interrupts during that time.
 
-### Time and the PC {#Heading7}
+### Time and the PC
 
 A second interesting point about `ZTimerOn` is that it may introduce
 some small inaccuracy into the system clock time whenever it is called.
@@ -742,7 +742,7 @@ Nonetheless, it's a good idea to reboot your computer at the end of each
 session with the Zen timer in order to make sure that the system clock
 is correct.
 
-### Stopping the Zen Timer {#Heading8}
+### Stopping the Zen Timer
 
 At some point after `ZTimerOn` is called, `ZTimerOff` must always be
 called to mark the end of the timing interval. `ZTimerOff` saves the
@@ -774,7 +774,7 @@ this chapter, though, we'll see that timer 0 can be stopped after all.)
 We simply tell the 8253 to latch the current count, and the 8253 does so
 without breaking stride.
 
-### Reporting Timing Results {#Heading9}
+### Reporting Timing Results
 
 `ZTimerReport` may be called to display timing results at any time
 after both `ZTimerOn` and `ZTimerOff` have been called.
@@ -829,7 +829,7 @@ You may well want to devise still other approaches better suited to your
 needs than those I've presented. Go to it! I've just thrown out a few
 possibilities to get you started.
 
-### Notes on the Zen Timer {#Heading10}
+### Notes on the Zen Timer
 
 The Zen timer subroutines are designed to be near-called from assembly
 language code running in the public segment `Code`. The Zen timer
@@ -890,7 +890,7 @@ useful—quite the contrary. The Zen timer is an excellent tool for
 evaluating code performance over the entire spectrum of PC-compatible
 computers.
 
-### A Sample Use of the Zen Timer {#Heading11}
+### A Sample Use of the Zen Timer
 
 Listing 3.2 shows a test-bed program for measuring code performance with
 the Zen timer. This program sets DS equal to CS (for reasons we'll
@@ -1114,7 +1114,7 @@ the test-bed program of Listing 3.2, simply insert calls to `ZTimerOn,
 ZTimerOff`, and `ZTimerReport` in the appropriate places and link
 PZTIMER to your program.
 
-### The Long-Period Zen Timer {#Heading12}
+### The Long-Period Zen Timer
 
 With a few exceptions, the Zen timer presented above will serve us well
 for the remainder of this book since we'll be focusing on relatively
@@ -1171,7 +1171,7 @@ major inaccuracy into the system clock time during a single timing run
 since it leaves interrupts enabled and therefore allows the system clock
 to update normally.
 
-#### Stopping the Clock {#Heading13}
+#### Stopping the Clock
 
 There's a potential problem with the long-period Zen timer. The problem
 is this: In order to measure times longer than 54 ms, we must maintain
@@ -1897,7 +1897,7 @@ Finally, please note that the *precision* Zen timer works perfectly well
 on both PS/2 and non-PS/2 computers. The PS/2 and 8253 considerations
 we've just discussed apply *only* to the longZen timer.
 
-### Example Use of the Long-Period Zen Timer {#Heading14}
+### Example Use of the Long-Period Zen Timer
 
 The long-period Zen timer has exactly the same calling interface as the
 precision Zen timer, and can be used in place of the precision Zen timer
@@ -2113,7 +2113,7 @@ PC if you are using MASM, with most of that time spent assembling
 Listing 3.8. Why? Because MASM is notoriously slow at assembling
 `REPT` blocks, and the block in Listing 3.8 is repeated 20,000 times.
 
-### Using the Zen Timer from C {#Heading15}
+### Using the Zen Timer from C
 
 The Zen timer can be used to measure code performance when programming
 in C—but not right out of the box. As presented earlier, the timer is
@@ -2169,7 +2169,7 @@ precision timer, but the long-period timer is very similar.
 The full listings for the C-callable Zen timers are presented in Chapter
 K on the companion CD-ROM.
 
-#### Watch Out for Optimizing Assemblers! {#Heading16}
+#### Watch Out for Optimizing Assemblers!
 
 One important safety tip when modifying the Zen timer for use with large
 code model C code: Watch out for optimizing assemblers! TASM actually
@@ -2221,7 +2221,7 @@ I've tested the changes shown in Figures 3.2 and 3.3 with TASM and
 Borland C++ 4.0, and also with the latest MASM and Microsoft C/C++
 compiler.
 
-#### Further Reading {#Heading17}
+#### Further Reading
 
 For those of you who wish to pursue the mechanics of code measurement
 further, one good article about measuring code performance with the 8253
@@ -2242,7 +2242,7 @@ how the Zen timer works. All you really need to know is what the Zen
 timer can do and how to use it, and we've accomplished that in this
 chapter.
 
-#### Armed with the Zen Timer, Onward and Upward {#Heading18}
+#### Armed with the Zen Timer, Onward and Upward
 
 The Zen timer is not perfect. For one thing, the finest resolution to
 which it can measure an interval is at best about 1µs, a period of time

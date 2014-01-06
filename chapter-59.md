@@ -11,9 +11,9 @@ pages: 1095-1114
 ---
 
 ## Chapter 59\
- The Idea of BSP Trees {#Heading1}
+ The Idea of BSP Trees
 
-### What BSP Trees Are and How to Walk Them {#Heading2}
+### What BSP Trees Are and How to Walk Them
 
 The answer is: Wendy Tucker.
 
@@ -94,7 +94,7 @@ the most from them.
 Before we begin, I'd like to thank John Carmack, the technical wizard
 behind DOOM, for generously sharing his knowledge of BSP trees with me.
 
-### BSP Trees {#Heading3}
+### BSP Trees
 
 A BSP tree is, at heart, nothing more than a tree that subdivides space
 in order to isolate features of interest. Each node of a BSP tree splits
@@ -117,7 +117,7 @@ powerful way to implement Constructive Solid Geometry (CSG). BSP trees
 can also be used for hit testing, line-of-sight determination, and
 collision detection.
 
-#### Visibility Determination {#Heading4}
+#### Visibility Determination
 
 For the time being, I'm going to discuss only one of the many uses of
 BSP trees: The ability of a BSP tree to allow you to traverse a set of
@@ -158,7 +158,7 @@ trees.
 
 ![**Figure 59.1**  *The painter's algorithm.*](images/59-01.jpg)
 
-#### Limitations of BSP Trees {#Heading5}
+#### Limitations of BSP Trees
 
 Powerful as they are, BSP trees aren't perfect. By far the greatest
 limitation of BSP trees is that they're time-consuming to build, enough
@@ -207,7 +207,7 @@ I'll present in the next chapter, which visually depicts the process of
 spatial subdivision as a BSP tree is constructed, help a great deal with
 BSP debugging.
 
-### Building a BSP Tree {#Heading6}
+### Building a BSP Tree
 
 Now that we know a good bit about what a BSP tree is, how it helps in
 visible surface determination, and what its strengths and weaknesses
@@ -280,7 +280,7 @@ treated as a separate wall. As shown in Figure 59.6, each of the split
 pieces then has a subspace to itself, and each becomes a leaf of the
 tree. The BSP tree is now complete.
 
-#### Visibility Ordering {#Heading7}
+#### Visibility Ordering
 
 Now that we've successfully built a BSP tree, you might justifiably be a
 little puzzled as to how any of this helps with visibility ordering. The
@@ -379,7 +379,7 @@ void WalkBSPTree(NODE *pNode)
 > partition space identically and can't occlude one another, so it
 > suffices to generate one splitting node for each collinear set.
 
-### Inorder Walks of BSP Trees {#Heading8}
+### Inorder Walks of BSP Trees
 
 It was implementing BSP trees that got me to thinking about inorder tree
 traversal. In inorder traversal, the left subtree of each node gets
@@ -472,7 +472,7 @@ fully functional model to follow, with all the problems solved, but they
 can't make the connection between that model and the code they're trying
 to implement. Why is this?
 
-#### Know It *Cold* {#Heading9}
+#### Know It *Cold*
 
 The problem is that these people don't understand inorder walking
 through and through. They understand the concepts of visiting left and
@@ -604,7 +604,7 @@ pants.
 > the model down cold, you can always tell if the implementation is
 > correct by comparing it with the model.
 
-#### Measure and Learn {#Heading10}
+#### Measure and Learn
 
 How much difference does all this fuss make, anyway? Listing 59.5 is a
 sample program that builds a tree, then calls `WalkTree` () to walk it
@@ -749,7 +749,7 @@ run fast enough to keep up if you just keep at it.
 
 Depths within depths indeed!
 
-### Surfing Amidst the Trees {#Heading11}
+### Surfing Amidst the Trees
 
 In the next chapter, we'll build a BSP-tree compiler, and after that,
 we'll put together a rendering system built around the BSP trees the
@@ -761,7 +761,7 @@ must investigate at
 up in the familiar Internet Frequently Asked Questions (FAQ) style, and
 is very good stuff.
 
-#### Related Reading {#Heading12}
+#### Related Reading
 
 Foley, J., A. van Dam, S. Feiner, and J. Hughes, *Computer Graphics:
 Principles and Practice (Second Edition)*, Addison Wesley, 1990, pp.

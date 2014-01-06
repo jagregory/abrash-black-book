@@ -11,9 +11,9 @@ pages: 449-460
 ---
 
 ## Chapter 24\
- Parallel Processing with the VGA {#Heading1}
+ Parallel Processing with the VGA
 
-### Taking on Graphics Memory Four Bytes at a Time {#Heading2}
+### Taking on Graphics Memory Four Bytes at a Time
 
 This heading refers to the ability of the VGA chip to manipulate up to
 four bytes of display memory at once. In particular, the VGA provides
@@ -24,7 +24,7 @@ one part of the surprisingly complex data flow architecture of the VGA,
 but since they're involved in almost all memory access operations,
 they're a good place to begin.
 
-### VGA Programming: ALUs and Latches {#Heading3}
+### VGA Programming: ALUs and Latches
 
 I'm going to begin our detailed tour of the VGA at the heart of the flow
 of data through the VGA: the four ALUs built into the VGA's Graphics
@@ -395,7 +395,7 @@ encountered any particularly valuable applications for AND and OR, but
 they're the sort of building-block features that could come in handy in
 just the right context, so keep them in mind.
 
-### Notes on the ALU/Latch Demo Program {#Heading4}
+### Notes on the ALU/Latch Demo Program
 
 VGA settings such as the logical function select should be restored to
 their default condition before the BIOS is called to output text or draw

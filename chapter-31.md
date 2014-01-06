@@ -11,9 +11,9 @@ pages: 587-605
 ---
 
 ## Chapter 31\
- Higher 256-Color Resolution on the VGA {#Heading1}
+ Higher 256-Color Resolution on the VGA
 
-### When Is 320x200 Really 320x400? {#Heading2}
+### When Is 320x200 Really 320x400?
 
 One of the more appealing features of the VGA is its ability to display
 256 simultaneous colors. Unfortunately, one of the *less* appealing
@@ -43,7 +43,7 @@ games use.
 
 So. Let's get started.
 
-### Why 320x200? Only IBM Knows for Sure {#Heading3}
+### Why 320x200? Only IBM Knows for Sure
 
 The first question, of course, is, "How can it be possible to get higher
 256-color resolutions out of the VGA?" After all, there were no unused
@@ -86,7 +86,7 @@ designing the chip. Whatever the reason, mode 13H is really a
 400-scan-line mode masquerading as a 200-scan-line mode, and we can
 readily end that masquerade.
 
-### 320x400 256-Color Mode {#Heading4}
+### 320x400 256-Color Mode
 
 Okay, what's so great about 320x400 256-color mode? Two things: easy,
 safe mode sets and page flipping.
@@ -122,7 +122,7 @@ That's why I like 320x400 256-color mode. The next step is to understand
 how display memory is organized in 320x400 mode, and that's not so
 simple.
 
-#### Display Memory Organization in 320x400 Mode {#Heading5}
+#### Display Memory Organization in 320x400 Mode
 
 First, let's look at why display memory must be organized differently in
 320x400 256-color mode than in mode 13H. The designers of the VGA
@@ -187,7 +187,7 @@ turned off, and selecting byte mode for video data display. All that's
 done in the `Set320x400Mode` subroutine in Listing 31.1, which we'll
 discuss next.
 
-#### Reading and Writing Pixels {#Heading6}
+#### Reading and Writing Pixels
 
 The basic graphics functions in any mode are functions to read and write
 single pixels. Any more complex function can be built on these
@@ -624,7 +624,7 @@ an adequately fast—and often *very* fast—version for 320x400 mode of
 whatever graphics function you need. If you're not all that concerned
 with speed, `WritePixel` and `ReadPixel` should meet your needs.
 
-### Two 256-Color Pages {#Heading7}
+### Two 256-Color Pages
 
 Listing 31.2 demonstrates the two pages of 320x400 256-color mode by
 drawing slanting color bars in page 0, then drawing color bars slanting
@@ -911,7 +911,7 @@ The displays produced by Listing 31.2 make it clear that 320x400
 256-color mode can produce effects that are simply not possible in any
 16-color mode.
 
-### Something to Think About {#Heading8}
+### Something to Think About
 
 You can, if you wish, use the display memory organization of 320x400
 mode in 320x200 mode by modifying `Set320x400Mode` to leave the

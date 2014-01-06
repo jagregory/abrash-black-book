@@ -11,9 +11,9 @@ pages: 1077-1093
 ---
 
 ## Chapter 58\
- Heinlein's Crystal Ball, Spock's Brain, and the 9-Cycle Dare {#Heading1}
+ Heinlein's Crystal Ball, Spock's Brain, and the 9-Cycle Dare
 
-### Using the Whole-Brain Approach to Accelerate Texture Mapping {#Heading2}
+### Using the Whole-Brain Approach to Accelerate Texture Mapping
 
 I've had the pleasure recently of rereading several of the works of
 Robert A. Heinlein, and I'm as impressed as I was as a teenager—but in a
@@ -81,7 +81,7 @@ it.
 As Exhibit \#1, I present my experience with speeding up the texture
 mapper in X-Sharp.
 
-### Texture Mapping Redux {#Heading3}
+### Texture Mapping Redux
 
 We've spent the previous several chapters exploring the X Sharp graphics
 library, something I built over time as a serious exercise in 3-D
@@ -105,7 +105,7 @@ But 3 jumps *per pixel?* Hmph!"
 
 It was the "Hmph" that really got to me.
 
-#### Left-Brain Optimization {#Heading4}
+#### Left-Brain Optimization
 
 That was the first shot of juice for my optimizer (or at least blow to
 my ego, which can be just as productive). John went on to say he had
@@ -223,7 +223,7 @@ don't you just draw vertical rather than horizontal scanlines?"
 
 Why indeed?
 
-#### A 90-Degree Shift in Perspective {#Heading5}
+#### A 90-Degree Shift in Perspective
 
 As I said earlier, how you look at an optimization problem defines how
 you'll be able to solve it. In order to boost performance, sometimes
@@ -326,7 +326,7 @@ and get caught up in particular implementations; if you bounce your
 ideas off someone, you may well find them coming back with an
 unexpected—and welcome—spin.
 
-### That's Nice—But it Sure as Heck Ain't 9 Cycles {#Heading6}
+### That's Nice—But it Sure as Heck Ain't 9 Cycles
 
 Excellent as Chris's suggestion was, I still had work to do: Listing
 58.2 is still more than twice as slow as John Miles's code.
@@ -492,7 +492,7 @@ SCANOFFSET = SCANOFFSET + SCANWIDTH
      ENDM
 ```
 
-#### Don't Stop Thinking about Those Cycles {#Heading7}
+#### Don't Stop Thinking about Those Cycles
 
 Remember what I said at the outset, that knowing something has been done
 makes it much easier to do? A corollary is that pushing past that point,
@@ -580,7 +580,7 @@ every optimization task as if John Miles has just written to inform you
 that he's made it faster than your wildest dreams, and you'll be amazed
 at what you can do!
 
-### Texture Mapping Notes {#Heading8}
+### Texture Mapping Notes
 
 Listing 58.3 contains no 486 pipeline stalls; it has Pentium stalls, but
 not much can be done for them because of the size prefix on `ADD

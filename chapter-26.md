@@ -11,9 +11,9 @@ pages: 481-497
 ---
 
 ## Chapter 26\
- VGA Write Mode 3 {#Heading1}
+ VGA Write Mode 3
 
-### The Write Mode That Grows on You {#Heading2}
+### The Write Mode That Grows on You
 
 Over the last three chapters, we've covered the VGA's write path from
 stem to stern—with one exception. Thus far, we've only looked at how
@@ -31,7 +31,7 @@ in the next chapter, but right now I want to focus on write mode 3,
 which can be confusing at first, but turns out to be quite a bit more
 powerful than one might initially think.
 
-### A Mode Born in Strangeness {#Heading3}
+### A Mode Born in Strangeness
 
 Write mode 3 is strange indeed, and its use is not immediately obvious.
 The first time I encountered write mode 3, I understood immediately how
@@ -806,7 +806,7 @@ of the X-Sharp library. Nonetheless, the performance benefit of this
 approach can be a speedup of as much as four times—all thanks to the
 decidedly quirky but surprisingly powerful and flexible write mode 3.
 
-### A Note on Preserving Register Bits {#Heading4}
+### A Note on Preserving Register Bits
 
 If you take a quick look, you'll see that the code in Listing 26.1 uses
 the readable register feature of the VGA to preserve reserved bits and

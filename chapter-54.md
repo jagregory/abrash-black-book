@@ -11,9 +11,9 @@ pages: 1005-1029
 ---
 
 ## Chapter 54\
- 3-D Shading {#Heading1}
+ 3-D Shading
 
-### Putting Realistic Surfaces on Animated 3-D Objects {#Heading2}
+### Putting Realistic Surfaces on Animated 3-D Objects
 
 At the end of the previous chapter, X-Sharp had just acquired basic
 hidden-surface capability, and performance had been vastly improved
@@ -22,7 +22,7 @@ to add quite a bit more: support for 8088 and 80286 PCs, a general color
 model, and shading. That's an awful lot to cover in one chapter
 (actually, it'll spill over into the next chapter), so let's get to it!
 
-### Support for Older Processors {#Heading3}
+### Support for Older Processors
 
 To date, X-Sharp has run on only the 386 and 486, because it uses 32-bit
 multiply and divide instructions that sub-386 processors don't support.
@@ -940,7 +940,7 @@ _ConcatXforms    endp
 end
 ```
 
-#### Shading {#Heading4}
+#### Shading
 
 So far, the polygons out of which our animated objects have been built
 have had colors of fixed intensities. For example, a face of a cube
@@ -1168,7 +1168,7 @@ void DrawPObject(PObject * ObjectToXform)
 }
 ```
 
-#### Shading: Implementation Details {#Heading7}
+#### Shading: Implementation Details
 
 In order to calculate the cosine of the angle between an incoming light
 source and a polygon's unit normal, we must first have the polygon's

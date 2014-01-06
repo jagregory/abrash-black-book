@@ -11,9 +11,9 @@ pages: 369-379
 ---
 
 ## Chapter 19\
- Pentium: Not the Same Old Song {#Heading1}
+ Pentium: Not the Same Old Song
 
-### Learning a Whole Different Set of Optimization Rules {#Heading2}
+### Learning a Whole Different Set of Optimization Rules
 
 I can still remember the day I did my first 8088 programming. I had just
 moved over from the distantly related Z80, so the 8088 wasn't totally
@@ -45,7 +45,7 @@ that made cycle counting more meaningful than ever before, and careful
 code massaging sometimes yielded startling results. Nonetheless, the 486
 was still too simple to mark a return to the golden age of optimization.
 
-### The Return of Optimization as Art {#Heading3}
+### The Return of Optimization as Art
 
 Then the Pentium came around, and filled our code with optimization
 hazards, and life was good again. The Pentium has two execution
@@ -90,7 +90,7 @@ pitch Preparation H. I can hardly wait.
 
 Gimme a "P"....
 
-### The Pentium: An Overview {#Heading4}
+### The Pentium: An Overview
 
 Architecturally, the Pentium is vastly different in many ways from the
 486, but most of those differences are transparent to programmers. After
@@ -139,7 +139,7 @@ to 128 bytes. In conjunction with the branch prediction feature
 branches, this larger prefetch queue means that the Pentium's two pipes
 should be better fed than those of any previous x86 processor.
 
-#### Crossing Cache Lines {#Heading5}
+#### Crossing Cache Lines
 
 There are three other characteristics of the Pentium that make for a
 healthy supply of instruction bytes. One is that the Pentium can
@@ -189,7 +189,7 @@ Architecture and Programming Manual* (ISBN 1-55512-195-0; Intel order
 number 241430-001), and the article "Optimizing Pentium Code" by Mike
 Schmidt, in *Dr. Dobb's Journal* for January 1994.
 
-#### Cache Organization {#Heading6}
+#### Cache Organization
 
 There are two other interesting changes in the Pentium's cache
 organization. First, the cache is two-way set-associative, whereas the
@@ -243,7 +243,7 @@ improvement. Clearly, avoiding AGIs becomes a much more challenging and
 rewarding game in a superscalar world, one to which I'll return in the
 next chapter.
 
-### Faster Addressing and More {#Heading7}
+### Faster Addressing and More
 
 I'll spend the rest of this chapter covering a variety of Pentium
 optimization tips. For starters, effective address calculations (that
@@ -346,7 +346,7 @@ Pentium may have to shut down the V-pipe for a cycle to avoid potential
 dependencies on the result of the `AND` or `OR`. `TEST` suffers
 from no such potential dependencies.
 
-### Branch Prediction {#Heading8}
+### Branch Prediction
 
 One brand-spanking-new feature of the Pentium is *branch prediction*,
 whereby the Pentium tries to guess, based on past history, which way
@@ -406,7 +406,7 @@ on any given iteration.
 > to fall through branches if possible, and try to be consistent in your
 > branching if not.
 
-### Miscellaneous Pentium Topics {#Heading9}
+### Miscellaneous Pentium Topics
 
 The Pentium has all the instructions of the 486, plus a few new ones.
 One much-needed instruction that has finally made it into the
@@ -418,7 +418,7 @@ to me to be a particularly useful instruction, but I'm sure Intel
 wouldn't have added it without a reason; if you know of a use for it,
 please pass it along to me.
 
-#### 486 versus Pentium Optimization {#Heading10}
+#### 486 versus Pentium Optimization
 
 Many Pentium optimizations help, or at least don't hurt, on the 486.
 Many, but not all—and many *do* hurt on the 386. As I discuss various
@@ -438,7 +438,7 @@ absolutely the best possible performance for your DOS and Windows apps
 on the fastest hardware, Pentium optimization can make your code
 *scream*.
 
-#### Going Superscalar {#Heading11}
+#### Going Superscalar
 
 In the next chapter, we'll look into the single biggest element of
 Pentium performance, cranking up the Pentium's second execution pipe.

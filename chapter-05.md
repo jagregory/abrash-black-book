@@ -11,9 +11,9 @@ pages: 111-123
 ---
 
 ## Chapter 5\
- Crossing the Border {#Heading1}
+ Crossing the Border
 
-### Searching Files with Restartable Blocks {#Heading2}
+### Searching Files with Restartable Blocks
 
 *We just moved.* Those three little words should strike terror into the
 heart of anyone who owns more than a sleeping bag and a toothbrush. Our
@@ -66,7 +66,7 @@ more effort and forethought, but would have paid off handsomely.
 And with that, let's look at a fairly complex application of restartable
 blocks.
 
-#### Searching for Text {#Heading3}
+#### Searching for Text
 
 The application we're going to examine searches a file for a specified
 string. We'll develop a program that will search the file specified on
@@ -112,7 +112,7 @@ all-important inner loop of our searching program, where the program
 will spend virtually all of its time (aside from the unavoidable disk
 access overhead).
 
-### Avoiding the String Trap {#Heading4}
+### Avoiding the String Trap
 
 The easiest approach would be to use a C/C++ library function. The
 closest match to what we need is `strstr()`, which searches one string
@@ -136,7 +136,7 @@ for our application, from unnecessary overhead.
 > it, and relate that to their performance in the context you're
 > interested in.
 
-### Brute-Force Techniques {#Heading5}
+### Brute-Force Techniques
 
 Given that no C/C++ library function meets our needs precisely, an
 obvious alternative approach is the brute-force technique that uses
@@ -169,7 +169,7 @@ match for the first character, stopping to check for a match with the
 rest of the string *only* when the first character matches, as shown in
 Figure 5.2.
 
-### Using memchr() {#Heading6}
+### Using memchr()
 
 There's yet a better way to implement this approach, however. Use the
 `memchr()` function, which does nothing more or less than find the
@@ -201,7 +201,7 @@ Now that we've selected a searching approach, let's integrate it with
 file handling and searching through multiple blocks. In other words,
 let's make it restartable.
 
-#### Making a Search Restartable {#Heading7}
+#### Making a Search Restartable
 
 As it happens, there's no great trick to putting the pieces of this
 search program together. Basically, we'll read in a buffer of data
@@ -407,7 +407,7 @@ main(int argc, char *argv[]) {
 }
 ```
 
-### Interpreting Where the Cycles Go {#Heading8}
+### Interpreting Where the Cycles Go
 
 To boost the overall performance of Listing 5.1, I would normally
 convert `SearchForString()` to assembly language at this point.
@@ -461,7 +461,7 @@ work.
 
 Not likely.
 
-#### Knowing When Assembly Is Pointless {#Heading9}
+#### Knowing When Assembly Is Pointless
 
 So that's why we're not going to go to assembly language in this
 example—which is not to say it would never be worth converting the
@@ -516,7 +516,7 @@ search engine is by no means fully optimized, it's nonetheless as fast
 as there's any reason for it to be, given the balance of performance
 among the components of this program.
 
-### Always Look Where Execution Is Going {#Heading10}
+### Always Look Where Execution Is Going
 
 I've explained two important lessons: Know when it's worth optimizing
 further, and use restartable blocks to process large data sets as a

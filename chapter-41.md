@@ -11,9 +11,9 @@ pages: 757-771
 ---
 
 ## Chapter 41\
- Those Way-Down Polygon Nomenclature Blues {#Heading1}
+ Those Way-Down Polygon Nomenclature Blues
 
-### Names Do Matter when You Conceptualize a Data Structure {#Heading2}
+### Names Do Matter when You Conceptualize a Data Structure
 
 After I wrote the columns on polygons in *Dr. Dobb's Journal* that
 became Chapters 38-40, long-time reader Bill Huber wrote to take me to
@@ -63,7 +63,7 @@ who could be among your most astute readers—those who already have been
 trained in the same or a related field." Ditto. Likewise. *D'accord*.
 And *mea culpa* ; I shall endeavor to watch my language in the future.
 
-### Nomenclature in Action {#Heading3}
+### Nomenclature in Action
 
 Just to show you how much difference proper description and interchange
 of ideas can make, consider the case of identifying convex polygons.

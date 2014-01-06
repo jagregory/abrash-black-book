@@ -11,9 +11,9 @@ pages: 859-874
 ---
 
 ## Chapter 46\
- Who Was that Masked Image? {#Heading1}
+ Who Was that Masked Image?
 
-### Optimizing Dirty-Rectangle Animation {#Heading2}
+### Optimizing Dirty-Rectangle Animation
 
 Programming is, by and large, a linear process. One statement or
 instruction follows another, in predictable sequences, with tiny
@@ -61,7 +61,7 @@ We're strange thinking machines, but we're the best ones yet invented,
 and it's worth learning how to tap our full potential. And with that,
 it's back to dirty-rectangle animation.
 
-#### Dirty-Rectangle Animation, Continued {#Heading3}
+#### Dirty-Rectangle Animation, Continued
 
 In the last chapter, Introduced the idea of dirty-rectangle animation.
 This technique is an alternative to page flipping that's capable of
@@ -618,7 +618,7 @@ RowLoop3:
         end
 ```
 
-#### Masked Images {#Heading4}
+#### Masked Images
 
 Masked images are rendered by drawing an object's pixels through a mask;
 pixels are actually drawn only where the mask specifies that drawing is
@@ -654,7 +654,7 @@ one color undrawable. Also, with a transparent color, it's not possible
 to keep the same base image but use different masks, because the mask
 information is embedded in the image data.
 
-#### Internal Animation {#Heading5}
+#### Internal Animation
 
 I've added another feature essential to producing convincing animation:
 *internal animation*, which is the process of changing the appearance of
@@ -720,7 +720,7 @@ minimal cost. You might then decide to ignore overlapped drawing between
 different images, which tends to be both less common and more expensive
 to identify and handle.
 
-#### Drawing Order and Visual Quality {#Heading7}
+#### Drawing Order and Visual Quality
 
 A final note on dirty-rectangle animation concerns the quality of the
 displayed screen image. In the last chapter, we simply stuffed dirty

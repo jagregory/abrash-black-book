@@ -11,9 +11,9 @@ pages: 248-258
 ---
 
 ## Chapter 13\
- Aiming the 486 {#Heading1}
+ Aiming the 486
 
-### Pipelines and Other Hazards of the High End {#Heading2}
+### Pipelines and Other Hazards of the High End
 
 It's a sad but true fact that 84 percent of American schoolchildren are
 ignorant of 92 percent of American history. Not my daughter, though. We
@@ -58,7 +58,7 @@ For example, consider how Terje Mathisen doubled the speed of his
 word-counting program on a 486 simply by shuffling a couple of
 instructions.
 
-#### 486 Pipeline Optimization {#Heading3}
+#### 486 Pipeline Optimization
 
 I've mentioned Terje Mathisen in my writings before. Terje is an
 assembly language programmer extraordinaire, and author of the
@@ -167,7 +167,7 @@ engine can process more than 16 million characters *per second* on a
 
 Clever 486 optimization can pay off big. QED.
 
-### BSWAP: More Useful Than You Might Think {#Heading4}
+### BSWAP: More Useful Than You Might Think
 
 There are only 3 non-system instructions unique to the 486. None is
 earthshaking, but they have their uses. Consider `BSWAP`. `BSWAP` does
@@ -268,7 +268,7 @@ looptop:
       jnz    looptop
 ```
 
-### Pushing and Popping Memory {#Heading5}
+### Pushing and Popping Memory
 
 Pushing or popping a memory location, as in `PUSH WORD PTR [BX]` or
 `POP [MemVar]`, is a compact, easy way to get a value onto or off of
@@ -315,7 +315,7 @@ well as `XLAT`, `LOOP`, and, of course, `PUSH *mem*` and `POP
 > pipeline efficiency, as is the case with Terje's optimization described
 > earlier in this chapter.
 
-### Optimal 1-Bit Shifts and Rotates {#Heading6}
+### Optimal 1-Bit Shifts and Rotates
 
 On a 486, the n-bit forms of the shift and rotate instructions—as in
 `ROR AX,2` and `SHL BX,9`—are 2-cycle instructions, but the 1-bit
@@ -357,7 +357,7 @@ critical cycles—and Lord knows that if you're optimizing for the
 unoptimized code on a 486—you almost certainly need all the speed you
 can get.
 
-### 32-Bit Addressing Modes {#Heading7}
+### 32-Bit Addressing Modes
 
 The 386 and 486 both support 32-bit addressing modes, in which any
 register may serve as the base memory addressing register, and almost

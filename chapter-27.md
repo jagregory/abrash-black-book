@@ -11,9 +11,9 @@ pages: 499-521
 ---
 
 ## Chapter 27\
- Yet Another VGA Write Mode {#Heading1}
+ Yet Another VGA Write Mode
 
-### Write Mode 2, Chunky Bitmaps,and Text-Graphics Coexistence {#Heading2}
+### Write Mode 2, Chunky Bitmaps,and Text-Graphics Coexistence
 
 In the last chapter, we learned about the markedly peculiar write mode 3
 of the VGA, after having spent three chapters learning the ins and outs
@@ -31,7 +31,7 @@ ever imagine.
 Let's start with the easy stuff, write mode 2, and save the read modes
 for the next chapter.
 
-### Write Mode 2 and Set/Reset {#Heading3}
+### Write Mode 2 and Set/Reset
 
 Remember how set/reset works? Good, because that's pretty much how write
 mode 2 works. (You *don't* remember? Well, I'll provide a brief
@@ -68,7 +68,7 @@ nonetheless, I suspect that some additional explanation of an admittedly
 non-obvious mode wouldn't hurt. Let's follow the CPU byte through the
 VGA in write mode 2, step by step.
 
-#### A Byte's Progress in Write Mode 2 {#Heading4}
+#### A Byte's Progress in Write Mode 2
 
 Figure 27.1 shows the write mode 2 data path. The CPU byte comes into
 the VGA and is split into four separate bits, one for each plane. Bits
@@ -130,7 +130,7 @@ on the VGA is to read the Graphics Mode register, mask off bits 1 and 0,
 OR in 00000010b (02H), and write the result back to the Graphics Mode
 register, thereby leaving the other bits in the register undisturbed.
 
-#### Copying Chunky Bitmaps to VGA Memory Using Write Mode 2 {#Heading5}
+#### Copying Chunky Bitmaps to VGA Memory Using Write Mode 2
 
 Let's take a look at two examples of write mode 2 in action. Listing
 27.1 presents a program that uses write mode 2 to copy a graphics image
@@ -406,7 +406,7 @@ to illustrate the mechanics of write mode 2.
 > time, nasty transient color effects can occur as one plane becomes
 > visibly changed before other planes have been modified.
 
-#### Drawing Color-Patterned Lines Using Write Mode 2 {#Heading6}
+#### Drawing Color-Patterned Lines Using Write Mode 2
 
 A more serviceable use of write mode 2 is shown in the program presented
 in Listing 27.2. The program draws multicolored horizontal, vertical,
@@ -764,7 +764,7 @@ Code    ends
         end     Start
 ```
 
-### When to Use Write Mode 2 and When to Use Set/Reset {#Heading7}
+### When to Use Write Mode 2 and When to Use Set/Reset
 
 As indicated earlier, write mode 2 and set/reset are functionally
 interchangeable. Write mode 2 lends itself to more efficient
@@ -785,7 +785,7 @@ the value written to some planes to a fixed value while allowing the CPU
 byte to modify other planes. This is the mode of operation when
 set/reset is enabled for some but not all planes.
 
-### Mode 13H—320x200 with 256 Colors {#Heading8}
+### Mode 13H—320x200 with 256 Colors
 
 I'm going to take a minute—and I do mean a minute—to discuss the
 programming model for mode 13H, the VGA's 320x200 256-color mode.
@@ -803,7 +803,7 @@ program, especially given that some of the listings later in this book,
 such as the antialiasing code in Chapter F on the companion CD-ROM, use
 mode 13H.
 
-### Flipping Pages from Text to Graphics and Back {#Heading9}
+### Flipping Pages from Text to Graphics and Back
 
 A while back, I got an interesting letter from Phil Coleman, of La
 Jolla, who wrote:

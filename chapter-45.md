@@ -11,9 +11,9 @@ pages: 839-857
 ---
 
 ## Chapter 45\
- Dog Hair and Dirty Rectangles {#Heading1}
+ Dog Hair and Dirty Rectangles
 
-### Different Angles on Animation {#Heading2}
+### Different Angles on Animation
 
 We brought our pets with us when we moved to Seattle. At about the same
 time, our Golden Retriever, Sam, observed his third birthday. Sam is
@@ -55,7 +55,7 @@ joyously knocks down any stranger who makes the mistake of glancing in
 his direction, and will, quite possibly, be booked any day now on
 suspicion of homicide by licking.
 
-### Plus ça Change {#Heading3}
+### Plus ça Change
 
 Okay, you give up. What exactly does this have to do with graphics? I'm
 glad you asked. The lesson to be learned from Sam, The Dog With A Brain
@@ -86,7 +86,7 @@ least one pair of underwear without a single hole in it. Which brings
 us, deus ex machina and the creek don't rise, to yet another animation
 method: dirty-rectangle animation.
 
-### VGA Access Times {#Heading4}
+### VGA Access Times
 
 Actually, before we get to dirty rectangles, I'd like to take you
 through a quick refresher on VGA memory and I/O access times. I want to
@@ -162,7 +162,7 @@ memory if you don't have to. Write each pixel once and only once.
 It is indeed a strange concept: The key to fast graphics is staying away
 from the graphics adapter as much as possible.
 
-### Dirty-Rectangle Animation {#Heading5}
+### Dirty-Rectangle Animation
 
 The relative slowness of VGA hardware is part of the appeal of the
 technique that I call "dirty-rectangle" animation, in which a complete
@@ -192,7 +192,7 @@ solves these problems.
 
 ![**Figure 45.2**  *Dirty rectangle animation.*](images/45-02.jpg)
 
-#### So Why Not Use Page Flipping? {#Heading6}
+#### So Why Not Use Page Flipping?
 
 Well, then, if we want good visual quality, why not use page flipping?
 For one thing, not all adapters and all modes support page flipping. The
@@ -234,7 +234,7 @@ happen, it's still possible to have the images in the various dirty
 rectangles show up non-simultaneously. In my experience, this latter
 phenomenon is not a serious problem, but do be aware of it.
 
-### Dirty Rectangles in Action {#Heading7}
+### Dirty Rectangles in Action
 
 Listing 45.1 demonstrates dirty-rectangle animation. This is a very
 simple implementation, in several respects. For one thing, it's written
@@ -540,7 +540,7 @@ graphics and by items such as scoreboards and status screens, but look
 closely and see if the animation region in your favorite game isn't
 smaller than you thought.
 
-### Hi-Res VGA Page Flipping {#Heading8}
+### Hi-Res VGA Page Flipping
 
 On a standard VGA, hi-res mode is mode 12H, which offers 640x480
 resolution with 16 colors. That's a nice mode, with plenty of pixels,
@@ -762,7 +762,7 @@ The 640x400 mode I've described here isn't exactly earthshaking, but it
 can come in handy for page flipping and CGA emulation, and I'm sure that
 some of you will find it useful at one time or another.
 
-### Another Interesting Twist on Page Flipping {#Heading9}
+### Another Interesting Twist on Page Flipping
 
 I've spent a fair amount of time exploring various ways to do animation.
 I thought I had pegged all the possible ways to do animation:

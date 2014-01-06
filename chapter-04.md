@@ -11,9 +11,9 @@ pages: 075-109
 ---
 
 ## Chapter 4\
- In the Lair of the Cycle-Eaters {#Heading1}
+ In the Lair of the Cycle-Eaters
 
-### How the PC Hardware Devours Code Performance {#Heading2}
+### How the PC Hardware Devours Code Performance
 
 This chapter, adapted from my earlier book, *Zen of Assembly Language*
 located on the companion CD-ROM, goes right to the heart of my
@@ -47,7 +47,7 @@ changed over time, but do take the time to at least skim through this
 chapter to give yourself a good start on the material in the rest of
 this book.
 
-### Cycle-Eaters {#Heading3}
+### Cycle-Eaters
 
 Programming has many levels, ranging from the familiar (high-level
 languages, DOS calls, and the like) down to the esoteric things that lie
@@ -81,7 +81,7 @@ properly improve the performance of our code.
 
 Which brings us to cycle-eaters.
 
-### The Nature of Cycle-Eaters {#Heading4}
+### The Nature of Cycle-Eaters
 
 Cycle-eaters are gremlins that live on the bus or in peripherals (and
 sometimes within the CPU itself), slowing the performance of PC code so
@@ -101,7 +101,7 @@ understand the simplest among them, those that haunted the original
 the newer generation of cycle-eaters in terms of those ancestral
 cycle-eaters—but we have to get the groundwork down first.
 
-#### The 8088's Ancestral Cycle-Eaters {#Heading5}
+#### The 8088's Ancestral Cycle-Eaters
 
 Internally, the 8088 is a 16-bit processor, capable of running at full
 speed at all times—unless external data is required. External data must
@@ -131,7 +131,7 @@ but do read it all even if the going gets a bit tough. Cycle-eaters play
 a key role in later chapters, so some familiarity with them is highly
 desirable.
 
-### The 8-Bit Bus Cycle-Eater {#Heading6}
+### The 8-Bit Bus Cycle-Eater
 
 *Look! Down on the motherboard! It's a 16-bit processor! It's an 8-bit
 processor! It's...*
@@ -194,7 +194,7 @@ a full 16-bit word at a time. The 386SX can process 32 bits (a
 doubleword) at a time, however, and loses a lot of time fetching that
 doubleword from memory in two halves.
 
-#### The Impact of the 8-Bit Bus Cycle-Eater {#Heading7}
+#### The Impact of the 8-Bit Bus Cycle-Eater
 
 One obvious effect of the 8-bit bus cycle-eater is that word-sized
 accesses to memory operands on the 8088 take 4 cycles longer than
@@ -255,7 +255,7 @@ operands. More ominously, as we will see shortly, the 8-bit bus
 cycle-eater can cause performance problems with other sorts of code as
 well.
 
-#### What to Do about the 8-Bit Bus Cycle-Eater? {#Heading8}
+#### What to Do about the 8-Bit Bus Cycle-Eater?
 
 The obvious implication of the 8-bit bus cycle-eater is that byte-sized
 memory variables should be used whenever possible. After all, the 8088
@@ -426,7 +426,7 @@ and there's one sort of word-sized memory access we haven't discussed
 yet: instruction fetching. The ugliest manifestation of the 8-bit bus
 cycle-eater is in fact the prefetch queue cycle-eater.
 
-### The Prefetch Queue Cycle-Eater {#Heading9}
+### The Prefetch Queue Cycle-Eater
 
 In an 8088 context, here's the prefetch queue cycle-eater in a nutshell:
 The 8088's 8-bit external data bus keeps the Bus Interface Unit from
@@ -492,7 +492,7 @@ external data bus, that's a glaring omission—but, alas, an unavoidable
 one. Let's look at why the official execution times are wrong, and why
 that can't be helped.
 
-#### Official Execution Times Are Only Part of the Story {#Heading10}
+#### Official Execution Times Are Only Part of the Story
 
 The sequence of 5 `SHR` instructions in the last example is 10 bytes
 long. That means that it can never execute in less than 24 cycles even
@@ -538,7 +538,7 @@ wrong, and why Intel can't provide better specifications. You also know
 now why it is that you must time your code if you want to know how fast
 it really is.
 
-#### There Is No Such Beast as a True Instruction Execution Time {#Heading11}
+#### There Is No Such Beast as a True Instruction Execution Time
 
 The effect of the code preceding an instruction on the execution time of
 that instruction makes the Zen timer trickier to use than you might
@@ -738,7 +738,7 @@ executes on the PC just by looking at it! Get used to the idea that
 execution times are only meaningful in context, learn the rules of thumb
 in this book, and use the Zen timer to measure your code.
 
-#### Approximating Overall Execution Times {#Heading12}
+#### Approximating Overall Execution Times
 
 Don't think that because overall instruction execution time is
 determined by both instruction fetch time and Execution Unit execution
@@ -767,7 +767,7 @@ instruction in a particular context to start when the first byte of the
 instruction is sent to the Execution Unit and end when the first byte of
 the next instruction is sent to the EU.
 
-#### What to Do about the Prefetch Queue Cycle-Eater? {#Heading13}
+#### What to Do about the Prefetch Queue Cycle-Eater?
 
 Reducing the impact of the prefetch queue cycle-eater is one of the
 overriding principles of high-performance assembly code. How can you do
@@ -809,7 +809,7 @@ then time your code to see how fast it really is. You should experiment
 freely, but always remember that actual, measured performance is the
 bottom line.
 
-#### Holding Up the 8088 {#Heading14}
+#### Holding Up the 8088
 
 In this chapter I've taken you further and further into the depths of
 the PC, telling you again and again that you must understand the
@@ -849,7 +849,7 @@ were programming in ignorance.
 Let's start with DRAM refresh, which affects the performance of every
 program that runs on the PC.
 
-### Dynamic RAM Refresh: The Invisible Hand {#Heading15}
+### Dynamic RAM Refresh: The Invisible Hand
 
 Dynamic RAM (DRAM) refresh is sort of an act of God. By that I mean that
 DRAM refresh invisibly and inexorably steals a certain fraction of all
@@ -881,7 +881,7 @@ within 4 µs of the last refresh. Since there's no guarantee that a given
 program will access each and every DRAM block once every 4 µs, the PC
 contains special circuitry and programming for providing DRAM refresh.
 
-#### How DRAM Refresh Works in the PC {#Heading16}
+#### How DRAM Refresh Works in the PC
 
 On the original 8088-based IBM PC, timer 1 of the 8253 timer chip is
 programmed at power-up to generate a signal once every 72 cycles, or
@@ -920,7 +920,7 @@ memory.
 
 ![**Figure 4.5**  *The PC bus dynamic RAM (DRAM) refresh.*](images/04-05.jpg)
 
-#### The Impact of DRAM Refresh {#Heading17}
+#### The Impact of DRAM Refresh
 
 Let's look at examples from opposite ends of the spectrum in terms of
 the impact of DRAM refresh on code performance. First, consider the
@@ -1005,7 +1005,7 @@ ranging as high as 8.33 percent—is far more likely to occur. This is
 especially true for high-performance assembly code, which uses fast
 instructions that tend to cause non-stop instruction fetching.
 
-#### What to Do About the DRAM Refresh Cycle-Eater? {#Heading18}
+#### What to Do About the DRAM Refresh Cycle-Eater?
 
 *Hmmm.* When we discovered the prefetch queue cycle-eater, we learned to
 use short instructions. When we discovered the 8-bit bus cycle-eater, we
@@ -1059,7 +1059,7 @@ two timing results that differ less or more than they seemingly should,
 that's usually DRAM refresh too. Thanks to DRAM refresh, variations of
 up to 8.33 percent in PC code performance are par for the course.
 
-### Wait States {#Heading19}
+### Wait States
 
 Wait states are cycles during which a bus access by the CPU to a device
 on the PC's bus is temporarily halted by that device while the device
@@ -1121,7 +1121,7 @@ the PC. While any adapter *can* insert wait states, in the PC only
 display adapters do so to the extent that performance is seriously
 affected.
 
-### The Display Adapter Cycle-Eater {#Heading20}
+### The Display Adapter Cycle-Eater
 
 Display adapters must serve two masters, and that creates a fundamental
 performance problem. Master \#1 is the circuitry that drives the display
@@ -1212,7 +1212,7 @@ the foreseeable future, and since it is the hardest graphics adapter to
 wring performance from, we'll restrict our discussion to the VGA (and
 its close relative, the EGA) for the remainder of this chapter.
 
-#### The Impact of the Display Adapter Cycle-Eater {#Heading21}
+#### The Impact of the Display Adapter Cycle-Eater
 
 Even on the EGA and VGA, the effect of the display adapter cycle-eater
 depends on the display mode selected. In text mode, the display adapter
@@ -1366,7 +1366,7 @@ PC. Remember, the limited speed of access to a graphics adapter is an
 inherent characteristic of the adapter, so the fastest computer around
 can't access display memory one iota faster than the adapter will allow.
 
-#### What to Do about the Display Adapter Cycle-Eater? {#Heading22}
+#### What to Do about the Display Adapter Cycle-Eater?
 
 What can we do about the display adapter cycle-eater? Well, we can
 minimize display memory accesses whenever possible. In particular, we
@@ -1422,7 +1422,7 @@ significant. There is only one way to discover just how significant the
 impact of the display adapter cycle-eater is for any particular graphics
 code, and that is of course to measure the performance of that code.
 
-#### Cycle-Eaters: A Summary {#Heading23}
+#### Cycle-Eaters: A Summary
 
 We've covered a great deal of sophisticated material in this chapter, so
 don't feel bad if you haven't understood everything you've read; it will
@@ -1446,7 +1446,7 @@ This basic knowledge about cycle-eaters puts you in a good position to
 understand the results reported by the Zen timer, and that means that
 you're well on your way to writing high-performance assembler code.
 
-#### What Does It All Mean? {#Heading24}
+#### What Does It All Mean?
 
 There you have it: life under the programming interface. It's not a
 particularly pretty picture for the inhabitants of that strange realm

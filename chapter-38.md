@@ -11,9 +11,9 @@ pages: 707-721
 ---
 
 ## Chapter 38\
- The Polygon Primeval {#Heading1}
+ The Polygon Primeval
 
-### Drawing Polygons Efficiently and Quickly {#Heading2}
+### Drawing Polygons Efficiently and Quickly
 
 *"Give me but one firm spot on which to stand, and I will move the
 Earth."*
@@ -44,7 +44,7 @@ boost performance into the realm of the sublime.
 
 And slow computer graphics is scarcely worth the bother.
 
-### Filled Polygons {#Heading3}
+### Filled Polygons
 
 A polygon is simply a shape formed by lines laid end to end to form a
 continuous, closed path. A polygon is filled by setting all pixels
@@ -79,7 +79,7 @@ widely useful and will serve well to introduce some of the subtler
 complexities of polygon drawing, not the least of which is the slippery
 concept of "inside."
 
-#### Which Side Is Inside? {#Heading4}
+#### Which Side Is Inside?
 
 The basic principle of polygon filling is decomposing each polygon into
 a series of horizontal lines, one for each horizontal row of pixels, or
@@ -139,7 +139,7 @@ to the boundary lines just won't do for drawing images composed of
 fitted-together polygons. And because fitting polygons together is
 exactly what I have in mind, we need a different approach.
 
-#### How Do You Fit Polygons Together? {#Heading5}
+#### How Do You Fit Polygons Together?
 
 How, then, do you fit polygons together? *Very* carefully. First, the
 line-tracing algorithm must be adjusted so that it selects only those
@@ -185,7 +185,7 @@ together seamlessly.
 For our purposes, nonoverlapping polygons are the way to go, so let's
 have at them.
 
-### Filling Non-Overlapping Convex Polygons {#Heading6}
+### Filling Non-Overlapping Convex Polygons
 
 Without further ado, Listing 38.1 contains a function,
 `FillConvexPolygon`, that accepts a list of points that describe a
@@ -658,7 +658,7 @@ Once the two edges are scan-converted, the whole line list is passed to
 
 Finis.
 
-### Oddball Cases {#Heading7}
+### Oddball Cases
 
 Listing 38.1 handles zero-length segments (multiple vertices at the same
 location) by ignoring them, which will be useful down the road because

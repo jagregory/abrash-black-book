@@ -11,9 +11,9 @@ pages: 149-166
 ---
 
 ## Chapter 8\
- Speeding Up C with Assembly Language {#Heading1}
+ Speeding Up C with Assembly Language
 
-### Jumping Languages When You Know It'll Help {#Heading2}
+### Jumping Languages When You Know It'll Help
 
 When I was a senior in high school, a pop song called "Seasons in the
 Sun," sung by one Terry Jacks, soared up the pop charts and spent, as
@@ -59,7 +59,7 @@ language output and tweaking it.
 
 Apropos of which, when was the last time you heard of Terry Jacks?
 
-#### Billy, Don't Be a Compiler {#Heading3}
+#### Billy, Don't Be a Compiler
 
 The key to optimizing C programs with assembly language is, as always,
 writing good assembly language code, but with an added twist. Rule 1
@@ -99,7 +99,7 @@ assembly language optimization.
 > future changes and debugging more difficult, slowing you down and
 > limiting your options.
 
-### Don't Call Your Functions on Me, Baby {#Heading4}
+### Don't Call Your Functions on Me, Baby
 
 In order to think differently from a compiler, you must understand both
 what compilers and C programmers tend to do and how that differs from
@@ -130,7 +130,7 @@ extra cycles they take don't affect performance, then the code they're
 in probably isn't critical, and perhaps you've chosen to convert too
 much code to assembly, eh?
 
-### Stack Frames Slow So Much {#Heading5}
+### Stack Frames Slow So Much
 
 C compilers work within the stack frame model, whereby variables reside
 in a block of stack memory and are accessed via offsets from BP.
@@ -149,7 +149,7 @@ sometimes useful indeed.
 That doesn't mean you shouldn't use stack frames, which are useful and
 often necessary. Just don't fall victim to their undeniable charms.
 
-### Torn Between Two Segments {#Heading6}
+### Torn Between Two Segments
 
 C compilers are not terrific at handling segments. Some compilers can
 efficiently handle a single far pointer used in a loop by leaving ES set
@@ -166,7 +166,7 @@ address to be reloaded each time either pointer is used.
 In assembly language you have full control over segments. Use it, and,
 if necessary, reorganize your code to minimize segment loading.
 
-#### Why Speeding Up Is Hard to Do {#Heading7}
+#### Why Speeding Up Is Hard to Do
 
 You might think that the most obvious advantage assembly language has
 over C is that it allows the use of all forms of instructions and all
@@ -219,7 +219,7 @@ jz    Match
 It's a simple example—but, I hope, a convincing one. Stretch your brain
 when you optimize.
 
-### Taking It to the Limit {#Heading8}
+### Taking It to the Limit
 
 The ultimate in assembly language optimization comes when you change the
 rules; that is, when you reorganize the entire program to allow the use
@@ -260,7 +260,7 @@ code into optimized assembly language:
 
 That said, let me show some of these precepts in action.
 
-#### A C-to-Assembly Case Study {#Heading9}
+#### A C-to-Assembly Case Study
 
 Listing 8.1 is the sample C application I'm going to use to examine
 optimization in action. Listing 8.1 isn't really complete—it doesn't

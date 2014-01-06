@@ -11,9 +11,9 @@ pages: 653-678
 ---
 
 ## Chapter 35\
- Bresenham Is Fast, and Fast Is Good {#Heading1}
+ Bresenham Is Fast, and Fast Is Good
 
-### Implementing and Optimizing Bresenham's Line-Drawing Algorithm {#Heading2}
+### Implementing and Optimizing Bresenham's Line-Drawing Algorithm
 
 For all the complexity of graphics design and programming, surprisingly
 few primitive functions lie at the heart of most graphics software.
@@ -73,7 +73,7 @@ Notwithstanding, the line-drawing implementation in Listing 35.3 is
 plenty fast enough for most purposes, so let's get the discussion
 underway.
 
-### The Task at Hand {#Heading3}
+### The Task at Hand
 
 There are two important characteristics of any line-drawing function.
 First, it must draw a reasonable approximation of a line. A computer
@@ -124,7 +124,7 @@ floating-point operations, no divides, and no multiplies inside the
 line-drawing loop. Moreover, it can be implemented with surprisingly
 little code.
 
-### Bresenham's Line-Drawing Algorithm {#Heading4}
+### Bresenham's Line-Drawing Algorithm
 
 The key to grasping Bresenham's algorithm is to understand that when
 drawing an approximation of a line on a finite-resolution display, each
@@ -243,7 +243,7 @@ under the name *Computer Graphics: Principles and Practice*
 integer-only, divide-free version of the algorithm, as well as Pascal
 code for drawing lines in one of the eight possible octants.
 
-#### Strengths and Weaknesses {#Heading5}
+#### Strengths and Weaknesses
 
 The overwhelming strength of Bresenham's line-drawing algorithm is
 speed. With no divides, no floating-point operations, and no need for
@@ -266,7 +266,7 @@ acceptance the algorithm is certainly good enough.
 Then, too, users hate waiting for their computer to finish drawing. By
 any standard of drawing performance, Bresenham's algorithm excels.
 
-### An Implementation in C {#Heading6}
+### An Implementation in C
 
 It's time to get down and look at some actual working code. Listing 35.1
 is a C implementation of Bresenham's line-drawing algorithm for modes
@@ -556,7 +556,7 @@ void main()
 }
 ```
 
-#### Looking at EVGALine {#Heading7}
+#### Looking at EVGALine
 
 The `EVGALine` function itself performs four operations. `EVGALine`
 first sets up the VGA's hardware so that all pixels drawn will be in the
@@ -654,7 +654,7 @@ modularity would improve, speed would suffer markedly.
 
 ![**Figure 35.5**  *EVGALine's decision logic.*](images/35-05.jpg)
 
-#### Drawing Each Line {#Heading8}
+#### Drawing Each Line
 
 The `Octant0` and `Octant1` functions draw lines for which
 |`DeltaX`| is greater than `DeltaY` and lines for which |`DeltaX`|
@@ -685,7 +685,7 @@ coordinate is advanced by either 1 or -1, depending on the value of
 `XDirection`. (This makes it possible for `Octant1` to draw lines in
 both octant 1 and octant 2.)
 
-#### Drawing Each Pixel {#Heading9}
+#### Drawing Each Pixel
 
 At the core of `Octant0` and `Octant1` is a pixel-drawing function,
 `EVGADot`. `EVGADot` draws a pixel at the specified coordinates in
@@ -765,7 +765,7 @@ pixel-drawing function for a different adapter, or a fundamentally
 different mode such as a 256-color SuperVGA mode, remember to remove the
 hardware-dependent `outportb` lines in `EVGALine` itself.
 
-### Comments on the C Implementation {#Heading10}
+### Comments on the C Implementation
 
 `EVGALine` does no error checking whatsoever. My assumption in writing
 `EVGALine` was that it would be ultimately used as the lowest-level
@@ -806,7 +806,7 @@ times the speed?
 Given which, a high-speed assembly language version of `EVGALine`
 would seem to be a logical next step.
 
-### Bresenham's Algorithm in Assembly {#Heading11}
+### Bresenham's Algorithm in Assembly
 
 Listing 35.3 is a high-performance implementation of Bresenham's
 algorithm, written entirely in assembly language. The code is callable

@@ -11,9 +11,9 @@ pages: 1145-1162
 ---
 
 ## Chapter 62\
- One Story, Two Rules, and a BSP Renderer {#Heading1}
+ One Story, Two Rules, and a BSP Renderer
 
-### Taking a Compiled BSP Tree from Logical to Visual Reality {#Heading2}
+### Taking a Compiled BSP Tree from Logical to Visual Reality
 
 As I've noted before, I'm working on Quake, id Software's follow-up to
 DOOM. A month or so back, we added page flipping to Quake, and made the
@@ -78,7 +78,7 @@ Tools*, AP Professional, ISBN 0-12-627230-1.
 
 Onward to rendering from a BSP tree.
 
-#### BSP-based Rendering {#Heading3}
+#### BSP-based Rendering
 
 For the last several chapters I've been discussing the nature of BSP
 (Binary Space Partitioning) trees, and in Chapter 60 I presented a
@@ -561,7 +561,7 @@ void UpdateWorld()
 }
 ```
 
-#### The Rendering Pipeline {#Heading4}
+#### The Rendering Pipeline
 
 Conceptually rendering from a BSP tree really is that simple, but the
 implementation is a bit more complicated. The full rendering pipeline,
@@ -582,7 +582,7 @@ detail. Some sources for further reading are *Computer Graphics*, by
 Foley and van Dam (ISBN 0-201-12110-7), and the *DDJ Essential Books on
 Graphics Programming* CD.
 
-### Moving the Viewer {#Heading5}
+### Moving the Viewer
 
 The sample BSP program performs first-person rendering; that is, it
 renders the world as seen from your eyes as you move about. The rate of
@@ -599,7 +599,7 @@ any tilted walls. For simplicity's sake, I have chosen not to implement
 this in Listing 62.1, but you may find it educational to add it to the
 program yourself.
 
-### Transformation into Viewspace {#Heading6}
+### Transformation into Viewspace
 
 The viewing angle (which controls direction of movement as well as view
 direction) can sweep through the full 360 degrees around the viewpoint,
@@ -626,7 +626,7 @@ values result in narrower fields of view.
 
 When this is done the walls are in viewspace, ready to be clipped.
 
-### Clipping {#Heading7}
+### Clipping
 
 In viewspace, the walls may be anywhere relative to the viewpoint: in
 front, behind, off to the side. We only want to draw those parts of
@@ -675,7 +675,7 @@ near clip plane guarantees that no remaining polygon point can have
 z\<=0, ensuring that when we project we'll always pass valid,
 y-clippable screenspace vertices to the polygon filler.
 
-### Projection to Screenspace {#Heading8}
+### Projection to Screenspace
 
 At this point, we have viewspace vertices for each wall that's at least
 partially visible. All we have to do is project these vertices according
@@ -686,7 +686,7 @@ as the last step for visible walls in `ClipWalls()`.
 
 ![**Figure 62.3**  *Why y clipping is more complex than x or z clipping.*](images/62-03.jpg)
 
-### Walking the Tree, Backface Culling and Drawing {#Heading9}
+### Walking the Tree, Backface Culling and Drawing
 
 Now that we have all the walls clipped to the frustum, with vertices
 projected into screen coordinates, all we have to do is draw them back
@@ -744,7 +744,7 @@ the new frame to the screen. The frame of animation is complete.
 
 ![**Figure 62.4**  *Fast backspace culling test in screenspace.*](images/62-04.jpg)
 
-#### Notes on the BSP Renderer {#Heading10}
+#### Notes on the BSP Renderer
 
 Listing 62.1 is far from complete or optimal. There is no such thing as
 a tiny BSP rendering demo, because 3D rendering, even when based on a

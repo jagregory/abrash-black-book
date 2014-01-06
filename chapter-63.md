@@ -11,9 +11,9 @@ pages: 1163-1175
 ---
 
 ## Chapter 63\
- Floating-Point for Real-Time 3-D {#Heading1}
+ Floating-Point for Real-Time 3-D
 
-### Knowing When to Hurl Conventional Math Wisdom Out the Window {#Heading2}
+### Knowing When to Hurl Conventional Math Wisdom Out the Window
 
 In a crisis, sometimes it's best to go with the first solution that
 comes into your head—but not very often.
@@ -94,7 +94,7 @@ quickly assumptions that once were completely valid can deteriorate.
 
 For example, consider floating-point math.
 
-### Not Your Father's Floating-Point {#Heading3}
+### Not Your Father's Floating-Point
 
 Until last year, I had never done any serious floating-point (FP)
 optimization, for the perfectly good reason that FP math had never been
@@ -132,7 +132,7 @@ this chapter I'll examine the basics of Pentium FP optimization, then
 look at how some key mathematical techniques for 3-D—dot product, cross
 product, transformation, and projection—can be accelerated.
 
-### Pentium Floating-Point Optimization {#Heading4}
+### Pentium Floating-Point Optimization
 
 I'm going to assume you're already familiar with x86 FP code in general;
 for additional information, check out Intel's *Pentium Processor User's
@@ -188,7 +188,7 @@ instructions starts. There's a more exciting possibility here, though:
 Given properly structured code, the FPU is capable of averaging 1 cycle
 per FADD, FSUB, or FMUL. The secret is pipelining.
 
-#### Pipelining, Latency, and Throughput {#Heading5}
+#### Pipelining, Latency, and Throughput
 
 The Pentium's FPU is the first pipelined x86 FPU. *Pipelining* means
 that the FPU is capable of starting an instruction every cycle, and can
@@ -258,7 +258,7 @@ two instructions. When dependencies like this occur, the FPU runs at
 latency rather than throughput speeds, and performance can drop by as
 much as two-thirds.
 
-#### FXCH {#Heading6}
+#### FXCH
 
 One piece of the puzzle is still missing. Clearly, to get maximum
 throughput, we need to interleave FP instructions, such that at any one
@@ -297,7 +297,7 @@ multiplications, without incurring any stalls, as shown in Listing 63.1.
         faddp   st(2),st(0)     ;starts on cycle 6
 ```
 
-### The Dot Product {#Heading7}
+### The Dot Product
 
 Now we're ready to look at fast FP for common 3-D operations; we'll
 start by looking at how to speed up the dot product. As discussed in
@@ -355,7 +355,7 @@ potential, as we'll see when we discuss transformation.
                                 ; ends on cycle 14
 ```
 
-### The Cross Product {#Heading8}
+### The Cross Product
 
 When last we looked at the cross product, we found that it's handy for
 generating a vector that's normal to two other vectors. The cross
@@ -442,7 +442,7 @@ of properly managing the Pentium's FP pipeline.
                                   ; ends on cycle 21
 ```
 
-### Transformation {#Heading9}
+### Transformation
 
 Transforming a point, for example from worldspace to viewspace, is one
 of the most heavily used FP operations in realtime 3-D. Conceptually,
@@ -528,7 +528,7 @@ certainly feasible; at a frame rate of 30 Hz, that's an impressive
                                     ; ends on cycle 33
 ```
 
-### Projection {#Heading10}
+### Projection
 
 The final optimization we'll look at is projection to screenspace.
 Projection itself is basically nothing more than a divide (to get 1/z),
@@ -554,7 +554,7 @@ precision-related problems, such as clipped values that vary more than
 you'd expect from the precise clip point, or the need for using larger
 epsilons in comparisons for point-on-plane tests.
 
-### Rounding Control {#Heading11}
+### Rounding Control
 
 Another useful area that I can note only in passing here is that of
 leaving the FPU in a particular rounding mode while performing bulk
@@ -576,7 +576,7 @@ A final note: There are some speed-ups to be had by manipulating FP
 variables with integer instructions. Check out Chris Hecker's column in
 the February/March 1996 issue of *Game Developer* for details.
 
-### A Farewell to 3-D Fixed-Point {#Heading12}
+### A Farewell to 3-D Fixed-Point
 
 As with most optimizations, there are both benefits and hazards to
 floating-point acceleration, especially pedal-to-the-metal optimizations

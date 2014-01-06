@@ -8,7 +8,7 @@ category: 'Web and Software Development: Game Development,Web and Software Devel
   Graphics and Multimedia Development'
 ---
 
-# Acknowledgments {#Heading1}
+# Acknowledgments
 
 There are many people to thank—because this book was written over many
 years, in many different settings, an unusually large number of people

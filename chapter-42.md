@@ -11,9 +11,9 @@ pages: 773-792
 ---
 
 ## Chapter 42\
- Wu'ed in Haste; Fried, Stewed at Leisure {#Heading1}
+ Wu'ed in Haste; Fried, Stewed at Leisure
 
-### Fast Antialiased Lines Using Wu's Algorithm {#Heading2}
+### Fast Antialiased Lines Using Wu's Algorithm
 
 The thought first popped into my head as I unenthusiastically picked
 through the salad bar at a local "family" restaurant, trying to decide
@@ -74,7 +74,7 @@ be accomplished on inexpensive, mass-market hardware with the proper
 programming perspective. In short, it's a splendid example of
 appropriate technology for PCs.
 
-### Wu Antialiasing {#Heading3}
+### Wu Antialiasing
 
 Antialiasing, as we've been discussing for the past few chapters, is the
 process of smoothing lines and edges so that they appear less jagged.
@@ -128,7 +128,7 @@ possible drawing speed—of an AT-bus VGA. In short, Wu antialiasing is
 about as fast an antialiased line approach as you could ever hope to
 find for the VGA.
 
-### Tracing and Intensity in One {#Heading4}
+### Tracing and Intensity in One
 
 Horizontal, vertical, and diagonal lines do not require Wu antialiasing
 because they pass through the center of every pixel they meet; such
@@ -331,7 +331,7 @@ void DrawWuLine(int X0, int Y0, int X1, int Y1, int BaseColor, int NumLevels,
 }
 ```
 
-### Sample Wu Antialiasing {#Heading5}
+### Sample Wu Antialiasing
 
 The true test of any antialiasing technique is how good it looks, so
 let's have a look at Wu antialiasing in action. Listing 42.1 is a C
@@ -929,7 +929,7 @@ _DrawWuLine endp
         end
 ```
 
-#### Notes on Wu Antialiasing {#Heading6}
+#### Notes on Wu Antialiasing
 
 Wu antialiasing can be applied to any curve for which it's possible to
 calculate at each step the positions and intensities of two bracketing

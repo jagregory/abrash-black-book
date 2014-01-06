@@ -11,9 +11,9 @@ pages: 793-815
 ---
 
 ## Chapter 43\
- Bit-Plane Animation {#Heading1}
+ Bit-Plane Animation
 
-### A Simple and Extremely Fast Animation Method for Limited Color {#Heading2}
+### A Simple and Extremely Fast Animation Method for Limited Color
 
 When it comes to computers, my first love is animation. There's nothing
 quite like the satisfaction of fooling the eye and creating a miniature
@@ -87,7 +87,7 @@ resources, and that you can do remarkable things if you understand those
 resources and come up with creative ways to put them to work at specific
 tasks.
 
-### Bit-Planes: The Basics {#Heading3}
+### Bit-Planes: The Basics
 
 The underlying principle of bit-plane animation is extremely simple. The
 VGA has four separate bit planes in modes 0DH, 0EH, 10H, and 12H. Plane
@@ -141,7 +141,7 @@ You bet.
 
 ![**Figure 43.3**  *The problem of overlapping colors.*](images/43-03.jpg)
 
-#### Stacking the Palette Registers {#Heading4}
+#### Stacking the Palette Registers
 
 Suppose that instead of viewing the four bits per pixel coming out of
 display memory as selecting one of sixteen colors,we view those bits as
@@ -217,7 +217,7 @@ chosen to make plane 0 the highest precedence only because it seems
 simplest to think of plane 0 as appearing in front of plane 1, which is
 in front of plane 2, which is in front of plane 3.
 
-### Bit-Plane Animation in Action {#Heading5}
+### Bit-Plane Animation in Action
 
 Without further ado, Listing 43.1 shows bit-plane animation in action.
 Listing 43.1 animates 13 rather large images (each 32 pixels on a side)
@@ -793,7 +793,7 @@ Bit-plane animation with bit-aligned images and internal animation can
 look truly spectacular. It's a sight worth seeing, particularly for
 those who doubt the PC's worth when it comes to animation.
 
-### Limitations of Bit-Plane Animation {#Heading6}
+### Limitations of Bit-Plane Animation
 
 As I've said, bit-plane animation is not perfect. For starters,
 bit-plane animation can only be used in the VGA's planar modes, modes
@@ -877,7 +877,7 @@ the images in a given plane marching along in step in a continuous band.
 The images could never overlap, so bit-plane animation would produce
 very high image quality.
 
-### Shearing and Page Flipping {#Heading7}
+### Shearing and Page Flipping
 
 As Listing 43.1 runs, you may occasionally see an image shear, with the
 top and bottom parts of the image briefly offset. This is a consequence
@@ -942,7 +942,7 @@ conjunction with page flipping, bit-plane animation looks a little
 better but is slower, and the overall animation scheme is more difficult
 to implement and perhaps a bit less reliable on some computers.
 
-### Beating the Odds in the Jaw-Dropping Contest {#Heading8}
+### Beating the Odds in the Jaw-Dropping Contest
 
 Bit-plane animation is neat stuff. Heck, good animation of *any* sort is
 fun, and the PC is as good a place as any (well, almost any) to make

@@ -11,9 +11,9 @@ pages: 1031-1044
 ---
 
 ## Chapter 55\
- Color Modeling in 256-Color Mode {#Heading1}
+ Color Modeling in 256-Color Mode
 
-### Pondering X-Sharp's Color Model in an RGB State of Mind {#Heading2}
+### Pondering X-Sharp's Color Model in an RGB State of Mind
 
 Once she turned six, my daughter wanted some fairly sophisticated books
 read to her*. Wind in the Willows.* *Little House on the Prairie.*
@@ -44,7 +44,7 @@ color on a 256-color display adapter such as the VGA. Coincidentally,
 VGA color modeling just happens to be this chapter's topic, and the
 place to start is with color modeling in general.
 
-#### A Color Model {#Heading3}
+#### A Color Model
 
 We've been developing X-Sharp for several chapters now. In the previous
 chapter, we added illumination sources and shading; that addition makes
@@ -340,7 +340,7 @@ To experiment with a different 256-color model in X-Sharp, just change
 `ModelColorToColorIndex()` to map 24-bit RGB triplets into the palette
 you've set up. It's that simple, and the results can be striking indeed.
 
-#### A Bonus from the BitMan {#Heading4}
+#### A Bonus from the BitMan
 
 Finally, a note on fast VGA text, which came in from a correspondent who
 asked to be referred to simply as the BitMan. The BitMan passed along a

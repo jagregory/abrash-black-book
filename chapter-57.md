@@ -11,9 +11,9 @@ pages: 1061-1075
 ---
 
 ## Chapter 57\
- 10,000 Freshly Sheared Sheep on the Screen {#Heading1}
+ 10,000 Freshly Sheared Sheep on the Screen
 
-### The Critical Role of Experience in Implementing Fast, Smooth Texture Mapping {#Heading2}
+### The Critical Role of Experience in Implementing Fast, Smooth Texture Mapping
 
 I recently spent an hour or so learning how to shear a sheep. Among
 other things, I learned—in great detail—about the importance of
@@ -42,7 +42,7 @@ graphics-programming approaches and algorithms. Second, computer
 graphics is a matter of illusion, of convincing the eye to see what you
 want it to see, and that's very much a black art based on experience.
 
-#### Visual Quality: A Black Hole ... Er, Art {#Heading3}
+#### Visual Quality: A Black Hole ... Er, Art
 
 Pleasing the eye with realtime computer animation is something less than
 a science, at least at the PC level, where there's a limited color
@@ -76,7 +76,7 @@ continuous motion, much like watching a badly flickering movie.
 > and blend the images together into continuous motion. Only experience
 > can give you a feel for that sweet spot.
 
-#### Fixed-Point Arithmetic, Redux {#Heading4}
+#### Fixed-Point Arithmetic, Redux
 
 In the previous chapter I added texture mapping to X-Sharp, but lacked
 space to explain some of its finer points. I'll pick up the thread now
@@ -135,7 +135,7 @@ Experience again: It's the difference between knowing which flaws (like
 small texture shifts) can reasonably be ignored, and which (like those
 that produce gaps between polygons) must be avoided at all costs.
 
-#### Texture Mapping: Orientation Independence {#Heading5}
+#### Texture Mapping: Orientation Independence
 
 The double-DDA texture-mapping code presented in the previous chapter
 worked adequately, but there were two things about it that left me less
@@ -249,7 +249,7 @@ void ScanOutLine(EdgeScan * LeftEdge, EdgeScan * RightEdge)
 }
 ```
 
-#### Mapping Textures across Multiple Polygons {#Heading6}
+#### Mapping Textures across Multiple Polygons
 
 One of the truly nifty things about double-DDA texture mapping is that
 it is not limited to mapping a texture onto a single polygon. A single

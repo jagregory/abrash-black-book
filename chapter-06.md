@@ -11,9 +11,9 @@ pages: 125-133
 ---
 
 ## Chapter 6\
- Looking Past Face Value {#Heading1}
+ Looking Past Face Value
 
-### How Machine Instructions May Do More Than You Think {#Heading2}
+### How Machine Instructions May Do More Than You Think
 
 I first met Jeff Duntemann at an authors' dinner hosted by *PC Tech
 Journal* at Fall Comdex, back in 1985. Jeff was already reasonably
@@ -95,7 +95,7 @@ disadvantage every time you sit down to program.
 In short, the x86 family can do much more than you think—if you'll use
 everything it has to offer. Give it a shot!
 
-#### Memory Addressing and Arithmetic {#Heading3}
+#### Memory Addressing and Arithmetic
 
 Years ago, I saw a clip on the David Letterman show in which Letterman
 walked into a store by the name of "Just Lamps" and asked, "So what do
@@ -169,7 +169,7 @@ calculations are free on the Pentium, however. I'll discuss 486
 performance issues in Chapters 12 and 13, and the Pentium in Chapters 19
 through 21.
 
-### Math via Memory Addressing {#Heading4}
+### Math via Memory Addressing
 
 You're probably not particularly wowed to hear that you can use
 addressing modes to perform memory addressing arithmetic that would
@@ -235,7 +235,7 @@ and Pentium, `LEA` can also be slowed down by addressing interlocks.
 
 ![**Figure 6.1**  *Operation of ADD Reg,Reg vs. LEA Reg,{Addr}.*](images/06-01.jpg)
 
-#### The Wonders of LEA on the 386 {#Heading5}
+#### The Wonders of LEA on the 386
 
 `LEA` really comes into its own as a "super-ADD" instruction on the
 386, 486, and Pentium, where it can take advantage of the enhanced
@@ -282,7 +282,7 @@ add  edi,offset TableBase
 
 when pointing to an entry in a doubly indexed table.
 
-### Multiplication with LEA Using Non-Powers of Two {#Heading6}
+### Multiplication with LEA Using Non-Powers of Two
 
 Are you impressed yet with all that `LEA` can do on the 386? Believe
 it or not, one more feature still awaits us. `LEA` can actually

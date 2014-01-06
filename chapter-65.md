@@ -11,9 +11,9 @@ pages: 1191-1208
 ---
 
 ## Chapter 65\
- 3-D Clipping and Other Thoughts {#Heading1}
+ 3-D Clipping and Other Thoughts
 
-### Determining What's Inside Your Field of View {#Heading2}
+### Determining What's Inside Your Field of View
 
 Our part of the world is changing, and I'm concerned. By way of
 explanation, three anecdotes.
@@ -100,7 +100,7 @@ circulated a good bit of info about 3-D graphics, and plan to keep on
 doing it as long as I can. Next, we're going to take a look at 3-D
 clipping.
 
-### 3-D Clipping Basics {#Heading3}
+### 3-D Clipping Basics
 
 Before I got deeply into 3-D, I kept hearing how difficult 3-D clipping
 was, so I was pleasantly surprised when I actually got around to doing
@@ -137,7 +137,7 @@ ways to speed up clipping under various circumstances, some of which
 I'll mention, but the material covered below will give you the tools you
 need to implement functional 3-D clipping.
 
-#### Intersecting a Line Segment with a Plane {#Heading4}
+#### Intersecting a Line Segment with a Plane
 
 The fundamental 3-D clipping operation is clipping a line segment to a
 plane. There are two parts to this operation: determining if the line is
@@ -246,7 +246,7 @@ y, and z lengths of the line segment by that fraction, and add the
 results to the inside endpoint, we get a new, clipped endpoint at the
 point of intersection.
 
-### Polygon Clipping {#Heading5}
+### Polygon Clipping
 
 Line clipping is fine for wireframe rendering, but what we really want
 to do is polygon rendering of solid models, which requires polygon
@@ -345,7 +345,7 @@ intersection with the clip plane can be used to advance the texture
 coordinates as well, so only one extra multiply and one extra add are
 required for each texture coordinate.
 
-#### Clipping to the Frustum {#Heading6}
+#### Clipping to the Frustum
 
 Given a polygon-clipping function, it's easy to clip to the frustum: set
 up the four planes for the sides of the frustum, with another one or two
@@ -669,7 +669,7 @@ void UpdateWorld()
 }
 ```
 
-#### The Lessons of Listing 65.3 {#Heading7}
+#### The Lessons of Listing 65.3
 
 There are several interesting points to Listing 65.3. First,
 floating-point arithmetic is used throughout the clipping process. While
@@ -731,7 +731,7 @@ viewspace, then clipping them. However, the decision whether to clip in
 worldspace or viewspace is not clear-cut and is affected by several
 factors.
 
-### Advantages of Viewspace Clipping {#Heading8}
+### Advantages of Viewspace Clipping
 
 Although viewspace clipping requires transforming vertices that may not
 be drawn, it has potential performance advantages. For example, in
@@ -771,7 +771,7 @@ the more frustum clipping you're doing, especially if most of the
 polygons are trivially visible, the more attractive the performance
 advantages of normalized clipping become.
 
-### Further Reading {#Heading9}
+### Further Reading
 
 You now have the basics of 3-D clipping, but because fast clipping is
 central to high-performance 3-D, there's a lot more to be learned. One

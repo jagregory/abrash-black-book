@@ -11,9 +11,9 @@ pages: 136-148
 ---
 
 ## Chapter 7\
- Local Optimization {#Heading1}
+ Local Optimization
 
-### Optimizing Halfway between Algorithms and Cycle Counting {#Heading2}
+### Optimizing Halfway between Algorithms and Cycle Counting
 
 You might not think it, but there's much to learn about performance
 programming from the Great Buffalo Sauna Fiasco. To wit:
@@ -88,7 +88,7 @@ possible given the capabilities of the x86 family instruction set.
 And yes, in case you're wondering, the above story is indeed true. Was I
 there? Let me put it this way: If I were, I'd never admit it!
 
-#### When LOOP Is a Bad Idea {#Heading3}
+#### When LOOP Is a Bad Idea
 
 Let's examine first an instruction that is less than it appears to be:
 `LOOP`. There's no mystery about what `LOOP` does; it decrements CX
@@ -144,7 +144,7 @@ jz      SkipLoop         ;If field is 0, don't bother
 will do just fine and is faster on all processors. Use `JCXZ` only
 when the Zero flag isn't already set to reflect the status of CX.
 
-### The Lessons of LOOP and JCXZ {#Heading4}
+### The Lessons of LOOP and JCXZ
 
 What can we learn from `LOOP` and `JCXZ`? First, that a single
 instruction that is intended to do a complex task is not necessarily
@@ -167,7 +167,7 @@ published cycle times are closer to actual execution times on the 386
 and 486 than on the 8088, and are reasonably reliable indicators of the
 relative performance levels of x86 instructions.
 
-#### Avoiding LOOPS of Any Stripe {#Heading5}
+#### Avoiding LOOPS of Any Stripe
 
 Cycle counting and directly substituting instructions (`DEC CX/JNZ`
 for `LOOP`, for example) are techniques that belong at the lowest
@@ -180,7 +180,7 @@ caught up in counting cycles because that's a small (albeit important)
 part of the optimization picture, and not the area in which your
 greatest advantage lies.
 
-### Local Optimization {#Heading6}
+### Local Optimization
 
 One level at which assembly language programming pays off handsomely is
 that of *local optimization;* that is, selecting the best *sequence* of
@@ -327,7 +327,7 @@ SearchMaxLengthendp
       end   Start
 ```
 
-### Unrolling Loops {#Heading7}
+### Unrolling Loops
 
 Listing 7.2 takes a different tack, unrolling the loop so that four
 bytes are checked for each `LOOP` performed. The same instructions are
@@ -490,7 +490,7 @@ avenues.
 > as building blocks with unique characteristics rather than as
 > instructions dedicated to specific tasks.
 
-#### Rotating and Shifting with Tables {#Heading8}
+#### Rotating and Shifting with Tables
 
 As another example of local optimization, consider the matter of
 rotating or shifting a mask into position. First, let's look at the
@@ -558,7 +558,7 @@ BIT_PATTERN=BIT_PATTERN SHL 1
 > optimization rule: Move as much work as possible out of your critical
 > code by whatever means necessary.
 
-#### NOT Flips Bits—Not Flags {#Heading9}
+#### NOT Flips Bits—Not Flags
 
 The `NOT` instruction flips all the bits in the operand, from 0 to 1
 or from 1 to 0. That's as simple as could be, but `NOT` nonetheless
@@ -586,7 +586,7 @@ and which flags are set, for example—can be critical when you're trying
 to optimize a code sequence and you're running out of registers, or when
 you're trying to minimize branching.
 
-#### Incrementing with and without Carry {#Heading10}
+#### Incrementing with and without Carry
 
 Another case in which there are two slightly different ways to perform a
 task involves adding 1 to an operand. You can do this with `INC`, as

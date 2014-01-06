@@ -11,9 +11,9 @@ pages: 461-479
 ---
 
 ## Chapter 25\
- VGA Data Machinery {#Heading1}
+ VGA Data Machinery
 
-### The Barrel Shifter, Bit Mask, and Set/Reset Mechanisms {#Heading2}
+### The Barrel Shifter, Bit Mask, and Set/Reset Mechanisms
 
 In the last chapter, we examined a simplified model of data flow within
 the GC portion of the VGA, featuring the latches and ALUs. Now we're
@@ -21,7 +21,7 @@ ready to expand that model to include the barrel shifter, bit mask, and
 the set/reset capabilities, leaving only the write modes to be explored
 over the next few chapters.
 
-### VGA Data Rotation {#Heading3}
+### VGA Data Rotation
 
 Figure 25.1 shows an expanded model of GC data flow, featuring the
 barrel shifter and bit mask circuitry. Let's look at the barrel shifter
@@ -60,7 +60,7 @@ I'll demonstrate that application below. In general, though, don't knock
 yourself out trying to figure out how to work data rotation into your
 programs—it just isn't all that useful in most cases.
 
-### The Bit Mask {#Heading4}
+### The Bit Mask
 
 The VGA has bit mask circuitry for each of the four memory planes. The
 four bit masks operate in parallel and are all driven by the same mask
@@ -403,7 +403,7 @@ complex."
 
 He's got a point there.
 
-### The VGA's Set/Reset Circuitry {#Heading5}
+### The VGA's Set/Reset Circuitry
 
 At last we come to the final aspect of data flow through the GC on write
 mode 0 writes: the set/reset circuitry. Figure 25.3 shows data flow on a
@@ -530,7 +530,7 @@ cseg    ends
         end     start
 ```
 
-#### Setting All Planes to a Single Color {#Heading6}
+#### Setting All Planes to a Single Color
 
 The set/reset circuitry can be used to force some planes to 0-bits and
 others to 1-bits during a single write, while letting CPU data go to
@@ -680,7 +680,7 @@ cseg    ends
         end     start
 ```
 
-#### Manipulating Planes Individually {#Heading7}
+#### Manipulating Planes Individually
 
 Listing 25.4 illustrates the use of set/reset to control only some,
 rather than all, planes. Here, the set/reset circuitry forces plane 2 to
@@ -826,7 +826,7 @@ you force all bits in each plane to either zero or one, or pass CPU data
 through unchanged, on each write to display memory. As tools go,
 set/reset is a handy one, and it'll pop up often in this book.
 
-### Notes on Set/Reset {#Heading8}
+### Notes on Set/Reset
 
 The set/reset circuitry is not active in write modes 1 or 2. The Enable
 Set/Reset register is inactive in write mode 3, but the Set/Reset
@@ -845,7 +845,7 @@ discussed in the next chapter.
 > selected planes; the set/reset value is then processed in exactly the
 > same way that CPU data normally is.
 
-### A Brief Note on Word OUTs {#Heading9}
+### A Brief Note on Word OUTs
 
 In the early days of the EGA and VGA, there was considerable debate
 about whether it was safe to do word `OUT`s (`OUT DX,AX`) to set

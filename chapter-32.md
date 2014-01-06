@@ -11,9 +11,9 @@ pages: 607-622
 ---
 
 ## Chapter 32\
- Be It Resolved: 360x480 {#Heading1}
+ Be It Resolved: 360x480
 
-### Taking 256-Color Modes About as Far as the Standard VGA Can Take Them {#Heading2}
+### Taking 256-Color Modes About as Far as the Standard VGA Can Take Them
 
 In the last chapter, we learned how to coax 320x400 256-color resolution
 out of a standard VGA. At the time, I noted that the VGA was actually
@@ -36,7 +36,7 @@ the line-drawing code that we'll develop in Chapter 35. Together, those
 routines will make a pretty nifty demo of the capabilities of 360x480
 256-color mode.
 
-### Extended 256-Color Modes: What's Not to Like? {#Heading3}
+### Extended 256-Color Modes: What's Not to Like?
 
 When last we left 256-color programming, we had found that the standard
 256-color mode, mode 13H, which officially offers 320x200 resolution,
@@ -101,7 +101,7 @@ undocumented, offers a better combination of resolution and color; even
 In other words, 360x480 256-color mode is worth considering—so let's
 have a look.
 
-### 360x480 256-Color Mode {#Heading4}
+### 360x480 256-Color Mode
 
 I'm going to start by showing you 360x480 256-color mode in action,
 after which we'll look at how it works. I suspect that once you see what
@@ -585,7 +585,7 @@ significant chunk of the market for your code.)
 Now that we've seen the wonders of which our new mode is capable, let's
 take the time to understand how it works.
 
-### How 360x480 256-Color Mode Works {#Heading5}
+### How 360x480 256-Color Mode Works
 
 In describing 360x480 256-color mode, I'm going to assume that you're
 familiar with the discussion of 320x400 256-color mode in the last
@@ -597,7 +597,7 @@ myself when the goods are just a few page flips (the paper kind) away.
 stretched in both dimensions. Let's look at the vertical stretching
 first, since that's the simpler of the two.
 
-#### 480 Scan Lines per Screen: A Little Slower, But No Big Deal {#Heading6}
+#### 480 Scan Lines per Screen: A Little Slower, But No Big Deal
 
 There's nothing unusual about 480 scan lines; standard modes 11H and 12H
 support that vertical resolution. The number of scan lines has nothing
@@ -620,7 +620,7 @@ isn't *bad*—that's the only refresh rate the EGA ever supported, and the
 EGA was the industry standard in its time—but it does tend to flicker a
 little more and so is a little harder on the eyes than 70 Hz.
 
-#### 360 Pixels per Scan Line: No Mean Feat {#Heading7}
+#### 360 Pixels per Scan Line: No Mean Feat
 
 Converting from 320 to 360 pixels per scan line is more difficult than
 converting from 400 to 480 scan lines per screen. None of the VGA's
@@ -682,7 +682,7 @@ resolution, as well.
 Once all that's done, the VGA is in 360x480 mode, awaiting our every
 high-resolution 256-color graphics whim.
 
-#### Accessing Display Memory in 360x480 256-Color Mode {#Heading8}
+#### Accessing Display Memory in 360x480 256-Color Mode
 
 Setting up for 360x480 256-color mode proved to be quite a task. Is
 drawing in this mode going to be as difficult?

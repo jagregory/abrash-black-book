@@ -13,9 +13,9 @@ pages: 423-448
 # Part II
 
 ## Chapter 23\
- Bones and Sinew {#Heading1}
+ Bones and Sinew
 
-### At the Very Heart of Standard PC Graphics {#Heading2}
+### At the Very Heart of Standard PC Graphics
 
 The VGA is unparalleled in the history of computer graphics, for it is
 by far the most widely-used graphics standard ever, the closest we may
@@ -50,7 +50,7 @@ well underway.
 We'll start our exploration with a quick overview of the VGA, and then
 we'll dive right in and get a taste of what the VGA can do.
 
-### The VGA {#Heading3}
+### The VGA
 
 The VGA is the baseline adapter for modern IBM PC compatibles, present
 in virtually every PC sold today or in the last several years. (Note
@@ -103,7 +103,7 @@ rather to start you down the road to understanding the VGA.
 
 Let's begin.
 
-### An Introduction to VGA Programming {#Heading4}
+### An Introduction to VGA Programming
 
 Most discussions of the VGA start out with a traditional "Here's a block
 diagram of the VGA" approach, with lists of registers and statistics.
@@ -128,7 +128,7 @@ conceptual level, letting the code itself demonstrate the implementation
 details. We'll return to many of these concepts in more depth later in
 this book.
 
-### At the Core {#Heading5}
+### At the Core
 
 A little background is necessary before we're ready to examine Listing
 23.1. The VGA is built around four functional blocks, named the CRT
@@ -247,7 +247,7 @@ fixed. Moreover, a great deal of graphics software now uses word
 > course, this method only works if the GC Index register remains
 > unchanged throughout the loop.
 
-#### Linear Planes and True VGA Modes {#Heading6}
+#### Linear Planes and True VGA Modes
 
 The VGA's memory is organized as four 64K planes. Each of these planes
 is a linear bitmap; that is, each byte from a given plane controls eight
@@ -867,7 +867,7 @@ cseg    ends
         end     start
 ```
 
-#### Smooth Panning {#Heading7}
+#### Smooth Panning
 
 The first thing you'll notice upon running the sample program is the
 remarkable smoothness with which the display pans from side-to-side and
@@ -972,7 +972,7 @@ should be set to 1.
 > reinventing the wheel and because the BIOS may well mask
 > incompatibilities between the IBM VGA and VGA clones.
 
-#### Color Plane Manipulation {#Heading8}
+#### Color Plane Manipulation
 
 The VGA provides a considerable amount of hardware assistance for
 manipulating the four display memory planes. Two features illustrated by
@@ -1050,7 +1050,7 @@ first pass; the VGA is a complicated beast, and learning about it is an
 iterative process. We'll be going over these features again, in
 different contexts, over the course of the rest of this book.
 
-#### Page Flipping {#Heading9}
+#### Page Flipping
 
 When animated graphics are drawn directly on the screen, with no
 intermediate frame-composition stage, the image typically flickers
@@ -1156,7 +1156,7 @@ designing programs for the VGA.
 To see the program run in 640x200 16-color mode, comment out the `EQU`
 line for `MEDRES_VIDEO_MODE`.
 
-### The Hazards of VGA Clones {#Heading10}
+### The Hazards of VGA Clones
 
 Earlier, I said that any VGA that doesn't support the features and
 functionality covered in this book can't properly be called VGA
@@ -1186,7 +1186,7 @@ is that if you're going to use oversized virtual bitmaps and pan around
 them, you should take great care to test your software on a wide variety
 of VRAM- and DRAM-based VGAs.
 
-### Just the Beginning {#Heading11}
+### Just the Beginning
 
 That pretty well covers the important points of the sample VGA program
 in Listing 23.1. There are many VGA features we didn't even touch on,
@@ -1196,7 +1196,7 @@ VGA's resources, and in general to give you an initial sense of what VGA
 programming is like. Starting with the next chapter, we'll begin to
 explore the VGA systematically, on a more detailed basis.
 
-### The Macro Assembler {#Heading12}
+### The Macro Assembler
 
 The code in this book is written in both C and assembly. I think C is a
 good development environment, but I believe that often the best code

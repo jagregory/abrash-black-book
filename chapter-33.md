@@ -11,9 +11,9 @@ pages: 623-636
 ---
 
 ## Chapter 33\
- Yogi Bear and Eurythmics Confront VGA Colors {#Heading1}
+ Yogi Bear and Eurythmics Confront VGA Colors
 
-### The Basics of VGA Color Generation {#Heading2}
+### The Basics of VGA Color Generation
 
 Kevin Mangis wants to know about the VGA's 4-bit to 8-bit to 18-bit
 color translation. Mansur Loloyan would like to find out how to generate
@@ -60,7 +60,7 @@ and the Digital Differential Analyzer," by Tim Paterson, is a good
 article about fast circle drawing, a topic we'll tackle soon. All in
 all, the dog days of 1990 were good times for graphics.
 
-### VGA Color Basics {#Heading3}
+### VGA Color Basics
 
 Briefly put, the VGA color translation circuitry takes in one 4- or
 8-bit pixel value at a time and translates it into three 6-bit values,
@@ -69,7 +69,7 @@ analog levels and sent to the monitor. Seems simple enough, doesn't it?
 Unfortunately, nothing is ever that simple on the VGA, and color
 translation is no exception.
 
-#### The Palette RAM {#Heading4}
+#### The Palette RAM
 
 The color path in the VGA involves two stages, as shown in Figure 33.1.
 The first stage fetches a 4-bit pixel from display memory and feeds it
@@ -91,7 +91,7 @@ attribute. In 256-color mode, which we'll get to eventually, the palette
 RAM is not a factor from the programmer's perspective and should be left
 alone.
 
-#### The DAC {#Heading5}
+#### The DAC
 
 Once the EGA-compatible palette RAM has fulfilled its karma and
 performed 4-bit to 6-bit translation on a pixel, the resulting value is
@@ -125,7 +125,7 @@ higher the number, the brighter the color, with 0 turning that color off
 in the pixel and 63 (3FH) making that color maximum brightness. Got all
 that?
 
-#### Color Paging with the Color Select Register {#Heading6}
+#### Color Paging with the Color Select Register
 
 "Wait a minute," you say bemusedly. "Aren't you missing some bits
 between the palette RAM and the DAC?" Indeed I am. The palette RAM puts
@@ -173,7 +173,7 @@ out of the circuit and simplifies life something wonderful. The palette
 RAM exists solely for EGA compatibility, and serves no useful purpose
 that I know of for VGA-only color programming.
 
-#### 256-Color Mode {#Heading7}
+#### 256-Color Mode
 
 So far I've spoken only of 16-color modes; what of 256-color modes?
 
@@ -193,7 +193,7 @@ VGA chip to the DAC come from display memory. Therefore, there is no
 color paging in 256-color mode. Of course, that makes sense given that
 all 256 DAC registers are simultaneously in use in 256-color mode.
 
-#### Setting the Palette RAM {#Heading8}
+#### Setting the Palette RAM
 
 The palette RAM can be programmed either directly or through BIOS
 interrupt 10H, function 10H. I strongly recommend using the BIOS
@@ -227,7 +227,7 @@ Having said that, let's leave the palette RAM behind (presumably in a
 pass-through state) and move on to the DAC, which is the right place to
 do color translation on the VGA.
 
-#### Setting the DAC {#Heading9}
+#### Setting the DAC
 
 Like the palette RAM, the DAC registers can be set either directly or
 through the BIOS. Again, the BIOS should be used whenever possible, but
@@ -264,7 +264,7 @@ consists of three bytes; the first byte is a 6-bit red component, the
 second byte is a 6-bit green component, and the third byte is a 6-bit
 blue component, as illustrated by Listing 33.1.
 
-### If You Can't Call the BIOS, Who Ya Gonna Call? {#Heading10}
+### If You Can't Call the BIOS, Who Ya Gonna Call?
 
 Although the palette RAM and DAC registers should be set through the
 BIOS whenever possible, there are times when the BIOS is not the best
@@ -340,7 +340,7 @@ In the meantime, if you can use the BIOS to set the DAC, do so; then you
 won't have to worry about the real and potential complications of
 setting the DAC directly.
 
-### An Example of Setting the DAC {#Heading11}
+### An Example of Setting the DAC
 
 This chapter has gotten about as big as a chapter really ought to be;
 the VGA color saga will continue in the next few. Quickly, then, Listing

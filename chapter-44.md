@@ -11,9 +11,9 @@ pages: 817-837
 ---
 
 ## Chapter 44\
- Split Screens Save the Page Flipped Day {#Heading1}
+ Split Screens Save the Page Flipped Day
 
-### 640x480 Page Flipped Animation in 64K...Almost {#Heading2}
+### 640x480 Page Flipped Animation in 64K...Almost
 
 Almost doesn't count, they say—at least in horseshoes and maybe a few
 other things. This is especially true in digital circles, where if you
@@ -38,7 +38,7 @@ groundwork first. Or maybe a lot of groundwork.
 
 No horseshoes here.
 
-#### A Plethora of Challenges {#Heading3}
+#### A Plethora of Challenges
 
 In its simplest terms, computer animation consists of rapidly redrawing
 similar images at slightly differing locations, so that the eye
@@ -66,7 +66,7 @@ invisible to the user; only the end result should ever be seen. Both of
 these requirements are met by the program presented in Listings 44.1 and
 44.2.
 
-#### A Page Flipping Animation Demonstration {#Heading4}
+#### A Page Flipping Animation Demonstration
 
 The listings taken together form a sample animation program, in which a
 single object bounces endlessly off other objects, with instructions and
@@ -977,7 +977,7 @@ screens drawn and cross-referencing that to the BIOS timer count
 periodically, accelerating the overall pace of the animation (moving
 farther each time and the like) if updates are happening too slowly.
 
-#### Enter the Split Screen {#Heading9}
+#### Enter the Split Screen
 
 So far, I've discussed page flipping in 640x350 mode. There's a reason
 for that: 640x350 is the highest-resolution standard mode in which

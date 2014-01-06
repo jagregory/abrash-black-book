@@ -11,9 +11,9 @@ pages: 679-693
 ---
 
 ## Chapter 36\
- The Good, the Bad, and the Run-Sliced {#Heading1}
+ The Good, the Bad, and the Run-Sliced
 
-### Faster Bresenham Lines with Run-Length Slice Line Drawing {#Heading2}
+### Faster Bresenham Lines with Run-Length Slice Line Drawing
 
 Years ago, I worked at a company that asked me to write blazingly fast
 line-drawing code for an AutoCAD driver. I implemented the basic
@@ -107,7 +107,7 @@ algorithm, which just happens to be an excellent example of a minimized
 state machine. In case you're fuzzy on the good/bad performance thing,
 that's "good"—as in *fast*.
 
-### Run-Length Slice Fundamentals {#Heading3}
+### Run-Length Slice Fundamentals
 
 First off, I have a confession to make: I'm not sure that the algorithm
 I'll discuss is actually, precisely Bresenham's run-length slice
@@ -171,7 +171,7 @@ redundant work is preferable.
 
 ![**Figure 36.3**  *Runs in a slope 1/3.5 line.*](images/36-03.jpg)
 
-### Run-Length Slice Implementation {#Heading4}
+### Run-Length Slice Implementation
 
 We know that for any line, a given run will always be one of two
 possible lengths. How, though, do we know which length to select?
@@ -242,7 +242,7 @@ actually write the pixel to display memory.
 
 That's good.
 
-### Run-Length Slice Details {#Heading5}
+### Run-Length Slice Details
 
 A couple of run-length slice implementation details yet remain. First is
 the matter of how error-term turnover is detected. This is done in much

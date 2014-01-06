@@ -11,9 +11,9 @@ pages: 1046-1059
 ---
 
 ## Chapter 56\
- Pooh and the Space Station {#Heading1}
+ Pooh and the Space Station
 
-### Using Fast Texture Mapping to Place Pooh on a Polygon {#Heading2}
+### Using Fast Texture Mapping to Place Pooh on a Polygon
 
 So, here's where Winnie the Pooh lives: in a space station orbiting
 Saturn. No, really; I have it straight from my daughter, and an
@@ -71,7 +71,7 @@ someone were standing in the window....
 
 The rest is history.
 
-### Principles of Quick-and-Dirty Texture Mapping {#Heading3}
+### Principles of Quick-and-Dirty Texture Mapping
 
 The key to our texture-mapping approach will be to quickly determine
 what pixel value to draw for each pixel in the transformed destination
@@ -96,7 +96,7 @@ slower.
 ![**Figure 56.1**  *Using reverse transformation to find the source pixel
 color.*](images/56-01.jpg)
 
-#### Mapping Textures Made Easy {#Heading4}
+#### Mapping Textures Made Easy
 
 To understand how we're going to map textures, consider Figure 56.2,
 which maps a bitmapped image directly onto an untransformed polygon.
@@ -190,7 +190,7 @@ the source image.*](images/56-04.jpg)
 
 ![**Figure 56.5**  *Mapping a texture onto a narrower polygon.*](images/56-05.jpg)
 
-#### Notes on DDA Texture Mapping {#Heading5}
+#### Notes on DDA Texture Mapping
 
 That's all there is to quick-and-dirty texture mapping. This technique
 basically uses a two-stage digital differential analyzer (DDA) approach
@@ -247,7 +247,7 @@ performs DDA texture mapping. First, though, I'd like to take a moment
 to thank Jim Kent, author of Autodesk Animator and a frequent
 correspondent, for getting me started with the DDA approach.
 
-### Fast Texture Mapping: An Implementation {#Heading6}
+### Fast Texture Mapping: An Implementation
 
 As you might expect, I've implemented DDA texture mapping in X-Sharp,
 and the changes are reflected in the X-Sharp archive in this chapter's

@@ -13,9 +13,9 @@ pages: 004-019
 # Part I
 
 ## Chapter 1\
- The Best Optimizer Is between Your Ears {#Heading1}
+ The Best Optimizer Is between Your Ears
 
-### The Human Element of Code Optimization {#Heading2}
+### The Human Element of Code Optimization
 
 This book is devoted to a topic near and dear to my heart: writing
 software that pushes PCs to the limit. Given run-of-the-mill software,
@@ -51,7 +51,7 @@ this book, we're going to work some of those wonders, starting...
 
 ...now.
 
-### Understanding High Performance {#Heading3}
+### Understanding High Performance
 
 Before we can create high-performance code, we must understand what high
 performance is. The objective (not always attained) in creating
@@ -93,7 +93,7 @@ touch, however.
 "What's a fast slow program?" you ask. That's a good question, and a
 brief (true) story is perhaps the best answer.
 
-#### When Fast Isn't Fast {#Heading4}
+#### When Fast Isn't Fast
 
 In the early 1970s, as the first hand-held calculators were hitting the
 market, I knew a fellow named Irwin. He was a good student, and was
@@ -123,7 +123,7 @@ grand scheme of things—and they scarcely matter at all unless they're
 used in the context of a good design and a thorough understanding of
 both the task at hand and the PC.
 
-### Rules for Building High-Performance Code {#Heading5}
+### Rules for Building High-Performance Code
 
 We've got the following rules for creating high-performance software:
 
@@ -148,7 +148,7 @@ the real world. For my money, examining some actual working code is
 always a good way to get a handle on programming concepts, so let's look
 at some of the performance rules in action.
 
-#### Know Where You're Going {#Heading6}
+#### Know Where You're Going
 
 If we're going to create high-performance code, first we have to know
 what that code is going to do. As an example, let's write a program that
@@ -161,7 +161,7 @@ with the checksum value other than print it out, however; right now
 we're only interested in generating that checksum value as rapidly as
 possible.
 
-#### Make a Big Map {#Heading7}
+#### Make a Big Map
 
 How are we going to generate a checksum value for a specified file? The
 logical approach is to get the file name, open the file, read the bytes
@@ -169,7 +169,7 @@ out of the file, add them together, and print the result. Most of those
 actions are straightforward; the only tricky part lies in reading the
 bytes and adding them together.
 
-#### Make Lots of Little Maps {#Heading8}
+#### Make Lots of Little Maps
 
 Actually, we're only going to make one little map, because we only have
 one program section that requires much thought—the section that reads
@@ -390,7 +390,7 @@ design, optimization just creates fast slow code.
 Well, then, how are we going to improve our design? Before we can do
 that, we have to understand what's wrong with the current design.
 
-#### Know the Territory {#Heading9}
+#### Know the Territory
 
 Just why is Listing 1.1 so slow? In a word: overhead. The C library
 implements the `read()` function by calling DOS to read the desired
@@ -481,7 +481,7 @@ main(int argc, char *argv[]) {
 }
 ```
 
-#### Know When It Matters {#Heading10}
+#### Know When It Matters
 
 The last section contained a particularly interesting phrase: *the
 time-critical portions of your code*. Time-critical portions of your
@@ -514,7 +514,7 @@ Besides, we don't want to optimize until the design is refined to our
 satisfaction, and that won't be the case until we've thought about other
 approaches.
 
-#### Always Consider the Alternatives {#Heading11}
+#### Always Consider the Alternatives
 
 Listing 1.4 is good, but let's see if there are other—perhaps less
 obvious—ways to get the same results faster. Let's start by considering
@@ -658,7 +658,7 @@ At any rate, Listing 1.5 isn't much more complicated than Listing
 1.4—and it's a *lot* faster. Always consider the alternatives; a bit of
 clever thinking and program redesign can go a long way.
 
-#### Know How to Turn On the Juice {#Heading12}
+#### Know How to Turn On the Juice
 
 I have said time and again that optimization is pointless until the
 design is settled. When that time comes, however, optimization can
@@ -808,7 +808,7 @@ specific case.
 All this is basically a way of saying: Know where you're going, know the
 territory, and know when it matters.
 
-### Where We've Been, What We've Seen {#Heading13}
+### Where We've Been, What We've Seen
 
 What have we learned? Don't let other people's code—even DOS—do the work
 for you when speed matters, at least not without knowing what that code
@@ -825,7 +825,7 @@ light of Table 1.1, does it? Your organic optimizer matters much more
 than your compiler's optimizer, and there's always assembly for those
 usually small sections of code where performance really matters.
 
-#### Where We're Going {#Heading14}
+#### Where We're Going
 
 This chapter has presented a quick step-by-step overview of the design
 process. I'm not claiming that this is the only way to create

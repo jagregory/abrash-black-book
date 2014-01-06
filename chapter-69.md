@@ -11,9 +11,9 @@ pages: 1257-1271
 ---
 
 ## Chapter 69\
- Surface Caching and Quake's Triangle Models {#Heading1}
+ Surface Caching and Quake's Triangle Models
 
-### Probing Hardware-Assisted Surfaces and Fast Model Animation Without Sprites {#Heading2}
+### Probing Hardware-Assisted Surfaces and Fast Model Animation Without Sprites
 
 In the late '70s, I spent a summer doing contract programming at a
 government-funded installation called the Northeast Solar Energy Center
@@ -83,7 +83,7 @@ and the more information we have, the better. In that spirit, let's look
 at more of the stuff that makes Quake tick, starting with what I've
 recently learned about surface caching.
 
-### Surface Caching with Hardware Assistance {#Heading3}
+### Surface Caching with Hardware Assistance
 
 In Chapter 68, I discussed in detail the surface caching technique that
 Quake uses to do detailed, high-quality lighting without lots of
@@ -135,7 +135,7 @@ the case in software. Second, there are at least two alternatives that
 preserve the advantages of surface caching without many of the
 disadvantages noted above.
 
-#### Letting the Graphics Card Build the Textures {#Heading4}
+#### Letting the Graphics Card Build the Textures
 
 One obvious solution is to have the accelerator card build the textures,
 rather than having the CPU build and then download them. This eliminates
@@ -157,7 +157,7 @@ as it stores them in texture memory. Better yet, some accelerators
 support 8-bpp palettized hardware textures that are expanded to 16-bpp
 on the fly during texturing.)
 
-#### The Light Map as Alpha Texture {#Heading5}
+#### The Light Map as Alpha Texture
 
 Another appealing non-caching approach is doing unlit texture-mapping in
 one pass, then lighting from the light map as a second pass, using the
@@ -193,7 +193,7 @@ heavily toward hardware accelerators, and at this point it's a tossup
 whether the engine will use surface caching, Gouraud shading, or
 two-pass lighting.
 
-### Drawing Triangle Models {#Heading6}
+### Drawing Triangle Models
 
 Most of the last group of chapters in this book discuss how Quake works.
 If you look closely, though, you'll see that almost all of the
@@ -212,7 +212,7 @@ discuss some interesting aspects of our triangle-model architecture, and
 present code for one useful approach for the rapid drawing of triangle
 models.
 
-#### Drawing Triangle Models Fast {#Heading7}
+#### Drawing Triangle Models Fast
 
 We would have liked one rendering model, and hence one graphics
 pipeline, for all drawing in Quake; this would have simplified the code
@@ -256,7 +256,7 @@ between the vertices that suffer slight warping.
 
 ![**Figure 69.1**  *Quake's triangle-model drawing pipeline.*](images/69-01.jpg)
 
-#### Trading Subpixel Precision for Speed {#Heading8}
+#### Trading Subpixel Precision for Speed
 
 Another sacrifice at the altar of performance was subpixel precision.
 Before each triangle is drawn, we snap its vertices to the nearest
@@ -290,7 +290,7 @@ so the model is always lit from the same direction. Somewhat
 surprisingly, in practice this looks considerably better than pure
 ambient lighting.
 
-#### An Idea that Didn't Work {#Heading9}
+#### An Idea that Didn't Work
 
 As we implemented triangle models, we tried several ideas that didn't
 work out. One that's notable because it seems so appealing is caching a
@@ -328,7 +328,7 @@ if necessary, but the sprite architecture just had the feeling of being
 fundamentally not the right approach, so we tried thinking along
 different lines.
 
-#### An Idea that Did Work {#Heading10}
+#### An Idea that Did Work
 
 John Carmack had the notion that it was just way too much effort per
 pixel to do all the work of scanning out the tiny triangles in distant
@@ -519,7 +519,7 @@ D_PolysetRecursiveTriangle (lp3, new, lp2);
 
 ![**Figure 69.2**  *One recursive subdivision triangle-drawing step.*](images/69-02.jpg)
 
-#### More Ideas that Might Work {#Heading11}
+#### More Ideas that Might Work
 
 Useful as subdivision rasterization proved to be, we by no means think
 that we've maxed out triangle-model drawing, if only because we spent

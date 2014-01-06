@@ -11,9 +11,9 @@ pages: 931-949
 ---
 
 ## Chapter 50\
- Adding a Dimension {#Heading1}
+ Adding a Dimension
 
-### 3-D Animation Using Mode X {#Heading2}
+### 3-D Animation Using Mode X
 
 When I first started programming micros, more than 11 years ago now,
 there wasn't much money in it, or visibility, or anything you could call
@@ -84,7 +84,7 @@ In a sense, I've saved the best for last, because, to my mind, real-time
 be done with a computer—and because, with today's hardware, it can in
 fact be done. Nay, it can be done amazingly well.
 
-### References on 3-D Drawing {#Heading3}
+### References on 3-D Drawing
 
 There are several good sources for information about 3-D graphics. Foley
 and van Dam's *Computer Graphics: Principles and Practice* (Second
@@ -113,7 +113,7 @@ you're just starting out, you might want to look at one and see if it
 helps you bridge the gap between the theory and implementation of 3-D
 graphics.
 
-### The 3-D Drawing Pipeline {#Heading4}
+### The 3-D Drawing Pipeline
 
 Each 3-D object that we'll handle will be built out of polygons that
 represent the surface of the object. Figure 50.1 shows the stages a
@@ -160,7 +160,7 @@ twice as far away as a coordinate of (0,0,-500).
 
 ![**Figure 50.2**  *A right-handed coordinate system.*](images/50-02.jpg)
 
-#### Projection {#Heading5}
+#### Projection
 
 Working backward from the final image, we want to take the vertices of a
 polygon, as transformed into view space, and project them to 2-D
@@ -182,7 +182,7 @@ projected X and Y coordinates to integers, appropriately clipped and
 adjusted as necessary to center the origin on the screen or otherwise
 map the image into a window, if desired.
 
-#### Translation {#Heading6}
+#### Translation
 
 *Translation* means adding X, Y, and Z offsets to a coordinate to move
 it linearly through space. Translation is as simple as it seems; it
@@ -193,7 +193,7 @@ the object may be located anywhere.
 
 ![**Figure 50.3**  *Perspective projection.*](images/50-03.jpg)
 
-#### Rotation {#Heading7}
+#### Rotation
 
 *Rotation* is the process of circularly moving coordinates around the
 origin. For our present purposes, it's necessary only to rotate objects
@@ -225,7 +225,7 @@ There's much more to be said about transformations and the supporting
 matrix math, but, in the interests of getting to working code in this
 chapter, I'll leave that to be discussed as the need arises.
 
-### A Simple 3-D Example {#Heading8}
+### A Simple 3-D Example
 
 At this point, we know enough to be able to put together a simple
 working 3-D animation example. The example will do nothing more
@@ -755,7 +755,7 @@ void main() {
 }
 ```
 
-#### Notes on the 3-D Animation Example {#Heading9}
+#### Notes on the 3-D Animation Example
 
 The sample program transforms the polygon's vertices from object space
 to world space to view space to the screen, as described earlier. In
@@ -812,7 +812,7 @@ it rotates. This is temporal aliasing at its finest! We won't address
 antialiasing further, realtime antialiasing being decidedly nontrivial,
 but this should give you an idea of why antialiasing is so desirable.
 
-### An Ongoing Journey {#Heading10}
+### An Ongoing Journey
 
 In the next chapter, we'll assign fronts and backs to polygons, and
 start drawing only those that are facing the viewer. That will enable us

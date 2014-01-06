@@ -11,9 +11,9 @@ pages: 561-585
 ---
 
 ## Chapter 30\
- Video Est Omnis Divisa {#Heading1}
+ Video Est Omnis Divisa
 
-### The Joys and Galling Problems of Using Split Screens on the EGA and VGA {#Heading2}
+### The Joys and Galling Problems of Using Split Screens on the EGA and VGA
 
 The ability to split the screen into two largely independent portions
 one—displayed above the other on the screen—is one of the more
@@ -33,7 +33,7 @@ we do have some ground to cover.
 
 Let's start with the basic operation of the split screen.
 
-### How the Split Screen Works {#Heading3}
+### How the Split Screen Works
 
 The *operation* of the split screen is simplicity itself. A split screen
 start scan line value is programmed into two EGA registers or three VGA
@@ -97,7 +97,7 @@ line displayed; the safest such approach is to set all bits of the split
 screen start scan line to 1. (That is, in fact, the split screen start
 scan line value programmed by the BIOS during a mode set.)
 
-#### The Split Screen in Action {#Heading4}
+#### The Split Screen in Action
 
 All of these points are illustrated by Listing 30.1. Listing 30.1 fills
 display memory starting at offset zero (the split screen area of memory)
@@ -509,7 +509,7 @@ Code    ends
         end    Start
 ```
 
-#### VGA and EGA Split-Screen Operation Don't Mix {#Heading5}
+#### VGA and EGA Split-Screen Operation Don't Mix
 
 You must set the `IS_VGA` equate at the start of Listing 30.1 
 correctly for the adapter the code will run on in order for the program
@@ -537,7 +537,7 @@ highest-resolution mode the VGA and EGA share. That's not the only mode
 the split screen works in, however. In fact, it works in *all* modes, as
 we'll see later.
 
-### Setting the Split-Screen-Related Registers {#Heading6}
+### Setting the Split-Screen-Related Registers
 
 Setting the split-screen-related registers is not as simple a matter as
 merely outputting the right values to the right registers; timing is
@@ -585,7 +585,7 @@ aware that the VGA supports 70 Hz frame rates in all non-480-scan-line
 modes, while the VGA in 480-scan-line-modes and the EGA in all color
 modes support 60 Hz frame rates.
 
-### The Problem with the EGA Split Screen {#Heading7}
+### The Problem with the EGA Split Screen
 
 I mentioned earlier that the EGA's split screen is a little buggy. How?
 you may well ask, particularly given that Listing 30.1 illustrates that
@@ -618,7 +618,7 @@ split screen is on. This isn't a bug—it's just one of the many areas in
 which the VGA's designers learned from the shortcomings of the EGA and
 went the EGA one better.
 
-### Split Screen and Panning {#Heading8}
+### Split Screen and Panning
 
 Back in Chapter 23, I presented a program that performed smooth
 horizontal panning. Smooth horizontal panning consists of two parts:
@@ -661,7 +661,7 @@ can be used to produce an attractive "streaming tape" effect in the
 normal screen while the split screen is used to display non-moving
 information.
 
-#### The Split Screen and Horizontal Panning: An Example {#Heading9}
+#### The Split Screen and Horizontal Panning: An Example
 
 Listing 30.2 illustrates the interaction of horizontal smooth panning
 with the split screen, as well as the suppression of pel panning in the
@@ -1107,7 +1107,7 @@ Codeends
 endStart
 ```
 
-### Notes on Setting and Reading Registers {#Heading10}
+### Notes on Setting and Reading Registers
 
 There are a few interesting points regarding setting and reading
 registers to be made about Listing 30.2. First, bit 5 of the AC Index
@@ -1190,7 +1190,7 @@ What if you wanted to pan faster? Well, you could of course just move
 two pixels at a time rather than one; I assure you no one will ever
 notice when you're panning at a rate of 10 or more times per second.
 
-### Split Screens in Other Modes {#Heading11}
+### Split Screens in Other Modes
 
 So far we've only discussed the split screen in mode 10H. What about
 other modes? Generally, the split screen works in any mode; the basic
@@ -1226,7 +1226,7 @@ noticeable on-screen effects depends on the text displayed by a
 particular application; for example, there should be no problem if the
 split screen has a border of blanks on the left side.
 
-### How Safe? {#Heading12}
+### How Safe?
 
 So, how safe *is* it to use the split screen? My opinion is that it's
 perfectly safe, although I'd welcome input from people with extensive

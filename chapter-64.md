@@ -11,9 +11,9 @@ pages: 1177-1190
 ---
 
 ## Chapter 64\
- Quake's Visible-Surface Determination {#Heading1}
+ Quake's Visible-Surface Determination
 
-### The Challenge of Separating All Things Seen from All Things Unseen {#Heading2}
+### The Challenge of Separating All Things Seen from All Things Unseen
 
 Years ago, I was working at Video Seven, a now-vanished video adapter
 manufacturer, helping to develop a VGA clone. The fellow who was
@@ -83,7 +83,7 @@ seemingly outlandish ideas can open up new design possibilities for you.
 
 Case in point: The evolution of Quake's 3-D graphics engine.
 
-### VSD: The Toughest 3-D Challenge of All {#Heading3}
+### VSD: The Toughest 3-D Challenge of All
 
 I've spent most of my waking hours for the last several months working
 on Quake, id Software's successor to DOOM, and I suspect I have a few
@@ -119,7 +119,7 @@ detailed. Already, a good-sized Quake level contains on the order of
 10,000 polygons, about three times as many polygons as a comparable DOOM
 level.
 
-### The Structure of Quake Levels {#Heading4}
+### The Structure of Quake Levels
 
 Before diving into VSD, let me note that each Quake level is stored as a
 single huge 3-D BSP tree. This BSP tree, like any BSP, subdivides space,
@@ -135,7 +135,7 @@ the boundaries of the BSP leaves, facing inward, the polygons in a given
 leaf can never obscure one another and can be drawn in any order. (This
 is a general property of convex polyhedra.)
 
-### Culling and Visible Surface Determination {#Heading5}
+### Culling and Visible Surface Determination
 
 The process of VSD would ideally work as follows: First, you would cull
 all polygons that are completely outside the view frustum (view
@@ -172,7 +172,7 @@ the world, more transformations and tests have to be performed to cull
 polygons that aren't visible; at some point, that will bog considerably
 performance down.
 
-#### Nodes Inside and Outside the View Frustum {#Heading6}
+#### Nodes Inside and Outside the View Frustum
 
 Happily, there's a good workaround for this particular problem. As
 discussed earlier, each leaf of a BSP tree represents a convex subspace,
@@ -199,7 +199,7 @@ specifically for culling tests.
 So culling to the frustum isn't a problem, and the BSP can be used to
 draw back-to- front. What, then, *is* the problem?
 
-### Overdraw {#Heading7}
+### Overdraw
 
 The problem John Carmack, the driving technical force behind DOOM and
 Quake, faced when he designed Quake was that in a complex world, many
@@ -241,7 +241,7 @@ By three months after I arrived, only one element of the original VSD
 design was anywhere in sight, and John had taken the dictum of "try new
 things" farther than I'd ever seen it taken.
 
-### The Beam Tree {#Heading8}
+### The Beam Tree
 
 John's original Quake design was to draw front-to-back, using a second
 BSP tree to keep track of what parts of the screen were already drawn
@@ -294,7 +294,7 @@ proved to suffer from much the same malady as the painter's algorithm:
 The worst case was much worse than the average case, and it didn't scale
 well with increasing level complexity.
 
-### 3-D Engine du Jour {#Heading9}
+### 3-D Engine du Jour
 
 Once the beam tree was working, John relentlessly worked at speeding up
 the 3-D engine, always trying to improve the design, rather than
@@ -311,7 +311,7 @@ are some of those approaches, presented in minimal detail in the hopes
 that, like Tom Wilson with the Paradise FIFO, your imagination will be
 sparked.
 
-#### Subdividing Raycast {#Heading10}
+#### Subdividing Raycast
 
 Rays are cast in an 8x8 screen-pixel grid; this is a highly efficient
 operation because the first intersection with a surface can be found by
@@ -324,7 +324,7 @@ This scales very well, being limited by the number of pixels, with no
 overdraw. The problem is dropouts; it's quite possible for small
 polygons to fall between rays and vanish.
 
-#### Vertex-Free Surfaces {#Heading11}
+#### Vertex-Free Surfaces
 
 The world is represented by a set of surface planes. The polygons are
 implicit in the plane intersections, and are extracted from the planes
@@ -332,7 +332,7 @@ as a final step before drawing. This makes for fast clipping and a very
 small data set (planes are far more compact than polygons), but it's
 time-consuming to extract polygons from planes.
 
-#### The Draw-Buffer {#Heading12}
+#### The Draw-Buffer
 
 Like a z-buffer, but with 1 bit per pixel, indicating whether the pixel
 has been drawn yet. This eliminates overdraw, but at the cost of an
@@ -344,7 +344,7 @@ for drawing 0-8 pixels, in the process possibly taking advantage of the
 ability of the x86 to do the perspective floating-point divide in
 parallel while 8 pixels are processed.
 
-#### Span-Based Drawing {#Heading13}
+#### Span-Based Drawing
 
 Polygons are rasterized into spans, which are added to a global span
 list and clipped against that list so that only the nearest span at each
@@ -353,7 +353,7 @@ because if there's any overlap, the span already in the list is nearer.
 This eliminates overdraw, but at the cost of a lot of span arithmetic;
 also, every polygon still has to be turned into spans.
 
-#### Portals {#Heading14}
+#### Portals
 
 The holes where polygons are missing on surfaces are tracked, because
 it's only through such portals that line-of-sight can extend. Drawing
@@ -363,7 +363,7 @@ portals remain visible. Applied recursively, this allows drawing only
 the visible portions of visible polygons, but at the cost of a
 considerable amount of portal clipping.
 
-### Breakthrough! {#Heading15}
+### Breakthrough!
 
 In the end, John decided that the beam tree was a sort of second-order
 structure, reflecting information already implicitly contained in the
@@ -421,7 +421,7 @@ still-in-development sorted-edge rasterizer that completely eliminates
 overdraw, comes remarkably close to meeting the "perfect-world"
 specifications we laid out at the start.
 
-### Simplify, and Keep on Trying New Things {#Heading16}
+### Simplify, and Keep on Trying New Things
 
 What does it all mean? Exactly what I said up front: Simplify, and keep
 trying new things. The precalculated PVS is simpler than any of the
@@ -463,7 +463,7 @@ things better with less code.
 
 So far, it seems to have worked out pretty well for him.
 
-### Learn Now, Pay Forward {#Heading17}
+### Learn Now, Pay Forward
 
 There's one other thing I'd like to mention before I close this chapter.
 Much of what I've learned, and a great deal of what I've written, has
@@ -494,7 +494,7 @@ in a vacuum; we all stand on the shoulders of giants such as Wirth and
 Knuth and thousands of others. Lend your shoulders to building the
 future!
 
-### References {#Heading18}
+### References
 
 Foley, James D., *et al.*, *Computer Graphics: Principles and Practice*,
 Addison Wesley, 1990, ISBN 0-201-12110-7 (beams, BSP trees, VSD).

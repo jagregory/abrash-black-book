@@ -11,9 +11,9 @@ pages: 322-346
 ---
 
 ## Chapter 17\
- The Game of Life {#Heading1}
+ The Game of Life
 
-### The Triumph of Algorithmic Optimization in a Cellular Automata Game {#Heading2}
+### The Triumph of Algorithmic Optimization in a Cellular Automata Game
 
 I've spent a lot of my life discussing assembly language optimization,
 which I consider to be an important and underappreciated topic. However,
@@ -40,7 +40,7 @@ we will find is that it's possible to get a 50-times speed-up without
 using *one byte of assembly!* It's all a matter of perspective—how you
 look at your code and data.
 
-### Conway's Game {#Heading3}
+### Conway's Game
 
 The program that we're going to optimize is Conway's famous Game of
 Life, long-ago favorite of the hackers at MIT's AI Lab. If you've never
@@ -64,7 +64,7 @@ speed-up range. Then in the next chapter, I'll show you how several
 programmers *really* floored it in taking me up on my second
 Optimization Challenge, which involved the Game of Life.
 
-#### The Rules of the Game {#Heading4}
+#### The Rules of the Game
 
 The Game of Life is ridiculously simple. There is a cellmap, consisting
 of a rectangular matrix of cells, each of which may initially be either
@@ -359,7 +359,7 @@ void show_text(int x, int y, char *text)
 }
 ```
 
-### Where Does the Time Go? {#Heading5}
+### Where Does the Time Go?
 
 How slow is Listing 17.1? Table 17.1 shows that even on a 486, Listing
 17.1 does fewer than three 96x96 generations per second. (The times in
@@ -415,7 +415,7 @@ at for possible optimizations are `cell_state()` and
 > knowing the nature of your data, and is a potent optimization technique
 > that will be extremely useful a little later in this chapter.
 
-### The Hazards and Advantages of Abstraction {#Heading6}
+### The Hazards and Advantages of Abstraction
 
 How can we speed up `cell_state()` and `next_generation()`? I'll
 tell you how *not* to do it: By writing those member functions in
@@ -685,7 +685,7 @@ assembly?
 
 Not hardly.
 
-### Heavy-Duty C++ Optimization {#Heading7}
+### Heavy-Duty C++ Optimization
 
 Before we get to assembly, we still have to perform C++ optimization,
 then see if we can find an alternative approach that better fits the
@@ -826,7 +826,7 @@ How is this possible? Here are some hints:
     bit-per-pixel.
   * Cells change state relatively infrequently.
 
-### Bringing In the Right Brain {#Heading8}
+### Bringing In the Right Brain
 
 In the previous section, we saw how a C++ program could be sped up about
 eight times simply by rearranging the data and code in straightforward
@@ -843,7 +843,7 @@ encourage you to saturate your brain with everything you know about any
 particular optimization problem, then make space for your right brain to
 solve the problem.
 
-#### Re-Examining the Task {#Heading9}
+#### Re-Examining the Task
 
 Earlier in this chapter, we looked at a straightforward Game of Life
 implementation, then increased performance considerably by making the
@@ -907,7 +907,7 @@ only one-tenth that of the original approach!
 
 ![**Figure 17.3**  *New cell format.*](images/17-03.jpg)
 
-#### Acting on What We Know {#Heading10}
+#### Acting on What We Know
 
 Once we've changed the cellmap format to store neighbor counts as well
 as states, with a byte for each cell, we can get another performance
@@ -1254,7 +1254,7 @@ No doubt we could get another two to five times improvement with good
 assembly code—but that's dwarfed by a 30-times improvement, so
 optimization at a conceptual level *must* come first.
 
-#### The Challenge That Ate My Life {#Heading11}
+#### The Challenge That Ate My Life
 
 The most recent optimization challenge I laid my community of readers
 was to write the fastest possible Game of Life generation engine. By

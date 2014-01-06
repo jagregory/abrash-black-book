@@ -11,9 +11,9 @@ pages: 1209-1222
 ---
 
 ## Chapter 66\
- Quake's Hidden-Surface Removal {#Heading1}
+ Quake's Hidden-Surface Removal
 
-### Struggling with Z-Order Solutions to the Hidden Surface Problem {#Heading2}
+### Struggling with Z-Order Solutions to the Hidden Surface Problem
 
 Okay, I admit it: I'm sick and tired of classic rock. Admittedly, it's
 been a while, about 20 years, since I was last excited to hear anything
@@ -55,7 +55,7 @@ I've found that they're often worth considering.
 Not that I should have needed any reminding, considering the
 ever-evolving nature of Quake.
 
-### Creative Flux and Hidden Surfaces {#Heading3}
+### Creative Flux and Hidden Surfaces
 
 Back in Chapter 64, I described the creative flux that led to John
 Carmack's decision to use a precalculated potentially visible set (PVS)
@@ -70,7 +70,7 @@ drawing perform the final stage of hidden-surface removal (HSR). This
 was a terrific idea, but it was far from the end of the road for Quake's
 design.
 
-#### Drawing Moving Objects {#Heading4}
+#### Drawing Moving Objects
 
 For one thing, there was still the question of how to sort and draw
 moving objects properly; in fact, this is the single technical question
@@ -102,7 +102,7 @@ drawing and z-filling of the world is done, we can simply draw the
 sprites and polygon models with z-buffering and get perfect sorting all
 around.
 
-#### Performance Impact {#Heading5}
+#### Performance Impact
 
 Whenever a z-buffer is involved, the questions inevitably are: What's
 the memory footprint and what's the performance impact? Well, the memory
@@ -117,7 +117,7 @@ vastly improved the visual quality and flexibility of the Quake engine,
 and also simplified the code quite a bit, at an acceptable memory and
 performance cost.
 
-#### Leveling and Improving Performance {#Heading6}
+#### Leveling and Improving Performance
 
 As I said above, in the Quake architecture, the world itself is drawn
 first, without z-buffer reads or compares, but filling the z-buffer with
@@ -158,7 +158,7 @@ than back-to-front drawing.
 
 And indeed there is.
 
-### Sorted Spans {#Heading7}
+### Sorted Spans
 
 The ideal final HSR stage for Quake would reject all the polygons in the
 PVS that are actually invisible, and draw only the visible pixels of the
@@ -214,7 +214,7 @@ implement, with a couple of major design choices to be made, a subtle
 mathematical element, and some tricky gotchas that I'll have to defer
 until Chapter 67. Let's look at the design choices first.
 
-### Edges versus Spans {#Heading8}
+### Edges versus Spans
 
 The first design choice is whether to sort spans or edges (both of which
 fall into the general category of "sorted spans"). Although the results
@@ -314,7 +314,7 @@ process, I'm going to have to make a few forward references to aspects
 of edge-sorting that I haven't yet covered in detail; my apologies, but
 it's unavoidable, and all should become clear by the end of Chapter 67.
 
-### Edge-Sorting Keys {#Heading9}
+### Edge-Sorting Keys
 
 Now that we know we're going to sort edges, using them to emit spans for
 the polygons nearest the viewer, the question becomes: How can we tell
@@ -389,7 +389,7 @@ floating-point math sounds expensive but really isn't, especially on a
 Pentium, where a plane's 1/z value at any point can be calculated in as
 little as six cycles in assembly language.
 
-#### Where That 1/Z Equation Comes From {#Heading10}
+#### Where That 1/Z Equation Comes From
 
 For those who are interested, here's a quick derivation of the 1/z
 equation. The plane equation for a plane is
@@ -410,7 +410,7 @@ Inverting and distributing yields:
 
 We'll see 1/z sorting in action in Chapter 67.
 
-#### Quake and Z-Sorting {#Heading11}
+#### Quake and Z-Sorting
 
 I mentioned earlier that Quake no longer uses BSP order as the sorting
 key; in fact, it uses 1/z as the key now. Elegant as the gradients are,
@@ -438,7 +438,7 @@ so they don't cross any solid world surfaces, to avoid complications
 associated with interpenetration), along with all the world edges, and
 1/z sorting takes care of the rest.
 
-### Decisions Deferred {#Heading12}
+### Decisions Deferred
 
 There is, without a doubt, an awful lot of information in the preceding
 pages, and it may not all connect together yet in your mind. The code
