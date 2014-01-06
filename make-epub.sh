@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 
 pandoc -S -o main.epub index.md intro.md about.md about_author.md \
- 01.md 02.md 03.md 04.md 05.md 06.md 07.md 08.md 09.md 10.md \
- 11.md 12.md 13.md 14.md 15.md 16.md 17.md 18.md 19.md 20.md \
- 21.md 22.md 23.md 24.md 25.md 26.md 27.md 28.md 29.md 30.md \
- 31.md 32.md 33.md 34.md 35.md 36.md 37.md 38.md 39.md 40.md \
- 41.md 42.md 43.md 44.md 45.md 46.md 47.md 48.md 49.md 50.md \
- 51.md 52.md 53.md 54.md 55.md 56.md 57.md 58.md 59.md 60.md \
- 61.md 62.md 63.md 64.md 65.md 66.md 67.md 68.md 69.md 70.md \
+ chapter-01.md chapter-02.md chapter-03.md chapter-04.md chapter-05.md \
+ chapter-06.md chapter-07.md chapter-08.md chapter-09.md chapter-10.md \
+ chapter-11.md chapter-12.md chapter-13.md chapter-14.md chapter-15.md \
+ chapter-16.md chapter-17.md chapter-18.md chapter-19.md chapter-20.md \
+ chapter-21.md chapter-22.md chapter-23.md chapter-24.md chapter-25.md \
+ chapter-26.md chapter-27.md chapter-28.md chapter-29.md chapter-30.md \
+ chapter-31.md chapter-32.md chapter-33.md chapter-34.md chapter-35.md \
+ chapter-36.md chapter-37.md chapter-38.md chapter-39.md chapter-40.md \
+ chapter-41.md chapter-42.md chapter-43.md chapter-44.md chapter-45.md \
+ chapter-46.md chapter-47.md chapter-48.md chapter-49.md chapter-50.md \
+ chapter-51.md chapter-52.md chapter-53.md chapter-54.md chapter-55.md \
+ chapter-56.md chapter-57.md chapter-58.md chapter-59.md chapter-60.md \
+ chapter-61.md chapter-62.md chapter-63.md chapter-64.md chapter-65.md \
+ chapter-66.md chapter-67.md chapter-68.md chapter-69.md chapter-70.md \
  appendix-a.md
