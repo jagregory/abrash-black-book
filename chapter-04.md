@@ -705,7 +705,7 @@ Listing 4.6.*](images/04-04.jpg)
      sub  al,al
      endm
      call ZTimerOff
- ```
+```
 
 As you can see, it's easy to be drawn into thinking you're saving cycles
 when you're not. You can only improve the performance of a specific bit
