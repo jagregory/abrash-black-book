@@ -265,7 +265,7 @@ even human figures). Just map the desired texture onto the underlying
 polygonal framework of an object, and let double-DDA texture mapping do
 the rest.
 
-#### Fast Texture Mapping {#Heading7 align="center"}
+#### Fast Texture Mapping
 
 Of course, there's a problem with mapping a texture across many
 polygons: Texture mapping is slow. If you run DEMO1 and move the ball up

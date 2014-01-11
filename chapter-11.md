@@ -195,7 +195,7 @@ to the memory architectures, the 8-bit bus cycle-eater is replaced by a
 new form of the wait state cycle-eater: wait states on accesses to
 normal system memory.
 
-#### System Wait States {#Heading6 align="center"}
+#### System Wait States
 
 The 286 and 386 were designed to lose relatively little performance to
 the prefetch queue cycle-eater...*when used with zero-wait-state
@@ -342,7 +342,7 @@ Of course, those are exactly the rules that apply to 8088 optimization
 as well. Isn't it convenient that the same general rules apply across
 the board?
 
-#### Data Alignment {#Heading7 align="center"}
+#### Data Alignment
 
 Thanks to its 16-bit bus, the 286 can access word-sized memory variables
 just as fast as byte-sized variables. There's a catch, however: That's
@@ -534,7 +534,7 @@ that consistently provides a reasonable return for bytes and effort
 expended, although sometimes it also pays to word-align tight
 time-critical loops.
 
-#### Alignment and the 386 {#Heading9 align="center"}
+#### Alignment and the 386
 
 So far we've only discussed alignment as it pertains to the 286. What,
 you may well ask, of the 386?
@@ -555,7 +555,7 @@ performance would dictate doubleword alignment of subroutines, that
 takes 3 bytes, a high price to pay for an optimization that improves
 performance *only* on the post 286 processors.
 
-#### Alignment and the Stack {#Heading10 align="center"}
+#### Alignment and the Stack
 
 One side-effect of the data alignment cycle-eater of the 286 and 386 is
 that you should *never* allow the stack pointer to become odd. (You can
@@ -580,7 +580,7 @@ slowly than it normally would. The same goes for decrementing twice; use
 > ![](images/i.jpg)
 > Keep the stack pointer aligned at all times.
 
-#### The DRAM Refresh Cycle-Eater: Still an Act of God {#Heading11 align="center"}
+#### The DRAM Refresh Cycle-Eater: Still an Act of God
 
 The DRAM refresh cycle-eater is the cycle-eater that's least changed
 from its 8088 form on the 286 and 386. In the AT, DRAM refresh uses a
@@ -606,7 +606,7 @@ an act of God, and there's not a blessed thing you can do about it.
 Happily, the internal caches of the 486 and Pentium make DRAM refresh
 largely a performance non-issue on those processors.
 
-#### The Display Adapter Cycle-Eater {#Heading12 align="center"}
+#### The Display Adapter Cycle-Eater
 
 Finally we come to the last of the cycle-eaters, the display adapter
 cycle-eater. There are two ways of looking at this cycle-eater on
@@ -782,7 +782,7 @@ unless you play some unorthodox tricks with the segment registers.
 > as Windows, so I'd recommend against using them. If you want 4-gigabyte
 > segments, use a 32-bit environment such as Win32.
 
-#### Optimization Rules: The More Things Change... {#Heading15 align="center"}
+#### Optimization Rules: The More Things Change...
 
 Let's see what we've learned about 286/386 optimization. Mostly what
 we've learned is that our familiar PC cycle-eaters still apply, although
@@ -805,7 +805,7 @@ that's the data alignment cycle-eater. From the data alignment
 cycle-eater we get a new rule: Word-align your word-sized variables, and
 start your subroutines at even addresses.
 
-#### Detailed Optimization {#Heading16 align="center"}
+#### Detailed Optimization
 
 While the major 8088 optimization rules hold true on computers built
 around the 286 and 386, many of the instruction-specific optimizations

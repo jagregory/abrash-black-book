@@ -965,7 +965,7 @@ There are other sorts of shading components, including transparency and
 atmospheric effects, but the ambient and diffuse-shading components are
 all we're going to deal with in X-Sharp.
 
-#### Ambient Shading {#Heading5 align="center"}
+#### Ambient Shading
 
 The basic model for both ambient and diffuse shading is a simple one.
 Each surface has a reflectivity between 0 and 1, where 0 means all light
@@ -988,7 +988,7 @@ available palette of colors; I'll do that in the next chapter. Ambient
 shading isn't the whole shading picture, though. In fact, scenes tend to
 look pretty bland without diffuse shading.
 
-#### Diffuse Shading {#Heading6 align="center"}
+#### Diffuse Shading
 
 Diffuse shading is more complicated than ambient shading, because the
 effective intensity of directed light falling on a surface depends on

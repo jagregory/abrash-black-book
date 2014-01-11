@@ -671,7 +671,7 @@ logic to produce more interesting and less predictable
 internal-animation effects, such as jumping, ducking, running, and the
 like.
 
-#### Dirty-Rectangle Management {#Heading6 align="center"}
+#### Dirty-Rectangle Management
 
 As mentioned above, dirty-rectangle animation makes it possible to
 access display memory a minimum number of times. The previous chapter's

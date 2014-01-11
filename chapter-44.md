@@ -712,7 +712,7 @@ at the maximum possible rate of once per frame even on a 1985-vintage
 8-MHz AT. In this case, faster performance would result only in a longer
 wait for the page to flip.
 
-#### Write Mode 3 {#Heading5 align="center"}
+#### Write Mode 3
 
 It's possible to update the bitmap very efficiently on the VGA, because
 the VGA can draw up to 8 pixels at once, and because the VGA provides a
@@ -819,7 +819,7 @@ coincidentally, the sample application draws only single-color objects
 within the animation area; this allows write mode 3 to be used for all
 drawing, in keeping with our desire for speedy screen updates.
 
-#### Drawing Text {#Heading6 align="center"}
+#### Drawing Text
 
 We'll need text in the sample application; is that also a good use for
 write mode 3? Sometimes it is, but not in this particular case.
@@ -870,7 +870,7 @@ are 10 ways to do it, each with unique strengths and weaknesses. Your
 mission, should you decide to accept it, is to figure out which one is
 best for your particular application.
 
-#### Page Flipping {#Heading7 align="center"}
+#### Page Flipping
 
 Now that we know how to update the screen reasonably quickly, it's time
 to get on to the fun stuff. Page flipping answers the second requirement
@@ -913,7 +913,7 @@ so on *ad infinitum.*
 
 ![**Figure 44.1**  *Memory allocation for mode 10h page flipping.*](images/44-01.jpg)
 
-#### Knowing When to Flip {#Heading8 align="center"}
+#### Knowing When to Flip
 
 There's a hitch, though, and that hitch is knowing exactly when it is
 that the page has flipped. The page doesn't flip the instant that you
