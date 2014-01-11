@@ -1,12 +1,38 @@
 body {
-  font: large/1.556 "Libertine", Palatino, "Palatino Linotype", "Book Antiqua", Georgia, "Times New Roman", serif;
+  font: large/1.556 Helvetica, Arial, sans-serif;
   margin: 5%;
-  word-spacing: 0.1em;
+  font-weight: 300;
+  width: 700px;
+  margin: 0 auto;
+}
+
+p {
+  text-align: justify;
 }
 
 code {
   font: medium Consolas, "Andale Mono", Monaco, "Liberation Mono", "Bitstream Vera Sans Mono", "DejaVu Sans Mono", monospace;
   white-space: pre;
+}
+
+h1, h2, h3, h4, h5, h6, blockquote {
+  font-family: "Libertine", Palatino, "Palatino Linotype", "Book Antiqua", Georgia, "Times New Roman", serif;
+  text-align: left;
+}
+
+blockquote {
+  margin: 2em 20px;
+  line-height: 1.4em;
+}
+
+blockquote p img {
+  float: left;
+  margin-right: 1em;
+}
+
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+  color: inherit;
+  text-decoration: none;
 }
 
 h1 {
@@ -21,16 +47,6 @@ h2 {
   line-height: 1.3125;
   margin: 1.167em 0;
   text-align: center;
-  text-align: left;
-}
-
-h3, h4, h5, h6 {
-  text-align: left;
-}
-
-h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
-  color: inherit;
-  text-decoration: none;
 }
 
 pre, table {
