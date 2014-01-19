@@ -12,4 +12,4 @@ html:
 epub:
 	mkdir -p out
 	rm -f out/black-book.epub
-	pandoc -S --to epub3 -o out/black-book.epub --epub-cover-image images/cover.jpg --toc --epub-chapter-level=2 --data-dir=epub --template=epub/template.html $(FILES)
+	pandoc -S --to epub3 -o out/black-book.epub --epub-cover-image images/cover.png --toc --epub-chapter-level=2 --data-dir=epub --template=epub/template.html $(FILES)
