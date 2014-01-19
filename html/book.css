@@ -49,9 +49,18 @@ h2 {
   text-align: center;
 }
 
+figure {
+  text-align: center;
+}
+
 pre, table {
   overflow: scroll;
   width: 100%;
+}
+
+caption {
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
 pre {
