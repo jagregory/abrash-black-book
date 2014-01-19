@@ -2,7 +2,7 @@ FILES=intro.md about.md about_author.md chapter-01.md chapter-02.md chapter-03.m
 
 .PHONY: html epub
 
-all: html epub
+all: html epub mobi
 
 html:
 	rm -rf out/html && mkdir -p out/html
@@ -13,3 +13,7 @@ epub:
 	mkdir -p out
 	rm -f out/black-book.epub
 	pandoc -S --to epub3 -o out/black-book.epub --epub-cover-image images/cover.png --toc --epub-chapter-level=2 --data-dir=epub --template=epub/template.html $(FILES)
+
+mobi: epub
+	rm -f out/black-book.mobi
+	kindlegen out/black-book.epub -c2
