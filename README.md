@@ -20,7 +20,7 @@ There's some larger changes that could be made to help perserve the content long
 
 ## Generating your own ebook
 
-You need to have the following software installed before you begin:
+You need to have the following software installed and on your `PATH` before you begin:
 
   * [pandoc](http://johnmacfarlane.net/pandoc/) for Markdown to HTML and Epub conversion.
   * [kindlegen](http://www.amazon.com/gp/feature.html?docId=1000765211) for Epub to Mobi conversion.
