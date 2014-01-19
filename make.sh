@@ -30,7 +30,8 @@ elif [[ "$TYPE" == "html" ]]; then
 	mkdir out/html
 	cp -r images out/html/
 	cp html/book.css out/html/
-	pandoc -S --to html5 -o out/html/black-book.html --section-divs --toc --standalone --template=html/template.html $FILES
+	pandoc -S --to html5 -o out/html/black-book.html --section-divs --toc \
+		--standalone --template=html/template.html $FILES
 else
 	echo 'Unknown type'
 	exit 1
