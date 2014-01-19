@@ -1,16 +1,10 @@
-body {
-  margin: 5%;
-  width: 700px;
-  margin: 0 auto;
-}
-
 code {
   font: medium Consolas, "Andale Mono", Monaco, "Liberation Mono", "Bitstream Vera Sans Mono", "DejaVu Sans Mono", monospace;
   white-space: pre;
 }
 
 blockquote {
-  font-size: 90%;
+  font-size: .9em;
   margin: 2em 20px;
   text-align: left;
 }
@@ -49,7 +43,7 @@ figure {
 }
 
 pre, table {
-  font-size: 75%;
+  font-size: .7em;
 }
 
 caption {
@@ -62,7 +56,7 @@ pre {
 }
 
 pre code {
-  font-size: 75%;
+  font-size: .7em;
 }
 
 nav#TOC > ul, nav#TOC > ul > li > ul {
