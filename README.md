@@ -12,6 +12,12 @@ The version which Michael and Dr. Dobbs released in 2001 was as a collection PDF
 
 This version has been thoroughly cleaned of artefacts and condensed into something which can be easily converted into a ebook friendly format. You can read this version online at Github, or download any of the Epub or Mobi releases. You can clone the repository and generate your own version with [pandoc](http://johnmacfarlane.net/pandoc/) if necessary.
 
+## Contributing
+
+Changes are welcome, especially conversion related ones. If you spot any issues whilst reading, please submit an issue and I'll correct it. Pull Requests are always welcome.
+
+There's some larger changes that could be made to help perserve the content longer term. I'd love to see some of the images converted to a vector representation so we can provide higher-resolution versions, and similarly formulas and maths could be represented in MathML.
+
 ## Generating your own ebook
 
 You need to have the following software installed before you begin:
