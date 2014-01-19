@@ -23,7 +23,8 @@ FILES='intro.md about.md about_author.md
 [ -d "out" ] || mkdir out
 
 if [[ "$TYPE" == "epub" || "$TYPE" == "" ]]; then
-	pandoc -S --to epub3 -o out/black-book.epub --toc --epub-chapter-level=2 --epub-cover-image=images/cover.jpg $FILES
+	pandoc -S --to epub3 -o out/black-book.epub --toc --epub-chapter-level=2 \
+		--data-dir=epub --template=epub/template.html $FILES
 elif [[ "$TYPE" == "html" ]]; then
 	rm -rf out/html
 	mkdir out/html

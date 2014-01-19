@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"$if(lang)$ xml:lang="$lang$"$endif$>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <title>$pagetitle$</title>
+$if(quotes)$
+  <style type="text/css">
+    q { quotes: "“" "”" "‘" "’"; }
+  </style>
+$endif$
+$if(highlighting-css)$
+  <style type="text/css">
+$highlighting-css$
+  </style>
+$endif$
+$for(css)$
+  <link rel="stylesheet" href="$css$" />
+$endfor$
+</head>
+<body>
+$if(titlepage)$
+  <h1 class="title">$title$</h1>
+$for(author)$
+  by <h2 class="author">$author$</h2>
+$endfor$
+$else$
+$body$
+$endif$
+</body>
+</html>
+
