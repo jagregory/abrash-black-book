@@ -33,3 +33,5 @@ To generate an e-reader friendly version of the book, you can use `make` with on
   * `all`  - do all of the above
 
 Once complete, there'll be an `out` directory with a `black-book.epub`, a `black-book.mobi` and a `html` directory with a `black-book.html` file.
+
+> Note: Generating a mobi requires an epub to already exist. Also, mobi generation can be *slow* because of compression. If you want a quick mobi conversion you can just run `kindlegen out/black-book.epub`.
