@@ -16,7 +16,7 @@ This version has been thoroughly cleaned of artefacts and condensed into somethi
 
 Changes are welcome, especially conversion related ones. If you spot any issues whilst reading, please submit an issue and I'll correct it. Pull Requests are always welcome.
 
-There's some larger changes that could be made to help perserve the content longer term. I'd love to see some of the images converted to a vector representation so we can provide higher-resolution versions, and similarly formulas and maths could be represented in MathML.
+There's some larger changes that could be made to help preserve the content longer term. I'd love to see some of the images converted to a vector representation so we can provide higher-resolution versions, and similarly formulas and maths could be represented in MathML.
 
 ## Generating your own ebook
 
