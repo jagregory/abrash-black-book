@@ -4,6 +4,8 @@ This is the source for an ebook version of Michael Abrash's Black Book of Graphi
 
 Reproduced with permission of Michael Abrash, converted and maintained by [James Gregory](mailto:james@jagregory.com).
 
+The [Github releases list](https://github.com/jagregory/abrash-black-book/releases) has an Epub and Mobi version available for download, and you can find a mirror of the HTML version at [www.jagregory.com/abrash-black-book](http://www.jagregory.com/abrash-black-book/).
+
 ## How does this differ from the previously released versions?
 
 The book is now out of print, and hard to come by. Last time I checked it was going for over $200 on ebay.
