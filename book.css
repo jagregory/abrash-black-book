@@ -1,0 +1,76 @@
+body {
+  font: large/1.556 Helvetica, Arial, sans-serif;
+  margin: 5%;
+  font-weight: 300;
+  width: 700px;
+  margin: 0 auto;
+}
+
+p {
+  text-align: justify;
+}
+
+code {
+  font: medium Consolas, "Andale Mono", Monaco, "Liberation Mono", "Bitstream Vera Sans Mono", "DejaVu Sans Mono", monospace;
+  white-space: pre;
+}
+
+h1, h2, h3, h4, h5, h6, blockquote {
+  font-family: "Libertine", Palatino, "Palatino Linotype", "Book Antiqua", Georgia, "Times New Roman", serif;
+  text-align: left;
+}
+
+blockquote {
+  margin: 2em 20px;
+  line-height: 1.4em;
+}
+
+blockquote p img {
+  float: left;
+  margin-right: 1em;
+}
+
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1 {
+  font-size: 266.7%;
+  line-height: 1.1;
+  margin: 1.49em 0;
+  text-align: center;
+}
+
+h2 {
+  font-size: 210%;
+  line-height: 1.3125;
+  margin: 1.167em 0;
+  text-align: center;
+}
+
+figure {
+  text-align: center;
+}
+
+pre, table {
+  overflow: scroll;
+  width: 100%;
+}
+
+caption {
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+pre {
+  line-height: 1em;
+}
+
+pre code {
+  font-size: small;
+}
+
+nav#TOC > ul, nav#TOC > ul > li > ul {
+  list-style: decimal;
+}
