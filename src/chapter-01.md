@@ -419,7 +419,7 @@ Listing 1.1.
 How can we speed up Listing 1.1? It should be clear that we must somehow
 avoid invoking DOS for every byte in the file, and that means reading
 more than one byte at a time, then buffering the data and parceling it
-out for examination one byte at a time. My gosh, that's a description of
+out for examination one byte at a time. By gosh, that's a description of
 C's stream I/O feature, whereby C reads files in chunks and buffers the
 bytes internally, doling them out to the application as needed by
 reading them from memory rather than calling DOS. Let's try using stream
