@@ -293,7 +293,7 @@ all the more so given that compilers are constrained by the limitations
 of high-level languages and by the process of transformation from
 high-level to machine language. Consequently, carefully optimized
 assembly is not just the language of choice but the *only* choice for
-the 1percent to 10 percent of code—usually consisting of small,
+the 1 percent to 10 percent of code—usually consisting of small,
 well-defined subroutines—that determines overall program performance,
 and it is the only choice for code that must be as compact as possible,
 as well. In the run-of-the-mill, non-time-critical portions of your
