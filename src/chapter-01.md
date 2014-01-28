@@ -254,7 +254,7 @@ requires over two and one-half minutes to checksum *one* file!
 These results make it clear that it's folly to rely on your compiler's
 optimization to make your programs fast. Listing 1.1 is simply poorly
 designed, and no amount of compiler optimization will compensate for
-that failing. To drive home the point, conListings 1.2 and 1.3, which
+that failing. To drive home the point, Listings 1.2 and 1.3, which
 together are equivalent to Listing 1.1 except that the entire checksum
 loop is written in tight assembly code. The assembly language
 implementation is indeed faster than any of the C versions, as shown in
@@ -419,7 +419,7 @@ Listing 1.1.
 How can we speed up Listing 1.1? It should be clear that we must somehow
 avoid invoking DOS for every byte in the file, and that means reading
 more than one byte at a time, then buffering the data and parceling it
-out for examination one byte at a time. By gosh, that's a description of
+out for examination one byte at a time. My gosh, that's a description of
 C's stream I/O feature, whereby C reads files in chunks and buffers the
 bytes internally, doling them out to the application as needed by
 reading them from memory rather than calling DOS. Let's try using stream
@@ -500,7 +500,7 @@ your programs that directly affect response time. Notice, for example,
 that I haven't bothered to implement a version of the checksum program
 entirely in assembly; Listings 1.2 and 1.6 call assembly subroutines
 that handle the time-critical operations, but C is still used for
-checking command-line parameters, operning files, printing, and the
+checking command-line parameters, opening files, printing, and the
 like.
 
 > ![](images/i.jpg)
@@ -521,7 +521,7 @@ Listing 1.4 is good, but let's see if there are other—perhaps less
 obvious—ways to get the same results faster. Let's start by considering
 why Listing 1.4 is so much better than Listing 1.1. Like `read()`,
 `getc()` calls DOS to read from the file; the speed improvement of
-Listing 1.4 over Listing 1.1 occurs because `getc()` eads many bytes
+Listing 1.4 over Listing 1.1 occurs because `getc()` reads many bytes
 at once via DOS, then manages those bytes for us. That's faster than
 reading them one at a time using `read()`—but there's no reason to
 think that it's faster than having our program read and manage blocks
@@ -563,7 +563,7 @@ The third reason is often fallacious. C library functions are not always
 written in assembly, nor are they always particularly well-optimized.
 (In fact, they're often written for *portability*, which has nothing to
 do with optimization.) What's more, they're general-purpose functions,
-and often can be outperformed by well-but-not- brilliantly-written code
+and often can be outperformed by well-but-not-brilliantly-written code
 that is well-matched to a specific task. As an example, consider Listing
 1.5, which uses internal buffering to handle blocks of bytes at a time.
 Table 1.1 shows that Listing 1.5 is 2.5 to 4 times faster than Listing
@@ -667,7 +667,7 @@ indeed make a significant difference. Table 1.1 indicates that the
 optimized version of Listing 1.5 produced by Microsoft C outperforms an
 unoptimized version of the same code by more than 60 percent. What's
 more, a mostly-assembly version of Listing 1.5, shown in Listings 1.6
-and 1.7, outperforms even the best-optimized C version of List1.5 by 26
+and 1.7, outperforms even the best-optimized C version of Listing 1.5 by 26
 percent. These are considerable improvements, well worth pursuing—once
 the design has been maxed out.
 
