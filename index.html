@@ -667,7 +667,7 @@ main(<span class="dt">int</span> argc, <span class="dt">char</span> *argv[]) {
 <blockquote>
 <p><img src="images/i.jpg" /> Listings 1.2 and 1.3 form the C/assembly equivalent to Listing 1.1, and Listings 1.6 and 1.7 form the C/assembly equivalent to Listing 1.5.</p>
 </blockquote>
-<p>These results make it clear that it’s folly to rely on your compiler’s optimization to make your programs fast. Listing 1.1 is simply poorly designed, and no amount of compiler optimization will compensate for that failing. To drive home the point, conListings 1.2 and 1.3, which together are equivalent to Listing 1.1 except that the entire checksum loop is written in tight assembly code. The assembly language implementation is indeed faster than any of the C versions, as shown in Table 1.1, but it’s less than 10 percent faster, and it’s still unacceptably slow.</p>
+<p>These results make it clear that it’s folly to rely on your compiler’s optimization to make your programs fast. Listing 1.1 is simply poorly designed, and no amount of compiler optimization will compensate for that failing. To drive home the point, Listings 1.2 and 1.3, which together are equivalent to Listing 1.1 except that the entire checksum loop is written in tight assembly code. The assembly language implementation is indeed faster than any of the C versions, as shown in Table 1.1, but it’s less than 10 percent faster, and it’s still unacceptably slow.</p>
 <table>
 <caption>Table 1.1 Execution Times for WordPerfect Checksum.</caption>
 <thead>
@@ -880,7 +880,7 @@ main(<span class="dt">int</span> argc, <span class="dt">char</span> *argv[]) {
 <section id="know-when-it-matters" class="level4">
 <h4><a href="#know-when-it-matters">Know When It Matters</a></h4>
 <p>The last section contained a particularly interesting phrase: <em>the time-critical portions of your code</em>. Time-critical portions of your code are those portions in which the speed of the code makes a significant difference in the overall performance of your program—and by “significant,” I don’t mean that it makes the code 100 percent faster, or 200 percent, or any particular amount at all, but rather that it makes the program more responsive and/or usable <em>from the user’s perspective</em>.</p>
-<p>Don’t waste time optimizing non-time-critical code: set-up code, initialization code, and the like. Spend your time improving the performance of the code inside heavily-used loops and in the portions of your programs that directly affect response time. Notice, for example, that I haven’t bothered to implement a version of the checksum program entirely in assembly; Listings 1.2 and 1.6 call assembly subroutines that handle the time-critical operations, but C is still used for checking command-line parameters, operning files, printing, and the like.</p>
+<p>Don’t waste time optimizing non-time-critical code: set-up code, initialization code, and the like. Spend your time improving the performance of the code inside heavily-used loops and in the portions of your programs that directly affect response time. Notice, for example, that I haven’t bothered to implement a version of the checksum program entirely in assembly; Listings 1.2 and 1.6 call assembly subroutines that handle the time-critical operations, but C is still used for checking command-line parameters, opening files, printing, and the like.</p>
 <blockquote>
 <p><img src="images/i.jpg" /> If you were to implement any of the listings in this chapter entirely in hand-optimized assembly, I suppose you might get a performance improvement of a few percent—but I rather doubt you’d get even that much, and you’d sure as heck spend an awful lot of time for whatever meager improvement does result. Let C do what it does well, and use assembly only when it makes a perceptible difference.</p>
 </blockquote>
@@ -888,7 +888,7 @@ main(<span class="dt">int</span> argc, <span class="dt">char</span> *argv[]) {
 </section>
 <section id="always-consider-the-alternatives" class="level4">
 <h4><a href="#always-consider-the-alternatives">Always Consider the Alternatives</a></h4>
-<p>Listing 1.4 is good, but let’s see if there are other—perhaps less obvious—ways to get the same results faster. Let’s start by considering why Listing 1.4 is so much better than Listing 1.1. Like <code>read()</code>, <code>getc()</code> calls DOS to read from the file; the speed improvement of Listing 1.4 over Listing 1.1 occurs because <code>getc()</code> eads many bytes at once via DOS, then manages those bytes for us. That’s faster than reading them one at a time using <code>read()</code>—but there’s no reason to think that it’s faster than having our program read and manage blocks itself. Easier, yes, but not faster.</p>
+<p>Listing 1.4 is good, but let’s see if there are other—perhaps less obvious—ways to get the same results faster. Let’s start by considering why Listing 1.4 is so much better than Listing 1.1. Like <code>read()</code>, <code>getc()</code> calls DOS to read from the file; the speed improvement of Listing 1.4 over Listing 1.1 occurs because <code>getc()</code> reads many bytes at once via DOS, then manages those bytes for us. That’s faster than reading them one at a time using <code>read()</code>—but there’s no reason to think that it’s faster than having our program read and manage blocks itself. Easier, yes, but not faster.</p>
 <p>Consider this: Every invocation of <code>getc()</code> involves pushing a parameter, executing a call to the C library function, getting the parameter (in the C library code), looking up information about the desired stream, unbuffering the next byte from the stream, and returning to the calling code. That takes a considerable amount of time, especially by contrast with simply maintaining a pointer to a buffer and whizzing through the data in the buffer inside a single loop.</p>
 <p>There are four reasons that many programmers would give for not trying to improve on Listing 1.4:</p>
 <ol type="1">
@@ -899,7 +899,7 @@ main(<span class="dt">int</span> argc, <span class="dt">char</span> *argv[]) {
 </ol>
 <p>I’ll ignore the first reason, both because performance is no longer an issue if the code is fast enough and because the current application does <em>not</em> run fast enough—13 seconds is a long time. (Stop and wait for 13 seconds while you’re doing something intense, and you’ll see just how long it is.)</p>
 <p>The second reason is the hallmark of the mediocre programmer. Know when optimization matters—and then optimize when it does!</p>
-<p>The third reason is often fallacious. C library functions are not always written in assembly, nor are they always particularly well-optimized. (In fact, they’re often written for <em>portability</em>, which has nothing to do with optimization.) What’s more, they’re general-purpose functions, and often can be outperformed by well-but-not- brilliantly-written code that is well-matched to a specific task. As an example, consider Listing 1.5, which uses internal buffering to handle blocks of bytes at a time. Table 1.1 shows that Listing 1.5 is 2.5 to 4 times faster than Listing 1.4 (and as much as 49 times faster than Listing 1.1!), even though it uses no assembly at all.</p>
+<p>The third reason is often fallacious. C library functions are not always written in assembly, nor are they always particularly well-optimized. (In fact, they’re often written for <em>portability</em>, which has nothing to do with optimization.) What’s more, they’re general-purpose functions, and often can be outperformed by well-but-not-brilliantly-written code that is well-matched to a specific task. As an example, consider Listing 1.5, which uses internal buffering to handle blocks of bytes at a time. Table 1.1 shows that Listing 1.5 is 2.5 to 4 times faster than Listing 1.4 (and as much as 49 times faster than Listing 1.1!), even though it uses no assembly at all.</p>
 <blockquote>
 <p><img src="images/i.jpg" /> Clearly, you can do well by using special-purpose C code in place of a C library function—if you have a thorough understanding of how the C library function operates and exactly what your application needs done. Otherwise, you’ll end up rewriting C library functions in C, which makes no sense at all.</p>
 </blockquote>
@@ -966,7 +966,7 @@ main(<span class="dt">int</span> argc, <span class="dt">char</span> *argv[]) {
 </section>
 <section id="know-how-to-turn-on-the-juice" class="level4">
 <h4><a href="#know-how-to-turn-on-the-juice">Know How to Turn On the Juice</a></h4>
-<p>I have said time and again that optimization is pointless until the design is settled. When that time comes, however, optimization can indeed make a significant difference. Table 1.1 indicates that the optimized version of Listing 1.5 produced by Microsoft C outperforms an unoptimized version of the same code by more than 60 percent. What’s more, a mostly-assembly version of Listing 1.5, shown in Listings 1.6 and 1.7, outperforms even the best-optimized C version of List1.5 by 26 percent. These are considerable improvements, well worth pursuing—once the design has been maxed out.</p>
+<p>I have said time and again that optimization is pointless until the design is settled. When that time comes, however, optimization can indeed make a significant difference. Table 1.1 indicates that the optimized version of Listing 1.5 produced by Microsoft C outperforms an unoptimized version of the same code by more than 60 percent. What’s more, a mostly-assembly version of Listing 1.5, shown in Listings 1.6 and 1.7, outperforms even the best-optimized C version of Listing 1.5 by 26 percent. These are considerable improvements, well worth pursuing—once the design has been maxed out.</p>
 <p><strong>LISTING 1.6 L1-6.C</strong></p>
 <pre class="sourceCode c"><code class="sourceCode c"><span class="co">/*</span>
 <span class="co">* Program to calculate the 16-bit checksum of the stream of bytes</span>
@@ -1152,7 +1152,7 @@ _ChecksumChunkendp
 <section id="knowledge" class="level4">
 <h4><a href="#knowledge">Knowledge</a></h4>
 <p>In the PC world, you can never have enough knowledge, and every item you add to your store will make your programs better. Thorough familiarity with both the operating system APIs and BIOS interfaces is important; since those interfaces are well-documented and reasonably straightforward, my advice is to get a good book or two and bring yourself up to speed. Similarly, familiarity with the PC hardware is required. While that topic covers a lot of ground—display adapters, keyboards, serial ports, printer ports, timer and DMA channels, memory organization, and more—most of the hardware is well-documented, and articles about programming major hardware components appear frequently in the literature, so this sort of knowledge can be acquired readily enough.</p>
-<p>The single most critical aspect of the hardware, and the one about which it is hardest to learn, is the CPU. The x86 family CPUs have a complex, irregular instruction set, and, unlike most processors, they are neither straightforward nor wellregarding true code performance. What’s more, assembly is so difficult to learn that most articles and books that present assembly code settle for code that just works, rather than code that pushes the CPU to its limits. In fact, since most articles and books are written for inexperienced assembly programmers, there is very little information of any sort available about how to generate high-quality assembly code for the x86 family CPUs. As a result, knowledge about programming them effectively is by far the hardest knowledge to gather. A good portion of this book is devoted to seeking out such knowledge.</p>
+<p>The single most critical aspect of the hardware, and the one about which it is hardest to learn, is the CPU. The x86 family CPUs have a complex, irregular instruction set, and, unlike most processors, they are neither straightforward nor well-documented true code performance. What’s more, assembly is so difficult to learn that most articles and books that present assembly code settle for code that just works, rather than code that pushes the CPU to its limits. In fact, since most articles and books are written for inexperienced assembly programmers, there is very little information of any sort available about how to generate high-quality assembly code for the x86 family CPUs. As a result, knowledge about programming them effectively is by far the hardest knowledge to gather. A good portion of this book is devoted to seeking out such knowledge.</p>
 <blockquote>
 <p><img src="images/i.jpg" /> Be forewarned, though: No matter how much you learn about programming the PC in assembly, there’s always more to discover.</p>
 </blockquote>
@@ -1169,7 +1169,7 @@ _ChecksumChunkendp
 <p>Knowledge of the sort described earlier is absolutely essential to fulfilling either of the objectives of assembly programming. What that knowledge doesn’t do by itself is meet the need to write code that both performs to the requirements of the application at hand and also operates as efficiently as possible in the PC environment. Knowledge makes that possible, but your programming instincts make it happen. And it is that intuitive, on-the-fly integration of a program specification and a sea of facts about the PC that is the heart of the Zen-class assembly optimization.</p>
 <p>As with Zen of any sort, mastering that Zen of assembly language is more a matter of learning than of being taught. You will have to find your own path of learning, although I will start you on your way with this book. The subtle facts and examples I provide will help you gain the necessary experience, but you must continue the journey on your own. Each program you create will expand your programming horizons and increase the options available to you in meeting the next challenge. The ability of your mind to find surprising new and better ways to craft superior code from a concept—the flexible mind, if you will—is the linchpin of good assembler code, and you will develop this skill only by doing.</p>
 <p>Never underestimate the importance of the flexible mind. Good assembly code is better than good compiled code. Many people would have you believe otherwise, but they’re wrong. That doesn’t mean that high-level languages are useless; far from it. High-level languages are the best choice for the majority of programmers, and for the bulk of the code of most applications. When the <em>best</em> code—the fastest or smallest code possible—is needed, though, assembly is the only way to go.</p>
-<p>Simple logic dictates that no compiler can know as much about what a piece of code needs to do or adapt as well to those needs as the person who wrote the code. Given that superior information and adaptability, an assembly language programmer can generate better code than a compiler, all the more so given that compilers are constrained by the limitations of high-level languages and by the process of transformation from high-level to machine language. Consequently, carefully optimized assembly is not just the language of choice but the <em>only</em> choice for the 1percent to 10 percent of code—usually consisting of small, well-defined subroutines—that determines overall program performance, and it is the only choice for code that must be as compact as possible, as well. In the run-of-the-mill, non-time-critical portions of your programs, it makes no sense to waste time and effort on writing optimized assembly code—concentrate your efforts on loops and the like instead; but in those areas where you need the finest code quality, accept no substitutes.</p>
+<p>Simple logic dictates that no compiler can know as much about what a piece of code needs to do or adapt as well to those needs as the person who wrote the code. Given that superior information and adaptability, an assembly language programmer can generate better code than a compiler, all the more so given that compilers are constrained by the limitations of high-level languages and by the process of transformation from high-level to machine language. Consequently, carefully optimized assembly is not just the language of choice but the <em>only</em> choice for the 1 percent to 10 percent of code—usually consisting of small, well-defined subroutines—that determines overall program performance, and it is the only choice for code that must be as compact as possible, as well. In the run-of-the-mill, non-time-critical portions of your programs, it makes no sense to waste time and effort on writing optimized assembly code—concentrate your efforts on loops and the like instead; but in those areas where you need the finest code quality, accept no substitutes.</p>
 <p>Note that I said that an assembly programmer <em>can</em> generate better code than a compiler, not <em>will</em> generate better code. While it is true that good assembly code is better than good compiled code, it is also true that bad assembly code is often much worse than bad compiled code; since the assembly programmer has so much control over the program, he or she has virtually unlimited opportunities to waste cycles and bytes. The sword cuts both ways, and good assembly code requires more, not less, forethought and planning than good code written in a high-level language.</p>
 <p>The gist of all this is simply that good assembly programming is done in the context of a solid overall framework unique to each program, and the flexible mind is the key to creating that framework and holding it together.</p>
 <section id="where-to-begin" class="level4">
@@ -1666,13 +1666,13 @@ Code   ends
 <p>The interrupt vector for IRQ0 is set by the BIOS at power-up time to point to a BIOS routine, <code>TIMER_INT</code>, that maintains a time-of-day count. <code>TIMER_INT</code> keeps a 16-bit count of IRQ0 interrupts in the BIOS data area at address 0000:046C (all addresses in this book are given in segment:offset hexadecimal pairs); this count turns over once an hour (less a few microseconds), and when it does, <code>TIMER_INT</code> updates a 16-bit hour count at address 0000:046E in the BIOS data area. This count is the basis for the current time and date that DOS supports via functions 2AH (2A hexadecimal) through 2DH and by way of the DATE and TIME commands.</p>
 <p>Each timer channel of the 8253 can operate in any of six modes. Timer 0 normally operates in mode 3: <em>square wave mode</em>. In square wave mode, the initial count is counted down two at a time; when the count reaches zero, the output state is changed. The initial count is again counted down two at a time, and the output state is toggled back when the count reaches zero. The result is a square wave that changes state more slowly than the input clock by a factor of the initial count. In its normal mode of operation, timer 0 generates an output pulse that is low for about 27.5 ms and high for about 27.5 ms; this pulse is sent to the 8259 interrupt controller, and its rising edge generates a timer interrupt once every 54.925 ms.</p>
 <p>Square wave mode is not very useful for precision timing because it counts down by two twice per timer interrupt, thereby rendering exact timings impossible. Fortunately, the 8253 offers another timer mode, mode 2 (divide-by-N mode), which is both a good substitute for square wave mode and a perfect mode for precision timing.</p>
-<p>Divide-by-N mode counts down by one from the initial count. When the count reaches zero, the timer turns over and starts counting down again without stopping, and a pulse is generated for a single clock period. While the pulse is not held for nearly as long as in square wave mode, it doesn’t matter, since the 8259 interrupt controller is configured in the PC to be edgeand hence cares only about the existence of a pulse from timer 0, not the duration of the pulse. As a result, timer 0 continues to generate timer interrupts in divide-by-N mode, and the system clock continues to maintain good time.</p>
+<p>Divide-by-N mode counts down by one from the initial count. When the count reaches zero, the timer turns over and starts counting down again without stopping, and a pulse is generated for a single clock period. While the pulse is not held for nearly as long as in square wave mode, it doesn’t matter, since the 8259 interrupt controller is configured in the PC to be edge-triggered and hence cares only about the existence of a pulse from timer 0, not the duration of the pulse. As a result, timer 0 continues to generate timer interrupts in divide-by-N mode, and the system clock continues to maintain good time.</p>
 <p>Why not use timer 2 instead of timer 0 for precision timing? After all, timer 2 has a programmable gate input and isn’t used for anything but sound generation. The problem with timer 2 is that its output can’t generate an interrupt; in fact, timer 2 can’t do anything but drive the speaker. We need the interrupt generated by the output of timer 0 to tell us when the count has overflowed, and we will see shortly that the timer interrupt also makes it possible to time much longer periods than the Zen timer shown in Listing 3.1 supports.</p>
-<p>In fact, the Zen timer shown in Listing 3.1 can only time intervals of up to about 54 ms in length, since that is the period of time that can be measured by timer 0 before its count turns over and repeats. fifty-four ms may not seem like a very long time, but even a CPU as slow as the 8088 can perform more than 1,000 divides in 54 ms, and division is the single instruction that the 8088 performs most slowly. If a measured period turns out to be longer than 54 ms (that is, if timer 0 has counted down and turned over), the Zen timer will display a message to that effect. A long-period Zen timer for use in such cases will be presented later in this chapter.</p>
+<p>In fact, the Zen timer shown in Listing 3.1 can only time intervals of up to about 54 ms in length, since that is the period of time that can be measured by timer 0 before its count turns over and repeats. Fifty-four ms may not seem like a very long time, but even a CPU as slow as the 8088 can perform more than 1,000 divides in 54 ms, and division is the single instruction that the 8088 performs most slowly. If a measured period turns out to be longer than 54 ms (that is, if timer 0 has counted down and turned over), the Zen timer will display a message to that effect. A long-period Zen timer for use in such cases will be presented later in this chapter.</p>
 <p>The Zen timer determines whether timer 0 has turned over by checking to see whether an IRQ0 interrupt is pending. (Remember, interrupts are off while the Zen timer runs, so the timer interrupt cannot be recognized until the Zen timer stops and enables interrupts.) If an IRQ0 interrupt is pending, then timer 0 has turned over and generated a timer interrupt. Recall that <code>ZTimerOn</code> initially sets timer 0 to 0, in order to allow for the longest possible period—about 54 ms—before timer 0 reaches 0 and generates the timer interrupt.</p>
 <p>Now we’re ready to look at the ways in which the Zen timer can introduce inaccuracy into the system clock. Since timer 0 is initially set to 0 by the Zen timer, and since the system clock ticks only when timer 0 counts off 54.925 ms and reaches 0 again, an average inaccuracy of one-half of 54.925 ms, or about 27.5 ms, is incurred each time the Zen timer is started. In addition, a timer interrupt is generated when timer 0 is switched from mode 3 to mode 2, advancing the system clock by up to 54.925 ms, although this only happens the first time the Zen timer is run after a warm or cold boot. Finally, up to 54.925 ms can again be lost when <code>ZTimerOff</code> is called, since that routine again sets the timer count to zero. Net result: The system clock will run up to 110 ms (about a ninth of a second) slow each time the Zen timer is used.</p>
 <p>Potentially far greater inaccuracy can be incurred by timing code that takes longer than about 110 ms to execute. Recall that all interrupts, including the timer interrupt, are disabled while timing code with the Zen timer. The 8259 interrupt controller is capable of remembering at most one pending timer interrupt, so all timer interrupts after the first one during any given Zen timing interval are ignored. Consequently, if a timing interval exceeds 54.9 ms, the system clock effectively stops 54.9 ms after the timing interval starts and doesn’t restart until the timing interval ends, losing time all the while.</p>
-<p>The effects on the system time of the Zen timer aren’t a matter for great concern, as they are temporary, lasting only until the next warm or cold boot. System that have batteryclocks, (AT-style machines; that is, virtually all machines in common use) automatically reset the correct time whenever the computer is booted, and systems without battery-clocks prompt for the correct date and time when booted. Also,repeated use of the Zen timer usually makes the system clock slow by at most a total of a few seconds, unless code that takes much longer than 54 ms to run is timed (in which case the Zen timer will notify you that the code is too long to time).</p>
+<p>The effects on the system time of the Zen timer aren’t a matter for great concern, as they are temporary, lasting only until the next warm or cold boot. System that have battery-backed clocks, (AT-style machines; that is, virtually all machines in common use) automatically reset the correct time whenever the computer is booted, and systems without battery-backed clocks prompt for the correct date and time when booted. Also, repeated use of the Zen timer usually makes the system clock slow by at most a total of a few seconds, unless code that takes much longer than 54 ms to run is timed (in which case the Zen timer will notify you that the code is too long to time).</p>
 <p>Nonetheless, it’s a good idea to reboot your computer at the end of each session with the Zen timer in order to make sure that the system clock is correct.</p>
 </section>
 <section id="stopping-the-zen-timer" class="level3">
@@ -1685,7 +1685,7 @@ Code   ends
 <section id="reporting-timing-results" class="level3">
 <h3><a href="#reporting-timing-results">Reporting Timing Results</a></h3>
 <p><code>ZTimerReport</code> may be called to display timing results at any time after both <code>ZTimerOn</code> and <code>ZTimerOff</code> have been called. <code>ZTimerReport</code> first checks to see whether the timer overflowed (counted down to 0 and turned over) before <code>ZTimerOff</code> was called; if overflow did occur, <code>ZTimerOff</code> prints a message to that effect and returns. Otherwise, <code>ZTimerReport</code> subtracts the reference count (representing the overhead of the Zen timer) from the count measured between the calls to <code>ZTimerOn</code> and <code>ZTimerOff</code>, converts the result from timer counts to microseconds, and prints the resulting time in microseconds to the standard output.</p>
-<p>Note that <code>ZTimerReport</code> need not be called immediately after <code>ZTimerOff</code>. In fact, after a given call to <code>ZTimerOff, ZTimerReport</code> can be called at any time right up until the next call to <code>ZTimerOn</code>.</p>
+<p>Note that <code>ZTimerReport</code> need not be called immediately after <code>ZTimerOff</code>. In fact, after a given call to <code>ZTimerOff</code>, <code>ZTimerReport</code> can be called at any time right up until the next call to <code>ZTimerOn</code>.</p>
 <p>You may want to use the Zen timer to measure several portions of a program while it executes normally, in which case it may not be desirable to have the text printed by <code>ZTimerReport</code> interfere with the program’s normal display. There are many ways to deal with this. One approach is removal of the invocations of the DOS print string function (INT 21H with AH equal to 9) from <code>ZTimerReport</code>, instead running the program under a debugger that supports screen flipping (such as Turbo Debugger or CodeView), placing a breakpoint at the start of <code>ZTimerReport</code>, and directly observing the count in microseconds as <code>ZTimerReport</code> calculates it.</p>
 <p>A second approach is modification of <code>ZTimerReport</code> to place the result at some safe location in memory, such as an unused portion of the BIOS data area.</p>
 <p>A third approach is alteration of <code>ZTimerReport</code> to print the result over a serial port to a terminal or to another PC acting as a terminal. Similarly, many debuggers can be run from a remote terminal via a serial link.</p>
@@ -1699,7 +1699,7 @@ Code   ends
 <p>If you do change the Zen timer routines to far procedures in order to call them from code running in another segment, be sure to make <em>all</em> the Zen timer routines far, including <code>ReferenceZTimerOn</code> and <code>ReferenceZTimerOff</code>. (You’ll have to put <code>FAR PTR</code> overrides on the calls from <code>ZTimerOff</code> to the latter two routines if you do make them far.) If the reference routines aren’t the same type—near or far—as the other routines, they won’t reflect the true overhead incurred by starting and stopping the Zen timer.</p>
 <p>Please be aware that the inaccuracy that the Zen timer can introduce into the system clock time does not affect the accuracy of the performance measurements reported by the Zen timer itself. The 8253 counts once every 838 ns, giving us a count resolution of about 1µs, although factors such as the prefetch queue (as discussed below), dynamic RAM refresh, and internal timing variations in the 8253 make it perhaps more accurate to describe the Zen timer as measuring code performance with an accuracy of better than 10µs. In fact, the Zen timer is actually most accurate in assessing code performance when timing intervals longer than about 100 µs. At any rate, we’re most interested in using the Zen timer to assess the relative performance of various code sequences—that is, using it to compare and tweak code—and the timer is more than accurate enough for that purpose.</p>
 <p>The Zen timer works on all PC-compatible computers I’ve tested it on, including XTs, ATs, PS/2 computers, and 386, 486, and Pentium-based machines. Of course, I haven’t been able to test it on <em>all</em> PC-compatibles, but I don’t expect any problems; computers on which the Zen timer doesn’t run can’t truly be called “PC-compatible.”</p>
-<p>On the other hand, there is certainly no guarantee that code performance as measured by the Zen timer will be the same on compatible computers as on genuine IBM machines, or that either absolute or relative code performance will be similar even on different IBM models; in fact, quite the opposite is true. For example, every PS/2 computer, even the relatively slow Model 30, executes code much faster than does a PC or XT. As another example, I set out to do the timings for my earlier book <em>Zen of Assembly Language</em> on an XTcomputer, only to find that the computer wasn’t quite IBM-compatible regarding code performance. The differences were minor, mind you, but my experience illustrates the risk of assuming that a specific make of computer will perform in a certain way without actually checking.</p>
+<p>On the other hand, there is certainly no guarantee that code performance as measured by the Zen timer will be the same on compatible computers as on genuine IBM machines, or that either absolute or relative code performance will be similar even on different IBM models; in fact, quite the opposite is true. For example, every PS/2 computer, even the relatively slow Model 30, executes code much faster than does a PC or XT. As another example, I set out to do the timings for my earlier book <em>Zen of Assembly Language</em> on an XT-compatible computer, only to find that the computer wasn’t quite IBM-compatible regarding code performance. The differences were minor, mind you, but my experience illustrates the risk of assuming that a specific make of computer will perform in a certain way without actually checking.</p>
 <p>Not that this variation between models makes the Zen timer one whit less useful—quite the contrary. The Zen timer is an excellent tool for evaluating code performance over the entire spectrum of PC-compatible computers.</p>
 </section>
 <section id="a-sample-use-of-the-zen-timer" class="level3">
@@ -1770,7 +1770,7 @@ MemVar <span class="dt">db</span>      ?
 <span class="co">;</span>
     <span class="kw">call</span>  ZTimerOff</code></pre>
 <p>It’s worth noting that Listing 3.3 begins by jumping around the memory variable <code>MemVar</code>. This approach lets us avoid reproducing Listing 3.2 in its entirety for each code fragment we want to measure; by defining any needed data right in the code segment and jumping around that data, each listing becomes self-contained and can be plugged directly into Listing 3.2 as TESTCODE. Listing 3.2 sets DS equal to CS before doing anything else precisely so that data can be embedded in code fragments being timed. Note that only after the initial jump is performed in Listing 3.3 is the Zen timer started, since we don’t want to include the execution time of start-up code in the timing interval. That’s why the calls to <code>ZTimerOn</code> and <code>ZTimerOff</code> are in TESTCODE, not in PZTEST.ASM; this way, we have full control over which portion of TESTCODE is timed, and we can keep set-up code and the like out of the timing interval.</p>
-<p>Listing 3.3 is used by naming it TESTCODE, assembling both Listing 3.2 (which includes TESTCODE) and Listing 3.1 with TASM or MASM, and linking the two resulting OBJ files together by way of the Borland orMicrosoft linker. Listing 3.4 shows a batch file, PZTIME.BAT, which does all that; when run, this batch file generates and runs the executable file PZTEST.EXE. PZTIME.BAT (Listing 3.4) assumes that the file PZTIMER.ASM contains Listing 3.1, and the file PZTEST.ASM contains Listing 3.2. The command-line parameter to PZTIME.BAT is the name of the file to be copied to TESTCODE and included into PZTEST.ASM. (Note that Turbo Assembler can be substituted for MASM by replacing “masm” with “tasm” and “link” with “tlink” in Listing 3.4. The same is true of Listing 3.7.)</p>
+<p>Listing 3.3 is used by naming it TESTCODE, assembling both Listing 3.2 (which includes TESTCODE) and Listing 3.1 with TASM or MASM, and linking the two resulting OBJ files together by way of the Borland or Microsoft linker. Listing 3.4 shows a batch file, PZTIME.BAT, which does all that; when run, this batch file generates and runs the executable file PZTEST.EXE. PZTIME.BAT (Listing 3.4) assumes that the file PZTIMER.ASM contains Listing 3.1, and the file PZTEST.ASM contains Listing 3.2. The command-line parameter to PZTIME.BAT is the name of the file to be copied to TESTCODE and included into PZTEST.ASM. (Note that Turbo Assembler can be substituted for MASM by replacing “masm” with “tasm” and “link” with “tlink” in Listing 3.4. The same is true of Listing 3.7.)</p>
 <p><strong>LISTING 3.4 PZTIME.BAT</strong></p>
 <pre class="bat"><code>echo off
 rem
@@ -1839,7 +1839,7 @@ echo ***************************************************************
 <p>When the above command is executed on an original 4.77 MHz IBM PC, the time reported by the Zen timer is 3619 µs, or about 3.62 µs per load of AL from memory. (While the exact number is 3.619 µs per load of AL, I’m going to round off that last digit from now on. No matter how many repetitions of a given instruction are timed, there’s just too much noise in the timing process—between dynamic RAM refresh, the prefetch queue, and the internal state of the processor at the start of timing—for that last digit to have any significance.) Given the test PC’s 4.77 MHz clock, this works out to about 17 cycles per <code>MOV</code>, which is actually a good bit longer than Intel’s specified 10-cycle execution time for this instruction. (See the MASM or TASM documentation, or Intel’s processor reference manuals, for official execution times.) Fear not, the Zen timer is right—<strong>MOV AL,[MEMVAR]</strong> really does take 17 cycles as used in Listing 3.3. Exactly why that is so is just what this book is all about.</p>
 <p>In order to perform any of the timing tests in this book, enter Listing 3.1 and name it PZTIMER.ASM, enter Listing 3.2 and name it PZTEST.ASM, and enter Listing 3.4 and name it PZTIME.BAT. Then simply enter the listing you wish to run into the file <em>filename</em> and enter the command:</p>
 <pre class="sh"><code>pztime &lt;filename&gt;</code></pre>
-<p>In fact, that’s exactly how I timed each of the listings in this book. Code fragments you write yourself can be timed in just the same way. If you wish to time code directly in place in your programs, rather than in the test-bed program of Listing 3.2, simply insert calls to <code>ZTimerOn, ZTimerOff</code>, and <code>ZTimerReport</code> in the appropriate places and link PZTIMER to your program.</p>
+<p>In fact, that’s exactly how I timed each of the listings in this book. Code fragments you write yourself can be timed in just the same way. If you wish to time code directly in place in your programs, rather than in the test-bed program of Listing 3.2, simply insert calls to <code>ZTimerOn</code>, <code>ZTimerOff</code>, and <code>ZTimerReport</code> in the appropriate places and link PZTIMER to your program.</p>
 </section>
 <section id="the-long-period-zen-timer" class="level3">
 <h3><a href="#the-long-period-zen-timer">The Long-Period Zen Timer</a></h3>
@@ -1935,8 +1935,8 @@ echo ***************************************************************
 <span class="co">; All registers and all flags are preserved by all routines.</span>
 <span class="co">;</span>
 
-Code <span class="kw">segment</span> <span class="dt">word</span> public ‘CODE<span class="st">&#39;</span>
-     assume <span class="kw">cs</span>:  Code, <span class="kw">ds</span>:nothing
+Code <span class="kw">segment</span> <span class="dt">word</span> public <span class="st">&#39;CODE&#39;</span>
+     assume      <span class="kw">cs</span>:Code, <span class="kw">ds</span>:nothing
      public      ZTimerOn, ZTimerOff, ZTimerReport
 
 <span class="co">;</span>
@@ -1958,24 +1958,24 @@ Code <span class="kw">segment</span> <span class="dt">word</span> public ‘CODE
 <span class="co">; which support the undocumented timer-stopping feature of the</span>
 <span class="co">; 8253. The choice is yours.</span>
 <span class="co">;</span>
-PS2                  equ1
+PS2                  <span class="dt">equ</span>    <span class="dv">1</span>
 <span class="co">;</span>
 <span class="co">; Base address of the 8253 timer chip.</span>
 <span class="co">;</span>
-BASE_8253            equ40h
+BASE_8253            <span class="dt">equ</span><span class="bn">    40h</span>
 <span class="co">;</span>
 <span class="co">; The address of the timer 0 count registers in the 8253.</span>
 <span class="co">;</span>
-TIMER_0_8253         equBASE_8253 + <span class="dv">0</span>
+TIMER_0_8253         <span class="dt">equ</span>    BASE_8253 + <span class="dv">0</span>
 <span class="co">;</span>
 <span class="co">; The address of the mode register in the 8253.</span>
 <span class="co">;</span>
-MODE_8253            equBASE_8253 + <span class="dv">3</span>
+MODE_8253            <span class="dt">equ</span>    BASE_8253 + <span class="dv">3</span>
 <span class="co">;</span>
 <span class="co">; The address of the BIOS timer count variable in the BIOS</span>
 <span class="co">; data segment.</span>
 <span class="co">;</span>
-TIMER_COUNT           equ46ch
+TIMER_COUNT           <span class="dt">equ</span><span class="bn">   46ch</span>
 <span class="co">;</span>
 <span class="co">; Macro to emulate a POPF instruction in order to fix the bug in some</span>
 <span class="co">; 80286 chips which allows interrupts to occur during a POPF even when</span>
@@ -1985,9 +1985,9 @@ MPOPF macro
       local p1, p2
       <span class="kw">jmp</span> <span class="dt">short</span> p2
 <span class="fu">p1:</span>   <span class="kw">iret</span>        <span class="co">;jump to pushed address &amp; pop flags</span>
-<span class="fu">p2:</span>   pushcs      <span class="co">;construct far return address to</span>
+<span class="fu">p2:</span>   <span class="kw">push</span> <span class="kw">cs</span>      <span class="co">;construct far return address to</span>
       <span class="kw">call</span> p1     <span class="co">; the next instruction</span>
-endm
+      endm
 
 <span class="co">;</span>
 <span class="co">; Macro to delay briefly to ensure that enough time has elapsed</span>
@@ -2015,11 +2015,11 @@ ReferenceCount        <span class="dt">dw</span>   ?       <span class="co">;num
 <span class="co">;</span>
 <span class="co">; String printed to report results.</span>
 <span class="co">;</span>
-OutputStr labelbyte
-          <span class="dt">db</span><span class="bn">     0dh, </span>0ah, ‘Timed count: ‘
-TimedCountStr    db10 dup (?)
-          db<span class="st">&#39;    microseconds&#39;</span><span class="bn">, 0dh, </span>0ah
-          <span class="dt">db</span>     ‘<span class="dv">$</span><span class="st">&#39;</span>
+OutputStr label <span class="dt">byte</span>
+          <span class="dt">db</span><span class="bn">     0dh, </span>0ah, <span class="st">&#39;Timed count: &#39;</span>
+TimedCountStr    <span class="dt">db</span>    <span class="dv">10</span> dup (?)
+          <span class="dt">db</span>     <span class="st">&#39;    microseconds&#39;</span><span class="bn">, 0dh, </span>0ah
+          <span class="dt">db</span>     <span class="st">&#39;$&#39;</span>
 <span class="co">;</span>
 <span class="co">; Temporary storage for timed count as it&#39;s divided down by powers</span>
 <span class="co">; of ten when converting from doubleword binary to ASCII.</span>
@@ -2030,7 +2030,7 @@ CurrentCountHigh  <span class="dt">dw</span>  ?
 <span class="co">; Powers of ten table used to perform division by 10 when doing</span>
 <span class="co">; doubleword conversion from binary to ASCII.</span>
 <span class="co">;</span>
-PowersOfTenlabelword
+PowersOfTen label <span class="dt">word</span>
      <span class="dt">dd</span>   <span class="dv">1</span>
      <span class="dt">dd</span>   <span class="dv">10</span>
      <span class="dt">dd</span>   <span class="dv">100</span>
@@ -2041,33 +2041,33 @@ PowersOfTenlabelword
      <span class="dt">dd</span>   <span class="dv">10000000</span>
      <span class="dt">dd</span>   <span class="dv">100000000</span>
      <span class="dt">dd</span>   <span class="dv">1000000000</span>
-PowersOfTenEnd   labelword
+PowersOfTenEnd   label <span class="dt">word</span>
 <span class="co">;</span>
 <span class="co">; String printed to report that the high word of the BIOS count</span>
 <span class="co">; changed while timing (an hour elapsed or midnight was crossed),</span>
 <span class="co">; and so the count is invalid and the test needs to be rerun.</span>
 <span class="co">;</span>
-TurnOverStrlabelbyte
-     <span class="dt">db</span><span class="bn">  0dh, </span>0ah
-     <span class="dt">db</span> ‘****************************************************<span class="st">&#39;</span>
+TurnOverStr label <span class="dt">byte</span>
      <span class="dt">db</span><span class="bn"> 0dh, </span>0ah
-     db<span class="st">&#39;*   Either midnight passed or an hour or more passed *&#39;</span>
+     <span class="dt">db</span> <span class="st">&#39;****************************************************&#39;</span>
      <span class="dt">db</span><span class="bn"> 0dh, </span>0ah
-     db<span class="st">&#39;*  while timing was in progress. If the former was  *&#39;</span>
+     <span class="dt">db</span> <span class="st">&#39;*   Either midnight passed or an hour or more passed *&#39;</span>
      <span class="dt">db</span><span class="bn"> 0dh, </span>0ah
-     db<span class="st">&#39;*  the case, please rerun the test; if the latter   *&#39;</span>
+     <span class="dt">db</span> <span class="st">&#39;*  while timing was in progress. If the former was  *&#39;</span>
      <span class="dt">db</span><span class="bn"> 0dh, </span>0ah
-     db<span class="st">&#39;* was the case, the test code takes too long to    *&#39;</span>
+     <span class="dt">db</span> <span class="st">&#39;*  the case, please rerun the test; if the latter   *&#39;</span>
      <span class="dt">db</span><span class="bn"> 0dh, </span>0ah
-     db<span class="st">&#39;* run to be timed by the long-period Zen timer.    *&#39;</span>
+     <span class="dt">db</span> <span class="st">&#39;* was the case, the test code takes too long to    *&#39;</span>
      <span class="dt">db</span><span class="bn"> 0dh, </span>0ah
-     <span class="dt">db</span> ‘* Suggestions: use the DOS TIME command, the DOS   *<span class="st">&#39;</span>
+     <span class="dt">db</span> <span class="st">&#39;* run to be timed by the long-period Zen timer.    *&#39;</span>
      <span class="dt">db</span><span class="bn"> 0dh, </span>0ah
-     <span class="dt">db</span> ‘* time function, <span class="kw">or</span> a watch.                       *<span class="st">&#39;</span>
+     <span class="dt">db</span> <span class="st">&#39;* Suggestions: use the DOS TIME command, the DOS   *&#39;</span>
      <span class="dt">db</span><span class="bn"> 0dh, </span>0ah
-     <span class="dt">db</span> ‘****************************************************<span class="st">&#39;</span>
+     <span class="dt">db</span> <span class="st">&#39;* time function, or a watch.                       *&#39;</span>
      <span class="dt">db</span><span class="bn"> 0dh, </span>0ah
-     db<span class="st">&#39;$&#39;</span>
+     <span class="dt">db</span> <span class="st">&#39;****************************************************&#39;</span>
+     <span class="dt">db</span><span class="bn"> 0dh, </span>0ah
+     <span class="dt">db</span> <span class="st">&#39;$&#39;</span>
 
 <span class="co">;********************************************************************</span>
 <span class="co">;* Routine called to start timing.         *</span>
@@ -2079,7 +2079,7 @@ ZTimerOn  proc near
 <span class="co">; Save the context of the program being timed.</span>
 <span class="co">;</span>
      <span class="kw">push</span> <span class="kw">ax</span>
-     pus  hf
+     <span class="kw">pushf</span>
 <span class="co">;</span>
 <span class="co">; Set timer 0 of the 8253 to mode 2 (divide-by-N), to cause</span>
 <span class="co">; linear counting rather than count-by-two counting. Also stops</span>
@@ -2095,10 +2095,10 @@ ZTimerOn  proc near
 <span class="co">; clock count each time it is executed.</span>
 <span class="co">;</span>
      DELAY
-     subal,<span class="kw">al</span>
-     outTIMER_0_8253,<span class="kw">al</span>       <span class="co">;lsb</span>
+     <span class="kw">sub</span> <span class="kw">al</span>,<span class="kw">al</span>
+     <span class="kw">out</span> TIMER_0_8253,<span class="kw">al</span>       <span class="co">;lsb</span>
      DELAY
-     outTIMER_0_8253,<span class="kw">al</span>       <span class="co">;msb</span>
+     <span class="kw">out</span> TIMER_0_8253,<span class="kw">al</span>       <span class="co">;msb</span>
 <span class="co">;</span>
 <span class="co">; In case interrupts are disabled, enable interrupts briefly to allow</span>
 <span class="co">; the interrupt generated when switching from mode 3 to mode 2 to be</span>
@@ -2120,12 +2120,12 @@ ZTimerOn  proc near
 <span class="co">; interrupts in order to avoid getting a half-changed count.)</span>
 <span class="co">;</span>
      <span class="kw">push</span>   <span class="kw">ds</span>
-     subax, <span class="kw">ax</span>
-     movds, <span class="kw">ax</span>
-     movax, <span class="kw">ds</span>:[TIMER_COUNT<span class="dv">+2</span>]
-<span class="fu">     movcs:</span> [StartBIOSCountHigh],<span class="kw">ax</span>
-     movax, <span class="kw">ds</span>:[TIMER_COUNT]
-<span class="fu">     movcs:</span> [StartBIOSCountLow],<span class="kw">ax</span>
+     <span class="kw">sub</span>    <span class="kw">ax</span>, <span class="kw">ax</span>
+     <span class="kw">mov</span>    <span class="kw">ds</span>, <span class="kw">ax</span>
+     <span class="kw">mov</span>    <span class="kw">ax</span>, <span class="kw">ds</span>:[TIMER_COUNT<span class="dv">+2</span>]
+     <span class="kw">mov</span>    <span class="kw">cs</span>:[StartBIOSCountHigh],<span class="kw">ax</span>
+     <span class="kw">mov</span>    <span class="kw">ax</span>, <span class="kw">ds</span>:[TIMER_COUNT]
+     <span class="kw">mov</span>    <span class="kw">cs</span>:[StartBIOSCountLow],<span class="kw">ax</span>
      <span class="kw">pop</span>    <span class="kw">ds</span>
 <span class="co">;</span>
 <span class="co">; Set the timer count to 0 again to start the timing interval.</span>
@@ -2133,7 +2133,7 @@ ZTimerOn  proc near
      <span class="kw">mov</span>    <span class="kw">al</span><span class="bn">,00110100b        </span><span class="co">;set up to load initial</span>
      <span class="kw">out</span>    MODE_8253,<span class="kw">al</span>        <span class="co">; timer count</span>
      DELAY
-     subal, <span class="kw">al</span>
+     <span class="kw">sub</span>    <span class="kw">al</span>, <span class="kw">al</span>
      <span class="kw">out</span>    TIMER_0_8253,<span class="kw">al</span><span class="co">;    load count lsb</span>
      DELAY
      <span class="kw">out</span>   TIMER_0_8253,<span class="kw">al</span><span class="co">;     load count msb</span>
@@ -2144,20 +2144,20 @@ ZTimerOn  proc near
      popax
      <span class="kw">ret</span>
 
-ZTimerOnendp
+ZTimerOn  endp
 
 <span class="co">;********************************************************************</span>
 <span class="co">;* Routine called to stop timing and get count.                     *</span>
 <span class="co">;********************************************************************</span>
 
-ZTimerOff procnear
+ZTimerOff proc near
 
 <span class="co">;</span>
 <span class="co">; Save the context of the program being timed.</span>
 <span class="co">;</span>
      <span class="kw">pushf</span>
-     pushax
-     pushcx
+     <span class="kw">push</span> <span class="kw">ax</span>
+     <span class="kw">push</span> <span class="kw">cx</span>
 <span class="co">;</span>
 <span class="co">; In case interrupts are disabled, enable interrupts briefly to allow</span>
 <span class="co">; any pending timer interrupt to be handled. Interrupts must be</span>
@@ -2250,7 +2250,7 @@ ife PS2
 
 endif
 
-<span class="kw">sti</span><span class="co">;let the BIOS count continue</span>
+    <span class="kw">sti</span>                       <span class="co">;let the BIOS count continue</span>
 <span class="co">;</span>
 <span class="co">; Time a zero-length code fragment, to get a reference for how</span>
 <span class="co">; much overhead this routine has. Time it 16 times and average it,</span>
@@ -2265,14 +2265,14 @@ endif
      <span class="kw">call</span>  ReferenceZTimerOff
      <span class="kw">loop</span>  RefLoop
      <span class="kw">sti</span>
-     <span class="kw">add</span>   <span class="kw">cs</span>:[ReferenceCount],<span class="dv">8</span><span class="co">;     total + (0.5 * 16)</span>
+     <span class="kw">add</span>   <span class="kw">cs</span>:[ReferenceCount],<span class="dv">8</span>    <span class="co">;total + (0.5 * 16)</span>
      <span class="kw">mov</span>   <span class="kw">cl</span>,<span class="dv">4</span>
-     <span class="kw">shr</span>   <span class="kw">cs</span>:[ReferenceCount],<span class="kw">cl</span><span class="co">;(total) / 16 + 0.5</span>
+     <span class="kw">shr</span>   <span class="kw">cs</span>:[ReferenceCount],<span class="kw">cl</span>   <span class="co">;(total) / 16 + 0.5</span>
 <span class="co">;</span>
 <span class="co">; Restore the context of the program being timed and return to it.</span>
 <span class="co">;</span>
-     popcx
-     popax
+     <span class="kw">pop</span> <span class="kw">cx</span>
+     <span class="kw">pop</span> <span class="kw">ax</span>
      MPOPF
      <span class="kw">ret</span>
 
@@ -2282,11 +2282,11 @@ ZTimerOff endp
 <span class="co">; Called by ZTimerOff to start the timer for overhead measurements.</span>
 <span class="co">;</span>
 
-ReferenceZTimerOnprocnear
+ReferenceZTimerOn proc near
 <span class="co">;</span>
 <span class="co">; Save the context of the program being timed.</span>
 <span class="co">;</span>
-     pushax
+     <span class="kw">push</span> <span class="kw">ax</span>
      <span class="kw">pushf</span>
 <span class="co">;</span>
 <span class="co">; Set timer 0 of the 8253 to mode 2 (divide-by-N), to cause</span>
@@ -2309,7 +2309,7 @@ ReferenceZTimerOnprocnear
      popax
      <span class="kw">ret</span>
 
-ReferenceZTimerOnendp
+ReferenceZTimerOn endp
 
 <span class="co">;</span>
 <span class="co">; Called by ZTimerOff to stop the timer and add the result to</span>
@@ -2318,20 +2318,20 @@ ReferenceZTimerOnendp
 <span class="co">; isn&#39;t going to take anywhere near 54 ms.</span>
 <span class="co">;</span>
 
-ReferenceZTimerOff procnear
+ReferenceZTimerOff proc near
 <span class="co">;</span>
 <span class="co">; Save the context of the program being timed.</span>
 <span class="co">;</span>
      <span class="kw">pushf</span>
-     pushax
-     pushcx
+     <span class="kw">push</span> <span class="kw">ax</span>
+     <span class="kw">push</span> <span class="kw">cx</span>
 
 <span class="co">;</span>
 <span class="co">; Match the interrupt-window delay in ZTimerOff.</span>
 <span class="co">;</span>
      <span class="kw">sti</span>
-     rept10
-     jmp<span class="dv">$</span>+<span class="dv">2</span>
+     rept <span class="dv">10</span>
+     <span class="kw">jmp</span> <span class="dv">$</span>+<span class="dv">2</span>
      endm
 
      <span class="kw">mov</span>    <span class="kw">al</span><span class="bn">,00000000b</span>
@@ -2352,8 +2352,8 @@ ReferenceZTimerOff procnear
 <span class="co">;</span>
 <span class="co">; Restore the context and return.</span>
 <span class="co">;</span>
-     popcx
-     popax
+     <span class="kw">pop</span> <span class="kw">cx</span>
+     <span class="kw">pop</span> <span class="kw">ax</span>
      MPOPF
      <span class="kw">ret</span>
 
@@ -2363,7 +2363,7 @@ ReferenceZTimerOff endp
 <span class="co">;* Routine called to report timing results.                           *</span>
 <span class="co">;********************************************************************</span>
 
-ZTimerReportprocnear
+ZTimerReport proc near
 
      <span class="kw">pushf</span>
      <span class="kw">push</span>    <span class="kw">ax</span>
@@ -2373,7 +2373,7 @@ ZTimerReportprocnear
      <span class="kw">push</span>    <span class="kw">si</span>
      <span class="kw">push</span>    <span class="kw">di</span>
      <span class="kw">push</span>    <span class="kw">ds</span>
-     <span class="co">;</span>
+<span class="co">;</span>
      <span class="kw">push</span>    <span class="kw">cs</span>     <span class="co">;DOS functions require that DS point</span>
      <span class="kw">pop</span>     <span class="kw">ds</span>     <span class="co">; to text to be displayed on the screen</span>
      assume  <span class="kw">ds</span>     :Code
@@ -2412,7 +2412,7 @@ ZTimerReportprocnear
 <span class="co">; Convert the BIOS time to microseconds.</span>
 <span class="co">;</span>
 <span class="fu">CalcBIOSTime:</span>
-     <span class="kw">mov</span>     <span class="kw">ax</span>,[EndBIOSCountLow]
+     <span class="kw">mov</span>    <span class="kw">ax</span>,[EndBIOSCountLow]
      <span class="kw">sub</span>    <span class="kw">ax</span>,[StartBIOSCountLow]
      <span class="kw">mov</span>    <span class="kw">dx</span>,<span class="dv">54925</span>          <span class="co">;number of microseconds each</span>
                               <span class="co">; BIOS count represents</span>
@@ -2440,7 +2440,7 @@ ZTimerReportprocnear
      <span class="kw">mov</span>    <span class="kw">si</span>,<span class="dv">8381</span>          <span class="co">;convert the reference count</span>
      <span class="kw">mul</span>    <span class="kw">si</span>               <span class="co">; to microseconds</span>
      <span class="kw">mov</span>    <span class="kw">si</span>,<span class="dv">10000</span>
-     <span class="kw">div</span>    <span class="kw">si</span><span class="co">;* .8381 = * 8381 / 10000</span>
+     <span class="kw">div</span>    <span class="kw">si</span>               <span class="co">;* .8381 = * 8381 / 10000</span>
      <span class="kw">sub</span>    <span class="kw">bx</span>,<span class="kw">ax</span>
      <span class="kw">sbb</span>    <span class="kw">cx</span>,<span class="dv">0</span>
      <span class="kw">mov</span>    [CurrentCountLow],<span class="kw">bx</span>
@@ -2495,7 +2495,7 @@ Code   ends
 <p>Rebooting should clear up any timer-related problems of the sort described above. (This gives us another reason to reboot at the end of each code-timing session.) You should <em>immediately</em> reboot and set the <code>PS2</code> equate to 1 if you get erratic or obviously incorrect results with the long-period Zen timer when <code>PS2</code> is set to 0. If you want to set <code>PS2</code> to 0, it would be a good idea to time a few of the listings in this book with <code>PS2</code> set first to 1 and then to 0, to make sure that the results match. If they’re consistently different, you should set <code>PS2</code> to 1.</p>
 <p>While the the non-PS/2 version is more dangerous than the PS/2 version, it also produces more accurate results when it does work. If you have a non-PS/2 PC-compatible computer, the choice between the two timing approaches is yours.</p>
 <p>If you do leave the <code>PS2</code> equate at 1 in Listing 3.5, you should repeat each code-timing run several times before relying on the results to be accurate to more than 54 ms, since variations may result from the possible lack of synchronization between the timer 0 count and the BIOS time-of-day count. In fact, it’s a good idea to time code more than once no matter which version of the long-period Zen timer you’re using, since interrupts, which must be enabled in order for the long-period timer to work properly, may occur at any time and can alter execution time substantially.</p>
-<p>Finally, please note that the <em>precision</em> Zen timer works perfectly well on both PS/2 and non-PS/2 computers. The PS/2 and 8253 considerations we’ve just discussed apply <em>only</em> to the longZen timer.</p>
+<p>Finally, please note that the <em>precision</em> Zen timer works perfectly well on both PS/2 and non-PS/2 computers. The PS/2 and 8253 considerations we’ve just discussed apply <em>only</em> to the long-period Zen timer.</p>
 </section>
 </section>
 <section id="example-use-of-the-long-period-zen-timer" class="level3">
@@ -2661,7 +2661,7 @@ callZTimerOff</code></pre>
 <section id="using-the-zen-timer-from-c" class="level3">
 <h3><a href="#using-the-zen-timer-from-c">Using the Zen Timer from C</a></h3>
 <p>The Zen timer can be used to measure code performance when programming in C—but not right out of the box. As presented earlier, the timer is designed to be called from assembly language; some relatively minor modifications are required before the <code>ZTimerOn</code> (start timer), <code>ZTimerOff</code> (stop timer), and <code>ZTimerReport</code> (display timing results) routines can be called from C. There are two separate cases to be dealt with here: small code model and large; I’ll tackle the simpler one, the small code model, first.</p>
-<p>Altering the Zen timer for linking to a small code model C program involves the following steps: <code>C</code> hange <code>ZTimerOn</code> to <code>_ZTimerOn</code>, change <code>ZTimerOff</code> to <code>_ZTimerOff</code>, change <code>ZTimerReport</code> to <code>_ZTimerReport</code>, and change <code>Code</code> to <code>_TEXT</code> . Figure 3.2 shows the line numbers and new states of all lines from Listing 3.1 that must be changed. These changes convert the code to use C-style external label names and the small model C code segment. (In C++, use the “C” specifier, as in</p>
+<p>Altering the Zen timer for linking to a small code model C program involves the following steps: Change <code>ZTimerOn</code> to <code>_ZTimerOn</code>, change <code>ZTimerOff</code> to <code>_ZTimerOff</code>, change <code>ZTimerReport</code> to <code>_ZTimerReport</code>, and change <code>Code</code> to <code>_TEXT</code> . Figure 3.2 shows the line numbers and new states of all lines from Listing 3.1 that must be changed. These changes convert the code to use C-style external label names and the small model C code segment. (In C++, use the “C” specifier, as in</p>
 <pre class="sourceCode c"><code class="sourceCode c"><span class="kw">extern</span> <span class="st">&quot;C&quot;</span> ZTimerOn(<span class="dt">void</span>);</code></pre>
 <p>when declaring the timer routines <code>extern</code>, so that name-mangling doesn’t occur, and the linker can find the routines’ C-style names.)</p>
 <p>That’s all it takes; after doing this, you’ll be able to use the Zen timer from C, as, for example, in:</p>
@@ -2683,11 +2683,11 @@ ZTimerReport();</code></pre>
 <p>with</p>
 <pre class="sourceCode nasm"><code class="sourceCode nasm"><span class="kw">push</span>     <span class="kw">cs</span>
 <span class="kw">call</span>     near <span class="dt">ptr</span> ReferenceZTimerOn</code></pre>
-<p>(and likewise for <code>ReferenceZTimerOff</code> ), which works because <code>ReferenceZTimerOn</code> is in the same segment as the calling code. This is normally a great optimization, being both smaller and faster than a far call. However, it’s not so great for the Zen</p>
+<p>(and likewise for <code>ReferenceZTimerOff</code>), which works because <code>ReferenceZTimerOn</code> is in the same segment as the calling code. This is normally a great optimization, being both smaller and faster than a far call.</p>
 <figure>
 <img src="images/03-03.jpg" alt="Figure 3.3  Changes for use with large code model C." /><figcaption><strong>Figure 3.3</strong>  <em>Changes for use with large code model C.</em></figcaption>
 </figure>
-<p>timer, because our purpose in calling the reference timing code is to determine exactly how much time is taken by overhead code—including the far calls to <code>ZTimerOn</code> and <code>ZTimerOf</code>f! By converting the far calls to push/near call pairs within the Zen timer module, TASM makes it impossible to emulate exactly the overhead of the Zen timer, and makes timings slightly (about 16 cycles on a 386) less accurate.</p>
+<p>However, it’s not so great for the Zen timer, because our purpose in calling the reference timing code is to determine exactly how much time is taken by overhead code—including the far calls to <code>ZTimerOn</code> and <code>ZTimerOf</code>! By converting the far calls to push/near call pairs within the Zen timer module, TASM makes it impossible to emulate exactly the overhead of the Zen timer, and makes timings slightly (about 16 cycles on a 386) less accurate.</p>
 <p>What’s the solution? Put the <code>NOSMART</code> directive at the start of the Zen timer code. This directive instructs TASM to turn off all optimizations, including converting far calls to push/near call pairs. By the way, there is, to the best of my knowledge, no such problem with MASM up through version 5.10A.</p>
 <p>In my mind, the whole business of optimizing assemblers is a mixed blessing. In general, it’s nice to have the assembler shortening jumps and selecting sign-extended forms of instructions for you. On the other hand, the benefits of tricks like substituting push/near call pairs for far calls are relatively small, and those tricks can get in the way when complete control is needed. Sure, complete control is needed very rarely, but when it is, optimizing assemblers can cause subtle problems; I discovered TASM’s alteration of far calls only because I happened to view the code in the debugger, and you might want to do the same if you’re using a recent version of MASM.</p>
 <p>I’ve tested the changes shown in Figures 3.2 and 3.3 with TASM and Borland C++ 4.0, and also with the latest MASM and Microsoft C/C++ compiler.</p>
@@ -2699,7 +2699,7 @@ ZTimerReport();</code></pre>
 </section>
 <section id="armed-with-the-zen-timer-onward-and-upward" class="level4">
 <h4><a href="#armed-with-the-zen-timer-onward-and-upward">Armed with the Zen Timer, Onward and Upward</a></h4>
-<p>The Zen timer is not perfect. For one thing, the finest resolution to which it can measure an interval is at best about 1µs, a period of time in which a 66 MHz Pentium computer can execute as many as 132 instructions (although an 8088-based PC would be hard-pressed to manage two instructions in a microsecond). Another problem is that the timing code itself interferes with the state of the prefetch queue and processor cache at the start of the code being timed, because the timing code is not necessarily fetched and does not necessarily access memory in exactly the same time sequence as the code immediately preceding the code under measurement normally does. This prefetch effect can introduce as much as 3 to 4 µ of inaccuracy. Similarly, the state of the prefetch queue at the end of the code being timed affects how long the code that stops the timer takes to execute. Consequently, the Zen timer tends to be more accurate for longer code sequences, since the relative magnitude of the inaccuracy introduced by the Zen timer becomes less over longer periods.</p>
+<p>The Zen timer is not perfect. For one thing, the finest resolution to which it can measure an interval is at best about 1µs, a period of time in which a 66 MHz Pentium computer can execute as many as 132 instructions (although an 8088-based PC would be hard-pressed to manage two instructions in a microsecond). Another problem is that the timing code itself interferes with the state of the prefetch queue and processor cache at the start of the code being timed, because the timing code is not necessarily fetched and does not necessarily access memory in exactly the same time sequence as the code immediately preceding the code under measurement normally does. This prefetch effect can introduce as much as 3 to 4 µs of inaccuracy. Similarly, the state of the prefetch queue at the end of the code being timed affects how long the code that stops the timer takes to execute. Consequently, the Zen timer tends to be more accurate for longer code sequences, since the relative magnitude of the inaccuracy introduced by the Zen timer becomes less over longer periods.</p>
 <p>Imperfections notwithstanding, the Zen timer is a good tool for exploring C code and x86 family assembly language, and it’s a tool we’ll use frequently for the remainder of this book.</p>
 </section>
 </section>
