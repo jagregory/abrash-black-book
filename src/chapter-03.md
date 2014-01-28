@@ -671,7 +671,7 @@ count reaches zero, the timer turns over and starts counting down again
 without stopping, and a pulse is generated for a single clock period.
 While the pulse is not held for nearly as long as in square wave mode,
 it doesn't matter, since the 8259 interrupt controller is configured in
-the PC to be edgeand hence cares only about the existence of a pulse
+the PC to be edge-triggered and hence cares only about the existence of a pulse
 from timer 0, not the duration of the pulse. As a result, timer 0
 continues to generate timer interrupts in divide-by-N mode, and the
 system clock continues to maintain good time.
@@ -688,7 +688,7 @@ the Zen timer shown in Listing 3.1 supports.
 In fact, the Zen timer shown in Listing 3.1 can only time intervals of
 up to about 54 ms in length, since that is the period of time that can
 be measured by timer 0 before its count turns over and repeats.
-fifty-four ms may not seem like a very long time, but even a CPU as slow
+Fifty-four ms may not seem like a very long time, but even a CPU as slow
 as the 8088 can perform more than 1,000 divides in 54 ms, and division
 is the single instruction that the 8088 performs most slowly. If a
 measured period turns out to be longer than 54 ms (that is, if timer 0
@@ -730,11 +730,11 @@ restart until the timing interval ends, losing time all the while.
 
 The effects on the system time of the Zen timer aren't a matter for
 great concern, as they are temporary, lasting only until the next warm
-or cold boot. System that have batteryclocks, (AT-style machines; that
+or cold boot. System that have battery-backed clocks, (AT-style machines; that
 is, virtually all machines in common use) automatically reset the
 correct time whenever the computer is booted, and systems without
-battery-clocks prompt for the correct date and time when booted.
-Also,repeated use of the Zen timer usually makes the system clock slow
+battery-backed clocks prompt for the correct date and time when booted.
+Also, repeated use of the Zen timer usually makes the system clock slow
 by at most a total of a few seconds, unless code that takes much longer
 than 54 ms to run is timed (in which case the Zen timer will notify you
 that the code is too long to time).
@@ -789,8 +789,8 @@ from timer counts to microseconds, and prints the resulting time in
 microseconds to the standard output.
 
 Note that `ZTimerReport` need not be called immediately after
-`ZTimerOff`. In fact, after a given call to `ZTimerOff,
-ZTimerReport` can be called at any time right up until the next call to
+`ZTimerOff`. In fact, after a given call to `ZTimerOff`,
+`ZTimerReport` can be called at any time right up until the next call to
 `ZTimerOn`.
 
 You may want to use the Zen timer to measure several portions of a
@@ -880,7 +880,7 @@ performance will be similar even on different IBM models; in fact, quite
 the opposite is true. For example, every PS/2 computer, even the
 relatively slow Model 30, executes code much faster than does a PC or
 XT. As another example, I set out to do the timings for my earlier book
-*Zen of Assembly Language* on an XTcomputer, only to find that the
+*Zen of Assembly Language* on an XT-compatible computer, only to find that the
 computer wasn't quite IBM-compatible regarding code performance. The
 differences were minor, mind you, but my experience illustrates the risk
 of assuming that a specific make of computer will perform in a certain
@@ -996,7 +996,7 @@ timing interval.
 
 Listing 3.3 is used by naming it TESTCODE, assembling both Listing 3.2
 (which includes TESTCODE) and Listing 3.1 with TASM or MASM, and linking
-the two resulting OBJ files together by way of the Borland orMicrosoft
+the two resulting OBJ files together by way of the Borland or Microsoft
 linker. Listing 3.4 shows a batch file, PZTIME.BAT, which does all that;
 when run, this batch file generates and runs the executable file
 PZTEST.EXE. PZTIME.BAT (Listing 3.4) assumes that the file PZTIMER.ASM
@@ -1111,8 +1111,8 @@ pztime <filename>
 In fact, that's exactly how I timed each of the listings in this book.
 Code fragments you write yourself can be timed in just the same way. If
 you wish to time code directly in place in your programs, rather than in
-the test-bed program of Listing 3.2, simply insert calls to `ZTimerOn,
-ZTimerOff`, and `ZTimerReport` in the appropriate places and link
+the test-bed program of Listing 3.2, simply insert calls to `ZTimerOn`,
+`ZTimerOff`, and `ZTimerReport` in the appropriate places and link
 PZTIMER to your program.
 
 ### The Long-Period Zen Timer
@@ -1303,8 +1303,8 @@ computers.
 ; All registers and all flags are preserved by all routines.
 ;
 
-Code segment word public ‘CODE'
-     assume cs:  Code, ds:nothing
+Code segment word public 'CODE'
+     assume      cs:Code, ds:nothing
      public      ZTimerOn, ZTimerOff, ZTimerReport
 
 ;
@@ -1326,24 +1326,24 @@ Code segment word public ‘CODE'
 ; which support the undocumented timer-stopping feature of the
 ; 8253. The choice is yours.
 ;
-PS2                  equ1
+PS2                  equ    1
 ;
 ; Base address of the 8253 timer chip.
 ;
-BASE_8253            equ40h
+BASE_8253            equ    40h
 ;
 ; The address of the timer 0 count registers in the 8253.
 ;
-TIMER_0_8253         equBASE_8253 + 0
+TIMER_0_8253         equ    BASE_8253 + 0
 ;
 ; The address of the mode register in the 8253.
 ;
-MODE_8253            equBASE_8253 + 3
+MODE_8253            equ    BASE_8253 + 3
 ;
 ; The address of the BIOS timer count variable in the BIOS
 ; data segment.
 ;
-TIMER_COUNT           equ46ch
+TIMER_COUNT           equ   46ch
 ;
 ; Macro to emulate a POPF instruction in order to fix the bug in some
 ; 80286 chips which allows interrupts to occur during a POPF even when
@@ -1353,9 +1353,9 @@ MPOPF macro
       local p1, p2
       jmp short p2
 p1:   iret        ;jump to pushed address & pop flags
-p2:   pushcs      ;construct far return address to
+p2:   push cs      ;construct far return address to
       call p1     ; the next instruction
-endm
+      endm
 
 ;
 ; Macro to delay briefly to ensure that enough time has elapsed
@@ -1383,11 +1383,11 @@ ReferenceCount        dw   ?       ;number of counts required to
 ;
 ; String printed to report results.
 ;
-OutputStr labelbyte
-          db     0dh, 0ah, ‘Timed count: ‘
-TimedCountStr    db10 dup (?)
-          db'    microseconds', 0dh, 0ah
-          db     ‘$'
+OutputStr label byte
+          db     0dh, 0ah, 'Timed count: '
+TimedCountStr    db    10 dup (?)
+          db     '    microseconds', 0dh, 0ah
+          db     '$'
 ;
 ; Temporary storage for timed count as it's divided down by powers
 ; of ten when converting from doubleword binary to ASCII.
@@ -1398,7 +1398,7 @@ CurrentCountHigh  dw  ?
 ; Powers of ten table used to perform division by 10 when doing
 ; doubleword conversion from binary to ASCII.
 ;
-PowersOfTenlabelword
+PowersOfTen label word
      dd   1
      dd   10
      dd   100
@@ -1409,33 +1409,33 @@ PowersOfTenlabelword
      dd   10000000
      dd   100000000
      dd   1000000000
-PowersOfTenEnd   labelword
+PowersOfTenEnd   label word
 ;
 ; String printed to report that the high word of the BIOS count
 ; changed while timing (an hour elapsed or midnight was crossed),
 ; and so the count is invalid and the test needs to be rerun.
 ;
-TurnOverStrlabelbyte
-     db  0dh, 0ah
-     db ‘****************************************************'
+TurnOverStr label byte
      db 0dh, 0ah
-     db'*   Either midnight passed or an hour or more passed *'
+     db '****************************************************'
      db 0dh, 0ah
-     db'*  while timing was in progress. If the former was  *'
+     db '*   Either midnight passed or an hour or more passed *'
      db 0dh, 0ah
-     db'*  the case, please rerun the test; if the latter   *'
+     db '*  while timing was in progress. If the former was  *'
      db 0dh, 0ah
-     db'* was the case, the test code takes too long to    *'
+     db '*  the case, please rerun the test; if the latter   *'
      db 0dh, 0ah
-     db'* run to be timed by the long-period Zen timer.    *'
+     db '* was the case, the test code takes too long to    *'
      db 0dh, 0ah
-     db ‘* Suggestions: use the DOS TIME command, the DOS   *'
+     db '* run to be timed by the long-period Zen timer.    *'
      db 0dh, 0ah
-     db ‘* time function, or a watch.                       *'
+     db '* Suggestions: use the DOS TIME command, the DOS   *'
      db 0dh, 0ah
-     db ‘****************************************************'
+     db '* time function, or a watch.                       *'
      db 0dh, 0ah
-     db'$'
+     db '****************************************************'
+     db 0dh, 0ah
+     db '$'
 
 ;********************************************************************
 ;* Routine called to start timing.         *
@@ -1447,7 +1447,7 @@ ZTimerOn  proc near
 ; Save the context of the program being timed.
 ;
      push ax
-     pus  hf
+     pushf
 ;
 ; Set timer 0 of the 8253 to mode 2 (divide-by-N), to cause
 ; linear counting rather than count-by-two counting. Also stops
@@ -1463,10 +1463,10 @@ ZTimerOn  proc near
 ; clock count each time it is executed.
 ;
      DELAY
-     subal,al
-     outTIMER_0_8253,al       ;lsb
+     sub al,al
+     out TIMER_0_8253,al       ;lsb
      DELAY
-     outTIMER_0_8253,al       ;msb
+     out TIMER_0_8253,al       ;msb
 ;
 ; In case interrupts are disabled, enable interrupts briefly to allow
 ; the interrupt generated when switching from mode 3 to mode 2 to be
@@ -1488,12 +1488,12 @@ ZTimerOn  proc near
 ; interrupts in order to avoid getting a half-changed count.)
 ;
      push   ds
-     subax, ax
-     movds, ax
-     movax, ds:[TIMER_COUNT+2]
-     movcs: [StartBIOSCountHigh],ax
-     movax, ds:[TIMER_COUNT]
-     movcs: [StartBIOSCountLow],ax
+     sub    ax, ax
+     mov    ds, ax
+     mov    ax, ds:[TIMER_COUNT+2]
+     mov    cs:[StartBIOSCountHigh],ax
+     mov    ax, ds:[TIMER_COUNT]
+     mov    cs:[StartBIOSCountLow],ax
      pop    ds
 ;
 ; Set the timer count to 0 again to start the timing interval.
@@ -1501,7 +1501,7 @@ ZTimerOn  proc near
      mov    al,00110100b        ;set up to load initial
      out    MODE_8253,al        ; timer count
      DELAY
-     subal, al
+     sub    al, al
      out    TIMER_0_8253,al;    load count lsb
      DELAY
      out   TIMER_0_8253,al;     load count msb
@@ -1512,20 +1512,20 @@ ZTimerOn  proc near
      popax
      ret
 
-ZTimerOnendp
+ZTimerOn  endp
 
 ;********************************************************************
 ;* Routine called to stop timing and get count.                     *
 ;********************************************************************
 
-ZTimerOff procnear
+ZTimerOff proc near
 
 ;
 ; Save the context of the program being timed.
 ;
      pushf
-     pushax
-     pushcx
+     push ax
+     push cx
 ;
 ; In case interrupts are disabled, enable interrupts briefly to allow
 ; any pending timer interrupt to be handled. Interrupts must be
@@ -1618,7 +1618,7 @@ ife PS2
 
 endif
 
-sti;let the BIOS count continue
+    sti                       ;let the BIOS count continue
 ;
 ; Time a zero-length code fragment, to get a reference for how
 ; much overhead this routine has. Time it 16 times and average it,
@@ -1633,14 +1633,14 @@ RefLoop:
      call  ReferenceZTimerOff
      loop  RefLoop
      sti
-     add   cs:[ReferenceCount],8;     total + (0.5 * 16)
+     add   cs:[ReferenceCount],8    ;total + (0.5 * 16)
      mov   cl,4
-     shr   cs:[ReferenceCount],cl;(total) / 16 + 0.5
+     shr   cs:[ReferenceCount],cl   ;(total) / 16 + 0.5
 ;
 ; Restore the context of the program being timed and return to it.
 ;
-     popcx
-     popax
+     pop cx
+     pop ax
      MPOPF
      ret
 
@@ -1650,11 +1650,11 @@ ZTimerOff endp
 ; Called by ZTimerOff to start the timer for overhead measurements.
 ;
 
-ReferenceZTimerOnprocnear
+ReferenceZTimerOn proc near
 ;
 ; Save the context of the program being timed.
 ;
-     pushax
+     push ax
      pushf
 ;
 ; Set timer 0 of the 8253 to mode 2 (divide-by-N), to cause
@@ -1677,7 +1677,7 @@ ReferenceZTimerOnprocnear
      popax
      ret
 
-ReferenceZTimerOnendp
+ReferenceZTimerOn endp
 
 ;
 ; Called by ZTimerOff to stop the timer and add the result to
@@ -1686,20 +1686,20 @@ ReferenceZTimerOnendp
 ; isn't going to take anywhere near 54 ms.
 ;
 
-ReferenceZTimerOff procnear
+ReferenceZTimerOff proc near
 ;
 ; Save the context of the program being timed.
 ;
      pushf
-     pushax
-     pushcx
+     push ax
+     push cx
 
 ;
 ; Match the interrupt-window delay in ZTimerOff.
 ;
      sti
-     rept10
-     jmp$+2
+     rept 10
+     jmp $+2
      endm
 
      mov    al,00000000b
@@ -1720,8 +1720,8 @@ ReferenceZTimerOff procnear
 ;
 ; Restore the context and return.
 ;
-     popcx
-     popax
+     pop cx
+     pop ax
      MPOPF
      ret
 
@@ -1731,7 +1731,7 @@ ReferenceZTimerOff endp
 ;* Routine called to report timing results.                           *
 ;********************************************************************
 
-ZTimerReportprocnear
+ZTimerReport proc near
 
      pushf
      push    ax
@@ -1741,7 +1741,7 @@ ZTimerReportprocnear
      push    si
      push    di
      push    ds
-     ;
+;
      push    cs     ;DOS functions require that DS point
      pop     ds     ; to text to be displayed on the screen
      assume  ds     :Code
@@ -1780,7 +1780,7 @@ TestTooLong:
 ; Convert the BIOS time to microseconds.
 ;
 CalcBIOSTime:
-     mov     ax,[EndBIOSCountLow]
+     mov    ax,[EndBIOSCountLow]
      sub    ax,[StartBIOSCountLow]
      mov    dx,54925          ;number of microseconds each
                               ; BIOS count represents
@@ -1808,7 +1808,7 @@ CalcBIOSTime:
      mov    si,8381          ;convert the reference count
      mul    si               ; to microseconds
      mov    si,10000
-     div    si;* .8381 = * 8381 / 10000
+     div    si               ;* .8381 = * 8381 / 10000
      sub    bx,ax
      sbb    cx,0
      mov    [CurrentCountLow],bx
@@ -1896,7 +1896,7 @@ substantially.
 
 Finally, please note that the *precision* Zen timer works perfectly well
 on both PS/2 and non-PS/2 computers. The PS/2 and 8253 considerations
-we've just discussed apply *only* to the longZen timer.
+we've just discussed apply *only* to the long-period Zen timer.
 
 ### Example Use of the Long-Period Zen Timer
 
@@ -2126,7 +2126,7 @@ be dealt with here: small code model and large; I'll tackle the simpler
 one, the small code model, first.
 
 Altering the Zen timer for linking to a small code model C program
-involves the following steps: `C` hange `ZTimerOn` to
+involves the following steps: Change `ZTimerOn` to
 `_ZTimerOn`, change `ZTimerOff` to `_ZTimerOff`, change
 `ZTimerReport` to `_ZTimerReport`, and change `Code` to
 `_TEXT` . Figure 3.2 shows the line numbers and new states of all
@@ -2187,16 +2187,16 @@ push     cs
 call     near ptr ReferenceZTimerOn
 ```
 
-(and likewise for `ReferenceZTimerOff` ), which works because
+(and likewise for `ReferenceZTimerOff`), which works because
 `ReferenceZTimerOn` is in the same segment as the calling code. This
 is normally a great optimization, being both smaller and faster than a
-far call. However, it's not so great for the Zen
+far call. 
 
 ![**Figure 3.3**  *Changes for use with large code model C.*](images/03-03.jpg)
 
-timer, because our purpose in calling the reference timing code is to
+However, it's not so great for the Zen timer, because our purpose in calling the reference timing code is to
 determine exactly how much time is taken by overhead code—including the
-far calls to `ZTimerOn` and `ZTimerOf`f! By converting the far calls
+far calls to `ZTimerOn` and `ZTimerOf`! By converting the far calls
 to push/near call pairs within the Zen timer module, TASM makes it
 impossible to emulate exactly the overhead of the Zen timer, and makes
 timings slightly (about 16 cycles on a 386) less accurate.
@@ -2255,7 +2255,7 @@ processor cache at the start of the code being timed, because the timing
 code is not necessarily fetched and does not necessarily access memory
 in exactly the same time sequence as the code immediately preceding the
 code under measurement normally does. This prefetch effect can introduce
-as much as 3 to 4 µ of inaccuracy. Similarly, the state of the prefetch
+as much as 3 to 4 µs of inaccuracy. Similarly, the state of the prefetch
 queue at the end of the code being timed affects how long the code that
 stops the timer takes to execute. Consequently, the Zen timer tends to
 be more accurate for longer code sequences, since the relative magnitude

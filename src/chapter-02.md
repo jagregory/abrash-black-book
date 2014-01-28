@@ -200,7 +200,7 @@ enough.
 The single most critical aspect of the hardware, and the one about which
 it is hardest to learn, is the CPU. The x86 family CPUs have a complex,
 irregular instruction set, and, unlike most processors, they are neither
-straightforward nor wellregarding true code performance. What's more,
+straightforward nor well-documented true code performance. What's more,
 assembly is so difficult to learn that most articles and books that
 present assembly code settle for code that just works, rather than code
 that pushes the CPU to its limits. In fact, since most articles and
