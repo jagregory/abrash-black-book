@@ -200,7 +200,7 @@ enough.
 The single most critical aspect of the hardware, and the one about which
 it is hardest to learn, is the CPU. The x86 family CPUs have a complex,
 irregular instruction set, and, unlike most processors, they are neither
-straightforward nor wellregarding true code performance. What's more,
+straightforward nor well-documented true code performance. What's more,
 assembly is so difficult to learn that most articles and books that
 present assembly code settle for code that just works, rather than code
 that pushes the CPU to its limits. In fact, since most articles and
@@ -293,7 +293,7 @@ all the more so given that compilers are constrained by the limitations
 of high-level languages and by the process of transformation from
 high-level to machine language. Consequently, carefully optimized
 assembly is not just the language of choice but the *only* choice for
-the 1percent to 10 percent of code—usually consisting of small,
+the 1 percent to 10 percent of code—usually consisting of small,
 well-defined subroutines—that determines overall program performance,
 and it is the only choice for code that must be as compact as possible,
 as well. In the run-of-the-mill, non-time-critical portions of your
