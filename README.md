@@ -8,17 +8,17 @@ The [Github releases list](https://github.com/jagregory/abrash-black-book/releas
 
 ## How does this differ from the previously released versions?
 
-The book is now out of print, and hard to come by. Last time I checked it was going for over $200 on ebay.
+The book is now out of print, and hard to come by. Last time I checked, it was going for over $200 on ebay.
 
-The version which Michael and Dr. Dobbs released in 2001 was as a collection PDFs. This version is [still available](http://www.drdobbs.com/parallel/graphics-programming-black-book/184404919); however, the structure (multiple files) and the format (PDF) doesn't lend itself well to reading on a ebook reader or other mobile device.
+The version which Michael and Dr. Dobbs released in 2001 was a collection of PDF files. That version is [still available](http://www.drdobbs.com/parallel/graphics-programming-black-book/184404919).  However, the structure (multiple files) and the format (PDF) result in a poor user experience on an ebook reader or other mobile device.
 
-This version has been thoroughly cleaned of artefacts and condensed into something which can be easily converted into a ebook friendly format. You can read this version online at Github, or download any of the Epub or Mobi releases. You can clone the repository and generate your own version with [pandoc](http://johnmacfarlane.net/pandoc/) if necessary.
+This version has been thoroughly cleaned of artifacts and condensed into something which can easily be converted into an ebook-friendly format. You can read this version online at Github, or download any of the Epub or Mobi releases. You can clone the repository and generate your own version with [pandoc](http://johnmacfarlane.net/pandoc/) if necessary.
 
 ## Contributing
 
-Changes are welcome, especially conversion related ones. If you spot any issues whilst reading, please submit an issue and I'll correct it. Pull Requests are always welcome.
+Changes are welcome, especially conversion-related ones. If you spot any problems while reading, please [submit an issue](https://github.com/jagregory/abrash-black-book/issues) and I'll correct it. Pull Requests are always welcome.
 
-There's some larger changes that could be made to help preserve the content longer term. I'd love to see some of the images converted to a vector representation so we can provide higher-resolution versions, and similarly formulas and maths could be represented in MathML.
+Some larger changes could be made to improve the content. I'd love to see some of the images converted to a vector representation so we can provide higher-resolution versions.  Formulas and equations could be typeset with MathML.
 
 ## Generating your own ebook
 
