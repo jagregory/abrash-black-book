@@ -18,7 +18,7 @@ This version has been thoroughly cleaned of artifacts and condensed into somethi
 
 Changes are welcome, especially conversion-related ones. If you spot any problems while reading, please [submit an issue](https://github.com/jagregory/abrash-black-book/issues) and I'll correct it. Pull Requests are always welcome.
 
-Some larger changes could be made to improve the content. I'd love to see some of the images converted to a vector representation so we can provide higher-resolution versions.  Formulas and equations could be typeset with MathML.
+Some larger changes could be made to improve the content. I'd love to see some of the images converted to a vector representation so we can provide higher-resolution versions.  Formulas and equations could be typeset with [MathJax](http://www.mathjax.org/).
 
 ## Generating your own ebook
 
