@@ -2,7 +2,7 @@
 
 This is the source for an ebook version of Michael Abrash's Black Book of Graphics Programming (Special Edition), originally published in 1997 and [released online for free in 2001](http://www.drdobbs.com/parallel/graphics-programming-black-book/184404919).
 
-Reproduced with permission of Michael Abrash, converted and maintained by [James Gregory](mailto:james@jagregory.com).
+Reproduced with blessing of Michael Abrash, converted and maintained by [James Gregory](mailto:james@jagregory.com).
 
 The [Github releases list](https://github.com/jagregory/abrash-black-book/releases) has an Epub and Mobi version available for download, and you can find a mirror of the HTML version at [www.jagregory.com/abrash-black-book](http://www.jagregory.com/abrash-black-book/).
 
