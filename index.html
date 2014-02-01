@@ -953,7 +953,7 @@ main(<span class="dt">int</span> argc, <span class="dt">char</span> *argv[]) {
             <span class="kw">while</span> ( LengthCount-- ) {
             <span class="co">/* Add each byte in turn into the checksum accumulator */</span>
                   Checksum += (<span class="dt">unsigned</span> <span class="dt">int</span>) *WorkingPtr++;
-      }
+            }
       } <span class="kw">while</span> ( WorkingLength );
 
       <span class="co">/* Report the result */</span>
@@ -3425,7 +3425,7 @@ main(<span class="dt">int</span> argc, <span class="dt">char</span> *argv[]) {
 <h3><a href="#math-via-memory-addressing">Math via Memory Addressing</a></h3>
 <p>You’re probably not particularly wowed to hear that you can use addressing modes to perform memory addressing arithmetic that would otherwise have to be performed with separate arithmetic instructions. You may, however, be a tad more interested to hear that you can also use addressing modes to perform arithmetic that has nothing to do with memory addressing, and with a couple of advantages over arithmetic instructions, at that.</p>
 <p>How?</p>
-<p>With <code>LEA</code>, the only instruction that performs memory addressing calculations but doesn’t actually address memory. <code>LEA</code> accepts a standard memory addressing operand, but does nothing more than store the calculated memory offset in the specified register, which may be any general-purpose register. The operation of <code>LEA</code> is illustrated in Figure 6.1, which also shows the operation of register-to-register <code>ADD</code>, for comparis on.</p>
+<p>With <code>LEA</code>, the only instruction that performs memory addressing calculations but doesn’t actually address memory. <code>LEA</code> accepts a standard memory addressing operand, but does nothing more than store the calculated memory offset in the specified register, which may be any general-purpose register. The operation of <code>LEA</code> is illustrated in Figure 6.1, which also shows the operation of register-to-register <code>ADD</code>, for comparison.</p>
 <p>What does that give us? Two things that <code>ADD</code> doesn’t provide: the ability to perform addition with either two or three operands, and the ability to store the result in <em>any</em> register, not just in one of the source operands.</p>
 <p>Imagine that we want to add BX to DI, add two to the result, and store the result in AX. The obvious solution is this:</p>
 <pre class="sourceCode nasm"><code class="sourceCode nasm"><span class="kw">mov</span>  <span class="kw">ax</span>,<span class="kw">bx</span>
