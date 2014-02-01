@@ -629,7 +629,7 @@ main(int argc, char *argv[]) {
             while ( LengthCount-- ) {
             /* Add each byte in turn into the checksum accumulator */
                   Checksum += (unsigned int) *WorkingPtr++;
-      }
+            }
       } while ( WorkingLength );
 
       /* Report the result */
