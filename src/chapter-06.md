@@ -188,7 +188,7 @@ standard memory addressing operand, but does nothing more than store the
 calculated memory offset in the specified register, which may be any
 general-purpose register. The operation of `LEA` is illustrated in
 Figure 6.1, which also shows the operation of register-to-register
-`ADD`, for comparis on.
+`ADD`, for comparison.
 
 What does that give us? Two things that `ADD` doesn't provide: the
 ability to perform addition with either two or three operands, and the
