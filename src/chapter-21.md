@@ -98,7 +98,7 @@ Unfortunately, this tends to extend the lifetimes of pointer registers
 to span a greater number of instructions, making the Pentium's
 relatively small register set seem even smaller.
 
-![**Figure 21.1**  *An AGI can stall up to three instructions later.*](images/21-01.jpg)
+![**Figure 21.1**  *An AGI can stall up to three instructions later.*](../images/21-01.jpg)
 
 As an example of a sort of AGI that's new to the Pentium, consider the
 following test for a NULL pointer, followed by the use of the pointer if
@@ -124,7 +124,7 @@ use `TEST EBX,EBX` instead of `AND; TEST` can't modify EBX, so no
 AGI occurs. Sure, `AND EBX,EBX` doesn't modify EBX either, but the
 Pentium doesn't know that, so it has to insert the AGI.
 
-![**Figure 21.2**  *An AGI can cost as many as 3 cycles.*](images/21-02.jpg)
+![**Figure 21.2**  *An AGI can cost as many as 3 cycles.*](../images/21-02.jpg)
 
 As on the 486, you should keep a careful eye out for AGIs involving the
 stack pointer. Implicit modifiers of ESP, such as `PUSH` and `POP`,

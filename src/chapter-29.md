@@ -46,7 +46,7 @@ here, putting the screen into mode 10H, putting up some bittext so there
 is something to save, and creating the 112K file SNAPSHOT.SCR, which
 contains the visible portion of the mode 10H frame buffer.
 
-![**Figure 29.1**  *Saving EGA/VGA display memory.*](images/29-01.jpg)
+![**Figure 29.1**  *Saving EGA/VGA display memory.*](../images/29-01.jpg)
 
 The only part of Listing 29.1 that's even remotely tricky is the use of
 the Read Map register (Graphics Controller register 4) to make each of
@@ -342,7 +342,7 @@ must be in write mode 0, with the Bit Mask register set to 0FFH and Data
 Rotate register set to 0 (no data rotation and the logical function set
 to pass the data through unchanged).
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > While these requirements are no problem if you're simply calling a
 > subroutine in order to save an image from your program, they pose a
 > considerable problem if you're designing a hot-key operated TSR that can
@@ -391,7 +391,7 @@ as long as the high-level language you're using can perform direct port
 I/O to set up the adapter and can read and write display memory
 directly.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > One tip if you're saving and restoring the screen from a high-level
 > language on an EGA, though: After you've completed the save or restore
 > operation, be sure to put any registers that you've changed back to
@@ -459,7 +459,7 @@ monitor. The best way to figure out what the 64 colors look like on your
 monitor is to see them, and that's just what the program in Listing
 29.3, which we'll discuss shortly, lets you do.
 
-![**Figure 29.2**  *Color translation via the palette registers.*](images/29-02.jpg)
+![**Figure 29.2**  *Color translation via the palette registers.*](../images/29-02.jpg)
 
 How does one go about setting the palette registers? Well, it's
 certainly possible to set the palette registers directly by addressing
@@ -485,7 +485,7 @@ of video function 10H. If AL = 3 (subfunction 3), bit 0 of BL is set to
 1 to cause bit 7 of text attributes to select blinking, or set to 0 to
 cause bit 7 of text attributes to select highreverse video.)
 
-![**Figure 29.3**  *Bit organization within a palette register.*](images/29-03.jpg)
+![**Figure 29.3**  *Bit organization within a palette register.*](../images/29-03.jpg)
 
 Listing 29.3 uses video function 10H, subfunction 2 to step through all
 64 possible colors. This is accomplished by putting up 16 color bars,
@@ -781,7 +781,7 @@ programmed to any of the 64 possible colors by either setting Attribute
 Controller register 11H directly or calling video function 10H,
 subfunction 1.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > On ECD-compatible monitors, however, there's too little scan time to
 > display a proper border when the EGA is in 350-scan-line mode, so
 > overscan should always be 0 (black) unless you're in 200-scanmode. Note,
@@ -958,4 +958,4 @@ publisher. You'd be doing a favor for a whole generation of graphics
 programmers who aren't sure whether they're skating on thin ice without
 those legendary delays.
 
-![**Figure 29.4**  *Graphics mode register fields.*](images/29-04.jpg)
+![**Figure 29.4**  *Graphics mode register fields.*](../images/29-04.jpg)

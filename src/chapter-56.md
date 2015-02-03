@@ -95,7 +95,7 @@ the image. This can greatly improve texture quality, although it is
 slower.
 
 ![**Figure 56.1**  *Using reverse transformation to find the source pixel
-color.*](images/56-01.jpg)
+color.*](../images/56-01.jpg)
 
 #### Mapping Textures Made Easy
 
@@ -116,7 +116,7 @@ and the polygon, and the pixel mapping is one-to-one, so the appropriate
 part of each scan line of the image can simply be block copied to the
 destination.
 
-![**Figure 56.2**  *Mapping a texture onto an untransformed polygon.*](images/56-02.jpg)
+![**Figure 56.2**  *Mapping a texture onto an untransformed polygon.*](../images/56-02.jpg)
 
 Now, matters get more complicated. What if the destination polygon is
 rotated in two dimensions? We no longer have a neat direct mapping from
@@ -145,7 +145,7 @@ is the height of the destination edge. The this approach arranges to
 step the source image edge `DestYHeight` times also, to match what the
 destination is doing.
 
-![**Figure 56.3**  *Mapping a texture onto a 2-D rotated polygon.*](images/56-03.jpg)
+![**Figure 56.3**  *Mapping a texture onto a 2-D rotated polygon.*](../images/56-03.jpg)
 
 Now we're able to track the coordinates of the polygon edges through the
 source image in tandem with the destination edges. Stepping across each
@@ -187,9 +187,9 @@ any polygonal area of a bitmap to any destination polygon will work,
 given only that the two polygons have the same number of vertices.
 
 ![**Figure 56.4**  *Mapping a horizontal destination scan line back to
-the source image.*](images/56-04.jpg)
+the source image.*](../images/56-04.jpg)
 
-![**Figure 56.5**  *Mapping a texture onto a narrower polygon.*](images/56-05.jpg)
+![**Figure 56.5**  *Mapping a texture onto a narrower polygon.*](../images/56-05.jpg)
 
 #### Notes on DDA Texture Mapping
 
@@ -263,7 +263,7 @@ need the complete X-Sharp library to see texture mapping in action, but
 Listings 56.1 and 56.2 are the actual texture mapping code in its
 entirety.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Here's a major tip: DDA texture mapping looks best on fast-moving
 > surfaces, where the eye doesn't have time to pick nits with the shearing
 > and aliasing that's an inevi table by-product of such a crude approach.

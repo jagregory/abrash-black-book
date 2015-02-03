@@ -340,7 +340,7 @@ Leveling is very important, because cases where a game slows down to the
 point of being unplayable dictate game and level design, and the fewer
 constraints placed on design, the better.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > A corollary is that best case performance can be seductively misleading;
 > it's a great feeling to see a scene running at 30 or even 60 frames per
 > second, but if the bulk of the game runs at 15 fps, those best cases are
@@ -883,7 +883,7 @@ of time needed to make the interpolation possible. This illustrates a
 common tradeoff, which is that reduced latency often makes for rougher
 play.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Reduced latency also often makes for more frustrating play. It's
 > actually not hard to reduce the latency perceived by the player, but
 > many of the approaches that reduce latency introduce the potential for

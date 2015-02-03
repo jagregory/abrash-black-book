@@ -65,7 +65,7 @@ me—the code was rotating each bit into place separately, so that a
 multibit rotation was being performed every time through the loop, for a
 total of four separate time-consuming multibit rotations!
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > While the instructions themselves were individually optimized, the
 > overall approach did not make the best possible use of the instructions.
 
@@ -142,7 +142,7 @@ mode of the 386 and its successors, with their more powerful addressing
 modes, offer fewer registers than compilers would like.
 
 ![**Figure 2.1** *The high-level language transformation
-inefficiencies.*](images/02-01.jpg)
+inefficiencies.*](../images/02-01.jpg)
 
 Assembly, on the other hand, is simply a human-oriented representation
 of machine language. As a result, assembly provides a difficult
@@ -159,7 +159,7 @@ programmer is able to produce machine language code that's precisely
 tailored to the needs of each task a given application requires.
 
 ![**Figure 2.2**  *Properly constructed assembly programs suffer no
-transformation loss.*](images/02-02.jpg)
+transformation loss.*](../images/02-02.jpg)
 
 The key, of course, is the programmer, since in assembly the programmer
 must essentially perform the transformation from the application
@@ -211,7 +211,7 @@ knowledge about programming them effectively is by far the hardest
 knowledge to gather. A good portion of this book is devoted to seeking
 out such knowledge.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Be forewarned, though: No matter how much you learn about programming
 > the PC in assembly, there's always more to discover.
 
@@ -248,7 +248,7 @@ reusability, source code control, choice of development environment, and
 the like that they often forget rule \#1: From the user's perspective,
 *performance is fundamental*.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Comment your code, design it carefully, and write non-time-critical
 > portions in a high-level language, if you wish—but when you write the
 > portions that interact with the user and/or affect response time,

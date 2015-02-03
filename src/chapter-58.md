@@ -129,7 +129,7 @@ up the code, but soon realized that all the clever coding in the world
 wasn't going to get me within 100 percent of John's performance so long
 as I had to cycle from one plane to the next for every pixel.
 
-![**Figure 58.1**  *Texture mapping a single horizontal scanline.*](images/58-01.jpg)
+![**Figure 58.1**  *Texture mapping a single horizontal scanline.*](../images/58-01.jpg)
 
 **LISTING 58.1 L58-1.ASM**
 
@@ -193,7 +193,7 @@ of 18 cycles, double John's 9 cycles, just to handle plane management.
 Clearly, getting plane control out of the inner loop was absolutely
 necessary.
 
-![**Figure 58.2**  *Display memory organization in Mode X.*](images/58-02.jpg)
+![**Figure 58.2**  *Display memory organization in Mode X.*](../images/58-02.jpg)
 
 I must confess, with some embarrassment, that at this point I threw
 myself into designing a solution that involved executing the texture
@@ -297,7 +297,7 @@ scanning it out left to right; it is only in conjunction with the
 hardware organization of Mode X that the scanning direction matters in
 the least.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > That's what Zen programming is all about, though; tying together two
 > pieces of seemingly unrelated information to good effect—and that's what
 > I had failed to do. Like Robert Heinlein—like all of us—I had viewed the
@@ -311,7 +311,7 @@ the least.
 > and periodically try to figure out what assumptions you're making—and
 > then question them!
 
-![**Figure 58.3**  *Texture mapping a single vertical column.*](images/58-03.jpg)
+![**Figure 58.3**  *Texture mapping a single vertical column.*](../images/58-03.jpg)
 
 There are a few complications with Chris's approach, not least that
 X-Sharp's polygon-filling convention (top and left edges included,
@@ -384,7 +384,7 @@ from fractional to integer parts are detected via conditional jumps, as
 shown in Figure 58.4. There's quite a lot we can do to improve this.
 
 ![**Figure 58.4**  *Original method for advancing the source texture
-pointer.*](images/58-04.jpg)
+pointer.*](../images/58-04.jpg)
 
 First, we can sum the X and Y integer advance amounts outside the loop,
 then add them both to the source pointer with a single instruction.
@@ -415,10 +415,10 @@ the source pointer in X. That's a mere 3 cycles, and all that remains is
 to finish advancing the source pointer in Y.
 
 ![**Figure 58.5**  *Efficient method for advancing source texture
-pointer.*](images/58-05.jpg)
+pointer.*](../images/58-05.jpg)
 
 ![**Figure 58.6**  *Storing both X and Y fractional coordinates in one
-register.*](images/58-06.jpg)
+register.*](../images/58-06.jpg)
 
 Actually, we also advanced the source pointer by the Y integer amount
 back when we added BP to SI; all that's left is to detect whether our
@@ -460,7 +460,7 @@ Or can we?
 ;             15 set to 0
 ```
 
-![**Figure 58.7**  *Final method for advancing source texture pointer.*](images/58-07.jpg)
+![**Figure 58.7**  *Final method for advancing source texture pointer.*](../images/58-07.jpg)
 
 ```nasm
 ;       EDX = fractional source texture Y coordinate in lower

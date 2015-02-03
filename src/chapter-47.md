@@ -328,7 +328,7 @@ routines as basic primitives, and so you'll understand how the bitmap is
 organized, but the building blocks of high-performance graphics software
 are fills, copies, and bitblts, and it's there that Mode X shines.
 
-![**Figure 47.1**  *Mode X display memory organization.*](images/47-01.jpg)
+![**Figure 47.1**  *Mode X display memory organization.*](../images/47-01.jpg)
 
 **LISTING 47.2 L47-2.ASM**
 
@@ -570,7 +570,7 @@ screen on a 20-MHz cached 386 with a Paradise VGA. Although Listing 47.5
 is slightly slower than an equivalent mode 13H fill routine would be,
 it's not grievously so.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > In general, performing plane-at-a-time operations can make almost any
 > Mode X operation, at the worst, nearly as fast as the same operation in
 > mode 13H (although this sort of Mode X programming is admittedly fairly
@@ -749,7 +749,7 @@ to by each CPU access. Thus, it would seem that up to four pixels could
 be set by a single Mode X byte-sized write to display memory,
 potentially speeding up operations like rectangle fills by four times.
 
-![**Figure 47.2**  *Selecting planes with the Map Mask register.*](images/47-02.jpg)
+![**Figure 47.2**  *Selecting planes with the Map Mask register.*](../images/47-02.jpg)
 
 And, as it turns out, four-plane parallelism works quite nicely indeed.
 Listing 47.6 is yet another rectangle-fill routine, this time using the

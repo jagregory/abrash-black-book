@@ -107,9 +107,9 @@ from the use of DI to address memory (remember, the loop is unrolled, so
 the last instruction is followed by the first instruction), but because
 the intervening instruction takes two cycles, there's no penalty at all.
 
-![**Figure 13.1**  *Cycle-eaters in the original WC.*](images/13-01.jpg)
+![**Figure 13.1**  *Cycle-eaters in the original WC.*](../images/13-01.jpg)
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Remember, pipeline penalties diminish with increasing number of cycles,
 > not instructions, between the pipeline disrupter and the potentially
 > affected instruction.
@@ -193,7 +193,7 @@ values (least-significant byte first) loads pixels in the wrong order,
 so far as word rotation is concerned, but `BSWAP` can take care of
 that.
 
-![**Figure 13.2**  *BSWAP in operation.*](images/13-02.jpg)
+![**Figure 13.2**  *BSWAP in operation.*](../images/13-02.jpg)
 
 As it turns out, though, `BSWAP` is also useful in an unexpected way,
 having to do with making efficient use of the upper half of 32-bit
@@ -308,7 +308,7 @@ operations include all the string instructions except `REP MOVS`, as
 well as `XLAT`, `LOOP`, and, of course, `PUSH *mem*` and `POP
 *mem*`.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Whenever possible, try to use the 486's 1-cycle instructions, including
 > `MOV`, `ADD`, `SUB`, `CMP`, `ADC`, `SBB`, `XOR`, `AND`, `OR`, `TEST`,
 > `LEA`, and `PUSH reg` and `POP reg`. These instructions have an added
@@ -413,7 +413,7 @@ example, `MOV AL, [EBX]` is a 2-byte instruction; `MOV AL,
 [EBX+10H]` is a 3-byte instruction; and `MOV AL, [EBX+10000H]` is a
 6-byte instruction.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Note that 1 and 4-byte displacements, but not 2-byte displacements, are
 > supported for 32-bit addressing. Code size can be greatly improved by
 > keeping stack frame variables within 128 bytes of EBP, and variables in

@@ -260,7 +260,7 @@ now on) by arranging your operands so that the multiplier (always the
 rightmost operand following `MUL` or `IMUL`) is no larger than the
 other operand.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Why? Because the 386 processes one multiplier bit per cycle and
 > immediately ends a multiplication when all significant bits of the
 > multiplier have been processed, so fewer cycles are required to multiply
@@ -285,7 +285,7 @@ This highlights another interesting point: `MUL` and `IMUL` on the
 386 are so fast that alternative multiplication approaches, while
 generally still faster, are worthwhile only in truly time-critical code.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > On 386SXs and uncached 386s, where code size can significantly affect
 > performance due to instruction prefetching, the compact `MUL` and
 > `IMUL` instructions can approach and in some cases even outperform the
@@ -317,7 +317,7 @@ fastest way to search on the PC, can be used to eliminate most potential
 matches; each remaining potential match can then be checked in its
 entirety with `REPZ CMPS`.
 
-![**Figure 9.1**  *Simple searching method for locating a text string.*](images/09-01.jpg)
+![**Figure 9.1**  *Simple searching method for locating a text string.*](../images/09-01.jpg)
 
 Rob's revelation, which he credits without explanation to Edgar Allen
 Poe (search nevermore?), was that by far the slowest part of the whole
@@ -325,7 +325,7 @@ deal is handling `REPNZ SCASB` matches, which require checking the
 remainder of the string with `REPZ CMPS` and restarting `REPNZ
 SCASB` if no match is found.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Rob points out that the number of `REPNZ SCASB` matches can easily be
 > reduced simply by scanning for the character in the searched-for string
 > that appears least often in the buffer being searched.
@@ -359,12 +359,12 @@ counting. Listings 9.1 and 9.2 use pretty much the same instructions,
 and even use the same approach of scanning with `REPNZ SCASB` and
 using `REPZ CMPS` to check scanning matches.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > The difference between Listings 9.1 and 9.2 (which gives you more than a
 > doubling of performance) is due entirely to understanding the nature of
 > the data being handled, and biasing the code to reflect that knowledge.
 
-![**Figure 9.2**  *Faster searching method for locating a text string.*](images/09-02.jpg)
+![**Figure 9.2**  *Faster searching method for locating a text string.*](../images/09-02.jpg)
 
 **LISTING 9.1 L9-1.ASM**
 
@@ -701,7 +701,7 @@ applied to handling arbitrarily large dividends in 386 native mode code,
 but in that case the operation can proceed a dword, rather than a word,
 at a time.
 
-![**Figure 9.3**  *Fast multiword division on the 386.*](images/09-03.jpg)
+![**Figure 9.3**  *Fast multiword division on the 386.*](../images/09-03.jpg)
 
 As for handling signed division with arbitrarily large dividends, that
 can be done easily enough by remembering the signs of the dividend and
@@ -832,7 +832,7 @@ slows performance because instructions must be fetched through the
 half-pint 16-bit bus; on a 386, the effect depends on the instruction
 mix and whether there's a cache.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > On balance, though, it's as important to keep your most-used variables
 > in the stack's sweet spot in 386 native mode as it was on the 8088.
 
@@ -866,7 +866,7 @@ fast they run on my 386, and I very much doubt that you'll find
 different execution times on other 386s. (Please let me know if you do,
 though!)
 
-![**Figure 9.4**  *Performing rotate instructions using the Carry flag.*](images/09-04.jpg)
+![**Figure 9.4**  *Performing rotate instructions using the Carry flag.*](../images/09-04.jpg)
 
 Interestingly, according to Intel's *i486 Microprocessor Programmer's
 Reference Manual*, the 486 can `RCR` or `RCL` a register by one bit

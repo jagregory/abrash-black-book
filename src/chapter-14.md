@@ -101,7 +101,7 @@ It's important to understand that we're assuming that the buffer is
 typical text. That's what I meant at the outset, when I said that the
 information you need may be under your nose.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Formally, you don't know a blessed thing about the search buffer, but
 > experience, common sense, and your knowledge of the application give you
 > a great deal of useful, if somewhat imprecise, information.
@@ -177,7 +177,7 @@ of bytes (a portion of the buffer); it doesn't matter in the least in
 what order we compare them, so long as all the bytes in one set are
 compared to the corresponding bytes in the other set.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Why on earth would we want to start with the rightmost character?
 > Because a mismatch on the rightmost character tells us a great deal more
 > than a mismatch on the leftmost character.
@@ -207,7 +207,7 @@ advance of fewer bytes than the pattern length, and potentially as
 little as the same single byte distance by which the standard search
 approach advances.
 
-![**Figure 14.1**  *Mismatch on first character checked.*](images/14-01.jpg)
+![**Figure 14.1**  *Mismatch on first character checked.*](../images/14-01.jpg)
 
 What if the mismatch occurs with a buffer character that *does* occur in
 the pattern? Then we can't skip past the mismatch location, but we can
@@ -227,7 +227,7 @@ move clear past the mismatch location. Otherwise, the pattern moves
 until a matching pattern byte lies atop the mismatch. That's all there
 is to it!
 
-![**Figure 14.2**  *Mismatch on third character checked.*](images/14-02.jpg)
+![**Figure 14.2**  *Mismatch on third character checked.*](../images/14-02.jpg)
 
 ### Boyer-Moore: The Good and the Bad
 
@@ -241,7 +241,7 @@ skips, help Boyer-Moore, as does a long distance to the match location,
 which helps diffuse the overhead of building the table of distances to
 skip ahead on all the possible mismatch values.
 
-![**Figure 14.3**  *Mismatch on character that appears in pattern.*](images/14-03.jpg)
+![**Figure 14.3**  *Mismatch on character that appears in pattern.*](../images/14-03.jpg)
 
 The best case for Boyer-Moore is good indeed: About N/M comparisons are
 required, where N is the buffer length and M is the pattern length. This
