@@ -7,8 +7,6 @@ all: html epub mobi
 html:
 	rm -rf out/html && mkdir -p out/html
 	cp html/book.css out/html/
-	# This symbolic link is a crutch until all image references are converted from "images/xxx.jpg" to "../images/xxx.jpg"
-	ln -f -s ../images src/images
 	cd src && pandoc -S --to html5 -o ../out/html/black-book.html --section-divs --toc --standalone --template=../html/template.html $(FILES)
 
 epub:
