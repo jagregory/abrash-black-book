@@ -69,7 +69,7 @@ VGA, I found that the faster rotation was too fast! The ball spun so
 rapidly that the eye couldn't blend successive images together into
 continuous motion, much like watching a badly flickering movie.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > So the second lesson is that either too little or too much speed can
 > destroy the illusion. Unless you're antialiasing, you need to tune the
 > shifting of your images so that they're in the "sweet spot" of apparent
@@ -161,7 +161,7 @@ map. This asymmetry was quite visible, and not at all the desired
 effect.
 
 ![**Figure 57.1**  *Gaps caused by mixing fixed-point and all-integer
-math.*](images/57-01.jpg)
+math.*](../images/57-01.jpg)
 
 Listing 57.1 is one solution to these problems. This code, which
 replaces the equivalently named function presented in the previous

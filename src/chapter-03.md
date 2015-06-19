@@ -58,7 +58,7 @@ performance of his code and found it to be unexpectedly slow, curiosity
 might well have led him to experiment further and thereby add to his
 store of reliable information about the CPU.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > There you have an important tenet of assembly language optimization:
 > After crafting the best code possible, check it in action to see if it's
 > really doing what you think it is. If it's not behaving as expected,
@@ -628,7 +628,7 @@ attention.
 Timer 1 is dedicated to providing dynamic RAM refresh, and should not be
 tampered with lest system crashes result.
 
-![**Figure 3.1**  *The configuration of the 8253 timer chip in the PC.*](images/03-01.jpg)
+![**Figure 3.1**  *The configuration of the 8253 timer chip in the PC.*](../images/03-01.jpg)
 
 Finally, timer 0 is used to drive the system clock. As programmed by the
 BIOS at power-up, every 65,536 (64K) counts, or 54.925 milliseconds,
@@ -2156,7 +2156,7 @@ ZTimerReport();
 timer—Listing 3.5—requires the same modifications, but to different
 lines.)
 
-![**Figure 3.2**  *Changes for use with small code model C.*](images/03-02.jpg)
+![**Figure 3.2**  *Changes for use with small code model C.*](../images/03-02.jpg)
 
 Altering the Zen timer for use in C's large code model is a tad more
 complex, because in addition to the above changes, all functions,
@@ -2192,7 +2192,7 @@ call     near ptr ReferenceZTimerOn
 is normally a great optimization, being both smaller and faster than a
 far call. 
 
-![**Figure 3.3**  *Changes for use with large code model C.*](images/03-03.jpg)
+![**Figure 3.3**  *Changes for use with large code model C.*](../images/03-03.jpg)
 
 However, it's not so great for the Zen timer, because our purpose in calling the reference timing code is to
 determine exactly how much time is taken by overhead code—including the

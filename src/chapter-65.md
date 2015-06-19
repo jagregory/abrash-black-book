@@ -273,9 +273,9 @@ which the line intersects the clip plane as the next polygon vertex, as
 shown in Figure 65.3. Listing 65.2 shows a polygon-clipping function.
 
 ![**Figure 65.1**  *The distance from the plane to the inside endpoint,
-measured along the normal.*](images/65-01.jpg)
+measured along the normal.*](../images/65-01.jpg)
 
-![**Figure 65.2**  *Clipping a polygon.*](images/65-02.jpg)
+![**Figure 65.2**  *Clipping a polygon.*](../images/65-02.jpg)
 
 **LISTING 65.2 L65\_2.c**
 
@@ -357,7 +357,7 @@ for a simple 3-D clipping example that allows you to move around and
 look at polygonal models from any angle. The full code for this program
 is available on the CD-ROM in the file DDJCLIP.ZIP.
 
-![**Figure 65.3**  *Clipping a polygon edge.*](images/65-03.jpg)
+![**Figure 65.3**  *Clipping a polygon edge.*](../images/65-03.jpg)
 
 **LISTING 65.3 L65\_3.c**
 

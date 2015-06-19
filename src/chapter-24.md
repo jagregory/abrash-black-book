@@ -73,7 +73,7 @@ of the read results in a write operation that logically combines CPU
 data n with whatever data happens to be in the latches from the last
 read, which is normally undesirable.
 
-![**Figure 24.1**  *VGA ALU data flow.*](images/24-01.jpg)
+![**Figure 24.1**  *VGA ALU data flow.*](../images/24-01.jpg)
 
 Occasionally, however, the independence of the latches from the display
 memory location being written to can be used to great advantage. The
@@ -475,7 +475,7 @@ separate byte values, making matters easier for the programmer, while
 the macro itself can combine the values into a single word-sized
 constant.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > A minor optimization tip illustrated in the listing is the use of `INC
 > AX` and `DEC AX` in the `DrawVerticalBox` subroutine when only AL
 > actually needs to be modified. Word-sized register increment and
