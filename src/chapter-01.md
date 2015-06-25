@@ -352,7 +352,7 @@ TempByte         db        ?       ;each byte read by DOS will be stored here
 _ChecksumFile    proc near
                  push      bp
                  mov       bp,sp
-                 push      si                  ;save C's register variable
+                 push      si                   ;save C's register variable
 ;
                  mov       bx,[bp+Handle]       ;get file handle
                  sub       si,si                ;zero the checksum ;accumulator
@@ -363,17 +363,17 @@ _ChecksumFile    proc near
 ChecksumLoop:
                  mov       ah,3fh               ;DOS read file function #
                  int       21h                  ;read the byte
-jcErrorEnd;an error occurred
+                 jc        ErrorEnd             ;an error occurred
                  and       ax,ax                ;any bytes read?
                  jz        Success              ;no-end of file reached-we're done
                  add       si,[TempWord]        ;add the byte into the
                                                 ;checksum total
-jmpChecksumLoop
+                 jmp       ChecksumLoop
 ErrorEnd:
                  sub       ax,ax                ;error
                  jmp       short Done
 Success:
-                 mov       bx,[bp+Checksum] ;point to the checksum variable
+                 mov       bx,[bp+Checksum]     ;point to the checksum variable
                  mov       [bx],si              ;save the new checksum
                  mov       ax,1                 ;success
 ;
@@ -381,7 +381,7 @@ Done:
                  pop       si                   ;restore C's register variable
                  pop       bp
                  ret
-_ChecksumFileendp
+_ChecksumFile    endp
                  end
 ```
 
@@ -754,33 +754,33 @@ Parms struc
 Buffer              dw    ?
 BufferLength        dw    ?
 Checksum            dw    ?
-Parmsends
+Parms ends
 ;
      .model small
      .code
      public _ChecksumChunk
-_ChecksumChunkprocnear
-     push  bp
-     mov   bp,sp
-     push  si                        ;save C's register variable
+_ChecksumChunk proc near
+     push bp
+     mov  bp,sp
+     push si                   ;save C's register variable
 ;
-     cld                             ;make LODSB increment SI
-      mov  si,[bp+Buffer]            ;point to buffer
-      mov  cx,[bp+BufferLength]      ;get buffer length
-      mov  bx,[bp+Checksum]          ;point to checksum variable
-      mov  dx,[bx]                   ;get the current checksum
-      sub  ah,ah                     ;so AX will be a 16-bit value after LODSB
+     cld                       ;make LODSB increment SI
+     mov  si,[bp+Buffer]       ;point to buffer
+     mov  cx,[bp+BufferLength] ;get buffer length
+     mov  bx,[bp+Checksum]     ;point to checksum variable
+     mov  dx,[bx]              ;get the current checksum
+     sub  ah,ah                ;so AX will be a 16-bit value after LODSB
 ChecksumLoop:
-      lodsb                  ;get the next byte
-      add  dx,ax             ;add it into the checksum total
-      loop ChecksumLoop      ;continue for all bytes in block
-      mov  [bx],dx           ;save the new checksum
+     lodsb                     ;get the next byte
+     add  dx,ax                ;add it into the checksum total
+     loop ChecksumLoop         ;continue for all bytes in block
+     mov  [bx],dx              ;save the new checksum
 ;
-      pop  si                ;restore C's register variable
-      pop  bp
-      ret
-_ChecksumChunkendp
-      end
+     pop  si                   ;restore C's register variable
+     pop  bp
+     ret
+_ChecksumChunk endp
+     end
 ```
 
 Note that in Table 1.1, optimization makes little difference except in
