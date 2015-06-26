@@ -116,7 +116,7 @@ set/reset would produce color effects; in that case, the operation of
 the logical functions must be evaluated on a plane-by-plane basis, since
 only the enabled planes would be affected by each operation.
 
-**LISTING 24.1 L24-1.ASM**
+**LISTING 24.1 [L24-1.ASM](../code/L24-1.ASM)**
 
 ```nasm
 ; Program to illustrate operation of ALUs and latches of the VGA's

@@ -194,7 +194,7 @@ write, and functions perfectly—with one slight hitch:
 
 It's *slow*.
 
-**LISTING 1.1 L1-1.C**
+**LISTING 1.1 [L1-1.C](../code/L01-1.ASM)**
 
 ```c
 /*
@@ -278,7 +278,7 @@ and off (no opt). All times were measured with Paradigm Systems' TIMER
 program on a 10 MHz 1-wait-state AT clone with a 28-ms hard disk, with
 disk caching turned off.
 
-**LISTING 1.2 L1-2.C**
+**LISTING 1.2 [L1-2.C](../code/L01-2.C)**
 
 ```c
 /*
@@ -315,7 +315,7 @@ main(int argc, char *argv[]) {
 }
 ```
 
-**LISTING 1.3 L1-3.ASM**
+**LISTING 1.3 [L1-3.ASM](../code/L01-3.ASM)**
 
 ```nasm
 ; Assembler subroutine to perform a 16-bit checksum on the file
@@ -443,41 +443,41 @@ as that between a 4.77 MHz PC and a 16 MHz 386.
 In this case that means knowing how DOS and the C/C++ file-access
 libraries do their work. In other words, *know the territory*!
 
-**LISTING 1.4 L1-4.C**
+**LISTING 1.4 [L1-4.C](../code/L01-4.C)**
 
 ```c
 /*
-* Program to calculate the 16-bit checksum of the stream of bytes
-* from the specified file. Obtains the bytes one at a time via
-* getc(), allowing C to perform data buffering.
-*/
+ * Program to calculate the 16-bit checksum of the stream of bytes
+ * from the specified file. Obtains the bytes one at a time via
+ * getc(), allowing C to perform data buffering.
+ */
 #include <stdio.h>
 
 main(int argc, char *argv[]) {
-      FILE *CheckFile;
-      int Byte;
-      unsigned int Checksum;
-
-      if ( argc != 2 ) {
-            printf("usage: checksum filename\n");
-            exit(1);
-      }
-      if ( (CheckFile = fopen(argv[1], "rb")) == NULL ) {
-            printf("Can't open file: %s\n", argv[1]);
-            exit(1);
-      }
-
-      /* Initialize the checksum accumulator */
-      Checksum = 0;
-
-      /* Add each byte in turn into the checksum accumulator */
-      while ( (Byte = getc(CheckFile)) != EOF ) {
-            Checksum += (unsigned int) Byte;
-      }
-
-      /* Report the result */
-      printf("The checksum is: %u\n", Checksum);
-      exit(0);
+	FILE *CheckFile;
+	int Byte;
+	unsigned int Checksum;
+	
+	if ( argc != 2 ) {
+		printf("usage: checksum filename\n");
+		exit(1);
+	}
+	if ( (CheckFile = fopen(argv[1], "rb")) == NULL ) {
+		printf("Can't open file: %s\n", argv[1]);
+		exit(1);
+	}
+	
+	/* Initialize the checksum accumulator */
+	Checksum = 0;
+	
+	/* Add each byte in turn into the checksum accumulator */
+	while ( (Byte = getc(CheckFile)) != EOF ) {
+		Checksum += (unsigned int) Byte;
+	}
+	
+	/* Report the result */
+	printf("The checksum is: %u\n", Checksum);
+	exit(0);
 }
 ```
 
@@ -576,64 +576,64 @@ uses no assembly at all.
 > Otherwise, you'll end up rewriting C library functions in C, which makes
 > no sense at all.
 
-**LISTING 1.5 L1-5.C**
+**LISTING 1.5 [L1-5.C](../code/L01-5.C)**
 
 ```c
 /*
-* Program to calculate the 16-bit checksum of the stream of bytes
-* from the specified file. Buffers the bytes internally, rather
-* than letting C or DOS do the work.
-*/
+ * Program to calculate the 16-bit checksum of the stream of bytes
+ * from the specified file. Buffers the bytes internally, rather
+ * than letting C or DOS do the work.
+ */
 #include <stdio.h>
 #include <fcntl.h>
 #include <alloc.h>   /* alloc.h for Borland,
-                                malloc.h for Microsoft  */
+                       	malloc.h for Microsoft  */
 
 #define BUFFER_SIZE  0x8000   /* 32Kb data buffer */
 
 main(int argc, char *argv[]) {
-      int Handle;
-      unsigned int Checksum;
-      unsigned char *WorkingBuffer, *WorkingPtr;
-      int WorkingLength, LengthCount;
-
-      if ( argc != 2 ) {
-            printf("usage: checksum filename\n");
-            exit(1);
-      }
-      if ( (Handle = open(argv[1], O_RDONLY | O_BINARY)) == -1 ) {
-            printf("Can't open file: %s\n", argv[1]);
-            exit(1);
-      }
-
-      /* Get memory in which to buffer the data */
-      if ( (WorkingBuffer = malloc(BUFFER_SIZE)) == NULL ) {
-            printf("Can't get enough memory\n");
-            exit(1);
-      }
-
-      /* Initialize the checksum accumulator */
-      Checksum = 0;
-
-      /* Process the file in BUFFER_SIZE chunks */
-      do {
-            if ( (WorkingLength = read(Handle, WorkingBuffer,
-                  BUFFER_SIZE)) == -1 ) {
-                  printf("Error reading file %s\n", argv[1]);
-                  exit(1);
-            }
-            /* Checksum this chunk */
-            WorkingPtr = WorkingBuffer;
-            LengthCount = WorkingLength;
-            while ( LengthCount-- ) {
-            /* Add each byte in turn into the checksum accumulator */
-                  Checksum += (unsigned int) *WorkingPtr++;
-            }
-      } while ( WorkingLength );
-
-      /* Report the result */
-      printf("The checksum is: %u\n", Checksum);
-      exit(0);
+	int Handle;
+	unsigned int Checksum;
+	unsigned char *WorkingBuffer, *WorkingPtr;
+	int WorkingLength, LengthCount;
+	
+	if ( argc != 2 ) {
+		printf("usage: checksum filename\n");
+		exit(1);
+	}
+	if ( (Handle = open(argv[1], O_RDONLY | O_BINARY)) == -1 ) {
+		printf("Can't open file: %s\n", argv[1]);
+		exit(1);
+	}
+	
+	/* Get memory in which to buffer the data */
+	if ( (WorkingBuffer = malloc(BUFFER_SIZE)) == NULL ) {
+		printf("Can't get enough memory\n");
+		exit(1);
+	}
+	
+	/* Initialize the checksum accumulator */
+	Checksum = 0;
+	
+	/* Process the file in BUFFER_SIZE chunks */
+	do {
+		if ( (WorkingLength = read(Handle, WorkingBuffer,
+			BUFFER_SIZE)) == -1 ) {
+			printf("Error reading file %s\n", argv[1]);
+			exit(1);
+		}
+		/* Checksum this chunk */
+		WorkingPtr = WorkingBuffer;
+		LengthCount = WorkingLength;
+		while ( LengthCount-- ) {
+			/* Add each byte in turn into the checksum accumulator */
+			Checksum += (unsigned int) *WorkingPtr++;
+		}
+	} while ( WorkingLength );
+	
+	/* Report the result */
+	printf("The checksum is: %u\n", Checksum);
+	exit(0);
 }
 ```
 
@@ -670,65 +670,64 @@ and 1.7, outperforms even the best-optimized C version of Listing 1.5 by 26
 percent. These are considerable improvements, well worth pursuing—once
 the design has been maxed out.
 
-**LISTING 1.6 L1-6.C**
+**LISTING 1.6 [L1-6.C](../code/L01-6.C)**
 
 ```c
 /*
-* Program to calculate the 16-bit checksum of the stream of bytes
-* from the specified file. Buffers the bytes internally, rather
-* than letting C or DOS do the work, with the time-critical
-* portion of the code written in optimized assembler.
-*/
+ * Program to calculate the 16-bit checksum of the stream of bytes
+ * from the specified file. Buffers the bytes internally, rather
+ * than letting C or DOS do the work, with the time-critical
+ * portion of the code written in optimized assembler.
+ */
 #include <stdio.h>
 #include <fcntl.h>
 #include <alloc.h>   /* alloc.h for Borland,
-                         malloc.h for Microsoft  */
+                        malloc.h for Microsoft  */
 
 #define BUFFER_SIZE  0x8000   /* 32K data buffer */
 
 main(int argc, char *argv[]) {
-      int Handle;
-      unsigned int Checksum;
-      unsigned char *WorkingBuffer;
-      int WorkingLength;
-
-      if ( argc != 2 ) {
-            printf("usage: checksum filename\n");
-            exit(1);
-      }
-      if ( (Handle = open(argv[1], O_RDONLY | O_BINARY)) == -1 ) {
-            printf("Can't open file: %s\n", argv[1]);
-            exit(1);
-      }
-
-      /* Get memory in which to buffer the data */
-      if ( (WorkingBuffer = malloc(BUFFER_SIZE)) == NULL ) {
-            printf("Can't get enough memory\n");
-            exit(1);
-      }
-
-      /* Initialize the checksum accumulator */
-      Checksum = 0;
-
-      /* Process the file in 32K chunks */
-      do {
-            if ( (WorkingLength = read(Handle, WorkingBuffer,
-            BUFFER_SIZE)) == -1 ) {
-                  printf("Error reading file %s\n", argv[1]);
-                  exit(1);
-            }
-            /* Checksum this chunk if there's anything in it */
-            if ( WorkingLength )
-                  ChecksumChunk(WorkingBuffer, WorkingLength, &Checksum);
-            } while ( WorkingLength );
-
-            /* Report the result */
-            printf("The checksum is: %u\n", Checksum);
-            exit(0);
+	int Handle;
+	unsigned int Checksum;
+	unsigned char *WorkingBuffer;
+	int WorkingLength;
+	
+	if ( argc != 2 ) {
+		printf("usage: checksum filename\n");
+		exit(1);
+	}
+	if ( (Handle = open(argv[1], O_RDONLY | O_BINARY)) == -1 ) {
+		printf("Can't open file: %s\n", argv[1]);
+		exit(1);
+	}
+	
+	/* Get memory in which to buffer the data */
+	if ( (WorkingBuffer = malloc(BUFFER_SIZE)) == NULL ) {
+		printf("Can't get enough memory\n");
+		exit(1);
+	}
+	
+	/* Initialize the checksum accumulator */
+	Checksum = 0;
+	
+	/* Process the file in 32K chunks */
+	do {
+		if ( (WorkingLength = read(Handle, WorkingBuffer, BUFFER_SIZE)) == -1 ) {
+			printf("Error reading file %s\n", argv[1]);
+			exit(1);
+		}
+		/* Checksum this chunk if there's anything in it */
+		if ( WorkingLength )
+			ChecksumChunk(WorkingBuffer, WorkingLength, &Checksum);
+	} while ( WorkingLength );
+	
+	/* Report the result */
+	printf("The checksum is: %u\n", Checksum);
+	exit(0);
 }
 ```
 
-**LISTING 1.7 L1-7.ASM**
+**LISTING 1.7 [L1-7.ASM](../code/L01-7.ASM)**
 
 ```nasm
 ; Assembler subroutine to perform a 16-bit checksum on a block of

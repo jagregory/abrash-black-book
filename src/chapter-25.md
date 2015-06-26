@@ -103,7 +103,7 @@ drawing of the sort used in Listing 25.1, it's possible to draw any font
 of any size anywhere on the screen (and a lot faster than via DOS or the
 BIOS, as well).
 
-**LISTING 25.1 L25-1.ASM**
+**LISTING 25.1 [L25-1.ASM](../code/L25-1.ASM)**
 
 ```nasm
 ; Program to illustrate operation of data rotate and bit mask
@@ -445,7 +445,7 @@ unchanged. In order to generate blue unconditionally, it would be
 necessary to set the Map Mask register to 0FH, clear memory, and then
 set the Map Mask register to 01H and fill with blue.
 
-**LISTING 25.2 L25-2.ASM**
+**LISTING 25.2 [L25-2.ASM](../code/L25-2.ASM)**
 
 ```nasm
 ; Program to illustrate operation of Map Mask register when drawing
@@ -568,7 +568,7 @@ color. The preexisting pattern is completely overwritten this time,
 because the set/reset circuitry writes 0-bytes to planes that must be
 off as well as 0FFH-bytes to planes that must be on.
 
-**LISTING 25.3 L25-3.ASM**
+**LISTING 25.3 [L25-3.ASM](../code/L25-3.ASM)**
 
 ```nasm
 ; Program to illustrate operation of set/reset circuitry to force
@@ -700,7 +700,7 @@ entire byte of CPU data for a plane, the combination of set/reset for
 some planes and CPU data for other planes, as in the example above, can
 be used to control individual pixels.
 
-**LISTING 25.4 L25-4.ASM**
+**LISTING 25.4 [L25-4.ASM](../code/L25-4.ASM)**
 
 ```nasm
 ; Program to illustrate operation of set/reset circuitry in conjunction

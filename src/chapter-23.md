@@ -308,7 +308,7 @@ program shown in Listing 23.1. I suggest you run the program before
 continuing, since the explanations will mean far more to you if you've
 seen the features in action.
 
-**LISTING 23.1 L23-1.ASM**
+**LISTING 23.1 [L23-1.ASM](../code/L23-1.ASM)**
 
 ```nasm
 ; Sample VGA program.
