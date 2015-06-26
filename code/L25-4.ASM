@@ -54,15 +54,15 @@ start	proc	near
 ;
 ; Draw 18 10-scan-line high horizontal bars in green, 10 scan lines apart.
 ;
-	SETSC	SC_MAP_MASK,02h;map mask setting enables only
-; plane 1, the green plane
-	sub	di,di;start at beginning of video memory
+	SETSC	SC_MAP_MASK,02h		;map mask setting enables only
+					; plane 1, the green plane
+	sub	di,di			;start at beginning of video memory
 	mov	al,0ffh
-	mov	bp,18;# bars to draw
+	mov	bp,18			;# bars to draw
 HorzBarLoop:
-	mov	cx,80*10;# bytes per horizontal bar
-	rep stosb;draw bar
-	add	di,80*10;point to start of next bar
+	mov	cx,80*10		;# bytes per horizontal bar
+	rep stosb			;draw bar
+	add	di,80*10		;point to start of next bar
 	dec	bp
 	jnz	HorzBarLoop
 ;
