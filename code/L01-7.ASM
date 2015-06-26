@@ -15,35 +15,35 @@
 ; Parameter structure:
 ;
 Parms struc
-		dw	?	;pushed BP
-		dw	?	;return address
-Buffer		dw	?
-BufferLength	dw	?
-Checksum	dw	?
+                dw      ?       ;pushed BP
+                dw      ?       ;return address
+Buffer          dw      ?
+BufferLength    dw      ?
+Checksum        dw      ?
 Parms ends
 ;
-	.model	small
-	.code
-	public	_ChecksumChunk
-_ChecksumChunk	proc near
-	push	bp
-	mov	bp,sp
-	push	si			;save C's register variable
+        .model  small
+        .code
+        public  _ChecksumChunk
+_ChecksumChunk  proc near
+        push    bp
+        mov     bp,sp
+        push    si                      ;save C's register variable
 ;
-	cld				;make LODSB increment SI
-	mov	si,[bp+Buffer]		;point to buffer
-	mov	cx,[bp+BufferLength]	;get buffer length
-	mov	bx,[bp+Checksum]	;point to checksum variable
-	mov	dx,[bx]			;get the current checksum
-	sub	ah,ah			;so AX will be a 16-bit value after LODSB
+        cld                             ;make LODSB increment SI
+        mov     si,[bp+Buffer]          ;point to buffer
+        mov     cx,[bp+BufferLength]    ;get buffer length
+        mov     bx,[bp+Checksum]        ;point to checksum variable
+        mov     dx,[bx]                 ;get the current checksum
+        sub     ah,ah                   ;so AX will be a 16-bit value after LODSB
 ChecksumLoop:
-	lodsb			;get the next byte
-	add	dx,ax		;add it into the checksum total
-	loop	ChecksumLoop	;continue for all bytes in block
-	mov	[bx],dx		;save the new checksum
+        lodsb                           ;get the next byte
+        add     dx,ax                   ;add it into the checksum total
+        loop    ChecksumLoop            ;continue for all bytes in block
+        mov     [bx],dx                 ;save the new checksum
 ;
-	pop	si		;restore C's register variable
-	pop	bp
-	ret
-_ChecksumChunk	endp
-	end
+        pop     si                      ;restore C's register variable
+        pop     bp
+        ret
+_ChecksumChunk  endp
+        end

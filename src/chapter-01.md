@@ -198,44 +198,43 @@ It's *slow*.
 
 ```c
 /*
-* Program to calculate the 16-bit checksum of all bytes in the
-* specified file. Obtains the bytes one at a time via read(),
-* letting DOS perform all data buffering.
-*/
+ * Program to calculate the 16-bit checksum of all bytes in the
+ * specified file. Obtains the bytes one at a time via read(),
+ * letting DOS perform all data buffering.
+ */
 #include <stdio.h>
 #include <fcntl.h>
 
 main(int argc, char *argv[]) {
-     int Handle;
-     unsigned char Byte;
-     unsigned int Checksum;
-     int ReadLength;
-
-     if ( argc != 2 ) {
-          printf("usage: checksum filename\n");
-          exit(1);
-     }
-     if ( (Handle = open(argv[1], O_RDONLY | O_BINARY)) == -1 ) {
-          printf("Can't open file: %s\n", argv[1]);
-          exit(1);
-     }
-
-     /* Initialize the checksum accumulator */
-     Checksum = 0;
-
-     /* Add each byte in turn into the checksum accumulator */
-     while ( (ReadLength = read(Handle, &Byte, sizeof(Byte))) > 0 ) {
-          Checksum += (unsigned int) Byte;
-     }
-     if ( ReadLength == -1 ) {
-          printf("Error reading file %s\n", argv[1]);
-          exit(1);
-     }
-
-
-     /* Report the result */
-     printf("The checksum is: %u\n", Checksum);
-     exit(0);
+	int Handle;
+	unsigned char Byte;
+	unsigned int Checksum;
+	int ReadLength;
+	
+	if ( argc != 2 ) {
+		printf("usage: checksum filename\n");
+		exit(1);
+	}
+	if ( (Handle = open(argv[1], O_RDONLY | O_BINARY)) == -1 ) {
+		printf("Can't open file: %s\n", argv[1]);
+		exit(1);
+	}
+	
+	/* Initialize the checksum accumulator */
+	Checksum = 0;
+	
+	/* Add each byte in turn into the checksum accumulator */
+	while ( (ReadLength = read(Handle, &Byte, sizeof(Byte))) > 0 ) {
+		Checksum += (unsigned int) Byte;
+	}
+	if ( ReadLength == -1 ) {
+		printf("Error reading file %s\n", argv[1]);
+		exit(1);
+	}
+	
+	/* Report the result */
+	printf("The checksum is: %u\n", Checksum);
+	exit(0);
 }
 ```
 
@@ -283,36 +282,36 @@ disk caching turned off.
 
 ```c
 /*
-* Program to calculate the 16-bit checksum of the stream of bytes
-* from the specified file. Obtains the bytes one at a time in
-* assembler, via direct calls to DOS.
-*/
+ * Program to calculate the 16-bit checksum of the stream of bytes
+ * from the specified file. Obtains the bytes one at a time in
+ * assembler, via direct calls to DOS.
+ */
 
 #include <stdio.h>
 #include <fcntl.h>
 
 main(int argc, char *argv[]) {
-      int Handle;
-      unsigned char Byte;
-      unsigned int Checksum;
-      int ReadLength;
-
-      if ( argc != 2 ) {
-            printf("usage: checksum filename\n");
-            exit(1);
-      }
-      if ( (Handle = open(argv[1], O_RDONLY | O_BINARY)) == -1 ) {
-            printf("Can't open file: %s\n", argv[1]);
-            exit(1);
-      }
-      if ( !ChecksumFile(Handle, &Checksum) ) {
-            printf("Error reading file %s\n", argv[1]);
-            exit(1);
-      }
-
-      /* Report the result */
-      printf("The checksum is: %u\n", Checksum);
-      exit(0);
+	int Handle;
+	unsigned char Byte;
+	unsigned int Checksum;
+	int ReadLength;
+	
+	if ( argc != 2 ) {
+		printf("usage: checksum filename\n");
+		exit(1);
+	}
+	if ( (Handle = open(argv[1], O_RDONLY | O_BINARY)) == -1 ) {
+		printf("Can't open file: %s\n", argv[1]);
+		exit(1);
+	}
+	if ( !ChecksumFile(Handle, &Checksum) ) {
+		printf("Error reading file %s\n", argv[1]);
+		exit(1);
+	}
+	
+	/* Report the result */
+	printf("The checksum is: %u\n", Checksum);
+	exit(0);
 }
 ```
 
@@ -334,55 +333,55 @@ main(int argc, char *argv[]) {
 ; Parameter structure:
 ;
 Parms      struc
-                 dw        ?       ;pushed BP
-                 dw        ?       ;return address
-Handle           dw        ?
-Checksum         dw        ?
+                dw      ?       ;pushed BP
+                dw      ?       ;return address
+Handle          dw      ?
+Checksum        dw      ?
 Parms      ends
 ;
-                 .model small
-                 .data
-TempWord label   word
-TempByte         db        ?       ;each byte read by DOS will be stored here
-                 db        0       ;high byte of TempWord is always 0
-                                   ;for 16-bit adds
+                .model small
+                .data
+TempWord label  word
+TempByte        db      ?       ;each byte read by DOS will be stored here
+                db      0       ;high byte of TempWord is always 0
+                                ; for 16-bit adds
 ;
                  .code
-                 public _ChecksumFile
-_ChecksumFile    proc near
-                 push      bp
-                 mov       bp,sp
-                 push      si                   ;save C's register variable
+                public _ChecksumFile
+_ChecksumFile   proc near
+                push    bp
+                mov     bp,sp
+                push    si                      ;save C's register variable
 ;
-                 mov       bx,[bp+Handle]       ;get file handle
-                 sub       si,si                ;zero the checksum ;accumulator
-                 mov       cx,1                 ;request one byte on each ;read
-                 mov       dx,offset TempByte   ;point DX to the byte in
+                mov     bx,[bp+Handle]          ;get file handle
+                sub     si,si                   ;zero the checksum ;accumulator
+                mov     cx,1                    ;request one byte on each ;read
+                mov     dx,offset TempByte      ;point DX to the byte in
                                                 ;which DOS should store
                                                 ;each byte read
 ChecksumLoop:
-                 mov       ah,3fh               ;DOS read file function #
-                 int       21h                  ;read the byte
-                 jc        ErrorEnd             ;an error occurred
-                 and       ax,ax                ;any bytes read?
-                 jz        Success              ;no-end of file reached-we're done
-                 add       si,[TempWord]        ;add the byte into the
+                mov     ah,3fh                  ;DOS read file function #
+                int     21h                     ;read the byte
+                jc      ErrorEnd                ;an error occurred
+                and     ax,ax                   ;any bytes read?
+                jz      Success                 ;no-end of file reached-we're done
+                add     si,[TempWord]           ;add the byte into the
                                                 ;checksum total
-                 jmp       ChecksumLoop
+                jmp     ChecksumLoop
 ErrorEnd:
-                 sub       ax,ax                ;error
-                 jmp       short Done
+                sub     ax,ax                   ;error
+                jmp     short Done
 Success:
-                 mov       bx,[bp+Checksum]     ;point to the checksum variable
-                 mov       [bx],si              ;save the new checksum
-                 mov       ax,1                 ;success
+                mov     bx,[bp+Checksum]        ;point to the checksum variable
+                mov     [bx],si                 ;save the new checksum
+                mov     ax,1                    ;success
 ;
 Done:
-                 pop       si                   ;restore C's register variable
-                 pop       bp
-                 ret
-_ChecksumFile    endp
-                 end
+                pop     si                      ;restore C's register variable
+                pop     bp
+                ret
+_ChecksumFile   endp
+                end
 ```
 
 The lesson is clear: Optimization makes code faster, but without proper
@@ -749,38 +748,38 @@ main(int argc, char *argv[]) {
 ; Parameter structure:
 ;
 Parms struc
-                    dw    ?    ;pushed BP
-                    dw    ?    ;return address
-Buffer              dw    ?
-BufferLength        dw    ?
-Checksum            dw    ?
+                dw      ?       ;pushed BP
+                dw      ?       ;return address
+Buffer          dw      ?
+BufferLength    dw      ?
+Checksum        dw      ?
 Parms ends
 ;
-     .model small
-     .code
-     public _ChecksumChunk
-_ChecksumChunk proc near
-     push bp
-     mov  bp,sp
-     push si                   ;save C's register variable
+        .model  small
+        .code
+        public  _ChecksumChunk
+_ChecksumChunk  proc near
+        push    bp
+        mov     bp,sp
+        push    si                      ;save C's register variable
 ;
-     cld                       ;make LODSB increment SI
-     mov  si,[bp+Buffer]       ;point to buffer
-     mov  cx,[bp+BufferLength] ;get buffer length
-     mov  bx,[bp+Checksum]     ;point to checksum variable
-     mov  dx,[bx]              ;get the current checksum
-     sub  ah,ah                ;so AX will be a 16-bit value after LODSB
+        cld                             ;make LODSB increment SI
+        mov     si,[bp+Buffer]          ;point to buffer
+        mov     cx,[bp+BufferLength]    ;get buffer length
+        mov     bx,[bp+Checksum]        ;point to checksum variable
+        mov     dx,[bx]                 ;get the current checksum
+        sub     ah,ah                   ;so AX will be a 16-bit value after LODSB
 ChecksumLoop:
-     lodsb                     ;get the next byte
-     add  dx,ax                ;add it into the checksum total
-     loop ChecksumLoop         ;continue for all bytes in block
-     mov  [bx],dx              ;save the new checksum
+        lodsb                           ;get the next byte
+        add     dx,ax                   ;add it into the checksum total
+        loop    ChecksumLoop            ;continue for all bytes in block
+        mov     [bx],dx                 ;save the new checksum
 ;
-     pop  si                   ;restore C's register variable
-     pop  bp
-     ret
-_ChecksumChunk endp
-     end
+        pop     si                      ;restore C's register variable
+        pop     bp
+        ret
+_ChecksumChunk  endp
+        end
 ```
 
 Note that in Table 1.1, optimization makes little difference except in
