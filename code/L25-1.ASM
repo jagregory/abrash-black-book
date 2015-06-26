@@ -4,7 +4,7 @@
 ;  for use with modes 0Dh, 0Eh, 0Fh, 10h, and 12h.
 ; By Michael Abrash.
 ;
-stack	segment para stack ‘STACK'
+stack	segment para stack 'STACK'
 	db	512 dup(?)
 stack	ends
 ;
@@ -19,13 +19,13 @@ GC_ROTATE	equ	3	;GC data rotate/logical function
 				; register index
 GC_BIT_MASK	equ	8	;GC bit mask register index
 ;
-dseg	segment para common ‘DATA'
+dseg	segment para common 'DATA'
 TEST_TEXT_ROW	equ	69	;row to display test text at
 TEST_TEXT_COL	equ	17	;column to display test text at
 TEST_TEXT_WIDTH equ	8	;width of a character in pixels
 
 TestString	label	byte
-	db	‘Hello, world!',0       ;test string to print.
+	db	'Hello, world!',0       ;test string to print.
 FontPointer	dd	?		;font offset
 dseg	ends
 ;
@@ -37,7 +37,7 @@ SETGC	macro	INDEX, SETTING
 	out	dx,ax
 	endm
 ;
-cseg	segment para public ‘CODE'
+cseg	segment para public 'CODE'
 	assume	cs:cseg, ds:dseg
 start	proc	near
 	mov	ax,dseg

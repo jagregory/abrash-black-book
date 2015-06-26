@@ -5,7 +5,7 @@
 ;  the images with the background.
 ; By Michael Abrash.
 ;
-stack	segment para stack ‘STACK'
+stack	segment para stack 'STACK'
 	db	512 dup(?)
 stack	ends
 ;
@@ -28,23 +28,23 @@ GC_ROTATE	equ	3	;GC data rotate/logical function
 				; register index
 GC_MODE		equ	5	;GC mode register index
 ;
-dseg	segment para common ‘DATA'
+dseg	segment para common 'DATA'
 ;
 ; String used to label logical functions.
 ;
 LabelString	label	byte
-	db	‘UNMODIFIED	 AND	   OR	     XOR   '
+	db	'UNMODIFIED	 AND	   OR	     XOR   '
 LABEL_STRING_LENGTH	equ	$-LabelString
 ;
 ; Strings used to label fill patterns.
 ;
-FillPatternFF	db	‘Fill Pattern: 0FFh'
+FillPatternFF	db	'Fill Pattern: 0FFh'
 FILL_PATTERN_FF_LENGTH	equ	$ - FillPatternFF
-FillPattern00	db	‘Fill Pattern: 000h'
+FillPattern00	db	'Fill Pattern: 000h'
 FILL_PATTERN_00_LENGTH	equ	$ - FillPattern00
-FillPatternVert db	‘Fill Pattern: Vertical Bar'
+FillPatternVert db	'Fill Pattern: Vertical Bar'
 FILL_PATTERN_VERT_LENGTH	equ	$ - FillPatternVert
-FillPatternHorz db	‘Fill Pattern: Horizontal Bar'
+FillPatternHorz db	'Fill Pattern: Horizontal Bar'
 FILL_PATTERN_HORZ_LENGTH equ	$ - FillPatternHorz
 ;
 dseg	ends
@@ -71,7 +71,7 @@ TEXT_UP macro	TEXT_STRING, TEXT_LENGTH, ROW, COLUMN
 	int	10h
 	endm
 ;
-cseg	segment para public ‘CODE'
+cseg	segment para public 'CODE'
 	assume	cs:cseg, ds:dseg
 start	proc	near
 	mov	ax,dseg

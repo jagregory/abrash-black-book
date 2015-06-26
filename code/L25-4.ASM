@@ -2,7 +2,7 @@
 ;  with CPU data to modify setting of memory that already contains data.
 ; By Michael Abrash.
 ;
-stack	segment para stack ‘STACK#146;
+stack	segment para stack 'STACK'
 	db	512 dup(?)
 stack	ends
 ;
@@ -40,7 +40,7 @@ SETGC	macro	INDEX, SETTING
 	dec	dx
 	endm
 ;
-cseg	segment para public ‘CODE#146;
+cseg	segment para public 'CODE'
 	assume	cs:cseg
 start	proc	near
 ;

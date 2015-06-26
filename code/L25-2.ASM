@@ -2,7 +2,7 @@
 ;  to memory that already contains data.
 ; By Michael Abrash.
 ;
-stack	segment para stack ‘STACK'
+stack	segment para stack 'STACK'
 	db	512 dup(?)
 stack	ends
 ;
@@ -25,7 +25,7 @@ SETSC	macro	INDEX, SETTING
 	dec	dx
 	endm
 ;
-cseg	segment para public ‘CODE#146;
+cseg	segment para public 'CODE'
 	assume	cs:cseg
 start	proc	near
 ;

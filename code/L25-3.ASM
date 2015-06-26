@@ -2,7 +2,7 @@
 ;  setting of memory that already contains data.
 ; By Michael Abrash.
 ;
-stack	segment para stack ‘STACK#146;
+stack	segment para stack 'STACK'
 	db	512 dup(?)
 stack	ends
 ;
@@ -40,7 +40,7 @@ SETGC	macro	INDEX, SETTING
 	dec	dx
 	endm
 ;
-cseg	segment para public ‘CODE#146;
+cseg	segment para public 'CODE'
 	assume	cs:cseg
 start	proc	near
 ;
@@ -56,18 +56,18 @@ start	proc	near
 ;
 	SETSC	SC_MAP_MASK,02h		;map mask setting enables only
 					; plane 1, the green plane
-	sub	di,di		;start at beginning of video memory
+	sub	di,di			;start at beginning of video memory
 	mov	al,0ffh
-	mov	bp,24		;# bars to draw
+	mov	bp,24			;# bars to draw
 HorzBarLoop:
-	mov	cx,80*10	;# bytes per horizontal bar
-	rep stosb		;draw bar
-	add	di,80*10	;point to start of next bar
+	mov	cx,80*10		;# bytes per horizontal bar
+	rep stosb			;draw bar
+	add	di,80*10		;point to start of next bar
 	dec	bp
 	jnz	HorzBarLoop
 ;
-; Fill screen with blue, using set/reset to force plane 0 to 1#146;s and all
-; other plane to 0#146;s.
+; Fill screen with blue, using set/reset to force plane 0 to 1's and all
+; other plane to 0's.
 ;
 	SETSC	SC_MAP_MASK,0fh		;must set map mask to enable all
 					; planes, so set/reset values can
