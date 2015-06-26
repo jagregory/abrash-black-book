@@ -74,8 +74,8 @@ HorzBarLoop:
 					; be written to planes 0, 2 & 3
 					; and CPU data can be written to
 					; plane 1 (the green plane)
-	SETGC	GC_ENABLE_SET_RESET,0dh	   ;CPU data to planes 0, 2 & 3 will be
-					   ; replaced by set/reset value
+	SETGC	GC_ENABLE_SET_RESET,0dh	;CPU data to planes 0, 2 & 3 will be
+					; replaced by set/reset value
 	SETGC	GC_SET_RESET,04h	;set/reset value is 0ffh for plane 2
 					; (the red plane) and 0 for other
 					; planes

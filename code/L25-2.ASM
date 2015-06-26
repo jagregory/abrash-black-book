@@ -41,13 +41,13 @@ start	proc	near
 ;
 	SETSC	SC_MAP_MASK,02h		;map mask setting enables only
 					; plane 1, the green plane
-	sub	di,di		;start at beginning of video memory
+	sub	di,di			;start at beginning of video memory
 	mov	al,0ffh
-	mov	bp,24		;# bars to draw
+	mov	bp,24			;# bars to draw
 HorzBarLoop:
-	mov	cx,80*10	;# bytes per horizontal bar
-	rep stosb		;draw bar
-	add	di,80*10	;point to start of next bar
+	mov	cx,80*10		;# bytes per horizontal bar
+	rep stosb			;draw bar
+	add	di,80*10		;point to start of next bar
 	dec	bp
 	jnz	HorzBarLoop
 ;

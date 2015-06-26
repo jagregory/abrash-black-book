@@ -50,11 +50,11 @@ start	proc	near
 ;
 ; Set driver to use the 8x8 font.
 ;
-	 mov	 ah,11h	 ;VGA BIOS character generator function,
-	 mov	 al,30h	 ; return info subfunction
-	 mov	 bh,3;get 8x8 font pointer
-	 int	 10h
-	 call	 SelectFont
+	mov	ah,11h	 ;VGA BIOS character generator function,
+	mov	al,30h	 ; return info subfunction
+	mov	bh,3;get 8x8 font pointer
+	int	10h
+	call	SelectFont
 ;
 ; Print the test string.
 ;

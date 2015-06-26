@@ -329,7 +329,7 @@ MoveBall:
 	mov	al,[HPan]
 	out	dx,al			;set new pel panning
 ;
-; Flip the page to draw to to the undisplayed page.
+; Flip the page to draw to the undisplayed page.
 ;
 	xor	[CurrentPage],1
 	jnz	IsPage1
