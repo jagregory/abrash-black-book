@@ -158,9 +158,9 @@ start   proc    near
 ;
 ; Set driver to use the 8x8 font.
 ;
-        mov     ah,11h   ;VGA BIOS character generator function,
-        mov     al,30h   ; return info subfunction
-        mov     bh,3;get 8x8 font pointer
+        mov     ah,11h          ;VGA BIOS character generator function,
+        mov     al,30h          ; return info subfunction
+        mov     bh,3            ;get 8x8 font pointer
         int     10h
         call    SelectFont
 ;
@@ -237,12 +237,12 @@ DrawChar        proc    near
         pop     ds
         mul     di      ;calculate offset of start of row
         push    di      ;set aside screen width
-        mov     di,cx    ;set aside the column
-        and     cl,0111b    ;keep only the column in-byte address
+        mov     di,cx   ;set aside the column
+        and     cl,0111b;keep only the column in-byte address
         shr     di,1
         shr     di,1
-        shr     di,1       ;divide column by 8 to make a byte address
-        add     di,ax    ;and point to byte
+        shr     di,1    ;divide column by 8 to make a byte address
+        add     di,ax   ;and point to byte
 ;
 ; Calculate font address of character.
 ;
@@ -250,7 +250,7 @@ DrawChar        proc    near
         shl     bx,1    ;assumes 8 bytes per character; use
         shl     bx,1    ; a multiply otherwise
         shl     bx,1    ;offset in font of character
-        add     si,bx    ;offset in font segment of character
+        add     si,bx   ;offset in font segment of character
 ;
 ; Set up the GC rotation.
 ;

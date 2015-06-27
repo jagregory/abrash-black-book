@@ -56,7 +56,7 @@ start   proc    near
         inc     dx
         in      al,dx
         and     al,0f0h
-        or      al,1                ;blue plane only set, others reset
+        or      al,1            ;blue plane only set, others reset
         out     dx,al
         dec     dx
         mov     al,GC_ENABLE_SET_RESET
@@ -64,15 +64,15 @@ start   proc    near
         inc     dx
         in      al,dx
         and     al,0f0h
-        or      al,0fh              ;enable set/reset for all planes
+        or      al,0fh          ;enable set/reset for all planes
         out     dx,al
         mov     dx,VGA_VIDEO_SEGMENT
-        mov     es,dx               ;point to display memory
+        mov     es,dx           ;point to display memory
         mov     di,0
-        mov     cx,8000h            ;fill all 32k words
-        mov     ax,0ffffh           ;because of set/reset, the value
-                                    ; written actually doesn't matter
-        rep stosw                   ;fill with blue
+        mov     cx,8000h        ;fill all 32k words
+        mov     ax,0ffffh       ;because of set/reset, the value
+                                ; written actually doesn't matter
+        rep stosw               ;fill with blue
 ;
 ; Set driver to use the 8x8 font.
 ;
@@ -87,16 +87,16 @@ start   proc    near
         mov     si,offset TestString
         mov     bx,TEST_TEXT_ROW
         mov     cx,TEST_TEXT_COL
-        mov     ah,0                ;start with color 0
+        mov     ah,0            ;start with color 0
 StringOutLoop:
         lodsb
         and     al,al
         jz      StringOutDone
-        push    ax                  ;preserve color
+        push    ax              ;preserve color
         call    DrawChar
-        pop     ax                  ;restore color
-        inc     ah                  ;next color
-        and     ah,0fh              ;colors range from 0 to 15
+        pop     ax              ;restore color
+        inc     ah              ;next color
+        and     ah,0fh          ;colors range from 0 to 15
         add     cx,TEST_TEXT_WIDTH
         jmp     StringOutLoop
 StringOutDone:
@@ -137,7 +137,7 @@ DrawChar        proc    near
         push    di
         push    bp
         push    ds
-        push    ax      ;preserve character to draw in AL
+        push    ax              ;preserve character to draw in AL
 ;
 ; Set up set/reset to produce character color, using the readability
 ; of VGA register to preserve the setting of reserved bits 7-4.
