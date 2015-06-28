@@ -171,7 +171,7 @@ This process is then repeated for the rightmost chunky pixel, if
 necessary, and repeated again for as many pixels as there are in the
 image.
 
-**LISTING 27.1 L27-1.ASM**
+**LISTING 27.1 [L27-1.ASM](../code/L27-1.ASM)**
 
 ```nasm
 ; Program to illustrate one use of write mode 2 of the VGA and EGA by
@@ -182,19 +182,20 @@ image.
 ;
 ; By Michael Abrash
 ;
-Stack   segment para stack ‘STACK'
+Stack   segment para stack 'STACK'
         db      512 dup(0)
 Stack   ends
 
 SCREEN_WIDTH_IN_BYTES   equ     80
 DISPLAY_MEMORY_SEGMENT  equ     0a000h
-SC_INDEX                                  equ     3c4h    ;Sequence Controller Index register
-MAP_MASK                                  equ     2       ;index of Map Mask register
-GC_INDEX                                  equ     03ceh   ;Graphics Controller Index reg
-GRAPHICS_MODE                             equ     5       ;index of Graphics Mode reg
-BIT_MASKequ     8       ;index of Bit Mask reg
 
-Data    segment para common ‘DATA'
+SC_INDEX        equ     3c4h    ;Sequence Controller Index register
+MAP_MASK        equ     2       ;index of Map Mask register
+GC_INDEX        equ     03ceh   ;Graphics Controller Index reg
+GRAPHICS_MODE   equ     5       ;index of Graphics Mode reg
+BIT_MASK        equ     8       ;index of Bit Mask reg
+
+Data    segment para common 'DATA'
 ;
 ; Current location of "A" as it is animated across the screen.
 ;
@@ -221,7 +222,7 @@ AImage          label   byte
                 db      000h, 000h, 000h, 000h, 000h, 000h, 000h
 Data    ends
 
-Code    segment para public ‘CODE'
+Code    segment para public 'CODE'
         assume  cs:Code, ds:Data
 Start   proc    near
         mov     ax,Data
@@ -328,7 +329,7 @@ DrawFromChunkyBitmap    proc    near
         mov     cx,[si]         ;get the width
         inc     si
         inc     si
-        mov     bx,[si]      ;get the height
+        mov     bx,[si]         ;get the height
         inc     si
         inc     si
         mov     dx,GC_INDEX
@@ -351,7 +352,7 @@ ColumnLoop:
         shr     al,1
         shr     al,1            ;move the first pixel into the lsb
         stosb                   ;draw the first pixel
-        ror     ah,1           ;move mask to next pixel position
+        ror     ah,1            ;move mask to next pixel position
         jc      CheckMorePixels ;is next pixel in the adjacent byte?
         dec     di              ;no
 
@@ -362,11 +363,11 @@ CheckMorePixels:
         out     dx,al           ;set the bit mask to draw this pixel
         mov     al,es:[di]      ;load the latches
         lodsb                   ;get the same two chunky pixels again
-                          ; and advance pointer to the next
-                               ; two pixels
+                                ; and advance pointer to the next
+                                ; two pixels
         stosb                   ;draw the second of the two pixels
         ror     ah,1            ;move mask to next pixel position
-        jc      CheckMorePixels2 ;is next pixel in the adjacent byte?
+        jc      CheckMorePixels2;is next pixel in the adjacent byte?
         dec     di              ;no
 
 CheckMorePixels2:
@@ -434,7 +435,7 @@ patterned line drawing on the VGA, the basic approach remains the same:
 Use the bit mask to select the pixel (or pixels) to be altered and use
 the CPU byte in write mode 2 to select the color in which to draw.
 
-**LISTING 27.2 L27-2.ASM**
+**LISTING 27.2 [L27-2.ASM](../code/L27-2.ASM)**
 
 ```nasm
 ; Program to illustrate one use of write mode 2 of the VGA and EGA by
@@ -444,19 +445,20 @@ the CPU byte in write mode 2 to select the color in which to draw.
 ;
 ; By Michael Abrash
 ;
-Stack   segment para stack ‘STACK'
+Stack   segment para stack 'STACK'
         db      512 dup(0)
 Stack   ends
 
-SCREEN_WIDTH_IN_BYTES equ     80
-GRAPHICS_SEGMENT      equ    0a000h   ;mode 10 bit-map segment
-SC_INDEX              equ     3c4h    ;Sequence Controller Index register
-MAP_MASK              equ     2       ;index of Map Mask register
-GC_INDEX              equ     03ceh   ;Graphics Controller Index reg
-GRAPHICS_MODE         equ     5       ;index of Graphics Mode reg
-BIT_MASK              equ     8       ;index of Bit Mask reg
+SCREEN_WIDTH_IN_BYTES   equ     80
+GRAPHICS_SEGMENT        equ     0a000h  ;mode 10 bit-map segment
 
-Data    segment para common ‘DATA'
+SC_INDEX        equ     3c4h    ;Sequence Controller Index register
+MAP_MASK        equ     2       ;index of Map Mask register
+GC_INDEX        equ     03ceh   ;Graphics Controller Index reg
+GRAPHICS_MODE   equ     5       ;index of Graphics Mode reg
+BIT_MASK        equ     8       ;index of Bit Mask reg
+
+Data    segment para common 'DATA'
 Pattern0        db      16
                 db      0, 1, 2, 3, 4, 5, 6, 7, 8
                 db      9, 10, 11, 12, 13, 14, 15
@@ -468,7 +470,7 @@ Pattern3        db      9
                 db      1, 1, 1, 2, 2, 2, 4, 4, 4
 Data    ends
 
-Code    segment para public ‘CODE'
+Code    segment para public 'CODE'
         assume  cs:Code, ds:Data
 Start   proc    near
         mov     ax,Data
@@ -919,7 +921,7 @@ configurations of display memory in VGA graphics and text modes. Right
 now, though, we've still got the basics of the remarkably complex (but
 rewarding!) VGA to cover.
 
-**LISTING 27.3 L27-3.ASM**
+**LISTING 27.3 [L27-3.ASM](../code/L27-3.ASM)**
 
 ```nasm
 ; Program to illustrate flipping from bit-mapped graphics mode to
@@ -929,30 +931,31 @@ rewarding!) VGA to cover.
 ;
 ; By Michael Abrash
 ;
-Stack   segment para stack ‘STACK'
+Stack   segment para stack 'STACK'
         db      512 dup(0)
 Stack   ends
 
-GRAPHICS_SEGMENT equ     0a000h  ;mode 10 bit-map segment
-TEXT_SEGMENT    equ     0b800h  ;mode 3 bit-map segment
+GRAPHICS_SEGMENT        equ     0a000h  ;mode 10 bit-map segment
+TEXT_SEGMENT            equ     0b800h  ;mode 3 bit-map segment
+
 SC_INDEX        equ     3c4h    ;Sequence Controller Index register
 MAP_MASK        equ     2       ;index of Map Mask register
 GC_INDEX        equ     3ceh    ;Graphics Controller Index register
 READ_MAP        equ     4       ;index of Read Map register
 
-Data    segment para common ‘DATA'
+Data    segment para common 'DATA'
 
 GStrikeAnyKeyMsg0       label   byte
-        db      0dh, 0ah, ‘Graphics mode', 0dh, 0ah
-        db      ‘Strike any key to continue...', 0dh, 0ah, ‘$'
+        db      0dh, 0ah, 'Graphics mode', 0dh, 0ah
+        db      'Strike any key to continue...', 0dh, 0ah, '$'
 
 GStrikeAnyKeyMsg1       label   byte
-        db      0dh, 0ah, ‘Graphics mode again', 0dh, 0ah
-        db      ‘Strike any key to continue...', 0dh, 0ah, ‘$'
+        db      0dh, 0ah, 'Graphics mode again', 0dh, 0ah
+        db      'Strike any key to continue...', 0dh, 0ah, '$'
 
 TStrikeAnyKeyMsg        label   byte
-        db      0dh, 0ah, ‘Text mode', 0dh, 0ah
-        db      ‘Strike any key to continue...', 0dh, 0ah, ‘$'
+        db      0dh, 0ah, 'Text mode', 0dh, 0ah
+        db      'Strike any key to continue...', 0dh, 0ah, '$'
 
 Plane2Save      db      2000h dup (?)   ;save area for plane 2 data
                                         ; where font gets loaded
@@ -961,7 +964,7 @@ CharAttSave     db      4000 dup (?)    ;save area for memory wiped
                                         ; data in text mode
 Data    ends
 
-Code    segment para public ‘CODE'
+Code    segment para public 'CODE'
         assume  cs:Code, ds:Data
 Start   proc    near
         mov     ax,10h
@@ -1045,7 +1048,7 @@ FillBitMap:
         mov     ax,TEXT_SEGMENT
         mov     es,ax
         sub     di,di
-        mov     al,‘.'          ;fill character
+        mov     al,'.'          ;fill character
         mov     ah,7            ;fill attribute
         mov     cx,4000/2       ;length of one text screen in words
         rep stosw
