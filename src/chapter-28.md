@@ -75,7 +75,7 @@ time, clearing the old image, and copying the image to a new location in
 VGA memory. Note the differing settings of the Read Map and Map Mask
 registers.
 
-**LISTING 28.1 L28-1.ASM**
+**LISTING 28.1 [L28-1.ASM](../code/L28-1.ASM)**
 
 ```nasm
 ; Program to illustrate the use of the Read Map register in read mode 0.
@@ -85,32 +85,32 @@ registers.
 ;
 ; By Michael Abrash
 ;
-stacksegmentword stack 'STACK'
-db512 dup (?)
-stackends
+stack   segment word stack 'STACK'
+        db      512 dup (?)
+stack   ends
 ;
-datasegment    word 'DATA'
-IMAGE_WIDTHEQU 4                 ;in bytes
-IMAGE_HEIGHT   EQU   32          ;in pixels
-LEFT_BOUND     EQU   10          ;in bytes
-RIGHT_BOUND    EQU   66          ;in bytes
-VGA_SEGMENT    EQU   0a000h
-SCREEN_WIDTH   EQU   80          ;in bytes
-SC_INDEX       EQU   3c4h        ;Sequence Controller Index register
-GC_INDEX       EQU   3ceh        ;Graphics Controller Index register
-MAP_MASK       EQU   2           ;Map Mask register index in SC
-READ_MAP       EQU   4           ;Read Map register index in GC
+data    segment word 'DATA'
+IMAGE_WIDTH     EQU     4       ;in bytes
+IMAGE_HEIGHT    EQU     32      ;in pixels
+LEFT_BOUND      EQU     10      ;in bytes
+RIGHT_BOUND     EQU     66      ;in bytes
+VGA_SEGMENT     EQU     0a000h
+SCREEN_WIDTH    EQU     80      ;in bytes
+SC_INDEX        EQU     3c4h    ;Sequence Controller Index register
+GC_INDEX        EQU     3ceh    ;Graphics Controller Index register
+MAP_MASK        EQU     2       ;Map Mask register index in SC
+READ_MAP        EQU     4       ;Read Map register index in GC
 ;
-                                 ; Base pattern for 16-color image.
+; Base pattern for 16-color image.
 ;
-PatternPlane0    label byte
-     db    32 dup (0ffh,0ffh,0,0)
-PatternPlane1    labelbyte
-     db    32 dup (0ffh,0,0ffh,0)
-PatternPlane2    labelbyte
-     db    32 dup (0f0h,0f0h,0f0h,0f0h)
-PatternPlane3    labelbyte
-     db    32 dup (0cch,0cch,0cch,0cch)
+PatternPlane0   label byte
+        db      32 dup (0ffh,0ffh,0,0)
+PatternPlane1   label byte
+        db      32 dup (0ffh,0,0ffh,0)
+PatternPlane2   label byte
+        db      32 dup (0f0h,0f0h,0f0h,0f0h)
+PatternPlane3   label byte
+        db      32 dup (0cch,0cch,0cch,0cch)
 ;
 ; Temporary storage for 16-color image during animation.
 ;
@@ -124,24 +124,24 @@ ImagePlane3 db   32*4 dup (?)
 ImageX          dw  40           ;in bytes
 ImageY          dw  100          ;in pixels
 ImageXDirection dw  1            ;in bytes
-dataends
+data    ends
 ;
-code segment    word 'CODE'
-     assume     cs:code,ds:data
-Start proc  near
-     cld
-     mov  ax,data
-     mov  ds,ax
+code    segment word 'CODE'
+        assume  cs:code,ds:data
+Start   proc    near
+        cld
+        mov     ax,data
+        mov     ds,ax
 ;
 ; Select graphics mode 10h.
 ;
-     mov  ax,10h
-     int  10h
+        mov     ax,10h
+        int     10h
 ;
 ; Draw the initial image.
 ;
-     mov  si,offset PatternPlane0
-     call DrawImage
+        mov     si,offset PatternPlane0
+        call    DrawImage
 ;
 ; Loop to animate by copying the image from VGA memory to system memory,
 ; erasing the image, and copying the image from system memory to a new
@@ -151,168 +151,168 @@ AnimateLoop:
 ;
 ; Copy the image from VGA memory to system memory.
 ;
-     mov  di,offset ImagePlane0
-     call GetImage
+        mov     di,offset ImagePlane0
+        call    GetImage
 ;
 ; Clear the image from VGA memory.
 ;
-     call EraseImage
+        call    EraseImage
 ;
 ; Advance the image X coordinate, reversing direction if either edge
 ; of the screen has been reached.
 ;
-     mov  ax,[ImageX]
-     cmp  ax,LEFT_BOUND
-     jz   ReverseDirection
-     cmp  ax,RIGHT_BOUND
-     jnz  SetNewX
+        mov     ax,[ImageX]
+        cmp     ax,LEFT_BOUND
+        jz      ReverseDirection
+        cmp     ax,RIGHT_BOUND
+        jnz     SetNewX
 ReverseDirection:
-     neg  [ImageXDirection]
+        neg     [ImageXDirection]
 SetNewX:
-     add  ax,[ImageXDirection]
-     mov  [ImageX],ax
+        add     ax,[ImageXDirection]
+        mov     [ImageX],ax
 ;
 ; Draw the image by copying it from system memory to VGA memory.
 ;
-     mov  si,offset ImagePlane0
-     call DrawImage
+        mov     si,offset ImagePlane0
+        call    DrawImage
 ;
 ; Slow things down a bit for visibility (adjust as needed).
 ;
-     mov  cx,0
+        mov     cx,0
 DelayLoop:
-     loop DelayLoop
+        loop    DelayLoop
 ;
 ; See if a key has been hit, ending the program.
 ;
-     mov  ah,1
-     int  16h
-     jz   AnimateLoop
+        mov     ah,1
+        int     16h
+        jz      AnimateLoop
 ;
 ; Clear the key, return to text mode, and return to DOS.
 ;
-     sub  ah,ah
-     int  16h
-     mov  ax,3
-     int  10h
-     mov  ah,4ch
-     int  21h
-Startendp
+        sub     ah,ah
+        int     16h
+        mov     ax,3
+        int     10h
+        mov     ah,4ch
+        int     21h
+Start endp
 ;
 ; Draws the image at offset DS:SI to the current image location in
 ; VGA memory.
 ;
-DrawImageprocnear
-     mov  ax,VGA_SEGMENT
-     mov  es,ax
-     call GetImageOffset   ;ES:DI is the destination address for the
-                      ; image in VGA memory
-     mov  dx,SC_INDEX
-     mov  al,1        ;do plane 0 first
+DrawImage proc near
+        mov     ax,VGA_SEGMENT
+        mov     es,ax
+        call    GetImageOffset  ;ES:DI is the destination address for the
+                                ; image in VGA memory
+        mov     dx,SC_INDEX
+        mov     al,1            ;do plane 0 first
 DrawImagePlaneLoop:
-     push di          ;image is drawn at the same offset in
-                      ; each plane
-     push ax          ;preserve plane select
-     mov  al,MAP_MASK ;Map Mask index
-     out  dx,al       ;point SC Index to the Map Mask register
-     pop  ax          ;get back plane select
-     inc  dx          ;point to SC index register
-     out  dx,al       ;set up the Map Mask to allow writes to
-                      ; the plane of interest
-     dec  dx          ;point back to SC Data register
-     mov  bx,IMAGE_HEIGHT  ;# of scan lines in image
+        push    di              ;image is drawn at the same offset in
+                                ; each plane
+        push    ax              ;preserve plane select
+        mov     al,MAP_MASK     ;Map Mask index
+        out     dx,al           ;point SC Index to the Map Mask register
+        pop     ax              ;get back plane select
+        inc     dx              ;point to SC index register
+        out     dx,al           ;set up the Map Mask to allow writes to
+                                ; the plane of interest
+        dec     dx              ;point back to SC Data register
+        mov     bx,IMAGE_HEIGHT ;# of scan lines in image
 DrawImageLoop:
-     mov  cx,IMAGE_WIDTH   ;# of bytes across image
-     rep  movsb
-     add  di,SCREEN_WIDTH-IMAGE_WIDTH
-                           ;point to next scan line of image
-     dec  bx               ;any more scan lines?
-     jnz  DrawImageLoop
-     pop  di               ;get back image start offset in VGA memory
-     shl  al,1             ;Map Mask setting for next plane
-     cmp  al,10h           ;have we done all four planes?
-     jnz  DrawImagePlaneLoop
-     ret
-DrawImageendp
+        mov     cx,IMAGE_WIDTH  ;# of bytes across image
+        rep     movsb
+        add     di,SCREEN_WIDTH-IMAGE_WIDTH
+                                ;point to next scan line of image
+        dec     bx              ;any more scan lines?
+        jnz     DrawImageLoop
+        pop     di              ;get back image start offset in VGA memory
+        shl     al,1            ;Map Mask setting for next plane
+        cmp     al,10h          ;have we done all four planes?
+        jnz     DrawImagePlaneLoop
+        ret
+DrawImage endp
 ;
 ; Copies the image from its current location in VGA memory into the
 ; buffer at DS:DI.
 ;
 GetImage  proc near
-     mov  si,di             ;move destination offset into SI
-     call GetImageOffset    ;DI is offset of image in VGA memory
-     xchg si,di             ;SI is offset of image, DI is destination offset
-     push ds
-     pop  es                ;ES:DI is destination
-     mov  ax,VGA_SEGMENT
-     mov  ds,ax             ;DS:SI is source
+        mov     si,di           ;move destination offset into SI
+        call    GetImageOffset  ;DI is offset of image in VGA memory
+        xchg    si,di           ;SI is offset of image, DI is destination offset
+        push    ds
+        pop     es              ;ES:DI is destination
+        mov     ax,VGA_SEGMENT
+        mov     ds,ax           ;DS:SI is source
 ;
-     mov  dx,GC_INDEX
-     sub  al,al;do plane 0 first
+        mov     dx,GC_INDEX
+        sub     al,al           ;do plane 0 first
 GetImagePlaneLoop:
-     push si                ;image comes from same offset in each plane
-     push ax                ;preserve plane select
-     mov  al,READ_MAP       ;Read Map index
-     out  dx,al             ;point GC Index to Read Map register
-     pop  ax                ;get back plane select
-     inc  dx                ;point to GC Index register
-     out  dx,al             ;set up the Read Map to select reads from
-                            ; the plane of interest
-     dec  dx                ;point back to GC data register
-     mov  bx,IMAGE_HEIGHT   ;# of scan lines in image
+        push    si              ;image comes from same offset in each plane
+        push    ax              ;preserve plane select
+        mov     al,READ_MAP     ;Read Map index
+        out     dx,al           ;point GC Index to Read Map register
+        pop     ax              ;get back plane select
+        inc     dx              ;point to GC Index register
+        out     dx,al           ;set up the Read Map to select reads from
+                                ; the plane of interest
+        dec     dx              ;point back to GC data register
+        mov     bx,IMAGE_HEIGHT ;# of scan lines in image
 GetImageLoop:
-     mov  cx,IMAGE_WIDTH    ;# of bytes across image
-     rep  movsb
-     add  si,SCREEN_WIDTH-IMAGE_WIDTH
-                            ;point to next scan line of image
-     dec  bx                ;any more scan lines?
-     jnz  GetImageLoop
-     pop  si                ;get back image start offset
-     inc  al                ;Read Map setting for next plane
-     cmp  al,4              ;have we done all four planes?
-     jnz  GetImagePlaneLoop
-     push es
-     pop  ds                ;restore original DS
-     ret
-GetImageendp
+        mov     cx,IMAGE_WIDTH  ;# of bytes across image
+        rep     movsb
+        add     si,SCREEN_WIDTH-IMAGE_WIDTH
+                                ;point to next scan line of image
+        dec     bx              ;any more scan lines?
+        jnz     GetImageLoop
+        pop     si              ;get back image start offset
+        inc     al              ;Read Map setting for next plane
+        cmp     al,4            ;have we done all four planes?
+        jnz     GetImagePlaneLoop
+        push    es
+        pop     ds              ;restore original DS
+        ret
+GetImage endp
 ;
 ; Erases the image at its current location.
 ;
 EraseImage proc near
-     mov  dx,SC_INDEX
-     mov  al,MAP_MASK
-     out  dx,al             ;point SC Index to the Map Mask register
-     inc  dx                ;point to SC Data register
-     mov  al,0fh
-     out  dx,al             ;set up the Map Mask to allow writes to go to
-                            ; all 4 planes
-     mov  ax,VGA_SEGMENT
-     mov  es,ax
-     call GetImageOffset    ;ES:DI points to the start address
-                            ; of the image
-     sub  al,al             ;erase with zeros
-     mov  bx,IMAGE_HEIGHT   ;# of scan lines in image
+        mov     dx,SC_INDEX
+        mov     al,MAP_MASK
+        out     dx,al           ;point SC Index to the Map Mask register
+        inc     dx              ;point to SC Data register
+        mov     al,0fh
+        out     dx,al           ;set up the Map Mask to allow writes to go to
+                                ; all 4 planes
+        mov     ax,VGA_SEGMENT
+        mov     es,ax
+        call    GetImageOffset  ;ES:DI points to the start address
+                                ; of the image
+        sub     al,al           ;erase with zeros
+        mov     bx,IMAGE_HEIGHT ;# of scan lines in image
 EraseImageLoop:
-     mov  cx,IMAGE_WIDTH    ;# of bytes across image
-     rep  stosb
-     add  di,SCREEN_WIDTH-IMAGE_WIDTH
-                            ;point to next scan line of image
-     dec  bx                ;any more scan lines?
-     jnz  EraseImageLoop
-     ret
+        mov     cx,IMAGE_WIDTH  ;# of bytes across image
+        rep     stosb
+        add     di,SCREEN_WIDTH-IMAGE_WIDTH
+                                ;point to next scan line of image
+        dec     bx              ;any more scan lines?
+        jnz     EraseImageLoop
+        ret
 EraseImage endp
 ;
 ; Returns the current offset of the image in the VGA segment in DI.
 ;
 GetImageOffset proc near
-     mov  ax,SCREEN_WIDTH
-     mul  [ImageY]
-     add  ax,[ImageX]
-     mov  di,ax
-     ret
+        mov     ax,SCREEN_WIDTH
+        mul     [ImageY]
+        add     ax,[ImageX]
+        mov     di,ax
+        ret
 GetImageOffset endp
-code  ends
-     end  Start
+code    ends
+        end  Start
 ```
 
 By the way, the code in Listing 28.1 is intended only to illustrate read
@@ -372,7 +372,7 @@ mode 1 makes it easy to tell when a given byte contains a pixel of a
 boundary color. Another application is in detecting on-screen object
 collisions, as illustrated by the code in Listing 28.2.
 
-**LISTING 28.2 L28-2.ASM**
+**LISTING 28.2 [L28-2.ASM](../code/L28-2.ASM)**
 
 ```nasm
 ; Program to illustrate use of read mode 1 (color compare mode)
@@ -382,160 +382,160 @@ collisions, as illustrated by the code in Listing 28.2.
 ;
 ; By Michael Abrash
 ;
-stack segment     word stack `STACK'
-      db    512 dup (?)
-stack ends
+stack   segment word stack 'STACK'
+        db      512 dup (?)
+stack   ends
 ;
-VGA_SEGMENT       EQU    0a000h
-SCREEN_WIDTH             EQU   80    ;in bytes
-GC_INDEX          EQU    3ceh        ;Graphics Controller Index register
-SET_RESET         EQU    0           ;Set/Reset register index in GC
-ENABLE_SET_RESET  EQU    1           ;Enable Set/Reset register index in GC
-COLOR_COMPARE     EQU    2           ;Color Compare register index in GC
-GRAPHICS_MODE     EQU    5           ;Graphics Mode register index in GC
-BIT_MASK          EQU    8           ;Bit Mask register index in GC
+VGA_SEGMENT             EQU     0a000h
+SCREEN_WIDTH            EQU     80      ;in bytes
+GC_INDEX                EQU     3ceh    ;Graphics Controller Index register
+SET_RESET               EQU     0       ;Set/Reset register index in GC
+ENABLE_SET_RESET        EQU     1       ;Enable Set/Reset register index in GC
+COLOR_COMPARE           EQU     2       ;Color Compare register index in GC
+GRAPHICS_MODE           EQU     5       ;Graphics Mode register index in GC
+BIT_MASK                EQU     8       ;Bit Mask register index in GC
 ;
-code              segment   word `CODE'
-                  assume    cs:code
-Start             proc      near
-                  cld
+code    segment word 'CODE'
+        assume  cs:code
+Start   proc    near
+        cld
 ;
 ; Select graphics mode 10h.
 ;
-     mov    ax,10h
-     int    10h
+        mov     ax,10h
+        int     10h
 ;
 ; Fill the screen with blue.
 ;
-     mov    al,1                  ;blue is color 1
-     call   SelectSetResetColor   ;set to draw in blue
-     mov    ax,VGA_SEGMENT
-     move   s,ax
-     sub    di,di
-     mov    cx,7000h
-     rep    stosb                 ;the value written actually doesn't
-; matter, since set/reset is providing
-; the data written to display memory
+        mov     al,1                    ;blue is color 1
+        call    SelectSetResetColor     ;set to draw in blue
+        mov     ax,VGA_SEGMENT
+        mov     es,ax
+        sub     di,di
+        mov     cx,7000h
+        rep     stosb                   ;the value written actually doesn't
+                                        ; matter, since set/reset is providing
+                                        ; the data written to display memory
 ;
 ; Draw a vertical yellow line.
 ;
-     mov    al,14                 ;yellow is color 14
-     call   SelectSetResetColor   ;set to draw in yellow
-     mov    dx,GC_INDEX
-     mov    al,BIT_MASK
-     out    dx,al                 ;point GC Index to Bit Mask
-     inc    dx                    ;point to GC Data
-     mov    al,10h
-     out    dx,al                 ;set Bit Mask to 10h
-     mov    di,40                 ;start in the middle of the top line
-     mov    cx,350                ;do full height of screen
+        mov     al,14                   ;yellow is color 14
+        call    SelectSetResetColor     ;set to draw in yellow
+        mov     dx,GC_INDEX
+        mov     al,BIT_MASK
+        out     dx,al                   ;point GC Index to Bit Mask
+        inc     dx                      ;point to GC Data
+        mov     al,10h
+        out     dx,al                   ;set Bit Mask to 10h
+        mov     di,40                   ;start in the middle of the top line
+        mov     cx,350                  ;do full height of screen
 VLineLoop:
-     mov    al,es:[di]            ;load the latches
-     stosb                        ;write next pixel of yellow line (set/reset
-; provides the data written to display
-; memory, and AL is actually ignored)
-     add    di,SCREEN_WIDTH-1     ;point to the next scan line
-loopVLineLoop
+        mov     al,es:[di]              ;load the latches
+        stosb                           ;write next pixel of yellow line (set/reset
+                                        ; provides the data written to display
+                                        ; memory, and AL is actually ignored)
+        add     di,SCREEN_WIDTH-1       ;point to the next scan line
+        loop    VLineLoop
 ;
 ; Select write mode 0 and read mode 1.
 ;
-     mov    dx,GC_INDEX
-     mov    al,GRAPHICS_MODE
-     out    dx,al                 ;point GC Index to Graphics Mode register
-     inc    dx                    ;point to GC Data
-     mov    al,00001000b          ;bit 3=1 is read mode 1, bits 1 & 0=00
-                                  ; is write mode 0
-     out    dx,al                 ;set Graphics Mode to read mode 1,
-                                  ; write mode 0
+        mov     dx,GC_INDEX
+        mov     al,GRAPHICS_MODE
+        out     dx,al                   ;point GC Index to Graphics Mode register
+        inc     dx                      ;point to GC Data
+        mov     al,00001000b            ;bit 3=1 is read mode 1, bits 1 & 0=00
+                                        ; is write mode 0
+        out     dx,al                   ;set Graphics Mode to read mode 1,
+                                        ; write mode 0
 ;
 ; Draw a horizontal green line, one pixel at a time, from left
 ; to right until color compare reports a yellow pixel is encountered.
 ;
 ; Draw in green.
 ;
-     mov    al,2                  ;green is color 2
-     call    SelectSetResetColor  ;set to draw in green
+        mov     al,2                    ;green is color 2
+        call    SelectSetResetColor     ;set to draw in green
 ;
 ; Set color compare to look for yellow.
 ;
-     mov    dx,GC_INDEX
-     mov    al,COLOR_COMPARE
-     out    dx,al                 ;point GC Index to Color Compare register
-     inc    dx                    ;point to GC Data
-     mov    al,14                 ;we're looking for yellow, color 14
-     out    dx,al                 ;set color compare to look for yellow
-     dec    dx                    ;point to GC Index
+        mov     dx,GC_INDEX
+        mov     al,COLOR_COMPARE
+        out     dx,al                   ;point GC Index to Color Compare register
+        inc     dx                      ;point to GC Data
+        mov     al,14                   ;we're looking for yellow, color 14
+        out     dx,al                   ;set color compare to look for yellow
+        dec     dx                      ;point to GC Index
 ;
 ; Set up for quick access to Bit Mask register.
 ;
-     mov    al,BIT_MASK
-     out    dx,al                 ;point GC Index to Bit Mask register
-     inc    dx                    ;point to GC Data
+        mov     al,BIT_MASK
+        out     dx,al                   ;point GC Index to Bit Mask register
+        inc     dx                      ;point to GC Data
 ;
 ; Set initial pixel mask and display memory offset.
 ;
-     mov    al,80h                ;initial pixel mask
-     mov    di,100*SCREEN_WIDTH
-                                  ;start at left edge of scan line 100
+        mov     al,80h                  ;initial pixel mask
+        mov     di,100*SCREEN_WIDTH
+                                        ;start at left edge of scan line 100
 HLineLoop:
-     mov    ah,es:[di]            ;do a read mode 1 (color compare) read.
-                                  ; This also loads the latches.
-     and    ah,al                 ;is the pixel of current interest yellow?
-     jnz    WaitKeyAndDone        ;yes-we've reached the yellow line, so we're
-                                  ; done
-     out    dx,al                 ;set the Bit Mask register so that we
-                                  ; modify only the pixel of interest
-     mov    es:[di],al            ;draw the pixel. The value written is
-                                  ; irrelevant, since set/reset is providing
-                                  ; the data written to display memory
-     ror    al,1                  ;shift pixel mask to the next pixel
-     adc    di,0                  ;advance the display memory offset if
-                                  ; the pixel mask wrapped
+        mov     ah,es:[di]              ;do a read mode 1 (color compare) read.
+                                        ; This also loads the latches.
+        and     ah,al                   ;is the pixel of current interest yellow?
+        jnz     WaitKeyAndDone          ;yes-we've reached the yellow line, so we're
+                                        ; done
+        out     dx,al                   ;set the Bit Mask register so that we
+                                        ; modify only the pixel of interest
+        mov     es:[di],al              ;draw the pixel. The value written is
+                                        ; irrelevant, since set/reset is providing
+                                        ; the data written to display memory
+        ror     al,1                    ;shift pixel mask to the next pixel
+        adc     di,0                    ;advance the display memory offset if
+                                        ; the pixel mask wrapped
 ;
 ; Slow things down a bit for visibility (adjust as needed).
 ;
-     mov    cx,0
+        mov     cx,0
 DelayLoop:
-     loop   DelayLoop
-     jmp    HLineLoop
+        loop    DelayLoop
+        jmp     HLineLoop
 ;
 ; Wait for a key to be pressed to end, then return to text mode and
 ; return to DOS.
 ;
 WaitKeyAndDone:
 WaitKeyLoop:
-     mov    ah,1
-     int    16h
-     jz    WaitKeyLoop
-     sub    ah,ah
-     int    16h                   ;clear the key
-     mov    ax,3
-     int    10h                   ;return to text mode
-     mov    ah,4ch
-     int    21h                   ;done
-Startendp
+        mov     ah,1
+        int     16h
+        jz      WaitKeyLoop
+        sub     ah,ah
+        int     16h                     ;clear the key
+        mov     ax,3
+        int     10h                     ;return to text mode
+        mov     ah,4ch
+        int     21h                     ;done
+Start   endp
 ;
 ; Enables set/reset for all planes, and sets the set/reset color
 ; to AL.
 ;
-SelectSetResetColorprocnear
-     mov    dx,GC_INDEX
-     push   ax                    ;preserve color
-     mov    al,SET_RESET
-     out    dx,al                 ;point GC Index to Set/Reset register
-     inc    dx                    ;point to GC Data
-     pop    ax                    ;get back color
-     out    dx,al                 ;set Set/Reset register to selected color
-     dec    dx                    ;point to GC Index
-     mov    al,ENABLE_SET_RESET
-     out    dx,al                 ;point GC Index to Enable Set/Reset register
-     inc    dx                    ;point to GC Data
-     mov    al,0fh
-     out    dx,al                 ;enable set/reset for all planes
-     ret
-SelectSetResetColorendp
-code ends
-end  Start
+SelectSetResetColor proc near
+        mov     dx,GC_INDEX
+        push    ax                      ;preserve color
+        mov     al,SET_RESET
+        out     dx,al                   ;point GC Index to Set/Reset register
+        inc     dx                      ;point to GC Data
+        pop     ax                      ;get back color
+        out     dx,al                   ;set Set/Reset register to selected color
+        dec     dx                      ;point to GC Index
+        mov     al,ENABLE_SET_RESET
+        out     dx,al                   ;point GC Index to Enable Set/Reset register
+        inc     dx                      ;point to GC Data
+        mov     al,0fh
+        out     dx,al                   ;enable set/reset for all planes
+        ret
+SelectSetResetColor endp
+code    ends
+        end     Start
 ```
 
 ### When all Planes "Don't Care"

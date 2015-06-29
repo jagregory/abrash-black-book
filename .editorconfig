@@ -13,7 +13,7 @@ indent_size = 8
 trim_trailing_whitespace = true
 
 [{*.ASM,*.INC,*.asm,*.inc,*.nasm,*.lst,*.map}]
-indent_style = tab
+indent_style = space
 indent_size = 8
 trim_trailing_whitespace = true
 
