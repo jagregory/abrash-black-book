@@ -69,71 +69,71 @@ as each plane is loaded when Listing 29.2 runs. Note that Listing 29.2
 does not itself draw any text, but rather simply loads the bit map saved
 by Listing 29.1 back into the mode 10H frame buffer.
 
-**LISTING 29.1 L29-1.ASM**
+**LISTING 29.1 [L29-1.ASM](../code/L29-1.ASM)**
 
 ```nasm
 ; Program to put up a mode 10h EGA graphics screen, then save it
 ; to the file SNAPSHOT.SCR.
 ;
-VGA_SEGMENT                 equ   0a000h
-GC_INDEX                    equ   3ceh             ;Graphics Controller Index register
-READ_MAP                    equ   4                ;Read Map register index in GC
-DISPLAYED_SCREEN_SIZE       equ  (640/8)*350       ;# of displayed bytes per plane in a
-                                                   ; hi-res graphics screen
+VGA_SEGMENT     equ   0a000h
+GC_INDEX        equ   3ceh              ;Graphics Controller Index register
+READ_MAP        equ   4                 ;Read Map register index in GC
+DISPLAYED_SCREEN_SIZE equ (640/8)*350   ;# of displayed bytes per plane in a
+                                        ; hi-res graphics screen
 ;
-stack      segment para stack ‘STACK'
-                 db                  512 dup (?)
-stack      ends
+stack   segment para stack 'STACK'
+        db      512 dup (?)
+stack   ends
 ;
-Data       segment     word ‘DATA'
-SampleText       db    ‘This is bit-mapped text, drawn in hi-res '
-                 db    ‘EGA graphics mode 10h.', 0dh, 0ah, 0ah
-                 db    ‘Saving the screen (including this text)...'
-                 db    0dh, 0ah, ‘$'
-Filename         db    ‘SNAPSHOT.SCR',0   ;name of file we're saving to
-ErrMsg1          db    ‘*** Couldn't open SNAPSHOT.SCR ***',0dh,0ah,‘$'
-ErrMsg2          db    ‘*** Error writing to SNAPSHOT.SCR ***',0dh,0ah,‘$'
-WaitKeyMsg       db    0dh, 0ah, ‘Done. Press any key to end...',0dh,0ah,‘$'
-Handle           dw    ?                           ;handle of file we're saving to
-Plane            db    ?                           ;plane being read
-Data  ends
+Data    segment word 'DATA'
+SampleText      db      'This is bit-mapped text, drawn in hi-res '
+                db      'EGA graphics mode 10h.', 0dh, 0ah, 0ah
+                db      'Saving the screen (including this text)...'
+                db      0dh, 0ah, '$'
+Filename        db      'SNAPSHOT.SCR',0;name of file we're saving to
+ErrMsg1         db      "*** Couldn't open SNAPSHOT.SCR ***",0dh,0ah,'$'
+ErrMsg2         db      '*** Error writing to SNAPSHOT.SCR ***',0dh,0ah,'$'
+WaitKeyMsg      db      0dh, 0ah, 'Done. Press any key to end...',0dh,0ah,'$'
+Handle          dw      ?               ;handle of file we're saving to
+Plane           db      ?               ;plane being read
+Data    ends
 ;
-Code           segment
-               assume   cs:Code, ds:Data
-Start          proc     near
-               mov      ax,Data
-               mov      ds,ax
+Code    segment
+        assume  cs:Code, ds:Data
+Start   proc    near
+        mov     ax,Data
+        mov     ds,ax
 ;
 ; Go to hi-res graphics mode.
 ;
-               mov      ax,10h     ;AH = 0 means mode set, AL = 10h selects
-                                   ; hi-res graphics mode
-               int      10h        ;BIOS video interrupt
+        mov     ax,10h                  ;AH = 0 means mode set, AL = 10h selects
+                                        ; hi-res graphics mode
+        int     10h                     ;BIOS video interrupt
 ;
 ; Put up some text, so the screen isn't empty.
 ;
-               mov      ah,9       ;DOS print string function
-               mov      dx,offset SampleText
-               int      21h
+        mov     ah,9                    ;DOS print string function
+        mov     dx,offset SampleText
+        int     21h
 ;
 ; Delete SNAPSHOT.SCR if it exists.
 ;
-               mov      ah,41h     ;DOS unlink file function
-               mov      dx,offset Filename
-               int      21h
+        mov     ah,41h                  ;DOS unlink file function
+        mov     dx,offset Filename
+        int     21h
 ;
 ; Create the file SNAPSHOT.SCR.
 ;
-               mov      ah,3ch        ;DOS create file function
-               mov      dx,offset Filename
-               sub      cx,cx         ;make it a normal file
-               int      21h
-               mov      [Handle],ax   ;save the handle
-               jnc      SaveTheScreen ;we're ready to save if no error
-               mov      ah,9          ;DOS print string function
-               mov      dx,offset ErrMsg1
-               int      21h           ;notify of the error
-               jmp      short Done    ;and done
+        mov     ah,3ch                  ;DOS create file function
+        mov     dx,offset Filename
+        sub     cx,cx                   ;make it a normal file
+        int     21h
+        mov     [Handle],ax             ;save the handle
+        jnc     SaveTheScreen           ;we're ready to save if no error
+        mov     ah,9                    ;DOS print string function
+        mov     dx,offset ErrMsg1
+        int     21h                     ;notify of the error
+        jmp     short Done              ;and done
 ;
 ; Loop through the 4 planes, making each readable in turn and
 ; writing it to disk. Note that all 4 planes are readable at
@@ -141,116 +141,116 @@ Start          proc     near
 ; at any one time.
 ;
 SaveTheScreen:
-               mov      [Plane],0;start with plane 0
+        mov     [Plane],0               ;start with plane 0
 SaveLoop:
-               mov      dx,GC_INDEX
-               mov      al,READ_MAP;set GC Index to Read Map register
-               out      dx,al
-               inc      dx
-               mov      al,[Plane]          ;get the # of the plane we want
-                                            ; to save
-               out      dx,al               ;set to read from the desired plane
-               mov      ah,40h              ;DOS write to file function
-               mov      bx,[Handle]
-               mov      cx,DISPLAYED_SCREEN_SIZE ;# of bytes to save
-               sub      dx,dx               ;write all displayed bytes at A000:0000
-               push     ds
-               mov      si,VGA_SEGMENT
-               mov      ds,si
-               int      21h                 ;write the displayed portion of this plane
-               pop      ds
-               cmp      ax,DISPLAYED_SCREEN_SIZE ;did all bytes get written?
-               jz       SaveLoopBottom
-               mov      ah,9                ;DOS print string function
-               mov      dx,offset ErrMsg2
-               int      21h                 ;notify about the error
-               jmp      short DoClose       ;and done
+        mov     dx,GC_INDEX
+        mov     al,READ_MAP     ;set GC Index to Read Map register
+        out     dx,al
+        inc     dx
+        mov     al,[Plane]              ;get the # of the plane we want
+                                        ; to save
+        out     dx,al                   ;set to read from the desired plane
+        mov     ah,40h                  ;DOS write to file function
+        mov     bx,[Handle]
+        mov     cx,DISPLAYED_SCREEN_SIZE;# of bytes to save
+        sub     dx,dx                   ;write all displayed bytes at A000:0000
+        push    ds
+        mov     si,VGA_SEGMENT
+        mov     ds,si
+        int     21h                     ;write the displayed portion of this plane
+        pop     ds
+        cmp     ax,DISPLAYED_SCREEN_SIZE;did all bytes get written?
+        jz      SaveLoopBottom
+        mov     ah,9                    ;DOS print string function
+        mov     dx,offset ErrMsg2
+        int     21h                     ;notify about the error
+        jmp     short DoClose           ;and done
 SaveLoopBottom:
-               mov      al,[Plane]
-               inc      ax                  ;point to the next plane
-               mov      [Plane],al
-               cmp      al,3                ;have we done all planes?
-               jbe      SaveLoop            ;no, so do the next plane
+        mov     al,[Plane]
+        inc     ax                      ;point to the next plane
+        mov     [Plane],al
+        cmp     al,3                    ;have we done all planes?
+        jbe     SaveLoop                ;no, so do the next plane
 ;
 ; Close SNAPSHOT.SCR.
 ;
 DoClose:
-               mov      ah,3eh              ;DOS close file function
-               mov      bx,[Handle]
-               int      21h
+        mov     ah,3eh                  ;DOS close file function
+        mov     bx,[Handle]
+        int     21h
 ;
 ; Wait for a keypress.
 ;
-               mov      ah,9                ;DOS print string function
-               mov      dx,offset WaitKeyMsg
-               int      21h                 ;prompt
-               mov      ah,8                ;DOS input without echo function
-               int      21h
+        mov     ah,9                    ;DOS print string function
+        mov     dx,offset WaitKeyMsg
+        int     21h                     ;prompt
+        mov     ah,8                    ;DOS input without echo function
+        int     21h
 ;
 ; Restore text mode.
 ;
-               mov      ax,3
-               int      10h
+        mov     ax,3
+        int     10h
 ;
 ; Done.
 ;
 Done:
-               mov      ah,4ch;DOS terminate function
-               int      21h
-Start          endp
-Code           ends
-               end      Start
+        mov     ah,4ch                  ;DOS terminate function
+        int     21h
+Start   endp
+Code    ends
+        end     Start
 ```
 
-**LISTING 29.2 L29-2.ASM**
+**LISTING 29.2 [L29-2.ASM](../code/L29-2.ASM)**
 
 ```nasm
 ; Program to restore a mode 10h EGA graphics screen from
 ; the file SNAPSHOT.SCR.
 ;
-VGA_SEGMENT                 equ   0a000h
-SC_INDEX                    equ   3c4h            ;Sequence Controller Index register
-MAP_MASK                    equ   2               ;Map Mask register index in SC
-DISPLAYED_SCREEN_SIZE       equ  (640/8)*350      ;# of displayed bytes per plane in a
-                                                  ; hi-res graphics screen
+VGA_SEGMENT     equ     0a000h
+SC_INDEX        equ     3c4h            ;Sequence Controller Index register
+MAP_MASK        equ     2               ;Map Mask register index in SC
+DISPLAYED_SCREEN_SIZE equ (640/8)*350   ;# of displayed bytes per plane in a
+                                        ; hi-res graphics screen
 ;
-stack      segment para stack ‘STACK'
-                 db              512 dup (?)
-stack      ends
+stack   segment para stack 'STACK'
+        db      512 dup (?)
+stack   ends
 ;
-Data       segment     word ‘DATA'
-Filename         db          ‘SNAPSHOT.SCR',0   ;name of file we're restoring from
-ErrMsg1          db          ‘*** Couldn'‘t open SNAPSHOT.SCR ***',0dh,0ah,‘$'
-ErrMsg2          db          ‘*** Error reading from SNAPSHOT.SCR ***',0dh,0ah,‘$'
-WaitKeyMsg       db          0dh, 0ah, ‘Done. Press any key to end...',0dh,0ah,‘$'
-Handle           dw          ?                  ;handle of file we're restoring from
-Plane            db          ?                  ;plane being written
-Data       ends
+Data    segment word 'DATA'
+Filename        db      'SNAPSHOT.SCR',0;name of file we're restoring from
+ErrMsg1         db      "*** Couldn't open SNAPSHOT.SCR ***",0dh,0ah,'$'
+ErrMsg2         db      '*** Error reading from SNAPSHOT.SCR ***',0dh,0ah,'$'
+WaitKeyMsg      db      0dh, 0ah, 'Done. Press any key to end...',0dh,0ah,'$'
+Handle          dw      ?               ;handle of file we're restoring from
+Plane           db      ?               ;plane being written
+Data    ends
 ;
-Code          segment
-              assume   cs:Code, ds:Data
-Start         proc     near
-              mov      ax,Data
-              mov      ds,ax
+Code    segment
+        assume  cs:Code, ds:Data
+Start   proc    near
+        mov     ax,Data
+        mov     ds,ax
 ;
 ; Go to hi-res graphics mode.
 ;
-              mov      ax,10h          ;AH = 0 means mode set, AL = 10h selects
-                                       ; hi-res graphics mode
-              int      10h             ;BIOS video interrupt
+        mov     ax,10h                  ;AH = 0 means mode set, AL = 10h selects
+                                        ; hi-res graphics mode
+        int     10h                     ;BIOS video interrupt
 ;
 ; Open SNAPSHOT.SCR.
 ;
-              mov      ah,3dh           ;DOS open file function
-              mov      dx,offset Filename
-              sub      al,al            ;open for reading
-              int      21h
-              mov      [Handle],ax      ;save the handle
-              jnc      RestoreTheScreen ;we're ready to restore if no error
-              mov      ah,9             ;DOS print string function
-              mov      dx,offset ErrMsg1
-              int      21h              ;notify of the error
-              jmp      short Done;and done
+        mov     ah,3dh                  ;DOS open file function
+        mov     dx,offset Filename
+        sub     al,al                   ;open for reading
+        int     21h
+        mov     [Handle],ax             ;save the handle
+        jnc     RestoreTheScreen        ;we're ready to restore if no error
+        mov     ah,9                    ;DOS print string function
+        mov     dx,offset ErrMsg1
+        int     21h                     ;notify of the error
+        jmp     short Done              ;and done
 ;
 ; Loop through the 4 planes, making each writable in turn and
 ; reading it from disk. Note that all 4 planes are writable at
@@ -258,67 +258,67 @@ Start         proc     near
 ; at any one time. We only make one plane readable at a time.
 ;
 RestoreTheScreen:
-              mov      [Plane],0                ;start with plane 0
+        mov     [Plane],0               ;start with plane 0
 RestoreLoop:
-              mov      dx,SC_INDEX
-              mov      al,MAP_MASK              ;set SC Index to Map Mask register
-outdx,al
-              inc      dx
-              mov      cl,[Plane]               ;get the # of the plane we want
-; to restore
-              mov      al,1
-              shl      al,cl                    ;set the bit enabling writes to
-                                                ; only the one desired plane
-              out      dx,al                    ;set to read from desired plane
-              mov      ah,3fh                   ;DOS read from file function
-              mov      bx,[Handle]
-              mov      cx,DISPLAYED_SCREEN_SIZE ;# of bytes to read
-              sub      dx,dx                    ;start loading bytes at A000:0000
-              push     ds
-              mov      si,VGA_SEGMENT
-              mov      ds,si
-              int      21h                      ;read the displayed portion of this plane
-              pop      ds
-              jc       ReadError
-              cmp      ax,DISPLAYED_SCREEN_SIZE ;did all bytes get read?
-              jz       RestoreLoopBottom
+        mov     dx,SC_INDEX
+        mov     al,MAP_MASK             ;set SC Index to Map Mask register
+        out     dx,al
+        inc     dx
+        mov     cl,[Plane]              ;get the # of the plane we want
+                                        ; to restore
+        mov     al,1
+        shl     al,cl                   ;set the bit enabling writes to
+                                        ; only the one desired plane
+        out     dx,al                   ;set to read from desired plane
+        mov     ah,3fh                  ;DOS read from file function
+        mov     bx,[Handle]
+        mov     cx,DISPLAYED_SCREEN_SIZE;# of bytes to read
+        sub     dx,dx                   ;start loading bytes at A000:0000
+        push    ds
+        mov     si,VGA_SEGMENT
+        mov     ds,si
+        int     21h                     ;read the displayed portion of this plane
+        pop     ds
+        jc      ReadError
+        cmp     ax,DISPLAYED_SCREEN_SIZE;did all bytes get read?
+        jz      RestoreLoopBottom
 ReadError:
-              mov      ah,9                     ;DOS print string function
-              mov      dx,offset ErrMsg2
-              int      21h                      ;notify about the error
-              jmp      short DoClose            ;and done
+        mov     ah,9                    ;DOS print string function
+        mov     dx,offset ErrMsg2
+        int     21h                     ;notify about the error
+        jmp     short DoClose           ;and done
 RestoreLoopBottom:
-              mov      al,[Plane]
-              inc      ax                       ;point to the next plane
-              mov      [Plane],al
-              cmp      al,3                     ;have we done all planes?
-              jbe      RestoreLoop              ;no, so do the next plane
+        mov     al,[Plane]
+        inc     ax                      ;point to the next plane
+        mov     [Plane],al
+        cmp     al,3                    ;have we done all planes?
+        jbe     RestoreLoop             ;no, so do the next plane
 ;
 ; Close SNAPSHOT.SCR.
 ;
 DoClose:
-              mov      ah,3eh                   ;DOS close file function
-              mov      bx,[Handle]
-              int      21h
+        mov     ah,3eh                  ;DOS close file function
+        mov     bx,[Handle]
+        int     21h
 ;
 ; Wait for a keypress.
 ;
-              mov      ah,8                     ;DOS input without echo function
-              int      21h
+        mov     ah,8                    ;DOS input without echo function
+        int     21h
 ;
 ; Restore text mode.
 ;
-              mov      ax,3
-              int      10h
+        mov     ax,3
+        int     10h
 ;
 ; Done.
 ;
 Done:
-              mov      ah,4ch                   ;DOS terminate function
-              int      21h
-Start         endp
-Code          ends
-              end      Start
+        mov     ah,4ch                  ;DOS terminate function
+        int     21h
+Start   endp
+Code    ends
+        end     Start
 ```
 
 If you compare Listings 29.1 and 29.2, you will see that the Map Mask
@@ -516,259 +516,260 @@ inaccurate to speak of bits in display memory as representing colors;
 more accurately, they represent attributes in the range 0-15, which are
 mapped to colors 0-3FH by the palette registers.
 
-**LISTING 29.3 L29-3.ASM**
+**LISTING 29.3 [L29-3.ASM](../code/L29-3.ASM)**
 
 ```nasm
 ; Program to illustrate the color mapping capabilities of the
 ; EGA's palette registers.
 ;
-VGA_SEGMENT            equ  0a000h
-SC_INDEX               equ  3c4h         ;Sequence Controller Index register
-MAP_MASK               equ  2            ;Map Mask register index in SC
-BAR_HEIGHT             equ  14           ;height of each bar
-TOP_BAR                equ  BAR_HEIGHT*6 ;start the bars down a bit to
-                                         ; leave room for text
+VGA_SEGMENT     equ     0a000h
+SC_INDEX        equ     3c4h            ;Sequence Controller Index register
+MAP_MASK        equ     2               ;Map Mask register index in SC
+BAR_HEIGHT      equ     14              ;height of each bar
+TOP_BAR         equ     BAR_HEIGHT*6    ;start the bars down a bit to
+                                        ; leave room for text
 ;
-stack    segment para stack ‘STACK'
-              db                  512 dup (?)
-stack    ends
+stack   segment para stack 'STACK'
+        db      512 dup (?)
+stack   ends
 ;
-Data     segment    word ‘DATA'
-KeyMsg   db         ‘Press any key to see the next color set. '
-         db         ‘There are 64 color sets in all.'
-         db         0dh, 0ah, 0ah, 0ah, 0ah
-         db         13 dup (‘ '), ‘Attribute'
-         db         38 dup (‘ '), ‘Color$'
+Data    segment word 'DATA'
+KeyMsg  db      'Press any key to see the next color set. '
+        db      'There are 64 color sets in all.'
+        db      0dh, 0ah, 0ah, 0ah, 0ah
+        db      13 dup (' '), 'Attribute'
+        db      38 dup (' '), 'Color$'
 ;
 ; Used to label the attributes of the color bars.
 ;
-AttributeNumbers    label byte
-x=         0
-           rept     16
+AttributeNumbers        label   byte
+x=      0
+        rept    16
 if x lt 10
-           db       ‘0', x+‘0', ‘h', 0ah, 8, 8, 8
+        db      '0', x+'0', 'h', 0ah, 8, 8, 8
 else
-           db       ‘0', x+‘A'-10, ‘h', 0ah, 8, 8, 8
+        db      '0', x+'A'-10, 'h', 0ah, 8, 8, 8
 endif
-x=         x+1
-           endm
-           db       ‘$'
+x=      x+1
+        endm
+        db      '$'
 ;
 ; Used to label the colors of the color bars. (Color values are
 ; filled in on the fly.)
 ;
-ColorNumberslabelbyte
-           rept    16
-           db      ‘000h', 0ah, 8, 8, 8, 8
-           endm
-COLOR_ENTRY_LENGTHequ($-ColorNumbers)/16
-           db      ‘$'
+ColorNumbers    label   byte
+        rept    16
+        db      '000h', 0ah, 8, 8, 8, 8
+        endm
+COLOR_ENTRY_LENGTH      equ     ($-ColorNumbers)/16
+        db      '$'
 ;
-CurrentColordb?
+CurrentColor    db      ?
 ;
 ; Space for the array of 16 colors we'll pass to the BIOS, plus
 ; an overscan setting of black.
 ;
-ColorTable    db         16 dup (?), 0
-Data          ends
+ColorTable      db      16 dup (?), 0
+Data    ends
 ;
-Code          segment
-              assume     cs:Code, ds:Data
-Start         procnear
-              cld
-              mov        ax,Data
-              mov        ds,ax
+Code    segment
+        assume  cs:Code, ds:Data
+Start   proc    near
+        cld
+        mov     ax,Data
+        mov     ds,ax
 ;
 ; Go to hi-res graphics mode.
 ;
-              mov        ax,10h           ;AH = 0 means mode set, AL = 10h selects
-                                          ; hi-res graphics mode
-              int        10h              ;BIOS video interrupt
+        mov     ax,10h          ;AH = 0 means mode set, AL = 10h selects
+                                ; hi-res graphics mode
+        int     10h             ;BIOS video interrupt
 ;
 ; Put up relevant text.
 ;
-              mov        ah,9             ;DOS print string function
-              mov        dx,offset KeyMsg
-              int        21h
+        mov     ah,9            ;DOS print string function
+        mov     dx,offset KeyMsg
+        int     21h
 ;
 ; Put up the color bars, one in each of the 16 possible pixel values
 ; (which we'll call attributes).
 ;
-              mov        cx,16            ;we'll put up 16 color bars
-              sub        al,al            ;start with attribute 0
+        mov     cx,16           ;we'll put up 16 color bars
+        sub     al,al           ;start with attribute 0
 BarLoop:
-              push       ax
-              push       cx
-              call       BarUp
-              pop        cx
-              pop        ax
-              inc        ax               ;select the next attribute
-              loop       BarLoop
+        push    ax
+        push    cx
+        call    BarUp
+        pop     cx
+        pop     ax
+        inc     ax              ;select the next attribute
+        loop    BarLoop
 ;
 ; Put up the attribute labels.
 ;
-              mov        ah,2             ;video interrupt set cursor position function
-              sub        bh,bh            ;page 0
-              mov        dh,TOP_BAR/14    ;counting in character rows, match to
-                                          ; top of first bar, counting in
-                                          ; scan lines
-              mov        dl,16            ;just to left of bars
-              int        10h
-              mov        ah,9             ;DOS print string function
-              mov        dx,offset AttributeNumbers
-              int        21h
+        mov     ah,2            ;video interrupt set cursor position function
+        sub     bh,bh           ;page 0
+        mov     dh,TOP_BAR/14   ;counting in character rows, match to
+                                ; top of first bar, counting in
+                                ; scan lines
+        mov     dl,16           ;just to left of bars
+        int     10h
+        mov     ah,9            ;DOS print string function
+        mov     dx,offset AttributeNumbers
+        int     21h
 ;
 ; Loop through the color set, one new setting per keypress.
 ;
-              mov        [CurrentColor],0 ;start with color zero
+        mov     [CurrentColor],0        ;start with color zero
 ColorLoop:
 ;
 ; Set the palette registers to the current color set, consisting
 ; of the current color mapped to attribute 0, current color + 1
 ; mapped to attribute 1, and so on.
 ;
-              mov        al,[CurrentColor]
-              mov        bx,offset ColorTable
-              mov        cx,16            ;we have 16 colors to set
+        mov     al,[CurrentColor]
+        mov     bx,offset ColorTable
+        mov     cx,16           ;we have 16 colors to set
 PaletteSetLoop:
-              and        al,3fh          ;limit to 6-bit color values
-              mov        [bx],al         ;build the 16-color table used for setting
-              inc        bx              ; the palette registers
-              inc        ax
-              loop       PaletteSetLoop
-              mov        ah,10h          ;video interrupt palette function
-              mov        al,2            ;subfunction to set all 16 palette registers
-                                         ; and overscan at once
-              mov        dx,offset ColorTable
-              push       ds
-              pop        es              ;ES:DX points to the color table
-              int        10h             ;invoke the video interrupt to set the palette
+        and     al,3fh          ;limit to 6-bit color values
+        mov     [bx],al         ;built the 16-color table used for setting
+        inc     bx              ; the palette registers
+        inc     ax
+        loop    PaletteSetLoop
+        mov     ah,10h          ;video interrupt palette function
+        mov     al,2            ;subfunction to set all 16 palette registers
+                                ; and overscan at once
+        mov     dx,offset ColorTable
+        push    ds
+        pop     es              ;ES:DX points to the color table
+        int     10h             ;invoke the video interrupt to set the palette
 ;
 ; Put up the color numbers, so we can see how attributes map
 ; to color values, and so we can see how each color # looks
 ; (at least on this particular screen).
 ;
-              call       ColorNumbersUp
+        call    ColorNumbersUp
 ;
 ; Wait for a keypress, so they can see this color set.
 ;
 WaitKey:
-              mov        ah,8            ;DOS input without echo function
-              int        21h
+        mov     ah,8            ;DOS input without echo function
+        int     21h
 ;
 ; Advance to the next color set.
 ;
-              mov        al,[CurrentColor]
-              inc        ax
-              mov        [CurrentColor],al
-              cmp        al,64
-              jbe        ColorLoop
+        mov     al,[CurrentColor]
+        inc     ax
+        mov     [CurrentColor],al
+        cmp     al,64
+        jbe     ColorLoop
 ;
 ; Restore text mode.
 ;
-              mov        ax,3
-              int        10h
+        mov     ax,3
+        int     10h
 ;
 ; Done.
 ;
 Done:
-              mov        ah,4ch          ;DOS terminate function
-              int        21h
+        mov     ah,4ch          ;DOS terminate function
+        int     21h
 ;
 ; Puts up a bar consisting of the specified attribute (pixel value),
 ; at a vertical position corresponding to the attribute.
 ;
 ; Input: AL = attribute
 ;
-BarUp         proc       near
-              mov        dx,SC_INDEX
-              mov        ah,al
-              mov        al,MAP_MASK
-              out        dx,al
-              inc        dx
-              mov        al,ah
-              out        dx,al           ;set the Map Mask register to produce
-                                         ; the desired color
-              mov        ah,BAR_HEIGHT
-              mul        ah              ;row of top of bar
-              add        ax,TOP_BAR      ;start a few lines down to leave room for
-                                         ; text
-              mov        dx,80           ;rows are 80 bytes long
-              mul        dx              ;offset in bytes of start of scan line bar
-                                         ; starts on
-              add         ax,20          ;offset in bytes of upper left corner of bar
-              mov         di,ax
-              mov         ax,VGA_SEGMENT
-              mov         es,ax          ;ES:DI points to offset of upper left
-                                         ; corner of bar
-              mov         dx,BAR_HEIGHT
-              mov         al,0ffh
+BarUp   proc    near
+        mov     dx,SC_INDEX
+        mov     ah,al
+        mov     al,MAP_MASK
+        out     dx,al
+        inc     dx
+        mov     al,ah
+        out     dx,al           ;set the Map Mask register to produce
+                                ; the desired color
+        mov     ah,BAR_HEIGHT
+        mul     ah              ;row of top of bar
+        add     ax,TOP_BAR      ;start a few lines down to leave room for
+                                ; text
+        mov     dx,80           ;rows are 80 bytes long
+        mul     dx              ;offset in bytes of start of scan line bar
+                                ; starts on
+        add     ax,20           ;offset in bytes of upper left corner of bar
+        mov     di,ax
+        mov     ax,VGA_SEGMENT
+        mov     es,ax           ;ES:DI points to offset of upper left
+                                ; corner of bar
+        mov     dx,BAR_HEIGHT
+        mov     al,0ffh
 BarLineLoop:
-              mov         cx,40          ;make the bars 40 wide
-              rep         stosb          ;do one scan line of the bar
-              add         di,40          ;point to the start of the next scan line
-                                         ; of the bar
-              dec         dx
-              jnz         BarLineLoop
-              ret
-BarUp         endp
+        mov     cx,40           ;make the bars 40 wide
+        rep     stosb           ;do one scan line of the bar
+        add     di,40           ;point to the start of the next scan line
+                                ; of the bar
+        dec     dx
+        jnz     BarLineLoop
+        ret
+BarUp   endp
 ;
 ; Converts AL to a hex digit in the range 0-F.
 ;
-BinToHexDigit proc        near
-              cmp         al,9
-              ja                IsHex
-              add         al,‘0'
-              ret
+BinToHexDigit   proc    near
+        cmp     al,9
+        ja      IsHex
+        add     al,'0'
+        ret
 IsHex:
-              add         al,‘A'-10
-              ret
-BinToHexDigit endp
+        add     al,'A'-10
+        ret
+BinToHexDigit   endp
 ;
 ; Displays the color values generated by the color bars given the
 ; current palette register settings off to the right of the color
 ; bars.
 ;
-ColorNumbersUp proc       near
-               mov        ah,2             ;video interrupt set cursor position function
-               sub        bh,bh            ;page 0
-               mov        dh,TOP_BAR/14    ;counting in character rows, match to
-                                           ; top of first bar, counting in
-                                           ; scan lines
-               mov        dl,20+40+1       ;just to right of bars
-               int        10h
-               mov        al,[CurrentColor] ;start with the current color
-               mov        bx,offset ColorNumbers+1
-                                            ;build color number text string on the fly
-               mov        cx,16             ;we've got 16 colors to do
+ColorNumbersUp  proc    near
+        mov     ah,2            ;video interrupt set cursor position function
+        sub     bh,bh           ;page 0
+        mov     dh,TOP_BAR/14   ;counting in character rows, match to
+                                ; top of first bar, counting in
+                                ; scan lines
+        mov     dl,20+40+1      ;just to right of bars
+        int     10h
+        mov     al,[CurrentColor]       ;start with the current color
+        mov     bx,offset ColorNumbers+1
+                                ;build the color number text string on the fly
+        mov     cx,16           ;we've got 16 colors to do
 ColorNumberLoop:
-               pus        hax;save the color #
-               and        al,3fh;limit to 6-bit color values
-               shr        al,1
-               shr        al,1
-               shr        al,1
-               shr        al,1              ;isolate the high nibble of the color #
-               call       BinToHexDigit     ;convert the high color # nibble
-               mov        [bx],al           ; and put it into the text
-               pop        ax                ;get back the color #
-               push       ax                ;save the color #
-               and        al,0fh            ;isolate the low color # nibble
-               call       BinToHexDigit     ;convert the low nibble of the
-                                            ; color # to ASCII
-               mov        [bx+1],al         ; and put it into the text
-               add        bx,COLOR_ENTRY_LENGTH     ;point to the next entry
-               pop        ax                ;get back the color #
-               inc        ax                ;next color #
-               loop       ColorNumberLoop
-               mov        ah,9              ;DOS print string function
-               mov        dx,offset ColorNumbers
-               int        21h               ;put up the attribute numbers
-               ret
-ColorNumbersUpendp
+        push    ax              ;save the color #
+        and     al,3fh          ;limit to 6-bit color values
+        shr     al,1
+        shr     al,1
+        shr     al,1
+        shr     al,1            ;isolate the high nibble of the
+                                ; color #
+        call    BinToHexDigit   ;convert the high color # nibble
+        mov     [bx],al         ; and put it into the text
+        pop     ax              ;get back the color #
+        push    ax              ;save the color #
+        and     al,0fh          ;isolate the low color # nibble
+        call    BinToHexDigit   ;convert the low nibble of the
+                                ; color # to ASCII
+        mov     [bx+1],al       ; and put it into the text
+        add     bx,COLOR_ENTRY_LENGTH   ;point to the next entry
+        pop     ax              ;get back the color #
+        inc     ax              ;next color #
+        loop    ColorNumberLoop
+        mov     ah,9            ;DOS print string function
+        mov     dx,offset ColorNumbers
+        int     21h             ;put up the attribute numbers
+        ret
+ColorNumbersUp  endp
 ;
-Start          endp
-Code           ends
-               end       Start
+Start   endp
+Code    ends
+        end     Start
 ```
 
 ### Overscan
@@ -802,90 +803,90 @@ screen. Setting bit 5 of the AC Index back to 1 restores video data
 immediately. Listing 29.4 illustrates this simple but effective form of
 screen blanking.
 
-**LISTING 29.4 L29-4.ASM**
+**LISTING 29.4 [L29-4.ASM](../code/L29-4.ASM)**
 
 ```nasm
 ; Program to demonstrate screen blanking via bit 5 of the
 ; Attribute Controller Index register.
 ;
-AC_INDEX               equ   3c0h            ;Attribute Controller Index register
-INPUT_STATUS_1         equ   3dah            ;color-mode address of the Input
-                                             ; Status 1 register
+AC_INDEX        equ     3c0h    ;Attribute Controller Index register
+INPUT_STATUS_1  equ     3dah    ;color-mode address of the Input
+                                ; Status 1 register
 ;
 ; Macro to wait for and clear the next keypress.
 ;
 WAIT_KEY macro
-              mov      ah,8                  ;DOS input without echo function
-              int      21h
-              endm
+        mov     ah,8            ;DOS input without echo function
+        int     21h
+        endm
 ;
-stack         segment para stack ‘STACK'
-              db512 dup (?)
-stack         ends
+stack   segment para stack 'STACK'
+        db      512 dup (?)
+stack   ends
 ;
-Data  segment   word   ‘DATA'
-SampleText      db     ‘This is bit-mapped text, drawn in hi-res '
-                db     ‘EGA graphics mode 10h.', 0dh, 0ah, 0ah
-                db     ‘Press any key to blank the screen, then '
-                db     ‘any key to unblank it,', 0dh, 0ah
-                db     ‘then any key to end.$'
-Data        ends
+Data    segment word 'DATA'
+SampleText db   'This is bit-mapped text, drawn in hi-res '
+        db      'EGA graphics mode 10h.', 0dh, 0ah, 0ah
+        db      'Press any key to blank the screen, then '
+        db      'any key to unblank it,', 0dh, 0ah
+        db      'then any key to end.$'
+Data    ends
 ;
-Code        segment
-            assume  cs:Code, ds:Data
-Start       proc    near
-            mov     ax,Data
-            mov     ds,ax
+Code    segment
+        assume  cs:Code, ds:Data
+Start   proc    near
+        mov     ax,Data
+        mov     ds,ax
 ;
 ; Go to hi-res graphics mode.
 ;
-            mov     ax,10h          ;AH = 0 means mode set, AL = 10h selects
-                                    ; hi-res graphics mode
-            int     10h             ;BIOS video interrupt
+        mov     ax,10h          ;AH = 0 means mode set, AL = 10h selects
+                                ; hi-res graphics mode
+        int     10h             ;BIOS video interrupt
 ;
 ; Put up some text, so the screen isn't empty.
 ;
-            mov     ah,9            ;DOS print string function
-            mov     dx,offset SampleText
-            int     21h
+        mov     ah,9            ;DOS print string function
+        mov     dx,offset SampleText
+        int     21h
 ;
-            WAIT_KEY
+        WAIT_KEY
 ;
 ; Blank the screen.
 ;
-            mov     dx,INPUT_STATUS_1
-            in      al,dx           ;reset port 3c0h to index (rather than data)
-                                    ; mode
-            mov     dx,AC_INDEX
-            sub     al,al           ;make bit 5 zero...
-            out     dx,al           ;...which blanks the screen
+        mov     dx,INPUT_STATUS_1
+        in      al,dx           ;reset port 3c0h to index (rather than data)
+                                ; mode
+        mov     dx,AC_INDEX
+        sub     al,al           ;make bit 5 zero...
+        out     dx,al           ;...which blanks the screen
 ;
-            WAIT_KEY
+        WAIT_KEY
 ;
 ; Unblank the screen.
 ;
-            mov    dx,INPUT_STATUS_1
-            in     al,dx            ;reset port 3c0h to Index (rather than data)
-                                    ; mode
-            mov    dx,AC_INDEX
-            mov    al,20h           ;make bit 5 one...
-            out    dx,al            ;...which unblanks the screen
+        mov     dx,INPUT_STATUS_1
+        in      al,dx           ;reset port 3c0h to Index (rather than data)
+                                ; mode
+        mov     dx,AC_INDEX
+        mov     al,20h          ;make bit 5 one...
+        out     dx,al           ;...which unblanks the screen
 ;
-            WAIT_KEY
+        WAIT_KEY
 ;
 ; Restore text mode.
 ;
-            mov    ax,2
-            int    10h
+        mov     ax,2
+        int     10h
 ;
 ; Done.
 ;
 Done:
-            mov    ah,4ch           ;DOS terminate function
-            int    21h
-Start              endp
-Code               ends
-            end    Start
+        mov     ah,4ch          ;DOS terminate function
+        int     21h
+Start   endp
+Code    ends
+        end     Start
 ```
 
 Does that do it for color selection? Yes and no. For the EGA, we've

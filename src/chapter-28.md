@@ -698,7 +698,7 @@ DrawDiagonalLoop:
                                 ; point to the next scan line
         ror     al,1            ;move the pixel mask one pixel to the right
         adc     bx,0            ;advance to the next byte if the pixel mask wrapped
-loopDrawDiagonalLoop
+        loop    DrawDiagonalLoop
 ;
 ; Wait for a key to be pressed to end, then return to text mode and
 ; return to DOS.
