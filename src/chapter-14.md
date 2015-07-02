@@ -275,7 +275,7 @@ point.
 Table: Table 14.1 Comparison of searching techniques.
 
 Search pattern (approximate distance searched before match is shown in
-parentheses).
+parentheses).\
  Times are in milliseconds; shorter is better.
 
 The entry "Standard Boyer-Moore in ASM" in Table 14.1 refers to
