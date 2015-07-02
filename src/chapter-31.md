@@ -37,7 +37,7 @@ the way up to 360x480—and that's with the vanilla IBM VGA!
 
 In this chapter, I'm going to focus on one of my favorite 256-color
 modes, which provides 320x400 resolution and two graphics pages and can
-be set up with very little reof the VGA. In the next chapter, I'll
+be set up with very little reprogramming of the VGA. In the next chapter, I'll
 discuss higher-resolution 256-color modes, and starting in Chapter 47,
 I'll cover the high-performance "Mode X" 256-color programming that many
 games use.
@@ -205,7 +205,7 @@ horizontal, and vertical lines are drawn one pixel at a time based on a
 list of line descriptors, with the draw colors incremented for each
 successive time through the line list.
 
-**LISTING 31.1 L31-1.ASM**
+**LISTING 31.1 [L31-1.ASM](../code/L31-1.ASM)**
 
 ```nasm
 ; Program to demonstrate pixel drawing in 320x400 256-color
@@ -214,138 +214,135 @@ successive time through the line list.
 ; each in a different color set. Although it's not used, a
 ; pixel read function is also provided.
 ;
-VGA_SEGMENT              equ        0a000h
-SC_INDEX                 equ        3c4h        ;Sequence Controller Index register
-GC_INDEX                 equ        3ceh        ;Graphics Controller Index register
-CRTC_INDEX               equ        3d4h        ;CRT Controller Index register
-MAP_MASK                 equ        2           ;Map Mask register index in SC
-MEMORY_MODE              equ        4           ;Memory Mode register index in SC
-MAX_SCAN_LINE            equ        9           ;Maximum Scan Line reg index in CRTC
-START_ADDRESS_HIGH       equ        0ch         ;Start Address High reg index in CRTC
-UNDERLINE                equ        14h         ;Underline Location reg index in CRTC
-MODE_CONTROL             equ        17h         ;Mode Control register index in CRTC
-READ_MAP                 equ        4           ;Read Map register index in GC
-GRAPHICS_MODE            equ        5           ;Graphics Mode register index in GC
-MISCELLANEOUS            equ        6           ;Miscellaneous register index in GC
-SCREEN_WIDTH             equ        320         ;# of pixels across screen
-SCREEN_HEIGHT            equ        400         ;# of scan lines on screen
-WORD_OUTS_OK             equ        1           ;set to 0 to assemble for
-                                                ; computers that can't handle
-                                                ; word outs to indexed VGA registers
+VGA_SEGMENT     equ     0a000h
+SC_INDEX        equ     3c4h    ;Sequence Controller Index register
+GC_INDEX        equ     3ceh    ;Graphics Controller Index register
+CRTC_INDEX      equ     3d4h    ;CRT Controller Index register
+MAP_MASK        equ     2       ;Map Mask register index in SC
+MEMORY_MODE     equ     4       ;Memory Mode register index in SC
+MAX_SCAN_LINE   equ     9       ;Maximum Scan Line reg index in CRTC
+START_ADDRESS_HIGH equ  0ch     ;Start Address High reg index in CRTC
+UNDERLINE       equ     14h     ;Underline Location reg index in CRTC
+MODE_CONTROL    equ     17h     ;Mode Control register index in CRTC
+READ_MAP        equ     4       ;Read Map register index in GC
+GRAPHICS_MODE   equ     5       ;Graphics Mode register index in GC
+MISCELLANEOUS   equ     6       ;Miscellaneous register index in GC
+SCREEN_WIDTH    equ     320     ;# of pixels across screen
+SCREEN_HEIGHT   equ     400     ;# of scan lines on screen
+WORD_OUTS_OK    equ     1       ;set to 0 to assemble for
+                                ; computers that can't handle
+                                ; word outs to indexed VGA registers
 ;
-stack        segment     para stack 'STACK'
-                  db     512 dup (?)
-stack        ends
+stack   segment para stack 'STACK'
+        db      512 dup (?)
+stack   ends
 ;
-Data         segment     word 'DATA'
+Data    segment word 'DATA'
 ;
-BaseColor         db     0
+BaseColor       db      0
 ;
 ; Structure used to control drawing of a line.
 ;
-LineControl struc
-StartX           dw   ?
-StartY           dw   ?
-LineXInc         dw   ?
-LineYInc         dw   ?
-BaseLength       dw   ?
-LineColor        db   ?
-LineControl      ends
+LineControl     struc
+StartX          dw      ?
+StartY          dw      ?
+LineXInc        dw      ?
+LineYInc        dw      ?
+BaseLength      dw      ?
+LineColor       db      ?
+LineControl     ends
 ;
 ; List of descriptors for lines to draw.
 ;
-LineList      label    LineControl
-      LineControl <130,110,1,0,60,0>
-      LineControl <190,110,1,1,60,1>
-      LineControl <250,170,0,1,60,2>
-      LineControl <250,230,-1,1,60,3>
-      LineControl <190,290,-1,0,60,4>
-      LineControl <130,290,-1,-1,60,5>
-      LineControl <70,230,0,-1,60,6>
-      LineControl <70,170,1,-1,60,7>
-      LineControl <-1,0,0,0,0,0>
-Data ends
+LineList        label   LineControl
+        LineControl     <130,110,1,0,60,0>
+        LineControl     <190,110,1,1,60,1>
+        LineControl     <250,170,0,1,60,2>
+        LineControl     <250,230,-1,1,60,3>
+        LineControl     <190,290,-1,0,60,4>
+        LineControl     <130,290,-1,-1,60,5>
+        LineControl     <70,230,0,-1,60,6>
+        LineControl     <70,170,1,-1,60,7>
+        LineControl     <-1,0,0,0,0,0>
+Data    ends
 ;
 ; Macro to output a word value to a port.
 ;
-OUT_WORD macro
+OUT_WORD        macro
 if WORD_OUTS_OK
-     out   dx,ax
+        out     dx,ax
 else
-     out   dx,al
-     inc   dx
-     xchg  ah,al
-     out   dx,al
-     dec   dx
-     xchg  ah,al
+        out     dx,al
+        inc     dx
+        xchg    ah,al
+        out     dx,al
+        dec     dx
+        xchg    ah,al
 endif
-     endm
+        endm
 ;
 ; Macro to output a constant value to an indexed VGA register.
 ;
-CONSTANT_TO_INDEXED_REGISTERmacroADDRESS, INDEX, VALUE
-      mov  dx,ADDRESS
-      mov  ax,(VALUE shl 8) + INDEX
-      OUT_WORD
-      endm
+CONSTANT_TO_INDEXED_REGISTER    macro   ADDRESS, INDEX, VALUE
+        mov     dx,ADDRESS
+        mov     ax,(VALUE shl 8) + INDEX
+        OUT_WORD
+        endm
 ;
 Code    segment
-        assume        cs:Code, ds:Data
-Start   proc  near
-        mov   ax,Data
-        mov   ds,ax
+        assume  cs:Code, ds:Data
+Start   proc    near
+        mov     ax,Data
+        mov     ds,ax
 ;
-
-
-
 ; Set 320x400 256-color mode.
 ;
-     call  Set320By400Mode
+        call    Set320By400Mode
 ;
 ; We're in 320x400 256-color mode. Draw each line in turn.
 ;
 ColorLoop:
-     mov   si,offset LineList     ;point to the start of the
-                                  ; line descriptor list
+        mov     si,offset LineList ;point to the start of the
+                                ; line descriptor list
 LineLoop:
-     mov   cx,[si+StartX]         ;set the initial X coordinate
-     cmpcx,-1
-     jz    LinesDone              ;a descriptor with a -1 X
-                                  ; coordinate marks the end
-                                  ; of the list
-     mov   dx,[si+StartY]         ;set the initial Y coordinate,
-     mov   bl,[si+LineColor]      ; line color,
-     mov   bp,[si+BaseLength]     ; and pixel count
-     add   bl,[BaseColor]         ;adjust the line color according
-                                  ; to BaseColor
+        mov     cx,[si+StartX]  ;set the initial X coordinate
+        cmp     cx,-1
+        jz      LinesDone       ;a descriptor with a -1 X
+                                ; coordinate marks the end
+                                ; of the list
+        mov     dx,[si+StartY]  ;set the initial Y coordinate,
+        mov     bl,[si+LineColor]       ; line color,
+        mov     bp,[si+BaseLength]      ; and pixel count
+        add     bl,[BaseColor]  ;adjust the line color according
+                                ; to BaseColor
 PixelLoop:
-     push  cx                     ;save the coordinates
-     push  dx
-     call  WritePixel             ;draw this pixel
-     pop   dx                     ;retrieve the coordinates
-     pop   cx
-     add   cx,[si+LineXInc]       ;set the coordinates of the
-     add   dx,[si+LineYInc]       ; next point of the line
-     dec   bp                     ;any more points?
-     jnz   PixelLoop              ;yes, draw the next
-     add   si,size LineControl    ;point to the next line descriptor
-     jmp   LineLoop               ; and draw the next line
+        push    cx              ;save the coordinates
+        push    dx
+        call    WritePixel      ;draw this pixel
+        pop     dx              ;retrieve the coordinates
+        pop     cx
+        add     cx,[si+LineXInc];set the coordinates of the
+        add     dx,[si+LineYInc]; next point of the line
+        dec     bp              ;any more points?
+        jnz     PixelLoop       ;yes, draw the next
+        add     si,size LineControl     ;point to the next line descriptor
+        jmp     LineLoop        ; and draw the next line
 LinesDone:
-     call  GetNextKey             ;wait for a key, then
-     inc   [BaseColor]            ; bump the color selection and
-     cmp   [BaseColor],8          ; see if we're done
-     jb    ColorLoop              ;not done yet
+        call    GetNextKey      ;wait for a key, then
+        inc     [BaseColor]     ; bump the color selection and
+        cmp     [BaseColor],8   ; see if we're done
+        jb      ColorLoop       ;not done yet
 ;
 ; Wait for a key and return to text mode and end when
 ; one is pressed.
 ;
-     call   GetNextKey
-     mov    ax,0003h
-     int    10h                    text mode
-     mov    ah,4ch
-     int    21h   ;done
+        call    GetNextKey
+        mov     ax,0003h
+        int     10h     ;text mode
+        mov     ah,4ch
+        int     21h     ;done
 ;
-Start endp
+Start   endp
 ;
 ; Sets up 320x400 256-color modes.
 ;
@@ -353,14 +350,14 @@ Start endp
 ;
 ; Output: none
 ;
-Set320By400Mode   proc   near
+Set320By400Mode proc    near
 ;
 ; First, go to normal 320x200 256-color mode, which is really a
 ; 320x400 256-color mode with each line scanned twice.
 ;
-        mov        ax,0013h        ;AH = 0 means mode set, AL = 13h selects
-                                   ; 256-color graphics mode
-        int        10h             ;BIOS video interrupt
+        mov     ax,0013h        ;AH = 0 means mode set, AL = 13h selects
+                                ; 256-color graphics mode
+        int     10h             ;BIOS video interrupt
 ;
 ; Change CPU addressing of video memory to linear (not odd/even,
 ; chain, or chain 4), to allow us to access all 256K of display
@@ -369,172 +366,172 @@ Set320By400Mode   proc   near
 ; control one 256-color pixel, with 4 adjacent pixels at any given
 ; address, one pixel per plane.
 ;
-     mov    dx,SC_INDEX
-     mov    al,MEMORY_MODE
-     out    dx,al
-     inc    dx
-     ina    l,dx
-     and    al,not 08h                   ;turn off chain 4
-     ora    l,04h                        ;turn off odd/even
-     out    dx,al
-     mov    dx,GC_INDEX
-     mov    al,GRAPHICS_MODE
-     out    dx,al
-     inc    dx
-     ina    l,dx
-     and    al,not 10h                   ;turn off odd/even
-     out    dx,al
-     dec    dx
-     mov    al,MISCELLANEOUS
-     out    dx,al
-     inc    dx
-     ina    l,dx
-     and    al,not 02h                   ;turn off chain
-     out    dx,al
+        mov     dx,SC_INDEX
+        mov     al,MEMORY_MODE
+        out     dx,al
+        inc     dx
+        in      al,dx
+        and     al,not 08h      ;turn off chain 4
+        or      al,04h          ;turn off odd/even
+        out     dx,al
+        mov     dx,GC_INDEX
+        mov     al,GRAPHICS_MODE
+        out     dx,al
+        inc     dx
+        in      al,dx
+        and     al,not 10h      ;turn off odd/even
+        out     dx,al
+        dec     dx
+        mov     al,MISCELLANEOUS
+        out     dx,al
+        inc     dx
+        in      al,dx
+        and     al,not 02h      ;turn off chain
+        out     dx,al
 ;
 ; Now clear the whole screen, since the mode 13h mode set only
 ; cleared 64K out of the 256K of display memory. Do this before
 ; we switch the CRTC out of mode 13h, so we don't see garbage
 ; on the screen when we make the switch.
 ;
-CONSTANT_TO_INDEXED_REGISTER SC_INDEX,MAP_MASK,0fh
-                                     ;enable writes to all planes, so
-                                     ; we can clear 4 pixels at a time
-        mov    ax,VGA_SEGMENT
-        mov    es,ax
-        sub    di,di
-        mov    ax,di
-        mov    cx,8000h   ;# of words in 64K
-        cld    
-        rep    stosw      ;clear all of display memory
+        CONSTANT_TO_INDEXED_REGISTER SC_INDEX,MAP_MASK,0fh
+                                ;enable writes to all planes, so
+                                ; we can clear 4 pixels at a time
+        mov     ax,VGA_SEGMENT
+        mov     es,ax
+        sub     di,di
+        mov     ax,di
+        mov     cx,8000h        ;# of words in 64K
+        cld
+        rep     stosw           ;clear all of display memory
 ;
 ; Tweak the mode to 320x400 256-color mode by not scanning each
 ; line twice.
 ;
-        mov   dx,CRTC_INDEX
-        mov   al,MAX_SCAN_LINE
-        out   dx,al
-        inc   dx
-        in    al,dx
-        and   al,not 1fh         ;set maximum scan line = 0
-        out   dx,al
-        dec   dx
+        mov     dx,CRTC_INDEX
+        mov     al,MAX_SCAN_LINE
+        out     dx,al
+        inc     dx
+        in      al,dx
+        and     al,not 1fh      ;set maximum scan line = 0
+        out     dx,al
+        dec     dx
 ;
 ; Change CRTC scanning from doubleword mode to byte mode, allowing
 ; the CRTC to scan more than 64K of video data.
 ;
-        mov    al,UNDERLINE
-        out    dx,al
-        inc    dx
-        in     al,dx
-        and    al,not 40h        ;turn off doubleword
-        out    dx,al
-        dec    dx
-        mov    al,MODE_CONTROL
-        out    dx,al
-        inc    dx
-        in    al,dx
-        or    al,40h             ;turn on the byte mode bit, so memory is
-                                 ; scanned for video data in a purely
-                                 ; linear way, just as in modes 10h and 12h
-        out    dx,al
-        ret 
-Set320By400Mode        endp
+        mov     al,UNDERLINE
+        out     dx,al
+        inc     dx
+        in      al,dx
+        and     al,not 40h      ;turn off doubleword
+        out     dx,al
+        dec     dx
+        mov     al,MODE_CONTROL
+        out     dx,al
+        inc     dx
+        in      al,dx
+        or      al,40h          ;turn on the byte mode bit, so memory is
+                                ; scanned for video data in a purely
+                                ; linear way, just as in modes 10h and 12h
+        out     dx,al
+        ret
+Set320By400Mode endp
 ;
 ; Draws a pixel in the specified color at the specified
 ; location in 320x400 256-color mode.
 ;
 ; Input:
-;    CX = X coordinate of pixel
-;    DX = Y coordinate of pixel
-;    BL = pixel color
+;       CX = X coordinate of pixel
+;       DX = Y coordinate of pixel
+;       BL = pixel color
 ;
 ; Output: none
 ;
 ; Registers altered: AX, CX, DX, DI, ES
 ;
-WritePixel proc near
-        mov    ax,VGA_SEGMENT
-        mov    es,ax                    ;point to display memory
-        mov    ax,SCREEN_WIDTH/4
-                                        ;there are 4 pixels at each address, so
-                                        ; each 320-pixel row is 80 bytes wide
-                                        ; in each plane
-        mul   dx                        ;point to start of desired row
-        push  cx                        ;set aside the X coordinate
-        shr   cx,1                      ;there are 4 pixels at each address
-        shr   cx,1                      ; so divide the X coordinate by 4
-        add   ax,cx                     ;point to the pixel's address
-        mov   di,ax
-        pop   cx                        ;get back the X coordinate
-        and   cl,3                      ;get the plane # of the pixel
-        mov   ah,1
-        shl   ah,cl                     ;set the bit corresponding to the plane
-                                        ; the pixel is in
-        mov   al,MAP_MASK
-        mov   dx,SC_INDEX
-        OUT_WORD                        ;set to write to the proper plane for
-                                        ; the pixel
-        mov  es:[di],bl                 ;draw the pixel
+WritePixel      proc    near
+        mov     ax,VGA_SEGMENT
+        mov     es,ax           ;point to display memory
+        mov     ax,SCREEN_WIDTH/4
+                                ;there are 4 pixels at each address, so
+                                ; each 320-pixel row is 80 bytes wide
+                                ; in each plane
+        mul     dx              ;point to start of desired row
+        push    cx              ;set aside the X coordinate
+        shr     cx,1            ;there are 4 pixels at each address
+        shr     cx,1            ; so divide the X coordinate by 4
+        add     ax,cx           ;point to the pixel's address
+        mov     di,ax
+        pop     cx              ;get back the X coordinate
+        and     cl,3            ;get the plane # of the pixel
+        mov     ah,1
+        shl     ah,cl           ;set the bit corresponding to the plane
+                                ; the pixel is in
+        mov     al,MAP_MASK
+        mov     dx,SC_INDEX
+        OUT_WORD                ;set to write to the proper plane for
+                                ; the pixel
+        mov     es:[di],bl      ;draw the pixel
         ret
-WritePixelendp
+WritePixel      endp
 ;
 ; Reads the color of the pixel at the specified location in 320x400
 ; 256-color mode.
 ;
 ; Input:
-;     CX = X coordinate of pixel to read
-;     DX = Y coordinate of pixel to read
+;       CX = X coordinate of pixel to read
+;       DX = Y coordinate of pixel to read
 ;
 ; Output:
-;     AL = pixel color
+;       AL = pixel color
 ;
 ; Registers altered: AX, CX, DX, SI, ES
 ;
-ReadPixelprocnear
-        mov   ax,VGA_SEGMENT
-        mov   es,ax                        ;point to display memory
-        mov   ax,SCREEN_WIDTH/4
-                                           ;there are 4 pixels at each address, so
-                                           ; each 320-pixel row is 80 bytes wide
-                                           ; in each plane
-        mul    dx                          ;point to start of desired row
-        push   cx                          ;set aside the X coordinate
-        shr    cx,1                        ;there are 4 pixels at each address
-        shr    cx,1                        ; so divide the X coordinate by 4
-        add    ax,cx                       ;point to the pixel's address
-        mov    si,ax
-        pop    ax                          ;get back the X coordinate
-        and    al,3                        ;get the plane # of the pixel
-        mov    ah,al
-        mov    al,READ_MAP
-        mov    dx,GC_INDEX
-        OUT_WORD                           ;set to read from the proper plane for
-                                           ; the pixel
-        lodsbyte ptr es:[si]               ;read the pixel
+ReadPixel       proc    near
+        mov     ax,VGA_SEGMENT
+        mov     es,ax           ;point to display memory
+        mov     ax,SCREEN_WIDTH/4
+                                ;there are 4 pixels at each address, so
+                                ; each 320-pixel row is 80 bytes wide
+                                ; in each plane
+        mul     dx              ;point to start of desired row
+        push    cx              ;set aside the X coordinate
+        shr     cx,1            ;there are 4 pixels at each address
+        shr     cx,1            ; so divide the X coordinate by 4
+        add     ax,cx           ;point to the pixel's address
+        mov     si,ax
+        pop     ax              ;get back the X coordinate
+        and     al,3            ;get the plane # of the pixel
+        mov     ah,al
+        mov     al,READ_MAP
+        mov     dx,GC_INDEX
+        OUT_WORD                ;set to read from the proper plane for
+                                ; the pixel
+        lods    byte ptr es:[si];read the pixel
         ret
-ReadPixelendp
+ReadPixel       endp
 ;
 ; Waits for the next key and returns it in AX.
 ;
 ; Input: none
 ;
 ; Output:
-;     AX = full 16-bit code for key pressed
+;       AX = full 16-bit code for key pressed
 ;
-GetNextKey   proc   near
+GetNextKey      proc    near
 WaitKey:
-        mov   ah,1
-        int   16h
-        jz    WaitKey                        ;wait for a key to become available
-        sub   ah,ah
-        int   16h                            ;read the key
+        mov     ah,1
+        int     16h
+        jz      WaitKey         ;wait for a key to become available
+        sub     ah,ah
+        int     16h             ;read the key
         ret
-GetNextKey   endp
+GetNextKey      endp
 ;
-Code   ends
+Code    ends
 ;
-end    Start
+        end     Start
 ```
 
 The interesting aspects of Listing 31.1 are three. First, the
@@ -642,7 +639,7 @@ color-bar algorithm that draws all the pixels in plane 0, then all the
 pixels in plane 1, and so on, thereby avoiding the overhead of
 constantly reprogramming the Map Mask register.
 
-**LISTING 31.2 L31-2.ASM**
+**LISTING 31.2 [L31-2.ASM](../code/L31-2.ASM)**
 
 ```nasm
 ; Program to demonstrate the two pages available in 320x400
@@ -651,91 +648,91 @@ constantly reprogramming the Map Mask register.
 ; the bars tilted the other way), and finally draws vertical
 ; color bars in page 0.
 ;
-VGA_SEGMENT        equ    0a000h
-SC_INDEX           equ    3c4h        ;Sequence Controller Index register
-GC_INDEX           equ    3ceh        ;Graphics Controller Index register
-CRTC_INDEX         equ    3d4h        ;CRT Controller Index register
-MAP_MASK           equ    2           ;Map Mask register index in SC
-MEMORY_MODE        equ    4           ;Memory Mode register index in SC
-MAX_SCAN_LINE      equ    9           ;Maximum Scan Line reg index in CRTC
-START_ADDRESS_HIGH equ    0ch         ;Start Address High reg index in CRTC
-UNDERLINE          equ    14h         ;Underline Location reg index in CRTC
-MODE_CONTROL       equ    17h         ;Mode Control register index in CRTC
-GRAPHICS_MODE      equ    5           ;Graphics Mode register index in GC
-MISCELLANEOUS      equ    6           ;Miscellaneous register index in GC
-SCREEN_WIDTH       equ    320         ;# of pixels across screen
-SCREEN_HEIGHT      equ    400         ;# of scan lines on screen
-WORD_OUTS_OK       equ    1           ;set to 0 to assemble for
-                                      ; computers that can't handle
-                                      ; word outs to indexed VGA registers
+VGA_SEGMENT     equ     0a000h
+SC_INDEX        equ     3c4h    ;Sequence Controller Index register
+GC_INDEX        equ     3ceh    ;Graphics Controller Index register
+CRTC_INDEX      equ     3d4h    ;CRT Controller Index register
+MAP_MASK        equ     2       ;Map Mask register index in SC
+MEMORY_MODE     equ     4       ;Memory Mode register index in SC
+MAX_SCAN_LINE   equ     9       ;Maximum Scan Line reg index in CRTC
+START_ADDRESS_HIGH equ  0ch     ;Start Address High reg index in CRTC
+UNDERLINE       equ     14h     ;Underline Location reg index in CRTC
+MODE_CONTROL    equ     17h     ;Mode Control register index in CRTC
+GRAPHICS_MODE   equ     5       ;Graphics Mode register index in GC
+MISCELLANEOUS   equ     6       ;Miscellaneous register index in GC
+SCREEN_WIDTH    equ     320     ;# of pixels across screen
+SCREEN_HEIGHT   equ     400     ;# of scan lines on screen
+WORD_OUTS_OK    equ     1       ;set to 0 to assemble for
+                                ; computers that can't handle
+                                ; word outs to indexed VGA registers
 ;
-stack        segment        para stack 'STACK'
-             db             512 dup (?)
-stack        ends
+stack   segment para stack 'STACK'
+        db      512 dup (?)
+stack   ends
 ;
 ; Macro to output a word value to a port.
 ;
-OUT_WORDmacro
+OUT_WORD        macro
 if WORD_OUTS_OK
-      outdx,ax
+        out     dx,ax
 else
-        out  dx,al
-        inc  dx
-        xch  gah,al
-        out  dx,al
-        dec  dx
-        xch  gah,al
+        out     dx,al
+        inc     dx
+        xchg    ah,al
+        out     dx,al
+        dec     dx
+        xchg    ah,al
 endif
         endm
 ;
 ; Macro to output a constant value to an indexed VGA register.
 ;
-CONSTANT_TO_INDEXED_REGISTERmacroADDRESS, INDEX, VALUE
-        mov  dx,ADDRESS
-        mov  ax,(VALUE shl 8) + INDEX
+CONSTANT_TO_INDEXED_REGISTER    macro   ADDRESS, INDEX, VALUE
+        mov     dx,ADDRESS
+        mov     ax,(VALUE shl 8) + INDEX
         OUT_WORD
         endm
 ;
 Code    segment
-        assume        cs:Code
-Start   proc   near
+        assume  cs:Code
+Start   proc    near
 ;
 ; Set 320x400 256-color mode.
 ;
-callSet320By400Mode
+        call    Set320By400Mode
 ;
 ; We're in 320x400 256-color mode, with page 0 displayed.
 ; Let's fill page 0 with color bars slanting down and to the right.
 ;
-        sub   di,di        ;page 0 starts at address 0
-        mov   bl,1         ;make color bars slant down and
-                           ; to the right
-        call   ColorBarsUp ;draw the color bars
+        sub     di,di           ;page 0 starts at address 0
+        mov     bl,1            ;make color bars slant down and
+                                ; to the right
+        call    ColorBarsUp     ;draw the color bars
 ;
 ; Now do the same for page 1, but with the color bars
 ; tilting the other way.
 ;
-        mov   di,8000h        ;page 1 starts at address 8000h
-        mov   bl,-1           ;make color bars slant down and
-                              ; to the left
-        call  ColorBarsUp     ;draw the color bars
+        mov     di,8000h        ;page 1 starts at address 8000h
+        mov     bl,-1           ;make color bars slant down and
+                                ; to the left
+        call    ColorBarsUp     ;draw the color bars
 ;
 ; Wait for a key and flip to page 1 when one is pressed.
 ;
-      callGetNextKey
-      CONSTANT_TO_INDEXED_REGISTER CRTC_INDEX,START_ADDRESS_HIGH,80h
-                               ;set the Start Address High register
-                               ; to 80h, for a start address of 8000h
+        call    GetNextKey
+        CONSTANT_TO_INDEXED_REGISTER CRTC_INDEX,START_ADDRESS_HIGH,80h
+                                ;set the Start Address High register
+                                ; to 80h, for a start address of 8000h
 ;
 ; Draw vertical bars in page 0 while page 1 is displayed.
 ;
-        sub  di,di              ;page 0 starts at address 0
-        sub  bl,bl              ;make color bars vertical
-        call ColorBarsUp        ;draw the color bars
+        sub     di,di           ;page 0 starts at address 0
+        sub     bl,bl           ;make color bars vertical
+        call    ColorBarsUp     ;draw the color bars
 ;
 ; Wait for another key and flip back to page 0 when one is pressed.
 ;
-        callGetNextKey
+        call    GetNextKey
         CONSTANT_TO_INDEXED_REGISTER CRTC_INDEX,START_ADDRESS_HIGH,00h
                                 ;set the Start Address High register
                                 ; to 00h, for a start address of 0000h
@@ -743,13 +740,13 @@ callSet320By400Mode
 ; Wait for yet another key and return to text mode and end when
 ; one is pressed.
 ;
-        call   GetNextKey
-        mov    ax,0003h
-        int    10h                ;text mode
-        mov    ah,4ch
-        int    21h                ;done
+        call    GetNextKey
+        mov     ax,0003h
+        int     10h             ;text mode
+        mov     ah,4ch
+        int     21h             ;done
 ;
-Start endp
+Start   endp
 ;
 ; Sets up 320x400 256-color modes.
 ;
@@ -757,14 +754,14 @@ Start endp
 ;
 ; Output: none
 ;
-Set320By400Modeprocnear
+Set320By400Mode proc    near
 ;
 ; First, go to normal 320x200 256-color mode, which is really a
 ; 320x400 256-color mode with each line scanned twice.
 ;
-        mov   ax,0013h           ;AH = 0 means mode set, AL = 13h selects
-                                 ; 256-color graphics mode
-        int   10h                ;BIOS video interrupt
+        mov     ax,0013h        ;AH = 0 means mode set, AL = 13h selects
+                                ; 256-color graphics mode
+        int     10h             ;BIOS video interrupt
 ;
 ; Change CPU addressing of video memory to linear (not odd/even,
 ; chain, or chain 4), to allow us to access all 256K of display
@@ -773,44 +770,44 @@ Set320By400Modeprocnear
 ; control one 256-color pixel, with 4 adjacent pixels at any given
 ; address, one pixel per plane.
 ;
-      mov     dx,SC_INDEX
-      mov     al,MEMORY_MODE
-      out     dx,al
-      inc     dx
-      ina     l,dx
-      and     al,not 08h                   ;turn off chain 4
-      ora     l,04h                        ;turn off odd/even
-      out     dx,al
-      mov     dx,GC_INDEX
-      mov     al,GRAPHICS_MODE
-      out     dx,al
-      inc     dx
-      ina     l,dx
-      and     al,not 10h                   ;turn off odd/even
-      out     dx,al
-      dec     dx
-      mov     al,MISCELLANEOUS
-      out     dx,al
-      inc     dx
-      ina     l,dx
-      and     al,not 02h                   ;turn off chain
-      out     dx,al
+        mov     dx,SC_INDEX
+        mov     al,MEMORY_MODE
+        out     dx,al
+        inc     dx
+        in      al,dx
+        and     al,not 08h      ;turn off chain 4
+        or      al,04h          ;turn off odd/even
+        out     dx,al
+        mov     dx,GC_INDEX
+        mov     al,GRAPHICS_MODE
+        out     dx,al
+        inc     dx
+        in      al,dx
+        and     al,not 10h      ;turn off odd/even
+        out     dx,al
+        dec     dx
+        mov     al,MISCELLANEOUS
+        out     dx,al
+        inc     dx
+        in      al,dx
+        and     al,not 02h      ;turn off chain
+        out     dx,al
 ;
 ; Now clear the whole screen, since the mode 13h mode set only
 ; cleared 64K out of the 256K of display memory. Do this before
 ; we switch the CRTC out of mode 13h, so we don't see garbage
 ; on the screen when we make the switch.
 ;
-CONSTANT_TO_INDEXED_REGISTER SC_INDEX,MAP_MASK,0fh
-                                        ;  enable writes to all planes, so
-                                        ; we can clear 4 pixels at a time
+        CONSTANT_TO_INDEXED_REGISTER SC_INDEX,MAP_MASK,0fh
+                                ;enable writes to all planes, so
+                                ; we can clear 4 pixels at a time
         mov     ax,VGA_SEGMENT
         mov     es,ax
         sub     di,di
         mov     ax,di
-        mov     cx,8000h                ;# of words in 64K
+        mov     cx,8000h        ;# of words in 64K
         cld
-        rep     stosw                   ;clear all of display memory
+        rep     stosw           ;clear all of display memory
 ;
 ; Tweak the mode to 320x400 256-color mode by not scanning each
 ; line twice.
@@ -820,7 +817,7 @@ CONSTANT_TO_INDEXED_REGISTER SC_INDEX,MAP_MASK,0fh
         out     dx,al
         inc     dx
         in      al,dx
-        and     al,not 1fh                ;set maximum scan line = 0
+        and     al,not 1fh      ;set maximum scan line = 0
         out     dx,al
         dec     dx
 ;
@@ -830,80 +827,80 @@ CONSTANT_TO_INDEXED_REGISTER SC_INDEX,MAP_MASK,0fh
         mov     al,UNDERLINE
         out     dx,al
         inc     dx
-        ina     l,dx
-        and     al,not40h                ;turn off doubleword
+        in      al,dx
+        and     al,not 40h      ;turn off doubleword
         out     dx,al
         dec     dx
         mov     al,MODE_CONTROL
         out     dx,al
         inc     dx
         in      al,dx
-        or      al,40h                   ;turn on the byte mode bit, so memory is
-                                         ; scanned for video data in a purely
-                                         ; linear way, just as in modes 10h and 12h
+        or      al,40h          ;turn on the byte mode bit, so memory is
+                                ; scanned for video data in a purely
+                                ; linear way, just as in modes 10h and 12h
         out     dx,al
         ret
-Set320By400Mode  endp
+Set320By400Mode endp
 ;
 ; Draws a full screen of slanting color bars in the specified page.
 ;
 ; Input:
-;        DI = page start address
-;        BL = 1 to make the bars slant down and to the right, -1 to
-;        make them slant down and to the left, 0 to make
-;        them vertical.
+;       DI = page start address
+;       BL = 1 to make the bars slant down and to the right, -1 to
+;               make them slant down and to the left, 0 to make
+;               them vertical.
 ;
-ColorBarsUpprocnear
+ColorBarsUp     proc    near
         mov     ax,VGA_SEGMENT
-        mov     es,ax                ;point to display memory
-        sub     bh,bh                ;start with color 0
-        mov     si,SCREEN_HEIGHT     ;# of rows to do
+        mov     es,ax           ;point to display memory
+        sub     bh,bh           ;start with color 0
+        mov     si,SCREEN_HEIGHT;# of rows to do
         mov     dx,SC_INDEX
         mov     al,MAP_MASK
-        out     dx,al                ;point the SC Index reg to the Map Mask reg
-        inc     dx                   ;point DX to the SC Data register
+        out     dx,al           ;point the SC Index reg to the Map Mask reg
+        inc     dx              ;point DX to the SC Data register
 RowLoop:
         mov     cx,SCREEN_WIDTH/4
-                                     ;4 pixels at each address, so
-                                     ; each 320-pixel row is 80 bytes wide
-                                     ; in each plane
-        pus h   bx                   ;save the row-start color
+                                ;there are 4 pixels at each address, so
+                                ; each 320-pixel row is 80 bytes wide
+                                ; in each plane
+        push    bx              ;save the row-start color
 ColumnLoop:
 MAP_SELECT = 1
-        rept  4                      ;do all 4 pixels at this address with
-                                     ; in-line code
+        rept    4               ;do all 4 pixels at this address with
+                                ; in-line code
         mov     al,MAP_SELECT
-        out     dx,al                ;select planes 0, 1, 2, and 3 in turn
-        mov     es:[di],bh           ;write this plane's pixel
-        inc     bh                   ;set the color for the next pixel
+        out     dx,al           ;select planes 0, 1, 2, and 3 in turn
+        mov     es:[di],bh      ;write this plane's pixel
+        inc     bh              ;set the color for the next pixel
 MAP_SELECT = MAP_SELECT shl 1
         endm
-        inc     di                    ;point to the address containing the next
-                                      ; 4 pixels
-        loop    ColumnLoop            ;do any remaining pixels on this line
-        pop     bx                    ;get back the row-start color
-        add     bh,bl                 ;select next row-start color (controls
-                                       ; slanting of color bars)
-        dec     si                     ;count down lines on the screen
+        inc     di              ;point to the address containing the next
+                                ; 4 pixels
+        loop    ColumnLoop ;do any remaining pixels on this line
+        pop     bx              ;get back the row-start color
+        add     bh,bl           ;select next row-start color (controls
+                                ; slanting of color bars)
+        dec     si              ;count down lines on the screen
         jnz     RowLoop
         ret
-ColorBarsUpendp
+ColorBarsUp     endp
 ;
 ; Waits for the next key and returns it in AX.
 ;
-GetNextKeyprocnear
+GetNextKey      proc    near
 WaitKey:
         mov     ah,1
         int     16h
-        jz      WaitKey                ;wait for a key to become available
+        jz      WaitKey         ;wait for a key to become available
         sub     ah,ah
-        int     16h                    ;read the key
+        int     16h             ;read the key
         ret
 GetNextKey      endp
 ;
-Codeends
+Code    ends
 ;
-endStart
+        end     Start
 ```
 
 When you run Listing 31.2, note the extremely smooth edges and fine
