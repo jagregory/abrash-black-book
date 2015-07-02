@@ -942,7 +942,7 @@ port. This approach is especially attractive because `IN`s are much
 slower than memory accesses on 386 and 486 machines.
 
 Astute readers may wonder why I didn't put a delay sequence, such as
-`JMP $+2`, between the `IN` and `OUT` involving the same
+`JMP \$+2`, between the `IN` and `OUT` involving the same
 register. There are, after all, guidelines from IBM, specifying that a
 certain period should be allowed to elapse before a second access to an
 I/O port is attempted, because not all devices can respond as rapidly as
