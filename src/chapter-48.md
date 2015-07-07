@@ -85,7 +85,6 @@ previous chapter's listings.)
    rectangle fills by filling the screen with adjacent 80x60
    rectangles in a variety of patterns. Tested with Borland C++
    in C compilation mode and the small model */
-*/
 #include <conio.h>
 #include <dos.h>
 
