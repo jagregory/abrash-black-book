@@ -545,7 +545,7 @@ operations. There is, however, a genuinely odd application of read mode
 1 that's worth knowing about; but in order to understand that, we must
 first look at the "don't care" aspect of color compare operation.
 
-As described earlier, during read mode 1 reads the color stored in the
+As described earlier, during read mode 1 reads, the color stored in the
 Color Compare register is compared to each of the 8 pixels at a given
 address in VGA memory. But—and it's a big but—any plane for which the
 corresponding bit in the Color Don't Care register is a 0 is always
