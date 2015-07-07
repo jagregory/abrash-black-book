@@ -78,13 +78,14 @@ together demonstrate a variety of fast Mode X four-by-four pattern
 fills. (The mode set function called by Listing 48.1 is from the
 previous chapter's listings.)
 
-**LISTING 48.1 L48-1.C**
+**LISTING 48.1 [L48-1.C](../code/L48-1.C)**
 
 ```c
 /* Program to demonstrate Mode X (320x240, 256 colors) patterned
    rectangle fills by filling the screen with adjacent 80x60
    rectangles in a variety of patterns. Tested with Borland C++
    in C compilation mode and the small model */
+*/
 #include <conio.h>
 #include <dos.h>
 
@@ -110,28 +111,28 @@ static char Patt14[]={3,3,3,3,3,7,7,3,3,7,7,3,3,3,3,3};
 static char Patt15[]={0,0,0,0,0,64,0,0,0,0,0,0,0,0,0,89};
 /* Table of pointers to the 16 4x4 patterns with which to draw */
 static char* PattTable[] = {Patt0,Patt1,Patt2,Patt3,Patt4,Patt5,Patt6,
-      Patt7,Patt8,Patt9,Patt10,Patt11,Patt12,Patt13,Patt14,Patt15};
+	Patt7,Patt8,Patt9,Patt10,Patt11,Patt12,Patt13,Patt14,Patt15};
 void main() {
-   int i,j;
-   union REGS regset;
+	int i,j;
+	union REGS regset;
 
-   Set320x240Mode();
-   for (j = 0; j < 4; j++) {
-      for (i = 0; i < 4; i++) {
-         FillPatternX(i*80,j*60,i*80+80,j*60+60,0,PattTable[j*4+i]);
-      }
-   }
-   getch();
-   regset.x.ax = 0x0003;   /* switch back to text mode and done */
-   int86(0x10, &regset, &regset);
+	Set320x240Mode();
+	for (j = 0; j < 4; j++) {
+		for (i = 0; i < 4; i++) {
+			FillPatternX(i*80,j*60,i*80+80,j*60+60,0,PattTable[j*4+i]);
+		}
+	}
+	getch();
+	regset.x.ax = 0x0003;   /* switch back to text mode and done */
+	int86(0x10, &regset, &regset);
 }
 ```
 
-**LISTING 48.2 L48-2.ASM**
+**LISTING 48.2 [L48-2.ASM](../code/L48-2.ASM)**
 
 ```nasm
 ; Mode X (320x240, 256 colors) rectangle 4x4 pattern fill routine.
-; Upper-left corner of pattern is always aligned to a multiple-of-4
+; Upper left corner of pattern is always aligned to a multiple-of-4
 ; row and column. Works on all VGAs. Uses approach of copying the
 ; pattern to off-screen display memory, then loading the latches with
 ; the pattern for each scan line and filling each scan line four
@@ -142,34 +143,33 @@ void main() {
 ;    void FillPatternX(int StartX, int StartY, int EndX, int EndY,
 ;       unsigned int PageBase, char* Pattern);
 
-SC_INDEX              equ    03c4h   ;Sequence Controller Index register port
-MAP_MASK              equ    02h     ;index in SC of Map Mask register
-GC_INDEX              equ    03ceh   ;Graphics Controller Index register port
-BIT_MASK              equ    08h     ;index in GC of Bit Mask register
-PATTERN_BUFFER        equ    0fffch  ;offset in screen memory of the buffer used
-                                     ; to store each pattern during drawing
-SCREEN_SEG            equ    0a000h  ;segment of display memory in Mode X
-SCREEN_WIDTH          equ    80      ;width of screen in addresses from one scan
-                                     ; line to the next
+SC_INDEX        equ     03c4h   ;Sequence Controller Index register port
+MAP_MASK        equ     02h     ;index in SC of Map Mask register
+GC_INDEX        equ     03ceh   ;Graphics Controller Index register port
+BIT_MASK        equ     08h     ;index in GC of Bit Mask register
+PATTERN_BUFFER  equ     0fffch  ;offset in screen memory of the buffer used
+                                ; to store each pattern during drawing
+SCREEN_SEG      equ     0a000h  ;segment of display memory in Mode X
+SCREEN_WIDTH    equ     80      ;width of screen in addresses from one scan
+                                ; line to the next
 parms   struc
-            dw      2 dup (?)        ;pushed BP and return address
-StartX      dw      ?                ;X coordinate of upper left corner of rect
-StartY      dw      ?                ;Y coordinate of upper left corner of rect
-EndX        dw      ?                ;X coordinate of lower right corner of rect
-                                     ; (the row at EndX is not filled)
-EndY        dw      ?                ;Y coordinate of lower right corner of rect
-                                     ; (the column at EndY is not filled)
-
-PageBase    dw      ?                ;base offset in display memory of page in
-                                     ; which to fill rectangle
-Pattern     dw      ?                ;4x4 pattern with which to fill rectangle
+        dw      2 dup (?)       ;pushed BP and return address
+StartX  dw      ?               ;X coordinate of upper left corner of rect
+StartY  dw      ?               ;Y coordinate of upper left corner of rect
+EndX    dw      ?               ;X coordinate of lower right corner of rect
+                                ; (the row at EndX is not filled)
+EndY    dw      ?               ;Y coordinate of lower right corner of rect
+                                ; (the column at EndY is not filled)
+PageBase dw     ?               ;base offset in display memory of page in
+                                ; which to fill rectangle
+Pattern dw      ?               ;4x4 pattern with which to fill rectangle
 parms   ends
 
-NextScanOffset        equ    -2      ;local storage for distance from end of one
-                                     ; scan line to start of next
-RectAddrWidth         equ    -4      ;local storage for address width of rectangle
-Height                equ    -6      ;local storage for height of rectangle
-STACK_FRAME_SIZE      equ     6
+NextScanOffset   equ   -2       ;local storage for distance from end of one
+                                ; scan line to start of next
+RectAddrWidth    equ   -4       ;local storage for address width of rectangle
+Height           equ   -6       ;local storage for height of rectangle
+STACK_FRAME_SIZE equ    6
 
         .model  small
         .data
@@ -179,129 +179,129 @@ RightClipPlaneMask      db      00fh,001h,003h,007h
         .code
         public  _FillPatternX
 _FillPatternX proc    near
-        push    bp                  ;preserve caller's stack frame
-        mov     bp,sp               ;point to local stack frame
+        push    bp              ;preserve caller's stack frame
+        mov     bp,sp           ;point to local stack frame
         sub     sp,STACK_FRAME_SIZE ;allocate space for local vars
-        push    si                  ;preserve caller's register variables
+        push    si              ;preserve caller's register variables
         push    di
 
         cld
-        mov     ax,SCREEN_SEG       ;point ES to display memory
+        mov     ax,SCREEN_SEG   ;point ES to display memory
         mov     es,ax
-                                    ;copy pattern to display memory buffer
-        mov     si,[bp+Pattern]     ;point to pattern to fill with
-        mov     di,PATTERN_BUFFER   ;point ES:DI to pattern buffer
-        mov     dx,SC_INDEX         ;point Sequence Controller Index to
-        mov     al,MAP_MASK         ; Map Mask
+                                ;copy pattern to display memory buffer
+        mov     si,[bp+Pattern] ;point to pattern to fill with
+        mov     di,PATTERN_BUFFER ;point ES:DI to pattern buffer
+        mov     dx,SC_INDEX     ;point Sequence Controller Index to
+        mov     al,MAP_MASK     ; Map Mask
         out     dx,al
-        inc     dx                  ;point to SC Data register
-        mov     cx,4                ;4 pixel quadruplets in pattern
+        inc     dx              ;point to SC Data register
+        mov     cx,4            ;4 pixel quadruplets in pattern
 DownloadPatternLoop:
-        mov     al,1                ;
-        out     dx,al               ;select plane 0 for writes
-        movsb                       ;copy over next plane 0 pattern pixel
-        dec     di                  ;stay at same address for next plane
-        mov     al,2                ;
-        out     dx,al               ;select plane 1 for writes
-        movsb                       ;copy over next plane 1 pattern pixel
-        dec     di                  ;stay at same address for next plane
-        mov     al,4                ;
-        out     dx,al               ;select plane 2 for writes
-        movsb                       ;copy over next plane 2 pattern pixel
-        dec     di                  ;stay at same address for next plane
-        mov     al,8                ;
-        out     dx,al               ;select plane 3 for writes
-        movsb                       ;copy over next plane 3 pattern pixel
-                                    ; and advance address
+        mov     al,1            ;
+        out     dx,al           ;select plane 0 for writes
+        movsb                   ;copy over next plane 0 pattern pixel
+        dec     di              ;stay at same address for next plane
+        mov     al,2            ;
+        out     dx,al           ;select plane 1 for writes
+        movsb                   ;copy over next plane 1 pattern pixel
+        dec     di              ;stay at same address for next plane
+        mov     al,4            ;
+        out     dx,al           ;select plane 2 for writes
+        movsb                   ;copy over next plane 2 pattern pixel
+        dec     di              ;stay at same address for next plane
+        mov     al,8            ;
+        out     dx,al           ;select plane 3 for writes
+        movsb                   ;copy over next plane 3 pattern pixel
+                                ; and advance address
         loop    DownloadPatternLoop
 
-        mov     dx,GC_INDEX         ;set the bit mask to select all bits
-        mov     ax,00000h+BIT_MASK  ; from the latches and none from
-        out     dx,ax               ; the CPU, so that we can write the
-                                    ; latch contents directly to memory
-        mov     ax,[bp+StartY]      ;top rectangle scan line
+        mov     dx,GC_INDEX     ;set the bit mask to select all bits
+        mov     ax,00000h+BIT_MASK ; from the latches and none from
+        out     dx,ax           ; the CPU, so that we can write the
+                                ; latch contents directly to memory
+        mov     ax,[bp+StartY]  ;top rectangle scan line
         mov     si,ax
-        and     si,011b             ;top rect scan line modulo 4
-        add     si,PATTERN_BUFFER   ;point to pattern scan line that
-                                    ; maps to top line of rect to draw
+        and     si,011b         ;top rect scan line modulo 4
+        add     si,PATTERN_BUFFER ;point to pattern scan line that
+                                ; maps to top line of rect to draw
         mov     dx,SCREEN_WIDTH
-        mul     dx                  ;offset in page of top rectangle scan line
+        mul     dx              ;offset in page of top rectangle scan line
         mov     di,[bp+StartX]
         mov     bx,di
-        shr     di,1                ;X/4 = offset of first rectangle pixel in scan
-        shr     di,1                ; line
-        add     di,ax               ;offset of first rectangle pixel in page
-        add     di,[bp+PageBase]    ;offset of first rectangle pixel in
-                                    ; display memory
-        and     bx,0003h                 ;look up left edge plane mask
-        mov     ah,LeftClipPlaneMask[bx]  ; to clip
+        shr     di,1            ;X/4 = offset of first rectangle pixel in scan
+        shr     di,1            ; line
+        add     di,ax           ;offset of first rectangle pixel in page
+        add     di,[bp+PageBase] ;offset of first rectangle pixel in
+                                ; display memory
+        and     bx,0003h        ;look up left edge plane mask
+        mov     ah,LeftClipPlaneMask[bx] ; to clip
         mov     bx,[bp+EndX]
-        and     bx,0003h                  ;look up right edge plane
+        and     bx,0003h        ;look up right edge plane
         mov     al,RightClipPlaneMask[bx] ; mask to clip
-        mov     bx,ax                     ;put the masks in BX
-        
-        mov     cx,[bp+EndX]              ;calculate # of addresses across rect
+        mov     bx,ax           ;put the masks in BX
+
+        mov     cx,[bp+EndX]    ;calculate # of addresses across rect
         mov     ax,[bp+StartX]
         cmp     cx,ax
-        jle     FillDone                  ;skip if 0 or negative width
+        jle     FillDone        ;skip if 0 or negative width
         dec     cx
         and     ax,not 011b
         sub     cx,ax
         shr     cx,1
-        shr     cx,1                       ;# of addresses across rectangle to fill - 1
-        jnz     MasksSet                   ;there's more than one pixel to draw
-        and     bh,bl                      ;there's only one pixel, so combine the left-
-                                           ; and right-edge clip masks
+        shr     cx,1            ;# of addresses across rectangle to fill - 1
+        jnz     MasksSet        ;there's more than one pixel to draw
+        and     bh,bl           ;there's only one pixel, so combine the left
+                                ; and right edge clip masks
 MasksSet:
         mov     ax,[bp+EndY]
-        sub     ax,[bp+StartY]             ;AX = height of rectangle
-        jle     FillDone                   ;skip if 0 or negative height
+        sub     ax,[bp+StartY]  ;AX = height of rectangle
+        jle     FillDone        ;skip if 0 or negative height
         mov     [bp+Height],ax
         mov     ax,SCREEN_WIDTH
-        sub     ax,cx                      ;distance from end of one scan line to start
-        dec     ax                         ; of next
+        sub     ax,cx           ;distance from end of one scan line to start
+        dec     ax              ; of next
         mov     [bp+NextScanOffset],ax
-        mov     [bp+RectAddrWidth],cx      ;remember width in addresses - 1
-        mov     dx,SC_INDEX+1              ;point to Sequence Controller Data reg
-                                           ; (SC Index still points to Map Mask)
+        mov     [bp+RectAddrWidth],cx ;remember width in addresses - 1
+        mov     dx,SC_INDEX+1   ;point to Sequence Controller Data reg
+                                ; (SC Index still points to Map Mask)
 FillRowsLoop:
-        mov     cx,[bp+RectAddrWidth]      ;width across - 1
-        mov     al,es:[si]                 ;read display memory to latch this scan
-                                           ; line's pattern
-        inc     si                         ;point to the next pattern scan line, wrapping
-        jnz     short NoWrap               ; back to the start of the pattern if
-        sub     si,4                       ; we've run off the end
+        mov     cx,[bp+RectAddrWidth] ;width across - 1
+        mov     al,es:[si]      ;read display memory to latch this scan
+                                ; line's pattern
+        inc     si              ;point to the next pattern scan line, wrapping
+        jnz     short NoWrap    ; back to the start of the pattern if
+        sub     si,4            ; we've run off the end
 NoWrap:
-        mov     al,bh                      ;put left-edge clip mask in AL
-        out     dx,al                      ;set the left-edge plane (clip) mask
-        stosb                              ;draw the left edge (pixels come from latches;
-                                           ; value written by CPU doesn't matter)
-        dec     cx                         ;count off left edge address
-        js      FillLoopBottom             ;that's the only address
-        jz      DoRightEdge                ;there are only two addresses
-        mov     al,00fh                    ;middle addresses are drawn 4 pixels at a pop
-        out     dx,al                      ;set the middle pixel mask to no clip
-        rep     stosb                      ;draw the middle addresses four pixels apiece
-                                           ; (from latches; value written doesn't matter)
+        mov     al,bh           ;put left-edge clip mask in AL
+        out     dx,al           ;set the left-edge plane (clip) mask
+        stosb                   ;draw the left edge (pixels come from latches;
+                                ; value written by CPU doesn't matter)
+        dec     cx              ;count off left edge address
+        js      FillLoopBottom  ;that's the only address
+        jz      DoRightEdge     ;there are only two addresses
+        mov     al,00fh         ;middle addresses are drawn 4 pixels at a pop
+        out     dx,al           ;set the middle pixel mask to no clip
+        rep     stosb           ;draw the middle addresses four pixels apiece
+                                ; (from latches; value written doesn't matter)
 DoRightEdge:
-        mov     al,bl                      ;put right-edge clip mask in AL
-        out     dx,al                      ;set the right-edge plane (clip) mask
-        stosb                              ;draw the right edge (from latches; value
-                                           ; written doesn't matter)
+        mov     al,bl           ;put right-edge clip mask in AL
+        out     dx,al           ;set the right-edge plane (clip) mask
+        stosb                   ;draw the right edge (from latches; value
+                                ; written doesn't matter)
 FillLoopBottom:
-        add     di,[bp+NextScanOffset]     ;point to the start of the next scan
-                                           ; line of the rectangle
-        dec     word ptr [bp+Height]       ;count down scan lines
+        add     di,[bp+NextScanOffset] ;point to the start of the next scan
+                                ; line of the rectangle
+        dec     word ptr [bp+Height] ;count down scan lines
         jnz     FillRowsLoop
 FillDone:
-        mov     dx,GC_INDEX+1              ;restore the bit mask to its default,
-        mov     al,0ffh                    ; which selects all bits from the CPU
-        out     dx,al                      ; and none from the latches (the GC
-                                           ; Index still points to Bit Mask)
-        pop     di                         ;restore caller's register variables
+        mov     dx,GC_INDEX+1   ;restore the bit mask to its default,
+        mov     al,0ffh         ; which selects all bits from the CPU
+        out     dx,al           ; and none from the latches (the GC
+                                ; Index still points to Bit Mask)
+        pop     di              ;restore caller's register variables
         pop     si
-        mov     sp,bp                      ;discard storage for local variables
-        pop     bp                         ;restore caller's stack frame
+        mov     sp,bp           ;discard storage for local variables
+        pop     bp              ;restore caller's stack frame
         ret
 _FillPatternX endp
         end
@@ -388,7 +388,7 @@ pixels in that plane, repeating for all four planes.)
 > than it is to copy from display memory to display memory via the
 > latches.
 
-**LISTING 48.3 L48-3.ASM**
+**LISTING 48.3 [L48-3.ASM](../code/L48-3.ASM)**
 
 ```nasm
 ; Mode X (320x240, 256 colors) display memory to display memory copy
@@ -406,38 +406,38 @@ pixels in that plane, repeating for all four planes.)
 ;       unsigned int DestPageBase, int SourceBitmapWidth,
 ;       int DestBitmapWidth);
 
-SC_INDEX     equ    03c4h   ;Sequence Controller Index register port
-MAP_MASK     equ    02h     ;index in SC of Map Mask register
-GC_INDEX     equ    03ceh   ;Graphics Controller Index register port
-BIT_MASK     equ    08h     ;index in GC of Bit Mask register
-SCREEN_SEG   equ    0a000h  ;segment of display memory in Mode X
+SC_INDEX        equ     03c4h           ;Sequence Controller Index register port
+MAP_MASK        equ     02h             ;index in SC of Map Mask register
+GC_INDEX        equ     03ceh           ;Graphics Controller Index register port
+BIT_MASK        equ     08h             ;index in GC of Bit Mask register
+SCREEN_SEG      equ     0a000h          ;segment of display memory in Mode X
 
 parms   struc
-              dw  2 dup (?) ;pushed BP and return address
-SourceStartX  dw  ?         ;X coordinate of upper-left corner of source
-SourceStartY  dw  ?         ;Y coordinate of upper-left corner of source
-SourceEndX    dw  ?         ;X coordinate of lower-right corner of source
-                            ; (the row at SourceEndX is not copied)
-SourceEndY    dw  ?         ;Y coordinate of lower-right corner of source
-                            ; (the column at SourceEndY is not copied)
-DestStartX    dw  ?         ;X coordinate of upper-left corner of dest
-DestStartY    dw  ?         ;Y coordinate of upper-left corner of dest
-SourcePageBase dw ?         ;base offset in display memory of page in
-                            ; which source resides
-DestPageBase  dw  ?         ;base offset in display memory of page in
-                            ; which dest resides
-SourceBitmapWidth  dw   ?   ;# of pixels across source bitmap
-                            ; (must be a multiple of 4)
-DestBitmapWidth    dw   ?   ;# of pixels across dest bitmap
-                            ; (must be a multiple of 4)
+                dw      2 dup (?)       ;pushed BP and return address
+SourceStartX    dw      ?               ;X coordinate of upper left corner of source
+SourceStartY    dw      ?               ;Y coordinate of upper left corner of source
+SourceEndX      dw      ?               ;X coordinate of lower right corner of source
+                                        ; (the row at SourceEndX is not copied)
+SourceEndY      dw      ?               ;Y coordinate of lower right corner of source
+                                        ; (the column at SourceEndY is not copied)
+DestStartX      dw      ?               ;X coordinate of upper left corner of dest
+DestStartY      dw      ?               ;Y coordinate of upper left corner of dest
+SourcePageBase  dw      ?               ;base offset in display memory of page in
+                                        ; which source resides
+DestPageBase    dw      ?               ;base offset in display memory of page in
+                                        ; which dest resides
+SourceBitmapWidth dw    ?               ;# of pixels across source bitmap
+                                        ; (must be a multiple of 4)
+DestBitmapWidth   dw    ?               ;# of pixels across dest bitmap
+                                        ; (must be a multiple of 4)
 parms   ends
 
-SourceNextScanOffset equ -2 ;local storage for distance from end of
-                            ; one source scan line to start of next
-DestNextScanOffset   equ -4 ;local storage for distance from end of
-                            ; one dest scan line to start of next
-RectAddrWidth     equ -6    ;local storage for address width of rectangle
-Height       equ -8;local storage for height of rectangle
+SourceNextScanOffset equ -2             ;local storage for distance from end of
+                                        ; one source scan line to start of next
+DestNextScanOffset   equ -4             ;local storage for distance from end of
+                                        ; one dest scan line to start of next
+RectAddrWidth        equ -6             ;local storage for address width of rectangle
+Height               equ -8             ;local storage for height of rectangle
 STACK_FRAME_SIZE     equ  8
 
         .model  small
@@ -448,119 +448,119 @@ RightClipPlaneMask      db      00fh,001h,003h,007h
         .code
         public  _CopyScreenToScreenX
 _CopyScreenToScreenX proc    near
-        push    bp      ;preserve caller's stack frame
-        mov     bp,sp   ;point to local stack frame
-        sub     sp,STACK_FRAME_SIZE ;allocate space for local vars
-        push    si      ;preserve caller's register variables
+        push    bp                      ;preserve caller's stack frame
+        mov     bp,sp                   ;point to local stack frame
+        sub     sp,STACK_FRAME_SIZE     ;allocate space for local vars
+        push    si                      ;preserve caller's register variables
         push    di
         push    ds
 
         cld
-        mov     dx,GC_INDEX        ;set the bit mask to select all bits
-        mov     ax,00000h+BIT_MASK ; from the latches and none from
-        out     dx,ax              ; the CPU, so that we can write the
-                                   ; latch contents directly to memory
-        mov     ax,SCREEN_SEG      ;point ES to display memory
+        mov     dx,GC_INDEX             ;set the bit mask to select all bits
+        mov     ax,00000h+BIT_MASK      ; from the latches and none from
+        out     dx,ax                   ; the CPU, so that we can write the
+                                        ; latch contents directly to memory
+        mov     ax,SCREEN_SEG           ;point ES to display memory
         mov     es,ax
         mov     ax,[bp+DestBitmapWidth]
-        shr     ax,1               ;convert to width in addresses
+        shr     ax,1                    ;convert to width in addresses
         shr     ax,1
-        mul     [bp+DestStartY]    ;top dest rect scan line
+        mul     [bp+DestStartY]         ;top dest rect scan line
         mov     di,[bp+DestStartX]
-        shr     di,1               ;X/4 = offset of first dest rect pixel in
-        shr     di,1               ; scan line
-        add     di,ax              ;offset of first dest rect pixel in page
-        add     di,[bp+DestPageBase] ;offset of first dest rect pixel
-                                   ; in display memory
+        shr     di,1                    ;X/4 = offset of first dest rect pixel in
+        shr     di,1                    ; scan line
+        add     di,ax                   ;offset of first dest rect pixel in page
+        add     di,[bp+DestPageBase]    ;offset of first dest rect pixel
+                                        ; in display memory
         mov     ax,[bp+SourceBitmapWidth]
-        shr     ax,1               ;convert to width in addresses
+        shr     ax,1                    ;convert to width in addresses
         shr     ax,1
-        mul     [bp+SourceStartY]  ;top source rect scan line
+        mul     [bp+SourceStartY]       ;top source rect scan line
         mov     si,[bp+SourceStartX]
         mov     bx,si
-        shr     si,1               ;X/4 = offset of first source rect pixel in
-        shr     si,1               ; scan line
-        add     si,ax              ;offset of first source rect pixel in page
-        add     si,[bp+SourcePageBase] ;offset of first source rect
-                                   ; pixel in display memory
-        and     bx,0003h           ;look up left edge plane mask
-        mov     ah,LeftClipPlaneMask[bx]  ; to clip
+        shr     si,1                    ;X/4 = offset of first source rect pixel in
+        shr     si,1                            ; scan line
+        add     si,ax                   ;offset of first source rect pixel in page
+        add     si,[bp+SourcePageBase]  ;offset of first source rect
+                                        ; pixel in display memory
+        and     bx,0003h                ;look up left edge plane mask
+        mov     ah,LeftClipPlaneMask[bx]; to clip
         mov     bx,[bp+SourceEndX]
-        and     bx,0003h           ;look up right-edge plane
+        and     bx,0003h                ;look up right edge plane
         mov     al,RightClipPlaneMask[bx] ; mask to clip
-        mov     bx,ax              ;put the masks in BX
-        
-        mov     cx,[bp+SourceEndX] ;calculate # of addresses across
-        mov     ax,[bp+SourceStartX] ; rect
+        mov     bx,ax                   ;put the masks in BX
+
+        mov     cx,[bp+SourceEndX]      ;calculate # of addresses across
+        mov     ax,[bp+SourceStartX]    ; rect
         cmp     cx,ax
-        jle     CopyDone           ;skip if 0 or negative width
+        jle     CopyDone                ;skip if 0 or negative width
         dec     cx
         and     ax,not 011b
         sub     cx,ax
         shr     cx,1
-        shr     cx,1               ;# of addresses across rectangle to copy - 1
-        jnz     MasksSet           ;there's more than one address to draw
-        and     bh,bl              ;there's only one address, so combine the 
-                                   ; left- and right-edge clip masks
+        shr     cx,1                    ;# of addresses across rectangle to copy - 1
+        jnz     MasksSet                ;there's more than one address to draw
+        and     bh,bl                   ;there's only one address, so combine the left
+                                        ; and right edge clip masks
 MasksSet:
         mov     ax,[bp+SourceEndY]
-        sub     ax,[bp+SourceStartY]  ;AX = height of rectangle
-        jle     CopyDone           ;skip if 0 or negative height
+        sub     ax,[bp+SourceStartY]    ;AX = height of rectangle
+        jle     CopyDone                ;skip if 0 or negative height
         mov     [bp+Height],ax
         mov     ax,[bp+DestBitmapWidth]
-        shr     ax,1               ;convert to width in addresses
+        shr     ax,1                    ;convert to width in addresses
         shr     ax,1
-        sub     ax,cx              ;distance from end of one dest scan line to
-        dec     ax                 ; start of next
+        sub     ax,cx                   ;distance from end of one dest scan line to
+        dec     ax                      ; start of next
         mov     [bp+DestNextScanOffset],ax
         mov     ax,[bp+SourceBitmapWidth]
-        shr     ax,1               ;convert to width in addresses
+        shr     ax,1                    ;convert to width in addresses
         shr     ax,1
-        sub     ax,cx              ;distance from end of one source scan line to
-        dec     ax                 ; start of next
+        sub     ax,cx                   ;distance from end of one source scan line to
+        dec     ax                      ; start of next
         mov     [bp+SourceNextScanOffset],ax
-        mov     [bp+RectAddrWidth],cx ;remember width in addresses - 1
-;----------------------BUG FIX
-mov     dx,SC_INDEX
+        mov     [bp+RectAddrWidth],cx   ;remember width in addresses - 1
+;-----------------------BUG FIX
+        mov     dx,SC_INDEX
         mov     al,MAP_MASK
-        out     dx,al              ;point SC Index reg to Map Mask
-        inc     dx                 ;point to SC Data reg
-;----------------------BUG FIX
-        mov     ax,es              ;DS=ES=screen segment for MOVS
+        out     dx,al                   ;point SC Index reg to Map Mask
+        inc     dx                      ;point to SC Data reg
+;-----------------------BUG FIX
+        mov     ax,es                   ;DS=ES=screen segment for MOVS
         mov     ds,ax
 CopyRowsLoop:
-        mov     cx,[bp+RectAddrWidth] ;width across - 1
-        mov     al,bh              ;put left-edge clip mask in AL
-        out     dx,al              ;set the left-edge plane (clip) mask
-        movsb                      ;copy the left edge (pixels go through
-                                   ; latches)
-        dec     cx                 ;count off left edge address
-        js      CopyLoopBottom     ;that's the only address
-        jz      DoRightEdge        ;there are only two addresses
-        mov     al,00fh            ;middle addresses are drawn 4 pixels at a pop
-        out     dx,al              ;set the middle pixel mask to no clip
-        rep     movsb              ;draw the middle addresses four pixels apiece
-                                   ; (pixels copied through latches)
+        mov     cx,[bp+RectAddrWidth]   ;width across - 1
+        mov     al,bh                   ;put left-edge clip mask in AL
+        out     dx,al                   ;set the left-edge plane (clip) mask
+        movsb                           ;copy the left edge (pixels go through
+                                        ; latches)
+        dec     cx                      ;count off left edge address
+        js      CopyLoopBottom          ;that's the only address
+        jz      DoRightEdge             ;there are only two addresses
+        mov     al,00fh                 ;middle addresses are drawn 4 pixels at a pop
+        out     dx,al                   ;set the middle pixel mask to no clip
+        rep     movsb                   ;draw the middle addresses four pixels apiece
+                                        ; (pixels copied through latches)
 DoRightEdge:
-        mov     al,bl              ;put right-edge clip mask in AL
-        out     dx,al              ;set the right-edge plane (clip) mask
-        movsb                      ;draw the right edge (pixels copied through
-                                   ; latches)
+        mov     al,bl                   ;put right-edge clip mask in AL
+        out     dx,al                   ;set the right-edge plane (clip) mask
+        movsb                           ;draw the right edge (pixels copied through
+                                        ; latches)
 CopyLoopBottom:
         add     si,[bp+SourceNextScanOffset] ;point to the start of
         add     di,[bp+DestNextScanOffset]   ; next source & dest lines
-        dec     word ptr [bp+Height]         ;count down scan lines
+        dec     word ptr [bp+Height]    ;count down scan lines
         jnz     CopyRowsLoop
 CopyDone:
-        mov     dx,GC_INDEX+1       ;restore the bit mask to its default,
-        mov     al,0ffh             ; which selects all bits from the CPU
-        out     dx,al               ; and none from the latches (the GC
-                                    ; Index still points to Bit Mask)
+        mov     dx,GC_INDEX+1           ;restore the bit mask to its default,
+        mov     al,0ffh                 ; which selects all bits from the CPU
+        out     dx,al                   ; and none from the latches (the GC
+                                        ; Index still points to Bit Mask)
         pop     ds
-        pop     di                  ;restore caller's register variables
+        pop     di                      ;restore caller's register variables
         pop     si
-        mov     sp,bp               ;discard storage for local variables
-        pop     bp                  ;restore caller's stack frame
+        mov     sp,bp                   ;discard storage for local variables
+        pop     bp                      ;restore caller's stack frame
         ret
 _CopyScreenToScreenX endp
         end
@@ -610,7 +610,7 @@ I'm not going to present a routine to perform Mode X copies from display
 memory to system memory, but such a routine would be a straightforward
 inverse of Listing 48.4.
 
-**LISTING 48.4 L48-4.ASM**
+**LISTING 48.4 [L48-4.ASM](../code/L48-4.ASM)**
 
 ```nasm
 ; Mode X (320x240, 256 colors) system memory to display memory copy
@@ -627,54 +627,54 @@ inverse of Listing 48.4.
 ;       int DestStartY, char* SourcePtr, unsigned int DestPageBase,
 ;       int SourceBitmapWidth, int DestBitmapWidth);
 
-SC_INDEX        equ    03c4h           ;Sequence Controller Index register port
-MAP_MASK        equ    02h             ;index in SC of Map Mask register
-SCREEN_SEG      equ    0a000h          ;segment of display memory in Mode X
+SC_INDEX        equ     03c4h           ;Sequence Controller Index register port
+MAP_MASK        equ     02h             ;index in SC of Map Mask register
+SCREEN_SEG      equ     0a000h          ;segment of display memory in Mode X
 
 parms   struc
-                    dw    2 dup (?)    ;pushed BP and return address
-SourceStartX        dw    ?            ;X coordinate of upper-left corner of source
-SourceStartY        dw    ?            ;Y coordinate of upper-left corner of source
-SourceEndX          dw    ?            ;X coordinate of lower-right corner of source
-                                       ; (the row at EndX is not copied)
-SourceEndY          dw    ?            ;Y coordinate of lower-right corner of source
-                                       ; (the column at EndY is not copied)
-DestStartX          dw    ?            ;X coordinate of upper-left corner of dest
-DestStartY          dw    ?            ;Y coordinate of upper-left corner of dest
-SourcePtr           dw    ?            ;pointer in DS to start of bitmap in which
-                                       ; source resides
-DestPageBase        dw    ?            ;base offset in display memory of page in
-                                       ; which dest resides
-SourceBitmapWidth    dw    ?           ;# of pixels across source bitmap
-DestBitmapWidth      dw    ?           ;# of pixels across dest bitmap
-                                       ; (must be a multiple of 4)
+                dw      2 dup (?)       ;pushed BP and return address
+SourceStartX    dw      ?               ;X coordinate of upper left corner of source
+SourceStartY    dw      ?               ;Y coordinate of upper left corner of source
+SourceEndX      dw      ?               ;X coordinate of lower right corner of source
+                                        ; (the row at EndX is not copied)
+SourceEndY      dw      ?               ;Y coordinate of lower right corner of source
+                                        ; (the column at EndY is not copied)
+DestStartX      dw      ?               ;X coordinate of upper left corner of dest
+DestStartY      dw      ?               ;Y coordinate of upper left corner of dest
+SourcePtr       dw      ?               ;pointer in DS to start of bitmap in which
+                                        ; source resides
+DestPageBase    dw      ?               ;base offset in display memory of page in
+                                        ; which dest resides
+SourceBitmapWidth dw    ?               ;# of pixels across source bitmap
+DestBitmapWidth   dw    ?               ;# of pixels across dest bitmap
+                                        ; (must be a multiple of 4)
 parms   ends
 
-RectWidth            equ    -2         ;local storage for width of rectangle
-LeftMask             equ    -4         ;local storage for left rect edge plane mask
-STACK_FRAME_SIZE     equ    4
+RectWidth       equ    -2               ;local storage for width of rectangle
+LeftMask        equ    -4               ;local storage for left rect edge plane mask
+STACK_FRAME_SIZE equ    4
 
         .model  small
         .code
         public  _CopySystemToScreenX
 _CopySystemToScreenX proc    near
-        push    bp                     ;preserve caller's stack frame
-        mov     bp,sp                  ;point to local stack frame
-        sub     sp,STACK_FRAME_SIZE    ;allocate space for local vars
-        push    si                     ;preserve caller's register variables
+        push    bp                      ;preserve caller's stack frame
+        mov     bp,sp                   ;point to local stack frame
+        sub     sp,STACK_FRAME_SIZE     ;allocate space for local vars
+        push    si                      ;preserve caller's register variables
         push    di
 
         cld
-        mov     ax,SCREEN_SEG          ;point ES to display memory
+        mov     ax,SCREEN_SEG           ;point ES to display memory
         mov     es,ax
         mov     ax,[bp+SourceBitmapWidth]
-        mul     [bp+SourceStartY]      ;top source rect scan line
+        mul     [bp+SourceStartY]       ;top source rect scan line
         add     ax,[bp+SourceStartX]
-        add     ax,[bp+SourcePtr]      ;offset of first source rect pixel
-        mov     si,ax                  ; in DS
-        
+        add     ax,[bp+SourcePtr]       ;offset of first source rect pixel
+        mov     si,ax                   ; in DS
+
         mov     ax,[bp+DestBitmapWidth]
-        shr     ax,1                   ;convert to width in addresses
+        shr     ax,1                    ;convert to width in addresses
         shr     ax,1
         mov     [bp+DestBitmapWidth],ax ;remember address width
         mul     [bp+DestStartY]         ;top dest rect scan line
@@ -686,10 +686,10 @@ _CopySystemToScreenX proc    near
         add     di,[bp+DestPageBase]    ;offset of first dest rect pixel
                                         ; in display memory
         and     cl,011b                 ;CL = first dest pixel's plane
-        mov     al,11h                  ;upper nibble comes into play when 
-                                        ; plane wraps from 3 back to 0
-        shl     al,cl                   ;set the bit for the first dest pixel's 
-        mov     [bp+LeftMask],al        ; plane in each nibble to 1
+        mov     al,11h                  ;upper nibble comes into play when plane wraps
+                                        ; from 3 back to 0
+        shl     al,cl                   ;set the bit for the first dest pixel's plane
+        mov     [bp+LeftMask],al        ; in each nibble to 1
 
         mov     cx,[bp+SourceEndX]      ;calculate # of pixels across
         sub     cx,[bp+SourceStartX]    ; rect
