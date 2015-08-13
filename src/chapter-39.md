@@ -718,7 +718,7 @@ DiagonalSkipEntry:
         jmp   ScanEdgeDone
         align 2
 YMajor:
-        pushbp                      ;preserve stack frame pointer
+        push  bp                    ;preserve stack frame pointer
         mov   si,[bp+X1]            ;starting X coordinate
         cmp   [bp+SkipFirst],1      ;skip the first point?
         mov   bp,bx                 ;put Height in BP for error term calcs
@@ -734,7 +734,7 @@ YMajorSkipEntry:
 YMajorNoAdvance:
         dec   bx                    ;count off this scan line
         jnz   YMajorLoop
-        popbp                       ;restore stack frame pointer
+        pop   bp                    ;restore stack frame pointer
 ScanEdgeDone:
         cmp   [bp+SetXStart],1       ;were we working with XStart field?
         jz    UpdateHLinePtr         ;yes, DI points to the next XStart

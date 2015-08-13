@@ -262,7 +262,7 @@ RestoreTheScreen:
 RestoreLoop:
               mov      dx,SC_INDEX
               mov      al,MAP_MASK              ;set SC Index to Map Mask register
-outdx,al
+              out      dx,al
               inc      dx
               mov      cl,[Plane]               ;get the # of the plane we want
 ; to restore

@@ -346,7 +346,7 @@ For example, you'd certainly expect a sequence such as
 pop    ax
 ret
 pop    ax
-et
+ret
 :
 ```
 

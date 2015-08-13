@@ -174,7 +174,7 @@ else ;  !ROUNDING-ON
         sub     eax,eax
         shrd    eax,edx,16       ;position so that result ends up
         sar     edx,16           ; in EAX
-        idivdword ptr [bp+Divisor]
+        idiv    dword ptr [bp+Divisor]
 endif ;ROUNDING-ON
         shld    edx,eax,16       ;whole part of result in DX;
                                  ; fractional part is already in AX
@@ -224,9 +224,9 @@ jg    MakeInRange
       ja   Quadrant1
                             ;quadrant 0
       shl   bx,2
-      move  ax,CosTable[bx] ;look up sine
+      mov   eax,CosTable[bx] ;look up sine
       neg   bx              ;sin(Angle) = cos(90-Angle)
-      move  dx,CosTable[bx+90*10*4] ;look up cosine
+      mov   edx,CosTable[bx+90*10*4] ;look up cosine
       jmp   short CSDone
 
       align  ALIGNMENT
@@ -237,7 +237,7 @@ Quadrant1:
       mov    eax,CosTable[bx] ;look up cosine
       neg    eax             ;negative in this quadrant
       neg    bx              ;sin(Angle) = cos(90-Angle)
-      move   dx,CosTable[bx+90*10*4] ;look up cosine
+      mov    edx,CosTable[bx+90*10*4] ;look up cosine
       jmp    short CSDone
 
       align  ALIGNMENT
@@ -248,11 +248,11 @@ BottomHalf:                ;quadrant 2 or 3
       ja      Quadrant2
                            ;quadrant 3
       shl      bx, 2
-      mov   eax,CosTable[bx]     ;look up cosine
-      neg   bx              ;sin(Angle) = cos(90-Angle)
-      movedx,CosTable[90*10*4+bx] ;look up sine
-      nege     dx          ;negative in this quadrant
-      jmp     short CSDone
+      mov      eax,CosTable[bx]     ;look up cosine
+      neg      bx              ;sin(Angle) = cos(90-Angle)
+      mov      edx,CosTable[90*10*4+bx] ;look up sine
+      neg      edx          ;negative in this quadrant
+      jmp      short CSDone
 
       align  ALIGNMENT
 Quadrant2:
@@ -262,8 +262,8 @@ Quadrant2:
      mov     eax,CosTable[bx] ;look up cosine
      neg     eax          ;negative in this quadrant
      neg     bx           ;sin(Angle) = cos(90-Angle)
-     move    dx,CosTable[90*10*4+bx] ;look up sine
-     nege    dx             ;negative in this quadrant
+     mov     edx,CosTable[90*10*4+bx] ;look up sine
+     neg     edx             ;negative in this quadrant
 CSDone:
      mov      bx,[bp].Cos
      mov      [bx],eax
@@ -347,9 +347,9 @@ soff=soff+16
 doff=doff+4
 ENDM
 
-popdi;restore register variables
-popsi
-popbp;restore stack frame
+pop di;restore register variables
+pop si
+pop bp;restore stack frame
 ret
 -XformVecendp
 ;=====================================================================
@@ -391,7 +391,7 @@ CXparms       ends
      push   bp                     ;preserve stack frame
      mov    bp,sp                  ;set up local stack frame
      push   si                     ;preserve register variables
-pushdi
+     push   di
 
      mov    bx,[bp].SourceXform2    ;BX points to xform2 matrix
      mov    si,[bp].SourceXform1    ;SI points to xform1 matrix
@@ -407,7 +407,7 @@ coff=0                          ;column offset
       imul    dword ptr [bx+coff];times row 0 entry in column
 if ROUNDING-ON
       add     eax,8000h        ;round by adding 2^(-17)
-      adcedx,0;whole part of result is in DX
+      adc     edx,0            ;whole part of result is in DX
 endif ;ROUNDING-ON
        shrd    eax,edx,16       ;shift the result back to 16.16 form
        mov     ecx,eax          ;set running total
@@ -471,9 +471,9 @@ coff=coff+4                ;point to next col in xform2 & dest
 roff=roff+16                ;point to next col in xform2 & dest
 ENDM
 
-popdi;restore register variables
-popsi
-popbp;restore stack frame
+pop di;restore register variables
+pop si
+pop bp;restore stack frame
 ret
 -ConcatXformsendp
 end

@@ -410,7 +410,7 @@ Start             proc      near
      mov    al,1                  ;blue is color 1
      call   SelectSetResetColor   ;set to draw in blue
      mov    ax,VGA_SEGMENT
-     move   s,ax
+     mov    es,ax
      sub    di,di
      mov    cx,7000h
      rep    stosb                 ;the value written actually doesn't

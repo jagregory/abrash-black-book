@@ -499,7 +499,7 @@ parms   ends
         les     di,[bp+BufferPtr]
         mov     dx,[bp+RectHeight]
         mov     bx,[bp+BufferWidth]
-        su    bx,[bp+RectWidth]         ;distance from end of one dest scan
+        sub     bx,[bp+RectWidth]         ;distance from end of one dest scan
                                         ; to start of next
         mov     al,byte ptr [bp+Color]
         mov     ah,al                   ;double the color for REP STOSW
@@ -544,7 +544,7 @@ parms2  ends
         mov     bx,[bp+Pixels]
         mov     dx,[bp+ImageHeight]
         mov     ax,[bp+BufferWidth2]
-        su    ax,[bp+ImageWidth]        ;distance from end of one dest scan
+        sub     ax,[bp+ImageWidth]        ;distance from end of one dest scan
         mov     [bp+BufferWidth2],ax    ; to start of next
 RowLoop2:
         mov     cx,[bp+ImageWidth]
@@ -556,7 +556,7 @@ ColumnLoop:
         mov     es:[di],al
 SkipPixel:
         inc     bx                      ;point to next source pixel
-        inc     d                       ;point to next dest pixel
+        inc     di                      ;point to next dest pixel
         dec     cx
         jnz     ColumnLoop
         add     di,[bp+BufferWidth2]    ;point to next scan to fill
@@ -596,9 +596,9 @@ parms3  ends
         lds     si,[bp+SrcBufferPtr]
         mov     dx,[bp+CopyHeight]
         mov     bx,[bp+DestBufferWidth] ;distance from end of one dest scan
-        su    bx,[bp+CopyWidth]         ; of copy to the next
+        sub     bx,[bp+CopyWidth]         ; of copy to the next
         mov     ax,[bp+SrcBufferWidth]  ;distance from end of one source scan
-        su    ax,[bp+CopyWidth]         ; of copy to the next
+        sub     ax,[bp+CopyWidth]         ; of copy to the next
 RowLoop3:
         mov     cx,[bp+CopyWidth]       ;# of bytes to copy
         shr     cx,1

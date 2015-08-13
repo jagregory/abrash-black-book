@@ -373,22 +373,22 @@ Set320By400Mode   proc   near
      mov    al,MEMORY_MODE
      out    dx,al
      inc    dx
-     ina    l,dx
+     in     al,dx
      and    al,not 08h                   ;turn off chain 4
-     ora    l,04h                        ;turn off odd/even
+     or     al,04h                       ;turn off odd/even
      out    dx,al
      mov    dx,GC_INDEX
      mov    al,GRAPHICS_MODE
      out    dx,al
      inc    dx
-     ina    l,dx
+     in     al,dx
      and    al,not 10h                   ;turn off odd/even
      out    dx,al
      dec    dx
      mov    al,MISCELLANEOUS
      out    dx,al
      inc    dx
-     ina    l,dx
+     in     al,dx
      and    al,not 02h                   ;turn off chain
      out    dx,al
 ;
@@ -677,14 +677,14 @@ stack        ends
 ;
 OUT_WORDmacro
 if WORD_OUTS_OK
-      outdx,ax
+        out  dx,ax
 else
         out  dx,al
         inc  dx
-        xch  gah,al
+        xchg ah,al
         out  dx,al
         dec  dx
-        xch  gah,al
+        xchg ah,al
 endif
         endm
 ;
@@ -777,22 +777,22 @@ Set320By400Modeprocnear
       mov     al,MEMORY_MODE
       out     dx,al
       inc     dx
-      ina     l,dx
+      in      al,dx
       and     al,not 08h                   ;turn off chain 4
-      ora     l,04h                        ;turn off odd/even
+      or      al,04h                       ;turn off odd/even
       out     dx,al
       mov     dx,GC_INDEX
       mov     al,GRAPHICS_MODE
       out     dx,al
       inc     dx
-      ina     l,dx
+      in      al,dx
       and     al,not 10h                   ;turn off odd/even
       out     dx,al
       dec     dx
       mov     al,MISCELLANEOUS
       out     dx,al
       inc     dx
-      ina     l,dx
+      in      al,dx
       and     al,not 02h                   ;turn off chain
       out     dx,al
 ;
@@ -830,7 +830,7 @@ CONSTANT_TO_INDEXED_REGISTER SC_INDEX,MAP_MASK,0fh
         mov     al,UNDERLINE
         out     dx,al
         inc     dx
-        ina     l,dx
+        in      al,dx
         and     al,not40h                ;turn off doubleword
         out     dx,al
         dec     dx

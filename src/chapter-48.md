@@ -521,7 +521,7 @@ MasksSet:
         mov     [bp+SourceNextScanOffset],ax
         mov     [bp+RectAddrWidth],cx ;remember width in addresses - 1
 ;----------------------BUG FIX
-mov     dx,SC_INDEX
+        mov     dx,SC_INDEX
         mov     al,MAP_MASK
         out     dx,al              ;point SC Index reg to Map Mask
         inc     dx                 ;point to SC Data reg
