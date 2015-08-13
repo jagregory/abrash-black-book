@@ -1020,7 +1020,7 @@ pushed on the stack will point to the instruction we want to continue
 with. The code works out like this:
 
 ```nasm
-      jmpshort popfskip
+      jmp short popfskip
 popfiret:
       iret;      branches to the instruction after the
                  ; call, popping the word below the address
@@ -1082,8 +1082,8 @@ an 8088.)
       .286
                  :
 EMULATE_POPFmacro
-      pushcs
-      pushoffset $+4
+      push cs
+      push offset $+4
       iret
       endm
 ```
