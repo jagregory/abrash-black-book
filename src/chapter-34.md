@@ -390,7 +390,7 @@ RowLoop:
 ColumnLoop:
         stosb                               ;draw a pixel
         add     al,1                        ;increment the attribute
-        ad      cal,0                       ;if the attribute just turned
+        adc     al,0                        ;if the attribute just turned
                                             ; over to 0, increment it to 1
                                             ; because we're not going to
                                             ; cycle DAC location 0, so

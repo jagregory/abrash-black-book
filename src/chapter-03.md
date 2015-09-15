@@ -350,9 +350,9 @@ ZTimerOff proc     near
 ; timer interrupt.
 ;
      mov   al,00001010b        ; OCW3, set up to read
-     out   OCW3,al; Int        errupt Request register
+     out   OCW3,al             ; Interrupt Request register
      DELAY
-     ina   l,IRR; read         Interrupt Request
+     in    al,IRR              ; read Interrupt Request
                                ; register
      and   al,1                ; set AL to 1 if IRQ0 (the
                                ; timer interrupt) is pending
@@ -1509,7 +1509,7 @@ ZTimerOn  proc near
 ; Restore the context of the program being timed and return to it.
 ;
      MPOPF
-     popax
+     pop   ax
      ret
 
 ZTimerOn  endp
@@ -1674,7 +1674,7 @@ ReferenceZTimerOn proc near
 ; Restore the context of the program being timed and return to it.
 ;
      MPOPF
-     popax
+     pop   ax
      ret
 
 ReferenceZTimerOn endp

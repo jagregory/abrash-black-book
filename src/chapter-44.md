@@ -447,7 +447,7 @@ DrawRectParms   ends
         mov     dh,RightMask[bx] ;set the right-edge clip mask
         mov     bx,LeftX[bp]
         and     bx,NOT 7         ;intrapixel address of left edge
-        su    si,bx
+        sub     si,bx
         shr     si,1
         shr     si,1
         shr     si,1             ;# of bytes across spanned by rectangle - 1
@@ -455,7 +455,7 @@ DrawRectParms   ends
         and     dl,dh            ; combine the masks
 MasksSet:
         mov     bx,BottomY[bp]
-        su    bx,TopY[bp]        ;# of scan lines to fill - 1
+        sub     bx,TopY[bp]        ;# of scan lines to fill - 1
 FillLoop:
         push    di               ;remember line start offset
         mov     al,dl            ;left edge clip mask
@@ -661,7 +661,7 @@ TextUpDone:
 CharUp:                              ;draws the character in AL at ES:DI
         lds     si,[BIOS8x8Ptr]      ;point to the 8x8 font start
         mov     bl,al
-        su    bh,bh
+        sub     bh,bh
         shl     bx,1
         shl     bx,1
         shl     bx,1                 ;*8 to look up character offset in font

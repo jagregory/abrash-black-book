@@ -810,7 +810,7 @@ RowLoop:
      mov     cx,LOGICAL_SCREEN_WIDTH/8/4
                                               ;fill 1 scan line
 ColumnLoop:
-     sto     sw                               ;draw part of a diagonal line
+     stosw                                    ;draw part of a diagonal line
      mov     word ptr es:[di],0               ;make vertical blank spaces so
                                               ; panning effects can be seen easily
      inc     di
@@ -832,7 +832,7 @@ RowLoop2:
      mov     cx,LOGICAL_SCREEN_WIDTH/8/4
                                               ;fill 1 scan line
 ColumnLoop2:
-     sto     sw                               ;draw part of a diagonal line
+     stosw                                    ;draw part of a diagonal line
      mov     word ptr es:[di],0               ;make vertical blank spaces so
                                               ; panning effects can be seen easily
      inc     di
