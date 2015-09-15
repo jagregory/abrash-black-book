@@ -302,8 +302,7 @@ the pike. The success or failure of the search can then be determined
 outside the loop, if necessary, by checking for the tail node's special
 pointer—but the inside of the loop is streamlined to just one test, as
 shown in Listing 15.5. Not all linked lists lend themselves to
-sentinels, but the performance benefits are considerable for those lend
-themselves to sentinels, but the performance benefits are considerable
+sentinels, but the performance benefits are considerable
 for those that do.
 
 ![**Figure 15.3**  *Representing an empty list.*](images/15-03.jpg)
