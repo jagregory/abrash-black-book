@@ -237,7 +237,7 @@ contention. Such operations, as in
 
 ```nasm
 mov eax,edx ;U-pipe cycle 1
-sub edx,edxX ;V-pipe cycle 1
+sub edx,edx ;V-pipe cycle 1
 ```
 
 are free of charge.
