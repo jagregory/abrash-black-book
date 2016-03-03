@@ -2075,23 +2075,23 @@ the precision Zen timer to handle on the 8088.
 ; Note: takes about ten minutes to assemble on a slow PC if
 ;you are using MASM
 ;
-jmpSkip;jump around defined data
+    jmp     Skip ;jump around defined data
 ;
-MemVardb?
+MemVar  db  ?
 ;
 Skip:
 ;
 ; Start timing.
 ;
-callZTimerOn
+    call   ZTimerOn
 ;
-rept20000
-moval,[MemVar]
-endm
+    rept   20000
+    mov    al,[MemVar]
+    endm
 ;
 ; Stop timing.
 ;
-callZTimerOff
+    call   ZTimerOff
 ```
 
 When LZTIME.BAT is run on a PC with the following command line (assuming
