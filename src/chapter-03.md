@@ -163,34 +163,34 @@ presented in Chapter K on the companion CD-ROM.
 ; in when ZTimerOn was called.
 ;
 
-Code segment word public ‘CODE'
-     assumecs:    Code, ds:nothing
+Code segment word public 'CODE'
+     assume       cs:Code, ds:nothing
      public       ZTimerOn, ZTimerOff, ZTimerReport
 
 ;
 ; Base address of the 8253 timer chip.
 ;
-BASE_8253equ40h
+BASE_8253        equ 40h
 ;
 ; The address of the timer 0 count registers in the 8253.
 ;
-TIMER_0_8253     equBASE_8253 + 0
+TIMER_0_8253     equ BASE_8253 + 0
 ;
 ; The address of the mode register in the 8253.
 ;
-MODE_8253        equBASE_8253 + 3
+MODE_8253        equ BASE_8253 + 3
 ;
 ; The address of Operation Command Word 3 in the 8259 Programmable
 ; Interrupt Controller (PIC) (write only, and writable only when
 ; bit 4 of the byte written to this address is 0 and bit 3 is 1).
 ;
-OCW3              equ20h
+OCW3              equ 20h
 ;
 ; The address of the Interrupt Request register in the 8259 PIC
 ; (read only, and readable only when bit 1 of OCW3 = 1 and bit 0
 ; of OCW3 = 0).
 ;
-IRR               equ20h
+IRR               equ 20h
 ;
 ; Macro to emulate a POPF instruction in order to fix the bug in some
 ; 80286 chips which allows interrupts to occur during a POPF even when
@@ -220,7 +220,7 @@ OriginalFlags   db    ?    ; storage for upper byte of
                            ; ZTimerOn called
 TimedCount      dw    ?    ; timer 0 count when the timer
                            ; is stopped
-ReferenceCount  dw         ; number of counts required to
+ReferenceCount  dw    ?    ; number of counts required to
                            ; execute timer overhead code
 OverflowFlag    db    ?    ; used to indicate whether the
                            ; timer overflowed during the
@@ -229,28 +229,28 @@ OverflowFlag    db    ?    ; used to indicate whether the
 ; String printed to report results.
 ;
 OutputStr  label byte
-           db    0dh, 0ah, ‘Timed count: ‘, 5 dup (?)
-ASCIICountEnd    labelbyte
-           db    ‘ microseconds', 0dh, 0ah
-           db    ‘$'
+           db    0dh, 0ah, 'Timed count: ', 5 dup (?)
+ASCIICountEnd    label byte
+           db    ' microseconds', 0dh, 0ah
+           db    '$'
 ;
 ; String printed to report timer overflow.
 ;
 OverflowStr label byte
       db    0dh, 0ah
-      db    ‘****************************************************'
+      db    '****************************************************'
       db    0dh, 0ah
-      db    ‘* The timer overflowed, so the interval timed was  *'
+      db    '* The timer overflowed, so the interval timed was  *'
       db    0dh, 0ah
-      db    ‘* too long for the precision timer to measure.     *'
+      db    '* too long for the precision timer to measure.     *'
       db    0dh, 0ah
-      db    ‘* Please perform the timing test again with the    *'
-db0dh, 0ah
-      db    ‘* long-period timer.                               *'    
+      db    '* Please perform the timing test again with the    *'
       db    0dh, 0ah
-      db    ‘****************************************************'
+      db    '* long-period timer.                               *'
       db    0dh, 0ah
-      db    ‘$'
+      db    '****************************************************'
+      db    0dh, 0ah
+      db    '$'
 
 ; ********************************************************************
 ; * Routine called to start timing.                                  *
@@ -418,7 +418,7 @@ ZTimerOff  endp
 ; Called by ZTimerOff to start timer for overhead measurements.
 ;
 
-ReferenceZTimerOnproc   near
+ReferenceZTimerOn proc  near
 ;
 ; Save the context of the program being timed.
 ;
@@ -445,7 +445,7 @@ ReferenceZTimerOnproc   near
      pop    ax
      ret
 
-ReferenceZTimerOnendp
+ReferenceZTimerOn endp
 
 ;
 ; Called by ZTimerOff to stop timer and add result to ReferenceCount
@@ -488,7 +488,7 @@ ReferenceZTimerOff endp
 ; * Routine called to report timing results.                         *
 ; ********************************************************************
 
-ZTimerReport procnear
+ZTimerReport proc    near
 
        pushf
        push  ax
@@ -541,7 +541,7 @@ CTSLoop:
 ;
      mov   ah, 9
      mov   dx, offset OutputStr
-     int   21h 
+     int   21h
 ;
 EndZTimerReport:
      pop   ds
@@ -2190,7 +2190,7 @@ call     near ptr ReferenceZTimerOn
 (and likewise for `ReferenceZTimerOff`), which works because
 `ReferenceZTimerOn` is in the same segment as the calling code. This
 is normally a great optimization, being both smaller and faster than a
-far call. 
+far call.
 
 ![**Figure 3.3**  *Changes for use with large code model C.*](images/03-03.jpg)
 
