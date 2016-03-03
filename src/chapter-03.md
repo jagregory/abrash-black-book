@@ -913,13 +913,13 @@ and should contain calls to `ZTimerOn` and `ZTimerOff` .
 ;
 ; By Michael Abrash
 ;
-mystack   segment  para stack ‘STACK'
+mystack   segment  para stack 'STACK'
       db  512 dup(?)
 mystack   ends
 ;
-Code  segment   para public ‘CODE'
+Code  segment   para public 'CODE'
       assume    cs:Code, ds:Code
-      extrnZTimerOn:near, ZTimerOff:near, ZTimerReport:near
+      extrn     ZTimerOn:near, ZTimerOff:near, ZTimerReport:near
 Start proc near
       push cs
       pop  ds    ; set DS to point to the code segment,
