@@ -68,29 +68,29 @@ BufSeg       dw   ?     ;buffer segment
 EndMrk       db   ?     ;marker for the end of the stack frame
 OnStack      ends
 ;
-ClearS       proc near
-     push    bp                         ;save caller's BP
-     mov     bp,sp                      ;point to stack frame
-     cmp     word ptr [bp].BufSeg,0     ;skip the fill if a null
-    jne      Start                      ; pointer is passed
-    cmp      word ptr [bp].BufOfs,0
-    je       Bye
-Start: cld                           ;make STOSW count up
-    mov      ax,[bp].Attrib          ;load AX with attribute parameter
-    and      ax,0ff00h               ;prepare for merging with fill char
-    mov      bx,[bp].Filler          ;load BX with fill char
-    and      bx,0ffh                 ;prepare for merging with attribute
-    or       ax,bx                   ;combine attribute and fill char
-    mov      bx,[bp].BufOfs          ;load DI with target buffer offset
-    mov      di,bx
-    mov      bx,[bp].BufSeg          ;load ES with target buffer segment
-    mov      es,bx
-    mov      cx,[bp].BufSize         ;load CX with buffer size
-    rep      stosw                   ;fill the buffer
-Bye:mov      sp,bp                   ;restore original stack pointer
-    pop      bp                      ; and caller's BP
-    ret      EndMrk-RetAddr-2        ;return, clearing the parms from the stack
-ClearS       endp
+ClearS proc near
+       push     bp                      ;save caller's BP
+       mov      bp,sp                   ;point to stack frame
+       cmp      word ptr [bp].BufSeg,0  ;skip the fill if a null
+       jne      Start                   ; pointer is passed
+       cmp      word ptr [bp].BufOfs,0
+       je       Bye
+Start: cld                              ;make STOSW count up
+       mov      ax,[bp].Attrib          ;load AX with attribute parameter
+       and      ax,0ff00h               ;prepare for merging with fill char
+       mov      bx,[bp].Filler          ;load BX with fill char
+       and      bx,0ffh                 ;prepare for merging with attribute
+       or       ax,bx                   ;combine attribute and fill char
+       mov      bx,[bp].BufOfs          ;load DI with target buffer offset
+       mov      di,bx
+       mov      bx,[bp].BufSeg          ;load ES with target buffer segment
+       mov      es,bx
+       mov      cx,[bp].BufSize         ;load CX with buffer size
+       rep      stosw                   ;fill the buffer
+Bye:   mov      sp,bp                   ;restore original stack pointer
+       pop      bp                      ; and caller's BP
+       ret      EndMrk-RetAddr-2        ;return, clearing the parms from the stack
+ClearS endp
 ```
 
 The first thing you'll notice about Listing 22.1 is that `ClearS` uses
@@ -121,27 +121,27 @@ DI directly as shown in Listing 22.2.
 **LISTING 22.2 L22-2.ASM**
 
 ```nasm
-ClearS        proc near
-      push    bp                        ;save caller's BP
-      mov     bp,sp                     ;point to stack frame
-      cmp     word ptr [bp].BufSeg,0    ;skip the fill if a null
-      jne     Start                     ; pointer is passed
-      cmp     word ptr [bp].BufOfs,0
-      je      Bye
+ClearS proc near
+       push    bp                       ;save caller's BP
+       mov     bp,sp                    ;point to stack frame
+       cmp     word ptr [bp].BufSeg,0   ;skip the fill if a null
+       jne     Start                    ; pointer is passed
+       cmp     word ptr [bp].BufOfs,0
+       je      Bye
 Start: cld                              ;make STOSW count up
-      mov     ax,[bp].Attrib            ;load AX with attribute parameter
-      and     ax,0ff00h                 ;prepare for merging with fill char
-      mov     bx,[bp].Filler            ;load BX with fill char
-      and      bx,0ffh                  ;prepare for merging with attribute
-      or       ax,bx                    ;combine attribute and fill char
-     mov       di,[bp].BufOfs           ;load DI with target buffer offset
-     mov       es,[bp].BufSeg           ;load ES with target buffer segment
-     mov       cx,[bp].BufSize          ;load CX with buffer size
-     rep       stosw                    ;fill the buffer
+       mov     ax,[bp].Attrib           ;load AX with attribute parameter
+       and     ax,0ff00h                ;prepare for merging with fill char
+       mov     bx,[bp].Filler           ;load BX with fill char
+       and     bx,0ffh                  ;prepare for merging with attribute
+       or      ax,bx                    ;combine attribute and fill char
+       mov     di,[bp].BufOfs           ;load DI with target buffer offset
+       mov     es,[bp].BufSeg           ;load ES with target buffer segment
+       mov     cx,[bp].BufSize          ;load CX with buffer size
+       rep     stosw                    ;fill the buffer
 Bye:
-     pop       bp                       ;restore caller's BP
-     ret       EndMrk-RetAddr-2         ;return, clearing the parms from the stack
-ClearS         endp
+       pop     bp                       ;restore caller's BP
+       ret     EndMrk-RetAddr-2         ;return, clearing the parms from the stack
+ClearS endp
 ```
 
 (The `OnStack` structure definition doesn't change in any of our
@@ -158,27 +158,27 @@ loading ES and DI as shown in Listing 22.3.
 **LISTING 22.3 L22-3.ASM**
 
 ```nasm
-ClearS         proc near
-      push     bp                       ;save caller's BP
-      mov      bp,sp                    ;point to stack frame
-      cmp      word ptr [bp].BufSeg,0   ;skip the fill if a null
-      jne      Start                    ; pointer is passed
-      cmp      word ptr [bp].BufOfs,0
-      je       Bye
+ClearS proc    near
+       push    bp                       ;save caller's BP
+       mov     bp,sp                    ;point to stack frame
+       cmp     word ptr [bp].BufSeg,0   ;skip the fill if a null
+       jne     Start                    ; pointer is passed
+       cmp     word ptr [bp].BufOfs,0
+       je      Bye
 Start: cld                              ;make STOSW count up
-      mov      ax,[bp].Attrib           ;load AX with attribute parameter
-      and      ax,0ff00h                ;prepare for merging with fill char
-      mov      bx,[bp].Filler           ;load BX with fill char
-      and      bx,0ffh                  ;prepare for merging with attribute
-      or       ax,bx                    ;combine attribute and fill char
-     les       di,dword ptr [bp].BufOfs ;load ES:DI with target buffer
+       mov     ax,[bp].Attrib           ;load AX with attribute parameter
+       and     ax,0ff00h                ;prepare for merging with fill char
+       mov     bx,[bp].Filler           ;load BX with fill char
+       and     bx,0ffh                  ;prepare for merging with attribute
+       or      ax,bx                    ;combine attribute and fill char
+       les     di,dword ptr [bp].BufOfs ;load ES:DI with target buffer
                                         ;segment:offset
-      mov      cx,[bp].BufSize          ;load CX with buffer size
-      rep      stosw                    ;fill the buffer
+       mov     cx,[bp].BufSize          ;load CX with buffer size
+       rep     stosw                    ;fill the buffer
 Bye:
-      pop      bp                       ;restore caller's BP
-      ret      EndMrk-RetAddr-2         ;return, clearing the parms from the stack
-ClearS         endp
+       pop     bp                       ;restore caller's BP
+       ret     EndMrk-RetAddr-2         ;return, clearing the parms from the stack
+ClearS endp
 ```
 
 That's good for another three bytes. We're down to 43 bytes, and
@@ -190,27 +190,27 @@ values as shown in Listing 22.4.
 
 **LISTING 22.4 L22-4.ASM**
 
-    ClearS         proc near
-          push     bp                       ;save caller's BP
-          mov      bp,sp                    ;point to stack frame
-          cmp      word ptr [bp].BufSeg,0   ;skip the fill if a null
-          jne      Start                    ; pointer is passed
-          cmp      word ptr [bp].BufOfs,0
-          je       Bye
-    Start: cld                              ;make STOSW count up
-          mov      ax,[bp].Attrib           ;load AX with      attribute parameter
-          sub      al,al                    ;prepare for merging with fill char
-          mov      bx,[bp].Filler           ;load BX with fill char
-          sub      bh,bh                    ;prepare for merging with attribute
-          or       ax,bx                    ;combine attribute and fill char
-          les      di,dword ptr [bp].BufOfs ;load ES:DI with target buffer
-                                            ;segment:offset
-          mov      cx,[bp].BufSize          ;load CX with buffer size
-          rep      stosw                    ;fill the buffer
+    ClearS proc near
+           push     bp                       ;save caller's BP
+           mov      bp,sp                    ;point to stack frame
+           cmp      word ptr [bp].BufSeg,0   ;skip the fill if a null
+           jne      Start                    ; pointer is passed
+           cmp      word ptr [bp].BufOfs,0
+           je       Bye
+    Start: cld                               ;make STOSW count up
+           mov      ax,[bp].Attrib           ;load AX with attribute parameter
+           sub      al,al                    ;prepare for merging with fill char
+           mov      bx,[bp].Filler           ;load BX with fill char
+           sub      bh,bh                    ;prepare for merging with attribute
+           or       ax,bx                    ;combine attribute and fill char
+           les      di,dword ptr [bp].BufOfs ;load ES:DI with target buffer
+                                             ;segment:offset
+           mov      cx,[bp].BufSize          ;load CX with buffer size
+           rep      stosw                    ;fill the buffer
     Bye:
-          pop      bp                       ;restore caller's BP
-          ret      EndMrk-RetAddr-2         ;return, clearing the parms from the stack
-    ClearS         endp
+           pop      bp                       ;restore caller's BP
+           ret      EndMrk-RetAddr-2         ;return, clearing the parms from the stack
+    ClearS endp
 
 Now we're down to 40 bytes—more than 20 percent smaller than the
 original code. That's pretty much it for simple instruction
@@ -232,23 +232,23 @@ shows the new code.
 **LISTING 22.5 L22-5.ASM**
 
 ```nasm
-ClearS         proc near
-      push     bp                       ;save caller's BP
-      mov      bp,sp                    ;point to stack frame
-      cmp      word ptr [bp].BufSeg,0   ;skip the fill if a null
-      jne      Start                    ; pointer is passed
-      cmp      word ptr [bp].BufOfs,0
-      je       Bye
-Start: cld                              ;make STOSW count up
-      mov     ah,byte ptr [bp].Attrib[1];load AH with attribute
-      mov      al,byte ptr [bp].Filler  ;load AL with fill char
-      les      di,dword ptr [bp].BufOfs ;load ES:DI with target buffer segment:offset
-      mov      cx,[bp].BufSize          ;load CX with buffer size
-      rep      stosw                    ;fill the buffer
+ClearS proc near
+       push     bp                         ;save caller's BP
+       mov      bp,sp                      ;point to stack frame
+       cmp      word ptr [bp].BufSeg,0     ;skip the fill if a null
+       jne      Start                      ; pointer is passed
+       cmp      word ptr [bp].BufOfs,0
+       je       Bye
+Start: cld                                 ;make STOSW count up
+       mov      ah,byte ptr [bp].Attrib[1] ;load AH with attribute
+       mov      al,byte ptr [bp].Filler    ;load AL with fill char
+       les      di,dword ptr [bp].BufOfs   ;load ES:DI with target buffer segment:offset
+       mov      cx,[bp].BufSize            ;load CX with buffer size
+       rep      stosw                      ;fill the buffer
 Bye:
-      pop      bp                       ;restore caller's BP
-      ret      EndMrk-RetAddr-2         ;return, clearing the parms from the stack
-ClearS         endp
+       pop      bp                         ;restore caller's BP
+       ret      EndMrk-RetAddr-2           ;return, clearing the parms from the stack
+ClearS endp
 ```
 
 (We could get rid of yet another instruction by having the calling code
@@ -266,22 +266,22 @@ shown in Listing 22.6.
 **LISTING 22.6 L22-6.ASM**
 
 ```nasm
-ClearS         proc near
-      push     bp                       ;save caller's BP
-      mov      bp,sp                    ;point to stack frame
-      les      di,dword ptr [bp].BufOfs ;load ES:DI with target buffer;segment:offset
-      mov      ax,es                    ;put segment where we can test it
-      or       ax,di                    ;is it a null pointer?
-      je       Bye                      ;yes, so we're done
-Start: cld                              ;make STOSW count up
-      mov     ah,byte ptr [bp].Attrib[1];load AH with attribute
-      mov      al,byte ptr [bp].Filler  ;load AL with fill char
-      mov      cx,[bp].BufSize          ;load CX with buffer size
-      rep      stosw                    ;fill the buffer
+ClearS proc near
+       push     bp                          ;save caller's BP
+       mov      bp,sp                       ;point to stack frame
+       les      di,dword ptr [bp].BufOfs    ;load ES:DI with target buffer;segment:offset
+       mov      ax,es                       ;put segment where we can test it
+       or       ax,di                       ;is it a null pointer?
+       je       Bye                         ;yes, so we're done
+Start: cld                                  ;make STOSW count up
+       mov      ah,byte ptr [bp].Attrib[1]  ;load AH with attribute
+       mov      al,byte ptr [bp].Filler     ;load AL with fill char
+       mov      cx,[bp].BufSize             ;load CX with buffer size
+       rep      stosw                       ;fill the buffer
 Bye:
-      pop      bp                       ;restore caller's BP
-      ret      EndMrk-RetAddr-2         ;return, clearing the parms from the stack
-ClearS         endp
+       pop      bp                          ;restore caller's BP
+       ret      EndMrk-RetAddr-2            ;return, clearing the parms from the stack
+ClearS endp
 ```
 
 Well. Now we're down to 28 bytes, having reduced the size of this
@@ -327,22 +327,22 @@ With that problem dealt with, Listing 22.7 shows the Zenned version of
 **LISTING 22.7 L22-7.ASM**
 
 ```nasm
-ClearS         procnear
-      pop      dx                  ;get the return address
-      pop      ax                  ;put fill char into AL
-      pop      bx                  ;get the attribute
-      mov      ah,bh               ;put attribute into AH
-      pop      cx                  ;get the buffer size
-      pop      di                  ;get the offset of the buffer origin
-      pop      es                  ;get the segment of the buffer origin
-      mov      bx,es               ;put the segment where we can test it
-      or       bx,di               ;null pointer?
-      je       Bye                 ;yes, so we're done
-      cld                          ;make STOSW count up
-      rep      stosw               ;do the string store
+ClearS proc near
+       pop      dx                  ;get the return address
+       pop      ax                  ;put fill char into AL
+       pop      bx                  ;get the attribute
+       mov      ah,bh               ;put attribute into AH
+       pop      cx                  ;get the buffer size
+       pop      di                  ;get the offset of the buffer origin
+       pop      es                  ;get the segment of the buffer origin
+       mov      bx,es               ;put the segment where we can test it
+       or       bx,di               ;null pointer?
+       je       Bye                 ;yes, so we're done
+       cld                          ;make STOSW count up
+       rep      stosw               ;do the string store
 Bye:
-      jmp      dx                  ;return to the calling code
-ClearS         endp
+       jmp      dx                  ;return to the calling code
+ClearS endp
 ```
 
 At long last, we're down to the bare metal. This version of `ClearS`
