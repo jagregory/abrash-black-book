@@ -23,7 +23,7 @@ learn in the space of a few months on the PC.
 
 The biggest benefit to me of actually making money as a programmer was
 the ability to buy all the books and magazines I wanted. I bought a lot.
-I was in territory that I new almost nothing about, so I read
+I was in territory that I knew almost nothing about, so I read
 *everything* that I could get my hands on. Feature articles, editorials,
 even advertisements held information for me to assimilate.
 
