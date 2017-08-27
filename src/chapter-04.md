@@ -1053,7 +1053,7 @@ reduction can vary considerably and unpredictably, depending on how the
 DRAM refreshes interact with your code's pattern of memory accesses.
 When you use the Zen timer and get a fractional cycle count for the
 execution time of an instruction, that's often the DRAM refresh
-cycle-eater at work. (The display adapter cycleis another possible
+cycle-eater at work. (The display adapter cycle is another possible
 culprit, and, on 386s and later processors, cache misses and pipeline
 execution hazards produce this sort of effect as well.) Whenever you get
 two timing results that differ less or more than they seemingly should,
