@@ -485,7 +485,7 @@ One possible optimization is unrolling the loop, although that is truly
 a last resort because it tends to make further changes extremely
 difficult.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Exhaust all other optimizations before unrolling loops.
 
 ### Challenges and Hazards
@@ -552,7 +552,7 @@ base+index addressing (`[EBX+EAX]`), which saves a cycle on the 386.
 Second: Changing the instruction to `CMP [EAX],DH` saved 2 cycles—just
 enough, by good fortune, to speed up the whole program by 5 percent.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > `CMP reg,[mem]` takes 6 cycles on the 386, but `CMP [ mem ],reg`
 > takes only 5 cycles; you should always perform`CMP` with the memory
 > operand on the left on the 386.
@@ -600,7 +600,7 @@ faster. Consider the incongruity of Terje's willingness to consider a 5
 percent speedup significant in light of his later near-doubling of
 performance.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Don't get stuck in the rut of instruction-by-instruction optimization.
 > It's useful in key loops, but very often, a change in approach will work
 > far greater wonders than any amount of cycle counting can.
@@ -860,7 +860,7 @@ don't even guarantee that David Stafford's entry works perfectly,
 although, knowing him, it probably does; the more complex and cryptic
 the code, the greater the chance for obscure bugs.)
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Remember, optimize only when needed, and stop when further optimization
 > will not be noticed. Optimization that's not perceptible to the user is
 > like buying Telly Savalas a comb; it's not going to do any harm, but
@@ -1207,7 +1207,7 @@ and using the resulting value to index into the 64K table, adding in the
 to perform all word-counting tasks for a pair of bytes. Three
 instructions, no branches—pretty nearly perfect code.
 
-![**Figure 16.1**  *The two potential word count locations.*](images/16-01.jpg)
+![**Figure 16.1**  *The two potential word count locations.*](../images/16-01.jpg)
 
 One detail remains to be attended to: setting the Carry flag for next
 time if the last byte was a non-separator. David does this in a bizarre
@@ -1219,7 +1219,7 @@ masked off before being added to the total count, so David is
 essentially using different parts of the count variables for different
 purposes (counting, and setting the Carry flag).
 
-![**Figure 16.2**  *Looking up a word count status.*](images/16-02.jpg)
+![**Figure 16.2**  *Looking up a word count status.*](../images/16-02.jpg)
 
 There are a number of other interesting details in David's code,
 including the unrolling of the loop 64 times, so that 256 bytes in a row

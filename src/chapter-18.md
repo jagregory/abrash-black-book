@@ -39,7 +39,7 @@ circumscribed arena.
 Why am I telling you this? First, because it is a useful lesson for
 programming.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > All programming is performed within limitations, some of which can be
 > bent or changed, but many of which cannot. You cannot change the maximum
 > memory bandwidth of a VGA, or the maximum instruction execution rate of
@@ -905,7 +905,7 @@ as shown in Figure 18.1. Therefore, the neighbor count for a given cell
 never needs to reflect more than seven neighbors, because at least one
 of the eight neighbors' states is already encoded in the word.]
 
-![**Figure 18.1**  *Cell triplet storage.*](images/18-01.jpg)
+![**Figure 18.1**  *Cell triplet storage.*](../images/18-01.jpg)
 
 "The basic idea is to maintain a ‘change list.' This is an array of
 pointers into the cell array. Each change list element points to a word

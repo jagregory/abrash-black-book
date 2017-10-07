@@ -85,7 +85,7 @@ for earlier x86 processors. Generally, I'll be discussing optimization
 for real mode (it being the most widely used mode at the moment),
 although many of the rules should apply to protected mode as well.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > 486 optimization is generally more precise and less frustrating than
 > optimization for other x86 processors because every 486 has an identical
 > internal cache. Whenever both the instructions being executed and the
@@ -121,7 +121,7 @@ matter what register is used.) `MOV AX, [BX+DI]` and `MOV CL,
 [BP+SI+10]` perform indexed addressing; `MOV AX,[BX]` and `MOV DL,
 [SI+1]` do not.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Therefore, in real mode, the rule is to avoid using two registers to
 > point to memory whenever possible. Often, this simply means adding the
 > two registers together outside a loop before memory is actually
@@ -233,7 +233,7 @@ documentation understates the extent of the penalty for interrupting the
 address calculation pipeline by loading a memory pointer just before
 it's used.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > The truth of the matter appears to be that if a register is the
 > destination of one instruction and is then used by the next instruction
 > to address memory in real mode, not one but two cycles are lost!
@@ -248,7 +248,7 @@ improvement in the performance of the entire loop. But wait, there's
 more. If a register is loaded 2 cycles (which generally means 2
 instructions, but, because some 486 instructions take more than 1 cycle,
 
-![**Figure 12.1**  *One-cycle-ahead address pipelining.*](images/12-01.jpg)
+![**Figure 12.1**  *One-cycle-ahead address pipelining.*](../images/12-01.jpg)
 
 the 2 are not always equivalent) before it's used to point to memory, 1
 cycle is lost. Therefore, whereas this code
@@ -294,7 +294,7 @@ Figure 12.2 will do just fine for optimization purposes.)
 Clearly, there's considerable optimization potential in careful
 rearrangement of 486 code.
 
-![**Figure 12.2**  *Two-cycle-ahead address pipelining.*](images/12-02.jpg)
+![**Figure 12.2**  *Two-cycle-ahead address pipelining.*](../images/12-02.jpg)
 
 ### Caveat Programmor
 
@@ -460,7 +460,7 @@ mentioned in this chapter apply to `XLAT`, apparently because `XLAT`
 is so slow—4 cycles—that it gives the 486 time to perform addressing
 calculations during the course of the instruction.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > While it's nice that `XLAT` doesn't suffer from the various 486
 > addressing penalties, the reason for that is basically that `XLAT` is
 > slow, so there's still no compelling reason to use `XLAT` on the 486.
@@ -547,7 +547,7 @@ presumably, `MOV CL,AL` interrupts the pipeline again because the
 pipeline is now on its first cycle: the one that loading a byte register
 can affect.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > I know—it seems awfully complicated. It isn't, really. Generally, try
 > not to use byte destinations exactly two cycles before using a register
 > to address memory, and try not to load a register either one or two
@@ -621,7 +621,7 @@ more than doubles to 224 µs, or 3.7 cycles per repetition; the extra
 seven-tenths of a cycle comes from fetching non-cached instruction
 bytes.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Whenever you see non-integral timing results of this sort, it's a good
 > bet that the test code or data isn't cached.
 

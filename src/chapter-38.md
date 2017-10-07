@@ -94,7 +94,7 @@ is reached. At first glance, rasterization does not seem to be
 particularly complicated, although it should be apparent that this
 simple approach is inadequate for nonconvex polygons.
 
-![**Figure 38.1**  *Convex, nonconvex, and complex polygons.*](images/38-01.jpg)
+![**Figure 38.1**  *Convex, nonconvex, and complex polygons.*](../images/38-01.jpg)
 
 There are a couple of complications, however. The lesser complication is
 how to rasterize the polygon efficiently, given that it's difficult to
@@ -127,7 +127,7 @@ supposed to, and all drawing on raster displays is, after all, only an
 approximation of an ideal.
 
 ![**Figure 38.2**  *Drawing polygons with standard line-drawing
-algorithms.*](images/38-02.jpg)
+algorithms.*](../images/38-02.jpg)
 
 There's one great drawback to tracing polygons with standard lines,
 however: Adjacent polygons won't fit together properly, as shown in
@@ -155,7 +155,7 @@ with that, we're going to adopt the following rules:
     interior of the polygon is directly to the right (left edges are
     drawn, right edges aren't).
 
-    ![**Figure 38.3**  *The adjacent polygons problem.*](images/38-03.jpg)
+    ![**Figure 38.3**  *The adjacent polygons problem.*](../images/38-03.jpg)
 
   * Points located exactly on horizontal edges are drawn only if the
     interior of the polygon is directly below them (horizontal top edges
@@ -174,7 +174,7 @@ range around a pixel, then that pixel will be drawn once and only
 once—just what we need in order to be able to fit filled polygons
 together seamlessly.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > This sort of non-overlapping polygon filling isn't ideal for all
 > purposes. Polygons are skewed toward the top and left edges, which not
 > only introduces drawing error relative to the ideal polygon but also

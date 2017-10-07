@@ -532,7 +532,7 @@ in, and simply pass pointers to these structures to the low level,
 rather than passing many separate parameters, as is now the case. I've
 used separate parameters for simplicity and flexibility.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Be aware that as nifty as Mode X hardware-assisted masked copying is,
 > whether or not it's actually faster than software-only masked or
 > transparent copying depends upon the processor and the video adapter.
@@ -586,7 +586,7 @@ background. This continues at a rate of up to 60 times a second until
 Esc is pressed to exit the program. See Figure 49.1 for a screen shot of
 the resulting image—add the animation in your imagination.
 
-![**Figure 49.1**  *An animated Mode X screen.*](images/49-01.jpg)
+![**Figure 49.1**  *An animated Mode X screen.*](../images/49-01.jpg)
 
 **LISTING 49.5 L49-5.C**
 

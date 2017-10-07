@@ -111,7 +111,7 @@ the right location, rather than the jagged pattern of line segments that
 non-antialiased line-drawing algorithms such as Bresenham's (see
 Chapters 35, 36, and 37) trace out.
 
-![**Figure 42.1**  *The basic concept of Wu antialiasing.*](images/42-01.jpg)
+![**Figure 42.1**  *The basic concept of Wu antialiasing.*](../images/42-01.jpg)
 
 You might expect that the implementation of Wu antialiasing would fall
 into two distinct areas: tracing out the line (that is, finding the
@@ -178,7 +178,7 @@ bits of the first pixel's value. All this works because what the error
 accumulator accumulates is precisely the ideal line's current distance
 between the two bracketing pixels.
 
-![**Figure 42.2**  *Wu intensity calculations.*](images/42-02.jpg)
+![**Figure 42.2**  *Wu intensity calculations.*](../images/42-02.jpg)
 
 The intensity calculations take longer to describe than they do to
 perform. All that's involved is a shift of the error accumulator to
@@ -945,7 +945,7 @@ accurate polygon-antialiasing approach around Wu's basic weighting
 technique. The results would not be quite so good as more sophisticated
 antialiasing techniques, but they would be much faster.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > In general, the results obtained by Wu antialiasing are only so-so, by
 > theoretical measures. Wu antialiasing amounts to a simple box filter
 > placed over a fixed-point step approximation of a line, and that process

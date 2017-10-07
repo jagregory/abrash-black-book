@@ -124,7 +124,7 @@ internal cache. The 486 has a single 8K cache that stores both code and
 data, and prefetching can stall if data fetching doesn't allow time for
 prefetching to occur (although this rarely happens in practice).
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > The Pentium, on the other hand, has two separate 8K caches, one for code
 > and one for data, so code prefetches can never collide with data
 > fetches; the prefetch queue can stall only when the code being fetched
@@ -156,7 +156,7 @@ bits, and runs twice as fast, at 66 MHz, so the Pentium can fetch both
 instruction and data bytes from the external cache four times as fast as
 the 486.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Even when the Pentium is running flat-out with both pipes in use, it can
 > generally consume only about twice as many bytes as the 486; so the
 > ratio of external memory bandwidth to processing power is much improved,
@@ -285,7 +285,7 @@ recommends for 486 jump targets. The 32-byte alignment might make for
 slightly more efficient Pentium cache usage, but would make code much
 bigger overall.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > In fact, given that most jump targets aren't in performance-critical
 > code, it's hard to make a compelling argument for aligning branch
 > targets even on the 486. I'd say that no alignment (except possibly
@@ -325,7 +325,7 @@ primarily an operating system instruction—but there's a hidden gotcha
 here because the `XCHG` instruction always locks the bus when used
 with a memory operand.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > `XCHG` is a tempting instruction that's often used in assembly
 > language; for example, exchanging with video memory is a popular way to
 > read and write VGA memory in a single instruction—but it's now a bad
@@ -359,7 +359,7 @@ the branch or fall-through takes 4 or 5 cycles (if it executes in the U-
 or V-pipe, respectively)—1 or 2 cycles more than a branch and 3 or 4
 cycles more than a fall-through on the 486.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Branch prediction is unprecedented in the x86, and fundamentally alters
 > the nature of pedal-to-the-metal optimization, for the simple reason
 > that it renders unrolled loops largely obsolete. Rare indeed is the loop
@@ -399,7 +399,7 @@ count on a branch to take 1 cycle when it falls through, but on the
 Pentium you can't be sure whether it will take 1 or either 4 or 5 cycles
 on any given iteration.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > As things currently stand, branch prediction is an annoyance for
 > assembly language optimization because it's impossible to be certain
 > exactly how code will perform until you measure it, and even then it's

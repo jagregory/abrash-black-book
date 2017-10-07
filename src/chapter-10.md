@@ -68,7 +68,7 @@ always hungered to get results from my work as soon as possible; I
 gravitated toward graphics for its instant and very visible
 gratification. Over time, however, I've learned patience.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > I've come to spend an increasingly large portion of my time choosing
 > algorithms, designing, and simply giving my mind quiet time in which to
 > work on problems and come up with non-obvious approaches before coding;
@@ -168,7 +168,7 @@ calculation. Table 10.1 shows how long it takes this approach to find
 the GCD for several integer pairs. As expected, performance is extremely
 poor when iS is large.
 
-![**Figure 10.1**  *Using a brute-force algorithm to find a GCD.*](images/10-01.jpg)
+![**Figure 10.1**  *Using a brute-force algorithm to find a GCD.*](../images/10-01.jpg)
 
 **Integer pairs for which to find GCD**
 
@@ -270,7 +270,7 @@ iterations this approach requires relative to Listing 10.1 depends
 heavily on the values of iL and iS, so it's not always faster, but, as
 Table 10.1 indicates, Listing 10.2 is generally much better code.
 
-![**Figure 10.2**  *Using repeated subtraction algorithm to find a GCD.*](images/10-02.jpg)
+![**Figure 10.2**  *Using repeated subtraction algorithm to find a GCD.*](../images/10-02.jpg)
 
 Listing 10.2 is a far graver misstep than Listing 10.1, for all that
 it's faster. Listing 10.1 is obviously a hacked-up, brute-force
@@ -347,7 +347,7 @@ As you can see from Table 10.1, Euclid's algorithm is superior,
 especially for large numbers (and imagine if we were working with large
 *longs!*).
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Had I been implementing GCD determination without Sedgewick's help, I
 > would surely not have settled for Listing 10.1—but I might well have
 > ended up with Listing 10.2 in my enthusiasm over the "brilliant"
@@ -355,7 +355,7 @@ especially for large numbers (and imagine if we were working with large
 > GCD number from the greater. In a commercial product, my lack of
 > patience and discipline could have been costly indeed.
 
-![**Figure 10.3**  *Using Euclid's algorithm to find a GCD.*](images/10-03.jpg)
+![**Figure 10.3**  *Using Euclid's algorithm to find a GCD.*](../images/10-03.jpg)
 
 Give your mind time and space to wander around the edges of important
 programming problems before you settle on any one approach. I titled
@@ -526,7 +526,7 @@ lousy at; compilers could out-optimize you at this level with one pass
 tied behind their back *if* they knew as much about the code you're
 writing as you do, which they don't.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Design optimization—conceptual breakthroughs in understanding the
 > relationships between the needs of an application, the nature of the
 > data the application works with, and what the computer can do—is global

@@ -112,7 +112,7 @@ simple instructions such as `MOV` and `ADD`, but unable to handle
 `MUL, DIV`, string instructions, any sort of rotation or shift, or
 even `ADC` or `SBB`.
 
-![**Figure 20.1**  *The Pentium's two pipes.*](images/20-01.jpg)
+![**Figure 20.1**  *The Pentium's two pipes.*](../images/20-01.jpg)
 
 Getting two instructions executing simultaneously in the two pipes is
 trickier than it sounds, not only because the V-pipe can handle only a
@@ -121,7 +121,7 @@ because those instructions that the V-pipe can handle are able to pair
 only with certain U-pipe instructions. For example, `MOVSD` uses both
 pipes, so no instruction can be executed in parallel with `MOVSD`.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > The use of both pipes does make `MOVSD` nearly twice as fast on the
 > Pentium as on the 486, but it's nonetheless slower than using equivalent
 > simpler instructions that allow for superscalar execution. Stick to the
@@ -274,7 +274,7 @@ ROL/ROR/RCL/RCR  reg,1           (1 cycle)
 V-pipe-executable instructions to execute simultaneously (pair) in the
 V-pipe.**
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > A fundamental rule of Pentium optimization is that it pays to break
 > complex instructions into equivalent simple instructions, then shuffle
 > the simple instructions for maximum use of the V-pipe. This is true
@@ -283,7 +283,7 @@ V-pipe.**
 > allows more freedom to rearrange code to avoid the AGIs and register
 > contention I'll discuss in the next chapter.
 
-![**Figure 20.2**  *Instruction flow through the two pipes.*](images/20-02.jpg)
+![**Figure 20.2**  *Instruction flow through the two pipes.*](../images/20-02.jpg)
 
 One downside of this "RISCification" (turning complex instructions into
 simple, RISC-like ones) of Pentium-optimized code is that it makes for
@@ -301,7 +301,7 @@ push eax
 ```
 
 ![**Figure 20.3**  *Pushing a value from memory effectively in one
-cycle.*](images/20-03.jpg)
+cycle.*](../images/20-03.jpg)
 
 A more telling example is the following
 
@@ -322,7 +322,7 @@ proper sequencing, interleaving the simple instructions with other
 instructions that don't use EDX or `Mem Var`, the three-instruction
 sequence can be reduced to 1.5 cycles, but it is *14* bytes long.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > It's not unusual for Pentium optimization to approximately double both
 > performance and code size at the same time. In an important loop, go for
 > performance and ignore the size, but on a program-wide basis, the size
@@ -357,13 +357,13 @@ fully overlap, as described below). The logical conclusion would seem to
 be that we should strive to pair instructions of the same lengths, but
 that is often not correct.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > The actual rule is that we should strive to pair one-cycle instructions
 > (or, at most, two-cycle instructions, but not three-cycle instructions),
 > which in turn leads to the corollary that we should, in general, use
 > mostly one-cycle instructions when optimizing.
 
-![**Figure 20.4**  *Lockstep execution and idle time in the V-pipe.*](images/20-04.jpg)
+![**Figure 20.4**  *Lockstep execution and idle time in the V-pipe.*](../images/20-04.jpg)
 
 Here's why. The Pentium is fully capable of handling instructions that
 use memory operands in either pipe, or, if necessary, in both pipes at
@@ -392,7 +392,7 @@ banks your paired memory accesses fall in—that's just too much work—but
 you might want to watch out for simultaneously read addresses that have
 the same values for address
 
-![**Figure 20.5**  *The Pentium's eight bank data cache.*](images/20-05.jpg)
+![**Figure 20.5**  *The Pentium's eight bank data cache.*](../images/20-05.jpg)
 
 bits 2, 3, and 4 (fall in the same bank) in tight loops, and you should
 also avoid sequences like
@@ -458,10 +458,10 @@ instructions take 5 cycles in all to execute, and 4 cycles of idle
 time—2 in the U-pipe and 2 in the V-pipe, out of 10 cycles in all—are
 incurred in the process.
 
-![**Figure 20.6**  *Non-overlapped lockstep execution.*](images/20-06.jpg)
+![**Figure 20.6**  *Non-overlapped lockstep execution.*](../images/20-06.jpg)
 
 ![**Figure 20.7**  *Interleaving simple instructions for maximum
-performance.*](images/20-07.jpg)
+performance.*](../images/20-07.jpg)
 
 The solution is to break the instructions into simple instructions and
 interleave them, as shown in Figure 20.7, which accomplishes the same
@@ -517,7 +517,7 @@ complex memory operation; in pre-superscalar days, we used to employ
 those handy CISC memory instructions to do all that stuff without using
 any extra registers.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > More problematic still is that for maximum pairing, you'll typically
 > have two operations proceeding at once, one in each pipe, and trying to
 > keep two operations in registers at once is difficult indeed. There's
@@ -560,4 +560,4 @@ always been to grab the Zen timer and *measure actual performance*—and
 nowhere is this more true than on the Pentium. Don't believe it until
 you measure it!
 
-![**Figure 20.8**  *Prefix delays.*](images/20-08.jpg)
+![**Figure 20.8**  *Prefix delays.*](../images/20-08.jpg)

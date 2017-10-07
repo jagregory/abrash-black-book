@@ -264,7 +264,7 @@ the floating point results were sufficiently imprecise to creep from
 just under an integer value to just over it, so that the `ceil`
 function returned a coordinate that was one too large.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Floating point is very accurate—but it is not precise. Integer
 > calculations, properly performed, are.
 
@@ -429,7 +429,7 @@ states. With those wait states factored out, the assembly language
 version of `DrawHorizontalLineList` becomes almost three times as fast
 as the C code.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > There is a lesson here. An optimization has no fixed payoff; its value
 > fluctuates according to the context in which it is used. There's
 > relatively little benefit to further optimizing code that already spends

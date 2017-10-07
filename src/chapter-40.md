@@ -96,7 +96,7 @@ randomly; the X coordinate of an edge at one scan line is a consistent
 delta from that edge's X coordinate at the last scan line, and that is
 consistent for the length of the line.
 
-![**Figure 40.1**  *Filling one scan line by finding intersecting edges.*](images/40-01.jpg)
+![**Figure 40.1**  *Filling one scan line by finding intersecting edges.*](../images/40-01.jpg)
 
 This allows us to reduce the number of edges that must be checked for
 intersection; on any given scan line, we only need to check for
@@ -109,7 +109,7 @@ running list of currently active edges—called the *active edge table*
 intersection with the current scan line. Then, we can simply fill each
 scan line in turn according to the list of active edges at that line.
 
-![**Figure 40.2**  *Checking currently active edges (solid lines).*](images/40-02.jpg)
+![**Figure 40.2**  *Checking currently active edges (solid lines).*](../images/40-02.jpg)
 
 Maintaining the AET from one scan line to the next involves three steps:
 First, we must add to the AET any edges that start on the current scan
@@ -171,7 +171,7 @@ the following:
   
   7. If either the AET or GET isn't empty, go to step 2.
 
-![**Figure 40.3**  *The global and active edge tables as linked lists.*](images/40-03.jpg)
+![**Figure 40.3**  *The global and active edge tables as linked lists.*](../images/40-03.jpg)
 
 That's really all there is to it. Compare Listing 40.1 to the fast
 convex polygon filling code from Chapter 39, and you'll see that,
@@ -772,7 +772,7 @@ back links and insertion sorting aren't great enough; profiling a
 variety of polygons reveals that less than ten percent of total time is
 spent sorting the AET.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > The potential 1 to 5 percent speedup gained by optimizing AET sorting
 > just isn't worth it in any but the most demanding application—a good
 > example of the need to keep an overall perspective when comparing the

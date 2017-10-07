@@ -255,7 +255,7 @@ mapping, avoiding the work required for perspective. Mind you, the
 models are perspective-correct at the vertices; it's just the pixels
 between the vertices that suffer slight warping.
 
-![**Figure 69.1**  *Quake's triangle-model drawing pipeline.*](images/69-01.jpg)
+![**Figure 69.1**  *Quake's triangle-model drawing pipeline.*](../images/69-01.jpg)
 
 #### Trading Subpixel Precision for Speed
 
@@ -518,7 +518,7 @@ D_PolysetRecursiveTriangle (lp3, new, lp2);
 }
 ```
 
-![**Figure 69.2**  *One recursive subdivision triangle-drawing step.*](images/69-02.jpg)
+![**Figure 69.2**  *One recursive subdivision triangle-drawing step.*](../images/69-02.jpg)
 
 #### More Ideas that Might Work
 

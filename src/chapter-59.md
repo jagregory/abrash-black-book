@@ -157,7 +157,7 @@ that are children of that node must likewise be outside the view volume,
 for reasons that will become clear as we delve into the workings of BSP
 trees.
 
-![**Figure 59.1**  *The painter's algorithm.*](images/59-01.jpg)
+![**Figure 59.1**  *The painter's algorithm.*](../images/59-01.jpg)
 
 #### Limitations of BSP Trees
 
@@ -236,7 +236,7 @@ into two again, and so on, until each wall resides in its own unique
 subspace. An obvious question, then, is how should we carve up the world
 of Figure 59.2?
 
-![**Figure 59.2**  *A sample set of walls, viewed from above.*](images/59-02.jpg)
+![**Figure 59.2**  *A sample set of walls, viewed from above.*](../images/59-02.jpg)
 
 There are infinitely valid ways to carve up Figure 59.2, but the
 simplest is just to carve along the lines of the walls themselves, with
@@ -258,7 +258,7 @@ valid choice for the initial split; we'll return to the issue of
 choosing splitting walls in the next chapter.) This splitting into front
 and back is the essential dualism of BSP trees.
 
-![**Figure 59.3**  *Initial split along the line of wall C.*](images/59-03.jpg)
+![**Figure 59.3**  *Initial split along the line of wall C.*](../images/59-03.jpg)
 
 Next, in Figure 59.4, the front subspace of wall C is split by wall D.
 This is the only wall in that subspace, so we're done with wall C's
@@ -270,10 +270,10 @@ generated from wall B. Does wall A belong in the front or back subspace
 of wall B?
 
 ![**Figure 59.4**  *Split of wall C's front subspace along the line of
-wall D.*](images/59-04.jpg)
+wall D.*](../images/59-04.jpg)
 
 ![**Figure 59.5**  *Split of wall C's back subspace along the line of
-wall B.*](images/59-05.jpg)
+wall B.*](../images/59-05.jpg)
 
 Both, actually. Wall A gets split into two pieces, which I'll call wall
 A and wall E; each piece is assigned to the appropriate subspace and
@@ -312,9 +312,9 @@ children is on the far side from the viewpoint, draw the wall, and then
 visit the node's nearer child, in that order. Visiting a child is
 recursive, involving the same far-near visiting order.
 
-![**Figure 59.6**  *The final BSP tree.*](images/59-06.jpg)
+![**Figure 59.6**  *The final BSP tree.*](../images/59-06.jpg)
 
-![**Figure 59.7**  *Viewing the BSP tree from an arbitrary angle.*](images/59-07.jpg)
+![**Figure 59.7**  *Viewing the BSP tree from an arbitrary angle.*](../images/59-07.jpg)
 
 The key is that each BSP splitting line separates all the walls in the
 current subspace into two groups relative to the viewpoint, and every
@@ -324,7 +324,7 @@ BSP tree can be traversed to provide back-to-front or front-to-back
 ordering, with each node being visited only once.
 
 ![**Figure 59.8**  *Back-to-front traversal of the BSP tree as viewed in
-Figure 59.7.*](images/59-08.jpg)
+Figure 59.7.*](../images/59-08.jpg)
 
 The type of tree walk used to produce front-to-back or back-to-front BSP
 traversal is known as an *inorder* walk. More on this very shortly;
@@ -372,7 +372,7 @@ void WalkBSPTree(NODE *pNode)
 }
 ```
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Be aware that BSP trees can often be made smaller and more efficient by
 > detecting collinear surfaces (like aligned wall segments) and generating
 > only one BSP node for each collinear set, with the collinear surfaces
@@ -409,7 +409,7 @@ visits each node in a passed-in tree in inorder sequence. Each candidate
 unhesitatingly writes something like the perfectly good code in Listings
 59.2 and 59.3 shown next.
 
-![**Figure 59.9**  *An inorder walk of a BSP tree.*](images/59-09.jpg)
+![**Figure 59.9**  *An inorder walk of a BSP tree.*](../images/59-09.jpg)
 
 **Listing 59.2 L59\_2.C**
 
@@ -581,7 +581,7 @@ they are unfamiliar, they abandon the perfectly good model they used
 before and try to rederive it in the new context by the seat of their
 pants.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Here's a secret when you're faced with a situation like this: Step back
 > and get a clear picture of what your code has to do. Omit no steps. You
 > should build a model that is so consistent and solid that you can

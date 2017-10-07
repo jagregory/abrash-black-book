@@ -30,7 +30,7 @@ This involves perspective, shading, proper handling of hidden surfaces,
 and rapid and smooth screen updates; the whole deal is considerably more
 difficult to pull off on a PC than 2-D animation.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > In some senses, however, 3-D animation is easier than 2-D. Because
 > there's more going on in 3-D animation, the eye and brain tend to make
 > more assumptions, and so are more apt to see what they expect to see,
@@ -138,7 +138,7 @@ choose to work with and the order in which we evaluate them, so we must
 establish some conventions for defining polygons and evaluating the
 cross-product.
 
-![**Figure 51.1**  *The cross-product of two vectors.*](images/51-01.jpg)
+![**Figure 51.1**  *The cross-product of two vectors.*](../images/51-01.jpg)
 
 We'll define only convex polygons, with the vertices defined in
 clockwise order, as viewed from the outside; that is, if you're looking
@@ -165,7 +165,7 @@ information; unlike screen space, it does not reflect perspective
 effects.
 
 ![**Figure 51.2**  *Using the cross product to generate a polygon
-normal.*](images/51-02.jpg)
+normal.*](../images/51-02.jpg)
 
 Backface removal may also be performed using the polygon vertices in
 screen coordinates, which are integers. This is less accurate than using
@@ -476,7 +476,7 @@ around the X axis, which runs horizontally across the screen; the latter
 four keys are most conveniently used by flipping the keypad to the
 numeric state.
 
-![**Figure 51.3**  *Sample screens from the 3-D cube program.*](images/51-03.jpg)
+![**Figure 51.3**  *Sample screens from the 3-D cube program.*](../images/51-03.jpg)
 
 The demo involves six polygons, one for each side of the cube. Each of
 the polygons must be transformed and projected, so it would seem that 24
@@ -502,7 +502,7 @@ help a great deal to flag which of the objects had moved with respect to
 the viewer, performing a new transformation and projection only for
 those that had.
 
-![**Figure 51.4**  *The object data structure*](images/51-04.jpg)
+![**Figure 51.4**  *The object data structure*](../images/51-04.jpg)
 
 With the above optimizations, the sample program is certainly adequately
 responsive on a 20 MHz 386 (sans 387; I'm sure it's wonderfully
