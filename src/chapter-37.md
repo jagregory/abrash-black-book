@@ -104,7 +104,7 @@ _LineDraw   proc  near
       cld
       push        bp                  ;preserve caller's stack frame
       mov         bp,sp               ;point to our stack frame
-      sub sp,     LOCAL_SIZE          ;allocate space for local variables
+      sub         sp, LOCAL_SIZE      ;allocate space for local variables
       push        si                  ;preserve C register variables
       push        di
       push        ds                  ;preserve caller's DS
@@ -115,7 +115,7 @@ _LineDraw   proc  near
       jle         LineIsTopToBottom
       xchg        [bp].YEnd,ax;          swap endpoints
       mov         [bp].YStart,ax
-      movbx,      [bp].XStart
+      mov         bx,[bp].XStart
       xchg        [bp].XEnd,bx
       mov         [bp].XStart,bx
 LineIsTopToBottom:

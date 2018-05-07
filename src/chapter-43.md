@@ -443,7 +443,7 @@ Dataends
 ;
 ; Macro to output a word value to a port.
 ;
-OUT_WORDmacro
+OUT_WORD macro
 if WORD_OUTS_OK
         out     dx,ax
 else
@@ -459,9 +459,9 @@ endif
 ; Macro to output a constant value to an indexed VGA
 ; register.
 ;
-CONSTANT_TO_INDEXED_REGISTERmacro ADDRESS, INDEX, VALUE
-        movdx,  ADDRESS
-        movax,  (VALUE shl 8) + INDEX
+CONSTANT_TO_INDEXED_REGISTER macro ADDRESS, INDEX, VALUE
+        mov     dx,  ADDRESS
+        mov     ax,  (VALUE shl 8) + INDEX
         OUT_WORD
         endm
 ;
@@ -704,7 +704,7 @@ DrawObject      proc    near
         mov     dx,ax           ;# of lines in the image
         lodsw                   ;# of bytes across the image
         mov     bp,SCREEN_WIDTH
-        subbp,ax                ;# of bytes to add to the display
+        sub     bp,ax           ;# of bytes to add to the display
                                 ; memory offset after copying a line
                                 ; of the image to display memory in
                                 ; order to point to the address
@@ -718,7 +718,7 @@ DrawLoop:
                                 ; next line will go in display
                                 ; memory
         dec     dx              ;count down the lines of the image
-        jnzDrawLoop
+        jnz     DrawLoop
         ret
 DrawObjectendp
 ;

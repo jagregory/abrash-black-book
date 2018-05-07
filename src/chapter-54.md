@@ -203,14 +203,14 @@ _FixedMul   endp
 ;       Fixedpoint FixedDiv(Fixedpoint Dividend, Fixedpoint Divisor);
 FDparms struc
          dw      2    dup(?)       ;return address & pushed BP
-Dividend dd?
-Divisor  dd?
+Dividend dd ?
+Divisor  dd ?
 FDparms ends
-        alignALIGNMENT
-        public_FixedDiv
+        align   ALIGNMENT
+        public  _FixedDiv
 _FixedDivproc    near
-        pushbp
-        movbp,sp
+        push    bp
+        mov     bp,sp
 
 if USE386
 
@@ -268,13 +268,13 @@ else                            ;!USE386
  ; projection can't be performed for points closer to the viewpoint than Z=1.
                                       ;figure out signs, so we can use
                                       ; unsigned divisions
-      subcx,    cx                    ;assume both operands positive
+      sub   cx,cx                     ;assume both operands positive
       mov   ax,word ptr [bp+Dividend+2]
       and   ax,ax;first operand negative?
       jns   CheckSecondOperandD ;no
       neg   ax                         ;yes, so negate first operand
       neg   word ptr [bp+Dividend]
-      sbbax,0
+      sbb   ax,0
       inc   cx                         ;mark that first operand is negative
       CheckSecondOperandD:
       mov    bx,word ptr [bp+Divisor+2]
@@ -366,9 +366,9 @@ CheckInRange:
      ja    Quadrant1
 ;quadrant 0
      shl   bx,2
-     move  ax,CosTable[bx]              ;look up sine
+     mov   eax,CosTable[bx]              ;look up sine
      neg   bx;sin(Angle) = cos(90-Angle)
-     move  dx,CosTable[bx+90*10*4]      ;look up cosine
+     mov   edx,CosTable[bx+90*10*4]      ;look up cosine
      jmp   short CSDone
 
      align ALIGNMENT
@@ -376,10 +376,10 @@ Quadrant1:
      neg   bx
      add   bx,180*10                    ;convert to angle between 0 and 90
      shl   bx,2
-     move  ax,CosTable[bx]              ;look up cosine
+     mov   eax,CosTable[bx]              ;look up cosine
      neg   eax                          ;negative in this quadrant
      neg   bx                           ;sin(Angle) = cos(90-Angle)
-     move  dx,CosTable[bx+90*10*4]      ;look up cosine
+     mov   edx,CosTable[bx+90*10*4]      ;look up cosine
      jmp   short CSDone
 
      align ALIGNMENT
@@ -390,9 +390,9 @@ BottomHalf:                             ;quadrant 2 or 3
      ja    Quadrant2
                                         ;quadrant 3
      shl   bx,2
-     move  ax,CosTable[bx]              ;look up cosine
+     mov   eax,CosTable[bx]              ;look up cosine
      neg   bx;sin(Angle) = cos(90-Angle)
-     move  dx,CosTable[90*10*4+bx]      ;look up sine
+     mov   edx,CosTable[90*10*4+bx]      ;look up sine
      neg   edx                          ;negative in this quadrant
      jmp   short CSDone
 
@@ -401,10 +401,10 @@ Quadrant2:
      neg   bx
      add   bx,180*10                    ;convert to angle between 0 and 90
      shl   bx,2
-     move  ax,CosTable[bx]              ;look up cosine
+     mov   eax,CosTable[bx]              ;look up cosine
      neg   eax                          ;negative in this quadrant
      neg   bx                           ;sin(Angle) = cos(90-Angle)
-     move  dx,CosTable[90*10*4+bx]      ;look up sine
+     mov   edx,CosTable[90*10*4+bx]      ;look up sine
      neg   edx                          ;negative in this quadrant
 CSDone:
      mov   bx,[bp].Cos
@@ -619,9 +619,9 @@ if MUL-ROUNDING-ON
      adc   edx,0                          ;whole part of result is in DX
 endif ;MUL-ROUNDING-ON
      shrd  eax,edx,16                     ;shift the result back to 16.16 form
-     move  cx,eax                         ;set running total
+     mov   ecx,eax                         ;set running total
 
-     move  ax,[si+soff+4]                 ;column 1 entry on this row
+     mov   eax,[si+soff+4]                 ;column 1 entry on this row
      imul  dword ptr [bx+4]               ;xform entry times source Y entry
 if MUL-ROUNDING-ON
      add   eax,8000h                      ;round by adding 2^(-17)
@@ -630,7 +630,7 @@ endif ;MUL-ROUNDING-ON
      shrd  eax,edx,16                     ;shift the result back to 16.16 form
      add   ecx,eax                        ;running total for this row
 
-     move  ax,[si+soff+8]                ;column 2 entry on this row
+     mov   eax,[si+soff+8]                ;column 2 entry on this row
      imul  dword ptr [bx+8]              ;xform entry times source Z entry
 if MUL-ROUNDING-ON
      add   eax,8000h                     ;round by adding 2^(-17)
@@ -759,17 +759,17 @@ coff=0                                 ;column offset
 REPT 3                                 ;once for each of the first 3 columns,
                                        ; assuming 0 as the bottom entry (no
                                        ; translation)
-          move    ax,[si+roff]         ;column 0 entry on this row
+          mov     eax,[si+roff]         ;column 0 entry on this row
           imul    dword ptr [bx+coff]  ;times row 0 entry in column
 if MUL-ROUNDING-ON
           add     eax,8000h            ;round by adding 2^(-17)
           adc     edx,0                ;whole part of result is in DX
 endif ;MUL-ROUNDING-ON
           shrd    eax,edx,16           ;shift the result back to 16.16 form
-          move    cx,eax               ;set running total
+          mov     ecx,eax               ;set running total
 
-          move    ax,[si+roff+4]       ;column 1 entry on this row
-          imuld   word ptr [bx+coff+16] ;times row 1 entry in col
+          mov     eax,[si+roff+4]       ;column 1 entry on this row
+          imul    dword ptr [bx+coff+16] ;times row 1 entry in col
 if MUL-ROUNDING-ON
           add     eax,8000h            ;round by adding 2^(-17)
           adc     edx,0                ;whole part of result is in DX
@@ -777,8 +777,8 @@ endif ;MUL-ROUNDING-ON
           shrd    eax,edx,16           ;shift the result back to 16.16 form
           add     ecx,eax              ;running total
 
-          move    ax,[si+roff+8]       ;column 2 entry on this row
-          imuld   word ptr [bx+coff+32] ;times row 2 entry in col
+          mov     eax,[si+roff+8]       ;column 2 entry on this row
+          imul    dword ptr [bx+coff+32] ;times row 2 entry in col
 if MUL-ROUNDING-ON
           add     eax,8000h             ;round by adding 2^(-17)
           adc     edx,0                 ;whole part of result is in DX
@@ -792,17 +792,17 @@ coff=coff+4                             ;point to next col in xform2 & dest
 ;now do the fourth column, assuming
 ; 1 as the bottom entry, causing
 ; translation to be performed
-          move    ax,[si+roff]          ;column 0 entry on this row
-          imuld   word ptr [bx+coff]    ;times row 0 entry in column
+          mov     eax,[si+roff]          ;column 0 entry on this row
+          imul    dword ptr [bx+coff]    ;times row 0 entry in column
 if MUL-ROUNDING-ON
           add     eax,8000h              ;round by adding 2^(-17)
           adc     edx,0                  ;whole part of result is in DX
 endif ;MUL-ROUNDING-ON
           shrd    eax,edx,16             ;shift the result back to 16.16 form
-          move    cx,eax                 ;set running total
+          mov     ecx,eax                 ;set running total
 
-          move    ax,[si+roff+4]         ;column 1 entry on this row
-          imuld   word ptr [bx+coff+16]  ;times row 1 entry in col
+          mov     eax,[si+roff+4]         ;column 1 entry on this row
+          imul    dword ptr [bx+coff+16]  ;times row 1 entry in col
 if MUL-ROUNDING-ON
           add     eax,8000h              ;round by adding 2^(-17)
           adc     edx,0                  ;whole part of result is in DX
@@ -810,8 +810,8 @@ endif ;MUL-ROUNDING-ON
           shrd    eax,edx,16             ;shift the result back to 16.16 form
           add     ecx,eax                ;running total
 
-          move    ax,[si+roff+8]         ;column 2 entry on this row
-          imuld   word ptr [bx+coff+32]  ;times row 2 entry in col
+          mov     eax,[si+roff+8]         ;column 2 entry on this row
+          imul    dword ptr [bx+coff+32]  ;times row 2 entry in col
 if MUL-ROUNDING-ON
           add     eax,8000h              ;round by adding 2^(-17)
           adc     edx,0                  ;whole part of result is in DX

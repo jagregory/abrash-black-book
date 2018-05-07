@@ -213,13 +213,13 @@ display modes):
 
 ```nasm
 SHL   AX,1        ;*2
-SH   LAX,1        ;*4
-SH   LAX,1        ;*8
-SH   LAX,1        ;*16
-MO   VBX,AX
-SH   LAX,1        ;*32
-SH   LAX,1        ;*64
-ADD  AX,BX        ;*80
+SHL   AX,1        ;*4
+SHL   AX,1        ;*8
+SHL   AX,1        ;*16
+MOV   BX,AX
+SHL   AX,1        ;*32
+SHL   AX,1        ;*64
+ADD   AX,BX       ;*80
 ```
 
 Using `LEA` on the 386, the above could be reduced to
@@ -242,7 +242,7 @@ Of course, on the 386, the shift and add version could also be reduced
 to this considerably more efficient code:
 
 ```nasm
-SH    LAX,4      ;*16
+SHL   AX,4       ;*16
 MOV   BX,AX
 SHL   AX,2       ;*64
 ADD   AX,BX      ;*80
@@ -766,9 +766,9 @@ _Divprocnear
                sub  dx,dx      ;convert initial divisor word to a 32-bit
                                ;value for DIV
 DivLoop:
-               lod  sw         ;get next most significant word of divisor
+               lodsw           ;get next most significant word of divisor
                div  bx
-               sto  sw         ;save this word of the quotient
+               stosw           ;save this word of the quotient
                                ;DX contains the remainder at this point,
                                ; ready to prepend to the next divisor word
                loop  DivLoop
