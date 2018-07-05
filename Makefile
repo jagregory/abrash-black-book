@@ -7,12 +7,12 @@ all: html epub mobi
 html:
 	rm -rf out/html && mkdir -p out/html
 	cp html/book.css out/html/
-	cd src && pandoc -S --to html5 -o ../out/html/black-book.html --section-divs --toc --standalone --template=../html/template.html $(FILES)
+	cd src && pandoc -f markdown+smart --to html5 -o ../out/html/black-book.html --section-divs --toc --standalone --template=../html/template.html $(FILES)
 
 epub:
 	mkdir -p out
 	rm -f out/black-book.epub
-	cd src && pandoc -S --to epub3 -o ../out/black-book.epub --epub-cover-image ../images/cover.png --toc --epub-chapter-level=2 --data-dir=epub --template=../epub/template.html $(FILES)
+	cd src && pandoc -f markdown+smart --to epub3 -o ../out/black-book.epub --epub-cover-image ../images/cover.png --toc --epub-chapter-level=2 --data-dir=epub --template=../epub/template.html $(FILES)
 	
 mobi:
 	rm -f out/black-book.mobi
