@@ -193,7 +193,7 @@ only 15 instructions are required per step along the major axis—and the
 number of instructions could be reduced to ten by special-casing and
 loop unrolling. Make no mistake about it, Wu antialiasing is fast.
 
-**LISTING 42.1 L42-1.C**
+**LISTING 42.1 [L42-1.C](../code/L42-1.C)**
 
 ```c
 /* Function to draw an antialiased line from (X0,Y0) to (X1,Y1), using an
@@ -214,121 +214,118 @@ extern void DrawPixel(int, int, int);
 /* Wu antialiased line drawer.
  * (X0,Y0),(X1,Y1) = line to draw
  * BaseColor = color # of first color in block used for antialiasing, the
- *          100% intensity version of the drawing color
+ *			100% intensity version of the drawing color
  * NumLevels = size of color block, with BaseColor+NumLevels-1 being the
- *          0% intensity version of the drawing color
+ *			0% intensity version of the drawing color
  * IntensityBits = log base 2 of NumLevels; the # of bits used to describe
- *          the intensity of the drawing color. 2**IntensityBits==NumLevels
+ *			the intensity of the drawing color. 2**IntensityBits==NumLevels
  */
-void DrawWuLine(int X0, int Y0, int X1, int Y1, int BaseColor, int NumLevels,
-   unsigned int IntensityBits)
+void DrawWuLine(int X0, int Y0, int X1, int Y1, int BaseColor, int NumLevels, unsigned int IntensityBits)
 {
-   unsigned int IntensityShift, ErrorAdj, ErrorAcc;
-   unsigned int ErrorAccTemp, Weighting, WeightingComplementMask;
-   int DeltaX, DeltaY, Temp, XDir;
+	unsigned int IntensityShift, ErrorAdj, ErrorAcc;
+	unsigned int ErrorAccTemp, Weighting, WeightingComplementMask;
+	int DeltaX, DeltaY, Temp, XDir;
 
-   /* Make sure the line runs top to bottom */
-   if (Y0 > Y1) {
-      Temp = Y0; Y0 = Y1; Y1 = Temp;
-      Temp = X0; X0 = X1; X1 = Temp;
-   }
-   /* Draw the initial pixel, which is always exactly intersected by
-      the line and so needs no weighting */
-   DrawPixel(X0, Y0, BaseColor);
+	/* Make sure the line runs top to bottom */
+	if (Y0 > Y1) {
+		Temp = Y0; Y0 = Y1; Y1 = Temp;
+		Temp = X0; X0 = X1; X1 = Temp;
+	}
+	/* Draw the initial pixel, which is always exactly intersected by
+	   the line and so needs no weighting */
+	DrawPixel(X0, Y0, BaseColor);
 
-   if ((DeltaX = X1 - X0) >= 0) {
-      XDir = 1;
-   } else {
-      XDir = -1;
-      DeltaX = -DeltaX; /* make DeltaX positive */
-   }
-   /* Special-case horizontal, vertical, and diagonal lines, which
-      require no weighting because they go right through the center of
-      every pixel */
-   if ((DeltaY = Y1 - Y0) == 0) {
-      /* Horizontal line */
-      while (DeltaX-- != 0) {
-         X0 += XDir;
-         DrawPixel(X0, Y0, BaseColor);
-      }
-      return;
-   }
-   if (DeltaX == 0) {
-      /* Vertical line */
-      do {
-         Y0++;
-         DrawPixel(X0, Y0, BaseColor);
-      } while (--DeltaY != 0);
-      return;
-   }
-   if (DeltaX == DeltaY) {
-      /* Diagonal line */
-      do {
-         X0 += XDir;
-         Y0++;
-         DrawPixel(X0, Y0, BaseColor);
-      } while (--DeltaY != 0);
-      return;
-   }
-   /* line is not horizontal, diagonal, or vertical */
-   ErrorAcc = 0;  /* initialize the line error accumulator to 0 */
-   /* # of bits by which to shift ErrorAcc to get intensity level */
-   IntensityShift = 16 - IntensityBits;
-   /* Mask used to flip all bits in an intensity weighting, producing the
-      result (1 - intensity weighting) */
-   WeightingComplementMask = NumLevels - 1;
-   /* Is this an X-major or Y-major line? */
-   if (DeltaY > DeltaX) {
-      /* Y-major line; calculate 16-bit fixed-point fractional part of a
-         pixel that X advances each time Y advances 1 pixel, truncating the
-         result so that we won't overrun the endpoint along the X axis */
-      ErrorAdj = ((unsigned long) DeltaX << 16) / (unsigned long) DeltaY;
-      /* Draw all pixels other than the first and last */
-      while (--DeltaY) {
-         ErrorAccTemp = ErrorAcc;   /* remember currrent accumulated error */
-         ErrorAcc += ErrorAdj;      /* calculate error for next pixel */
-         if (ErrorAcc <= ErrorAccTemp) {
-            /* The error accumulator turned over, so advance the X coord */
-            X0 += XDir;
-         }
-         Y0++; /* Y-major, so always advance Y */
-         /* The IntensityBits most significant bits of ErrorAcc give us the
-            intensity weighting for this pixel, and the complement of the
-            weighting for the paired pixel */
-         Weighting = ErrorAcc >> IntensityShift;
-         DrawPixel(X0, Y0, BaseColor + Weighting);
-         DrawPixel(X0 + XDir, Y0,
-               BaseColor + (Weighting ^ WeightingComplementMask));
-      }
-      /* Draw the final pixel, which is always exactly intersected by the line
-         and so needs no weighting */
-      DrawPixel(X1, Y1, BaseColor);
-      return;
-   }
-   /* It's an X-major line; calculate 16-bit fixed-point fractional part of a
-      pixel that Y advances each time X advances 1 pixel, truncating the
-      result to avoid overrunning the endpoint along the X axis */
-   ErrorAdj = ((unsigned long) DeltaY << 16) / (unsigned long) DeltaX;
-   /* Draw all pixels other than the first and last */
-   while (--DeltaX) {
-      ErrorAccTemp = ErrorAcc;   /* remember currrent accumulated error */
-      ErrorAcc += ErrorAdj;      /* calculate error for next pixel */
-      if (ErrorAcc <= ErrorAccTemp) {
-         /* The error accumulator turned over, so advance the Y coord */
-         Y0++;
-      }
-      X0 += XDir; /* X-major, so always advance X */
-      /* The IntensityBits most significant bits of ErrorAcc give us the
-         intensity weighting for this pixel, and the complement of the
-         weighting for the paired pixel */
-      Weighting = ErrorAcc >> IntensityShift;
-      DrawPixel(X0, Y0, BaseColor + Weighting);
-      DrawPixel(X0, Y0 + 1,
-            BaseColor + (Weighting ^ WeightingComplementMask));
-   }
-   /* Draw the final pixel, which is always exactly intersected by the line
-      and so needs no weighting */
-   DrawPixel(X1, Y1, BaseColor);
+	if ((DeltaX = X1 - X0) >= 0) {
+		XDir = 1;
+	} else {
+		XDir = -1;
+		DeltaX = -DeltaX; /* make DeltaX positive */
+	}
+	/* Special-case horizontal, vertical, and diagonal lines, which
+	   require no weighting because they go right through the center of
+	   every pixel */
+	if ((DeltaY = Y1 - Y0) == 0) {
+		/* Horizontal line */
+		while (DeltaX-- != 0) {
+			X0 += XDir;
+			DrawPixel(X0, Y0, BaseColor);
+		}
+		return;
+	}
+	if (DeltaX == 0) {
+		/* Vertical line */
+		do {
+			Y0++;
+			DrawPixel(X0, Y0, BaseColor);
+		} while (--DeltaY != 0);
+		return;
+	}
+	if (DeltaX == DeltaY) {
+		/* Diagonal line */
+		do {
+			X0 += XDir;
+			Y0++;
+			DrawPixel(X0, Y0, BaseColor);
+		} while (--DeltaY != 0);
+		return;
+	}
+	/* Line is not horizontal, diagonal, or vertical */
+	ErrorAcc = 0;  /* initialize the line error accumulator to 0 */
+	/* # of bits by which to shift ErrorAcc to get intensity level */
+	IntensityShift = 16 - IntensityBits;
+	/* Mask used to flip all bits in an intensity weighting, producing the
+	   result (1 - intensity weighting) */
+	WeightingComplementMask = NumLevels - 1;
+	/* Is this an X-major or Y-major line? */
+	if (DeltaY > DeltaX) {
+		/* Y-major line; calculate 16-bit fixed-point fractional part of a
+		  pixel that X advances each time Y advances 1 pixel, truncating the
+		  result so that we won't overrun the endpoint along the X axis */
+		ErrorAdj = ((unsigned long) DeltaX << 16) / (unsigned long) DeltaY;
+		/* Draw all pixels other than the first and last */
+		while (--DeltaY) {
+			ErrorAccTemp = ErrorAcc;   /* remember currrent accumulated error */
+			ErrorAcc += ErrorAdj;	   /* calculate error for next pixel */
+			if (ErrorAcc <= ErrorAccTemp) {
+				/* The error accumulator turned over, so advance the X coord */
+				X0 += XDir;
+			}
+			Y0++; /* Y-major, so always advance Y */
+			/* The IntensityBits most significant bits of ErrorAcc give us the
+			 intensity weighting for this pixel, and the complement of the
+			 weighting for the paired pixel */
+			Weighting = ErrorAcc >> IntensityShift;
+			DrawPixel(X0, Y0, BaseColor + Weighting);
+			DrawPixel(X0 + XDir, Y0, BaseColor + (Weighting ^ WeightingComplementMask));
+		}
+		/* Draw the final pixel, which is always exactly intersected by the line
+		  and so needs no weighting */
+		DrawPixel(X1, Y1, BaseColor);
+		return;
+	}
+	/* It's an X-major line; calculate 16-bit fixed-point fractional part of a
+	   pixel that Y advances each time X advances 1 pixel, truncating the
+	   result to avoid overrunning the endpoint along the X axis */
+	ErrorAdj = ((unsigned long) DeltaY << 16) / (unsigned long) DeltaX;
+	/* Draw all pixels other than the first and last */
+	while (--DeltaX) {
+		ErrorAccTemp = ErrorAcc;   /* remember currrent accumulated error */
+		ErrorAcc += ErrorAdj;	   /* calculate error for next pixel */
+		if (ErrorAcc <= ErrorAccTemp) {
+			/* The error accumulator turned over, so advance the Y coord */
+			Y0++;
+		}
+		X0 += XDir; /* X-major, so always advance X */
+		/* The IntensityBits most significant bits of ErrorAcc give us the
+		  intensity weighting for this pixel, and the complement of the
+		  weighting for the paired pixel */
+		Weighting = ErrorAcc >> IntensityShift;
+		DrawPixel(X0, Y0, BaseColor + Weighting);
+		DrawPixel(X0, Y0 + 1, BaseColor + (Weighting ^ WeightingComplementMask));
+	}
+	/* Draw the final pixel, which is always exactly intersected by the line
+	   and so needs no weighting */
+	DrawPixel(X1, Y1, BaseColor);
 }
 ```
 
@@ -344,7 +341,7 @@ Finally, Listing 42.4 is a simple, non-antialiased line-drawing routine.
 Link these four listings together and run the resulting program to see
 both Wu-antialiased and non-antialiased lines.
 
-**LISTING 42.2 L42-2.C**
+**LISTING 42.2 [L42-2.C](../code/L42-2.C)**
 
 ```c
 /* Sample line-drawing program to demonstrate Wu antialiasing. Also draws
@@ -358,78 +355,78 @@ void SetPalette(struct WuColor *);
 extern void DrawWuLine(int, int, int, int, int, int, unsigned int);
 extern void DrawLine(int, int, int, int, int);
 extern void SetMode(void);
-extern int ScreenWidthInPixels;  /* screen dimension globals */
+extern int ScreenWidthInPixels;	 /* screen dimension globals */
 extern int ScreenHeightInPixels;
 
 #define NUM_WU_COLORS 2 /* # of colors we'll do antialiased drawing with */
-struct WuColor {        /* describes one color used for antialiasing */
-   int BaseColor;       /* # of start of palette intensity block in DAC */
-   int NumLevels;       /* # of intensity levels */
-   int IntensityBits;   /* IntensityBits == log2 NumLevels */
-   int MaxRed;          /* red component of color at full intensity */
-   int MaxGreen;        /* green component of color at full intensity */
-   int MaxBlue;         /* blue component of color at full intensity */
+struct WuColor {		/* describes one color used for antialiasing */
+	int BaseColor;		/* # of start of palette intensity block in DAC */
+	int NumLevels;		/* # of intensity levels */
+	int IntensityBits;	/* IntensityBits == log2 NumLevels */
+	int MaxRed;			/* red component of color at full intensity */
+	int MaxGreen;		/* green component of color at full intensity */
+	int MaxBlue;		/* blue component of color at full intensity */
 };
-enum {WU_BLUE=0, WU_WHITE=1};             /* drawing colors */
+enum {WU_BLUE=0, WU_WHITE=1};			  /* drawing colors */
 struct WuColor WuColors[NUM_WU_COLORS] =  /* blue and white */
-    {{192, 32, 5, 0, 0, 0x3F}, {224, 32, 5, 0x3F, 0x3F, 0x3F}};
+	{{192, 32, 5, 0, 0, 0x3F}, {224, 32, 5, 0x3F, 0x3F, 0x3F}};
 
 void main()
 {
-   int CurrentColor, i;
-   union REGS regset;
+	int CurrentColor, i;
+	union REGS regset;
 
-   /* Draw Wu-antialiased lines in all directions */
-   SetMode();
-   SetPalette(WuColors);
-   for (i=5; i<ScreenWidthInPixels; i += 10) {
-      DrawWuLine(ScreenWidthInPixels/2-ScreenWidthInPixels/10+i/5,
-            ScreenHeightInPixels/5, i, ScreenHeightInPixels-1,
-            WuColors[WU_BLUE].BaseColor, WuColors[WU_BLUE].NumLevels,
-            WuColors[WU_BLUE].IntensityBits);
-   }
-   for (i=0; i<ScreenHeightInPixels; i += 10) {
-      DrawWuLine(ScreenWidthInPixels/2-ScreenWidthInPixels/10, i/5, 0, i,
-            WuColors[WU_BLUE].BaseColor, WuColors[WU_BLUE].NumLevels,
-            WuColors[WU_BLUE].IntensityBits);
-   }
-   for (i=0; i<ScreenHeightInPixels; i += 10) {
-      DrawWuLine(ScreenWidthInPixels/2+ScreenWidthInPixels/10, i/5,
-            ScreenWidthInPixels-1, i, WuColors[WU_BLUE].BaseColor,
-            WuColors[WU_BLUE].NumLevels, WuColors[WU_BLUE].IntensityBits);
-   }
-   for (i=0; i<ScreenWidthInPixels; i += 10) {
-      DrawWuLine(ScreenWidthInPixels/2-ScreenWidthInPixels/10+i/5,
-            ScreenHeightInPixels, i, 0, WuColors[WU_WHITE].BaseColor,
-            WuColors[WU_WHITE].NumLevels,
-            WuColors[WU_WHITE].IntensityBits);
-   }
-   getch();                /* wait for a key press */
+	/* Draw Wu-antialiased lines in all directions */
+	SetMode();
+	SetPalette(WuColors);
+	for (i=5; i<ScreenWidthInPixels; i += 10) {
+		DrawWuLine(ScreenWidthInPixels/2-ScreenWidthInPixels/10+i/5,
+			ScreenHeightInPixels/5, i, ScreenHeightInPixels-1,
+			WuColors[WU_BLUE].BaseColor, WuColors[WU_BLUE].NumLevels,
+			WuColors[WU_BLUE].IntensityBits);
+	}
+	for (i=0; i<ScreenHeightInPixels; i += 10) {
+		DrawWuLine(ScreenWidthInPixels/2-ScreenWidthInPixels/10, i/5, 0, i,
+			WuColors[WU_BLUE].BaseColor, WuColors[WU_BLUE].NumLevels,
+			WuColors[WU_BLUE].IntensityBits);
+	}
+	for (i=0; i<ScreenHeightInPixels; i += 10) {
+		DrawWuLine(ScreenWidthInPixels/2+ScreenWidthInPixels/10, i/5,
+			ScreenWidthInPixels-1, i, WuColors[WU_BLUE].BaseColor,
+			WuColors[WU_BLUE].NumLevels, WuColors[WU_BLUE].IntensityBits);
+	}
+	for (i=0; i<ScreenWidthInPixels; i += 10) {
+		DrawWuLine(ScreenWidthInPixels/2-ScreenWidthInPixels/10+i/5,
+			ScreenHeightInPixels, i, 0, WuColors[WU_WHITE].BaseColor,
+			WuColors[WU_WHITE].NumLevels,
+			WuColors[WU_WHITE].IntensityBits);
+	}
+	getch();				/* wait for a key press */
 
-   /* Now clear the screen and draw non-antialiased lines */
-   SetMode();
-   SetPalette(WuColors);
-   for (i=0; i<ScreenWidthInPixels; i += 10) {
-      DrawLine(ScreenWidthInPixels/2-ScreenWidthInPixels/10+i/5,
-            ScreenHeightInPixels/5, i, ScreenHeightInPixels-1,
-            WuColors[WU_BLUE].BaseColor);
-   }
-   for (i=0; i<ScreenHeightInPixels; i += 10) {
-      DrawLine(ScreenWidthInPixels/2-ScreenWidthInPixels/10, i/5, 0, i,
-            WuColors[WU_BLUE].BaseColor);
-   }
-   for (i=0; i<ScreenHeightInPixels; i += 10) {
-      DrawLine(ScreenWidthInPixels/2+ScreenWidthInPixels/10, i/5,
-            ScreenWidthInPixels-1, i, WuColors[WU_BLUE].BaseColor);
-   }
-   for (i=0; i<ScreenWidthInPixels; i += 10) {
-      DrawLine(ScreenWidthInPixels/2-ScreenWidthInPixels/10+i/5,
-            ScreenHeightInPixels, i, 0, WuColors[WU_WHITE].BaseColor);
-   }
-   getch();                /* wait for a key press */
+	/* Now clear the screen and draw non-antialiased lines */
+	SetMode();
+	SetPalette(WuColors);
+	for (i=0; i<ScreenWidthInPixels; i += 10) {
+		DrawLine(ScreenWidthInPixels/2-ScreenWidthInPixels/10+i/5,
+			ScreenHeightInPixels/5, i, ScreenHeightInPixels-1,
+			WuColors[WU_BLUE].BaseColor);
+	}
+	for (i=0; i<ScreenHeightInPixels; i += 10) {
+		DrawLine(ScreenWidthInPixels/2-ScreenWidthInPixels/10, i/5, 0, i,
+			WuColors[WU_BLUE].BaseColor);
+	}
+	for (i=0; i<ScreenHeightInPixels; i += 10) {
+		DrawLine(ScreenWidthInPixels/2+ScreenWidthInPixels/10, i/5,
+			ScreenWidthInPixels-1, i, WuColors[WU_BLUE].BaseColor);
+	}
+	for (i=0; i<ScreenWidthInPixels; i += 10) {
+		DrawLine(ScreenWidthInPixels/2-ScreenWidthInPixels/10+i/5,
+			ScreenHeightInPixels, i, 0, WuColors[WU_WHITE].BaseColor);
+	}
+	getch();				/* wait for a key press */
 
-   regset.x.ax = 0x0003;   /* AL = 3 selects 80x25 text mode */
-   int86(0x10, &regset, &regset);   /* return to text mode */
+	regset.x.ax = 0x0003;	/* AL = 3 selects 80x25 text mode */
+	int86(0x10, &regset, &regset);	 /* return to text mode */
 }
 
 /* Sets up the palette for antialiasing with the specified colors.
@@ -441,40 +438,39 @@ void main()
  */
 void SetPalette(struct WuColor * WColors)
 {
-   int i, j;
-   union REGS regset;
-   struct SREGS sregset;
-   static unsigned char PaletteBlock[256][3];   /* 256 RGB entries */
-   /* Gamma-corrected DAC color components for 64 linear levels from 0% to
-      100% intensity */
-   static unsigned char GammaTable[] = {
-      0, 10, 14, 17, 19, 21, 23, 24, 26, 27, 28, 29, 31, 32, 33, 34,
-      35, 36, 37, 37, 38, 39, 40, 41, 41, 42, 43, 44, 44, 45, 46, 46,
-      47, 48, 48, 49, 49, 50, 51, 51, 52, 52, 53, 53, 54, 54, 55, 55,
-      56, 56, 57, 57, 58, 58, 59, 59, 60, 60, 61, 61, 62, 62, 63, 63};
+	int i, j;
+	union REGS regset;
+	struct SREGS sregset;
+	static unsigned char PaletteBlock[256][3];	 /* 256 RGB entries */
+	/* Gamma-corrected DAC color components for 64 linear levels from 0% to 100% intensity */
+	static unsigned char GammaTable[] = {
+		0, 10, 14, 17, 19, 21, 23, 24, 26, 27, 28, 29, 31, 32, 33, 34,
+		35, 36, 37, 37, 38, 39, 40, 41, 41, 42, 43, 44, 44, 45, 46, 46,
+		47, 48, 48, 49, 49, 50, 51, 51, 52, 52, 53, 53, 54, 54, 55, 55,
+		56, 56, 57, 57, 58, 58, 59, 59, 60, 60, 61, 61, 62, 62, 63, 63};
 
-   for (i=0; i<NUM_WU_COLORS; i++) {
-      for (j=0; j<WColors[i].NumLevels; j++) {
-         PaletteBlock[j][0] = GammaTable[((double)WColors[i].MaxRed * (1.0 -
-               (double)j / (double)(WColors[i].NumLevels - 1))) + 0.5];
-         PaletteBlock[j][1] = GammaTable[((double)WColors[i].MaxGreen * (1.0 -
-               (double)j / (double)(WColors[i].NumLevels - 1))) + 0.5];
-         PaletteBlock[j][2] = GammaTable[((double)WColors[i].MaxBlue * (1.0 -
-               (double)j / (double)(WColors[i].NumLevels - 1))) + 0.5];
-      }
-      /* Now set up the palette to do Wu antialiasing for this color */
-      regset.x.ax = 0x1012;   /* set block of DAC registers function */
-      regset.x.bx = WColors[i].BaseColor;   /* first DAC location to load */
-      regset.x.cx = WColors[i].NumLevels;   /* # of DAC locations to load */
-      regset.x.dx = (unsigned int)PaletteBlock; /* offset of array from which
-                                                   to load RGB settings */
-      sregset.es = _DS; /* segment of array from which to load settings */
-      int86x(0x10, &regset, &regset, &sregset); /* load the palette block */
-   }
+	for (i=0; i<NUM_WU_COLORS; i++) {
+		for (j=0; j<WColors[i].NumLevels; j++) {
+			PaletteBlock[j][0] = GammaTable[((double)WColors[i].MaxRed * (1.0 -
+			   (double)j / (double)(WColors[i].NumLevels - 1))) + 0.5];
+			PaletteBlock[j][1] = GammaTable[((double)WColors[i].MaxGreen * (1.0 -
+			   (double)j / (double)(WColors[i].NumLevels - 1))) + 0.5];
+			PaletteBlock[j][2] = GammaTable[((double)WColors[i].MaxBlue * (1.0 -
+			   (double)j / (double)(WColors[i].NumLevels - 1))) + 0.5];
+		}
+		/* Now set up the palette to do Wu antialiasing for this color */
+		regset.x.ax = 0x1012;						/* set block of DAC registers function */
+		regset.x.bx = WColors[i].BaseColor;			/* first DAC location to load */
+		regset.x.cx = WColors[i].NumLevels;			/* # of DAC locations to load */
+		regset.x.dx = (unsigned int)PaletteBlock;	/* offset of array from which
+													   to load RGB settings */
+		sregset.es = _DS;							/* segment of array from which to load settings */
+		int86x(0x10, &regset, &regset, &sregset);	/* load the palette block */
+	}
 }
 ```
 
-**LISTING 42.3 L42-3.C**
+**LISTING 42.3 [L42-3.C](../code/L42-3.C)**
 
 ```c
 /* VGA mode 13h pixel-drawing and mode set functions.
@@ -489,26 +485,26 @@ int ScreenHeightInPixels = 200;
 /* Mode 13h draw pixel function. */
 void DrawPixel(int X, int Y, int Color)
 {
-#define SCREEN_SEGMENT  0xA000
-   unsigned char far *ScreenPtr;
+	#define SCREEN_SEGMENT	0xA000
+	unsigned char far *ScreenPtr;
 
-   FP_SEG(ScreenPtr) = SCREEN_SEGMENT;
-   FP_OFF(ScreenPtr) = (unsigned int) Y * ScreenWidthInPixels + X;
-   *ScreenPtr = Color;
+	FP_SEG(ScreenPtr) = SCREEN_SEGMENT;
+	FP_OFF(ScreenPtr) = (unsigned int) Y * ScreenWidthInPixels + X;
+	*ScreenPtr = Color;
 }
 
 /* Mode 13h mode-set function. */
 void SetMode()
 {
-   union REGS regset;
+	union REGS regset;
 
-   /* Set to 320x200 256-color graphics mode */
-   regset.x.ax = 0x0013;
-   int86(0x10, &regset, &regset);
+	/* Set to 320x200 256-color graphics mode */
+	regset.x.ax = 0x0013;
+	int86(0x10, &regset, &regset);
 }
 ```
 
-**LISTING 42.4 L42-4.C**
+**LISTING 42.4 [L42-4.C](../code/L42-4.C)**
 
 ```c
 /* Function to draw a non-antialiased line from (X0,Y0) to (X1,Y1), using a
@@ -522,60 +518,58 @@ extern void DrawPixel(int, int, int);
  */
 void DrawLine(int X0, int Y0, int X1, int Y1, int Color)
 {
-   unsigned long ErrorAcc, ErrorAdj;
-   int DeltaX, DeltaY, XDir, Temp;
+	unsigned long ErrorAcc, ErrorAdj;
+	int DeltaX, DeltaY, XDir, Temp;
 
-   /* Make sure the line runs top to bottom */
-   if (Y0 > Y1) {
-      Temp = Y0; Y0 = Y1; Y1 = Temp;
-      Temp = X0; X0 = X1; X1 = Temp;
-   }
-   DrawPixel(X0, Y0, Color);  /* draw the initial pixel */
-   if ((DeltaX = X1 - X0) >= 0) {
-      XDir = 1;
-   } else {
-      XDir = -1;
-      DeltaX = -DeltaX; /* make DeltaX positive */
-   }
-   if ((DeltaY = Y1 - Y0) == 0)  /* done if only one point in the line */
-      if (DeltaX == 0) return;
+	/* Make sure the line runs top to bottom */
+	if (Y0 > Y1) {
+		Temp = Y0; Y0 = Y1; Y1 = Temp;
+		Temp = X0; X0 = X1; X1 = Temp;
+	}
+	DrawPixel(X0, Y0, Color);  /* draw the initial pixel */
+	if ((DeltaX = X1 - X0) >= 0) {
+		XDir = 1;
+	} else {
+		XDir = -1;
+		DeltaX = -DeltaX; /* make DeltaX positive */
+	}
+	if ((DeltaY = Y1 - Y0) == 0)  /* done if only one point in the line */
+		if (DeltaX == 0) return;
 
-   ErrorAcc = 0x8000;   /* initialize line error accumulator to .5, so we can
-                           advance when we get halfway to the next pixel */
-   /* Is this an X-major or Y-major line? */
-   if (DeltaY > DeltaX) {
-      /* Y-major line; calculate 16-bit fixed-point fractional part of a
-         pixel that X advances each time Y advances 1 pixel */
-      ErrorAdj = ((((unsigned long)DeltaX << 17) / (unsigned long)DeltaY) +
-            1) >> 1;
-      /* Draw all pixels between the first and last */
-      do {
-         ErrorAcc += ErrorAdj;      /* calculate error for this pixel */
-         if (ErrorAcc & ~0xFFFFL) {
-            /* The error accumulator turned over, so advance the X coord */
-            X0 += XDir;
-            ErrorAcc &= 0xFFFFL;    /* clear integer part of result */
-         }
-         Y0++;                      /* Y-major, so always advance Y */
-         DrawPixel(X0, Y0, Color);
-      } while (--DeltaY);
-      return;
-   }
-   /* It's an X-major line; calculate 16-bit fixed-point fractional part of a
-      pixel that Y advances each time X advances 1 pixel */
-   ErrorAdj = ((((unsigned long)DeltaY << 17) / (unsigned long)DeltaX) +
-         1) >> 1;
-   /* Draw all remaining pixels */
-   do {
-      ErrorAcc += ErrorAdj;      /* calculate error for this pixel */
-      if (ErrorAcc & ~0xFFFFL) {
-         /* The error accumulator turned over, so advance the Y coord */
-         Y0++;
-         ErrorAcc &= 0xFFFFL;    /* clear integer part of result */
-      }
-      X0 += XDir;                /* X-major, so always advance X */
-      DrawPixel(X0, Y0, Color);
-   } while (--DeltaX);
+	ErrorAcc = 0x8000;	 /* initialize line error accumulator to .5, so we can
+						   advance when we get halfway to the next pixel */
+	/* Is this an X-major or Y-major line? */
+	if (DeltaY > DeltaX) {
+		/* Y-major line; calculate 16-bit fixed-point fractional part of a
+		 pixel that X advances each time Y advances 1 pixel */
+		ErrorAdj = ((((unsigned long)DeltaX << 17) / (unsigned long)DeltaY) + 1) >> 1;
+		/* Draw all pixels between the first and last */
+		do {
+			ErrorAcc += ErrorAdj;	   /* calculate error for this pixel */
+			if (ErrorAcc & ~0xFFFFL) {
+				/* The error accumulator turned over, so advance the X coord */
+				X0 += XDir;
+				ErrorAcc &= 0xFFFFL;	/* clear integer part of result */
+			}
+			Y0++;					   /* Y-major, so always advance Y */
+			DrawPixel(X0, Y0, Color);
+		} while (--DeltaY);
+		return;
+	}
+	/* It's an X-major line; calculate 16-bit fixed-point fractional part of a
+	  pixel that Y advances each time X advances 1 pixel */
+	ErrorAdj = ((((unsigned long)DeltaY << 17) / (unsigned long)DeltaX) + 1) >> 1;
+	/* Draw all remaining pixels */
+	do {
+		ErrorAcc += ErrorAdj;	   /* calculate error for this pixel */
+		if (ErrorAcc & ~0xFFFFL) {
+			/* The error accumulator turned over, so advance the Y coord */
+			Y0++;
+			ErrorAcc &= 0xFFFFL;	/* clear integer part of result */
+		}
+		X0 += XDir;				   /* X-major, so always advance X */
+		DrawPixel(X0, Y0, Color);
+	} while (--DeltaX);
 }
 ```
 
@@ -593,7 +587,7 @@ properly. At 640x480, however, Wu-antialiased lines look fabulous; from
 a couple of feet away, they look as straight and smooth as if they were
 drawn with a ruler.
 
-**LISTING 42.5 L42-5.C**
+**LISTING 42.5 [L42-5.C](../code/L42-5.C)**
 
 ```c
 /* Mode set and pixel-drawing functions for the 640x480 256-color mode of
@@ -609,32 +603,32 @@ int ScreenHeightInPixels = 480;
 /* ET4000 640x480 256-color draw pixel function. */
 void DrawPixel(int X, int Y, int Color)
 {
-#define SCREEN_SEGMENT        0xA000
-#define GC_SEGMENT_SELECT     0x3CD /* ET4000 segment (bank) select reg */
-   unsigned char far *ScreenPtr;
-   unsigned int Bank;
-   unsigned long BitmapAddress;
+	#define SCREEN_SEGMENT		  0xA000
+	#define GC_SEGMENT_SELECT	  0x3CD /* ET4000 segment (bank) select reg */
+	unsigned char far *ScreenPtr;
+	unsigned int Bank;
+	unsigned long BitmapAddress;
 
-   /* full bitmap address of pixel, as measured from address 0 to 0xFFFFF */
-   BitmapAddress = (unsigned long) Y * ScreenWidthInPixels + X;
-   /* Bank # is upper word of bitmap addr */
-   Bank = BitmapAddress >> 16;
-   /* Upper nibble is read bank #, lower nibble is write bank # */
-   outp(GC_SEGMENT_SELECT, (Bank << 4) | Bank);
-   /* Draw into the bank */
-   FP_SEG(ScreenPtr) = SCREEN_SEGMENT;
-   FP_OFF(ScreenPtr) = (unsigned int) BitmapAddress;
-   *ScreenPtr = Color;
+	/* Full bitmap address of pixel, as measured from address 0 to 0xFFFFF */
+	BitmapAddress = (unsigned long) Y * ScreenWidthInPixels + X;
+	/* Bank # is upper word of bitmap addr */
+	Bank = BitmapAddress >> 16;
+	/* Upper nibble is read bank #, lower nibble is write bank # */
+	outp(GC_SEGMENT_SELECT, (Bank << 4) | Bank);
+	/* Draw into the bank */
+	FP_SEG(ScreenPtr) = SCREEN_SEGMENT;
+	FP_OFF(ScreenPtr) = (unsigned int) BitmapAddress;
+	*ScreenPtr = Color;
 }
 
 /* ET4000 640x480 256-color mode-set function. */
 void SetMode()
 {
-   union REGS regset;
+	union REGS regset;
 
-   /* Set to 640x480 256-color graphics mode */
-   regset.x.ax = 0x002E;
-   int86(0x10, &regset, &regset);
+	/* Set to 640x480 256-color graphics mode */
+	regset.x.ax = 0x002E;
+	int86(0x10, &regset, &regset);
 }
 ```
 
@@ -656,7 +650,7 @@ peanut butter and jelly, which is to say very well indeed; the assembly
 implementation ran more than twice as fast as the C code on my 486.
 Enough said!
 
-**LISTING 42.6 L42-6.ASM**
+**LISTING 42.6 [L42-6.ASM](../code/L42-6.ASM)**
 
 ```nasm
 ; C near-callable function to draw an antialiased line from
@@ -677,31 +671,31 @@ Enough said!
 ;   void DrawWuLine(int X0, int Y0, int X1, int Y1, int BaseColor,
 ;      int NumLevels, unsigned int IntensityBits);
 
-SCREEN_WIDTH_IN_BYTES equ 320;# of bytes from the start of one scan line
+SCREEN_WIDTH_IN_BYTES equ 320   ;# of bytes from the start of one scan line
 ; to the start of the next
-SCREEN_SEGMENT   equ   0a000h;segment in which screen memory resides
+SCREEN_SEGMENT   equ   0a000h   ;segment in which screen memory resides
 
 ; Parameters passed in stack frame.
 parms   struc
-     dw    2 dup (?) ;pushed BP and return address
-X0   dw    ?         ;X coordinate of line start point
-Y0   dw    ?         ;Y coordinate of line start point
-X1   dw    ?         ;X coordinate of line end point
-Y1   dw    ?         ;Y coordinate of line end point
-BaseColor dw     ?       ;color # of first color in block used for
-                     ;antialiasing, the 100% intensity version of the
-                     ;drawing color
-NumLevels dw     ?       ;size of color block, with BaseColor+NumLevels-1
-                     ; being the 0% intensity version of the drawing color
-                     ; (maximum NumLevels = 256)
-IntensityBits dw ?       ;log base 2 of NumLevels; the # of bits used to
-                     ; describe the intensity of the drawing color.
-                     ; 2**IntensityBits==NumLevels
-                     ; (maximum IntensityBits = 8)
-parms ends
+        dw   2 dup (?)          ;pushed BP and return address
+X0      dw   ?                  ;X coordinate of line start point
+Y0      dw   ?                  ;Y coordinate of line start point
+X1      dw   ?                  ;X coordinate of line end point
+Y1      dw   ?                  ;Y coordinate of line end point
+BaseColor dw   ?                ;color # of first color in block used for
+                                ;antialiasing, the 100% intensity version of the
+                                ;drawing color
+NumLevels dw   ?                ;size of color block, with BaseColor+NumLevels-1
+                                ; being the 0% intensity version of the drawing color
+                                ; (maximum NumLevels = 256)
+IntensityBits dw ?              ;log base 2 of NumLevels; the # of bits used to
+                                ; describe the intensity of the drawing color.
+                                ; 2**IntensityBits==NumLevels
+                                ; (maximum IntensityBits = 8)
+parms   ends
 
-.model  small
-.code
+        .model   small
+        .code
 ; Screen dimension globals, used in main program to scale.
 _ScreenWidthInPixels    dw      320
 _ScreenHeightInPixels   dw      200
@@ -709,18 +703,18 @@ _ScreenHeightInPixels   dw      200
         .code
         public   _DrawWuLine
 _DrawWuLine proc near
-        push    bp      ;preserve caller's stack frame
-        mov     bp,sp   ;point to local stack frame
-        push    si      ;preserve C's register variables
+        push    bp                      ;preserve caller's stack frame
+        mov     bp,sp                   ;point to local stack frame
+        push    si                      ;preserve C's register variables
         push    di
-        push    ds      ;preserve C's default data segment
-        cld             ;make string instructions increment their pointers
+        push    ds                      ;preserve C's default data segment
+        cld                             ;make string instructions increment their pointers
 
 ; Make sure the line runs top to bottom.
         mov     si,[bp].X0
         mov     ax,[bp].Y0
-        cmp     ax,[bp].Y1   ;swap endpoints if necessary to ensure that
-        jna     NoSwap       ; Y0 <= Y1
+        cmp     ax,[bp].Y1              ;swap endpoints if necessary to ensure that
+        jna     NoSwap                  ; Y0 <= Y1
         xchg    [bp].Y1,ax
         mov     [bp].Y0,ax
         xchg    [bp].X1,si
@@ -730,62 +724,62 @@ NoSwap:
 ; Draw the initial pixel, which is always exactly intersected by the line
 ; and so needs no weighting.
         mov     dx,SCREEN_SEGMENT
-        mov     ds,dx           ;point DS to the screen segment
+        mov     ds,dx                   ;point DS to the screen segment
         mov     dx,SCREEN_WIDTH_IN_BYTES
-        mul     dx              ;Y0 * SCREEN_WIDTH_IN_BYTES yields the offset
-                                ; of the start of the row start the initial
-                                ; pixel is on
-        add     si,ax           ;point DS:SI to the initial pixel
-        mov     al,byte ptr [bp].BaseColor ;color with which to draw
-        mov     [si],al         ;draw the initial pixel
+        mul     dx                      ;Y0 * SCREEN_WIDTH_IN_BYTES yields the offset
+                                        ; of the start of the row start the initial
+                                        ; pixel is on
+        add     si,ax                   ;point DS:SI to the initial pixel
+        mov     al,byte ptr [bp].BaseColor      ;color with which to draw
+        mov     [si],al                 ;draw the initial pixel
 
-        mov     bx,1            ;XDir = 1; assume DeltaX >= 0
+        mov     bx,1                    ;XDir = 1; assume DeltaX >= 0
         mov     cx,[bp].X1
-        sub     cx,[bp].X0      ;DeltaX; is it >= 1?
-        jns     DeltaXSet       ;yes, move left->right, all set
-                                ;no, move right->left
-        neg     cx              ;make DeltaX positive
-        neg     bx              ;XDir = -1
+        sub     cx,[bp].X0              ;DeltaX; is it >= 1?
+        jns     DeltaXSet               ;yes, move left->right, all set
+                                        ;no, move right->left
+        neg     cx                      ;make DeltaX positive
+        neg     bx                              ;XDir = -1
 DeltaXSet:
 
 ; Special-case horizontal, vertical, and diagonal lines, which require no
 ; weighting because they go right through the center of every pixel.
         mov     dx,[bp].Y1
-        sub     dx,[bp].Y0      ;DeltaY; is it 0?
-        jnz     NotHorz         ;no, not horizontal
-                                ;yes, is horizontal, special case
-        and     bx,bx           ;draw from left->right?
-        jns     DoHorz          ;yes, all set
-        std                     ;no, draw right->left
+        sub     dx,[bp].Y0              ;DeltaY; is it 0?
+        jnz     NotHorz                 ;no, not horizontal
+                                        ;yes, is horizontal, special case
+        and     bx,bx                   ;draw from left->right?
+        jns     DoHorz                  ;yes, all set
+        std                             ;no, draw right->left
 DoHorz:
-        lea     di,[bx+si]      ;point DI to next pixel to draw
+        lea     di,[bx+si]              ;point DI to next pixel to draw
         mov     ax,ds
-        mov     es,ax           ;point ES:DI to next pixel to draw
+        mov     es,ax                   ;point ES:DI to next pixel to draw
         mov     al,byte ptr [bp].BaseColor ;color with which to draw
-                                ;CX = DeltaX at this point
-        rep     stosb           ;draw the rest of the horizontal line
+                                        ;CX = DeltaX at this point
+        rep stosb                       ;draw the rest of the horizontal line
         cld                             ;restore default direction flag
         jmp     Done                    ;and we're done
 
-        align2
+        align   2
 NotHorz:
         and     cx,cx                   ;is DeltaX 0?
         jnz     NotVert                 ;no, not a vertical line
                                         ;yes, is vertical, special case
-        mov     al,byte ptr [bp].BaseColor  ;color with which to draw
+        mov     al,byte ptr [bp].BaseColor ;color with which to draw
 VertLoop:
-        add     si,SCREEN_WIDTH_IN_BYTES    ;point to next pixel to draw
+        add     si,SCREEN_WIDTH_IN_BYTES ;point to next pixel to draw
         mov     [si],al                 ;draw the next pixel
         dec     dx                      ;--DeltaY
         jnz     VertLoop
         jmp     Done                    ;and we're done
-        
-        align2
+
+        align   2
 NotVert:
         cmp     cx,dx                   ;DeltaX == DeltaY?
         jnz     NotDiag                 ;no, not diagonal
                                         ;yes, is diagonal, special case
-        mov     al,byte ptr [bp].BaseColor  ;color with which to draw
+        mov     al,byte ptr [bp].BaseColor ;color with which to draw
 DiagLoop:
         lea     si,[si+SCREEN_WIDTH_IN_BYTES+bx]
                                         ;advance to next pixel to draw by
@@ -796,136 +790,136 @@ DiagLoop:
         jmp     Done                    ;and we're done
 
 ; Line is not horizontal, diagonal, or vertical.
-        align2
+        align   2
 NotDiag:
 ; Is this an X-major or Y-major line?
         cmp     dx,cx
-        jbX     Major                   ;it's X-major
+        jb      XMajor                  ;it's X-major
 
 ; It's a Y-major line. Calculate the 16-bit fixed-point fractional part of a
 ; pixel that X advances each time Y advances 1 pixel, truncating the result
 ; to avoid overrunning the endpoint along the X axis.
-        xchg    dx,cx           ;DX = DeltaX, CX = DeltaY
-        sub     ax,ax           ;make DeltaX 16.16 fixed-point value in DX:AX
-        div     cx              ;AX = (DeltaX << 16) / DeltaY. Won't overflow
-                                ; because DeltaX < DeltaY
-        mov     di,cx           ;DI = DeltaY (loop count)
-        sub     si,bx           ;back up the start X by 1, as explained below
-        mov     dx,-1           ;initialize the line error accumulator to -1,
-                                ; so that it will turn over immediately and
-                                ; advance X to the start X. This is necessary
-                                ; properly to bias error sums of 0 to mean
-                                ; "advance next time" rather than "advance
-                                ; this time," so that the final error sum can
-                                ; never cause drawing to overrun the final X
-                                ; coordinate (works in conjunction with
-                                ; truncating ErrorAdj, to make sure X can't
-                                ; overrun)
-        mov     cx,8            ;CL = # of bits by which to shift
-        sub     cx,[bp].IntensityBits  ; ErrorAcc to get intensity level (8
-                                ; instead of 16 because we work only
-                                ; with the high byte of ErrorAcc)
-        mov     ch,byte ptr [bp].NumLevels  ;mask used to flip all bits in an
-        dec     ch              ; intensity weighting, producing
-                                ; result (1 - intensity weighting)
-        mov     bp,BaseColor[bp]  ;***stack frame not available***
-                                ;***from now on              ***
-        xchg    bp,ax           ;BP = ErrorAdj, AL = BaseColor,
-                                ; AH = scratch register
+        xchg    dx,cx                   ;DX = DeltaX, CX = DeltaY
+        sub     ax,ax                   ;make DeltaX 16.16 fixed-point value in DX:AX
+        div     cx                      ;AX = (DeltaX << 16) / DeltaY. Won't overflow
+                                        ; because DeltaX < DeltaY
+        mov     di,cx                   ;DI = DeltaY (loop count)
+        sub     si,bx                   ;back up the start X by 1, as explained below
+        mov     dx,-1                   ;initialize the line error accumulator to -1,
+                                        ; so that it will turn over immediately and
+                                        ; advance X to the start X. This is necessary
+                                        ; properly to bias error sums of 0 to mean
+                                        ; "advance next time" rather than "advance
+                                        ; this time," so that the final error sum can
+                                        ; never cause drawing to overrun the final X
+                                        ; coordinate (works in conjunction with
+                                        ; truncating ErrorAdj, to make sure X can't
+                                        ; overrun)
+        mov     cx,8                    ;CL = # of bits by which to shift
+        sub     cx,[bp].IntensityBits   ; ErrorAcc to get intensity level (8
+                                        ; instead of 16 because we work only
+                                        ; with the high byte of ErrorAcc)
+        mov     ch,byte ptr [bp].NumLevels ;mask used to flip all bits in an
+        dec     ch                      ; intensity weighting, producing
+                                        ; result (1 - intensity weighting)
+        mov     bp,BaseColor[bp]        ;***stack frame not available***
+                                        ;***from now on              ***
+        xchg    bp,ax                   ;BP = ErrorAdj, AL = BaseColor,
+                                        ; AH = scratch register
 
 ; Draw all remaining pixels.
 YMajorLoop:
-        add     dx,bp           ;calculate error for next pixel
-        jnc     NoXAdvance      ;not time to step in X yet
-                                ;the error accumulator turned over,
-                                ;so advance the X coord
-        add     si,bx           ;add XDir to the pixel pointer
+        add     dx,bp                   ;calculate error for next pixel
+        jnc     NoXAdvance              ;not time to step in X yet
+                                        ;the error accumulator turned over,
+                                        ;so advance the X coord
+        add     si,bx                   ;add XDir to the pixel pointer
 NoXAdvance:
         add     si,SCREEN_WIDTH_IN_BYTES ;Y-major, so always advance Y
 
 ; The IntensityBits most significant bits of ErrorAcc give us the intensity
 ; weighting for this pixel, and the complement of the weighting for the
 ; paired pixel.
-        mov     ah,dh           ;msb of ErrorAcc
-        shr     ah,cl           ;Weighting = ErrorAcc >> IntensityShift;
-        add     ah,al           ;BaseColor + Weighting
-        mov     [si],ah         ;DrawPixel(X, Y, BaseColor + Weighting);
-        mov     ah,dh           ;msb of ErrorAcc
-        shr     ah,cl           ;Weighting = ErrorAcc >> IntensityShift;
-        xor     ah,ch           ;Weighting ^ WeightingComplementMask
-        add     ah,al           ;BaseColor + (Weighting ^ WeightingComplementMask)
-        mov     [si+bx],ah      ;DrawPixel(X+XDir, Y,
-                                ; BaseColor + (Weighting ^ WeightingComplementMask));
-        dec     di              ;--DeltaY
+        mov     ah,dh                   ;msb of ErrorAcc
+        shr     ah,cl                   ;Weighting = ErrorAcc >> IntensityShift;
+        add     ah,al                   ;BaseColor + Weighting
+        mov     [si],ah                 ;DrawPixel(X, Y, BaseColor + Weighting);
+        mov     ah,dh                   ;msb of ErrorAcc
+        shr     ah,cl                   ;Weighting = ErrorAcc >> IntensityShift;
+        xor     ah,ch                   ;Weighting ^ WeightingComplementMask
+        add     ah,al                   ;BaseColor + (Weighting ^ WeightingComplementMask)
+        mov     [si+bx],ah              ;DrawPixel(X+XDir, Y,
+; BaseColor + (Weighting ^ WeightingComplementMask));
+        dec     di                      ;--DeltaY
         jnz     YMajorLoop
-        jmp     Done            ;we're done with this line
+        jmp     Done                    ;we're done with this line
 
 ; It's an X-major line.
-        align2
+        align   2
 XMajor:
 ; Calculate the 16-bit fixed-point fractional part of a pixel that Y advances
 ; each time X advances 1 pixel, truncating the result to avoid overrunning
 ; the endpoint along the X axis.
-        sub     ax,ax           ;make DeltaY 16.16 fixed-point value in DX:AX
-        div     cx              ;AX = (DeltaY << 16) / Deltax. Won't overflow
-                                ; because DeltaY < DeltaX
-        mov     di,cx           ;DI = DeltaX (loop count)
-        sub     si,SCREEN_WIDTH_IN_BYTES ;back up the start X by 1, as
-                                ; explained below
-        mov     dx,-1           ;initialize the line error accumulator to -1,
-                                ; so that it will turn over immediately and
-                                ; advance Y to the start Y. This is necessary
-                                ; properly to bias error sums of 0 to mean
-                                ; "advance next time" rather than "advance
-                                ; this time," so that the final error sum can
-                                ; never cause drawing to overrun the final Y
-                                ; coordinate (works in conjunction with
-                                ; truncating ErrorAdj, to make sure Y can't
-                                ; overrun)
-        mov     cx,8            ;CL = # of bits by which to shift
-        sub     cx,[bp].IntensityBits ; ErrorAcc to get intensity level (8
-                                ; instead of 16 because we work only
-                                ; with the high byte of ErrorAcc)
-        mov     ch,byte ptr [bp].NumLevels  ;mask used to flip all bits in an
-        dec     ch              ; intensity weighting, producing
-                                ; result (1 - intensity weighting)
-        mov     bp,BaseColor[bp];***stack frame not available***
-                                ;***from now on              ***
-        xchg    bp,ax           ;BP = ErrorAdj, AL = BaseColor,
-                                ; AH = scratch register
-                                ; Draw all remaining pixels.
+        sub     ax,ax                   ;make DeltaY 16.16 fixed-point value in DX:AX
+        div     cx                      ;AX = (DeltaY << 16) / Deltax. Won't overflow
+                                        ; because DeltaY < DeltaX
+        mov     di,cx                   ;DI = DeltaX (loop count)
+        sub     si,SCREEN_WIDTH_IN_BYTES;back up the start X by 1, as
+                                        ; explained below
+        mov     dx,-1                   ;initialize the line error accumulator to -1,
+                                        ; so that it will turn over immediately and
+                                        ; advance Y to the start Y. This is necessary
+                                        ; properly to bias error sums of 0 to mean
+                                        ; "advance next time" rather than "advance
+                                        ; this time," so that the final error sum can
+                                        ; never cause drawing to overrun the final Y
+                                        ; coordinate (works in conjunction with
+                                        ; truncating ErrorAdj, to make sure Y can't
+                                        ; overrun)
+        mov     cx,8                    ;CL = # of bits by which to shift
+        sub     cx,[bp].IntensityBits   ; ErrorAcc to get intensity level (8
+                                        ; instead of 16 because we work only
+                                        ; with the high byte of ErrorAcc)
+        mov     ch,byte ptr [bp].NumLevels ;mask used to flip all bits in an
+        dec     ch                      ; intensity weighting, producing
+                                        ; result (1 - intensity weighting)
+        mov     bp,BaseColor[bp]        ;***stack frame not available***
+                                        ;***from now on              ***
+        xchg    bp,ax                   ;BP = ErrorAdj, AL = BaseColor,
+                                        ; AH = scratch register
+; Draw all remaining pixels.
 XMajorLoop:
-        add     dx,bp           ;calculate error for next pixel
-        jnc     NoYAdvance      ;not time to step in Y yet
-                                ;the error accumulator turned over,
-                                ; so advance the Y coord
-        add     si,SCREEN_WIDTH_IN_BYTES ;advance Y
+        add     dx,bp                   ;calculate error for next pixel
+        jnc     NoYAdvance              ;not time to step in Y yet
+                                        ;the error accumulator turned over,
+                                        ; so advance the Y coord
+        add     si,SCREEN_WIDTH_IN_BYTES;advance Y
 NoYAdvance:
-        add     si,bx           ;X-major, so add XDir to the pixel pointer
+        add     si,bx                   ;X-major, so add XDir to the pixel pointer
 
 ; The IntensityBits most significant bits of ErrorAcc give us the intensity
 ; weighting for this pixel, and the complement of the weighting for the
 ; paired pixel.
-        mov     ah,dh           ;msb of ErrorAcc
-        shr     ah,cl           ;Weighting = ErrorAcc >> IntensityShift;
-        add     ah,al           ;BaseColor + Weighting
-        mov     [si],ah         ;DrawPixel(X, Y, BaseColor + Weighting);
-        mov     ah,dh           ;msb of ErrorAcc
-        shr     ah,cl           ;Weighting = ErrorAcc >> IntensityShift;
-        xor     ah,ch           ;Weighting ^ WeightingComplementMask
-        add     ah,al           ;BaseColor + (Weighting ^ WeightingComplementMask)
+        mov     ah,dh                   ;msb of ErrorAcc
+        shr     ah,cl                   ;Weighting = ErrorAcc >> IntensityShift;
+        add     ah,al                   ;BaseColor + Weighting
+        mov     [si],ah                 ;DrawPixel(X, Y, BaseColor + Weighting);
+        mov     ah,dh                   ;msb of ErrorAcc
+        shr     ah,cl                   ;Weighting = ErrorAcc >> IntensityShift;
+        xor     ah,ch                   ;Weighting ^ WeightingComplementMask
+        add     ah,al                   ;BaseColor + (Weighting ^ WeightingComplementMask)
         mov     [si+SCREEN_WIDTH_IN_BYTES],ah
- ;DrawPixel(X, Y+SCREEN_WIDTH_IN_BYTES,
- ; BaseColor + (Weighting ^ WeightingComplementMask));
-        dec     di              ;--DeltaX
+
+; DrawPixel(X, Y+SCREEN_WIDTH_IN_BYTES, BaseColor + (Weighting ^ WeightingComplementMask));
+        dec     di                      ;--DeltaX
         jnz     XMajorLoop
-        
-Done:                           ;we're done with this line
-        pop     ds              ;restore C's default data segment
-        pop     di              ;restore C's register variables
+
+Done:                                   ;we're done with this line
+        pop     ds                      ;restore C's default data segment
+        pop     di                      ;restore C's register variables
         pop     si
-        pop     bp              ;restore caller's stack frame
-        ret                     ;done
+        pop     bp                      ;restore caller's stack frame
+        ret                             ;done
 _DrawWuLine endp
         end
 ```

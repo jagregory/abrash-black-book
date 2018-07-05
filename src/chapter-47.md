@@ -29,7 +29,7 @@ it before you did."
 
 And they say there are no groupies in programming!
 
-Well. I never claimed that I invented the mode (which is a 320x256-color
+Well. I never claimed that I invented the mode (which is a 320x240 256-color
 mode with some very special properties, as we'll see shortly). I did
 discover it independently, but so did other people in the game business,
 some of them no doubt before I did. The difference is that all those
@@ -63,7 +63,7 @@ and e-mail. Ladies and gentlemen, I give you...Mode X.
 
 ### What Makes Mode X Special?
 
-Consider the strange case of the VGA's 320x256-color mode—Mode X—which
+Consider the strange case of the VGA's 320x240 256-color mode—Mode X—which
 is undeniably complex to program and isn't even documented by IBM—but
 which is, nonetheless, perhaps the single best mode the VGA has to
 offer, especially for animation.
@@ -189,7 +189,7 @@ compatible; why, in short, the myriad irritations of using a PC
 exist—this is a big part of the reason. I guess that's just the price we
 pay for the unfettered creativity and vast choice of the PC market.
 
-**LISTING 47.1 L47-1.ASM**
+**LISTING 47.1 [L47-1.ASM](../code/L47-1.ASM)**
 
 ```nasm
 ; Mode X (320x240, 256 colors) mode set routine. Works on all VGAs.
@@ -202,81 +202,81 @@ pay for the unfettered creativity and vast choice of the PC market.
 ; Tested with TASM
 ; Modified from public-domain mode set code by John Bridges.
 
-SC_INDEX        equ  03c4h   ;Sequence Controller Index
-CRTC_INDEX      equ  03d4h   ;CRT Controller Index
-MISC_OUTPUT     equ  03c2h   ;Miscellaneous Output register
-SCREEN_SEG      equ  0a000h  ;segment of display memory in mode X
+SC_INDEX        equ     03c4h   ;Sequence Controller Index
+CRTC_INDEX      equ     03d4h   ;CRT Controller Index
+MISC_OUTPUT     equ     03c2h   ;Miscellaneous Output register
+SCREEN_SEG      equ     0a000h  ;segment of display memory in mode X
 
         .model  small
         .data
 ; Index/data pairs for CRT Controller registers that differ between
 ; mode 13h and mode X.
 CRTParms label  word
-        dw      00d06h  ;vertical total
-        dw      03e07h  ;overflow (bit 8 of vertical counts)
-        dw      04109h  ;cell height (2 to double-scan)
-        dw      0ea10h  ;v sync start
-        dw      0ac11h  ;v sync end and protect cr0-cr7
-        dw      0df12h  ;vertical displayed
-        dw      00014h  ;turn off dword mode
-        dw      0e715h  ;v blank start
-        dw      00616h  ;v blank end
-        dw      0e317h  ;turn on byte mode
+        dw      00d06h          ;vertical total
+        dw      03e07h          ;overflow (bit 8 of vertical counts)
+        dw      04109h          ;cell height (2 to double-scan)
+        dw      0ea10h          ;v sync start
+        dw      0ac11h          ;v sync end and protect cr0-cr7
+        dw      0df12h          ;vertical displayed
+        dw      00014h          ;turn off dword mode
+        dw      0e715h          ;v blank start
+        dw      00616h          ;v blank end
+        dw      0e317h          ;turn on byte mode
 CRT_PARM_LENGTH equ     (($-CRTParms)/2)
 
         .code
         public  _Set320x240Mode
 _Set320x240Mode proc    near
-        push    bp      ;preserve caller's stack frame
-        push    si      ;preserve C register vars
-        push    di      ; (don't count on BIOS preserving anything)
+        push    bp              ;preserve caller's stack frame
+        push    si              ;preserve C register vars
+        push    di              ; (don't count on BIOS preserving anything)
 
-        mov     ax,13h  ;let the BIOS set standard 256-color
-        int     10h     ; mode (320x200 linear)
+        mov     ax,13h          ;let the BIOS set standard 256-color
+        int     10h             ; mode (320x200 linear)
 
         mov     dx,SC_INDEX
         mov     ax,0604h
-        out     dx,ax   ;disable chain4 mode
+        out     dx,ax           ;disable chain4 mode
         mov     ax,0100h
-        out     dx,ax   ;synchronous reset while setting Misc Output
-                        ; for safety, even though clock unchanged
+        out     dx,ax           ;synchronous reset while setting Misc Output
+                                ; for safety, even though clock unchanged
         mov     dx,MISC_OUTPUT
         mov     al,0e3h
-        out     dx,al   ;select 25 MHz dot clock & 60 Hz scanning rate
+        out     dx,al           ;select 25 MHz dot clock & 60 Hz scanning rate
 
         mov     dx,SC_INDEX
         mov     ax,0300h
-        out     dx,ax   ;undo reset (restart sequencer)
+        out     dx,ax           ;undo reset (restart sequencer)
 
-        mov     dx,CRTC_INDEX ;reprogram the CRT Controller
-        mov     al,11h  ;VSync End reg contains register write
-        out     dx,al   ; protect bit
-        inc     dx      ;CRT Controller Data register
-        in      al,dx   ;get current VSync End register setting
-        and     al,7fh  ;remove write protect on various
-        out     dx,al   ; CRTC registers
-        dec     dx      ;CRT Controller Index
+        mov     dx,CRTC_INDEX   ;reprogram the CRT Controller
+        mov     al,11h          ;VSync End reg contains register write
+        out     dx,al           ; protect bit
+        inc     dx              ;CRT Controller Data register
+        in      al,dx           ;get current VSync End register setting
+        and     al,7fh          ;remove write protect on various
+        out     dx,al           ; CRTC registers
+        dec     dx              ;CRT Controller Index
         cld
         mov     si,offset CRTParms ;point to CRT parameter table
         mov     cx,CRT_PARM_LENGTH ;# of table entries
 SetCRTParmsLoop:
-        lodsw           ;get the next CRT Index/Data pair
-        out     dx,ax   ;set the next CRT Index/Data pair
+        lodsw                   ;get the next CRT Index/Data pair
+        out     dx,ax           ;set the next CRT Index/Data pair
         loop    SetCRTParmsLoop
 
         mov     dx,SC_INDEX
         mov     ax,0f02h
-        out     dx,ax   ;enable writes to all four planes
-        mov     ax,SCREEN_SEG ;now clear all display memory, 8 pixels
-        mov     es,ax         ; at a time
-        sub     di,di   ;point ES:DI to display memory
-        sub     ax,ax   ;clear to zero-value pixels
-        mov     cx,8000h ;# of words in display memory
-        rep     stosw   ;clear all of display memory
+        out     dx,ax           ;enable writes to all four planes
+        mov     ax,SCREEN_SEG   ;now clear all display memory, 8 pixels
+        mov     es,ax           ; at a time
+        sub     di,di           ;point ES:DI to display memory
+        sub     ax,ax           ;clear to zero-value pixels
+        mov     cx,8000h        ;# of words in display memory
+        rep     stosw           ;clear all of display memory
 
-        pop     di      ;restore C register vars
+        pop     di              ;restore C register vars
         pop     si
-        pop     bp      ;restore caller's stack frame
+        pop     bp              ;restore caller's stack frame
         ret
 _Set320x240Mode endp
         end
@@ -330,7 +330,7 @@ are fills, copies, and bitblts, and it's there that Mode X shines.
 
 ![**Figure 47.1**  *Mode X display memory organization.*](../images/47-01.jpg)
 
-**LISTING 47.2 L47-2.ASM**
+**LISTING 47.2 [L47-2.ASM](../code/L47-2.ASM)**
 
 ```nasm
 ; Mode X (320x240, 256 colors) write pixel routine. Works on all VGAs.
@@ -339,55 +339,55 @@ are fills, copies, and bitblts, and it's there that Mode X shines.
 ;
 ;    void WritePixelX(int X, int Y, unsigned int PageBase, int Color);
 
-SC_INDEX      equ    03c4h              ;Sequence Controller Index
-MAP_MASK      equ    02h                ;index in SC of Map Mask register
-SCREEN_SEG    equ    0a000h             ;segment of display memory in mode X
-SCREEN_WIDTH  equ    80                 ;width of screen in bytes from one scan line
-                                        ; to the next
+SC_INDEX        equ     03c4h   ;Sequence Controller Index
+MAP_MASK        equ     02h     ;index in SC of Map Mask register
+SCREEN_SEG      equ     0a000h  ;segment of display memory in mode X
+SCREEN_WIDTH    equ     80      ;width of screen in bytes from one scan line
+                                ; to the next
 
 parms   struc
-        dw      2 dup (?)               ;pushed BP and return address
-X       dw      ?                       ;X coordinate of pixel to draw
-Y       dw      ?                       ;Y coordinate of pixel to draw
-PageBase dw     ?                       ;base offset in display memory of page in
-                                        ; which to draw pixel
-Color   dw      ?                       ;color in which to draw pixel
+        dw      2 dup (?)       ;pushed BP and return address
+X       dw      ?               ;X coordinate of pixel to draw
+Y       dw      ?               ;Y coordinate of pixel to draw
+PageBase dw     ?               ;base offset in display memory of page in
+                                ; which to draw pixel
+Color   dw      ?               ;color in which to draw pixel
 parms   ends
 
         .model  small
         .code
         public  _WritePixelX
 _WritePixelX    proc    near
-        push    bp                      ;preserve caller's stack frame
-        mov     bp,sp                   ;point to local stack frame
+        push    bp              ;preserve caller's stack frame
+        mov     bp,sp           ;point to local stack frame
 
         mov     ax,SCREEN_WIDTH
-        mul     [bp+Y]                  ;offset of pixel's scan line in page
+        mul     [bp+Y]          ;offset of pixel's scan line in page
         mov     bx,[bp+X]
         shr     bx,1
-        shr     bx,1                    ;X/4 = offset of pixel in scan line
-        add     bx,ax                   ;offset of pixel in page
-        add     bx,[bp+PageBase]        ;offset of pixel in display memory
+        shr     bx,1            ;X/4 = offset of pixel in scan line
+        add     bx,ax           ;offset of pixel in page
+        add     bx,[bp+PageBase] ;offset of pixel in display memory
         mov     ax,SCREEN_SEG
-        mov     es,ax                   ;point ES:BX to the pixel's address
+        mov     es,ax           ;point ES:BX to the pixel's address
 
         mov     cl,byte ptr [bp+X]
-        and     cl,011b                 ;CL = pixel's plane
-        mov     ax,0100h + MAP_MASK     ;AL = index in SC of Map Mask reg
-        shl     ah,cl                   ;set only the bit for the pixel's plane to 1
-        mov     dx,SC_INDEX             ;set the Map Mask to enable only the
-        out     dx,ax                   ; pixel's plane
+        and     cl,011b         ;CL = pixel's plane
+        mov     ax,0100h + MAP_MASK ;AL = index in SC of Map Mask reg
+        shl     ah,cl           ;set only the bit for the pixel's plane to 1
+        mov     dx,SC_INDEX     ;set the Map Mask to enable only the
+        out     dx,ax           ; pixel's plane
 
         mov     al,byte ptr [bp+Color]
-        mov     es:[bx],al              ;draw the pixel in the desired color
+        mov     es:[bx],al      ;draw the pixel in the desired color
 
-        pop     bp                      ;restore caller's stack frame
+        pop     bp              ;restore caller's stack frame
         ret
 _WritePixelX    endp
         end
 ```
 
-**LISTING 47.3 L47-3.ASM**
+**LISTING 47.3 [L47-3.ASM](../code/L47-3.ASM)**
 
 ```nasm
 ; Mode X (320x240, 256 colors) read pixel routine. Works on all VGAs.
@@ -396,46 +396,46 @@ _WritePixelX    endp
 ;
 ;    unsigned int ReadPixelX(int X, int Y, unsigned int PageBase);
 
-GC_INDEX     equ    03ceh               ;Graphics Controller Index
-READ_MAP     equ    04h                 ;index in GC of the Read Map register
-SCREEN_SEG   equ    0a000h              ;segment of display memory in mode X
-SCREEN_WIDTH equ    80                  ;width of screen in bytes from one scan line
-                                        ; to the next
+GC_INDEX        equ     03ceh   ;Graphics Controller Index
+READ_MAP        equ     04h     ;index in GC of the Read Map register
+SCREEN_SEG      equ     0a000h  ;segment of display memory in mode X
+SCREEN_WIDTH    equ     80      ;width of screen in bytes from one scan line
+                                ; to the next
 parms   struc
-        dw      2 dup (?)               ;pushed BP and return address
-X       dw      ?                       ;X coordinate of pixel to read
-Y       dw      ?                       ;Y coordinate of pixel to read
-PageBase dw     ?                       ;base offset in display memory of page from
-                                        ; which to read pixel
+        dw      2 dup (?)       ;pushed BP and return address
+X       dw      ?               ;X coordinate of pixel to read
+Y       dw      ?               ;Y coordinate of pixel to read
+PageBase dw     ?               ;base offset in display memory of page from
+                                ; which to read pixel
 parms   ends
 
         .model  small
         .code
         public  _ReadPixelX
 _ReadPixelX     proc    near
-        push    bp                      ;preserve caller's stack frame
-        mov     bp,sp                   ;point to local stack frame
+        push    bp              ;preserve caller's stack frame
+        mov     bp,sp           ;point to local stack frame
 
         mov     ax,SCREEN_WIDTH
-        mul     [bp+Y]                  ;offset of pixel's scan line in page
+        mul     [bp+Y]          ;offset of pixel's scan line in page
         mov     bx,[bp+X]
         shr     bx,1
-        shr     bx,1                    ;X/4 = offset of pixel in scan line
-        add     bx,ax                   ;offset of pixel in page
-        add     bx,[bp+PageBase]        ;offset of pixel in display memory
+        shr     bx,1            ;X/4 = offset of pixel in scan line
+        add     bx,ax           ;offset of pixel in page
+        add     bx,[bp+PageBase] ;offset of pixel in display memory
         mov     ax,SCREEN_SEG
-        mov     es,ax                   ;point ES:BX to the pixel's address
+        mov     es,ax           ;point ES:BX to the pixel's address
 
         mov     ah,byte ptr [bp+X]
-        and     ah,011b ;AH = pixel's plane
-        mov     al,READ_MAP             ;AL = index in GC of the Read Map reg
-        mov     dx,GC_INDEX             ;set the Read Map to read the pixel's
-        out     dx,ax                   ; plane
+        and     ah,011b         ;AH = pixel's plane
+        mov     al,READ_MAP     ;AL = index in GC of the Read Map reg
+        mov     dx,GC_INDEX     ;set the Read Map to read the pixel's
+        out     dx,ax           ; plane
 
-        mov     al,es:[bx]              ;read the pixel's color
-        sub     ah,ah                   ;convert it to an unsigned int
+        mov     al,es:[bx]      ;read the pixel's color
+        sub     ah,ah           ;convert it to an unsigned int
 
-        pop     bp                      ;restore caller's stack frame
+        pop     bp              ;restore caller's stack frame
         ret
 _ReadPixelX     endp
         end
@@ -453,7 +453,7 @@ see. I've provided Listing 47.4 partly for illustrative purposes, but
 mostly so we'll have a point of reference for the substantial speed-up
 that's possible with code that's designed from a Mode X perspective.
 
-**LISTING 47.4 L47-4.ASM**
+**LISTING 47.4 [L47-4.ASM](../code/L47-4.ASM)**
 
 ```nasm
 ; Mode X (320x240, 256 colors) rectangle fill routine. Works on all
@@ -465,84 +465,84 @@ that's possible with code that's designed from a Mode X perspective.
 ;    void FillRectangleX(int StartX, int StartY, int EndX, int EndY,
 ;       unsigned int PageBase, int Color);
 
-SC_INDEX      equ    03c4h              ;Sequence Controller Index
-MAP_MASK      equ    02h                ;index in SC of Map Mask register
-SCREEN_SEG    equ    0a000h             ;segment of display memory in mode X
-SCREEN_WIDTH  equ    80                 ;width of screen in bytes from one scan line
-                                        ; to the next
+SC_INDEX        equ     03c4h   ;Sequence Controller Index
+MAP_MASK        equ     02h     ;index in SC of Map Mask register
+SCREEN_SEG      equ     0a000h  ;segment of display memory in mode X
+SCREEN_WIDTH    equ     80      ;width of screen in bytes from one scan line
+                                ; to the next
 parms   struc
-        dw      2 dup (?)               ;pushed BP and return address
-StartX  dw      ?                  ;X coordinate of upper left corner of rect
-StartY  dw      ?                  ;Y coordinate of upper left corner of rect
-EndX    dw      ?                  ;X coordinate of lower right corner of rect
-                                   ; (the row at EndX is not filled)
-EndY    dw      ?                       ;Y coordinate of lower right corner of rect
-                                        ; (the column at EndY is not filled)
-PageBase dw     ?                       ;base offset in display memory of page in
-                                        ; which to fill rectangle
-Color   dw      ?                       ;color in which to draw pixel
+        dw      2 dup (?)       ;pushed BP and return address
+StartX  dw      ?               ;X coordinate of upper left corner of rect
+StartY  dw      ?               ;Y coordinate of upper left corner of rect
+EndX    dw      ?               ;X coordinate of lower right corner of rect
+                                ; (the row at EndX is not filled)
+EndY    dw      ?               ;Y coordinate of lower right corner of rect
+                                ; (the column at EndY is not filled)
+PageBase dw     ?               ;base offset in display memory of page in
+                                ; which to fill rectangle
+Color   dw      ?               ;color in which to draw pixel
 parms   ends
 
         .model  small
         .code
         public  _FillRectangleX
 _FillRectangleX proc    near
-        push    bp                      ;preserve caller's stack frame
-        mov     bp,sp                   ;point to local stack frame
-        push    si                      ;preserve caller's register variables
+        push    bp              ;preserve caller's stack frame
+        mov     bp,sp           ;point to local stack frame
+        push    si              ;preserve caller's register variables
         push    di
 
         mov     ax,SCREEN_WIDTH
-        mul     [bp+StartY]             ;offset in page of top rectangle scan line
+        mul     [bp+StartY]     ;offset in page of top rectangle scan line
         mov     di,[bp+StartX]
         shr     di,1
-        shr     di,1                    ;X/4 = offset of first rectangle pixel in scan
-                                        ; line
-        add     di,ax                   ;offset of first rectangle pixel in page
-        add     di,[bp+PageBase]        ;offset of first rectangle pixel in
-                                        ; display memory
+        shr     di,1            ;X/4 = offset of first rectangle pixel in scan
+                                ; line
+        add     di,ax           ;offset of first rectangle pixel in page
+        add     di,[bp+PageBase] ;offset of first rectangle pixel in
+                                ; display memory
         mov     ax,SCREEN_SEG
-        mov     es,ax                   ;point ES:DI to the first rectangle pixel's
-                                        ; address
-        mov     dx,SC_INDEX             ;set the Sequence Controller Index to
-        mov     al,MAP_MASK             ; point to the Map Mask register
+        mov     es,ax           ;point ES:DI to the first rectangle pixel's
+                                ; address
+        mov     dx,SC_INDEX     ;set the Sequence Controller Index to
+        mov     al,MAP_MASK     ; point to the Map Mask register
         out     dx,al
-        inc     dx                      ;point DX to the SC Data register
+        inc     dx              ;point DX to the SC Data register
         mov     cl,byte ptr [bp+StartX]
-        and     cl,011b                 ;CL = first rectangle pixel's plane
+        and     cl,011b         ;CL = first rectangle pixel's plane
         mov     al,01h
-        shl     al,cl                   ;set only the bit for the pixel's plane to 1
-        mov     ah,byte ptr [bp+Color]  ;color with which to fill
+        shl     al,cl           ;set only the bit for the pixel's plane to 1
+        mov     ah,byte ptr [bp+Color] ;color with which to fill
         mov     bx,[bp+EndY]
-        sub     bx,[bp+StartY]          ;BX = height of rectangle
-        jle     FillDone                ;skip if 0 or negative height
+        sub     bx,[bp+StartY]  ;BX = height of rectangle
+        jle     FillDone        ;skip if 0 or negative height
         mov     si,[bp+EndX]
-        sub     si,[bp+StartX]          ;CX = width of rectangle
-        jle     FillDone                ;skip if 0 or negative width
+        sub     si,[bp+StartX]  ;CX = width of rectangle
+        jle     FillDone        ;skip if 0 or negative width
 FillRowsLoop:
-        push    ax                      ;remember the plane mask for the left edge
-        push    di                      ;remember the start offset of the scan line
-        mov     cx,si                   ;set count of pixels in this scan line
+        push    ax              ;remember the plane mask for the left edge
+        push    di              ;remember the start offset of the scan line
+        mov     cx,si           ;set count of pixels in this scan line
 FillScanLineLoop:
-        out     dx,al                   ;set the plane for this pixel
-        mov     es:[di],ah              ;draw the pixel
-        shl     al,1                    ;adjust the plane mask for the next pixel's
-        and     al,01111b               ; bit, modulo 4
-        jnz     AddressSet              ;advance address if we turned over from
-        inc     di                      ; plane 3 to plane 0
-        mov     al,00001b               ;set plane mask bit for plane 0
+        out     dx,al           ;set the plane for this pixel
+        mov     es:[di],ah      ;draw the pixel
+        shl     al,1            ;adjust the plane mask for the next pixel's
+        and     al,01111b       ; bit, modulo 4
+        jnz     AddressSet      ;advance address if we turned over from
+        inc     di              ; plane 3 to plane 0
+        mov     al,00001b       ;set plane mask bit for plane 0
 AddressSet:
         loop    FillScanLineLoop
-        pop     di                      ;retrieve the start offset of the scan line
-        add     di,SCREEN_WIDTH         ;point to the start of the next scan
-                                        ; line of the rectangle
-        pop     ax                      ;retrieve the plane mask for the left edge
-        dec     bx                      ;count down scan lines
+        pop     di              ;retrieve the start offset of the scan line
+        add     di,SCREEN_WIDTH ;point to the start of the next scan
+                                ; line of the rectangle
+        pop     ax              ;retrieve the plane mask for the left edge
+        dec     bx              ;count down scan lines
         jnz     FillRowsLoop
 FillDone:
-        pop     di                      ;restore caller's register variables
+        pop     di              ;restore caller's register variables
         pop     si
-        pop     bp                      ;restore caller's stack frame
+        pop     bp              ;restore caller's stack frame
         ret
 _FillRectangleX endp
         end
@@ -580,7 +580,7 @@ it's not grievously so.
 > four sets per scan line to avoid a fading-in effect) to facilitate
 > copying to the screen a plane at a time with `REP MOVS`.
 
-**LISTING 47.5 L47-5.ASM**
+**LISTING 47.5 [L47-5.ASM](../code/L47-5.ASM)**
 
 ```nasm
 ; Mode X (320x240, 256 colors) rectangle fill routine. Works on all
@@ -593,120 +593,120 @@ it's not grievously so.
 ;    void FillRectangleX(int StartX, int StartY, int EndX, int EndY,
 ;       unsigned int PageBase, int Color);
 
-SC_INDEX     equ    03c4h               ;Sequence Controller Index
-MAP_MASK     equ    02h                 ;index in SC of Map Mask register
-SCREEN_SEG   equ    0a000h              ;segment of display memory in mode X
-SCREEN_WIDTH equ    80                  ;width of screen in bytes from one scan line
-                                        ; to the next
+SC_INDEX        equ     03c4h   ;Sequence Controller Index
+MAP_MASK        equ     02h     ;index in SC of Map Mask register
+SCREEN_SEG      equ     0a000h  ;segment of display memory in mode X
+SCREEN_WIDTH    equ     80      ;width of screen in bytes from one scan line
+                                ; to the next
 parms struc
-        dw      2 dup (?)               ;pushed BP and return address
-StartX  dw      ?                       ;X coordinate of upper left corner of rect
-StartY  dw      ?                       ;Y coordinate of upper left corner of rect
-EndX    dw      ?                       ;X coordinate of lower right corner of rect
-                                        ; (the row at EndX is not filled)
-EndY    dw      ?                       ;Y coordinate of lower right corner of rect
-                                        ; (the column at EndY is not filled)
-PageBase dw     ?                       ;base offset in display memory of page in
-                                        ; which to fill rectangle
-Color   dw      ?                       ;color in which to draw pixel
+        dw      2 dup (?)       ;pushed BP and return address
+StartX  dw      ?               ;X coordinate of upper left corner of rect
+StartY  dw      ?               ;Y coordinate of upper left corner of rect
+EndX    dw      ?               ;X coordinate of lower right corner of rect
+                                ; (the row at EndX is not filled)
+EndY    dw      ?               ;Y coordinate of lower right corner of rect
+                                ; (the column at EndY is not filled)
+PageBase dw     ?               ;base offset in display memory of page in
+                                ; which to fill rectangle
+Color   dw      ?               ;color in which to draw pixel
 parms ends
 
-StartOffset  equ   -2                   ;local storage for start offset of rectangle
-Width        equ   -4                   ;local storage for address width of rectangle
-Height       equ   -6                   ;local storage for height of rectangle
-PlaneInfo    equ   -8                   ;local storage for plane # and plane mask
-STACK_FRAME_SIZE  equ  8
+StartOffset equ  -2             ;local storage for start offset of rectangle
+Width    equ     -4             ;local storage for address width of rectangle
+Height   equ     -6             ;local storage for height of rectangle
+PlaneInfo equ    -8             ;local storage for plane # and plane mask
+STACK_FRAME_SIZE equ 8
 
         .model  small
         .code
         public  _FillRectangleX
 _FillRectangleX proc    near
-        push    bp                      ;preserve caller's stack frame
-        mov     bp,sp                   ;point to local stack frame
-        sub     sp,STACK_FRAME_SIZE     ;allocate space for local vars
-        push    si                      ;preserve caller's register variables
+        push    bp              ;preserve caller's stack frame
+        mov     bp,sp           ;point to local stack frame
+        sub     sp,STACK_FRAME_SIZE ;allocate space for local vars
+        push    si              ;preserve caller's register variables
         push    di
 
         cld
         mov     ax,SCREEN_WIDTH
-        mul     [bp+StartY]             ;offset in page of top rectangle scan line
+        mul     [bp+StartY]     ;offset in page of top rectangle scan line
         mov     di,[bp+StartX]
         shr     di,1
-        shr     di,1                    ;X/4 = offset of first rectangle pixel in scan
-                                        ; line
-        add     di,ax                   ;offset of first rectangle pixel in page
-        add     di,[bp+PageBase]        ;offset of first rectangle pixel in
-                                        ; display memory
+        shr     di,1            ;X/4 = offset of first rectangle pixel in scan
+                                ; line
+        add     di,ax           ;offset of first rectangle pixel in page
+        add     di,[bp+PageBase] ;offset of first rectangle pixel in
+                                ; display memory
         mov     ax,SCREEN_SEG
-        mov     es,ax                   ;point ES:DI to the first rectangle pixel's
-        mov     [bp+StartOffset],di     ; address
-        mov     dx,SC_INDEX             ;set the Sequence Controller Index to
-        mov     al,MAP_MASK             ; point to the Map Mask register
+        mov     es,ax           ;point ES:DI to the first rectangle pixel's
+        mov     [bp+StartOffset],di ; address
+        mov     dx,SC_INDEX     ;set the Sequence Controller Index to
+        mov     al,MAP_MASK     ; point to the Map Mask register
         out     dx,al
         mov     bx,[bp+EndY]
-        sub     bx,[bp+StartY]          ;BX = height of rectangle
-        jle     FillDone                ;skip if 0 or negative height
+        sub     bx,[bp+StartY]  ;BX = height of rectangle
+        jle     FillDone        ;skip if 0 or negative height
         mov     [bp+Height],bx
         mov     dx,[bp+EndX]
         mov     cx,[bp+StartX]
         cmp     dx,cx
-        jle     FillDone                ;skip if 0 or negative width
+        jle     FillDone        ;skip if 0 or negative width
         dec     dx
         and     cx,not 011b
         sub     dx,cx
         shr     dx,1
         shr     dx,1
-        inc     dx                      ;# of addresses across rectangle to fill
+        inc     dx              ;# of addresses across rectangle to fill
         mov     [bp+Width],dx
         mov     word ptr [bp+PlaneInfo],0001h
-                                        ;lower byte = plane mask for plane 0,
-                                        ; upper byte = plane # for plane 0
+                                ;lower byte = plane mask for plane 0,
+                                ; upper byte = plane # for plane 0
 FillPlanesLoop:
         mov     ax,word ptr [bp+PlaneInfo]
-        mov     dx,SC_INDEX+1           ;point DX to the SC Data register
-        out     dx,al                   ;set the plane for this pixel
-        mov     di,[bp+StartOffset]     ;point ES:DI to rectangle start
+        mov     dx,SC_INDEX+1   ;point DX to the SC Data register
+        out     dx,al           ;set the plane for this pixel
+        mov     di,[bp+StartOffset] ;point ES:DI to rectangle start
         mov     dx,[bp+Width]
         mov     cl,byte ptr [bp+StartX]
-        and     cl,011b                 ;plane # of first pixel in initial byte
-        cmp     ah,cl                   ;do we draw this plane in the initial byte?
-        jae     InitAddrSet             ;yes
-        dec     dx                      ;no, so skip the initial byte
-        jz      FillLoopBottom          ;skip this plane if no pixels in it
+        and     cl,011b         ;plane # of first pixel in initial byte
+        cmp     ah,cl           ;do we draw this plane in the initial byte?
+        jae     InitAddrSet ;yes
+        dec     dx              ;no, so skip the initial byte
+        jz      FillLoopBottom ;skip this plane if no pixels in it
         inc     di
 InitAddrSet:
         mov     cl,byte ptr [bp+EndX]
         dec     cl
-        and     cl,011b                 ;plane # of last pixel in final byte
-        cmp     ah,cl                   ;do we draw this plane in the final byte?
-        jbe     WidthSet                ;yes
-        dec     dx                      ;no, so skip the final byte
-        jz      FillLoopBottom          ;skip this planes if no pixels in it
+        and     cl,011b         ;plane # of last pixel in final byte
+        cmp     ah,cl           ;do we draw this plane in the final byte?
+        jbe     WidthSet        ;yes
+        dec     dx              ;no, so skip the final byte
+        jz      FillLoopBottom  ;skip this planes if no pixels in it
 WidthSet:
         mov     si,SCREEN_WIDTH
-        sub     si,dx                   ;distance from end of one scan line to start
-                                        ; of next
-        mov     bx,[bp+Height]          ;# of lines to fill
-        mov     al,byte ptr [bp+Color]  ;color with which to fill
+        sub     si,dx           ;distance from end of one scan line to start
+                                ; of next
+        mov     bx,[bp+Height]  ;# of lines to fill
+        mov     al,byte ptr [bp+Color] ;color with which to fill
 FillRowsLoop:
-        mov     cx,dx                   ;# of bytes across scan line
-        rep     stosb                   ;fill the scan line in this plane
-        add     di,si                   ;point to the start of the next scan
-                                        ; line of the rectangle
-        dec     bx                      ;count down scan lines
+        mov     cx,dx           ;# of bytes across scan line
+        rep     stosb           ;fill the scan line in this plane
+        add     di,si           ;point to the start of the next scan
+                                ; line of the rectangle
+        dec     bx              ;count down scan lines
         jnz     FillRowsLoop
 FillLoopBottom:
         mov     ax,word ptr [bp+PlaneInfo]
-        shl     al,1                    ;set the plane bit to the next plane
-        inc     ah                      ;increment the plane #
+        shl     al,1            ;set the plane bit to the next plane
+        inc     ah              ;increment the plane #
         mov     word ptr [bp+PlaneInfo],ax
-        cmp     ah,4                    ;have we done all planes?
-        jnz     FillPlanesLoop          ;continue if any more planes
+        cmp     ah,4            ;have we done all planes?
+        jnz     FillPlanesLoop  ;continue if any more planes
 FillDone:
-        pop     di                      ;restore caller's register variables
+        pop     di              ;restore caller's register variables
         pop     si
-        mov     sp,bp                   ;discard storage for local variables
-        pop     bp                      ;restore caller's stack frame
+        mov     sp,bp           ;discard storage for local variables
+        pop     bp              ;restore caller's stack frame
         ret
 _FillRectangleX endp
         end
@@ -769,7 +769,7 @@ adapters lack the underlying memory bandwidth to write data that fast.
 However, Mode X parallel access should always be faster than mode 13H
 access; the only question on any given adapter is how *much* faster.
 
-**LISTING 47.6 L47-6.ASM**
+**LISTING 47.6 [L47-6.ASM](../code/L47-6.ASM)**
 
 ```nasm
 ; Mode X (320x240, 256 colors) rectangle fill routine. Works on all
@@ -781,107 +781,107 @@ access; the only question on any given adapter is how *much* faster.
 ;    void FillRectangleX(int StartX, int StartY, int EndX, int EndY,
 ;       unsigned int PageBase, int Color);
 
-SC_INDEX     equ    03c4h               ;Sequence Controller Index
-MAP_MASK     equ    02h                 ;index in SC of Map Mask register
-SCREEN_SEG   equ    0a000h              ;segment of display memory in mode X
-SCREEN_WIDTH equ    80                  ;width of screen in bytes from one scan line
-                                        ; to the next
+SC_INDEX        equ     03c4h   ;Sequence Controller Index
+MAP_MASK        equ     02h     ;index in SC of Map Mask register
+SCREEN_SEG      equ     0a000h  ;segment of display memory in mode X
+SCREEN_WIDTH    equ     80      ;width of screen in bytes from one scan line
+                                ; to the next
 parms   struc
-          dw      2 dup (?)             ;pushed BP and return address
-StartX    dw      ?                     ;X coordinate of upper left corner of rect
-StartY    dw      ?                     ;Y coordinate of upper left corner of rect
-EndX      dw      ?                     ;X coordinate of lower right corner of rect
-                                        ; (the row at EndX is not filled)
-EndY      dw      ?                     ;Y coordinate of lower right corner of rect
-                                        ; (the column at EndY is not filled)
-PageBase dw      ?                      ;base offset in display memory of page in
-                                        ; which to fill rectangle
-Color    dw      ?                      ;color in which to draw pixel
-parms    ends
+        dw      2 dup (?)       ;pushed BP and return address
+StartX  dw      ?               ;X coordinate of upper left corner of rect
+StartY  dw      ?               ;Y coordinate of upper left corner of rect
+EndX    dw      ?               ;X coordinate of lower right corner of rect
+                                ; (the row at EndX is not filled)
+EndY    dw      ?               ;Y coordinate of lower right corner of rect
+                                ; (the column at EndY is not filled)
+PageBase dw     ?               ;base offset in display memory of page in
+                                ; which to fill rectangle
+Color   dw      ?               ;color in which to draw pixel
+parms   ends
 
-         .model  small
-         .data
+        .model  small
+        .data
 ; Plane masks for clipping left and right edges of rectangle.
 LeftClipPlaneMask       db      00fh,00eh,00ch,008h
 RightClipPlaneMask      db      00fh,001h,003h,007h
         .code
         public  _FillRectangleX
 _FillRectangleX proc    near
-        push    bp                      ;preserve caller's stack frame
-        mov     bp,sp                   ;point to local stack frame
-        push    si                      ;preserve caller's register variables
+        push    bp              ;preserve caller's stack frame
+        mov     bp,sp           ;point to local stack frame
+        push    si              ;preserve caller's register variables
         push    di
 
         cld
         mov     ax,SCREEN_WIDTH
-        mul     [bp+StartY]             ;offset in page of top rectangle scan line
+        mul     [bp+StartY]     ;offset in page of top rectangle scan line
         mov     di,[bp+StartX]
-        shr     di,1                    ;X/4 = offset of first rectangle pixel in scan
-        shr     di,1                    ; line
-        add     di,ax                   ;offset of first rectangle pixel in page
-        add     di,[bp+PageBase]        ;offset of first rectangle pixel in
-                                        ; display memory
-        mov     ax,SCREEN_SEG           ;point ES:DI to the first rectangle
-        mov     es,ax                   ; pixel's address
-        mov     dx,SC_INDEX             ;set the Sequence Controller Index to
-        mov     al,MAP_MASK             ; point to the Map Mask register
+        shr     di,1            ;X/4 = offset of first rectangle pixel in scan
+        shr     di,1            ; line
+        add     di,ax           ;offset of first rectangle pixel in page
+        add     di,[bp+PageBase] ;offset of first rectangle pixel in
+                                ; display memory
+        mov     ax,SCREEN_SEG   ;point ES:DI to the first rectangle
+        mov     es,ax           ; pixel's address
+        mov     dx,SC_INDEX     ;set the Sequence Controller Index to
+        mov     al,MAP_MASK     ; point to the Map Mask register
         out     dx,al
-        inc     dx                      ;point DX to the SC Data register
+        inc     dx              ;point DX to the SC Data register
         mov     si,[bp+StartX]
-        and     si,0003h                ;look up left edge plane mask
-        mov     bh,LeftClipPlaneMask[si]; to clip & put in BH
+        and     si,0003h        ;look up left edge plane mask
+        mov     bh,LeftClipPlaneMask[si] ; to clip & put in BH
         mov     si,[bp+EndX]
-        and     si,0003h                ;look up right edge plane
-        mov     bl,RightClipPlaneMask[si]; mask to clip & put in BL
+        and     si,0003h        ;look up right edge plane
+        mov     bl,RightClipPlaneMask[si] ; mask to clip & put in BL
 
-        mov     cx,[bp+EndX]            ;calculate # of addresses across rect
+        mov     cx,[bp+EndX]    ;calculate # of addresses across rect
         mov     si,[bp+StartX]
         cmp     cx,si
-        jle     FillDone                ;skip if 0 or negative width
+        jle     FillDone        ;skip if 0 or negative width
         dec     cx
         and     si,not 011b
         sub     cx,si
         shr     cx,1
-        shr     cx,1                    ;# of addresses across rectangle to fill - 1
-        jnz     MasksSet                ;there's more than one byte to draw
-        and     bh,bl                   ;there's only one byte, so combine the left-
-                                        ; and right-edge clip masks
+        shr     cx,1            ;# of addresses across rectangle to fill - 1
+        jnz     MasksSet        ;there's more than one byte to draw
+        and     bh,bl           ;there's only one byte, so combine the left
+                                ; and right edge clip masks
 MasksSet:
         mov     si,[bp+EndY]
-        sub     si,[bp+StartY]          ;BX = height of rectangle
-        jle     FillDone                ;skip if 0 or negative height
-        mov     ah,byte ptr [bp+Color]  ;color with which to fill
-        mov     bp,SCREEN_WIDTH         ;stack frame isn't needed any more
-        sub     bp,cx                   ;distance from end of one scan line to start
-        dec     bp                      ; of next
+        sub     si,[bp+StartY]  ;BX = height of rectangle
+        jle     FillDone        ;skip if 0 or negative height
+        mov     ah,byte ptr [bp+Color] ;color with which to fill
+        mov     bp,SCREEN_WIDTH ;stack frame isn't needed any more
+        sub     bp,cx           ;distance from end of one scan line to start
+        dec     bp              ; of next
 FillRowsLoop:
-        push    cx                      ;remember width in addresses - 1
-        mov     al,bh                   ;put left-edge clip mask in AL
-        out     dx,al                   ;set the left-edge plane (clip) mask
-        mov     al,ah                   ;put color in AL
-        stosb                           ;draw the left edge
-        dec     cx                      ;count off left edge byte
-        js      FillLoopBottom          ;that's the only byte
-        jz      DoRightEdge             ;there are only two bytes
-        mov     al,00fh                 ;middle addresses are drawn 4 pixels at a pop
-        out     dx,al                   ;set the middle pixel mask to no clip
-        mov     al,ah                   ;put color in AL
-        rep     stosb                   ;draw the middle addresses four pixels apiece
+        push    cx              ;remember width in addresses - 1
+        mov     al,bh           ;put left-edge clip mask in AL
+        out     dx,al           ;set the left-edge plane (clip) mask
+        mov     al,ah           ;put color in AL
+        stosb                   ;draw the left edge
+        dec     cx              ;count off left edge byte
+        js      FillLoopBottom  ;that's the only byte
+        jz      DoRightEdge     ;there are only two bytes
+        mov     al,00fh         ;middle addresses are drawn 4 pixels at a pop
+        out     dx,al           ;set the middle pixel mask to no clip
+        mov     al,ah           ;put color in AL
+        rep     stosb           ;draw the middle addresses four pixels apiece
 DoRightEdge:
-        mov     al,bl                   ;put right-edge clip mask in AL
-        out     dx,al                   ;set the right-edge plane (clip) mask
-        mov     al,ah                   ;put color in AL
-        stosb                           ;draw the right edge
+        mov     al,bl           ;put right-edge clip mask in AL
+        out     dx,al           ;set the right-edge plane (clip) mask
+        mov     al,ah           ;put color in AL
+        stosb                   ;draw the right edge
 FillLoopBottom:
-        add     di,bp                   ;point to the start of the next scan line of
-                                        ; the rectangle
-        pop     cx                      ;retrieve width in addresses - 1
-        dec     si                      ;count down scan lines
+        add     di,bp           ;point to the start of the next scan line of
+                                ; the rectangle
+        pop     cx              ;retrieve width in addresses - 1
+        dec     si              ;count down scan lines
         jnz     FillRowsLoop
 FillDone:
-        pop     di                      ;restore caller's register variables
+        pop     di              ;restore caller's register variables
         pop     si
-        pop     bp                      ;restore caller's stack frame
+        pop     bp              ;restore caller's stack frame
         ret
 _FillRectangleX endp
         end
@@ -896,12 +896,13 @@ the next chapter, we'll continue with Mode X by exploring the wonders
 that the latches and parallel plane hardware can work on scrolls,
 copies, blits, and pattern fills.
 
-**LISTING 47.7 L47-7.C**
+**LISTING 47.7 [L47-7.C](../code/L47-7.C)**
 
 ```c
 /* Program to demonstrate mode X (320x240, 256-colors) rectangle
    fill by drawing adjacent 20x20 rectangles in successive colors from
-   0 on up across and down the screen */
+   0 on up across and down the screen
+*/
 #include <conio.h>
 #include <dos.h>
 
@@ -909,18 +910,18 @@ void Set320x240Mode(void);
 void FillRectangleX(int, int, int, int, unsigned int, int);
 
 void main() {
-   int i,j;
-   union REGS regset;
+	int i,j;
+	union REGS regset;
 
-   Set320x240Mode();
-   FillRectangleX(0,0,320,240,0,0); /* clear the screen to black */
-   for (j = 1; j < 220; j += 21) {
-      for (i = 1; i < 300; i += 21) {
-         FillRectangleX(i, j, i+20, j+20, 0, ((j/21*15)+i/21) & 0xFF);
-      }
-   }
-   getch();
-   regset.x.ax = 0x0003;   /* switch back to text mode and done */
-   int86(0x10, &regset, &regset);
+	Set320x240Mode();
+	FillRectangleX(0,0,320,240,0,0); /* clear the screen to black */
+	for (j = 1; j < 220; j += 21) {
+		for (i = 1; i < 300; i += 21) {
+			FillRectangleX(i, j, i+20, j+20, 0, ((j/21*15)+i/21) & 0xFF);
+		}
+	}
+	getch();
+	regset.x.ax = 0x0003;   /* switch back to text mode and done */
+	int86(0x10, &regset, &regset);
 }
 ```

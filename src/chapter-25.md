@@ -103,7 +103,7 @@ drawing of the sort used in Listing 25.1, it's possible to draw any font
 of any size anywhere on the screen (and a lot faster than via DOS or the
 BIOS, as well).
 
-**LISTING 25.1 L25-1.ASM**
+**LISTING 25.1 [L25-1.ASM](../code/L25-1.ASM)**
 
 ```nasm
 ; Program to illustrate operation of data rotate and bit mask
@@ -112,7 +112,7 @@ BIOS, as well).
 ;  for use with modes 0Dh, 0Eh, 0Fh, 10h, and 12h.
 ; By Michael Abrash.
 ;
-stack   segment para stack ‘STACK'
+stack   segment para stack 'STACK'
         db      512 dup(?)
 stack   ends
 ;
@@ -127,13 +127,13 @@ GC_ROTATE       equ     3       ;GC data rotate/logical function
                                 ; register index
 GC_BIT_MASK     equ     8       ;GC bit mask register index
 ;
-dseg    segment para common ‘DATA'
+dseg    segment para common 'DATA'
 TEST_TEXT_ROW   equ     69      ;row to display test text at
 TEST_TEXT_COL   equ     17      ;column to display test text at
 TEST_TEXT_WIDTH equ     8       ;width of a character in pixels
 
 TestString      label   byte
-        db      ‘Hello, world!',0       ;test string to print.
+        db      'Hello, world!',0       ;test string to print.
 FontPointer     dd      ?               ;font offset
 dseg    ends
 ;
@@ -145,7 +145,7 @@ SETGC   macro   INDEX, SETTING
         out     dx,ax
         endm
 ;
-cseg    segment para public ‘CODE'
+cseg    segment para public 'CODE'
         assume  cs:cseg, ds:dseg
 start   proc    near
         mov     ax,dseg
@@ -158,11 +158,11 @@ start   proc    near
 ;
 ; Set driver to use the 8x8 font.
 ;
-         mov     ah,11h  ;VGA BIOS character generator function,
-         mov     al,30h  ; return info subfunction
-         mov     bh,3;get 8x8 font pointer
-         int     10h
-         call    SelectFont
+        mov     ah,11h          ;VGA BIOS character generator function,
+        mov     al,30h          ; return info subfunction
+        mov     bh,3            ;get 8x8 font pointer
+        int     10h
+        call    SelectFont
 ;
 ; Print the test string.
 ;
@@ -237,12 +237,12 @@ DrawChar        proc    near
         pop     ds
         mul     di      ;calculate offset of start of row
         push    di      ;set aside screen width
-        mov     di,cx    ;set aside the column
-        and     cl,0111b    ;keep only the column in-byte address
+        mov     di,cx   ;set aside the column
+        and     cl,0111b;keep only the column in-byte address
         shr     di,1
         shr     di,1
-        shr     di,1       ;divide column by 8 to make a byte address
-        add     di,ax    ;and point to byte
+        shr     di,1    ;divide column by 8 to make a byte address
+        add     di,ax   ;and point to byte
 ;
 ; Calculate font address of character.
 ;
@@ -250,7 +250,7 @@ DrawChar        proc    near
         shl     bx,1    ;assumes 8 bytes per character; use
         shl     bx,1    ; a multiply otherwise
         shl     bx,1    ;offset in font of character
-        add     si,bx    ;offset in font segment of character
+        add     si,bx   ;offset in font segment of character
 ;
 ; Set up the GC rotation.
 ;
@@ -445,14 +445,14 @@ unchanged. In order to generate blue unconditionally, it would be
 necessary to set the Map Mask register to 0FH, clear memory, and then
 set the Map Mask register to 01H and fill with blue.
 
-**LISTING 25.2 L25-2.ASM**
+**LISTING 25.2 [L25-2.ASM](../code/L25-2.ASM)**
 
 ```nasm
 ; Program to illustrate operation of Map Mask register when drawing
 ;  to memory that already contains data.
 ; By Michael Abrash.
 ;
-stack   segment para stack ‘STACK'
+stack   segment para stack 'STACK'
         db      512 dup(?)
 stack   ends
 ;
@@ -475,7 +475,7 @@ SETSC   macro   INDEX, SETTING
         dec     dx
         endm
 ;
-cseg    segment para public ‘CODE#146;
+cseg    segment para public 'CODE'
         assume  cs:cseg
 start   proc    near
 ;
@@ -491,13 +491,13 @@ start   proc    near
 ;
         SETSC   SC_MAP_MASK,02h         ;map mask setting enables only
                                         ; plane 1, the green plane
-        sub     di,di           ;start at beginning of video memory
+        sub     di,di                   ;start at beginning of video memory
         mov     al,0ffh
-        mov     bp,24           ;# bars to draw
+        mov     bp,24                   ;# bars to draw
 HorzBarLoop:
-        mov     cx,80*10        ;# bytes per horizontal bar
-        rep stosb               ;draw bar
-        add     di,80*10        ;point to start of next bar
+        mov     cx,80*10                ;# bytes per horizontal bar
+        rep stosb                       ;draw bar
+        add     di,80*10                ;point to start of next bar
         dec     bp
         jnz     HorzBarLoop
 ;
@@ -568,14 +568,14 @@ color. The preexisting pattern is completely overwritten this time,
 because the set/reset circuitry writes 0-bytes to planes that must be
 off as well as 0FFH-bytes to planes that must be on.
 
-**LISTING 25.3 L25-3.ASM**
+**LISTING 25.3 [L25-3.ASM](../code/L25-3.ASM)**
 
 ```nasm
 ; Program to illustrate operation of set/reset circuitry to force
 ;  setting of memory that already contains data.
 ; By Michael Abrash.
 ;
-stack   segment para stack ‘STACK#146;
+stack   segment para stack 'STACK'
         db      512 dup(?)
 stack   ends
 ;
@@ -613,7 +613,7 @@ SETGC   macro   INDEX, SETTING
         dec     dx
         endm
 ;
-cseg    segment para public ‘CODE#146;
+cseg    segment para public 'CODE'
         assume  cs:cseg
 start   proc    near
 ;
@@ -629,18 +629,18 @@ start   proc    near
 ;
         SETSC   SC_MAP_MASK,02h         ;map mask setting enables only
                                         ; plane 1, the green plane
-        sub     di,di           ;start at beginning of video memory
+        sub     di,di                   ;start at beginning of video memory
         mov     al,0ffh
-        mov     bp,24           ;# bars to draw
+        mov     bp,24                   ;# bars to draw
 HorzBarLoop:
-        mov     cx,80*10        ;# bytes per horizontal bar
-        rep stosb               ;draw bar
-        add     di,80*10        ;point to start of next bar
+        mov     cx,80*10                ;# bytes per horizontal bar
+        rep stosb                       ;draw bar
+        add     di,80*10                ;point to start of next bar
         dec     bp
         jnz     HorzBarLoop
 ;
-; Fill screen with blue, using set/reset to force plane 0 to 1#146;s and all
-; other plane to 0#146;s.
+; Fill screen with blue, using set/reset to force plane 0 to 1's and all
+; other plane to 0's.
 ;
         SETSC   SC_MAP_MASK,0fh         ;must set map mask to enable all
                                         ; planes, so set/reset values can
@@ -700,14 +700,14 @@ entire byte of CPU data for a plane, the combination of set/reset for
 some planes and CPU data for other planes, as in the example above, can
 be used to control individual pixels.
 
-**LISTING 25.4 L25-4.ASM**
+**LISTING 25.4 [L25-4.ASM](../code/L25-4.ASM)**
 
 ```nasm
 ; Program to illustrate operation of set/reset circuitry in conjunction
 ;  with CPU data to modify setting of memory that already contains data.
 ; By Michael Abrash.
 ;
-stack   segment para stack ‘STACK#146;
+stack   segment para stack 'STACK'
         db      512 dup(?)
 stack   ends
 ;
@@ -745,7 +745,7 @@ SETGC   macro   INDEX, SETTING
         dec     dx
         endm
 ;
-cseg    segment para public ‘CODE#146;
+cseg    segment para public 'CODE'
         assume  cs:cseg
 start   proc    near
 ;
@@ -759,15 +759,15 @@ start   proc    near
 ;
 ; Draw 18 10-scan-line high horizontal bars in green, 10 scan lines apart.
 ;
-        SETSC   SC_MAP_MASK,02h;map mask setting enables only
-; plane 1, the green plane
-        sub     di,di;start at beginning of video memory
+        SETSC   SC_MAP_MASK,02h         ;map mask setting enables only
+                                        ; plane 1, the green plane
+        sub     di,di                   ;start at beginning of video memory
         mov     al,0ffh
-        mov     bp,18;# bars to draw
+        mov     bp,18                   ;# bars to draw
 HorzBarLoop:
-        mov     cx,80*10;# bytes per horizontal bar
-        rep stosb;draw bar
-        add     di,80*10;point to start of next bar
+        mov     cx,80*10                ;# bytes per horizontal bar
+        rep stosb                       ;draw bar
+        add     di,80*10                ;point to start of next bar
         dec     bp
         jnz     HorzBarLoop
 ;
@@ -779,8 +779,8 @@ HorzBarLoop:
                                         ; be written to planes 0, 2 & 3
                                         ; and CPU data can be written to
                                         ; plane 1 (the green plane)
-        SETGC   GC_ENABLE_SET_RESET,0dh    ;CPU data to planes 0, 2 & 3 will be
-                                           ; replaced by set/reset value
+        SETGC   GC_ENABLE_SET_RESET,0dh ;CPU data to planes 0, 2 & 3 will be
+                                        ; replaced by set/reset value
         SETGC   GC_SET_RESET,04h        ;set/reset value is 0ffh for plane 2
                                         ; (the red plane) and 0 for other
                                         ; planes

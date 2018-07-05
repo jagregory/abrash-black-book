@@ -27,7 +27,7 @@ write mode 0, write mode 1 is of little real significance.)
 
 Write mode 0 is a very useful mode, but some of VGA's most interesting
 capabilities involve the two write modes that we have yet to examine:
-write mode 1, and, especially, write mode 3. We'll get to write mode 1
+write mode 2, and, especially, write mode 3. We'll get to write mode 2
 in the next chapter, but right now I want to focus on write mode 3,
 which can be confusing at first, but turns out to be quite a bit more
 powerful than one might initially think.
@@ -79,7 +79,7 @@ result, the characters appear to be painted into the background, rather
 than over it. Another advantage of the code in Listing 26.1 is that the
 characters can be drawn in any of the 16 available colors.
 
-**LISTING 26.1 L26-1.ASM**
+**LISTING 26.1 [L26-1.ASM](../code/L26-1.ASM)**
 
 ```nasm
 ; Program to illustrate operation of write mode 3 of the VGA.
@@ -91,7 +91,7 @@ characters can be drawn in any of the 16 available colors.
 ; Assembled with MASM
 ; By Michael Abrash
 ;
-stack   segment para stack ‘STACK'
+stack   segment para stack 'STACK'
         db      512 dup(?)
 stack   ends
 ;
@@ -111,16 +111,16 @@ GC_ROTATE       equ     3       ;GC data rotate/logical function
 GC_MODE         equ     5       ;GC Mode register
 GC_BIT_MASK     equ     8       ;GC bit mask register index
 ;
-dseg    segment para common ‘DATA'
+dseg    segment para common 'DATA'
 TEST_TEXT_ROW   equ     69      ;row to display test text at
 TEST_TEXT_COL   equ     17      ;column to display test text at
 TEST_TEXT_WIDTH equ     8       ;width of a character in pixels
 TestString      label   byte
-        db      ‘Hello, world!',0       ;test string to print.
+        db      'Hello, world!',0       ;test string to print.
 FontPointer     dd      ?               ;font offset
 dseg    ends
 ;
-cseg    segment para public ‘CODE'
+cseg    segment para public 'CODE'
         assume  cs:cseg, ds:dseg
 start   proc    near
         mov     ax,dseg
@@ -140,7 +140,7 @@ start   proc    near
         inc     dx
         in      al,dx
         and     al,0f0h
-        or      al,1                ;blue plane only set, others reset
+        or      al,1            ;blue plane only set, others reset
         out     dx,al
         dec     dx
         mov     al,GC_ENABLE_SET_RESET
@@ -148,15 +148,15 @@ start   proc    near
         inc     dx
         in      al,dx
         and     al,0f0h
-        or      al,0fh              ;enable set/reset for all planes
+        or      al,0fh          ;enable set/reset for all planes
         out     dx,al
         mov     dx,VGA_VIDEO_SEGMENT
-        mov     es,dx               ;point to display memory
+        mov     es,dx           ;point to display memory
         mov     di,0
-        mov     cx,8000h            ;fill all 32k words
-        mov     ax,0ffffh           ;because of set/reset, the value
-                                    ; written actually doesn't matter
-        rep stosw                   ;fill with blue
+        mov     cx,8000h        ;fill all 32k words
+        mov     ax,0ffffh       ;because of set/reset, the value
+                                ; written actually doesn't matter
+        rep stosw               ;fill with blue
 ;
 ; Set driver to use the 8x8 font.
 ;
@@ -171,16 +171,16 @@ start   proc    near
         mov     si,offset TestString
         mov     bx,TEST_TEXT_ROW
         mov     cx,TEST_TEXT_COL
-        mov     ah,0                ;start with color 0
+        mov     ah,0            ;start with color 0
 StringOutLoop:
         lodsb
         and     al,al
         jz      StringOutDone
-        push    ax                  ;preserve color
+        push    ax              ;preserve color
         call    DrawChar
-        pop     ax                  ;restore color
-        inc     ah                  ;next color
-        and     ah,0fh              ;colors range from 0 to 15
+        pop     ax              ;restore color
+        inc     ah              ;next color
+        and     ah,0fh          ;colors range from 0 to 15
         add     cx,TEST_TEXT_WIDTH
         jmp     StringOutLoop
 StringOutDone:
@@ -221,7 +221,7 @@ DrawChar        proc    near
         push    di
         push    bp
         push    ds
-        push    ax      ;preserve character to draw in AL
+        push    ax              ;preserve character to draw in AL
 ;
 ; Set up set/reset to produce character color, using the readability
 ; of VGA register to preserve the setting of reserved bits 7-4.
@@ -445,7 +445,7 @@ font used in Listing 26.1. There is also an 8x16 font stored in ROM,
 along with the tables used to alter the 8x14 and 8x16 ROM fonts into
 9x14 and 9x16 fonts.
 
-**LISTING 26.2 L26-2.ASM**
+**LISTING 26.2 [L26-2.ASM](../code/L26-2.ASM)**
 
 ```nasm
 ; Program to illustrate high-speed text-drawing operation of
@@ -458,7 +458,7 @@ along with the tables used to alter the 8x14 and 8x16 ROM fonts into
 ; Assembled with MASM
 ; By Michael Abrash
 ;
-stack   segment para stack ‘STACK'
+stack   segment para stack 'STACK'
         db      512 dup(?)
 stack   ends
 ;
@@ -478,16 +478,16 @@ GC_ROTATE               equ     3           ;GC data rotate/logical function
 GC_MODE                 equ     5           ;GC Mode register
 GC_BIT_MASK             equ     8           ;GC bit mask register index
 ;
-dseg    segment para common ‘DATA'
+dseg    segment para common 'DATA'
 TEST_TEXT_ROW           equ     69          ;row to display test text at
 TEST_TEXT_COL           equ     17          ;column to display test text at
 TEST_TEXT_COLOR         equ     0fh         ;high intensity white
 TestString      label   byte
-        db      ‘Hello, world!',0           ;test string to print.
+        db      'Hello, world!',0           ;test string to print.
 FontPointer     dd      ?                   ;font offset
 dseg    ends
 ;
-cseg    segment para public ‘CODE'
+cseg    segment para public 'CODE'
         assume  cs:cseg, ds:dseg
 start   proc    near
         mov     ax,dseg
