@@ -547,7 +547,7 @@ void WalkTree(NODE *pNode)
             // Pop the next node from the stack so
             // we can visit it and see if it has a
             // right subtree to be traversed
-            if ((pNode = *—pNodeStack) == NULL)
+            if ((pNode = *--pNodeStack) == NULL)
             {
                // Stack is empty and the current node
                // has no right child; we're done
