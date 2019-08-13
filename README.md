@@ -24,8 +24,8 @@ Some larger changes could be made to improve the content. I'd love to see some o
 
 You need to have the following software installed and on your `PATH` before you begin:
 
-  * [pandoc](http://johnmacfarlane.net/pandoc/) for Markdown to HTML and EPUB conversion.
-  * [kindlegen](http://www.amazon.com/gp/feature.html?docId=1000765211) for EPUB to Mobi conversion.
+  * [pandoc](http://johnmacfarlane.net/pandoc/) version 2.0 or greater for Markdown to HTML and EPUB conversion.
+  * [kindlegen](http://www.amazon.com/gp/feature.html?docId=1000765211) for Epub to Mobi conversion.
 
 To generate an e-reader friendly version of the book, you can use `make` with one of the following options:
 
