@@ -89,7 +89,7 @@ much different from the original, and in fact still contains exactly the
 same number of instructions, the performance of the entire subroutine
 improved by about 10 percent from just this one change. (Incidentally,
 that wasn't the end of the optimization; I eliminated the `DEC` and
-`JNJ` instructions by expanding the four iterations of the loop—but
+`JNZ` instructions by expanding the four iterations of the loop—but
 that's a tale for another chapter.)
 
 The point is this: To write truly superior assembly programs, you need
