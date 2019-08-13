@@ -878,8 +878,8 @@ the PC must be completely refreshed about once every four milliseconds
 in order to ensure the integrity of the data it stores. Obviously, it's
 highly desirable that the memory in the PC retain the correct data
 indefinitely, so each DRAM chip in the PC *must* always be refreshed
-within 4 µs of the last refresh. Since there's no guarantee that a given
-program will access each and every DRAM block once every 4 µs, the PC
+within 4 ms of the last refresh. Since there's no guarantee that a given
+program will access each and every DRAM block once every 4 ms, the PC
 contains special circuitry and programming for providing DRAM refresh.
 
 #### How DRAM Refresh Works in the PC
@@ -900,8 +900,8 @@ purpose of refreshing the DRAM; the data that is read isn't used.)
 The 256 addresses accessed by the refresh DMA accesses are arranged so
 that taken together they properly refresh all the memory in the PC. By
 accessing one of the 256 addresses every 15.08 µs, all of the PC's DRAM
-is refreshed in 256 x 15.08 µs, or 3.86 µs, which is just about the
-desired 4 µs time I mentioned earlier. (Only the first 640K of memory is
+is refreshed in 256 x 15.08 µs, or 3.86 ms, which is just about the
+desired 4 ms time I mentioned earlier. (Only the first 640K of memory is
 refreshed in the PC; video adapters and other adapters above 640K
 containing memory that requires refreshing must provide their own DRAM
 refresh in pre-AT systems.)
@@ -1053,7 +1053,7 @@ reduction can vary considerably and unpredictably, depending on how the
 DRAM refreshes interact with your code's pattern of memory accesses.
 When you use the Zen timer and get a fractional cycle count for the
 execution time of an instruction, that's often the DRAM refresh
-cycle-eater at work. (The display adapter cycleis another possible
+cycle-eater at work. (The display adapter cycle is another possible
 culprit, and, on 386s and later processors, cache misses and pipeline
 execution hazards produce this sort of effect as well.) Whenever you get
 two timing results that differ less or more than they seemingly should,
@@ -1223,7 +1223,7 @@ display, and even with the display adapter cycle-eater it just doesn't
 take that long to manipulate 4,000 bytes. Even if the display adapter
 cycle-eater were to cause the 8088 to take as much as 5µs per display
 memory access—more than five times normal—it would still take only
-4,000x 2x 5µs, or 40 µs, to read and write every byte of display memory.
+4,000x 2x 5µs, or 40 ms, to read and write every byte of display memory.
 That's a lot of time as measured in 8088 cycles, but it's less than the
 blink of an eye in human time, and video performance only matters in
 human time. After all, the whole point of drawing graphics is to convey
@@ -1261,7 +1261,7 @@ seriously impact code performance, even as measured in human time.
 
 For example, if we assume the same 5 µs per display memory access for
 the EGA's high-resolution graphics mode that we assumed for text mode,
-it would take 26,000 x 2 x 5 µs, or 260 µs, to scroll the screen once in
+it would take 26,000 x 2 x 5 µs, or 260 ms, to scroll the screen once in
 the EGA's high-resolution graphics mode, mode 10H. That's more than
 one-quarter of a second—noticeable by human standards, an eternity by
 computer standards.

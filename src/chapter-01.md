@@ -363,12 +363,12 @@ _ChecksumFile    proc near
 ChecksumLoop:
                  mov       ah,3fh               ;DOS read file function #
                  int       21h                  ;read the byte
-jcErrorEnd;an error occurred
+                 jc        ErrorEnd             ;an error occurred
                  and       ax,ax                ;any bytes read?
                  jz        Success              ;no-end of file reached-we're done
                  add       si,[TempWord]        ;add the byte into the
                                                 ;checksum total
-jmpChecksumLoop
+                 jmp       ChecksumLoop
 ErrorEnd:
                  sub       ax,ax                ;error
                  jmp       short Done
@@ -381,7 +381,7 @@ Done:
                  pop       si                   ;restore C's register variable
                  pop       bp
                  ret
-_ChecksumFileendp
+_ChecksumFile    endp
                  end
 ```
 
