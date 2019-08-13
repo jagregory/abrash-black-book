@@ -107,7 +107,7 @@ from the use of DI to address memory (remember, the loop is unrolled, so
 the last instruction is followed by the first instruction), but because
 the intervening instruction takes two cycles, there's no penalty at all.
 
-![**Figure 13.1**  *Cycle-eaters in the original WC.*](images/13-01.jpg)
+![**Figure 13.1**  *Cycle-eaters in the original WC.*](images/13-01.png)
 
 > ![](images/i.jpg)
 > Remember, pipeline penalties diminish with increasing number of cycles,
