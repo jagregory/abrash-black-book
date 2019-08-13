@@ -138,7 +138,7 @@ a more accurate approximation of the line can be drawn by placing a
 given pixel one unit of screen resolution away from its predecessor in
 either the horizontal or the vertical direction, or both.
 
-![**Figure 35.1**  *Approximating a true line from a pixel array.*](images/35-01.jpg)
+![**Figure 35.1**  *Approximating a true line from a pixel array.*](../images/35-01.jpg)
 
 Let's examine the case of drawing a line where the horizontal, or X
 length of the line is greater than the vertical, or Y length, and both
@@ -167,7 +167,7 @@ In Figure 35.2, the X dimension is the major dimension. This means that
 drawn. The trick, then, is to decide on the correct Y coordinates to
 accompany those X coordinates.
 
-![**Figure 35.2**  *Drawing between two pixel endpoints.*](images/35-02.jpg)
+![**Figure 35.2**  *Drawing between two pixel endpoints.*](../images/35-02.jpg)
 
 It's easy enough to select the Y coordinates by eye in Figure 35.2. The
 appropriate Y coordinates are 0, 0, 1, 1, 2, 2, based on the Y
@@ -202,7 +202,7 @@ the next than to the current Y coordinate. The third pixel is drawn at
 adjustment of one pixel in the current Y coordinate. The running error
 of the pixel actually drawn at this point is C minus D.
 
-![**Figure 35.3**  *The error term in Bresenham's algorithm.*](images/35-03.jpg)
+![**Figure 35.3**  *The error term in Bresenham's algorithm.*](../images/35-03.jpg)
 
 The fourth pixel has an X coordinate of 3. The running error at this
 point is E minus D; since this is less than 1/2, the current Y
@@ -584,7 +584,7 @@ orientations are distinguished by which coordinate forms the major axis
 and by whether each of X and Y increases or decreases from the line
 start to the line end.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > A moment of thought will show, however, that four of the line
 > orientations are redundant. Each of the four orientations for which
 > `DeltaY`, the Y component of the line, is less than 0 (that is, for
@@ -620,7 +620,7 @@ when the running error of the line dictates. In octants 1 and 2, the Y
 coordinate changes on every pixel and the X coordinate changes only when
 the running error dictates, since Y is the major axis.
 
-![**Figure 35.4**  *Bresenham's eight possible line orientations.*](images/35-04.jpg)
+![**Figure 35.4**  *Bresenham's eight possible line orientations.*](../images/35-04.jpg)
 
 There is one line-drawing function for octants 0 and 3, `Octant0`, and
 one line-drawing function for octants 1 and 2, `Octant1`. A single
@@ -653,7 +653,7 @@ slower to do so. The same could be said of having `EVGADot` set the
 Enable Set/Reset and Set/Reset registers for each pixel: While
 modularity would improve, speed would suffer markedly.
 
-![**Figure 35.5**  *EVGALine's decision logic.*](images/35-05.jpg)
+![**Figure 35.5**  *EVGALine's decision logic.*](../images/35-05.jpg)
 
 #### Drawing Each Line
 

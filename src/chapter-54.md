@@ -1021,9 +1021,9 @@ have that, we can easily calculate the red diffuse shading from a
 directed light source as min(ID~red~xR~red~x(L'• N), 1) and likewise for
 the green and blue color components.
 
-![**Figure 54.1**  *Illumination by a directed light source*](images/54-01.jpg)
+![**Figure 54.1**  *Illumination by a directed light source*](../images/54-01.jpg)
 
-![**Figure 54.2**  *The dot product of two vectors.*](images/54-02.jpg)
+![**Figure 54.2**  *The dot product of two vectors.*](../images/54-02.jpg)
 
 The overall red shading for each polygon can be calculated by summing
 the ambient-shading red component with the diffuse-shading component
@@ -1189,9 +1189,9 @@ end-points has to be transformed, along with the rest of the vertices,
 and that takes time. Still, it's faster than calculating a unit normal
 for each polygon from scratch.
 
-![**Figure 54.3**  *The unit normal in the polygon data structure.*](images/54-03.jpg)
+![**Figure 54.3**  *The unit normal in the polygon data structure.*](../images/54-03.jpg)
 
-![**Figure 54.4**  *The reversed light source vector.*](images/54-04.jpg)
+![**Figure 54.4**  *The reversed light source vector.*](../images/54-04.jpg)
 
 We also need a unit vector for each directed light source. The directed
 light sources I've implemented in X-Sharp are spotlights; that is,

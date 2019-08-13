@@ -135,7 +135,7 @@ run as fast as possible, but we also want the difference in drawing
 speed between the average scene and the slowest-drawing scene to be as
 small as possible.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > It does little good to average 30 frames per second if 10 percent of the
 > scenes draw at 5 fps, because the jerkiness in those scenes will be
 > extremely obvious by comparison with the average scene, and highly
@@ -183,7 +183,7 @@ be drawn, as shown in Figure 66.2. This may sound a lot like z-buffering
 fine for smaller moving objects, as described earlier), but there are
 crucial differences.
 
-![**Figure 66.1**  *Span generation.*](images/66-01.jpg)
+![**Figure 66.1**  *Span generation.*](../images/66-01.jpg)
 
 By contrast with z-buffering, only visible portions of visible spans are
 scanned out pixel by pixel (although all polygon edges must still be
@@ -234,7 +234,7 @@ involves generating all spans for each polygon in turn, with each span
 immediately being sorted, clipped, and added to the appropriate bucket.
 
 ![**Figure 66.2**  *Two sets of spans sorted and clipped against one
-another.*](images/66-02.jpg)
+another.*](../images/66-02.jpg)
 
 With edge-sorting, edges are stored in x-sorted, linked list buckets
 according to their start scan line. Each polygon in turn is decomposed
@@ -290,7 +290,7 @@ rasterizing edges nearly in half, while also shrinking the world
 database quite a bit due to the sharing.
 
 ![**Figure 66.3**  *Activating a polygon when a leading edge is
-encountered in the AEL.*](images/66-03.jpg)
+encountered in the AEL.*](../images/66-03.jpg)
 
 One final advantage of edge-sorting is that it makes no distinction
 between convex and concave polygons. That's not an important
@@ -302,7 +302,7 @@ possible to handle concave polygons with span-sorting, that can involve
 significant performance penalties.
 
 ![**Figure 66.4**  *Deactivating a polygon when a trailing edge is
-encountered in the AEL.*](images/66-04.jpg)
+encountered in the AEL.*](../images/66-04.jpg)
 
 Nonetheless, there's no cut-and-dried answer as to which approach is
 better. In the end, span-sorting and edge-sorting amount to the same

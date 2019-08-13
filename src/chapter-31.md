@@ -155,7 +155,7 @@ the pixel number, n, of the pixel at display memory address *address* in
 plane *plane* is:
 
 ![**Figure 31.1**  *Bitmap organization in 320x400 256-color mode in
-320x400 256-color mode.*](images/31-01.jpg)
+320x400 256-color mode.*](../images/31-01.jpg)
 
 *n* = (*address* \* 4) + *plane*
 

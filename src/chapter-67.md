@@ -176,7 +176,7 @@ two spans may cross such that part of each span is visible, in which
 case the spans have to be split and drawn appropriately, as shown in
 Figure 67.1.
 
-![**Figure 67.1**  *Intersecting span sorting.*](images/67-01.jpg)
+![**Figure 67.1**  *Intersecting span sorting.*](../images/67-01.jpg)
 
 Intersecting is the slowest and most complicated type of span sorting,
 because it is necessary to compare 1/z values at two points in order to
@@ -215,7 +215,7 @@ falsely reporting close-but-not-abutting edges as ties, proved to be
 troublesome in Quake, and the epsilon calculations and extra comparisons
 slowed things down.
 
-![**Figure 67.2**  *Abutting span sorting.*](images/67-02.jpg)
+![**Figure 67.2**  *Abutting span sorting.*](../images/67-02.jpg)
 
 I do think that abutting 1/z span sorting could have been made reliable
 enough for production use in Quake, were it not that we share edges

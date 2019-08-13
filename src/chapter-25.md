@@ -39,7 +39,7 @@ shifted is controlled by bits 2-0 of GC register 3, the Data Rotate
 register, which also contains the ALU function select bits (data
 unmodified, AND, OR, and XOR) that we looked at in the last chapter.
 
-![**Figure 25.1**  *Data flow through the Graphics Controller.*](images/25-01.jpg)
+![**Figure 25.1**  *Data flow through the Graphics Controller.*](../images/25-01.jpg)
 
 The barrel shifter is powerful, but (as sometimes happens in this
 business) it sounds more useful than it really is. This is because the
@@ -73,7 +73,7 @@ to display memory. Briefly, the bit mask determines on a bit-by-bit
 basis whether the source for each byte written to display memory is the
 ALU for that plane or the latch for that plane.
 
-![**Figure 25.2**  *Bit mask operation.*](images/25-02.jpg)
+![**Figure 25.2**  *Bit mask operation.*](../images/25-02.jpg)
 
 The bit mask is controlled by GC register 8, the Bit Mask register. If a
 given bit of the Bit Mask register is 1, then the corresponding bit of
@@ -367,7 +367,7 @@ mask; unfortunately, we're already using it for stencilling in this
 case), but it completely eliminates reading display memory and does
 foreground-plus-background drawing in one blurry-fast pass.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > This last-described example is a good illustration of how I'd suggest
 > you approach the VGA: As a rich collection of hardware resources that
 > can profitably be combined in some non-obvious ways. Don't let yourself
@@ -422,7 +422,7 @@ the Map Mask register would be set to 09H to draw in high-intensity
 blue; here, bits 0 and 3 are set to 1, so only the blue plane (plane 0)
 and the intensity plane (plane 3) are written to.
 
-![**Figure 25.3**  *Data flow during a write mode 0 write operation.*](images/25-03.jpg)
+![**Figure 25.3**  *Data flow during a write mode 0 write operation.*](../images/25-03.jpg)
 
 Remember, though, that planes that are disabled by the Map Mask register
 are not written to or modified in any way. This means that the above
@@ -834,7 +834,7 @@ Set/Reset register is inactive in write mode 3, but the Set/Reset
 register provides the primary drawing color in write mode 3, as
 discussed in the next chapter.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Be aware that because set/reset directly replaces CPU data, it does not
 > necessarily have to force an entire display memory byte to 0 or 0FFH,
 > even when set/reset is replacing CPU data for all planes. For example,

@@ -42,10 +42,10 @@ memory byte, 4 bytes—one from each plane—can be loaded into the latches
 at once. Any or all of those 4 bytes can then be written anywhere in
 display memory with a single byte-sized write, as shown in Figure 48.2.
 
-![**Figure 48.1**  *How the VGA latches are loaded.*](images/48-01.jpg)
+![**Figure 48.1**  *How the VGA latches are loaded.*](../images/48-01.jpg)
 
 ![**Figure 48.2**  *Writing 4 bytes to display memory in a single
-operation.*](images/48-02.jpg)
+operation.*](../images/48-02.jpg)
 
 The upshot is that the latches make it possible to copy data around from
 one part of display memory to another, 32 bits (four pixels) at a
@@ -351,7 +351,7 @@ is used to restore the holes left after images move), the last 16 pixels
 and the remaining 31,728 pixels (7,932 addresses) of display memory are
 free for storage of icons, images, temporary buffers, or whatever.
 
-![**Figure 48.3**  *A useful Mode X display memory layout.*](images/48-03.jpg)
+![**Figure 48.3**  *A useful Mode X display memory layout.*](../images/48-03.jpg)
 
 This is an efficient organization for animation, but there are certainly
 many other possible setups. For example, you might choose to have a
@@ -380,7 +380,7 @@ set the Read Map register to select a source plane and the Map Mask
 register to select the corresponding destination plane. Then, copy all
 pixels in that plane, repeating for all four planes.)
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Although copying through the latches is, in general, a speedy technique,
 > especially on slower VGAs, it's not always a win. Reading video memory
 > tends to be quite a bit slower than writing, and on a fast VLB or PCI

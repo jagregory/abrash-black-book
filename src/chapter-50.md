@@ -157,9 +157,9 @@ confusion. Therefore, Z decreases as distance along the line of sight
 increases; a view space coordinate of (0,0,-1000) is directly ahead,
 twice as far away as a coordinate of (0,0,-500).
 
-![**Figure 50.1**  *The 3-D drawing pipeline.*](images/50-01.jpg)
+![**Figure 50.1**  *The 3-D drawing pipeline.*](../images/50-01.jpg)
 
-![**Figure 50.2**  *A right-handed coordinate system.*](images/50-02.jpg)
+![**Figure 50.2**  *A right-handed coordinate system.*](../images/50-02.jpg)
 
 #### Projection
 
@@ -192,7 +192,7 @@ for example, used to move objects from object space, in which the center
 of the object is typically the origin (0,0,0), into world space, where
 the object may be located anywhere.
 
-![**Figure 50.3**  *Perspective projection.*](images/50-03.jpg)
+![**Figure 50.3**  *Perspective projection.*](../images/50-03.jpg)
 
 #### Rotation
 
@@ -209,7 +209,7 @@ First, it is possible to concatenate multiple rotations into a single
 matrix by multiplying them together in the desired order; that single
 matrix can then be used to perform the rotations more efficiently.
 
-![**Figure 50.4**  *3-D rotation formulas.*](images/50-04.jpg)
+![**Figure 50.4**  *3-D rotation formulas.*](../images/50-04.jpg)
 
 Second, 3x3 rotation matrices can become the upper-left-hand portions of
 4x4 matrices that also perform translation (and scaling as well, but we
@@ -240,7 +240,7 @@ functionality), and the ability to draw the projected polygon (complete
 with clipping) and handle the other details of animation (2-D
 functionality).
 
-![**Figure 50.5**  *A 4x4 Transformation Matrix.*](images/50-05.jpg)
+![**Figure 50.5**  *A 4x4 Transformation Matrix.*](../images/50-05.jpg)
 
 Happily (and not coincidentally), we put together a nice 2-D animation
 framework back in Chapters 47, 48, and 49, during our exploratory

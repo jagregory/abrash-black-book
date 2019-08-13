@@ -408,7 +408,7 @@ state of our Game of Life implementation, the only areas worth looking
 at for possible optimizations are `cell_state()` and
 `next_generation().`
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > It's worth noting, though, that one reason `draw_pixel()` doesn't
 > much affect performance is that in Listing 17.1, we're smart enough to
 > redraw pixels only when their states change, rather than during every
@@ -435,7 +435,7 @@ know the cell storage format! This is a wonderful thing, in general; it
 saves programming time and bugs, and frees you to work on the
 application's needs, rather than implementation details.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > However, if you never look beneath the surface of the abstract model at
 > the implementation details, you have no idea of what the true performance
 > cost of various operations is, and, without that, you have largely
@@ -467,7 +467,7 @@ neighbor-counting for the bit-per-cell cellmap format, but it seems we'd
 need a lot of conditional code to handle wrapping, and that would slow
 things back down again.
 
-![**Figure 17.1**  *Edge-wrapping complications.*](images/17-01.jpg)
+![**Figure 17.1**  *Edge-wrapping complications.*](../images/17-01.jpg)
 
 When a problem doesn't lend itself well to optimization, make it a
 practice to see if you can change the problem definition to one that
@@ -490,7 +490,7 @@ Listing 17.1, as shown in Table 17.1. We're up to about 10 generations
 per second on a 486; not where we want to be, but it is a vast
 improvement.
 
-![**Figure 17.2**  *The "padding cells" solution.*](images/17-02.jpg)
+![**Figure 17.2**  *The "padding cells" solution.*](../images/17-02.jpg)
 
 **LISTING 17.3 L17-3.CPP**
 
@@ -809,7 +809,7 @@ It's undoubtedly possible to improve the performance of Listing 17.4
 further by fine-tuning the code, but no tremendous improvement is
 possible that way.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Once you've reached the point of fine-tuning pointer usage and register
 > variables and the like in C or C++, you've become compiler-dependent;
 > you therefore might as well go to assembly and get the real McCoy.
@@ -869,7 +869,7 @@ possible. Large lookup tables, oddly encoded cellmaps, and lots of
 bit-twiddling assembly code spring to mind as possible approaches. Can't
 you just feel your adrenaline start to pump?
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Relax. Step back. Try to divine the true nature of the problem. The
 > object is not to count neighbors and check cell states as quickly as
 > possible; that's just one possible implementation. The object is to
@@ -906,7 +906,7 @@ only one-tenth that of the original approach!
 
 *Know your data.*
 
-![**Figure 17.3**  *New cell format.*](images/17-03.jpg)
+![**Figure 17.3**  *New cell format.*](../images/17-03.jpg)
 
 #### Acting on What We Know
 
@@ -1242,7 +1242,7 @@ well-optimized, and, as I noted, the program must be compiled with the
 large model for large cellmaps. Also, of course, the entire program is
 still in C++; note well that there's not a whit of assembly here.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > We've gotten more than a 30-times speedup simply by removing a little of
 > the abstraction that C++ encourages, and by storing and processing the
 > data in a manner appropriate for the typical nature of the data itself.

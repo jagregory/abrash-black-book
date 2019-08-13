@@ -234,7 +234,7 @@ slower than `ADD` on a 486 if the sum of two registers is used to
 point to memory, but no slower than `ADD` on a Pentium. On both a 486
 and Pentium, `LEA` can also be slowed down by addressing interlocks.
 
-![**Figure 6.1**  *Operation of ADD Reg,Reg vs. LEA Reg,{Addr}.*](images/06-01.jpg)
+![**Figure 6.1**  *Operation of ADD Reg,Reg vs. LEA Reg,{Addr}.*](../images/06-01.jpg)
 
 #### The Wonders of LEA on the 386
 
@@ -256,7 +256,7 @@ This makes the 32-bit `LEA` much more generally useful than the
 standard 16-bit `LEA` in the role of an `ADD` with an independent
 destination.
 
-![**Figure 6.2**  *Operation of the 32-bit LEA reg,[Addr].*](images/06-02.jpg)
+![**Figure 6.2**  *Operation of the 32-bit LEA reg,[Addr].*](../images/06-02.jpg)
 
 But what else can `LEA` do on a 386, besides add?
 
@@ -314,7 +314,7 @@ Multiplying a 32-bit value by a non-power-of-two multiplier in just 2
 cycles is a pretty neat trick, even though it works only on a 386 or
 486.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > The full list of values that `LEA` can multiply a register by on a 386
 > or 486 is: 2, 3, 4, 5, 8, and 9. That list doesn't include every
 > multiplier you might want, but it covers some commonly used ones, and

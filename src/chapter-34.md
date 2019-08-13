@@ -163,7 +163,7 @@ load all 256 DAC locations without showing *some* sort of garbage on the
 screen for at least one frame, but that's not the BIOS's fault; it's a
 problem endemic to the VGA.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > These findings lead me inexorably to the conclusion that the BIOS should
 > not be used to load the DAC dynamically. That is, if you're loading the
 > DAC just once in preparation for a graphics session—sort of a DAC mode
@@ -623,7 +623,7 @@ much the same for the jets. The only remaining task would be to animate
 the spaceship across the screen, which is not a particularly difficult
 task.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > The key to getting all the color cycling to work in the above example,
 > however, would be to assign each color cycling task a different part of
 > the DAC, with each part cycled independently as needed. If, as is

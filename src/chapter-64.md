@@ -51,7 +51,7 @@ the CPU wanted to access display memory, pixels could come from the FIFO
 while the CPU was serviced immediately. That did indeed help
 performance—but not as much as Tom's write FIFO.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > What we have here is as neat a parable about the nature of creative
 > design as one could hope to find. The scrap of news about Paradise's
 > chip contained almost no actual information, but it forced Tom to push
@@ -150,9 +150,9 @@ to figure out what parts of which polygons are visible would be free,
 and the processing time would be the same for all possible viewpoints,
 giving the game a smooth visual flow.
 
-![**Figure 64.1**  *Quake's polygons are stored as empty leaves.*](images/64-01.jpg)
+![**Figure 64.1**  *Quake's polygons are stored as empty leaves.*](../images/64-01.jpg)
 
-![**Figure 64.2**  *Pixels visible from the current viewpoint.*](images/64-02.jpg)
+![**Figure 64.2**  *Pixels visible from the current viewpoint.*](../images/64-02.jpg)
 
 As it happens, it is easy to determine which polygons are outside the
 frustum or partially clipped, and it's quite possible to figure out
@@ -185,7 +185,7 @@ into two pieces created by the nodes above it in the tree, and the
 node's children then further carve that subspace into all the leaves
 that descend from the node.
 
-![**Figure 64.3**  *The substance described by node E.*](images/64-03.jpg)
+![**Figure 64.3**  *The substance described by node E.*](../images/64-03.jpg)
 
 Since a node's subspace is bounded and convex, it is possible to test
 whether it is entirely outside the frustum. If it is, *all* of the
@@ -266,10 +266,10 @@ there were no more polygons or the beam tree became entirely solid. Once
 the beam tree was completed, the visible portions of the polygons that
 had contributed to the beam tree were drawn.
 
-![**Figure 64.4**  *Partitioning the screen into 2-D regions.*](images/64-04.jpg)
+![**Figure 64.4**  *Partitioning the screen into 2-D regions.*](../images/64-04.jpg)
 
 ![**Figure 64.5**  *Beams as wedges projecting from the viewpoint to
-polygon edges.*](images/64-05.jpg)
+polygon edges.*](../images/64-05.jpg)
 
 The advantage to working with a 3-D beam tree, rather than a 2-D region,
 is that determining which side of a beam plane a polygon vertex is on
@@ -436,7 +436,7 @@ they've been designed. But the process of getting there requires
 incredible persistence and a willingness to try lots of different ideas
 until the right one falls into place, as happened here.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > My friend Chris Hecker has a theory that all approaches work out to the
 > same thing in the end, since they all reflect the same underlying state
 > and functionality. In terms of underlying theory, I've found that to be

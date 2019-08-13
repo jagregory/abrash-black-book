@@ -131,7 +131,7 @@ Figure 36.1 illustrates standard Bresenham's line drawing. The key point
 here is that a calculation and a test are performed once for each step
 along the major axis.
 
-![**Figure 36.1**  *Standard Bresenham's line drawing.*](images/36-01.jpg)
+![**Figure 36.1**  *Standard Bresenham's line drawing.*](../images/36-01.jpg)
 
 The run-length slice algorithm rotates matters 90 degrees, with
 salubrious results. The basis of the run-length slice algorithm is
@@ -168,9 +168,9 @@ possible divisor. Both approaches produce the desired result, but that
 which takes maximum advantage of the available information and minimizes
 redundant work is preferable.
 
-![**Figure 36.2**  *Run-length slice line drawing.*](images/36-02.jpg)
+![**Figure 36.2**  *Run-length slice line drawing.*](../images/36-02.jpg)
 
-![**Figure 36.3**  *Runs in a slope 1/3.5 line.*](images/36-03.jpg)
+![**Figure 36.3**  *Runs in a slope 1/3.5 line.*](../images/36-03.jpg)
 
 ### Run-Length Slice Implementation
 
@@ -199,7 +199,7 @@ close we are to needing an extra pixel; when the fractional sum reaches
 subtract 1 from the running sum (because we just advanced one pixel),
 and continue on.
 
-![**Figure 36.4**  *How the error term determines run length.*](images/36-04.jpg)
+![**Figure 36.4**  *How the error term determines run length.*](../images/36-04.jpg)
 
 Practically speaking, however, we can't work with fractions because
 floating-point arithmetic is slow and fixed-point arithmetic is
@@ -288,7 +288,7 @@ to grasp the principles of run-length slice drawing, and to understand
 the optimized code I'll present in the next chapter.
 
 ![**Figure 36.5**  *Balancing run-length slice lines: a) unbalanced; b)
-balanced.*](images/36-05.jpg)
+balanced.*](../images/36-05.jpg)
 
 **LISTING 36.1 L36-1.C**
 

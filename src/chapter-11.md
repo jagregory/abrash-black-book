@@ -219,7 +219,7 @@ exact number of wait states inserted at any given time depends on the
 interaction between the code being executed and the memory system it's
 running on.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > The performance of most 386 memory systems can vary greatly from one
 > memory access to another, depending on factors such as what data happens
 > to be in the cache and which interleaved bank and/or RAM column was
@@ -361,7 +361,7 @@ The penalty for performing a word-sized access starting at an odd
 address is easy to calculate: Two accesses take twice as long as one
 access.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > In other words, the effective capacity of the 286's external data bus
 > is *halved* when a word-sized access to an odd address is performed.
 
@@ -371,7 +371,7 @@ close relative of the 8088's 8-bit bus cycle-eater, but since it behaves
 differently—occurring only at odd addresses—and is avoided with a
 different workaround, we'll consider it to be a new cycle-eater.)
 
-![**Figure 11.1**  *The data alignment cycle-eater.*](images/11-01.jpg)
+![**Figure 11.1**  *The data alignment cycle-eater.*](../images/11-01.jpg)
 
 The way to deal with the data alignment cycle-eater is straightforward:
 *Don't perform word-sized accesses to odd addresses on the 286 if you
@@ -483,9 +483,9 @@ LoopTop:
     call   ZTimerOff
 ```
 
-![**Figure 11.2**  *Word-aligned prefetching on the 286.*](images/11-02.jpg)
+![**Figure 11.2**  *Word-aligned prefetching on the 286.*](../images/11-02.jpg)
 
-![**Figure 11.3**  *How instruction bytes are fetched after a branch.*](images/11-03.jpg)
+![**Figure 11.3**  *How instruction bytes are fetched after a branch.*](../images/11-03.jpg)
 
 Now, this code *should* run in, say, about 12 cycles per loop at most.
 Instead, it took over 14 cycles per loop, an execution time that I could
@@ -516,7 +516,7 @@ instruction if necessary, and the time required to execute a `NOP` can
 sometimes cancel the performance advantage of having a word-aligned
 branch destination.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Consequently, it's best to word-align only those branch destinations
 > that can be reached solely by branching.
 
@@ -577,7 +577,7 @@ interrupt occurring between the two instructions will be serviced more
 slowly than it normally would. The same goes for decrementing twice; use
 `SUB SP,2` instead.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Keep the stack pointer aligned at all times.
 
 #### The DRAM Refresh Cycle-Eater: Still an Act of God
@@ -681,7 +681,7 @@ adapter cycle-eater, as measured in cycles lost to wait states, is
 indeed much worse on AT-class computers than it is on the PC, and it's
 worse still on more powerful computers.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > How bad is the display adapter cycle-eater on an AT? It's this bad:
 > Based on my (not inconsiderable) experience in timing display adapter
 > access, I've found that the display adapter cycle-eater can slow an
@@ -777,7 +777,7 @@ to address a full 4 gigabytes per segment, but in real mode you're still
 limited to 64K, even with 32-bit registers and the new addressing modes,
 unless you play some unorthodox tricks with the segment registers.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Note well: Those tricks don't necessarily work with system software such
 > as Windows, so I'd recommend against using them. If you want 4-gigabyte
 > segments, use a 32-bit environment such as Win32.
@@ -1009,7 +1009,7 @@ have occurred had we executed `POPF`—WITH the bonus that no interrupts
 can accidentally occur when the Interrupt flag is 0 both before and
 after the pop.
 
-![**Figure 11.4**  *The operation of POPF.*](images/11-04.jpg)
+![**Figure 11.4**  *The operation of POPF.*](../images/11-04.jpg)
 
 How can we push the segment:offset of the next instruction? Well,
 finding the offset of the next instruction by performing a near call to
@@ -1038,7 +1038,7 @@ popfskip:
 ; if a POPF instruction had been executed.
 ```
 
-![**Figure 11.5**  *The operation of IRET.*](images/11-05.jpg)
+![**Figure 11.5**  *The operation of IRET.*](../images/11-05.jpg)
 
 The operation of this code is illustrated in Figure 11.6.
 
@@ -1088,7 +1088,7 @@ EMULATE_POPFmacro
       endm
 ```
 
-![**Figure 11.6**  *Workaround code for the POPF bug.*](images/11-06.jpg)
+![**Figure 11.6**  *Workaround code for the POPF bug.*](../images/11-06.jpg)
 
 The standard version of `EMULATE_POPF` is 6 bytes longer than
 `POPF` and much slower, as you'd expect given that it involves three

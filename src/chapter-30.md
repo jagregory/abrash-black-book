@@ -66,7 +66,7 @@ first scan line on the screen *and* the second scan line. There is no
 way to make the split screen cover the entire screen—it always comes up
 at least one scan line short.
 
-![**Figure 30.1**  *Display memory and the split screen.*](images/30-01.jpg)
+![**Figure 30.1**  *Display memory and the split screen.*](../images/30-01.jpg)
 
 So, where is the split screen start scan line stored? The answer varies
 a bit, depending on whether you're talking about the EGA or the VGA. On
@@ -557,7 +557,7 @@ screen start scan line is set—that seems to me to be an advantage—but
 because the changed screen can appear *before* the new split screen
 start scan line is set.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Remember, the split screen start scan line is spread out over two or
 > three registers. What if the incompletely-changed value matches the
 > current scan line after you've set one register but before you've set
@@ -606,7 +606,7 @@ designing split-screen images that might be displayed on EGAs, and you
 should in any case check how your split-screens look on both VGAs and
 EGAs.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > I have an important caution here: Don't count on the EGA's split-screen
 > bug; that is, don't rely on the first scan line being doubled when you
 > design your split screens. IBM designed and made the original EGA, but a
@@ -645,7 +645,7 @@ current byte. As the top part of the screen moves smoothly about, the
 split screen will move and jump, move and jump, over and over. Believe
 me, it's not a pretty sight.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > What's to be done? On the EGA, nothing. Unless you're willing to have
 > your users' eyes doing the jitterbug, don't use horizontal smooth
 > scrolling while the split screen is up. Byte panning is fine—just don't
@@ -1160,7 +1160,7 @@ I'm sure Richard is right when it comes to the real McCoy IBM VGA and
 EGA, but I'm less confident that every clone out there loads the start
 address at the start of vertical sync.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > For that very reason, I generally advise people not to use horizontal
 > smooth panning unless they can test their software on all the makes of
 > display adapter it might run on. I've used Richard's approach in

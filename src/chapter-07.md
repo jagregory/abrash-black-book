@@ -69,7 +69,7 @@ algorithm selection and good design are fundamental to performance. The
 extra horsepower a superb assembly language implementation gives a
 program is worth bothering with only in the context of a good design.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Assembly language optimization is a small but crucial corner of the PC
 > programming world. Use it sparingly and only within the framework of a
 > good design—but ignore it and you may find various portions of your
@@ -99,7 +99,7 @@ instinctively stuffs the loop count in CX and reaches for `LOOP` when
 setting up a loop. That's fine—`LOOP` does, of course, work as
 advertised—but there is one problem:
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > On half of the processors in the x86 family, `LOOP` is slower than
 > `DEC CX` followed by `JNZ`. (Granted, `DEC CX/JNZ` isn't precisely
 > equivalent to `LOOP`, because `DEC` alters the flags and LOOP
@@ -121,7 +121,7 @@ Pentium as well. (By the way, all this is not just theory; I've timed
 the relative performances of `LOOP` and `DEC CX/JNZ` on a cached
 386, and LOOP really is slower.)
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Things are stranger still for `LOOP`'s relative `JCXZ`, which
 > branches if and only if CX is zero. `JCXZ` is faster than `AND
 > CX,CX/JZ` on the 8088 and 80286, and equivalent on the 80386—but is
@@ -207,7 +207,7 @@ checking whether it's zero. There may be ways to perform those tasks a
 little faster by selecting different instructions, but they can get only
 so fast, and branching can't even get all that fast.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > The trick, then, is not to find the fastest way to decrement a count and
 > branch conditionally, but rather to figure out how to accomplish the
 > same result without decrementing or branching as often. Remember the
@@ -482,7 +482,7 @@ that algorithmic improvements can produce, but it can get you a critical
 50 percent or 100 percent improvement when you've exhausted all other
 avenues.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > The point is simply this: You can gain far more by stepping back a bit
 > and thinking of the fastest overall way for the CPU to perform a task
 > than you can by saving a cycle here or there using different
@@ -551,7 +551,7 @@ BIT_PATTERN=BIT_PATTERN SHL 1
      ENDM
 ```
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Besides illustrating the advantages of local optimization, this example
 > also shows that it generally pays to precalculate results; this is often
 > done at or before assembly time, but precalculated tables can also be
@@ -575,7 +575,7 @@ flags.) NOT is often used for tasks, such as flipping masks, where
 there's no reason to test the state of the result, and in that context
 it can be handy to keep the flags unmodified for later testing.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Besides, if you want to `NOT` an operand and set the flags in the
 > process, you can just `XOR` it with -1. Put another way, the only
 > functional difference between `NOT AX` and `XOR AX,0FFFFH` is that
@@ -649,7 +649,7 @@ altering the arithmetic flags is a common characteristic of program
 control instructions (as opposed to arithmetic and logical instructions
 like `SUB` and `AND`, which do alter the flags).
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > The rule is not that the arithmetic flags change whenever the CPU
 > performs a calculation; rather, the flags change whenever you execute an
 > arithmetic, logical, or flag control (such as `CLC` to clear the Carry

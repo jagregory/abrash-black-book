@@ -62,7 +62,7 @@ work yet, so I didn't waste any time due to my faulty assumption that
 should have done experiments until I was sure I knew what was going on
 before drawing any conclusions and acting on them.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > In general, make it a point not to fall into a tightly focused rut; stay
 > loose and think of alternative possibilities and new approaches, and
 > always, always, always keep asking questions. It'll pay off big in the
@@ -93,7 +93,7 @@ the root wall, and each half of the world is then split again by the
 root's children, and so on, until the world is carved into subspaces
 along the lines of all the walls.
 
-![**Figure 62.1**  *Vertical walls and a BSP tree to represent them.*](images/62-01.jpg)
+![**Figure 62.1**  *Vertical walls and a BSP tree to represent them.*](../images/62-01.jpg)
 
 Our objective is to draw the world so that whenever walls overlap we see
 the nearer wall at each overlapped pixel. The simplest way to do that is
@@ -663,7 +663,7 @@ wall's t values accordingly. The test for x clipping is very simple,
 because the edges of the frustum are defined as the planes where x==z
 and -x==z.
 
-![**Figure 62.2**  *Clipping to the view pyramid.*](images/62-02.jpg)
+![**Figure 62.2**  *Clipping to the view pyramid.*](../images/62-02.jpg)
 
 The final clip stage is clipping by y coordinate, and this is the most
 complicated, because vertical walls can be clipped at an angle in y, as
@@ -685,7 +685,7 @@ results to the width of the screen, then we'll be ready to draw.
 Although this step is logically separate from clipping, it is performed
 as the last step for visible walls in `ClipWalls()`.
 
-![**Figure 62.3**  *Why y clipping is more complex than x or z clipping.*](images/62-03.jpg)
+![**Figure 62.3**  *Why y clipping is more complex than x or z clipping.*](../images/62-03.jpg)
 
 ### Walking the Tree, Backface Culling and Drawing
 
@@ -743,7 +743,7 @@ All the visible, front-facing walls are drawn into a buffer by
 `DrawWallsBackToFront()`, then `UpdateWorld()` calls Win32 to copy
 the new frame to the screen. The frame of animation is complete.
 
-![**Figure 62.4**  *Fast backspace culling test in screenspace.*](images/62-04.jpg)
+![**Figure 62.4**  *Fast backspace culling test in screenspace.*](../images/62-04.jpg)
 
 #### Notes on the BSP Renderer
 

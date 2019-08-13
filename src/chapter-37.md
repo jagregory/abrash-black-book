@@ -464,7 +464,7 @@ When I compared the C and assembly implementations drawing to normal
 system (nondisplay) memory, I found that the assembly code was actually
 four times as fast as the C code.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > In fact, Listing 37.1 draws VGA lines at about 92 percent of the maximum
 > possible rate in my system—that is, it draws very nearly as fast as the
 > VGA hardware will allow. All the optimization in the world would get me

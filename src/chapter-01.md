@@ -86,7 +86,7 @@ solid programming skills, preferably using an optimizing compiler or
 assembly language. The optimization at the end is just the finishing
 touch, however.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Without good design, good algorithms, and complete understanding of the
 > program's operation, your carefully optimized code will amount to one of
 > mankind's least fruitful creations—a fast slow program.
@@ -247,7 +247,7 @@ with optimization both on and off; all four times are pretty much the
 same, however, and all are much too slow to be acceptable. Listing 1.1
 requires over two and one-half minutes to checksum *one* file!
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Listings 1.2 and 1.3 form the C/assembly equivalent to Listing 1.1, and
 > Listings 1.6 and 1.7 form the C/assembly equivalent to Listing 1.5.
 
@@ -436,7 +436,7 @@ slightly different but pretty much interchangeable, and yet in this
 application the performance difference between the two is about the same
 as that between a 4.77 MHz PC and a 16 MHz 386.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Make sure you understand what really goes on when you insert a
 > seemingly-innocuous function call into the time-critical portions of
 > your code.
@@ -503,7 +503,7 @@ that handle the time-critical operations, but C is still used for
 checking command-line parameters, opening files, printing, and the
 like.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > If you were to implement any of the listings in this chapter entirely in
 > hand-optimized assembly, I suppose you might get a performance
 > improvement of a few percent—but I rather doubt you'd get even that
@@ -570,7 +570,7 @@ Table 1.1 shows that Listing 1.5 is 2.5 to 4 times faster than Listing
 1.4 (and as much as 49 times faster than Listing 1.1!), even though it
 uses no assembly at all.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Clearly, you can do well by using special-purpose C code in place of a C
 > library function—if you have a thorough understanding of how the C
 > library function operates and exactly what your application needs done.
@@ -802,7 +802,7 @@ instructions and/or unrolled loops can be used effectively, assembly
 tends to be considerably faster relative to C than it is in this very
 specific case.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Don't get hung up on optimizing compilers or assembly language—the best
 > optimizer is between your ears.
 

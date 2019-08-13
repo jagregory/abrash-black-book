@@ -384,7 +384,7 @@ equal to 1 indicating where character pixels are to appear. The Data
 Rotate register is set to rotate the CPU data to pixel-align it, since
 without rotation characters could only be drawn on byte boundaries.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > As I pointed out in Chapter 25, the CPU is perfectly capable of rotating
 > the data itself, and it's often the case that that's more efficient. The
 > problem with using the Data Rotate register is that the `OUT` that

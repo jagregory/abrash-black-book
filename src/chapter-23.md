@@ -217,7 +217,7 @@ fixed. Moreover, a great deal of graphics software now uses word
 `OUT`s, so any computer or VGA that doesn't properly support word
 `OUT`s could scarcely be considered a clone at all.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > A speed tip: The setting of each chip's Index register remains the same
 > until it is reprogrammed. This means that in cases where you are setting
 > the same internal register repeatedly, you can set the Index register to
@@ -301,7 +301,7 @@ the VGA's hardware for vastly better performance. VGA text modes, which
 feature soft fonts, are another matter entirely, upon which we'll touch
 from time to time.
 
-![**Figure 23.1**  *Video data from memory to pixel.*](images/23-01.jpg)
+![**Figure 23.1**  *Video data from memory to pixel.*](../images/23-01.jpg)
 
 With that background out of the way, we can get on to the sample VGA
 program shown in Listing 23.1. I suggest you run the program before
@@ -895,7 +895,7 @@ displayed. For example, the Start Address High register could be set to
 cause the display screen to reflect memory starting at offset 8000H in
 each plane, rather than at the default offset of 0.
 
-![**Figure 23.2**  *Video memory organization for Listing 23.1.*](images/23-02.jpg)
+![**Figure 23.2**  *Video memory organization for Listing 23.1.*](../images/23-02.jpg)
 
 The logical height of the virtual screen is defined by the amount of VGA
 memory available. As the VGA scans display memory for video data, it
@@ -965,7 +965,7 @@ just to be safe.) Immediately after setting palette RAM, however, 20h
 Index register to restore normal video, and at all other times bit 5
 should be set to 1.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > By the way, palette RAM can be set via the BIOS video interrupt
 > (interrupt 10H), function 10H. Whenever an VGA function can be performed
 > reasonably well through a BIOS function, as it can in the case of
@@ -1116,7 +1116,7 @@ sync to happen, sets the new pel panning state, and then continues
 drawing. Don't worry about the details right now; page flipping will
 come up again, at considerably greater length, in later chapters.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > As an interesting side note, be aware that if you run DOS software under
 > a multitasking environment such as Windows NT, timeslicing delays can
 > make mismatched start address bytes or mismatched start address and pel

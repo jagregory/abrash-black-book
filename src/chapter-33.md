@@ -103,7 +103,7 @@ each signal), and sends the three analog signals to the monitor. The DAC
 is a separate chip, external to the VGA chip, but it's an integral part
 of the VGA standard and is present on every VGA.
 
-![**Figure 33.1**  *The VGA color generation path.*](images/33-01.jpg)
+![**Figure 33.1**  *The VGA color generation path.*](../images/33-01.jpg)
 
 (I'd like to take a moment to point out that you can't speak of "color"
 at any point in the color translation process until the output stage of

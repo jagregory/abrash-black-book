@@ -550,7 +550,7 @@ The first thing you'll notice when you run this code is that the speed
 of 360x480 256-color mode is pretty good, especially considering that
 most of the program is im-plemented in C.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Drawing in 360x480 256-color mode can sometimes actually be faster than
 > in the 16-color modes, because the byte-per-pixel display memory
 > organization of 256-color mode eliminates the need to read display
@@ -737,7 +737,7 @@ it's worth the trouble. Even the small taste we've gotten of the
 capabilities of these modes shows that they put the traditional CGA,
 EGA, and generally even VGA modes to shame.
 
-![**Figure 32.1**  *Pixel organization in 360x480 256-color mode.*](images/32-01.jpg)
+![**Figure 32.1**  *Pixel organization in 360x480 256-color mode.*](../images/32-01.jpg)
 
 There's more and better to come, though; in later chapters, we'll return
 to high-resolution 256-color programming in a big way, by exploring the

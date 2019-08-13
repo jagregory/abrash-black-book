@@ -124,7 +124,7 @@ for a given image would reside in a single plane, we could do away with
 the cumbersome programming of the VGA's complex hardware that is needed
 to manipulate images that span multiple planes.
 
-![**Figure 43.1**  *How 4 bits of video data become 6 bits of color.*](images/43-01.jpg)
+![**Figure 43.1**  *How 4 bits of video data become 6 bits of color.*](../images/43-01.jpg)
 
 All in all, it would be a good deal if we could store each image in a
 single plane, as shown in Figure 43.2. However, a problem arises when
@@ -138,9 +138,9 @@ background-colored) parts of the forward image. Can we do that?
 
 You bet.
 
-![**Figure 43.2**  *Storing images in separate planes.*](images/43-02.jpg)
+![**Figure 43.2**  *Storing images in separate planes.*](../images/43-02.jpg)
 
-![**Figure 43.3**  *The problem of overlapping colors.*](images/43-03.jpg)
+![**Figure 43.3**  *The problem of overlapping colors.*](../images/43-03.jpg)
 
 #### Stacking the Palette Registers
 
@@ -207,7 +207,7 @@ transparency.
 
 Table: Table 43.1 Palette RAM settings for bit-plane animation.
 
-![**Figure 43.4**  *How pixel precedence works.*](images/43-04.jpg)
+![**Figure 43.4**  *How pixel precedence works.*](../images/43-04.jpg)
 
 Seems almost too easy, doesn't it? Nonetheless, it works beautifully, as
 we'll see very shortly. First, though, I'd like to point out that
@@ -868,7 +868,7 @@ during which one image's fringe blanks a portion of another image is
 noticeable only upon close inspection, and not particularly unaesthetic
 even then.
 
-![**Figure 43.5**  *Pixel precedence for plane 3 only.*](images/43-05.jpg)
+![**Figure 43.5**  *Pixel precedence for plane 3 only.*](../images/43-05.jpg)
 
 When a technique has such tremendous visual and performance advantages
 as does bit-plane animation, it behooves you to design your animation

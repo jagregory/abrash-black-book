@@ -59,7 +59,7 @@ the overhead of driving back and forth made for miserable performance.
 Renting a truck (the restartable block approach) would have required
 more effort and forethought, but would have paid off handsomely.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > The easy, familiar approach often has nothing in its favor except that
 > it requires less thinking; not a great virtue when writing
 > high-performance code—or when moving.
@@ -131,7 +131,7 @@ exactly how long our search buffer is. Even if a given `strstr()`
 implementation is well-written, its performance will suffer, at least
 for our application, from unnecessary overhead.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > This illustrates why you shouldn't think of C/C++ library functions as
 > black boxes; understand what they do and try to figure out how they do
 > it, and relate that to their performance in the context you're
@@ -152,7 +152,7 @@ to check out the actual machine-code implementation of `memcmp()` from
 your compiler. If necessary, you could always write your own assembly
 language implementation of `memcmp()`.
 
-![**Figure 5.1**  *The brute-force searching technique.*](images/05-01.jpg)
+![**Figure 5.1**  *The brute-force searching technique.*](../images/05-01.jpg)
 
 Invoking `memcmp()` for each potential match location works, but
 entails considerable overhead. Each comparison requires that parameters
@@ -184,7 +184,7 @@ searched and the string we're searching for. Our engine also relies
 heavily on repeated string instructions, assuming that the `memchr()`
 and `memcmp()` library functions are properly coded.
 
-![**Figure 5.2**  *The faster string-searching technique.*](images/05-02.jpg)
+![**Figure 5.2**  *The faster string-searching technique.*](../images/05-02.jpg)
 
 We're going to go with the this approach in our file-searching program;
 the only trick lies in deciding how to integrate this approach with
@@ -496,7 +496,7 @@ And so we find, as we so often will, that optimization is definitely not
 a cut-and-dried matter, and that there is no such thing as a single
 "best" approach.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > You must know what your application will typically do, and you must know
 > whether you're more concerned with average or worst-case performance
 > before you can decide how best to speed up your program—and, indeed,
@@ -532,7 +532,7 @@ to the `read()` function, but a code profiler could be used to do the
 same thing much more easily), I found that the best code in the world
 wouldn't make much difference.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > When you try to speed up code, take a moment to identify the hot spots
 > in your program so that you know where optimization is needed and
 > whether it will make a significant difference before you invest your

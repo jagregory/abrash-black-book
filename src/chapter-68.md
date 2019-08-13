@@ -156,7 +156,7 @@ eliminate t-junctions anyway, because otherwise dropouts can occur along
 polygon edges). These problems can be eased by adding extra edges, but
 that increases the rasterization load.
 
-![**Figure 68.1**  *Adding an extra vertex directly beneath a light.*](images/68-01.jpg)
+![**Figure 68.1**  *Adding an extra vertex directly beneath a light.*](../images/68-01.jpg)
 
 #### Perspective Correctness
 
@@ -210,7 +210,7 @@ lighting detail. Finally, triangles don't solve clipping or viewing
 variance.
 
 ![**Figure 68.2**  *How Gouraud shading varies with polygon screen
-orientation.*](images/68-02.jpg)
+orientation.*](../images/68-02.jpg)
 
 Yet another problem is that while it may work well to add extra geometry
 so that spotlights and shadows show up well, that's feasible only for
@@ -332,7 +332,7 @@ worse, this approach doesn't work well with the procedural and
 post-processing techniques I'll discuss shortly.
 
 ![**Figure 68.3**  *Tiling the texture and lighting the texels from the
-light map.*](images/68-03.jpg)
+light map.*](../images/68-03.jpg)
 
 Moreover, surface-based lighting tends to spend more of its time in
 inner loops, because polygons can have any number of sides and don't
@@ -418,7 +418,7 @@ to mipmapping and the edge list, 600K has proven to be plenty for the
 surface cache at 320x200, even in the most complex scenes, and at
 640x480, a little more than 1 MB suffices.
 
-![**Figure 68.4**  *How mipmapping reduces surface caching requirements.*](images/68-04.jpg)
+![**Figure 68.4**  *How mipmapping reduces surface caching requirements.*](../images/68-04.jpg)
 
 All mipmapped texture tiles are generated as a preprocessing step, and
 loaded from disk at runtime. One interesting point is that a key to

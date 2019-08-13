@@ -323,7 +323,7 @@ far better VGA animation techniques.
 As you'd expect, neither the read mode nor the setting of the Read Map
 register affects CPU *writes* to VGA memory in any way.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > An important point regarding reading VGA memory involves the VGA's
 > latches. (Remember that each of the four latches stores a byte for one
 > plane; on CPU writes, the latches can provide some or all of the data

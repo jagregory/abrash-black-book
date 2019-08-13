@@ -160,9 +160,9 @@ or peripherals at only one-half the maximum rate of the 8086, which is
 to say one-half the maximum rate for which the Execution Unit of the
 8088 was designed.
 
-![**Figure 4.1**  *The location of the major cycle-eaters in the IBM PC.*](images/04-01.jpg)
+![**Figure 4.1**  *The location of the major cycle-eaters in the IBM PC.*](../images/04-01.jpg)
 
-![**Figure 4.2**  *Internal data bus widths of the 8088.*](images/04-02.jpg)
+![**Figure 4.2**  *Internal data bus widths of the 8088.*](../images/04-02.jpg)
 
 As shown in Figure 4.1, the 8-bit bus cycle-eater lies squarely on the
 8088's external data bus. Technically, it might be more accurate to
@@ -521,7 +521,7 @@ depending on the code mix preceding that instruction.* Similarly, the
 state in which a given instruction leaves the prefetch queue affects the
 overall execution time of the following instructions.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > In other words, while the execution time for a given instruction is
 > constant, the fetch time for that instruction depends heavily on the
 > context in which the instruction is executing—the amount of prefetching
@@ -619,7 +619,7 @@ that the "true" execution time of `SHR` is 8.64 cycles.
 ```
 
 ![**Figure 4.3**  *Execution and instruction prefetching sequence for
-Listing 4.5.*](images/04-03.jpg)
+Listing 4.5.*](../images/04-03.jpg)
 
 Now let's examine Listing 4.6. Here each `SHR` follows a `MUL`
 instruction. Since `MUL` instructions take so long to execute that the
@@ -675,7 +675,7 @@ and in both cases it is the 8-cycle instruction fetch time, not the 3 or
 4-cycle Execution Unit execution time, that limits performance.
 
 ![**Figure 4.4**  *Execution and instruction prefetching sequence for
-Listing 4.6.*](images/04-04.jpg)
+Listing 4.6.*](../images/04-04.jpg)
 
 **LISTING 4.7 LST4-7.ASM**
 
@@ -723,7 +723,7 @@ in the Intel manuals, but may take as much as 4 cycles per byte longer,
 depending on the state of the prefetch queue when the preceding
 instruction ends.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > The only true execution time for an instruction is a time measured in a
 > certain context, and that time is meaningful only in that context.
 
@@ -919,7 +919,7 @@ we'll see shortly), depending on the extent to which DRAM refresh
 occupies cycles during which the 8088 would otherwise be accessing
 memory.
 
-![**Figure 4.5**  *The PC bus dynamic RAM (DRAM) refresh.*](images/04-05.jpg)
+![**Figure 4.5**  *The PC bus dynamic RAM (DRAM) refresh.*](../images/04-05.jpg)
 
 #### The Impact of DRAM Refresh
 
@@ -1106,7 +1106,7 @@ that the whole point of the wait state mechanism is to allow a device to
 stretch out any access to itself for however much time it needs to
 perform the access.
 
-![**Figure 4.6**  *Video wait states inserted by the display adapter.*](images/04-06.jpg)
+![**Figure 4.6**  *Video wait states inserted by the display adapter.*](../images/04-06.jpg)
 
 As with DRAM refresh, wait states don't stop the 8088 completely. The
 Execution Unit can continue processing while wait states are inserted,
@@ -1158,7 +1158,7 @@ leaving as little as about 10 percent of all display memory accesses for
 the 8088. (These percentages vary considerably among the many EGA and
 VGA clones.)
 
-![**Figure 4.7**  *Allocation of display memory access.*](images/04-07.jpg)
+![**Figure 4.7**  *Allocation of display memory access.*](../images/04-07.jpg)
 
 Second, because the displayed dots (or *pixels,* short for "picture
 elements") must be drawn on the screen at a constant speed, many display
@@ -1177,7 +1177,7 @@ access just as it becomes available, again as shown in Figure 4.8. Any
 or all of the three factors I've described can result in wait states,
 slowing the 8088 and creating the display adapter cycle.
 
-![**Figure 4.8**  *Display memory access slots.*](images/04-08.jpg)
+![**Figure 4.8**  *Display memory access slots.*](../images/04-08.jpg)
 
 If some of this is Greek to you, don't worry. The important point is
 that display memory is not very fast compared to normal system memory.
@@ -1341,7 +1341,7 @@ Bear in mind that we're talking about a worst case here; the impact of
 the display adapter cycle-eater is proportional to the percent of time a
 given code sequence spends accessing display memory.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > A line-drawing subroutine, which executes perhaps a dozen instructions
 > for each display memory access, generally loses less performance to the
 > display adapter cycle-eater than does a block-copy or scrolling
@@ -1384,7 +1384,7 @@ and alter the rest, and write the byte back to display memory. Half as
 many display memory accesses means half as many display memory wait
 states.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Moreover, 486s and Pentiums, as well as recent Super VGAs, employ
 > write-caching schemes that make display memory writes considerably
 > faster than display memory reads.

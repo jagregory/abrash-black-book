@@ -48,7 +48,7 @@ called "nonconvex" is actually "simple," and I suppose what I called
 "complex" should be referred to as "nonsimple," or maybe just "none of
 the above."
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > This may seem like nit-picking, but actually, it isn't; what it's really
 > about is the tremendous importance of having a shared language. In one
 > of his books, Richard Feynman describes having developed his own
@@ -153,9 +153,9 @@ from Chapter 39, modified to be able to handle all monotone-vertical
 polygons, including nonsimple ones; the edge-scanning code (Listing 39.4
 from Chapter 39) remains the same, and so is not shown again here.
 
-![**Figure 41.1**  *Monotone-vertical polygons.*](images/41-01.jpg)
+![**Figure 41.1**  *Monotone-vertical polygons.*](../images/41-01.jpg)
 
-![**Figure 41.2**  *Non-monotone-vertical polygons.*](images/41-02.jpg)
+![**Figure 41.2**  *Non-monotone-vertical polygons.*](../images/41-02.jpg)
 
 **LISTING 41.2 L41-2.C**
 

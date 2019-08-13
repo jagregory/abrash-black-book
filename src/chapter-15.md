@@ -147,7 +147,7 @@ point to the head pointer and pretend it was a `LinkNode`
 structure—but that's an ugly and potentially dangerous trick, and we'll
 see a better approach next.)
 
-![**Figure 15.1**  *The basic concept of a linked list.*](images/15-01.jpg)
+![**Figure 15.1**  *The basic concept of a linked list.*](../images/15-01.jpg)
 
 **LISTING 15.1 L15-1.C**
 
@@ -239,9 +239,9 @@ encountered linked lists, while designing a seed fill function for
 MetaWindows, back during my tenure at Metagraphics Corp. But I could
 have learned it by spending five minutes with Sedgewick's book.
 
-![**Figure 15.2**  *Using a dummy head and tail node with a linked list.*](images/15-02.jpg)
+![**Figure 15.2**  *Using a dummy head and tail node with a linked list.*](../images/15-02.jpg)
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > The next-node pointer of the head node, which points to the first real
 > node, is the only part of the head node that's actually used. This way
 > the same code works on the head node as on the rest of the list, so
@@ -305,7 +305,7 @@ shown in Listing 15.5. Not all linked lists lend themselves to
 sentinels, but the performance benefits are considerable
 for those that do.
 
-![**Figure 15.3**  *Representing an empty list.*](images/15-03.jpg)
+![**Figure 15.3**  *Representing an empty list.*](../images/15-03.jpg)
 
 **LISTING 15.5 L15-5.C**
 
@@ -333,7 +333,7 @@ struct LinkNode *FindNodeBeforeValueNotLess(
 }
 ```
 
-![**Figure 15.4**  *List terminated by a sentinel.*](images/15-04.jpg)
+![**Figure 15.4**  *List terminated by a sentinel.*](../images/15-04.jpg)
 
 ### Circular Lists
 
@@ -375,7 +375,7 @@ not so simple that a little knowledge doesn't make a substantial
 difference. Make it a habit to read Knuth or Sedgewick or the like
 before you write a single line of code.
 
-![**Figure 15.5**  *Representing a circular list.*](images/15-05.jpg)
+![**Figure 15.5**  *Representing a circular list.*](../images/15-05.jpg)
 
 **LISTING 15.6 L15-6.C**
 

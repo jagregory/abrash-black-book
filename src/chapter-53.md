@@ -575,7 +575,7 @@ really all there is to depth sorting—and now we can have objects that
 overlap in X and Y.
 
 ![**Figure 53.1**  *Why back-to-front sorting doesn't always work
-properly.*](images/53-01.jpg)
+properly.*](../images/53-01.jpg)
 
 **LISTING 53.2 OLIST.C**
 

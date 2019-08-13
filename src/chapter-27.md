@@ -93,9 +93,9 @@ the latch byte. Finally, the byte from the bit mask circuitry for each
 plane is written to that plane if the corresponding bit in the Map Mask
 register is set to 1.
 
-![**Figure 27.1**  *VGA data flow in write mode 2.*](images/27-01.jpg)
+![**Figure 27.1**  *VGA data flow in write mode 2.*](../images/27-01.jpg)
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > It's worth noting two differences between write mode 2 and write mode 0,
 > the standard write mode of the VGA. First, rotation of the CPU data byte
 > does not take place in write mode 2. Second, the Set/Reset and Enable
@@ -398,7 +398,7 @@ Code    ends
 into VGA bitmaps does have its uses, Listing 27.1 is primarily intended
 to illustrate the mechanics of write mode 2.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > For performance, it's best to store 16-color bitmaps in pre-separated
 > four-plane format in system memory, and copy one plane at a time to the
 > screen. Ideally, such bitmaps should be copied one scan line at a time,

@@ -51,7 +51,7 @@ C/C++ and Watcom C are by now pretty good at fine-tuning C code, and
 you're not likely to do much better by taking the compiler's assembly
 language output and tweaking it.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > To make the process of translating C code to assembly language worth the
 > trouble, you must ignore what the compiler does and design your assembly
 > language code from a pure assembly language perspective. With a merely
@@ -92,7 +92,7 @@ Also make it a point to concentrate on refining your program design and
 algorithmic approach at the conceptual and/or C levels before doing any
 assembly language optimization.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Assembly language optimization is the final and far from the only step
 > in the optimization chain, and as such should be performed last;
 > converting to assembly too soon can lock in your code before the design
@@ -158,7 +158,7 @@ for the duration of the loop. But two far pointers used in the same loop
 confuse every compiler I've seen, causing the full segment:offset
 address to be reloaded each time either pointer is used.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > This particularly affects performance in 286 protected mode (under OS/2
 > 1.X or the Rational DOS Extender, for example) because segment loads in
 > protected mode take a minimum of 17 cycles, versus a mere 2 cycles in
@@ -184,7 +184,7 @@ Am I saying that C compilers produce better code than you do? No, I'm
 saying that they *can*, unless you use assembly language properly.
 Writing code in assembly language rather than C guarantees nothing.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > You can write good assembly, bad assembly, or assembly that is virtually
 > indistinguishable from compiled code; you are more likely than not to
 > write the latter if you think that optimization consists of tweaking
@@ -198,7 +198,7 @@ True optimization requires rethinking your code to take advantage of
 assembly language. A C loop that searches through an integer array for
 matches might compile
 
-![**Figure 8.1**  *Tweaked compiler output for a loop.*](images/08-01.jpg)
+![**Figure 8.1**  *Tweaked compiler output for a loop.*](../images/08-01.jpg)
 
 to something like Figure 8.1A. You might look at that and tweak it to
 the code shown in Figure 8.1B.
@@ -236,7 +236,7 @@ enough, there's no reason why you can't reorganize the data. This might
 mean removing the array elements from the structures and storing them in
 their own array so that `REP SCASW` *could* be used.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Organizing a program's data so that the performance of the critical
 > sections can be optimized is a key part of design, and one that's easily
 > shortchanged unless, during the design stage, you thoroughly understand
@@ -403,7 +403,7 @@ block and the inner one repeating once for each array element in each
 block. The inner loop—the critical one—is compact, containing only four
 statements, and should lend itself rather well to compiler optimization.
 
-![**Figure 8.2**  *Linked array storage format (version 1).*](images/08-02.jpg)
+![**Figure 8.2**  *Linked array storage format (version 1).*](../images/08-02.jpg)
 
 As it happens, Microsoft C/C++ does optimize the inner loop of
 `FindIDAverage` nicely. Listing 8.2 shows the code Microsoft C/C++
@@ -665,7 +665,7 @@ extern unsigned int FindIDAverage2(unsigned int,
                                    struct BlockHeader *);
 ```
 
-![**Figure 8.3**  *Linked array storage format (version 2).*](images/08-03.jpg)
+![**Figure 8.3**  *Linked array storage format (version 2).*](../images/08-03.jpg)
 
 ```c
 /* Structure that starts each variable-sized block */

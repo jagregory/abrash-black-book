@@ -802,7 +802,7 @@ mov   es,dx
 mov   byte ptr es:[di],0ffh
 ```
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > If you're familiar with VGA programming, you're no doubt aware that
 > everything that can be done with write mode 3 can also be accomplished
 > in write mode 0 or write mode 2 by using the Bit Mask register. However,
@@ -846,7 +846,7 @@ using write mode 3 because write mode 3 requires a read/write of display
 memory (or at least preloading the latches with the background color),
 while the write mode 0 approach requires only a write to display memory.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Is write mode 0 always the best way to do text? Not at all. The write
 > mode 0 approach described above draws both foreground and background
 > pixels within the character box, forcing the background pixels to black
@@ -911,7 +911,7 @@ performed by displaying page 0 and drawing to page 1, then setting the
 start address to page 1 to display that page and drawing to page 0, and
 so on *ad infinitum.*
 
-![**Figure 44.1**  *Memory allocation for mode 10h page flipping.*](images/44-01.jpg)
+![**Figure 44.1**  *Memory allocation for mode 10h page flipping.*](../images/44-01.jpg)
 
 #### Knowing When to Flip
 
@@ -1013,7 +1013,7 @@ by the desire to have as many page-flipped scan lines as possible; you
 may, if you wish, have fewer page-flipped lines and reserve part of the
 bitmap for other uses, such as off-screen storage for images.)
 
-![**Figure 44.2**  *Memory allocation for mode 12h page flipping.*](images/44-02.jpg)
+![**Figure 44.2**  *Memory allocation for mode 12h page flipping.*](../images/44-02.jpg)
 
 The sample program for this chapter uses the split screen and page
 flipping exactly as described above. The playfield through which the

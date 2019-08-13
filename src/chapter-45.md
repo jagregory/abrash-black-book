@@ -145,7 +145,7 @@ memory tends not to be as bad as VGA I/O, but lord knows it isn't
 Table: Table 45.1 Results of I/O performance tests run under the Phar
 Lap386|DOS-Extender.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > `OUT`s, in general, are lousy on the 486 (and to think they only took
 > three cycles on the 286!). `OUT`s to VGAs are particularly lousy.
 > Display memory performance is pretty poor, especially for reads. The
@@ -189,9 +189,9 @@ Figure 45.1 illustrates the visual problems associated with drawing
 directly to the screen; Figure 45.2 shows how dirty-rectangle animation
 solves these problems.
 
-![**Figure 45.1**  *Drawing directly to the screen.*](images/45-01.jpg)
+![**Figure 45.1**  *Drawing directly to the screen.*](../images/45-01.jpg)
 
-![**Figure 45.2**  *Dirty rectangle animation.*](images/45-02.jpg)
+![**Figure 45.2**  *Dirty rectangle animation.*](../images/45-02.jpg)
 
 #### So Why Not Use Page Flipping?
 
@@ -525,7 +525,7 @@ bitmap into the system-memory buffer, then copy the buffer to the
 screen, and the effect will be of having panned the window to the new
 location.
 
-> ![](images/i.jpg)
+> ![](../images/i.jpg)
 > Another argument in favor of a small viewing window is that it restricts
 > the amount of display memory actually drawn to. Restricting the display
 > memory used for animation reduces the total number of display-memory
