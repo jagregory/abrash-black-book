@@ -557,7 +557,7 @@ x=         x+1
 ; Used to label the colors of the color bars. (Color values are
 ; filled in on the fly.)
 ;
-ColorNumberslabelbyte
+ColorNumbers label byte
            rept    16
            db      ‘000h', 0ah, 8, 8, 8, 8
            endm

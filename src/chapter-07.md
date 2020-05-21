@@ -245,7 +245,7 @@ the whole point.)
         .stack      100h
         .data
 ; Sample string to search through.
-SampleString        labelbyte
+SampleString        label byte
         db   ‘This is a sample string of a long enough length '
         db   ‘so that raw searching speed can outweigh any '
         db   ‘extra set-up time that may be required.',0
@@ -350,7 +350,7 @@ all the difference.
        .stack      100h
        .data
 ; Sample string to search through.
-SampleStringlabelbyte
+SampleString label byte
         db     ‘This is a sample string of a long enough length '
         db     ‘so that raw searching speed can outweigh any '
         db     ‘extra set-up time that may be required.',0
