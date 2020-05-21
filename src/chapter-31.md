@@ -283,7 +283,7 @@ endif
 ;
 ; Macro to output a constant value to an indexed VGA register.
 ;
-CONSTANT_TO_INDEXED_REGISTERmacroADDRESS, INDEX, VALUE
+CONSTANT_TO_INDEXED_REGISTER macro ADDRESS, INDEX, VALUE
       mov  dx,ADDRESS
       mov  ax,(VALUE shl 8) + INDEX
       OUT_WORD
@@ -690,7 +690,7 @@ endif
 ;
 ; Macro to output a constant value to an indexed VGA register.
 ;
-CONSTANT_TO_INDEXED_REGISTERmacroADDRESS, INDEX, VALUE
+CONSTANT_TO_INDEXED_REGISTER macro ADDRESS, INDEX, VALUE
         mov  dx,ADDRESS
         mov  ax,(VALUE shl 8) + INDEX
         OUT_WORD
