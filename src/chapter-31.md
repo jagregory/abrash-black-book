@@ -309,7 +309,7 @@ ColorLoop:
                                   ; line descriptor list
 LineLoop:
      mov   cx,[si+StartX]         ;set the initial X coordinate
-     cmpcx,-1
+     cmp   cx,-1
      jz    LinesDone              ;a descriptor with a -1 X
                                   ; coordinate marks the end
                                   ; of the list
