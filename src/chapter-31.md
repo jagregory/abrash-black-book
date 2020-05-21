@@ -831,7 +831,7 @@ CONSTANT_TO_INDEXED_REGISTER SC_INDEX,MAP_MASK,0fh
         out     dx,al
         inc     dx
         in      al,dx
-        and     al,not40h                ;turn off doubleword
+        and     al,not 40h                ;turn off doubleword
         out     dx,al
         dec     dx
         mov     al,MODE_CONTROL
