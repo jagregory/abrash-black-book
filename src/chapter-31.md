@@ -511,7 +511,7 @@ ReadPixel proc near
         mov    dx,GC_INDEX
         OUT_WORD                           ;set to read from the proper plane for
                                            ; the pixel
-        lodsbyte ptr es:[si]               ;read the pixel
+        lods byte ptr es:[si]              ;read the pixel
         ret
 ReadPixel endp
 ;
