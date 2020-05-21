@@ -458,7 +458,7 @@ FindStringDone:
       pop    si
       pop    bp                 ;restore caller's stack frame
 ret
-_FindStringendp
+_FindString endp
       end
 ```
 
@@ -559,7 +559,7 @@ FindStringDone:
       pop         si
       pop         bp         ;restore caller's stack frame
       ret
-_FindStringendp
+_FindString endp
       end
 ```
 
@@ -778,7 +778,7 @@ DivLoop:
                pop   si
                pop   bp        ;restore caller's stack frame
                ret
-_Divendp
+_Div endp
                end
 ```
 

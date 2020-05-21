@@ -239,7 +239,7 @@ _Set360x480Mode proc near
       pop     di                ;restore C register vars
       pop     si
       ret
-_Set360x480Modeendp
+_Set360x480Mode endp
 ;
 ; Draws a pixel in the specified color at the specified
 ; location in 360x480 256-color mode.
@@ -289,7 +289,7 @@ _Draw360x480Dot proc near
       pop   si
       pop   bp             ;restore caller's BP
       ret
-_Draw360x480Dotendp
+_Draw360x480Dot endp
 ;
 ; Reads the color of the pixel at the specified
 ; location in 360x480 256-color mode.

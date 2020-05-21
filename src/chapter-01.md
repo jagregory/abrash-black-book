@@ -779,7 +779,7 @@ ChecksumLoop:
       pop  si                ;restore C's register variable
       pop  bp
       ret
-_ChecksumChunkendp
+_ChecksumChunk endp
       end
 ```
 

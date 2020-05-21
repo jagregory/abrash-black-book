@@ -704,7 +704,7 @@ endif ;USE386
      pop   si
      pop   bp                             ;restore stack frame
 ret
-_XformVecendp
+_XformVec endp
 
 ;=====================================================================
 ; Matrix multiplies SourceXform1 by SourceXform2 and stores the

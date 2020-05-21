@@ -289,7 +289,7 @@ PrintStatus:
     int  21h              ;report status
     mov  ah,4ch           ;return to DOS
     int  21h
-Startendp
+Start endp
 
 ; Function to search a buffer of a specified length until either a
 ; specified byte or a zero byte is encountered.
@@ -324,7 +324,7 @@ ByteFound:
                                    ;we found the searched-for byte
       stc                          ;return "found" status
       ret
-SearchMaxLengthendp
+SearchMaxLength endp
       end   Start
 ```
 
@@ -403,7 +403,7 @@ PrintStatus:
 
       mov   ah,4ch           ;return to DOS
       int   21h
-Startendp
+Start endp
 
 ; Function to search a buffer of a specified length until either a
 ; specified byte or a zero byte is encountered.
@@ -468,7 +468,7 @@ ByteFound:
                               ; we found the searched-for byte
      stc                      ;return "found" status
      ret
-SearchMaxLengthendp
+SearchMaxLength endp
      end    Start
 ```
 

@@ -764,7 +764,7 @@ ColorNumberLoop:
                mov        dx,offset ColorNumbers
                int        21h               ;put up the attribute numbers
                ret
-ColorNumbersUpendp
+ColorNumbersUp endp
 ;
 Start          endp
 Code           ends

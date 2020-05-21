@@ -318,7 +318,7 @@ CountVerticalSyncsLoop:
        int    10h                      ;return to text mode
        mov    ah,4ch
        int    21h                      ;return to DOS
-Startendp
+Start endp
 ;*********************************************************************
 ; Waits for the leading edge of the vertical sync pulse.
 ;
@@ -360,7 +360,7 @@ WaitNotVerticalSync2:
        test   al,08h
        jnz    WaitNotVerticalSync2
        ret
-WaitForVerticalSyncEndendp
+WaitForVerticalSyncEnd endp
 ;*********************************************************************
 ; Sets the start address to the value specifed by StartAddress.
 ; Wait for the trailing edge of vertical sync before setting so that
@@ -904,7 +904,7 @@ endif
      int     10h                         ;return to text mode
      mov     ah,4ch
      int     21h                         ;return to DOS
-Startendp
+Start endp
 ;*********************************************************************
 ; Waits for the leading edge of the vertical sync pulse.
 ;
@@ -997,7 +997,7 @@ SetPelPan     proc     near
      mov      al,[PelPan]
      out      dx,al                       ;load the new Pel Pan setting
      ret
-SetPelPanendp
+SetPelPan endp
 ;*********************************************************************
 ; Sets the scan line the split screen starts after to the scan line
 ; specified by SplitScreenLine.

@@ -197,7 +197,7 @@ DelayLoop:
      int  10h
      mov  ah,4ch
      int  21h
-Startendp
+Start endp
 ;
 ; Draws the image at offset DS:SI to the current image location in
 ; VGA memory.
@@ -233,7 +233,7 @@ DrawImageLoop:
      cmp  al,10h           ;have we done all four planes?
      jnz  DrawImagePlaneLoop
      ret
-DrawImageendp
+DrawImage endp
 ;
 ; Copies the image from its current location in VGA memory into the
 ; buffer at DS:DI.
@@ -274,7 +274,7 @@ GetImageLoop:
      push es
      pop  ds                ;restore original DS
      ret
-GetImageendp
+GetImage endp
 ;
 ; Erases the image at its current location.
 ;
@@ -513,7 +513,7 @@ WaitKeyLoop:
      int    10h                   ;return to text mode
      mov    ah,4ch
      int    21h                   ;done
-Startendp
+Start endp
 ;
 ; Enables set/reset for all planes, and sets the set/reset color
 ; to AL.
@@ -533,7 +533,7 @@ SelectSetResetColor proc near
      mov    al,0fh
      out    dx,al                 ;enable set/reset for all planes
      ret
-SelectSetResetColorendp
+SelectSetResetColor endp
 code ends
 end  Start
 ```
@@ -713,7 +713,7 @@ WaitKeyLoop:
     int  10h                ;return to text mode
     mov  ah,4ch
     int  21h                ;done
-Startendp
+Start endp
 code ends
     end  Start
 ```

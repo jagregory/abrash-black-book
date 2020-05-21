@@ -477,7 +477,7 @@ WritePixel proc near
                                         ; the pixel
         mov  es:[di],bl                 ;draw the pixel
         ret
-WritePixelendp
+WritePixel endp
 ;
 ; Reads the color of the pixel at the specified location in 320x400
 ; 256-color mode.
@@ -513,7 +513,7 @@ ReadPixel proc near
                                            ; the pixel
         lodsbyte ptr es:[si]               ;read the pixel
         ret
-ReadPixelendp
+ReadPixel endp
 ;
 ; Waits for the next key and returns it in AX.
 ;
@@ -887,7 +887,7 @@ MAP_SELECT = MAP_SELECT shl 1
         dec     si                     ;count down lines on the screen
         jnz     RowLoop
         ret
-ColorBarsUpendp
+ColorBarsUp endp
 ;
 ; Waits for the next key and returns it in AX.
 ;
