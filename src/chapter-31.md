@@ -341,7 +341,7 @@ LinesDone:
 ;
      call   GetNextKey
      mov    ax,0003h
-     int    10h                    text mode
+     int    10h                    ;text mode
      mov    ah,4ch
      int    21h   ;done
 ;
