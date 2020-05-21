@@ -561,7 +561,7 @@ ColorNumbers label byte
            rept    16
            db      ‘000h', 0ah, 8, 8, 8, 8
            endm
-COLOR_ENTRY_LENGTHequ($-ColorNumbers)/16
+COLOR_ENTRY_LENGTH equ ($-ColorNumbers)/16
            db      ‘$'
 ;
 CurrentColordb?
