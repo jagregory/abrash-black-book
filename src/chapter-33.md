@@ -532,7 +532,7 @@ FillVertLoop:
        jnz  FillHorzLoop           ;no, do the next column
        ret;
 
-        endStart
+        end Start
 ```
 
 Note the jagged lines at the corners of the screen when you run Listing

@@ -901,9 +901,9 @@ WaitKey:
         ret
 GetNextKey      endp
 ;
-Codeends
+Code ends
 ;
-endStart
+end Start
 ```
 
 When you run Listing 31.2, note the extremely smooth edges and fine

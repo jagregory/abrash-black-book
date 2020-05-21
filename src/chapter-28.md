@@ -85,12 +85,12 @@ registers.
 ;
 ; By Michael Abrash
 ;
-stacksegmentword stack 'STACK'
-db512 dup (?)
-stackends
+stack segment word stack 'STACK'
+ db 512 dup (?)
+stack ends
 ;
-datasegment    word 'DATA'
-IMAGE_WIDTHEQU 4                 ;in bytes
+data segment    word 'DATA'
+IMAGE_WIDTH    EQU   4           ;in bytes
 IMAGE_HEIGHT   EQU   32          ;in pixels
 LEFT_BOUND     EQU   10          ;in bytes
 RIGHT_BOUND    EQU   66          ;in bytes
@@ -105,11 +105,11 @@ READ_MAP       EQU   4           ;Read Map register index in GC
 ;
 PatternPlane0    label byte
      db    32 dup (0ffh,0ffh,0,0)
-PatternPlane1    labelbyte
+PatternPlane1    label byte
      db    32 dup (0ffh,0,0ffh,0)
-PatternPlane2    labelbyte
+PatternPlane2    label byte
      db    32 dup (0f0h,0f0h,0f0h,0f0h)
-PatternPlane3    labelbyte
+PatternPlane3    label byte
      db    32 dup (0cch,0cch,0cch,0cch)
 ;
 ; Temporary storage for 16-color image during animation.
@@ -124,7 +124,7 @@ ImagePlane3 db   32*4 dup (?)
 ImageX          dw  40           ;in bytes
 ImageY          dw  100          ;in pixels
 ImageXDirection dw  1            ;in bytes
-dataends
+data ends
 ;
 code segment    word 'CODE'
      assume     cs:code,ds:data

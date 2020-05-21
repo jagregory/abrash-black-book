@@ -1104,8 +1104,8 @@ DoSetStartAddress:
      ret
 PanRight     endp
 ;*********************************************************************
-Codeends
-endStart
+Code ends
+end Start
 ```
 
 ### Notes on Setting and Reading Registers

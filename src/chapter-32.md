@@ -171,7 +171,7 @@ vptbl   dw      06b00h  ; horz total
         dw      00616h  ; v blank end
         dw      0e317h  ; turn on byte mode
 vpend   label   word
-_DATAends
+_DATA ends
 ;
 ; Macro to output a word value to a port.
 ;
@@ -336,7 +336,7 @@ _Read360x480Dot proc near
        pop  bp              ;restore caller's BP
        ret
 _Read360x480Dot  endp
-_TEX   Tends
+_TEXT  ends
        end
 ```
 

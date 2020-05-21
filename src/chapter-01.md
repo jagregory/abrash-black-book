@@ -754,7 +754,7 @@ Parms struc
 Buffer              dw    ?
 BufferLength        dw    ?
 Checksum            dw    ?
-Parmsends
+Parms ends
 ;
      .model small
      .code
