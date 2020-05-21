@@ -339,7 +339,7 @@ SCparms    ends
 
     alignALIGNMENT
     public _CosSin
-_CosSin    procnear
+_CosSin     proc near
      push  bp                          ;preserve stack frame
      mov   bp,sp                       ;set up local stack frame
 
@@ -597,7 +597,7 @@ FixedMulDone:
 
      align ALIGNMENT
      public _XformVec
-_XformVecprocnear
+_XformVec proc near
      push   bp                           ;preserve stack frame
      mov    bp,sp                        ;set up local stack frame
      push   si                           ;preserve register variables
@@ -704,7 +704,7 @@ endif ;USE386
      pop   si
      pop   bp                             ;restore stack frame
 ret
-_XformVecendp
+_XformVec endp
 
 ;=====================================================================
 ; Matrix multiplies SourceXform1 by SourceXform2 and stores the
@@ -741,7 +741,7 @@ CXparms ends
 
           align ALIGNMENT
           public _ConcatXforms
-_ConcatXformsprocnear
+_ConcatXforms proc near
           push    bp                   ;preserve stack frame
           mov     bp,sp                ;set up local stack frame
           push    si                   ;preserve register variables

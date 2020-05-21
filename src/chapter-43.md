@@ -720,7 +720,7 @@ DrawLoop:
         dec     dx              ;count down the lines of the image
         jnz     DrawLoop
         ret
-DrawObjectendp
+DrawObject endp
 ;
 Code    ends
         end     Start

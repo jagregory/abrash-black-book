@@ -85,12 +85,12 @@ registers.
 ;
 ; By Michael Abrash
 ;
-stacksegmentword stack 'STACK'
-db512 dup (?)
-stackends
+stack segment word stack 'STACK'
+ db 512 dup (?)
+stack ends
 ;
-datasegment    word 'DATA'
-IMAGE_WIDTHEQU 4                 ;in bytes
+data segment    word 'DATA'
+IMAGE_WIDTH    EQU   4           ;in bytes
 IMAGE_HEIGHT   EQU   32          ;in pixels
 LEFT_BOUND     EQU   10          ;in bytes
 RIGHT_BOUND    EQU   66          ;in bytes
@@ -105,11 +105,11 @@ READ_MAP       EQU   4           ;Read Map register index in GC
 ;
 PatternPlane0    label byte
      db    32 dup (0ffh,0ffh,0,0)
-PatternPlane1    labelbyte
+PatternPlane1    label byte
      db    32 dup (0ffh,0,0ffh,0)
-PatternPlane2    labelbyte
+PatternPlane2    label byte
      db    32 dup (0f0h,0f0h,0f0h,0f0h)
-PatternPlane3    labelbyte
+PatternPlane3    label byte
      db    32 dup (0cch,0cch,0cch,0cch)
 ;
 ; Temporary storage for 16-color image during animation.
@@ -124,7 +124,7 @@ ImagePlane3 db   32*4 dup (?)
 ImageX          dw  40           ;in bytes
 ImageY          dw  100          ;in pixels
 ImageXDirection dw  1            ;in bytes
-dataends
+data ends
 ;
 code segment    word 'CODE'
      assume     cs:code,ds:data
@@ -197,12 +197,12 @@ DelayLoop:
      int  10h
      mov  ah,4ch
      int  21h
-Startendp
+Start endp
 ;
 ; Draws the image at offset DS:SI to the current image location in
 ; VGA memory.
 ;
-DrawImageprocnear
+DrawImage proc near
      mov  ax,VGA_SEGMENT
      mov  es,ax
      call GetImageOffset   ;ES:DI is the destination address for the
@@ -233,7 +233,7 @@ DrawImageLoop:
      cmp  al,10h           ;have we done all four planes?
      jnz  DrawImagePlaneLoop
      ret
-DrawImageendp
+DrawImage endp
 ;
 ; Copies the image from its current location in VGA memory into the
 ; buffer at DS:DI.
@@ -274,7 +274,7 @@ GetImageLoop:
      push es
      pop  ds                ;restore original DS
      ret
-GetImageendp
+GetImage endp
 ;
 ; Erases the image at its current location.
 ;
@@ -435,7 +435,7 @@ VLineLoop:
 ; provides the data written to display
 ; memory, and AL is actually ignored)
      add    di,SCREEN_WIDTH-1     ;point to the next scan line
-loopVLineLoop
+loop VLineLoop
 ;
 ; Select write mode 0 and read mode 1.
 ;
@@ -513,12 +513,12 @@ WaitKeyLoop:
      int    10h                   ;return to text mode
      mov    ah,4ch
      int    21h                   ;done
-Startendp
+Start endp
 ;
 ; Enables set/reset for all planes, and sets the set/reset color
 ; to AL.
 ;
-SelectSetResetColorprocnear
+SelectSetResetColor proc near
      mov    dx,GC_INDEX
      push   ax                    ;preserve color
      mov    al,SET_RESET
@@ -533,7 +533,7 @@ SelectSetResetColorprocnear
      mov    al,0fh
      out    dx,al                 ;enable set/reset for all planes
      ret
-SelectSetResetColorendp
+SelectSetResetColor endp
 code ends
 end  Start
 ```
@@ -636,7 +636,7 @@ COLOR_DONT_CARE  EQU  7            ;Color Don't Care register index in GC
 ;
 code  segment  word 'CODE'
      assume    cs:code
-Startprocnear
+Start proc near
 ;
 ; Select graphics mode 12h.
 ;
@@ -698,7 +698,7 @@ DrawDiagonalLoop:
                             ; point to the next scan line
     ror  al,1               ;move the pixel mask one pixel to the right
     adc  bx,0               ;advance to the next byte if the pixel mask wrapped
-loopDrawDiagonalLoop
+loop DrawDiagonalLoop
 ;
 ; Wait for a key to be pressed to end, then return to text mode and
 ; return to DOS.
@@ -713,7 +713,7 @@ WaitKeyLoop:
     int  10h                ;return to text mode
     mov  ah,4ch
     int  21h                ;done
-Startendp
+Start endp
 code ends
     end  Start
 ```

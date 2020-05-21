@@ -395,7 +395,7 @@ Parmsends
       .model      small
       .code
       public _FindString
-_FindStringprocnear
+_FindString proc near
       push     bp      ;preserve caller's stack frame
       mov      bp,sp   ;point to our stack frame
       push     si      ;preserve caller's register variables
@@ -458,7 +458,7 @@ FindStringDone:
       pop    si
       pop    bp                 ;restore caller's stack frame
 ret
-_FindStringendp
+_FindString endp
       end
 ```
 
@@ -492,7 +492,7 @@ Parmsends
       .model      small
       .code
       public _FindString
-_FindStringprocnear
+_FindString proc near
       push     bp      ;preserve caller's stack frame
       mov      bp,sp   ;point to our stack frame
       push     si      ;preserve caller's register variables
@@ -559,7 +559,7 @@ FindStringDone:
       pop         si
       pop         bp         ;restore caller's stack frame
       ret
-_FindStringendp
+_FindString endp
       end
 ```
 
@@ -743,7 +743,7 @@ parmsends
                .model     small
                .code
                public     _Div
-_Divprocnear
+_Div proc near
                push    bp      ;preserve caller's stack frame
                mov     bp,sp   ;point to our stack frame
                push    si      ;preserve caller's register variables
@@ -778,7 +778,7 @@ DivLoop:
                pop   si
                pop   bp        ;restore caller's stack frame
                ret
-_Divendp
+_Div endp
                end
 ```
 

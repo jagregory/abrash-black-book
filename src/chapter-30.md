@@ -146,7 +146,7 @@ SCREEN_WIDTH         equ  640
 SCREEN_HEIGHT        equ  350
 CRTC_INDEX           equ  3d4h     ;CRT Controller Index register
 OVERFLOW             equ  7        ;index of Overflow reg in CRTC
-MAXIMUM_SCAN_LINEequ 9             ;index of Maximum Scan Line register
+MAXIMUM_SCAN_LINE    equ  9        ;index of Maximum Scan Line register
                                    ; in CRTC
 START_ADDRESS_HIGH   equ  0ch      ;index of Start Address High register
                                    ; in CRTC
@@ -318,7 +318,7 @@ CountVerticalSyncsLoop:
        int    10h                      ;return to text mode
        mov    ah,4ch
        int    21h                      ;return to DOS
-Startendp
+Start endp
 ;*********************************************************************
 ; Waits for the leading edge of the vertical sync pulse.
 ;
@@ -328,7 +328,7 @@ Startendp
 ;
 ; Registers altered: AL, DX
 ;
-WaitForVerticalSyncStartprocnear
+WaitForVerticalSyncStart proc near
        mov    dx,INPUT_STATUS_0
 WaitNotVerticalSync:
        in     al,dx
@@ -349,7 +349,7 @@ WaitForVerticalSyncStart       endp
 ;
 ; Registers altered: AL, DX
 ;
-WaitForVerticalSyncEndprocnear
+WaitForVerticalSyncEnd proc near
        mov    dx,INPUT_STATUS_0
 WaitVerticalSync2:
        in     al,dx
@@ -360,7 +360,7 @@ WaitNotVerticalSync2:
        test   al,08h
        jnz    WaitNotVerticalSync2
        ret
-WaitForVerticalSyncEndendp
+WaitForVerticalSyncEnd endp
 ;*********************************************************************
 ; Sets the start address to the value specifed by StartAddress.
 ; Wait for the trailing edge of vertical sync before setting so that
@@ -751,7 +751,7 @@ MyStack       segment para stack 'STACK'
        db     512 dup (0)
 MyStack       ends
 ;*********************************************************************
-Datasegment
+Data segment
 SplitScreenLine       dw    ?            ;line the split screen currently
                                          ; starts after
 StartAddress          dw    ?            ;display memory offset at which
@@ -763,7 +763,7 @@ Data    ends
 Code    segment
         assume    cs:Code, ds:Data
 ;*********************************************************************
-Startproc    near
+Start proc    near
      mov     ax,Data
      mov     ds,ax
 ;
@@ -837,7 +837,7 @@ ColumnLoop2:
                                               ; panning effects can be seen easily
      inc     di
      inc     di
-loopColumnLoop2
+loop ColumnLoop2
      ror     ax,1                             ;shift pattern word
      dec     dx
      jnz     RowLoop2
@@ -847,7 +847,7 @@ loopColumnLoop2
 ; screen jerks back and forth as the pel panning setting cycles.
 ;
      mov     cx,200                   ;pan 200 pixels to the left
-callPanRight
+call PanRight
 ;
 ; Wait for a key press (don't echo character).
 ;
@@ -904,7 +904,7 @@ endif
      int     10h                         ;return to text mode
      mov     ah,4ch
      int     21h                         ;return to DOS
-Startendp
+Start endp
 ;*********************************************************************
 ; Waits for the leading edge of the vertical sync pulse.
 ;
@@ -997,7 +997,7 @@ SetPelPan     proc     near
      mov      al,[PelPan]
      out      dx,al                       ;load the new Pel Pan setting
      ret
-SetPelPanendp
+SetPelPan endp
 ;*********************************************************************
 ; Sets the scan line the split screen starts after to the scan line
 ; specified by SplitScreenLine.
@@ -1104,8 +1104,8 @@ DoSetStartAddress:
      ret
 PanRight     endp
 ;*********************************************************************
-Codeends
-endStart
+Code ends
+end Start
 ```
 
 ### Notes on Setting and Reading Registers

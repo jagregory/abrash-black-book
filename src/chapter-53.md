@@ -199,7 +199,7 @@ SCparms ends
 
    align ALIGNMENT
    public -CosSin
--CosSinprocnear
+-CosSin proc near
      push  bp                  ;preserve stack frame
      mov   bp,sp               ;set up local stack frame
 
@@ -272,7 +272,7 @@ CSDone:
 
      pop      bp;restore stack frame
 ret
--CosSinendp
+-CosSin endp
 ;=====================================================================
 ; Matrix multiplies Xform by SourceVec, and stores the result in
 ; DestVec. Multiplies a 4x4 matrix times a 4x1 matrix; the result
@@ -351,7 +351,7 @@ pop di;restore register variables
 pop si
 pop bp;restore stack frame
 ret
--XformVecendp
+-XformVec endp
 ;=====================================================================
 ; Matrix multiplies SourceXform1 by SourceXform2 and stores the
 ; result in DestXform. Multiplies a 4x4 matrix times a 4x4 matrix;
@@ -475,7 +475,7 @@ pop di;restore register variables
 pop si
 pop bp;restore stack frame
 ret
--ConcatXformsendp
+-ConcatXforms endp
 end
 ```
 

@@ -148,7 +148,7 @@ WORD_OUTS_OK    equ    1           ;set to 0 to assemble for
                                    ; computers that can't handle
                                    ; word outs to indexed VGA registers
 ;
-_DATAsegmentpublic byte ‘DATA'
+_DATA segment public byte ‘DATA'
 ;
 ; 360x480 256-color mode CRT Controller register settings.
 ; (Courtesy of John Bridges.)
@@ -171,7 +171,7 @@ vptbl   dw      06b00h  ; horz total
         dw      00616h  ; v blank end
         dw      0e317h  ; turn on byte mode
 vpend   label   word
-_DATAends
+_DATA ends
 ;
 ; Macro to output a word value to a port.
 ;
@@ -199,7 +199,7 @@ _TEXTsegment byte public ‘CODE'
 ; Returns: nothing
 ;
       public _Set360x480Mode
-_Set360x480Modeprocnear
+_Set360x480Mode proc near
       push   si                 ;preserve C register vars
       push   di
       mov    ax,12h             ; start with mode 12h
@@ -239,7 +239,7 @@ _Set360x480Modeprocnear
       pop     di                ;restore C register vars
       pop     si
       ret
-_Set360x480Modeendp
+_Set360x480Mode endp
 ;
 ; Draws a pixel in the specified color at the specified
 ; location in 360x480 256-color mode.
@@ -258,7 +258,7 @@ Color dw   ?            ;color in which to draw (in the
 DParms     ends
 ;
       public _Draw360x480Dot
-_Draw360x480Dotprocnear
+_Draw360x480Dot proc near
       push  bp            ;preserve caller's BP
       mov   bp,sp         ;point to stack frame
       push  si            ;preserve C register vars
@@ -289,7 +289,7 @@ _Draw360x480Dotprocnear
       pop   si
       pop   bp             ;restore caller's BP
       ret
-_Draw360x480Dotendp
+_Draw360x480Dot endp
 ;
 ; Reads the color of the pixel at the specified
 ; location in 360x480 256-color mode.
@@ -306,7 +306,7 @@ ReadY dw   ?                ;Y coordinate from which to read
 RParms     ends
 ;
       public _Read360x480Dot
-_Read360x480Dotprocnear
+_Read360x480Dot proc near
       push  bp              ;preserve caller's BP
       mov   bp,sp           ;point to stack frame
       push  si              ;preserve C register vars
@@ -336,7 +336,7 @@ _Read360x480Dotprocnear
        pop  bp              ;restore caller's BP
        ret
 _Read360x480Dot  endp
-_TEX   Tends
+_TEXT  ends
        end
 ```
 

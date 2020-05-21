@@ -245,7 +245,7 @@ the whole point.)
         .stack      100h
         .data
 ; Sample string to search through.
-SampleString        labelbyte
+SampleString        label byte
         db   ‘This is a sample string of a long enough length '
         db   ‘so that raw searching speed can outweigh any '
         db   ‘extra set-up time that may be required.',0
@@ -263,7 +263,7 @@ NoByteFoundMsg       db    0dh,0ah
                      db    ‘Buffer exhausted with no match.', 0dh, 0ah, ‘$'
 
     .code
-Startprocnear
+Start proc near
     mov  ax,@data    ;point to standard data segment
     mov  ds,ax
     mov  dx,offset Prompt
@@ -289,7 +289,7 @@ PrintStatus:
     int  21h              ;report status
     mov  ah,4ch           ;return to DOS
     int  21h
-Startendp
+Start endp
 
 ; Function to search a buffer of a specified length until either a
 ; specified byte or a zero byte is encountered.
@@ -306,7 +306,7 @@ Startendp
 ;         byte is found
 ;    Carry Flag = set if searched-for byte found, reset otherwise
 
-SearchMaxLengthprocnear
+SearchMaxLength proc near
       cld
 SearchMaxLengthLoop:
       lodsb                        ;get the next byte
@@ -324,7 +324,7 @@ ByteFound:
                                    ;we found the searched-for byte
       stc                          ;return "found" status
       ret
-SearchMaxLengthendp
+SearchMaxLength endp
       end   Start
 ```
 
@@ -350,7 +350,7 @@ all the difference.
        .stack      100h
        .data
 ; Sample string to search through.
-SampleStringlabelbyte
+SampleString label byte
         db     ‘This is a sample string of a long enough length '
         db     ‘so that raw searching speed can outweigh any '
         db     ‘extra set-up time that may be required.',0
@@ -403,7 +403,7 @@ PrintStatus:
 
       mov   ah,4ch           ;return to DOS
       int   21h
-Startendp
+Start endp
 
 ; Function to search a buffer of a specified length until either a
 ; specified byte or a zero byte is encountered.
@@ -468,7 +468,7 @@ ByteFound:
                               ; we found the searched-for byte
      stc                      ;return "found" status
      ret
-SearchMaxLengthendp
+SearchMaxLength endp
      end    Start
 ```
 

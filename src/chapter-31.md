@@ -37,7 +37,7 @@ the way up to 360x480—and that's with the vanilla IBM VGA!
 
 In this chapter, I'm going to focus on one of my favorite 256-color
 modes, which provides 320x400 resolution and two graphics pages and can
-be set up with very little reof the VGA. In the next chapter, I'll
+be set up with very little reprogramming of the VGA. In the next chapter, I'll
 discuss higher-resolution 256-color modes, and starting in Chapter 47,
 I'll cover the high-performance "Mode X" 256-color programming that many
 games use.
@@ -283,7 +283,7 @@ endif
 ;
 ; Macro to output a constant value to an indexed VGA register.
 ;
-CONSTANT_TO_INDEXED_REGISTERmacroADDRESS, INDEX, VALUE
+CONSTANT_TO_INDEXED_REGISTER macro ADDRESS, INDEX, VALUE
       mov  dx,ADDRESS
       mov  ax,(VALUE shl 8) + INDEX
       OUT_WORD
@@ -309,7 +309,7 @@ ColorLoop:
                                   ; line descriptor list
 LineLoop:
      mov   cx,[si+StartX]         ;set the initial X coordinate
-     cmpcx,-1
+     cmp   cx,-1
      jz    LinesDone              ;a descriptor with a -1 X
                                   ; coordinate marks the end
                                   ; of the list
@@ -341,7 +341,7 @@ LinesDone:
 ;
      call   GetNextKey
      mov    ax,0003h
-     int    10h                    text mode
+     int    10h                    ;text mode
      mov    ah,4ch
      int    21h   ;done
 ;
@@ -477,7 +477,7 @@ WritePixel proc near
                                         ; the pixel
         mov  es:[di],bl                 ;draw the pixel
         ret
-WritePixelendp
+WritePixel endp
 ;
 ; Reads the color of the pixel at the specified location in 320x400
 ; 256-color mode.
@@ -491,7 +491,7 @@ WritePixelendp
 ;
 ; Registers altered: AX, CX, DX, SI, ES
 ;
-ReadPixelprocnear
+ReadPixel proc near
         mov   ax,VGA_SEGMENT
         mov   es,ax                        ;point to display memory
         mov   ax,SCREEN_WIDTH/4
@@ -511,9 +511,9 @@ ReadPixelprocnear
         mov    dx,GC_INDEX
         OUT_WORD                           ;set to read from the proper plane for
                                            ; the pixel
-        lodsbyte ptr es:[si]               ;read the pixel
+        lods byte ptr es:[si]              ;read the pixel
         ret
-ReadPixelendp
+ReadPixel endp
 ;
 ; Waits for the next key and returns it in AX.
 ;
@@ -690,7 +690,7 @@ endif
 ;
 ; Macro to output a constant value to an indexed VGA register.
 ;
-CONSTANT_TO_INDEXED_REGISTERmacroADDRESS, INDEX, VALUE
+CONSTANT_TO_INDEXED_REGISTER macro ADDRESS, INDEX, VALUE
         mov  dx,ADDRESS
         mov  ax,(VALUE shl 8) + INDEX
         OUT_WORD
@@ -702,7 +702,7 @@ Start   proc   near
 ;
 ; Set 320x400 256-color mode.
 ;
-callSet320By400Mode
+call Set320By400Mode
 ;
 ; We're in 320x400 256-color mode, with page 0 displayed.
 ; Let's fill page 0 with color bars slanting down and to the right.
@@ -722,7 +722,7 @@ callSet320By400Mode
 ;
 ; Wait for a key and flip to page 1 when one is pressed.
 ;
-      callGetNextKey
+      call GetNextKey
       CONSTANT_TO_INDEXED_REGISTER CRTC_INDEX,START_ADDRESS_HIGH,80h
                                ;set the Start Address High register
                                ; to 80h, for a start address of 8000h
@@ -735,7 +735,7 @@ callSet320By400Mode
 ;
 ; Wait for another key and flip back to page 0 when one is pressed.
 ;
-        callGetNextKey
+        call GetNextKey
         CONSTANT_TO_INDEXED_REGISTER CRTC_INDEX,START_ADDRESS_HIGH,00h
                                 ;set the Start Address High register
                                 ; to 00h, for a start address of 0000h
@@ -757,7 +757,7 @@ Start endp
 ;
 ; Output: none
 ;
-Set320By400Modeprocnear
+Set320By400Mode proc near
 ;
 ; First, go to normal 320x200 256-color mode, which is really a
 ; 320x400 256-color mode with each line scanned twice.
@@ -831,7 +831,7 @@ CONSTANT_TO_INDEXED_REGISTER SC_INDEX,MAP_MASK,0fh
         out     dx,al
         inc     dx
         in      al,dx
-        and     al,not40h                ;turn off doubleword
+        and     al,not 40h                ;turn off doubleword
         out     dx,al
         dec     dx
         mov     al,MODE_CONTROL
@@ -853,7 +853,7 @@ Set320By400Mode  endp
 ;        make them slant down and to the left, 0 to make
 ;        them vertical.
 ;
-ColorBarsUpprocnear
+ColorBarsUp proc near
         mov     ax,VGA_SEGMENT
         mov     es,ax                ;point to display memory
         sub     bh,bh                ;start with color 0
@@ -867,7 +867,7 @@ RowLoop:
                                      ;4 pixels at each address, so
                                      ; each 320-pixel row is 80 bytes wide
                                      ; in each plane
-        pus h   bx                   ;save the row-start color
+        push    bx                   ;save the row-start color
 ColumnLoop:
 MAP_SELECT = 1
         rept  4                      ;do all 4 pixels at this address with
@@ -887,11 +887,11 @@ MAP_SELECT = MAP_SELECT shl 1
         dec     si                     ;count down lines on the screen
         jnz     RowLoop
         ret
-ColorBarsUpendp
+ColorBarsUp endp
 ;
 ; Waits for the next key and returns it in AX.
 ;
-GetNextKeyprocnear
+GetNextKey proc near
 WaitKey:
         mov     ah,1
         int     16h
@@ -901,9 +901,9 @@ WaitKey:
         ret
 GetNextKey      endp
 ;
-Codeends
+Code ends
 ;
-endStart
+end Start
 ```
 
 When you run Listing 31.2, note the extremely smooth edges and fine

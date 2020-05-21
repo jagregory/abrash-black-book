@@ -754,12 +754,12 @@ Parms struc
 Buffer              dw    ?
 BufferLength        dw    ?
 Checksum            dw    ?
-Parmsends
+Parms ends
 ;
      .model small
      .code
      public _ChecksumChunk
-_ChecksumChunkprocnear
+_ChecksumChunk proc near
      push  bp
      mov   bp,sp
      push  si                        ;save C's register variable
@@ -779,7 +779,7 @@ ChecksumLoop:
       pop  si                ;restore C's register variable
       pop  bp
       ret
-_ChecksumChunkendp
+_ChecksumChunk endp
       end
 ```
 

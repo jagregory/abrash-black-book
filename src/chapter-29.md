@@ -557,14 +557,14 @@ x=         x+1
 ; Used to label the colors of the color bars. (Color values are
 ; filled in on the fly.)
 ;
-ColorNumberslabelbyte
+ColorNumbers label byte
            rept    16
            db      ‘000h', 0ah, 8, 8, 8, 8
            endm
-COLOR_ENTRY_LENGTHequ($-ColorNumbers)/16
+COLOR_ENTRY_LENGTH equ ($-ColorNumbers)/16
            db      ‘$'
 ;
-CurrentColordb?
+CurrentColor db ?
 ;
 ; Space for the array of 16 colors we'll pass to the BIOS, plus
 ; an overscan setting of black.
@@ -574,7 +574,7 @@ Data          ends
 ;
 Code          segment
               assume     cs:Code, ds:Data
-Start         procnear
+Start          proc near
               cld
               mov        ax,Data
               mov        ds,ax
@@ -764,7 +764,7 @@ ColorNumberLoop:
                mov        dx,offset ColorNumbers
                int        21h               ;put up the attribute numbers
                ret
-ColorNumbersUpendp
+ColorNumbersUp endp
 ;
 Start          endp
 Code           ends
@@ -820,7 +820,7 @@ WAIT_KEY macro
               endm
 ;
 stack         segment para stack ‘STACK'
-              db512 dup (?)
+              db 512 dup (?)
 stack         ends
 ;
 Data  segment   word   ‘DATA'
