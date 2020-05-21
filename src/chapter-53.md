@@ -199,7 +199,7 @@ SCparms ends
 
    align ALIGNMENT
    public -CosSin
--CosSinprocnear
+-CosSin proc near
      push  bp                  ;preserve stack frame
      mov   bp,sp               ;set up local stack frame
 

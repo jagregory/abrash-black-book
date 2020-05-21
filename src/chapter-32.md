@@ -199,7 +199,7 @@ _TEXTsegment byte public ‘CODE'
 ; Returns: nothing
 ;
       public _Set360x480Mode
-_Set360x480Modeprocnear
+_Set360x480Mode proc near
       push   si                 ;preserve C register vars
       push   di
       mov    ax,12h             ; start with mode 12h
@@ -258,7 +258,7 @@ Color dw   ?            ;color in which to draw (in the
 DParms     ends
 ;
       public _Draw360x480Dot
-_Draw360x480Dotprocnear
+_Draw360x480Dot proc near
       push  bp            ;preserve caller's BP
       mov   bp,sp         ;point to stack frame
       push  si            ;preserve C register vars
@@ -306,7 +306,7 @@ ReadY dw   ?                ;Y coordinate from which to read
 RParms     ends
 ;
       public _Read360x480Dot
-_Read360x480Dotprocnear
+_Read360x480Dot proc near
       push  bp              ;preserve caller's BP
       mov   bp,sp           ;point to stack frame
       push  si              ;preserve C register vars

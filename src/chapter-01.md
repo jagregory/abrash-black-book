@@ -759,7 +759,7 @@ Parmsends
      .model small
      .code
      public _ChecksumChunk
-_ChecksumChunkprocnear
+_ChecksumChunk proc near
      push  bp
      mov   bp,sp
      push  si                        ;save C's register variable

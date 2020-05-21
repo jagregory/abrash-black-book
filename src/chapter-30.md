@@ -328,7 +328,7 @@ Startendp
 ;
 ; Registers altered: AL, DX
 ;
-WaitForVerticalSyncStartprocnear
+WaitForVerticalSyncStart proc near
        mov    dx,INPUT_STATUS_0
 WaitNotVerticalSync:
        in     al,dx
@@ -349,7 +349,7 @@ WaitForVerticalSyncStart       endp
 ;
 ; Registers altered: AL, DX
 ;
-WaitForVerticalSyncEndprocnear
+WaitForVerticalSyncEnd proc near
        mov    dx,INPUT_STATUS_0
 WaitVerticalSync2:
        in     al,dx

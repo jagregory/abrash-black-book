@@ -202,7 +202,7 @@ Startendp
 ; Draws the image at offset DS:SI to the current image location in
 ; VGA memory.
 ;
-DrawImageprocnear
+DrawImage proc near
      mov  ax,VGA_SEGMENT
      mov  es,ax
      call GetImageOffset   ;ES:DI is the destination address for the
@@ -518,7 +518,7 @@ Startendp
 ; Enables set/reset for all planes, and sets the set/reset color
 ; to AL.
 ;
-SelectSetResetColorprocnear
+SelectSetResetColor proc near
      mov    dx,GC_INDEX
      push   ax                    ;preserve color
      mov    al,SET_RESET
@@ -636,7 +636,7 @@ COLOR_DONT_CARE  EQU  7            ;Color Don't Care register index in GC
 ;
 code  segment  word 'CODE'
      assume    cs:code
-Startprocnear
+Start proc near
 ;
 ; Select graphics mode 12h.
 ;

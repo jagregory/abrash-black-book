@@ -574,7 +574,7 @@ Data          ends
 ;
 Code          segment
               assume     cs:Code, ds:Data
-Start         procnear
+Start          proc near
               cld
               mov        ax,Data
               mov        ds,ax

@@ -491,7 +491,7 @@ WritePixelendp
 ;
 ; Registers altered: AX, CX, DX, SI, ES
 ;
-ReadPixelprocnear
+ReadPixel proc near
         mov   ax,VGA_SEGMENT
         mov   es,ax                        ;point to display memory
         mov   ax,SCREEN_WIDTH/4
@@ -757,7 +757,7 @@ Start endp
 ;
 ; Output: none
 ;
-Set320By400Modeprocnear
+Set320By400Mode proc near
 ;
 ; First, go to normal 320x200 256-color mode, which is really a
 ; 320x400 256-color mode with each line scanned twice.
@@ -853,7 +853,7 @@ Set320By400Mode  endp
 ;        make them slant down and to the left, 0 to make
 ;        them vertical.
 ;
-ColorBarsUpprocnear
+ColorBarsUp proc near
         mov     ax,VGA_SEGMENT
         mov     es,ax                ;point to display memory
         sub     bh,bh                ;start with color 0
@@ -891,7 +891,7 @@ ColorBarsUpendp
 ;
 ; Waits for the next key and returns it in AX.
 ;
-GetNextKeyprocnear
+GetNextKey proc near
 WaitKey:
         mov     ah,1
         int     16h

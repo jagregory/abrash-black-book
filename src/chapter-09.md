@@ -395,7 +395,7 @@ Parmsends
       .model      small
       .code
       public _FindString
-_FindStringprocnear
+_FindString proc near
       push     bp      ;preserve caller's stack frame
       mov      bp,sp   ;point to our stack frame
       push     si      ;preserve caller's register variables
@@ -492,7 +492,7 @@ Parmsends
       .model      small
       .code
       public _FindString
-_FindStringprocnear
+_FindString proc near
       push     bp      ;preserve caller's stack frame
       mov      bp,sp   ;point to our stack frame
       push     si      ;preserve caller's register variables
@@ -743,7 +743,7 @@ parmsends
                .model     small
                .code
                public     _Div
-_Divprocnear
+_Div proc near
                push    bp      ;preserve caller's stack frame
                mov     bp,sp   ;point to our stack frame
                push    si      ;preserve caller's register variables

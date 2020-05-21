@@ -263,7 +263,7 @@ NoByteFoundMsg       db    0dh,0ah
                      db    ‘Buffer exhausted with no match.', 0dh, 0ah, ‘$'
 
     .code
-Startprocnear
+Start proc near
     mov  ax,@data    ;point to standard data segment
     mov  ds,ax
     mov  dx,offset Prompt
@@ -306,7 +306,7 @@ Startendp
 ;         byte is found
 ;    Carry Flag = set if searched-for byte found, reset otherwise
 
-SearchMaxLengthprocnear
+SearchMaxLength proc near
       cld
 SearchMaxLengthLoop:
       lodsb                        ;get the next byte
