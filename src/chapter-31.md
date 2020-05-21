@@ -867,7 +867,7 @@ RowLoop:
                                      ;4 pixels at each address, so
                                      ; each 320-pixel row is 80 bytes wide
                                      ; in each plane
-        pus h   bx                   ;save the row-start color
+        push    bx                   ;save the row-start color
 ColumnLoop:
 MAP_SELECT = 1
         rept  4                      ;do all 4 pixels at this address with
