@@ -837,7 +837,7 @@ ColumnLoop2:
                                               ; panning effects can be seen easily
      inc     di
      inc     di
-loopColumnLoop2
+loop ColumnLoop2
      ror     ax,1                             ;shift pattern word
      dec     dx
      jnz     RowLoop2
@@ -847,7 +847,7 @@ loopColumnLoop2
 ; screen jerks back and forth as the pel panning setting cycles.
 ;
      mov     cx,200                   ;pan 200 pixels to the left
-callPanRight
+call PanRight
 ;
 ; Wait for a key press (don't echo character).
 ;
