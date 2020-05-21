@@ -435,7 +435,7 @@ VLineLoop:
 ; provides the data written to display
 ; memory, and AL is actually ignored)
      add    di,SCREEN_WIDTH-1     ;point to the next scan line
-loopVLineLoop
+loop VLineLoop
 ;
 ; Select write mode 0 and read mode 1.
 ;
