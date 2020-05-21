@@ -820,7 +820,7 @@ WAIT_KEY macro
               endm
 ;
 stack         segment para stack ‘STACK'
-              db512 dup (?)
+              db 512 dup (?)
 stack         ends
 ;
 Data  segment   word   ‘DATA'
