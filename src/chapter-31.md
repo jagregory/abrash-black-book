@@ -37,7 +37,7 @@ the way up to 360x480—and that's with the vanilla IBM VGA!
 
 In this chapter, I'm going to focus on one of my favorite 256-color
 modes, which provides 320x400 resolution and two graphics pages and can
-be set up with very little reof the VGA. In the next chapter, I'll
+be set up with very little reprogramming of the VGA. In the next chapter, I'll
 discuss higher-resolution 256-color modes, and starting in Chapter 47,
 I'll cover the high-performance "Mode X" 256-color programming that many
 games use.
