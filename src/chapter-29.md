@@ -564,7 +564,7 @@ ColorNumbers label byte
 COLOR_ENTRY_LENGTH equ ($-ColorNumbers)/16
            db      ‘$'
 ;
-CurrentColordb?
+CurrentColor db ?
 ;
 ; Space for the array of 16 colors we'll pass to the BIOS, plus
 ; an overscan setting of black.
