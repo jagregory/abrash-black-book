@@ -751,7 +751,7 @@ MyStack       segment para stack 'STACK'
        db     512 dup (0)
 MyStack       ends
 ;*********************************************************************
-Datasegment
+Data segment
 SplitScreenLine       dw    ?            ;line the split screen currently
                                          ; starts after
 StartAddress          dw    ?            ;display memory offset at which
