@@ -146,7 +146,7 @@ SCREEN_WIDTH         equ  640
 SCREEN_HEIGHT        equ  350
 CRTC_INDEX           equ  3d4h     ;CRT Controller Index register
 OVERFLOW             equ  7        ;index of Overflow reg in CRTC
-MAXIMUM_SCAN_LINEequ 9             ;index of Maximum Scan Line register
+MAXIMUM_SCAN_LINE    equ  9        ;index of Maximum Scan Line register
                                    ; in CRTC
 START_ADDRESS_HIGH   equ  0ch      ;index of Start Address High register
                                    ; in CRTC
