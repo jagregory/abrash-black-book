@@ -702,7 +702,7 @@ Start   proc   near
 ;
 ; Set 320x400 256-color mode.
 ;
-callSet320By400Mode
+call Set320By400Mode
 ;
 ; We're in 320x400 256-color mode, with page 0 displayed.
 ; Let's fill page 0 with color bars slanting down and to the right.
