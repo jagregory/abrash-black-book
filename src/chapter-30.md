@@ -763,7 +763,7 @@ Data    ends
 Code    segment
         assume    cs:Code, ds:Data
 ;*********************************************************************
-Startproc    near
+Start proc    near
      mov     ax,Data
      mov     ds,ax
 ;
