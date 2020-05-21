@@ -722,7 +722,7 @@ call Set320By400Mode
 ;
 ; Wait for a key and flip to page 1 when one is pressed.
 ;
-      callGetNextKey
+      call GetNextKey
       CONSTANT_TO_INDEXED_REGISTER CRTC_INDEX,START_ADDRESS_HIGH,80h
                                ;set the Start Address High register
                                ; to 80h, for a start address of 8000h
@@ -735,7 +735,7 @@ call Set320By400Mode
 ;
 ; Wait for another key and flip back to page 0 when one is pressed.
 ;
-        callGetNextKey
+        call GetNextKey
         CONSTANT_TO_INDEXED_REGISTER CRTC_INDEX,START_ADDRESS_HIGH,00h
                                 ;set the Start Address High register
                                 ; to 00h, for a start address of 0000h
