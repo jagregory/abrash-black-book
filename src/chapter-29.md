@@ -81,19 +81,19 @@ READ_MAP                    equ   4                ;Read Map register index in G
 DISPLAYED_SCREEN_SIZE       equ  (640/8)*350       ;# of displayed bytes per plane in a
                                                    ; hi-res graphics screen
 ;
-stack      segment para stack ‘STACK'
+stack      segment para stack 'STACK'
                  db                  512 dup (?)
 stack      ends
 ;
-Data       segment     word ‘DATA'
-SampleText       db    ‘This is bit-mapped text, drawn in hi-res '
-                 db    ‘EGA graphics mode 10h.', 0dh, 0ah, 0ah
-                 db    ‘Saving the screen (including this text)...'
-                 db    0dh, 0ah, ‘$'
-Filename         db    ‘SNAPSHOT.SCR',0   ;name of file we're saving to
-ErrMsg1          db    ‘*** Couldn't open SNAPSHOT.SCR ***',0dh,0ah,‘$'
-ErrMsg2          db    ‘*** Error writing to SNAPSHOT.SCR ***',0dh,0ah,‘$'
-WaitKeyMsg       db    0dh, 0ah, ‘Done. Press any key to end...',0dh,0ah,‘$'
+Data       segment     word 'DATA'
+SampleText       db    'This is bit-mapped text, drawn in hi-res '
+                 db    'EGA graphics mode 10h.', 0dh, 0ah, 0ah
+                 db    'Saving the screen (including this text)...'
+                 db    0dh, 0ah, '$'
+Filename         db    'SNAPSHOT.SCR',0   ;name of file we're saving to
+ErrMsg1          db    '*** Couldn't open SNAPSHOT.SCR ***',0dh,0ah,'$'
+ErrMsg2          db    '*** Error writing to SNAPSHOT.SCR ***',0dh,0ah,'$'
+WaitKeyMsg       db    0dh, 0ah, 'Done. Press any key to end...',0dh,0ah,'$'
 Handle           dw    ?                           ;handle of file we're saving to
 Plane            db    ?                           ;plane being read
 Data  ends
@@ -214,15 +214,15 @@ MAP_MASK                    equ   2               ;Map Mask register index in SC
 DISPLAYED_SCREEN_SIZE       equ  (640/8)*350      ;# of displayed bytes per plane in a
                                                   ; hi-res graphics screen
 ;
-stack      segment para stack ‘STACK'
+stack      segment para stack 'STACK'
                  db              512 dup (?)
 stack      ends
 ;
-Data       segment     word ‘DATA'
-Filename         db          ‘SNAPSHOT.SCR',0   ;name of file we're restoring from
-ErrMsg1          db          ‘*** Couldn'‘t open SNAPSHOT.SCR ***',0dh,0ah,‘$'
-ErrMsg2          db          ‘*** Error reading from SNAPSHOT.SCR ***',0dh,0ah,‘$'
-WaitKeyMsg       db          0dh, 0ah, ‘Done. Press any key to end...',0dh,0ah,‘$'
+Data       segment     word 'DATA'
+Filename         db          'SNAPSHOT.SCR',0   ;name of file we're restoring from
+ErrMsg1          db          '*** Couldn''t open SNAPSHOT.SCR ***',0dh,0ah,'$'
+ErrMsg2          db          '*** Error reading from SNAPSHOT.SCR ***',0dh,0ah,'$'
+WaitKeyMsg       db          0dh, 0ah, 'Done. Press any key to end...',0dh,0ah,'$'
 Handle           dw          ?                  ;handle of file we're restoring from
 Plane            db          ?                  ;plane being written
 Data       ends
@@ -529,16 +529,16 @@ BAR_HEIGHT             equ  14           ;height of each bar
 TOP_BAR                equ  BAR_HEIGHT*6 ;start the bars down a bit to
                                          ; leave room for text
 ;
-stack    segment para stack ‘STACK'
+stack    segment para stack 'STACK'
               db                  512 dup (?)
 stack    ends
 ;
-Data     segment    word ‘DATA'
-KeyMsg   db         ‘Press any key to see the next color set. '
-         db         ‘There are 64 color sets in all.'
+Data     segment    word 'DATA'
+KeyMsg   db         'Press any key to see the next color set. '
+         db         'There are 64 color sets in all.'
          db         0dh, 0ah, 0ah, 0ah, 0ah
-         db         13 dup (‘ '), ‘Attribute'
-         db         38 dup (‘ '), ‘Color$'
+         db         13 dup (' '), 'Attribute'
+         db         38 dup (' '), 'Color$'
 ;
 ; Used to label the attributes of the color bars.
 ;
@@ -546,23 +546,23 @@ AttributeNumbers    label byte
 x=         0
            rept     16
 if x lt 10
-           db       ‘0', x+‘0', ‘h', 0ah, 8, 8, 8
+           db       '0', x+'0', 'h', 0ah, 8, 8, 8
 else
-           db       ‘0', x+‘A'-10, ‘h', 0ah, 8, 8, 8
+           db       '0', x+'A'-10, 'h', 0ah, 8, 8, 8
 endif
 x=         x+1
            endm
-           db       ‘$'
+           db       '$'
 ;
 ; Used to label the colors of the color bars. (Color values are
 ; filled in on the fly.)
 ;
 ColorNumbers label byte
            rept    16
-           db      ‘000h', 0ah, 8, 8, 8, 8
+           db      '000h', 0ah, 8, 8, 8, 8
            endm
 COLOR_ENTRY_LENGTH equ ($-ColorNumbers)/16
-           db      ‘$'
+           db      '$'
 ;
 CurrentColor db ?
 ;
@@ -718,10 +718,10 @@ BarUp         endp
 BinToHexDigit proc        near
               cmp         al,9
               ja                IsHex
-              add         al,‘0'
+              add         al,'0'
               ret
 IsHex:
-              add         al,‘A'-10
+              add         al,'A'-10
               ret
 BinToHexDigit endp
 ;
@@ -819,16 +819,16 @@ WAIT_KEY macro
               int      21h
               endm
 ;
-stack         segment para stack ‘STACK'
+stack         segment para stack 'STACK'
               db 512 dup (?)
 stack         ends
 ;
-Data  segment   word   ‘DATA'
-SampleText      db     ‘This is bit-mapped text, drawn in hi-res '
-                db     ‘EGA graphics mode 10h.', 0dh, 0ah, 0ah
-                db     ‘Press any key to blank the screen, then '
-                db     ‘any key to unblank it,', 0dh, 0ah
-                db     ‘then any key to end.$'
+Data  segment   word   'DATA'
+SampleText      db     'This is bit-mapped text, drawn in hi-res '
+                db     'EGA graphics mode 10h.', 0dh, 0ah, 0ah
+                db     'Press any key to blank the screen, then '
+                db     'any key to unblank it,', 0dh, 0ah
+                db     'then any key to end.$'
 Data        ends
 ;
 Code        segment

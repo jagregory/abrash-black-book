@@ -451,9 +451,9 @@ but is considerably more difficult to apply.
  LineWidthBytes  dw ?                ;offset from one scan line to the next
  FontPtr         dd ?                ;pointer to font with which to draw
  SampleString    label              byte
-       db  ‘ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-       db  ‘abcdefghijklmnopqrstuvwxyz'
-       db  ‘0123456789!@#$%^&*(),<.>/?;:',0
+       db  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+       db  'abcdefghijklmnopqrstuvwxyz'
+       db  '0123456789!@#$%^&*(),<.>/?;:',0
 
       .code
  start:

@@ -263,7 +263,7 @@ WORD_OUTS_OK    equ     1       ;set to 0 to assemble for
                                 ; handle word outs to
                                 ; indexed VGA regs
                                 ;
-stack segment para stack ‘STACK'
+stack segment para stack 'STACK'
         db      512 dup (?)
 stack ends
 ;
@@ -297,7 +297,7 @@ PlaneSelect db  ?       ;mask to select plane to
                         ; word-aligned)
 ObjectStructure ends
 ;
-Data segment    word ‘DATA'
+Data segment    word 'DATA'
 ;
 ; Palette settings to give plane 0 precedence, followed by
 ; planes 1, 2, and 3. Plane 3 has the lowest precedence (is

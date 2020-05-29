@@ -148,7 +148,7 @@ WORD_OUTS_OK    equ    1           ;set to 0 to assemble for
                                    ; computers that can't handle
                                    ; word outs to indexed VGA registers
 ;
-_DATA segment public byte ‘DATA'
+_DATA segment public byte 'DATA'
 ;
 ; 360x480 256-color mode CRT Controller register settings.
 ; (Courtesy of John Bridges.)
@@ -188,7 +188,7 @@ else
 endif
       endm
 ;
-_TEXTsegment byte public ‘CODE'
+_TEXTsegment byte public 'CODE'
        assumecs:_TEXT, ds:_DATA
 ;
 ; Sets up 360x480 256-color mode.

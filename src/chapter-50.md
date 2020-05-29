@@ -725,10 +725,10 @@ void main() {
          switch (getch()) {
             case 0x1B:     /* Esc to exit */
                Done = 1; break;
-            case ‘A': case ‘a':      /* away (-Z) */
+            case 'A': case 'a':      /* away (-Z) */
                PolyWorldXform[2][3] -= 3.0; break;
-            case ‘T':      /* towards (+Z). Don't allow to get too */
-            case ‘t':      /* close, so Z clipping isn't needed */
+            case 'T':      /* towards (+Z). Don't allow to get too */
+            case 't':      /* close, so Z clipping isn't needed */
                if (PolyWorldXform[2][3] < -40.0)
                      PolyWorldXform[2][3] += 3.0; break;
             case 0:     /* extended code */

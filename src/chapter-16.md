@@ -155,10 +155,10 @@ timed from a RAM disk on a 20 MHz 386.
           Ch = *BufferPtr++ & 0x7F; /* strip high bit, which some
                                        word processors set as an
                                        internal flag */
-          CharFlag = ((Ch >= ‘a') && (Ch <= ‘z')) ||
-                     ((Ch >= ‘A') && (Ch <= ‘Z')) ||
-                     ((Ch >= ‘0') && (Ch <= ‘9')) ||
-                     (Ch == ‘\'');
+          CharFlag = ((Ch >= 'a') && (Ch <= 'z')) ||
+                     ((Ch >= 'A') && (Ch <= 'Z')) ||
+                     ((Ch >= '0') && (Ch <= '9')) ||
+                     (Ch == '\'');
           if ((!CharFlag) && PredCharFlag) {
              WordCo u nt++; 
           }
@@ -291,19 +291,19 @@ ScanLoop:
         and     al,7fh          ;strip high bit for word processors
                                 ; that set it as an internal flag
         mov     bl,1            ;assume this is a char; CharFlag = 1;
-        cmp     al,‘a'          ;it is a char if between a and z
+        cmp     al,'a'          ;it is a char if between a and z
         jb      CheckAZ
-        cmp     al,‘z'
+        cmp     al,'z'
         jna     IsAChar
 CheckAZ:
-        cmp     al,‘A'          ;it is a char if between A and Z
+        cmp     al,'A'          ;it is a char if between A and Z
         jb      Check09
-        cmp     al,‘Z'
+        cmp     al,'Z'
         jna     IsAChar
 Check09:
-        cmp     al,‘0'          ;it is a char if between 0 and 9
+        cmp     al,'0'          ;it is a char if between 0 and 9
         jb      CheckApostrophe
-        cmp     al,‘9'
+        cmp     al,'9'
         jna     IsAChar
 CheckApostrophe:
         cmp      al,27h           ;it is a char if an apostrophe 
@@ -745,7 +745,7 @@ jumping.
                  mov     di,[bp+CharFlag]
                  mov     bh,[di]             ;bh = old CharFlag
                  mov     bl,[si]             ;bl = character
-                 add     bh,‘A'-1            ;make bh into character
+                 add     bh,'A'-1            ;make bh into character
                  add     bx,bx               ;prepare to index
                  mov     al,es:[bx]
                  cbw                         ;get hi bit in ah (then bh)
@@ -1155,7 +1155,7 @@ report a "location counter overflow" warning; ignore it.)
 #include <stdio.h>
 #include <ctype.h>
  
-#define ChType( c )  (((c) & 0x7f) == ‘\'' || isalnum((c) & 0x7f))
+#define ChType( c )  (((c) & 0x7f) == '\'' || isalnum((c) & 0x7f))
  
 int NoCarry[ 4 ] = { 0, 0x80, 1, 0x80 };
 int Carry[ 4 ]   = { 1, 0x81, 1, 0x80 };
