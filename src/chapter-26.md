@@ -91,7 +91,7 @@ characters can be drawn in any of the 16 available colors.
 ; Assembled with MASM
 ; By Michael Abrash
 ;
-stack   segment para stack ‘STACK'
+stack   segment para stack 'STACK'
         db      512 dup(?)
 stack   ends
 ;
@@ -111,16 +111,16 @@ GC_ROTATE       equ     3       ;GC data rotate/logical function
 GC_MODE         equ     5       ;GC Mode register
 GC_BIT_MASK     equ     8       ;GC bit mask register index
 ;
-dseg    segment para common ‘DATA'
+dseg    segment para common 'DATA'
 TEST_TEXT_ROW   equ     69      ;row to display test text at
 TEST_TEXT_COL   equ     17      ;column to display test text at
 TEST_TEXT_WIDTH equ     8       ;width of a character in pixels
 TestString      label   byte
-        db      ‘Hello, world!',0       ;test string to print.
+        db      'Hello, world!',0       ;test string to print.
 FontPointer     dd      ?               ;font offset
 dseg    ends
 ;
-cseg    segment para public ‘CODE'
+cseg    segment para public 'CODE'
         assume  cs:cseg, ds:dseg
 start   proc    near
         mov     ax,dseg
@@ -458,7 +458,7 @@ along with the tables used to alter the 8x14 and 8x16 ROM fonts into
 ; Assembled with MASM
 ; By Michael Abrash
 ;
-stack   segment para stack ‘STACK'
+stack   segment para stack 'STACK'
         db      512 dup(?)
 stack   ends
 ;
@@ -478,16 +478,16 @@ GC_ROTATE               equ     3           ;GC data rotate/logical function
 GC_MODE                 equ     5           ;GC Mode register
 GC_BIT_MASK             equ     8           ;GC bit mask register index
 ;
-dseg    segment para common ‘DATA'
+dseg    segment para common 'DATA'
 TEST_TEXT_ROW           equ     69          ;row to display test text at
 TEST_TEXT_COL           equ     17          ;column to display test text at
 TEST_TEXT_COLOR         equ     0fh         ;high intensity white
 TestString      label   byte
-        db      ‘Hello, world!',0           ;test string to print.
+        db      'Hello, world!',0           ;test string to print.
 FontPointer     dd      ?                   ;font offset
 dseg    ends
 ;
-cseg    segment para public ‘CODE'
+cseg    segment para public 'CODE'
         assume  cs:cseg, ds:dseg
 start   proc    near
         mov     ax,dseg
