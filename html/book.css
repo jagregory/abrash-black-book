@@ -54,8 +54,8 @@ figure {
 }
 
 pre, table {
-  overflow: scroll;
-  width: 100%;
+  overflow: hidden;
+  width: 100% !important;
 }
 
 caption {
