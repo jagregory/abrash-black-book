@@ -256,7 +256,7 @@ code into optimized assembly language:
   * Optimize in terms of what assembly does well, *not* in terms of
     fine-tuning compiled C code.
   * Change the rules to the benefit of assembly, if necessary; for
-    example, reorganize data structto allow efficient assembly language
+    example, reorganize data structs to allow efficient assembly language
     processing.
 
 That said, let me show some of these precepts in action.
