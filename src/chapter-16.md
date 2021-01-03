@@ -42,7 +42,7 @@ importance to buyers:
   
   10. Windows development cycle automation
 
-Is something missing here? You bet your maximum *gluteus* something's
+Is something missing here? You bet your *gluteus* *maximus* something's
 missing—nowhere on that list is there so much as one word about how fast
 the compiled code runs! I'm not saying that performance is everything,
 but optimization isn't even down there at number 10, below online help!
