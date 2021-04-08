@@ -1,0 +1,32 @@
+name: Build with Pandoc
+on:
+  - push
+  - pull_request
+
+jobs:
+  pandoc-build:
+    name: Pandoc build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Pandoc
+        run: |
+          sudo apt update
+          sudo apt install pandoc
+
+      - name: Check out the target branch
+        uses: actions/checkout@v2
+      - name: Build the book
+        # Kindle .mobi output suppressed because the Amazon KindleGen tool is
+        # no longer available.
+        run: make html epub
+
+      - name: Upload the HTML book
+        uses: actions/upload-artifact@v2
+        with:
+          name: black-book-html
+          path: out/html/
+      - name: Upload the EPUB book
+        uses: actions/upload-artifact@v2
+        with:
+          name: black-book-epub
+          path: out/black-book.epub
