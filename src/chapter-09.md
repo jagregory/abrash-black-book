@@ -271,7 +271,7 @@ other operand.
 (There's a minimum execution time on this trick; below 3 significant
 multiplier bits, no additional cycles are saved.) For example,
 multiplication of 32,767 times 1 is 12 cycles faster than multiplication
-of 1 times 32,727.
+of 1 times 32,767.
 
 Choosing the right operand as the multiplier can work wonders. According
 to published specs, the 386 takes 38 cycles to multiply by a multiplier
