@@ -946,8 +946,8 @@ Listing 3.3 shows some sample code to be timed. This listing measures
 the time required to execute 1,000 loads of AL from the memory variable
 `MemVar` . Note that Listing 3.3 calls `ZTimerOn` to start timing,
 performs 1,000 `MOV` instructions in a row, and calls `ZTimerOff` to
-end timing. When Listing 3.2 is named TESTCODE and included by Listing
-3.3, Listing 3.2 calls `ZTimerReport` to display the execution time
+end timing. When Listing 3.3 is named TESTCODE and included by Listing
+3.2, Listing 3.2 calls `ZTimerReport` to display the execution time
 after the code in Listing 3.3 has been run.
 
 **LISTING 3.3 LST3-3.ASM**
