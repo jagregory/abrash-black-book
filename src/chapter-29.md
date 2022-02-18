@@ -742,7 +742,7 @@ ColorNumbersUp proc       near
                                             ;build color number text string on the fly
                mov        cx,16             ;we've got 16 colors to do
 ColorNumberLoop:
-               pus        hax;save the color #
+               push       ax;save the color #
                and        al,3fh;limit to 6-bit color values
                shr        al,1
                shr        al,1
