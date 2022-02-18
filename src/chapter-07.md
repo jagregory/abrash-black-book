@@ -246,21 +246,21 @@ the whole point.)
         .data
 ; Sample string to search through.
 SampleString        label byte
-        db   ‘This is a sample string of a long enough length '
-        db   ‘so that raw searching speed can outweigh any '
-        db   ‘extra set-up time that may be required.',0
+        db   'This is a sample string of a long enough length '
+        db   'so that raw searching speed can outweigh any '
+        db   'extra set-up time that may be required.',0
 SAMPLE_STRING_LENGTH  equ  $-SampleString
 
 ; User prompt.
-Prompt     db      ‘Enter character to search for:$'
+Prompt     db      'Enter character to search for:$'
 
 ; Result status messages.
 ByteFoundMsg         db    0dh,0ah
-                     db    ‘Specified byte found.',0dh,0ah,‘$'
+                     db    'Specified byte found.',0dh,0ah,'$'
 ZeroByteFoundMsg db  0dh, 0ah
-                     db    ‘Zero byte encountered.',0dh,0ah,‘$'
+                     db    'Zero byte encountered.',0dh,0ah,'$'
 NoByteFoundMsg       db    0dh,0ah
-                     db    ‘Buffer exhausted with no match.', 0dh, 0ah, ‘$'
+                     db    'Buffer exhausted with no match.', 0dh, 0ah, '$'
 
     .code
 Start proc near
@@ -351,21 +351,21 @@ all the difference.
        .data
 ; Sample string to search through.
 SampleString label byte
-        db     ‘This is a sample string of a long enough length '
-        db     ‘so that raw searching speed can outweigh any '
-        db     ‘extra set-up time that may be required.',0
+        db     'This is a sample string of a long enough length '
+        db     'so that raw searching speed can outweigh any '
+        db     'extra set-up time that may be required.',0
 SAMPLE_STRING_LENGTH  equ  $-SampleString
 
 ; User prompt.
-Prompt  db        ‘Enter character to search for:$'
+Prompt  db        'Enter character to search for:$'
 
 ; Result status messages.
 ByteFoundMsg          db      0dh,0ah
-                      db      ‘Specified byte found.',0dh,0ah,‘$'
+                      db      'Specified byte found.',0dh,0ah,'$'
 ZeroByteFoundMsg db   0dh,0ah
-                      db      ‘Zero byte encountered.', 0dh, 0ah, ‘$'
+                      db      'Zero byte encountered.', 0dh, 0ah, '$'
 NoByteFoundMsg        db      0dh,0ah
-                      db      ‘Buffer exhausted with no match.', 0dh, 0ah, ‘$'
+                      db      'Buffer exhausted with no match.', 0dh, 0ah, '$'
 
 ; Table of initial, possibly partial loop entry points for
 ; SearchMaxLength.
