@@ -182,7 +182,7 @@ image.
 ;
 ; By Michael Abrash
 ;
-Stack   segment para stack ‘STACK'
+Stack   segment para stack 'STACK'
         db      512 dup(0)
 Stack   ends
 
@@ -194,7 +194,7 @@ GC_INDEX                                  equ     03ceh   ;Graphics Controller I
 GRAPHICS_MODE                             equ     5       ;index of Graphics Mode reg
 BIT_MASKequ     8       ;index of Bit Mask reg
 
-Data    segment para common ‘DATA'
+Data    segment para common 'DATA'
 ;
 ; Current location of "A" as it is animated across the screen.
 ;
@@ -221,7 +221,7 @@ AImage          label   byte
                 db      000h, 000h, 000h, 000h, 000h, 000h, 000h
 Data    ends
 
-Code    segment para public ‘CODE'
+Code    segment para public 'CODE'
         assume  cs:Code, ds:Data
 Start   proc    near
         mov     ax,Data
@@ -444,7 +444,7 @@ the CPU byte in write mode 2 to select the color in which to draw.
 ;
 ; By Michael Abrash
 ;
-Stack   segment para stack ‘STACK'
+Stack   segment para stack 'STACK'
         db      512 dup(0)
 Stack   ends
 
@@ -456,7 +456,7 @@ GC_INDEX              equ     03ceh   ;Graphics Controller Index reg
 GRAPHICS_MODE         equ     5       ;index of Graphics Mode reg
 BIT_MASK              equ     8       ;index of Bit Mask reg
 
-Data    segment para common ‘DATA'
+Data    segment para common 'DATA'
 Pattern0        db      16
                 db      0, 1, 2, 3, 4, 5, 6, 7, 8
                 db      9, 10, 11, 12, 13, 14, 15
@@ -468,7 +468,7 @@ Pattern3        db      9
                 db      1, 1, 1, 2, 2, 2, 4, 4, 4
 Data    ends
 
-Code    segment para public ‘CODE'
+Code    segment para public 'CODE'
         assume  cs:Code, ds:Data
 Start   proc    near
         mov     ax,Data
@@ -811,8 +811,8 @@ Jolla, who wrote:
 
 "Suppose I have the EGA in mode 10H (640x350 16-color graphics). I would
 like to preserve some or all of the image while I temporarily switch to
-text mode 3 to give my user a ‘Help' screen. Naturally memory is scarce
-so I'd rather not make a copy of the video buffer at A000H to ‘remember'
+text mode 3 to give my user a 'Help' screen. Naturally memory is scarce
+so I'd rather not make a copy of the video buffer at A000H to 'remember'
 the image while I digress to the Help text. The EGA BIOS says that the
 screen memory will not be cleared on a mode set if bit 7 of AL is set.
 Yet if I try that, it is clear that writing text into the B800H buffer
@@ -824,7 +824,7 @@ there a way to preserve the graphics image while I switch to text
 mode?''
 
 "A corollary to this question is: Where does the 64/128/256K of EGA
-memory ‘hide' when the EGA is in text mode? Some I guess is used to
+memory 'hide' when the EGA is in text mode? Some I guess is used to
 store character sets, but what happens to the rest? Or rather, how can I
 protect it?"
 
@@ -929,7 +929,7 @@ rewarding!) VGA to cover.
 ;
 ; By Michael Abrash
 ;
-Stack   segment para stack ‘STACK'
+Stack   segment para stack 'STACK'
         db      512 dup(0)
 Stack   ends
 
@@ -940,19 +940,19 @@ MAP_MASK        equ     2       ;index of Map Mask register
 GC_INDEX        equ     3ceh    ;Graphics Controller Index register
 READ_MAP        equ     4       ;index of Read Map register
 
-Data    segment para common ‘DATA'
+Data    segment para common 'DATA'
 
 GStrikeAnyKeyMsg0       label   byte
-        db      0dh, 0ah, ‘Graphics mode', 0dh, 0ah
-        db      ‘Strike any key to continue...', 0dh, 0ah, ‘$'
+        db      0dh, 0ah, 'Graphics mode', 0dh, 0ah
+        db      'Strike any key to continue...', 0dh, 0ah, '$'
 
 GStrikeAnyKeyMsg1       label   byte
-        db      0dh, 0ah, ‘Graphics mode again', 0dh, 0ah
-        db      ‘Strike any key to continue...', 0dh, 0ah, ‘$'
+        db      0dh, 0ah, 'Graphics mode again', 0dh, 0ah
+        db      'Strike any key to continue...', 0dh, 0ah, '$'
 
 TStrikeAnyKeyMsg        label   byte
-        db      0dh, 0ah, ‘Text mode', 0dh, 0ah
-        db      ‘Strike any key to continue...', 0dh, 0ah, ‘$'
+        db      0dh, 0ah, 'Text mode', 0dh, 0ah
+        db      'Strike any key to continue...', 0dh, 0ah, '$'
 
 Plane2Save      db      2000h dup (?)   ;save area for plane 2 data
                                         ; where font gets loaded
@@ -961,7 +961,7 @@ CharAttSave     db      4000 dup (?)    ;save area for memory wiped
                                         ; data in text mode
 Data    ends
 
-Code    segment para public ‘CODE'
+Code    segment para public 'CODE'
         assume  cs:Code, ds:Data
 Start   proc    near
         mov     ax,10h
@@ -1045,7 +1045,7 @@ FillBitMap:
         mov     ax,TEXT_SEGMENT
         mov     es,ax
         sub     di,di
-        mov     al,‘.'          ;fill character
+        mov     al,'.'          ;fill character
         mov     ah,7            ;fill attribute
         mov     cx,4000/2       ;length of one text screen in words
         rep stosw
