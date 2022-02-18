@@ -91,7 +91,7 @@ SampleText       db    'This is bit-mapped text, drawn in hi-res '
                  db    'Saving the screen (including this text)...'
                  db    0dh, 0ah, '$'
 Filename         db    'SNAPSHOT.SCR',0   ;name of file we're saving to
-ErrMsg1          db    '*** Couldn't open SNAPSHOT.SCR ***',0dh,0ah,'$'
+ErrMsg1          db    '*** Couldn''t open SNAPSHOT.SCR ***',0dh,0ah,'$'
 ErrMsg2          db    '*** Error writing to SNAPSHOT.SCR ***',0dh,0ah,'$'
 WaitKeyMsg       db    0dh, 0ah, 'Done. Press any key to end...',0dh,0ah,'$'
 Handle           dw    ?                           ;handle of file we're saving to
