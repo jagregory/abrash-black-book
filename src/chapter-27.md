@@ -192,7 +192,7 @@ SC_INDEX                                  equ     3c4h    ;Sequence Controller I
 MAP_MASK                                  equ     2       ;index of Map Mask register
 GC_INDEX                                  equ     03ceh   ;Graphics Controller Index reg
 GRAPHICS_MODE                             equ     5       ;index of Graphics Mode reg
-BIT_MASKequ     8       ;index of Bit Mask reg
+BIT_MASK                                  equ     8       ;index of Bit Mask reg
 
 Data    segment para common 'DATA'
 ;
