@@ -175,7 +175,7 @@ _DATA ends
 ;
 ; Macro to output a word value to a port.
 ;
-OUT_WORDmacro
+OUT_WORD macro
 if WORD_OUTS_OK
       out   dx,ax
 else
@@ -188,8 +188,8 @@ else
 endif
       endm
 ;
-_TEXTsegment byte public 'CODE'
-       assumecs:_TEXT, ds:_DATA
+_TEXT segment byte public 'CODE'
+       assume cs:_TEXT, ds:_DATA
 ;
 ; Sets up 360x480 256-color mode.
 ; (Courtesy of John Bridges.)
