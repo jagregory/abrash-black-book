@@ -475,7 +475,7 @@ SETSC   macro   INDEX, SETTING
         dec     dx
         endm
 ;
-cseg    segment para public 'CODE#146;
+cseg    segment para public 'CODE'
         assume  cs:cseg
 start   proc    near
 ;
@@ -575,7 +575,7 @@ off as well as 0FFH-bytes to planes that must be on.
 ;  setting of memory that already contains data.
 ; By Michael Abrash.
 ;
-stack   segment para stack 'STACK#146;
+stack   segment para stack 'STACK'
         db      512 dup(?)
 stack   ends
 ;
@@ -613,7 +613,7 @@ SETGC   macro   INDEX, SETTING
         dec     dx
         endm
 ;
-cseg    segment para public 'CODE#146;
+cseg    segment para public 'CODE'
         assume  cs:cseg
 start   proc    near
 ;
@@ -639,8 +639,8 @@ HorzBarLoop:
         dec     bp
         jnz     HorzBarLoop
 ;
-; Fill screen with blue, using set/reset to force plane 0 to 1#146;s and all
-; other plane to 0#146;s.
+; Fill screen with blue, using set/reset to force plane 0 to 1's and all
+; other plane to 0's.
 ;
         SETSC   SC_MAP_MASK,0fh         ;must set map mask to enable all
                                         ; planes, so set/reset values can
@@ -707,7 +707,7 @@ be used to control individual pixels.
 ;  with CPU data to modify setting of memory that already contains data.
 ; By Michael Abrash.
 ;
-stack   segment para stack 'STACK#146;
+stack   segment para stack 'STACK'
         db      512 dup(?)
 stack   ends
 ;
@@ -745,7 +745,7 @@ SETGC   macro   INDEX, SETTING
         dec     dx
         endm
 ;
-cseg    segment para public 'CODE#146;
+cseg    segment para public 'CODE'
         assume  cs:cseg
 start   proc    near
 ;
