@@ -314,25 +314,25 @@ void main() {
          switch (getch()) {
             case 0x1B:     /* Esc to exit */
                Done = 1; break;
-            case ‘A': case ‘a':      /* away (-Z) */
+            case 'A': case 'a':      /* away (-Z) */
                CubeWorldXform[2][3] -= 3.0; RecalcXform = 1; break;
-            case ‘T':      /* towards (+Z). Don't allow to get too */
-            case ‘t':      /* close, so Z clipping isn't needed */
+            case 'T':      /* towards (+Z). Don't allow to get too */
+            case 't':      /* close, so Z clipping isn't needed */
                if (CubeWorldXform[2][3] < -40.0) {
                      CubeWorldXform[2][3] += 3.0;
                      RecalcXform = 1;
                }
                break;
-            case ‘4':         /* rotate clockwise around Y */
+            case '4':         /* rotate clockwise around Y */
                AppendRotationY(CubeWorldXform, -ROTATION);
                RecalcXform=1; break;
-            case ‘6':         /* rotate counterclockwise around Y */
+            case '6':         /* rotate counterclockwise around Y */
                AppendRotationY(CubeWorldXform, ROTATION);
                RecalcXform=1; break;
-            case ‘8':         /* rotate clockwise around X */
+            case '8':         /* rotate clockwise around X */
                AppendRotationX(CubeWorldXform, -ROTATION);
                RecalcXform=1; break;
-            case ‘2':         /* rotate counterclockwise around X */
+            case '2':         /* rotate counterclockwise around X */
                AppendRotationX(CubeWorldXform, ROTATION);
                RecalcXform=1; break;
             case 0:     /* extended code */
