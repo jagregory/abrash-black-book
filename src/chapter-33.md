@@ -463,7 +463,7 @@ Start:
        mov  di,319                 ;start at (319,0)
        mov  bp,-1                  ;draw right to left (distance from
                                    ; one column to the next)
-callFillBlock;draw it
+       call FillBlock              ;draw it
 
                                    ;draw diagonal lines in the lower-
                                    ; left quarter of the screen
@@ -476,7 +476,7 @@ callFillBlock;draw it
        mov  di,199*320             ;start at (0,199)
        mov  bp,1                   ;draw left to right (distance from
                                    ; one column to the next)
-callFillBlock;draw it
+       call FillBlock              ;draw it
                                    ;
                                    ;draw diagonal lines in the lower-
                                    ; right quarter of the screen
@@ -489,16 +489,16 @@ callFillBlock;draw it
        mov  di,199*320+319     ;start at (319,199)
        mov  bp,-1                  ;draw right to left (distance from
                                    ; one column to the next)
-callFillBlock;draw it
+       callFillBlock               ;draw it
 
        mov  ah,1                   ;wait for a key
-int21h;
+       int 21h                     ;
 
        mov  ax,0003h               ;return to text mode
-int10h;
+       int 10h                     ;
 
        mov  ah,4ch                 ;done--return to DOS
-int21h
+       int 21h
 
 ; Fills the specified rectangular area of the screen with diagonal lines.
 ;
