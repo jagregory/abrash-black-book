@@ -624,7 +624,7 @@ excellent pixel- and line-drawing code.
 ;
 stack segment  word stack 'STACK'
      db  512 dup (?)
-stackends
+stack ends
 ;
 VGA_SEGMENT      EQU  0a000h
 SCREEN_WIDTH     EQU  80           ;in bytes
