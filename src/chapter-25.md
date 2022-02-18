@@ -112,7 +112,7 @@ BIOS, as well).
 ;  for use with modes 0Dh, 0Eh, 0Fh, 10h, and 12h.
 ; By Michael Abrash.
 ;
-stack   segment para stack ‘STACK'
+stack   segment para stack 'STACK'
         db      512 dup(?)
 stack   ends
 ;
@@ -127,13 +127,13 @@ GC_ROTATE       equ     3       ;GC data rotate/logical function
                                 ; register index
 GC_BIT_MASK     equ     8       ;GC bit mask register index
 ;
-dseg    segment para common ‘DATA'
+dseg    segment para common 'DATA'
 TEST_TEXT_ROW   equ     69      ;row to display test text at
 TEST_TEXT_COL   equ     17      ;column to display test text at
 TEST_TEXT_WIDTH equ     8       ;width of a character in pixels
 
 TestString      label   byte
-        db      ‘Hello, world!',0       ;test string to print.
+        db      'Hello, world!',0       ;test string to print.
 FontPointer     dd      ?               ;font offset
 dseg    ends
 ;
@@ -145,7 +145,7 @@ SETGC   macro   INDEX, SETTING
         out     dx,ax
         endm
 ;
-cseg    segment para public ‘CODE'
+cseg    segment para public 'CODE'
         assume  cs:cseg, ds:dseg
 start   proc    near
         mov     ax,dseg
@@ -452,7 +452,7 @@ set the Map Mask register to 01H and fill with blue.
 ;  to memory that already contains data.
 ; By Michael Abrash.
 ;
-stack   segment para stack ‘STACK'
+stack   segment para stack 'STACK'
         db      512 dup(?)
 stack   ends
 ;
@@ -475,7 +475,7 @@ SETSC   macro   INDEX, SETTING
         dec     dx
         endm
 ;
-cseg    segment para public ‘CODE#146;
+cseg    segment para public 'CODE#146;
         assume  cs:cseg
 start   proc    near
 ;
@@ -575,7 +575,7 @@ off as well as 0FFH-bytes to planes that must be on.
 ;  setting of memory that already contains data.
 ; By Michael Abrash.
 ;
-stack   segment para stack ‘STACK#146;
+stack   segment para stack 'STACK#146;
         db      512 dup(?)
 stack   ends
 ;
@@ -613,7 +613,7 @@ SETGC   macro   INDEX, SETTING
         dec     dx
         endm
 ;
-cseg    segment para public ‘CODE#146;
+cseg    segment para public 'CODE#146;
         assume  cs:cseg
 start   proc    near
 ;
@@ -707,7 +707,7 @@ be used to control individual pixels.
 ;  with CPU data to modify setting of memory that already contains data.
 ; By Michael Abrash.
 ;
-stack   segment para stack ‘STACK#146;
+stack   segment para stack 'STACK#146;
         db      512 dup(?)
 stack   ends
 ;
@@ -745,7 +745,7 @@ SETGC   macro   INDEX, SETTING
         dec     dx
         endm
 ;
-cseg    segment para public ‘CODE#146;
+cseg    segment para public 'CODE#146;
         assume  cs:cseg
 start   proc    near
 ;
