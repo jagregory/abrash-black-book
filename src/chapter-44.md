@@ -378,21 +378,21 @@ void MoveBouncer(bouncer *Bouncer, bumper *BumperPtr, int NumBumpers) {
 ; Low-level animation routines.
 ; Tested with TASM
 
-SCREEN-WIDTH       equ     80      ;screen width in bytes
-INPUT-STATUS-1     equ     03dah   ;Input Status 1 register
-CRTC-INDEX         equ     03d4h   ;CRT Controller Index reg
-START-ADDRESS-HIGH equ     0ch     ;bitmap start address high byte
-START-ADDRESS-LOW  equ     0dh     ;bitmap start address low byte
-GC-INDEX           equ     03ceh   ;Graphics Controller Index reg
-SET-RESET          equ     0       ;GC index of Set/Reset reg
-G-MODE             equ     5       ;GC index of Mode register
+SCREEN_WIDTH       equ     80      ;screen width in bytes
+INPUT_STATUS_1     equ     03dah   ;Input Status 1 register
+CRTC_INDEX         equ     03d4h   ;CRT Controller Index reg
+START_ADDRESS_HIGH equ     0ch     ;bitmap start address high byte
+START_ADDRESS_LOW  equ     0dh     ;bitmap start address low byte
+GC_INDEX           equ     03ceh   ;Graphics Controller Index reg
+SET_RESET          equ     0       ;GC index of Set/Reset reg
+G_MODE             equ     5       ;GC index of Mode register
 
         .model  small
         .data
 BIOS8x8Ptr dd   ?       ;points to BIOS 8x8 font
 ; Tables used to look up left and right clip masks.
-LeftMask d    0ffh, 07fh, 03fh, 01fh, 00fh, 007h, 003h, 001h
-RightMask d   080h, 0c0h, 0e0h, 0f0h, 0f8h, 0fch, 0feh, 0ffh
+LeftMask  db    0ffh, 07fh, 03fh, 01fh, 00fh, 007h, 003h, 001h
+RightMask db   080h, 0c0h, 0e0h, 0f0h, 0f8h, 0fch, 0feh, 0ffh
 
         .code
 ; Draws the specified filled rectangle in the specified color.
@@ -415,22 +415,22 @@ ScrnOffset  dw  ?               ;offset of base of bitmap in which to draw
 ScrnSegment dw  ?               ;segment of base of bitmap in which to draw
 DrawRectParms   ends
 
-        public  -DrawRect
--DrawRect       proc    near
+        public  _DrawRect
+_DrawRect       proc    near
         push    bp              ;preserve caller's stack frame
         mov     bp,sp           ;point to local stack frame
         push    si              ;preserve caller's register variables
         push    di
 
         cld
-        mov     dx,GC-INDEX
-        mov     al,SET-RESET
+        mov     dx,GC_INDEX
+        mov     al,SET_RESET
         mov     ah,byte ptr Color[bp]
         out     dx,ax           ;set the color in which to draw
-        mov     ax,G-MODE + (0300h)
+        mov     ax,G_MODE + (0300h)
         out     dx,ax           ;set to write mode 3
         les     di,dword ptr ScrnOffset[bp] ;point to bitmap start
-        mov     ax,SCREEN-WIDTH
+        mov     ax,SCREEN_WIDTH
         mul     TopY[bp]         ;point to the start of the top scan
         add     di,ax            ; line to fill
         mov     ax,LeftX[bp]
@@ -466,13 +466,13 @@ FillLoop:
         js      LineDone         ;that's it if there's only 1 byte across
         jz      DrawRightEdge    ;no middle bytes if only 2 bytes across
         mov     al,0ffh          ;non-edge bytes are solid
-        rep     stos             ;draw the solid bytes across the middle
+        rep     stosb            ;draw the solid bytes across the middle
 DrawRightEdge:
         mov     al,dh            ;right-edge clip mask
         xchg    es:[di],al       ;draw the right edge
 LineDone:
         pop     di               ;retrieve line start offset
-        add     di,SCREEN-WIDTH  ;point to the next line
+        add     di,SCREEN_WIDTH  ;point to the next line
         dec     bx               ;count off scan lines
         jns     FillLoop
 
@@ -480,7 +480,7 @@ LineDone:
         pop     si
         pop     bp               ;restore caller's stack frame
         ret
--DrawRect       endp
+_DrawRect       endp
 
 ; Shows the page at the specified offset in the bitmap. Page is
 ; displayed when this routine returns.
@@ -492,37 +492,37 @@ ShowPageParms   struc
 StartOffset dw  ?           ;offset in bitmap of page to display
 ShowPageParms   ends
 
-        public  -ShowPage
--ShowPage       proc    near
+        public  _ShowPage
+_ShowPage       proc    near
         push    bp                ;preserve caller's stack frame
         mov     bp,sp             ;point to local stack frame
 ; Wait for display enable to be active (status is active low), to be
 ; sure both halves of the start address will take in the same frame.
-        mov     bl,START-ADDRESS-LOW        ;preload for fastest
+        mov     bl,START_ADDRESS_LOW        ;preload for fastest
         mov     bh,byte ptr StartOffset[bp] ; flipping once display
-        mov     cl,START-ADDRESS-HIGH       ; enable is detected
+        mov     cl,START_ADDRESS_HIGH       ; enable is detected
         mov     ch,byte ptr StartOffset+1[bp]
-        mov     dx,INPUT-STATUS-1
+        mov     dx,INPUT_STATUS_1
 WaitDE:
         in      al,dx
         test    al,01h
         jnz     WaitDE            ;display enable is active low (0 = active)
 ; Set the start offset in display memory of the page to display.
-        mov     dx,CRTC-INDEX
+        mov     dx,CRTC_INDEX
         mov     ax,bx
         out     dx,ax             ;start address low
         mov     ax,cx
         out     dx,ax             ;start address high
 ; Now wait for vertical sync, so the other page will be invisible when
 ; we start drawing to it.
-        mov     dx,INPUT-STATUS-1
+        mov     dx,INPUT_STATUS_1
 WaitVS:
         in      al,dx
         test    al,08h
         jz      WaitVS            ;vertical sync is active high (1 = active)
         pop     bp                ;restore caller's stack frame
         ret
--ShowPage       endp
+_ShowPage       endp
 
 ; Displays the specified image at the specified location in the
 ; specified bitmap, in the desired color.
@@ -549,22 +549,22 @@ Height          dw      ?
 BitPattern      dw      ?
 image ends
 
-        public  -DrawImage
--DrawImage      proc    near
+        public  _DrawImage
+_DrawImage      proc    near
         push    bp              ;preserve caller's stack frame
         mov     bp,sp           ;point to local stack frame
         push    si              ;preserve caller's register variables
         push    di
 
         cld
-        mov     dx,GC-INDEX
-        mov     al,SET-RESET
+        mov     dx,GC_INDEX
+        mov     al,SET_RESET
         mov     ah,byte ptr DIColor[bp]
         out     dx,ax           ;set the color in which to draw
-        mov     ax,G-MODE + (0300h)
+        mov     ax,G_MODE + (0300h)
         out     dx,ax           ;set to write mode 3
         les     di,dword ptr DIScrnOffset[bp] ;point to bitmap start
-        mov     ax,SCREEN-WIDTH
+        mov     ax,SCREEN_WIDTH
         mul     DITopY[bp]      ;point to the start of the top scan
         add     di,ax           ; line on which to draw
         mov     ax,DILeftX[bp]
@@ -584,12 +584,12 @@ DrawImageLoop:
         push    di                   ;remember line start offset
         mov     cx,dx                ;# of bytes across
 DrawImageLineLoop:
-        lods                         ;get the next image byte
+        lodsb                        ;get the next image byte
         xchg    es:[di],al           ;draw the next image byte
         inc     di                   ;point to the following screen byte
         loop    DrawImageLineLoop
         pop     di                   ;retrieve line start offset
-        add     di,SCREEN-WIDTH      ;point to the next line
+        add     di,SCREEN_WIDTH      ;point to the next line
         dec     bx                   ;count off scan lines
         jnz     DrawImageLoop
 
@@ -597,7 +597,7 @@ DrawImageLineLoop:
         pop     si
         pop     bp                   ;restore caller's stack frame
         ret
--DrawImage      endp
+_DrawImage      endp
 
 ; Draws a 0-terminated text string at the specified location in the
 ; specified bitmap in white, using the 8x8 BIOS font. Must be at an X
@@ -616,19 +616,19 @@ TUScrnOffset     dw    ?            ;offset of base of bitmap in which to draw
 TUScrnSegment    dw    ?            ;segment of base of bitmap in which to draw
 TextUpParms     ends
 
-        public  -TextUp
--TextUp proc    near
+        public  _TextUp
+_TextUp proc    near
         push    bp                  ;preserve caller's stack frame
         mov     bp,sp               ;point to local stack frame
         push    si                  ;preserve caller's register variables
         push    di
 
         cld
-        mov     dx,GC-INDEX
-        mov     ax,G-MODE + (0000h)
+        mov     dx,GC_INDEX
+        mov     ax,G_MODE + (0000h)
         out     dx,ax   ;set to write mode 0
         les     di,dword ptr TUScrnOffset[bp] ;point to bitmap start
-        mov     ax,SCREEN-WIDTH
+        mov     ax,SCREEN_WIDTH
         mul     TUTopY[bp]           ;point to the start of the top scan
         add     di,ax                ; line the text starts on
         mov     ax,TULeftX[bp]
@@ -639,7 +639,7 @@ TextUpParms     ends
         add     di,ax                ;point to the upper-left corner of first char
         mov     si,Text[bp]          ;point to text to draw
 TextUpLoop:
-        lods                         ;get the next character to draw
+        lodsb                        ;get the next character to draw
         and     al,al
         jz      TextUpDone           ;done if null byte
         push    si                   ;preserve text string pointer
@@ -668,18 +668,18 @@ CharUp:                              ;draws the character in AL at ES:DI
         add     si,bx                ;point DS:Sito character data in font
         mov     cx,8                 ;characters are 8 high
 CharUpLoop:
-        movs                         ;copy the next character pattern byte
-        add     di,SCREEN-WIDTH-1    ;point to the next dest byte
+        movsb                        ;copy the next character pattern byte
+        add     di,SCREEN_WIDTH-1    ;point to the next dest byte
         loop    CharUpLoop
         ret
--TextUp endp
+_TextUp endp
 
 ; Sets the pointer to the BIOS 8x8 font.
 ;
 ; C near-callable as: extern void SetBIOS8x8Font(void);
 
-        public  -SetBIOS8x8Font
--SetBIOS8x8Font proc    near
+        public  _SetBIOS8x8Font
+_SetBIOS8x8Font proc    near
         push    bp                  ;preserve caller's stack frame
         push    si                  ;preserve caller's register variables
         push    di                  ; and data segment (don't assume BIOS
@@ -695,7 +695,7 @@ CharUpLoop:
         pop     si
         pop     bp                  ;restore caller's stack frame
         ret
--SetBIOS8x8Font endp
+_SetBIOS8x8Font endp
         end
 ```
 
