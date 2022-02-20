@@ -210,7 +210,7 @@ void ScanOutLine(EdgeScan * LeftEdge, EdgeScan * RightEdge)
       be necessary to nudge the source start coordinates to the right by an
       amount corresponding to the distance from the the real (fixed-point)
       DestX and the first pixel (at an integer X) to be drawn). */
-   DestWidth = INT-TO-FIXED(DestXMax - DestX);
+   DestWidth = INT_TO_FIXED(DestXMax - DestX);
 
    /* Calculate source steps that correspond to each dest X step (across
       the scan line) */
@@ -231,8 +231,8 @@ void ScanOutLine(EdgeScan * LeftEdge, EdgeScan * RightEdge)
 
    /* Clip left edge if necssary */
    if (DestX < ClipMinX) {
-      SourceX += FixedMul(SourceStepX, INT-TO-FIXED(ClipMinX - DestX));
-      SourceY += FixedMul(SourceStepY, INT-TO-FIXED(ClipMinX - DestX));
+      SourceX += FixedMul(SourceStepX, INT_TO_FIXED(ClipMinX - DestX));
+      SourceY += FixedMul(SourceStepY, INT_TO_FIXED(ClipMinX - DestX));
       DestX = ClipMinX;
    }
    /* Scan across the destination scan line, updating the source image
@@ -241,8 +241,8 @@ void ScanOutLine(EdgeScan * LeftEdge, EdgeScan * RightEdge)
       /* Get the currently mapped pixel out of the image and draw it to
          the screen */
       WritePixelX(DestX, DestY,
-            GET-IMAGE-PIXEL(TexMapBits, TexMapWidth,
-            ROUND-FIXED-TO-INT(SourceX), ROUND-FIXED-TO-INT(SourceY)) );
+            GET_IMAGE_PIXEL(TexMapBits, TexMapWidth,
+            ROUND_FIXED_TO_INT(SourceX), ROUND_FIXED_TO_INT(SourceY)) );
       /* Point to the next source pixel */
       SourceX += SourceStepX;
       SourceY += SourceStepY;
