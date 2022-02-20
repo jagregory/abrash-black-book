@@ -93,7 +93,7 @@ blue resolution, using the structure shown in Listing 55.1.
 **LISTING 55.1 L55-1.C**
 
 ```c
-typedef struct -ModelColor {
+typedef struct _ModelColor {
   unsigned char Red;   /* 255 = max red, 0 = no red */
   unsigned char Green; /* 255 = max green, 0 = no green */
   unsigned char Blue;  /* 255 = max blue, 0 = no blue */
