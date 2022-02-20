@@ -105,15 +105,19 @@ to using masked images.
 
 #include <stdlib.h>
 #include <conio.h>
+#ifdef __TURBOC__
 #include <alloc.h>
+#else    /* MSC */
+#include <malloc.h>
+#endif
 #include <memory.h>
 #include <dos.h>
 
 /* Comment out to disable overlap elimination in the dirty rectangle list. */
-#define CHECK-OVERLAP 1
-#define SCREEN-WIDTH  320
-#define SCREEN-HEIGHT 200
-#define SCREEN-SEGMENT 0xA000
+#define CHECK_OVERLAP 1
+#define SCREEN_WIDTH  320
+#define SCREEN_HEIGHT 200
+#define SCREEN_SEGMENT 0xA000
 
 /* Describes a dirty rectangle */
 typedef struct {
@@ -133,17 +137,17 @@ typedef struct {
    int InternalAnimateMax;   /* maximum internal animation state */
 } Entity;
 /* storage used for dirty rectangles */
-#define MAX-DIRTY-RECTANGLES  100
+#define MAX_DIRTY_RECTANGLES  100
 int NumDirtyRectangles;
-DirtyRectangle DirtyRectangles[MAX-DIRTY-RECTANGLES];
+DirtyRectangle DirtyRectangles[MAX_DIRTY_RECTANGLES];
 /* head/tail of dirty rectangle list */
 DirtyRectangle DirtyHead;
 /* If set to 1, ignore dirty rectangle list and copy the whole screen. */
 int DrawWholeScreen = 0;
 /* pixels and masks for the two internally animated versions of the image
    we'll animate */
-#define IMAGE-WIDTH  13
-#define IMAGE-HEIGHT 11
+#define IMAGE_WIDTH  13
+#define IMAGE_HEIGHT 11
 char ImagePixels0[] = {
    0, 0, 0, 9, 9, 9, 9, 9, 0, 0, 0, 0, 0,
    0, 0, 9, 9, 9, 9, 9, 9, 9, 0, 0, 0, 0,
@@ -201,8 +205,8 @@ char ImageMask1[] = {
 char * ImagePixelArray[] = {ImagePixels0, ImagePixels1};
 char * ImageMaskArray[] = {ImageMask0, ImageMask1};
 /* Animated entities */
-#define NUM-ENTITIES 15
-Entity Entities[NUM-ENTITIES];
+#define NUM_ENTITIES 15
+Entity Entities[NUM_ENTITIES];
 /* pointer to system buffer into which we'll draw */
 char far *SystemBufferPtr;
 /* pointer to screen */
@@ -211,9 +215,10 @@ void EraseEntities(void);
 void CopyDirtyRectanglesToScreen(void);
 void DrawEntities(void);
 void AddDirtyRect(Entity *, int, int);
-void DrawMasked(char far *, char *, char *, int, int, int);
-void FillRect(char far *, int, int, int, int);
-void CopyRect(char far *, char far *, int, int, int, int);
+
+extern void DrawMasked(char far *, char *, char *, int, int, int);
+extern void FillRect(char far *, int, int, int, int);
+extern void CopyRect(char far *, char far *, int, int, int, int);
 
 void main()
 {
@@ -222,26 +227,26 @@ void main()
    char far *TempPtr;
    union REGS regs;
    /* Allocate memory for the system buffer into which we'll draw */
-   if (!(SystemBufferPtr = farmalloc((unsigned int)SCREEN-WIDTH*
-         SCREEN-HEIGHT))) {
+   if (!(SystemBufferPtr = farmalloc((unsigned int)SCREEN_WIDTH*
+         SCREEN_HEIGHT))) {
       printf("Couldn't get memory\n");
       exit(1);
    }
    /* Clear the system buffer */
    TempPtr = SystemBufferPtr;
-   for (TempCount = ((unsigned)SCREEN-WIDTH*SCREEN-HEIGHT); TempCount--; ) {
+   for (TempCount = ((unsigned)SCREEN_WIDTH*SCREEN_HEIGHT); TempCount--; ) {
       *TempPtr++ = 0;
    }
    /* Point to the screen */
-   ScreenPtr = MK-FP(SCREEN-SEGMENT, 0);
+   ScreenPtr = MK_FP(SCREEN_SEGMENT, 0);
    /* Set up the entities we'll animate, at random locations */
    randomize();
-   for (= 0; < NUM-ENTITIES; i++) {
-      Entities[i].X = random(SCREEN-WIDTH - IMAGE-WIDTH);
-      Entities[i].Y = random(SCREEN-HEIGHT - IMAGE-HEIGHT);
+   for (i = 0; i < NUM_ENTITIES; i++) {
+      Entities[i].X = random(SCREEN_WIDTH - IMAGE_WIDTH);
+      Entities[i].Y = random(SCREEN_HEIGHT - IMAGE_HEIGHT);
       Entities[i].XDirection = 1;
       Entities[i].YDirection = -1;
-      Entities[i].InternalAnimateCount = & 1;
+      Entities[i].InternalAnimateCount =  0;
       Entities[i].InternalAnimateMax = 2;
    }
    /* Set the dirty rectangle list to empty, and set up the head/tail node
@@ -270,14 +275,14 @@ void main()
          updating the dirty rectangle list */
       EraseEntities();
       /* Move the entities, bouncing off the edges of the screen */
-      for (= 0; < NUM-ENTITIES; i++) {
+      for (i = 0; i < NUM_ENTITIES; i++) {
          XTemp = Entities[i].X + Entities[i].XDirection;
          YTemp = Entities[i].Y + Entities[i].YDirection;
-         if ((XTemp < 0) || ((XTemp + IMAGE-WIDTH) > SCREEN-WIDTH)) {
+         if ((XTemp < 0) || ((XTemp + IMAGE_WIDTH) > SCREEN_WIDTH)) {
             Entities[i].XDirection = -Entities[i].XDirection;
             XTemp = Entities[i].X + Entities[i].XDirection;
          }
-         if ((YTemp < 0) || ((YTemp + IMAGE-HEIGHT) > SCREEN-HEIGHT)) {
+         if ((YTemp < 0) || ((YTemp + IMAGE_HEIGHT) > SCREEN_HEIGHT)) {
             Entities[i].YDirection = -Entities[i].YDirection;
             YTemp = Entities[i].Y + Entities[i].YDirection;
          }
@@ -300,11 +305,11 @@ void DrawEntities()
    char *TempPtrMask;
    Entity *EntityPtr;
 
-   for (= 0, EntityPtr = Entities; < NUM-ENTITIES; i++, EntityPtr++) {
+   for (i = 0, EntityPtr = Entities; i < NUM_ENTITIES; i++, EntityPtr++) {
       /* Remember the dirty rectangle info for this entity */
-      AddDirtyRect(EntityPtr, IMAGE-HEIGHT, IMAGE-WIDTH);
+      AddDirtyRect(EntityPtr, IMAGE_HEIGHT, IMAGE_WIDTH);
       /* Point to the destination in the system buffer */
-      RowPtrBuffer = SystemBufferPtr + (EntityPtr->Y * SCREEN-WIDTH) +
+      RowPtrBuffer = SystemBufferPtr + (EntityPtr->Y * SCREEN_WIDTH) +
             EntityPtr->X;
       /* Advance the image animation pointer */
       if (++EntityPtr->InternalAnimateCount >=
@@ -314,8 +319,8 @@ void DrawEntities()
       /* Point to the image and mask to draw */
       TempPtrImage = ImagePixelArray[EntityPtr->InternalAnimateCount];
       TempPtrMask = ImageMaskArray[EntityPtr->InternalAnimateCount];
-      DrawMasked(RowPtrBuffer, TempPtrImage, TempPtrMask, IMAGE-HEIGHT,
-               IMAGE-WIDTH, SCREEN-WIDTH);
+      DrawMasked(RowPtrBuffer, TempPtrImage, TempPtrMask, IMAGE_HEIGHT,
+               IMAGE_WIDTH, SCREEN_WIDTH);
    }
 }
 /* Copy the dirty rectangles, or the whole system buffer if appropriate,
@@ -328,22 +333,22 @@ void CopyDirtyRectanglesToScreen()
    if (DrawWholeScreen) {
       /* Just copy the whole buffer to the screen */
       DrawWholeScreen = 0;
-      CopyRect(ScreenPtr, SystemBufferPtr, SCREEN-HEIGHT, SCREEN-WIDTH,
-               SCREEN-WIDTH, SCREEN-WIDTH);
+      CopyRect(ScreenPtr, SystemBufferPtr, SCREEN_HEIGHT, SCREEN_WIDTH,
+               SCREEN_WIDTH, SCREEN_WIDTH);
    } else {
       /* Copy only the dirty rectangles, in the YX-sorted order in which
          they're linked */
       DirtyPtr = DirtyHead.Next;
-      for (= 0; < NumDirtyRectangles; i++) {
+      for (i = 0; i < NumDirtyRectangles; i++) {
          /* Offset in both system buffer and screen of image */
-         Offset = (unsigned int) (DirtyPtr->Top * SCREEN-WIDTH) +
+         Offset = (unsigned int) (DirtyPtr->Top * SCREEN_WIDTH) +
                DirtyPtr->Left;
          /* Dimensions of dirty rectangle */
          RectWidth = DirtyPtr->Right - DirtyPtr->Left;
          RectHeight = DirtyPtr->Bottom - DirtyPtr->Top;
          /* Copy a dirty rectangle */
          CopyRect(ScreenPtr + Offset, SystemBufferPtr + Offset,
-               RectHeight, RectWidth, SCREEN-WIDTH, SCREEN-WIDTH);
+               RectHeight, RectWidth, SCREEN_WIDTH, SCREEN_WIDTH);
          /* Point to the next dirty rectangle */
          DirtyPtr = DirtyPtr->Next;
       }
@@ -356,14 +361,14 @@ void EraseEntities()
    int i;
    char far *RowPtr;
    
-   for (= 0; < NUM-ENTITIES; i++) {
+   for (i = 0; i < NUM_ENTITIES; i++) {
       /* Remember the dirty rectangle info for this entity */
-      AddDirtyRect(&Entities[i], IMAGE-HEIGHT, IMAGE-WIDTH);
+      AddDirtyRect(&Entities[i], IMAGE_HEIGHT, IMAGE_WIDTH);
       /* Point to the destination in the system buffer */
-      RowPtr = SystemBufferPtr + (Entities[i].Y * SCREEN-WIDTH) +
+      RowPtr = SystemBufferPtr + (Entities[i].Y * SCREEN_WIDTH) +
             Entities[i].X;
       /* Clear the rectangle */
-      FillRect(RowPtr, IMAGE-HEIGHT, IMAGE-WIDTH, SCREEN-WIDTH, 0);
+      FillRect(RowPtr, IMAGE_HEIGHT, IMAGE_WIDTH, SCREEN_WIDTH, 0);
    }
 }
 /* Add a dirty rectangle to the list. The list is maintained in top-to-bottom,
@@ -381,7 +386,7 @@ void EraseEntities()
    DirtyRectangle * TempPtr;
    Entity TempEntity;
    int i;
-   if (NumDirtyRectangles >= MAX-DIRTY-RECTANGLES) {
+   if (NumDirtyRectangles >= MAX_DIRTY_RECTANGLES) {
       /* Too many dirty rectangles; just redraw the whole screen */
       DrawWholeScreen = 1;
       return;
@@ -389,10 +394,10 @@ void EraseEntities()
    /* Remember this dirty rectangle. Break up if necessary to avoid
       overlap with rectangles already in the list, then add whatever
       rectangles are left, in YX sorted order */
-#ifdef CHECK-OVERLAP
+#ifdef CHECK_OVERLAP
    /* Check for overlap with existing rectangles */
    TempPtr = DirtyHead.Next;
-   for (= 0; < NumDirtyRectangles; i++, TempPtr = TempPtr->Next) {
+   for (i = 0; i < NumDirtyRectangles; i++, TempPtr = TempPtr->Next) {
       if ((TempPtr->Left < (pEntity->X + ImageWidth)) &&
           (TempPtr->Right > pEntity->X) &&
           (TempPtr->Top < (pEntity->Y + ImageHeight)) &&
@@ -444,7 +449,7 @@ void EraseEntities()
          return;
       }
    }
-#endif /* CHECK-OVERLAP */
+#endif /* CHECK_OVERLAP */
    /* There's no overlap with any existing rectangle, so we can just
       add this rectangle as-is */
    /* Find the YX-sorted insertion point. Searches will always terminate,
