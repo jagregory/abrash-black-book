@@ -1058,7 +1058,7 @@ void DrawPObject(PObject * ObjectToXform)
    ModelIntensity IntensityTemp;
    Point3 UnitNormal, *NormalStartpoint, *NormalEndpoint;
    long v1, v2, w1, w2;
-   Point Vertices[MAX-POLY-LENGTH];
+   Point Vertices[MAX_POLY_LENGTH];
 
    /* Draw each visible face (polygon) of the object in turn */
    for (i=0; i<NumFaces; i++, FacePtr++) {
@@ -1088,18 +1088,18 @@ void DrawPObject(PObject * ObjectToXform)
          for (j=0; j<NumVertices; j++) {
             if (Vertices[j].X >
                   ObjectToXform->EraseRect[NonDisplayedPage].Right)
-               if (Vertices[j].X < SCREEN-WIDTH)
+               if (Vertices[j].X < SCREEN_WIDTH)
                   ObjectToXform->EraseRect[NonDisplayedPage].Right =
                         Vertices[j].X;
                else ObjectToXform->EraseRect[NonDisplayedPage].Right =
-                     SCREEN-WIDTH;
+                     SCREEN_WIDTH;
             if (Vertices[j].Y >
                   ObjectToXform->EraseRect[NonDisplayedPage].Bottom)
-               if (Vertices[j].Y < SCREEN-HEIGHT)
+               if (Vertices[j].Y < SCREEN_HEIGHT)
                   ObjectToXform->EraseRect[NonDisplayedPage].Bottom =
                         Vertices[j].Y;
                else ObjectToXform->EraseRect[NonDisplayedPage].Bottom=
-                     SCREEN-HEIGHT;
+                     SCREEN_HEIGHT;
             if (Vertices[j].X <
                   ObjectToXform->EraseRect[NonDisplayedPage].Left)
                if (Vertices[j].X > 0)
@@ -1116,18 +1116,18 @@ void DrawPObject(PObject * ObjectToXform)
          /* See if there's any shading */
             if (FacePtr->ShadingType == 0) {
             /* No shading in effect, so just draw */
-            DRAW-POLYGON(Vertices, NumVertices, FacePtr->ColorIndex, 0, 0);
+            DRAW_POLYGON(Vertices, NumVertices, FacePtr->ColorIndex, 0, 0);
          } else {
             /* Handle shading */
             /* Do ambient shading, if enabled */
-            if (AmbientOn && (FacePtr->ShadingType & AMBIENT-SHADING)) {
+            if (AmbientOn && (FacePtr->ShadingType & AMBIENT_SHADING)) {
                /* Use the ambient shading component */
                IntensityTemp = AmbientIntensity;
             } else {
-               SET-INTENSITY(IntensityTemp, 0, 0, 0);
+               SET_INTENSITY(IntensityTemp, 0, 0, 0);
             }
             /* Do diffuse shading, if enabled */
-            if (FacePtr->ShadingType & DIFFUSE-SHADING) {
+            if (FacePtr->ShadingType & DIFFUSE_SHADING) {
                /* Calculate the unit normal for this polygon, for use in dot
                   products */
                UnitNormal.X = NormalEndpoint->X - NormalStartpoint->X;
@@ -1135,7 +1135,7 @@ void DrawPObject(PObject * ObjectToXform)
                UnitNormal.Z = NormalEndpoint->Z - NormalStartpoint->Z;
                /* Calculate the diffuse shading component for each active
                   spotlight */
-               for (Spot=0; Spot<MAX-SPOTS; Spot++) {
+               for (Spot=0; Spot<MAX_SPOTS; Spot++) {
                   if (SpotOn[Spot] != 0) {
                      /* Spot is on, so sum, for each color component, the
                         intensity, accounting for the angle of the light rays
@@ -1143,7 +1143,7 @@ void DrawPObject(PObject * ObjectToXform)
                      /* Calculate cosine of angle between the light and the
                         polygon normal; skip if spot is shining from behind
                         the polygon */
-                     if ((Diffusion = DOT-PRODUCT(SpotDirectionView[Spot],
+                     if ((Diffusion = DOT_PRODUCT(SpotDirectionView[Spot],
                            UnitNormal)) > 0) {
                         IntensityTemp.Red +=
                               FixedMul(SpotIntensity[Spot].Red, Diffusion);
@@ -1161,7 +1161,7 @@ void DrawPObject(PObject * ObjectToXform)
                   &IntensityTemp);
             /* Draw with the cumulative shading, converting from the general
                color representation to the best-match color index */
-            DRAW-POLYGON(Vertices, NumVertices,
+            DRAW_POLYGON(Vertices, NumVertices,
                   ModelColorToColorIndex(&ColorTemp), 0, 0);
          }
       }
