@@ -261,7 +261,7 @@ of *four* times faster than Listing 58.1.)
 ;       ES:DI = pointer to initial destination pixel
 ;       VGA set up to draw to the correct plane for this column
 
-     REPTLOOP_UNROLL
+     REPT   LOOP_UNROLL
 
 ; Set the Map Mask for this pixel's plane, then draw the pixel.
 
