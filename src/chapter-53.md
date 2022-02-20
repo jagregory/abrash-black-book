@@ -590,7 +590,7 @@ void InitializeObjectList()
 {
    ObjectListStart.NextObject = &ObjectListEnd;
    ObjectListStart.PreviousObject = NULL;
-   ObjectListStart.CenterInView.Z = INT-TO-FIXED(-32768);
+   ObjectListStart.CenterInView.Z = INT_TO_FIXED(-32768);
    ObjectListEnd.NextObject = NULL;
    ObjectListEnd.PreviousObject = &ObjectListStart;
    ObjectListEnd.CenterInView.Z = 0x7FFFFFFFL;
