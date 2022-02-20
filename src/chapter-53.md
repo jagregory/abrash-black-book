@@ -92,7 +92,7 @@ time to turn our optimization sights elsewhere.
 ```nasm
 ; 386-specific fixed point routines.
 ; Tested with TASM
-ROUNDING-ON     equ     1     ;1 for rounding, 0 for no rounding
+ROUNDING_ON     equ     1     ;1 for rounding, 0 for no rounding
                               ;no rounding is faster, rounding is
                               ; more accurate
 ALIGNMENT        equ    2
@@ -110,20 +110,20 @@ M1          dd   ?
 M2          dd   ?
 FMparms     ends
             align   ALIGNMENT
-            public  -FixedMul
--FixedMul       proc    near
+            public  _FixedMul
+_FixedMul       proc    near
         push    bp
         mov     bp,sp
         mov     eax,[bp+M1]
         imul    dword ptr [bp+M2] ;multiply
-if ROUNDING-ON
+if ROUNDING_ON
         add     eax,8000h       ;round by adding 2^(-17)
         adc     edx,0           ;whole part of result is in DX
 endif ;ROUNDING-ON
         shr     eax,16          ;put the fractional part in AX
         pop     bp
         ret
--FixedMul       endp
+_FixedMul       endp
 ;=====================================================================
 ; Divides one fixed-point value by another.
 ; C near-callable as:
@@ -134,12 +134,12 @@ Dividend   dd    ?
 Divisor    dd    ?
 FDparms    ends
       align ALIGNMENT
-public        -FixedDiv
--FixedDiv       proc    near
+public        _FixedDiv
+_FixedDiv       proc    near
         push    bp
         mov     bp,sp
 
-if ROUNDING-ON
+if ROUNDING_ON
         sub     cx,cx           ;assume positive result
         mov     eax,[bp+Dividend]
         and     eax,eax         ;positive dividend?
@@ -180,7 +180,7 @@ endif ;ROUNDING-ON
                                  ; fractional part is already in AX
         pop      bp
         ret
--FixedDiv       endp
+_FixedDiv       endp
 ;=====================================================================
 ; Returns the sine and cosine of an angle.
 ; C near-callable as:
@@ -198,8 +198,8 @@ Sin         dw    ?           ;pointer to sin destination
 SCparms ends
 
    align ALIGNMENT
-   public -CosSin
--CosSin proc near
+   public _CosSin
+_CosSin proc near
      push  bp                  ;preserve stack frame
      mov   bp,sp               ;set up local stack frame
 
@@ -226,7 +226,7 @@ jg    MakeInRange
       shl   bx,2
       mov   eax,CosTable[bx] ;look up sine
       neg   bx              ;sin(Angle) = cos(90-Angle)
-      mov   edx,CosTable[bx+90*10*4] ;look up cosine
+      mov   edx,CosTable[bx + (90*10*4)] ;look up cosine
       jmp   short CSDone
 
       align  ALIGNMENT
@@ -237,7 +237,7 @@ Quadrant1:
       mov    eax,CosTable[bx] ;look up cosine
       neg    eax             ;negative in this quadrant
       neg    bx              ;sin(Angle) = cos(90-Angle)
-      mov    edx,CosTable[bx+90*10*4] ;look up cosine
+      mov    edx,CosTable[bx + (90*10*4)] ;look up cosine
       jmp    short CSDone
 
       align  ALIGNMENT
@@ -250,7 +250,7 @@ BottomHalf:                ;quadrant 2 or 3
       shl      bx, 2
       mov      eax,CosTable[bx]     ;look up cosine
       neg      bx              ;sin(Angle) = cos(90-Angle)
-      mov      edx,CosTable[90*10*4+bx] ;look up sine
+      mov      edx,CosTable[(90*10*4) + bx] ;look up sine
       neg      edx          ;negative in this quadrant
       jmp      short CSDone
 
@@ -262,7 +262,7 @@ Quadrant2:
      mov     eax,CosTable[bx] ;look up cosine
      neg     eax          ;negative in this quadrant
      neg     bx           ;sin(Angle) = cos(90-Angle)
-     mov     edx,CosTable[90*10*4+bx] ;look up sine
+     mov     edx,CosTable[(90*10*4) + bx] ;look up sine
      neg     edx             ;negative in this quadrant
 CSDone:
      mov      bx,[bp].Cos
@@ -272,7 +272,7 @@ CSDone:
 
      pop      bp;restore stack frame
 ret
--CosSin endp
+_CosSin endp
 ;=====================================================================
 ; Matrix multiplies Xform by SourceVec, and stores the result in
 ; DestVec. Multiplies a 4x4 matrix times a 4x1 matrix; the result
@@ -300,8 +300,8 @@ DestVec        dw    ?          ;pointer to destination vector
 XVparms       ends
 
     align  ALIGNMENT
-    public -XformVec
--XformVec   proc   near
+    public _XformVec
+_XformVec   proc   near
     push    bp                  ;preserve stack frame
     mov     bp,sp               ;set up local stack frame
     push    si                  ;preserve register variables
@@ -316,7 +316,7 @@ doff=0
     REPT 3                     ;do once each for dest X, Y, and Z
     mov    eax,[si+soff]       ;column 0 entry on this row
     imul   dword ptr [bx]      ;xform entry times source X entry
-if ROUNDING-ON
+if ROUNDING_ON
     add    eax,8000h           ;round by adding 2^(-17)
     adc    edx,0               ;whole part of result is in DX
 endif ;ROUNDING-ON
@@ -325,7 +325,7 @@ endif ;ROUNDING-ON
 
     mov    eax,[si+soff+4]     ;column 1 entry on this row
     imul   dword ptr [bx+4]    ;xform entry times source Y entry
-if ROUNDING-ON
+if ROUNDING_ON
     add    eax,8000h           ;round by adding 2^(-17)
     adc    edx,0               ;whole part of result is in DX
 endif ;ROUNDING-ON
@@ -334,7 +334,7 @@ endif ;ROUNDING-ON
 
     mov    eax,[si+soff+8]     ;column 2 entry on this row
     imul   dword ptr [bx+8]    ;xform entry times source Z entry
-if ROUNDING-ON
+if ROUNDING_ON
     add    eax,8000h           ;round by adding 2^(-17)
     adc    edx,0               ;whole part of result is in DX
 endif ;ROUNDING-ON
@@ -351,7 +351,7 @@ pop di;restore register variables
 pop si
 pop bp;restore stack frame
 ret
--XformVec endp
+_XformVec endp
 ;=====================================================================
 ; Matrix multiplies SourceXform1 by SourceXform2 and stores the
 ; result in DestXform. Multiplies a 4x4 matrix times a 4x4 matrix;
@@ -386,8 +386,8 @@ DestXform     dw    ?                ;pointer to destination xform matrix
 CXparms       ends
 
        align  ALIGNMENT
-       public -ConcatXforms
--ConcatXforms    proc  near
+       public _ConcatXforms
+_ConcatXforms    proc  near
      push   bp                     ;preserve stack frame
      mov    bp,sp                  ;set up local stack frame
      push   si                     ;preserve register variables
@@ -405,7 +405,7 @@ coff=0                          ;column offset
 ; translation)
       mov     eax,[si+roff]     ;column 0 entry on this row
       imul    dword ptr [bx+coff];times row 0 entry in column
-if ROUNDING-ON
+if ROUNDING_ON
       add     eax,8000h        ;round by adding 2^(-17)
       adc     edx,0            ;whole part of result is in DX
 endif ;ROUNDING-ON
@@ -414,7 +414,7 @@ endif ;ROUNDING-ON
 
        mov     eax,[si+roff+4]  ;column 1 entry on this row
        imul    dword ptr [bx+coff+16];times row 1 entry in col
-if ROUNDING-ON
+if ROUNDING_ON
        add    eax,8000h         ;round by adding 2^(-17)
        adc    edx,0             ;whole part of result is in DX
 endif ;ROUNDING-ON
@@ -423,7 +423,7 @@ endif ;ROUNDING-ON
 
        mov    eax,[si+roff+8]   ;column 2 entry on this row
        imul   dword ptr [bx+coff+32];times row 2 entry in col
-if ROUNDING-ON
+if ROUNDING_ON
        add    eax,8000h         ;round by adding 2^(-17)
        adc    edx,0             ;whole part of result is in DX
 endif ;ROUNDING-ON
@@ -438,7 +438,7 @@ ENDM
                                ; translation to be performed
        mov     eax,[si+roff]   ;column 0 entry on this row
        imul    dword ptr [bx+coff]   ;times row 0 entry in column
-if ROUNDING-ON
+if ROUNDING_ON
        add     eax,8000h       ;round by adding 2^(-17)
        adc     edx,0           ;whole part of result is in DX
 endif ;ROUNDING-ON
@@ -447,7 +447,7 @@ endif ;ROUNDING-ON
 
        mov     eax,[si+roff+4] ;column 1 entry on this row
        imul    dword ptr [bx+coff+16];times row 1 entry in col
-if ROUNDING-ON
+if ROUNDING_ON
         add    eax,8000h       ;round by adding 2^(-17)
         adc    edx,0           ;whole part of result is in DX
 endif ;ROUNDING-ON
@@ -456,26 +456,26 @@ endif ;ROUNDING-ON
 
        mov     eax,[si+roff+8]  ;column 2 entry on this row
        imul    dword ptr [bx+coff+32];times row 2 entry in col
-if ROUNDING-ON
+if ROUNDING_ON
        add    eax,8000h         ;round by adding 2^(-17)
        adc    edx,0             ;whole part of result is in DX
 endif ;ROUNDING-ON
        shrd   eax,edx,16        ;shift the result back to 16.16 form
-addecx,eax;running total
+       add    ecx,eax           ;running total
 
-addecx,[si+roff+12];add in translation
+       add    ecx,[si+roff+12]  ;add in translation
 
-mov[di+coff+roff],ecx;save the result in dest matrix
+       mov    [di+coff+roff],ecx ;save the result in dest matrix
 coff=coff+4                ;point to next col in xform2 & dest
 
 roff=roff+16                ;point to next col in xform2 & dest
-ENDM
+       ENDM
 
-pop di;restore register variables
-pop si
-pop bp;restore stack frame
-ret
--ConcatXforms endp
+       pop di;restore register variables
+       pop si
+       pop bp;restore stack frame
+       ret
+_ConcatXforms endp
 end
 ```
 
