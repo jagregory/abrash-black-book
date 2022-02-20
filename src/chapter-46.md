@@ -489,8 +489,8 @@ RectWidth       dw      ?       ;width of rectangle to fill
 BufferWidth     dw      ?       ;width of buffer in which to fill
 Color           dw      ?       ;color with which to fill
 parms   ends
-        public  -FillRect
--FillRectproc  near
+        public  _FillRect
+_FillRect       proc  near
         cld
         push    bp
         mov     bp,sp
@@ -516,7 +516,7 @@ RowLoop:
         pop     di
         pop     bp
         ret
--FillRect   endp
+_FillRect   endp
 
 ; Draws a masked image (a sprite) to the specified buffer. C-callable as:
 ;     void DrawMasked(char far * BufferPtr, char * Pixels, char * Mask,
@@ -526,13 +526,13 @@ parms2  struc
                 dw      ?       ;pushed return address
 BufferPtr2      dd      ?       ;far pointer to buffer in which to draw
 Pixels          dw      ?       ;pointer to image pixels
-Mask            dw      ?       ;pointer to image mask
+Mask_            dw      ?       ;pointer to image mask
 ImageHeight     dw      ?       ;height of image to draw
 ImageWidth      dw      ?       ;width of image to draw
 BufferWidth2    dw      ?       ;width of buffer in which to draw
 parms2  ends
-        public  -DrawMasked
--DrawMasked     proc    near
+        public  _DrawMasked
+_DrawMasked     proc    near
         cld
         push    bp
         mov     bp,sp
@@ -540,7 +540,7 @@ parms2  ends
         push    di
 
         les     di,[bp+BufferPtr2]
-        mov     si,[bp+Mask]
+        mov     si,[bp+Mask_]
         mov     bx,[bp+Pixels]
         mov     dx,[bp+ImageHeight]
         mov     ax,[bp+BufferWidth2]
@@ -549,7 +549,7 @@ parms2  ends
 RowLoop2:
         mov     cx,[bp+ImageWidth]
 ColumnLoop:
-        lods                            ;get the next mask byte
+        lodsb                           ;get the next mask byte
         and     al,al                   ;draw this pixel?
         jz      SkipPixel               ;no
         mov     al,[bx]                 ;yes, draw the pixel
@@ -567,7 +567,7 @@ SkipPixel:
         pop     si
         pop     bp
         ret
--DrawMasked     endp
+_DrawMasked     endp
 
 ; Copies a rectangle from one buffer to another. C-callable as:
 ;     void CopyRect(DestBufferPtr, SrcBufferPtr, CopyHeight, CopyWidth,
@@ -583,8 +583,8 @@ CopyWidth       dw      ?       ;width of rect to copy
 DestBufferWidth dw      ?       ;width of buffer to which to copy
 SrcBufferWidth  dw      ?       ;width of buffer from which to copy
 parms3  ends
-        public  -CopyRect
--CopyRect       proc    near
+        public  _CopyRect
+_CopyRect       proc    near
         cld
         push    bp
         mov     bp,sp
@@ -604,7 +604,7 @@ RowLoop3:
         shr     cx,1
         rep     movsw                   ;copy as many words as possible
         adc     cx,cx
-        rep     movs                    ;copy odd byte, if any
+        rep     movsb                   ;copy odd byte, if any
         add     si,ax                   ;point to next source scan line
         add     di,bx                   ;point to next dest scan line
         dec     dx                      ;count down rows to fill
@@ -615,7 +615,7 @@ RowLoop3:
         pop     si
         pop     bp
         ret
--CopyRect       endp
+_CopyRect       endp
         end
 ```
 
