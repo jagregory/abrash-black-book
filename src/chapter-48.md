@@ -88,8 +88,8 @@ previous chapter's listings.)
 #include <conio.h>
 #include <dos.h>
 
-void Set320x240Mode(void);
-void FillPatternX(int, int, int, int, unsigned int, char*);
+extern void Set320x240Mode(void);
+extern void FillPatternX(int, int, int, int, unsigned int, char*);
 
 /* 16 4x4 patterns */
 static char Patt0[]={10,0,10,0,0,10,0,10,10,0,10,0,0,10,0,10};
