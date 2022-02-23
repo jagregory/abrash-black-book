@@ -350,7 +350,7 @@ DACStoreLoop:
         stosb
         sti
         inc     ah
-        loopDACStoreLoop
+        loop    DACStoreLoop
  else;!GUARD_AGAINST_INTS
         mov     dx,DAC_READ_INDEX
         sub     al,al
