@@ -24,9 +24,10 @@ jobs:
           FILES=$(cat filelist.txt)
           echo "::set-output name=input_files::$FILES"
       - name: pandoc html
-        uses: docker://pandoc/core:2.9
+        uses: docker://pandoc/core:2
         with:
-          args: 'pandoc --to html5+smart -o out/html/black-book.html --section-divs --toc --standalone --template=html/template.html ${{ steps.files.outputs.input_files }}'
+          entrypoint: /usr/local/bin/pandoc
+          args: '--to html5+smart -o out/html/black-book.html --section-divs --toc --standalone --template=html/template.html ${{ steps.files.outputs.input_files }}'
       - uses: actions/upload-artifact@v2
         with:
           path: out
@@ -46,9 +47,10 @@ jobs:
           FILES=$(cat filelist.txt)
           echo "::set-output name=input_files::$FILES"
       - name: pandoc epub
-        uses: docker://pandoc/core:2.9
+        uses: docker://pandoc/core:2
         with:
-          args: 'pandoc --to epub3+smart -o out/black-book.epub --epub-cover-image images/cover.png --toc --epub-chapter-level=2 --data-dir=epub --template=epub/template.html ${{ steps.files.outputs.input_files }}'
+          entrypoint: /usr/local/bin/pandoc
+          args: '--to epub3+smart -o out/black-book.epub --epub-cover-image images/cover.png --toc --epub-chapter-level=2 --data-dir=epub --template=epub/template.html ${{ steps.files.outputs.input_files }}'
       - name: kindlegen
         uses: docker://jagregory/kindlegen
         with:
