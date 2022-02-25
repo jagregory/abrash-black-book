@@ -3,6 +3,7 @@ name: CI
 on:
   push:
     branches: [master]
+    tags: ["v*"]
   pull_request_target:
     branches: [master]
 
@@ -58,3 +59,31 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           path: out
+
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [html, ebooks]
+
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          path: out
+
+      - name: zip html
+        run: tar -czf ../html.tar.gz .
+        working-directory: out/artifact/html
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          token: '${{ secrets.GITHUB_TOKEN }}'
+          prerelease: false
+          name: ${{ needs.check-version.outputs.version }}
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          files: |
+            out/artifact/black-book.epub
+            out/artifact/black-book.mobi
+            out/artifact/html.tar.gz
