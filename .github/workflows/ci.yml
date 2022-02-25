@@ -29,6 +29,8 @@ jobs:
         with:
           entrypoint: /usr/local/bin/pandoc
           args: '--to html5+smart -o out/html/black-book.html --section-divs --toc --standalone --template=html/template.html ${{ steps.files.outputs.input_files }}'
+      - name: rename index
+        run: mv out/html/black-book.html out/html/index.html
       - uses: actions/upload-artifact@v2
         with:
           path: out
@@ -67,6 +69,8 @@ jobs:
     needs: [html, ebooks]
 
     steps:
+      - uses: actions/checkout@v2
+
       - uses: actions/download-artifact@v2
         with:
           path: out
@@ -75,7 +79,7 @@ jobs:
         run: tar -czf ../html.tar.gz .
         working-directory: out/artifact/html
 
-      - name: Release
+      - name: Create release
         uses: softprops/action-gh-release@v1
         with:
           token: '${{ secrets.GITHUB_TOKEN }}'
@@ -87,3 +91,9 @@ jobs:
             out/artifact/black-book.epub
             out/artifact/black-book.mobi
             out/artifact/html.tar.gz
+
+      - name: Deploy GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4.2.5
+        with:
+          branch: gh-pages
+          folder: out/artifact/html
