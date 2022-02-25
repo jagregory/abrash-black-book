@@ -600,6 +600,7 @@ drawn with a ruler.
  * Tseng Labs ET4000-based SuperVGAs.
  * Tested with Borland C++ in C compilation mode and the small model.
  */
+#include <conio.h>
 #include <dos.h>
 
 /* Screen dimension globals, used in main program to scale */
@@ -767,7 +768,7 @@ DoHorz:
         cld                             ;restore default direction flag
         jmp     Done                    ;and we're done
 
-        align2
+        align  2
 NotHorz:
         and     cx,cx                   ;is DeltaX 0?
         jnz     NotVert                 ;no, not a vertical line
@@ -780,7 +781,7 @@ VertLoop:
         jnz     VertLoop
         jmp     Done                    ;and we're done
         
-        align2
+        align  2
 NotVert:
         cmp     cx,dx                   ;DeltaX == DeltaY?
         jnz     NotDiag                 ;no, not diagonal
@@ -796,11 +797,11 @@ DiagLoop:
         jmp     Done                    ;and we're done
 
 ; Line is not horizontal, diagonal, or vertical.
-        align2
+        align  2
 NotDiag:
 ; Is this an X-major or Y-major line?
         cmp     dx,cx
-        jbX     Major                   ;it's X-major
+        jb      XMajor                   ;it's X-major
 
 ; It's a Y-major line. Calculate the 16-bit fixed-point fractional part of a
 ; pixel that X advances each time Y advances 1 pixel, truncating the result
@@ -861,7 +862,7 @@ NoXAdvance:
         jmp     Done            ;we're done with this line
 
 ; It's an X-major line.
-        align2
+        align  2
 XMajor:
 ; Calculate the 16-bit fixed-point fractional part of a pixel that Y advances
 ; each time X advances 1 pixel, truncating the result to avoid overrunning

@@ -249,7 +249,7 @@ void BuildMaps( void )
   {
   unsigned short i, j, Size, x = 0, y, N1, N2, N3, C1, C2, C3;
 
-  printf( "_DATA segment ‘DATA'\nalign 2\n" );
+  printf( "_DATA segment 'DATA'\nalign 2\n" );
   printf( "public _CellMap\n" );
   printf( "_CellMap label word\n" );
 
@@ -284,7 +284,7 @@ void BuildMaps( void )
     printf( "Change1 dw offset _CHANGE:_ChangeList1\n" );
     printf( "Change2 dw offset _CHANGE:_ChangeList2\n" );
     printf( "ends\n\n" );
-    printf( "_CHANGE segment para public ‘FAR_DATA'\n" );
+    printf( "_CHANGE segment para public 'FAR_DATA'\n" );
     }
   else
     {
@@ -300,7 +300,7 @@ void BuildMaps( void )
   printf( "dw %d dup (offset DGROUP:ChangeCell)\n", Size );
   printf( "ends\n\n" );
 
-  printf( "_LDMAP segment para public ‘FAR_DATA'\n" );
+  printf( "_LDMAP segment para public 'FAR_DATA'\n" );
 
   do
     {
@@ -536,7 +536,7 @@ void Fix( char *Offset, char *Str, int JumpBack )
   printf( "mov  bh,[bx]\n" );
   printf( "mov  [bp+%s],bx\n", Offset );
 
-  if( *Offset != ‘0' )  printf( "lea  ax,[bp+%s]\n", Offset );
+  if( *Offset != '0' )  printf( "lea  ax,[bp+%s]\n", Offset );
   else                  printf( "mov  ax,bp\n" );
 
   printf( "stosw\n" );
@@ -654,7 +654,7 @@ void main( void )
   BuildMaps();
 
   printf( "DGROUP group _DATA\n" );
-  printf( "LIFE segment ‘CODE'\n" );
+  printf( "LIFE segment 'CODE'\n" );
   printf( "assume cs:LIFE,ds:DGROUP,ss:DGROUP,es:NOTHING\n" );
   printf( ".386C\n" "public _NextGen\n\n" );
 

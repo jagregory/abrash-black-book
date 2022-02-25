@@ -905,8 +905,8 @@ copies, blits, and pattern fills.
 #include <conio.h>
 #include <dos.h>
 
-void Set320x240Mode(void);
-void FillRectangleX(int, int, int, int, unsigned int, int);
+extern void Set320x240Mode(void);
+extern void FillRectangleX(int, int, int, int, unsigned int, int);
 
 void main() {
    int i,j;

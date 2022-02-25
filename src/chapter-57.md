@@ -210,7 +210,7 @@ void ScanOutLine(EdgeScan * LeftEdge, EdgeScan * RightEdge)
       be necessary to nudge the source start coordinates to the right by an
       amount corresponding to the distance from the the real (fixed-point)
       DestX and the first pixel (at an integer X) to be drawn). */
-   DestWidth = INT-TO-FIXED(DestXMax - DestX);
+   DestWidth = INT_TO_FIXED(DestXMax - DestX);
 
    /* Calculate source steps that correspond to each dest X step (across
       the scan line) */
@@ -231,8 +231,8 @@ void ScanOutLine(EdgeScan * LeftEdge, EdgeScan * RightEdge)
 
    /* Clip left edge if necssary */
    if (DestX < ClipMinX) {
-      SourceX += FixedMul(SourceStepX, INT-TO-FIXED(ClipMinX - DestX));
-      SourceY += FixedMul(SourceStepY, INT-TO-FIXED(ClipMinX - DestX));
+      SourceX += FixedMul(SourceStepX, INT_TO_FIXED(ClipMinX - DestX));
+      SourceY += FixedMul(SourceStepY, INT_TO_FIXED(ClipMinX - DestX));
       DestX = ClipMinX;
    }
    /* Scan across the destination scan line, updating the source image
@@ -241,8 +241,8 @@ void ScanOutLine(EdgeScan * LeftEdge, EdgeScan * RightEdge)
       /* Get the currently mapped pixel out of the image and draw it to
          the screen */
       WritePixelX(DestX, DestY,
-            GET-IMAGE-PIXEL(TexMapBits, TexMapWidth,
-            ROUND-FIXED-TO-INT(SourceX), ROUND-FIXED-TO-INT(SourceY)) );
+            GET_IMAGE_PIXEL(TexMapBits, TexMapWidth,
+            ROUND_FIXED_TO_INT(SourceX), ROUND_FIXED_TO_INT(SourceY)) );
       /* Point to the next source pixel */
       SourceX += SourceStepX;
       SourceY += SourceStepY;
@@ -305,17 +305,17 @@ so this is the appropriate place to optimize.
 ;   void ScanOutLine(EdgeScan * LeftEdge, EdgeScan * RightEdge);
 ; Tested with TASM 3.0.
 
-SC-INDEX     equ    03c4h     ;Sequence Controller Index
-MAP-MASK     equ    02h       ;index in SC of Map Mask register
-SCREEN-SEG   equ    0a000h    ;segment of display memory in mode X
-SCREEN-WIDTH equ    80        ;width of screen in bytes from one scan line
+SC_INDEX     equ    03c4h     ;Sequence Controller Index
+MAP_MASK     equ    02h       ;index in SC of Map Mask register
+SCREEN_SEG   equ    0a000h    ;segment of display memory in mode X
+SCREEN_WIDTH equ    80        ;width of screen in bytes from one scan line
                               ; to the next
 
         .model  small
         .data
-        extrn   -TexMapBits:word, -TexMapWidth:word, -DestY:word
-        extrn   -CurrentPageBase:word, -ClipMinX:word
-        extrn   -ClipMinY:word, -ClipMaxX:word, -ClipMaxY:word
+        extrn   _TexMapBits:word, _TexMapWidth:word, _DestY:word
+        extrn   _CurrentPageBase:word, _ClipMinX:word
+        extrn   _ClipMinY:word, _ClipMaxX:word, _ClipMaxY:word
 
 ; Describes the current location and stepping, in both the source and
 ; the destination, of an edge. Mirrors structure in DRAWTEXP.C.
@@ -360,28 +360,28 @@ lYAdvanceByOne equ   -22      ;used to step source pointer 1 pixel
                               ; incrementally in Y
 lYBaseAdvance  equ   -24      ;use to step source pointer minimum number of
                               ; pixels incrementally in Y
-LOCAL-SIZE     equ    24      ;total size of local variables
+LOCAL_SIZE     equ    24      ;total size of local variables
         .code
-        extrn   -FixedMul:near, -FixedDiv:near
+        extrn   _FixedMul:near, _FixedDiv:near
         align   2
 ToScanDone:
         jmp     ScanDone
-        public  -ScanOutLine
+        public  _ScanOutLine
         align   2
--ScanOutLine    proc    near
+_ScanOutLine    proc    near
         push    bp              ;preserve caller's stack frame
         mov     bp,sp           ;point to our stack frame
-        sub     sp,LOCAL-SIZE   ;allocate space for local variables
+        sub     sp,LOCAL_SIZE   ;allocate space for local variables
         push    si              ;preserve caller's register variables
         push    di
 ; Nothing to do if destination is fully X clipped.
         mov     di,[bp].RightEdge
         mov     si,[di].DestX
-        cmp     si,[-ClipMinX]
+        cmp     si,[_ClipMinX]
         jle     ToScanDone      ;right edge is to left of clip rect, so done
         mov     bx,[bp].LeftEdge
         mov     dx,[bx].DestX
-        cmp     dx,[-ClipMaxX]
+        cmp     dx,[_ClipMaxX]
         jge     ToScanDone      ;left edge is to right of clip rect, so done
         sub     si,dx           ;destination fill width
         jle     ToScanDone      ;null or negative full width, so done
@@ -406,7 +406,7 @@ ToScanDone:
         sbb     dx,word ptr [bp].lSourceX+2     ;high word of source X width
         push    dx              ;push source X width, in fixedpoint form
         push    ax
-        call    -FixedDiv       ;scale source X width to dest X width
+        call    _FixedDiv       ;scale source X width to dest X width
         add     sp,8            ;clear parameters from stack
         mov     word ptr [bp].lSourceStepX,ax   ;remember source X step for
         mov     word ptr [bp].lSourceStepX+2,dx ; 1-pixel destination X step
@@ -434,11 +434,11 @@ SourceXNonNeg:
         sbb     dx,word ptr [bp].lSourceY+2     ;high word of source Y height
         push    dx              ;push source Y height, in fixedpoint form
         push    ax
-        call    -FixedDiv       ;scale source Y height to dest X width
+        call    _FixedDiv       ;scale source Y height to dest X width
         add     sp,8            ;clear parameters from stack
         mov     word ptr [bp].lSourceStepY,ax   ;remember source Y step for
         mov     word ptr [bp].lSourceStepY+2,dx ; 1-pixel destination X step
-        mov     cx,[-TexMapWidth] ;assume source Y advances non-negative
+        mov     cx,[_TexMapWidth] ;assume source Y advances non-negative
         and     dx,dx           ;which way does source Y advance?
         jns     SourceYNonNeg   ;non-negative
         neg     cx              ;negative
@@ -450,7 +450,7 @@ SourceXNonNeg:
 SourceYNonNeg:
         mov     [bp].lYAdvanceByOne,cx  ;amount to add to source pointer to
                                         ; move by one in Y
-        mov     ax,[-TexMapWidth]       ;minimum distance skipped in source
+        mov     ax,[_TexMapWidth]       ;minimum distance skipped in source
         imul    dx                      ; image bitmap when Y steps (ignoring
         mov     [bp].lYBaseAdvance,ax   ; carry from the fractional part)
 ; Advance 1/2 step in the stepping direction, to space scanned pixels evenly
@@ -472,25 +472,25 @@ SourceYNonNeg:
         adc     word ptr [bp].lSourceY+2,dx
 ; Clip right edge if necessary.
         mov     si,[di].DestX
-        cmp     si,[-ClipMaxX]
+        cmp     si,[_ClipMaxX]
         jl      RightEdgeClipped
-        mov     si,[-ClipMaxX]
+        mov     si,[_ClipMaxX]
 RightEdgeClipped:
 ; Clip left edge if necssary
         mov     bx,[bp].LeftEdge
         mov     di,[bx].DestX
-        cmp     di,[-ClipMinX]
+        cmp     di,[_ClipMinX]
         jge     LeftEdgeClipped
 ; Left clipping is necessary; advance the source accordingly
         neg     di
-        add     di,[-ClipMinX]  ;ClipMinX - DestX
+        add     di,[_ClipMinX]  ;ClipMinX - DestX
                                 ;first, advance the source in X
         push    di              ;push ClipMinX - DestX, in fixedpoint form
         sub     ax,ax
         push    ax              ;push 0 as fractional part of ClipMinX-DestX
         push    word ptr [bp].lSourceStepX+2
         push    word ptr [bp].lSourceStepX
-        call    -FixedMul       ;total source X stepping in clipped area
+        call    _FixedMul       ;total source X stepping in clipped area
         add     sp,8            ;clear parameters from stack
         add     word ptr [bp].lSourceX,ax;step the source X past clipping
         adc     word ptr [bp].lSourceX+2,dx
@@ -500,11 +500,11 @@ RightEdgeClipped:
         push    ax              ;push 0 as fractional part of ClipMinX-DestX
         push    word ptr [bp].lSourceStepY+2
         push    word ptr [bp].lSourceStepY
-        call    -FixedMul       ;total source Y stepping in clipped area
+        call    _FixedMul       ;total source Y stepping in clipped area
         add     sp,8            ;clear parameters from stack
         add     word ptr [bp].lSourceY,ax;step the source Y past clipping
         adc     word ptr [bp].lSourceY+2,dx
-        mov     di,[-ClipMinX]  ;start X coordinate in dest after clipping
+        mov     di,[_ClipMinX]  ;start X coordinate in dest after clipping
 LeftEdgeClipped:
 ; Calculate actual clipped destination drawing width.
         sub     si,di
@@ -515,26 +515,26 @@ LeftEdgeClipped:
         add     word ptr [bp].lSourceY,8000h;add 0.5
         mov     ax,word ptr [bp].lSourceY+2
         adc     ax,0
-        mul     [-TexMapWidth]   ;initial scan line in source image
+        mul     [_TexMapWidth]   ;initial scan line in source image
         add     word ptr [bp].lSourceX,8000h;add 0.5
         mov     bx,word ptr [bp].lSourceX+2 ;offset into source scan line
         adc     bx,ax            ;initial source offset in source image
-        add     bx,[-TexMapBits] ;DS:BX points to the initial image pixel
+        add     bx,[_TexMapBits] ;DS:BX points to the initial image pixel
 ; Point to initial destination pixel.
-        mov     ax,SCREEN-SEG
+        mov     ax,SCREEN_SEG
         mov     es,ax
-        mov     ax,SCREEN-WIDTH
-        mul     [-DestY] ;offset of initial dest scan line
+        mov     ax,SCREEN_WIDTH
+        mul     [_DestY] ;offset of initial dest scan line
         mov     cx,di   ;initial destination X
         shr     di,1
         shr     di,1    ;X/4 = offset of pixel in scan line
         add     di,ax   ;offset of pixel in page
-        add     di,[-CurrentPageBase] ;offset of pixel in display memory
+        add     di,[_CurrentPageBase] ;offset of pixel in display memory
 ;ES:DI now points to the first destination pixel
 
         and     cl,011b ;CL = pixel's plane
-        mov     al,MAP-MASK
-        mov     dx,SC-INDEX
+        mov     al,MAP_MASK
+        mov     dx,SC_INDEX
         out     dx,al   ;point the SC Index register to the Map Mask
         mov     al,11h  ;one plane bit in each nibble, so we'll get carry
                         ; automatically when going from plane 3 to plane 0
@@ -558,7 +558,7 @@ SYStepSet:
 ;       BX = pointer to initial image pixel
 ;       SI = # of pixels to fill
 ;       DI = pointer to initial destination pixel
-        mov     dx,SC-INDEX+1   ;point to SC Data; Index points to Map Mask
+        mov     dx,SC_INDEX+1   ;point to SC Data; Index points to Map Mask
 TexScanLoop:
 ; Set the Map Mask for this pixel's plane, then draw the pixel.
         out     dx,al
@@ -590,7 +590,7 @@ ScanDone:
         mov     sp,bp           ;deallocate local variables
         pop     bp              ;restore caller's stack frame
         ret
--ScanOutLine    endp
+_ScanOutLine    endp
         end
 ```
 

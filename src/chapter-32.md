@@ -148,7 +148,7 @@ WORD_OUTS_OK    equ    1           ;set to 0 to assemble for
                                    ; computers that can't handle
                                    ; word outs to indexed VGA registers
 ;
-_DATA segment public byte ‘DATA'
+_DATA segment public byte 'DATA'
 ;
 ; 360x480 256-color mode CRT Controller register settings.
 ; (Courtesy of John Bridges.)
@@ -175,7 +175,7 @@ _DATA ends
 ;
 ; Macro to output a word value to a port.
 ;
-OUT_WORDmacro
+OUT_WORD macro
 if WORD_OUTS_OK
       out   dx,ax
 else
@@ -188,8 +188,8 @@ else
 endif
       endm
 ;
-_TEXTsegment byte public ‘CODE'
-       assumecs:_TEXT, ds:_DATA
+_TEXT segment byte public 'CODE'
+       assume cs:_TEXT, ds:_DATA
 ;
 ; Sets up 360x480 256-color mode.
 ; (Courtesy of John Bridges.)
@@ -532,10 +532,10 @@ void main()
    Set360x480Mode();
 
    /* Draw each of four rectangles full of vectors */
-   VectorsUp(X_MAX / 4, Y_MAX / 4, X_MAX / 4, Y_MAX / 4, 1);
-   VectorsUp(X_MAX * 3 / 4, Y_MAX / 4, X_MAX / 4, Y_MAX / 4, 2);
-   VectorsUp(X_MAX / 4, Y_MAX * 3 / 4, X_MAX / 4, Y_MAX / 4, 3);
-   VectorsUp(X_MAX * 3 / 4, Y_MAX * 3 / 4, X_MAX / 4, Y_MAX / 4, 4);
+   VectorsUp(X_MAX / 4, Y_MAX / 4, X_MAX / 4, Y_MAX / 4);
+   VectorsUp(X_MAX * 3 / 4, Y_MAX / 4, X_MAX / 4, Y_MAX / 4);
+   VectorsUp(X_MAX / 4, Y_MAX * 3 / 4, X_MAX / 4, Y_MAX / 4);
+   VectorsUp(X_MAX * 3 / 4, Y_MAX * 3 / 4, X_MAX / 4, Y_MAX / 4);
 
    /* Wait for the enter key to be pressed */
    scanf("%c", &temp);

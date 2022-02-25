@@ -382,7 +382,7 @@ collisions, as illustrated by the code in Listing 28.2.
 ;
 ; By Michael Abrash
 ;
-stack segment     word stack `STACK'
+stack segment     word stack 'STACK'
       db    512 dup (?)
 stack ends
 ;
@@ -395,7 +395,7 @@ COLOR_COMPARE     EQU    2           ;Color Compare register index in GC
 GRAPHICS_MODE     EQU    5           ;Graphics Mode register index in GC
 BIT_MASK          EQU    8           ;Bit Mask register index in GC
 ;
-code              segment   word `CODE'
+code              segment   word 'CODE'
                   assume    cs:code
 Start             proc      near
                   cld
@@ -624,7 +624,7 @@ excellent pixel- and line-drawing code.
 ;
 stack segment  word stack 'STACK'
      db  512 dup (?)
-stackends
+stack ends
 ;
 VGA_SEGMENT      EQU  0a000h
 SCREEN_WIDTH     EQU  80           ;in bytes

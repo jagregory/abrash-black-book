@@ -167,7 +167,7 @@ _CopySystemToScreenMaskedX proc    near
         mov     [bp+RectWidth],ax
         sub     word ptr [bp+SourceBitmapWidth],ax
                                             ;distance from end of one source scan line
-                                            to start of next
+                                            ;to start of next
         mov     ax,[bp+SourceEndY]
         sub     ax,[bp+SourceStartY]    ;height of rectangle
         jle     CopyDone                    ;skip if 0 or negative height
@@ -490,9 +490,11 @@ unsigned int CreateAlignedMaskedImage(MaskedImage * ImageToSet,
    }
    return DispMemOffset - DispMemStart;
 }
+```
 
 **LISTING 49.4 MASKIM.H**
 
+```c
 /* MASKIM.H: structures used for storing and manipulating masked
    images */
 

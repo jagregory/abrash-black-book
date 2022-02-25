@@ -291,7 +291,7 @@ endif   ;NOT_8088
 ;Storage for all 256 DAC locations, organized as one three-byte
 ; (actually three 6-bit values; upper two bits of each byte aren't
 ; significant) RGB triplet per color.
-PaletteTempdb   256*3 dup(?)
+PaletteTemp     db   256*3 dup(?)
         .code
 start:
         mov     ax,@data
@@ -350,7 +350,7 @@ DACStoreLoop:
         stosb
         sti
         inc     ah
-        loopDACStoreLoop
+        loop    DACStoreLoop
  else;!GUARD_AGAINST_INTS
         mov     dx,DAC_READ_INDEX
         sub     al,al
@@ -505,7 +505,7 @@ endif;USE_BIOS
         mov     ah,4ch                      ;DOS terminate process fn
         int     21h
 
-        endstart
+        end start
 ```
 
 The big question is, How does Listing 34.1 cycle colors? Via the BIOS or

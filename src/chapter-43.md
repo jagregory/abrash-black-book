@@ -263,7 +263,7 @@ WORD_OUTS_OK    equ     1       ;set to 0 to assemble for
                                 ; handle word outs to
                                 ; indexed VGA regs
                                 ;
-stack segment para stack ‘STACK'
+stack segment para stack 'STACK'
         db      512 dup (?)
 stack ends
 ;
@@ -297,7 +297,7 @@ PlaneSelect db  ?       ;mask to select plane to
                         ; word-aligned)
 ObjectStructure ends
 ;
-Data segment    word ‘DATA'
+Data segment    word 'DATA'
 ;
 ; Palette settings to give plane 0 precedence, followed by
 ; planes 1, 2, and 3. Plane 3 has the lowest precedence (is
@@ -423,7 +423,7 @@ Diamond label byte
 ;
 even;word-align for better 286 performance
 ;
-ObjectListlabelObjectStructure
+ObjectList label ObjectStructure
  ObjectStructure <1,21,Diamond,88,8,80,512,16,0,0,350,RED>
  ObjectStructure <1,15,Square,296,8,112,480,144,0,0,350,RED>
  ObjectStructure <1,23,Diamond,88,8,80,512,256,0,0,350,RED>
@@ -437,9 +437,9 @@ ObjectListlabelObjectStructure
  ObjectStructure <1,8,Diamond,296,8,0,576,144,6,0,280,GREEN>
  ObjectStructure <1,8,Square,344,8,0,576,192,6,0,280,GREEN>
  ObjectStructure <1,8,Diamond,392,8,0,576,240,6,0,280,GREEN>
-ObjectListEndlabelObjectStructure
+ObjectListEnd label ObjectStructure
 ;
-Dataends
+Data ends
 ;
 ; Macro to output a word value to a port.
 ;

@@ -176,7 +176,7 @@ void main()
       x = random(cellmap_width);
       y = random(cellmap_height);
       next_map.set_cell(x, y);
-   } while (—init_length);
+   } while (--init_length);
    current_map.copy_cells(next_map); // put init map in current_map
 
    enter_display_mode();
@@ -1207,7 +1207,7 @@ void cellmap::init()
       if (cell_state(x, y) == 0) {
          set_cell(x, y);
       }
-   } while (—init_length);
+   } while (--init_length);
 }
 ```
 

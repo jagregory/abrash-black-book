@@ -675,7 +675,7 @@ stack        ends
 ;
 ; Macro to output a word value to a port.
 ;
-OUT_WORDmacro
+OUT_WORD macro
 if WORD_OUTS_OK
         out  dx,ax
 else

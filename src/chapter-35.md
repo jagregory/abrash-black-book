@@ -357,7 +357,7 @@ int XDirection;               /* 1 if line is drawn left to right,
 
    /* Draw the line */
    EVGADot(X0, Y0);              /* draw the first pixel */
-   while ( DeltaX— ) {
+   while ( DeltaX-- ) {
       /* See if it's time to advance the Y coordinate */
       if ( ErrorTerm >= 0 ) {
          /* Advance the Y coordinate & adjust the error term
@@ -392,7 +392,7 @@ int XDirection;               /* 1 if line is drawn left to right,
    ErrorTerm = DeltaXx2 - (int) DeltaY;
 
    EVGADot(X0, Y0);           /* draw the first pixel */
-   while ( DeltaY— ) {
+   while ( DeltaY-- ) {
       /* See if it's time to advance the X coordinate */
       if ( ErrorTerm >= 0 ) {
          /* Advance the X coordinate & adjust the error term
@@ -517,13 +517,13 @@ int Color;              /* color to draw lines in */
    /* Lines from center to bottom of rectangle */
    WorkingX = XCenter + XLength - 1;
    WorkingY = YCenter + YLength - 1;
-   for ( ; WorkingX >= ( XCenter - XLength ); WorkingX— )
+   for ( ; WorkingX >= ( XCenter - XLength ); WorkingX-- )
       EVGALine(XCenter, YCenter, WorkingX, WorkingY, Color);
 
    /* Lines from center to left of rectangle */
    WorkingX = XCenter - XLength;
    WorkingY = YCenter + YLength - 1;
-   for ( ; WorkingY >= ( YCenter - YLength ); WorkingY— )
+   for ( ; WorkingY >= ( YCenter - YLength ); WorkingY-- )
       EVGALine(XCenter, YCenter, WorkingX, WorkingY, Color );
 }
 
@@ -842,7 +842,7 @@ difference is startling.
 ;****************************************************************
 ;
 
-       model small
+       .model small
        .code
 
 ;

@@ -93,26 +93,26 @@ Compiled with Borland C++ in C compilation mode. */
 #include <dos.h>
 #include <math.h>
 
-#define SCREEN-SEG         0xA000
-#define SCREEN-PIXWIDTH    640   /* in pixels */
-#define SCREEN-WIDTH       80    /* in bytes */
-#define SPLIT-START-LINE   339
-#define SPLIT-LINES        141
-#define NONSPLIT-LINES     339
-#define SPLIT-START-OFFSET 0
-#define PAGE0-START-OFFSET (SPLIT-LINES*SCREEN-WIDTH)
-#define PAGE1-START-OFFSET ((SPLIT-LINES+NONSPLIT-LINES)*SCREEN-WIDTH)
-#define CRTC-INDEX   0x3D4 /* CRT Controller Index register */
-#define CRTC-DATA    0x3D5 /* CRT Controller Data register */
-#define OVERFLOW     0x07  /* index of CRTC reg holding bit 8 of the
+#define SCREEN_SEG         0xA000
+#define SCREEN_PIXWIDTH    640   /* in pixels */
+#define SCREEN_WIDTH       80    /* in bytes */
+#define SPLIT_START_LINE   339
+#define SPLIT_LINES        141
+#define NONSPLIT_LINES     339
+#define SPLIT_START_OFFSET 0
+#define PAGE0_START_OFFSET (SPLIT_LINES*SCREEN_WIDTH)
+#define PAGE1_START_OFFSET ((SPLIT_LINES+NONSPLIT_LINES)*SCREEN_WIDTH)
+#define CRTC_INDEX   0x3D4 /* CRT Controller Index register */
+#define CRTC_DATA    0x3D5 /* CRT Controller Data register */
+#define OVERFLOW_    0x07  /* index of CRTC reg holding bit 8 of the
                               line the split screen starts after */
-#define MAX-SCAN     0x09  /* index of CRTC reg holding bit 9 of the
+#define MAX_SCAN     0x09  /* index of CRTC reg holding bit 9 of the
                               line the split screen starts after */
-#define LINE-COMPARE 0x18  /* index of CRTC reg holding lower 8 bits
+#define LINE_COMPARE 0x18  /* index of CRTC reg holding lower 8 bits
                               of line split screen starts after */
-#define NUM-BUMPERS  (sizeof(Bumpers)/sizeof(bumper))
-#define BOUNCER-COLOR 15
-#define BACK-COLOR   1     /* playfield background color */
+#define NUM_BUMPERS  (sizeof(Bumpers)/sizeof(bumper))
+#define BOUNCER_COLOR 15
+#define BACK_COLOR   1     /* playfield background color */
 
 typedef struct {  /* one solid bumper to be bounced off of */
    int LeftX,TopY,RightX,BottomY;
@@ -165,29 +165,29 @@ bumper Bumpers[] = {
    {420,160,579,163,11}, {428,210,571,213,11}, {420,260,579,263,11} };
 
 /* Image for bouncing object when left edge is aligned with bit 7 */
-unsigned char -BouncerRotation0[] = {
+unsigned char _BouncerRotation0[] = {
    0xFF,0x0F,0xF0, 0xFE,0x07,0xF0, 0xFC,0x03,0xF0, 0xFC,0x03,0xF0,
    0xFE,0x07,0xF0, 0xFF,0xFF,0xF0, 0xCF,0xFF,0x30, 0x87,0xFE,0x10,
    0x07,0x0E,0x00, 0x07,0x0E,0x00, 0x07,0x0E,0x00, 0x07,0x0E,0x00,
    0x87,0xFE,0x10, 0xCF,0xFF,0x30, 0xFF,0xFF,0xF0, 0xFE,0x07,0xF0,
    0xFC,0x03,0xF0, 0xFC,0x03,0xF0, 0xFE,0x07,0xF0, 0xFF,0x0F,0xF0};
-image BouncerRotation0 = {3, 20, -BouncerRotation0};
+image BouncerRotation0 = {3, 20, _BouncerRotation0};
 
 /* Image for bouncing object when left edge is aligned with bit 3 */
-unsigned char -BouncerRotation4[] = {
+unsigned char _BouncerRotation4[] = {
    0x0F,0xF0,0xFF, 0x0F,0xE0,0x7F, 0x0F,0xC0,0x3F, 0x0F,0xC0,0x3F,
    0x0F,0xE0,0x7F, 0x0F,0xFF,0xFF, 0x0C,0xFF,0xF3, 0x08,0x7F,0xE1,
    0x00,0x70,0xE0, 0x00,0x70,0xE0, 0x00,0x70,0xE0, 0x00,0x70,0xE0,
    0x08,0x7F,0xE1, 0x0C,0xFF,0xF3, 0x0F,0xFF,0xFF, 0x0F,0xE0,0x7F,
    0x0F,0xC0,0x3F, 0x0F,0xC0,0x3F, 0x0F,0xE0,0x7F, 0x0F,0xF0,0xFF};
-image BouncerRotation4 = {3, 20, -BouncerRotation4};
+image BouncerRotation4 = {3, 20, _BouncerRotation4};
 
 /* Initial settings for bouncing object. Only 2 rotations are needed
    because the object moves 4 pixels horizontally at a time */
-bouncer Bouncer = {156,60,20,20,4,4,156,156,60,60,BOUNCER-COLOR,
+bouncer Bouncer = {156,60,20,20,4,4,156,156,60,60,BOUNCER_COLOR,
    &BouncerRotation0,NULL,NULL,NULL,&BouncerRotation4,NULL,NULL,NULL};
 unsigned int PageStartOffsets[2] =
-   {PAGE0-START-OFFSET,PAGE1-START-OFFSET};
+   {PAGE0_START_OFFSET,PAGE1_START_OFFSET};
 unsigned int BounceCount;
 
 void main() {
@@ -204,9 +204,9 @@ void main() {
 
    /* Clear both pages to background and draw bumpers in each page */
    for (i=0; i<2; i++) {
-      DrawRect(0,0,SCREEN-PIXWIDTH-1,NONSPLIT-LINES-1,BACK-COLOR,
-            PageStartOffsets[i],SCREEN-SEG);
-      DrawBumperList(Bumpers,NUM-BUMPERS,PageStartOffsets[i]);
+      DrawRect(0,0,SCREEN_PIXWIDTH-1,NONSPLIT_LINES-1,BACK_COLOR,
+            PageStartOffsets[i],SCREEN_SEG);
+      DrawBumperList(Bumpers,NUM_BUMPERS,PageStartOffsets[i]);
    }
 
    DrawSplitScreen();   /* draw the static split screen info */
@@ -215,7 +215,7 @@ void main() {
 
    /* Draw the bouncing object at its initial location */
    DrawImage(Bouncer.LeftX,Bouncer.TopY,&Bouncer.Rotation0,
-         Bouncer.Color,PageStartOffsets[DisplayedPage],SCREEN-SEG);
+         Bouncer.Color,PageStartOffsets[DisplayedPage],SCREEN_SEG);
 
    /* Move the object, draw it in the nondisplayed page, and flip the
       page until Esc is pressed */
@@ -227,13 +227,13 @@ void main() {
             Bouncer.CurrentY[NonDisplayedPage],
             Bouncer.CurrentX[NonDisplayedPage]+Bouncer.Width-1,
             Bouncer.CurrentY[NonDisplayedPage]+Bouncer.Height-1,
-            BACK-COLOR,PageStartOffsets[NonDisplayedPage],SCREEN-SEG);
+            BACK_COLOR,PageStartOffsets[NonDisplayedPage],SCREEN_SEG);
       /* Move the bouncer */
-      MoveBouncer(&Bouncer, Bumpers, NUM-BUMPERS);
+      MoveBouncer(&Bouncer, Bumpers, NUM_BUMPERS);
       /* Draw at the new location in the nondisplayed page */
       DrawImage(Bouncer.LeftX,Bouncer.TopY,&Bouncer.Rotation0,
             Bouncer.Color,PageStartOffsets[NonDisplayedPage],
-            SCREEN-SEG);
+            SCREEN_SEG);
       /* Remember where the bouncer is in the nondisplayed page */
       Bouncer.CurrentX[NonDisplayedPage] = Bouncer.LeftX;
       Bouncer.CurrentY[NonDisplayedPage] = Bouncer.TopY;
@@ -276,7 +276,7 @@ void DrawBumperList(bumper * Bumpers, int NumBumpers,
    for (i=0; i<NumBumpers; i++,Bumpers++) {
       DrawRect(Bumpers->LeftX,Bumpers->TopY,Bumpers->RightX,
             Bumpers->BottomY,Bumpers->Color,PageStartOffset,
-            SCREEN-SEG);
+            SCREEN_SEG);
    }
 }
 
@@ -285,43 +285,43 @@ void ShowBounceCount() {
    char CountASCII[7];
 
    itoa(BounceCount,CountASCII,10); /* convert the count to ASCII*/
-   TextUp(CountASCII,344,64,SPLIT-START-OFFSET,SCREEN-SEG);
+   TextUp(CountASCII,344,64,SPLIT_START_OFFSET,SCREEN_SEG);
 }
 
 /* Frames the split screen and fills it with various text */
 void DrawSplitScreen() {
-   DrawRect(0,0,SCREEN-PIXWIDTH-1,SPLIT-LINES-1,0,SPLIT-START-OFFSET,
-         SCREEN-SEG);
-   DrawRect(0,1,SCREEN-PIXWIDTH-1,4,15,SPLIT-START-OFFSET,
-         SCREEN-SEG);
-   DrawRect(0,SPLIT-LINES-4,SCREEN-PIXWIDTH-1,SPLIT-LINES-1,15,
-         SPLIT-START-OFFSET,SCREEN-SEG);
-   DrawRect(0,1,3,SPLIT-LINES-1,15,SPLIT-START-OFFSET,SCREEN-SEG);
-   DrawRect(SCREEN-PIXWIDTH-4,1,SCREEN-PIXWIDTH-1,SPLIT-LINES-1,15,
-         SPLIT-START-OFFSET,SCREEN-SEG);
-   TextUp("This is the split screen area...",8,8,SPLIT-START-OFFSET,
-         SCREEN-SEG);
-   TextUp("Bounces: ",272,64,SPLIT-START-OFFSET,SCREEN-SEG);
-   TextUp("\033: nudge left",520,78,SPLIT-START-OFFSET,SCREEN-SEG);
-   TextUp("\032: nudge right",520,90,SPLIT-START-OFFSET,SCREEN-SEG);
-   TextUp("\031: nudge down",520,102,SPLIT-START-OFFSET,SCREEN-SEG);
-   TextUp("\030: nudge up",520,114,SPLIT-START-OFFSET,SCREEN-SEG);
-   TextUp("Esc to end",520,126,SPLIT-START-OFFSET,SCREEN-SEG);
+   DrawRect(0,0,SCREEN_PIXWIDTH-1,SPLIT_LINES-1,0,SPLIT_START_OFFSET,
+         SCREEN_SEG);
+   DrawRect(0,1,SCREEN_PIXWIDTH-1,4,15,SPLIT_START_OFFSET,
+         SCREEN_SEG);
+   DrawRect(0,SPLIT_LINES-4,SCREEN_PIXWIDTH-1,SPLIT_LINES-1,15,
+         SPLIT_START_OFFSET,SCREEN_SEG);
+   DrawRect(0,1,3,SPLIT_LINES-1,15,SPLIT_START_OFFSET,SCREEN_SEG);
+   DrawRect(SCREEN_PIXWIDTH-4,1,SCREEN_PIXWIDTH-1,SPLIT_LINES-1,15,
+         SPLIT_START_OFFSET,SCREEN_SEG);
+   TextUp("This is the split screen area...",8,8,SPLIT_START_OFFSET,
+         SCREEN_SEG);
+   TextUp("Bounces: ",272,64,SPLIT_START_OFFSET,SCREEN_SEG);
+   TextUp("\033: nudge left",520,78,SPLIT_START_OFFSET,SCREEN_SEG);
+   TextUp("\032: nudge right",520,90,SPLIT_START_OFFSET,SCREEN_SEG);
+   TextUp("\031: nudge down",520,102,SPLIT_START_OFFSET,SCREEN_SEG);
+   TextUp("\030: nudge up",520,114,SPLIT_START_OFFSET,SCREEN_SEG);
+   TextUp("Esc to end",520,126,SPLIT_START_OFFSET,SCREEN_SEG);
 }
 
 /* Turn on the split screen at the desired line (minus 1 because the
-   split screen starts *after* the line specified by the LINE-COMPARE
+   split screen starts *after* the line specified by the LINE_COMPARE
    register) (bit 8 of the split screen start line is stored in the
    Overflow register, and bit 9 is in the Maximum Scan Line reg) */
 void EnableSplitScreen() {
-   outp(CRTC-INDEX, LINE-COMPARE);
-   outp(CRTC-DATA, (SPLIT-START-LINE - 1) & 0xFF);
-   outp(CRTC-INDEX, OVERFLOW);
-   outp(CRTC-DATA, (((((SPLIT-START-LINE - 1) & 0x100) >> 8) << 4) |
-         (inp(CRTC-DATA) & ~0x10)));
-   outp(CRTC-INDEX, MAX-SCAN);
-   outp(CRTC-DATA, (((((SPLIT-START-LINE - 1) & 0x200) >> 9) << 6) |
-         (inp(CRTC-DATA) & ~0x40)));
+   outp(CRTC_INDEX, LINE_COMPARE);
+   outp(CRTC_DATA, (SPLIT_START_LINE - 1) & 0xFF);
+   outp(CRTC_INDEX, OVERFLOW_);
+   outp(CRTC_DATA, (((((SPLIT_START_LINE - 1) & 0x100) >> 8) << 4) |
+         (inp(CRTC_DATA) & ~0x10)));
+   outp(CRTC_INDEX, MAX_SCAN);
+   outp(CRTC_DATA, (((((SPLIT_START_LINE - 1) & 0x200) >> 9) << 6) |
+         (inp(CRTC_DATA) & ~0x40)));
 }
 
 /* Moves the bouncer, bouncing if bumpers are hit */
@@ -360,7 +360,7 @@ void MoveBouncer(bouncer *Bouncer, bumper *BumperPtr, int NumBumpers) {
          }
          /* Update the bounce count display; turn over at 10000 */
          if (++BounceCount >= 10000) {
-            TextUp("0    ",344,64,SPLIT-START-OFFSET,SCREEN-SEG);
+            TextUp("0    ",344,64,SPLIT_START_OFFSET,SCREEN_SEG);
             BounceCount = 0;
          } else {
             ShowBounceCount();
@@ -378,21 +378,21 @@ void MoveBouncer(bouncer *Bouncer, bumper *BumperPtr, int NumBumpers) {
 ; Low-level animation routines.
 ; Tested with TASM
 
-SCREEN-WIDTH       equ     80      ;screen width in bytes
-INPUT-STATUS-1     equ     03dah   ;Input Status 1 register
-CRTC-INDEX         equ     03d4h   ;CRT Controller Index reg
-START-ADDRESS-HIGH equ     0ch     ;bitmap start address high byte
-START-ADDRESS-LOW  equ     0dh     ;bitmap start address low byte
-GC-INDEX           equ     03ceh   ;Graphics Controller Index reg
-SET-RESET          equ     0       ;GC index of Set/Reset reg
-G-MODE             equ     5       ;GC index of Mode register
+SCREEN_WIDTH       equ     80      ;screen width in bytes
+INPUT_STATUS_1     equ     03dah   ;Input Status 1 register
+CRTC_INDEX         equ     03d4h   ;CRT Controller Index reg
+START_ADDRESS_HIGH equ     0ch     ;bitmap start address high byte
+START_ADDRESS_LOW  equ     0dh     ;bitmap start address low byte
+GC_INDEX           equ     03ceh   ;Graphics Controller Index reg
+SET_RESET          equ     0       ;GC index of Set/Reset reg
+G_MODE             equ     5       ;GC index of Mode register
 
         .model  small
         .data
 BIOS8x8Ptr dd   ?       ;points to BIOS 8x8 font
 ; Tables used to look up left and right clip masks.
-LeftMask d    0ffh, 07fh, 03fh, 01fh, 00fh, 007h, 003h, 001h
-RightMask d   080h, 0c0h, 0e0h, 0f0h, 0f8h, 0fch, 0feh, 0ffh
+LeftMask  db    0ffh, 07fh, 03fh, 01fh, 00fh, 007h, 003h, 001h
+RightMask db   080h, 0c0h, 0e0h, 0f0h, 0f8h, 0fch, 0feh, 0ffh
 
         .code
 ; Draws the specified filled rectangle in the specified color.
@@ -415,22 +415,22 @@ ScrnOffset  dw  ?               ;offset of base of bitmap in which to draw
 ScrnSegment dw  ?               ;segment of base of bitmap in which to draw
 DrawRectParms   ends
 
-        public  -DrawRect
--DrawRect       proc    near
+        public  _DrawRect
+_DrawRect       proc    near
         push    bp              ;preserve caller's stack frame
         mov     bp,sp           ;point to local stack frame
         push    si              ;preserve caller's register variables
         push    di
 
         cld
-        mov     dx,GC-INDEX
-        mov     al,SET-RESET
+        mov     dx,GC_INDEX
+        mov     al,SET_RESET
         mov     ah,byte ptr Color[bp]
         out     dx,ax           ;set the color in which to draw
-        mov     ax,G-MODE + (0300h)
+        mov     ax,G_MODE + (0300h)
         out     dx,ax           ;set to write mode 3
         les     di,dword ptr ScrnOffset[bp] ;point to bitmap start
-        mov     ax,SCREEN-WIDTH
+        mov     ax,SCREEN_WIDTH
         mul     TopY[bp]         ;point to the start of the top scan
         add     di,ax            ; line to fill
         mov     ax,LeftX[bp]
@@ -466,13 +466,13 @@ FillLoop:
         js      LineDone         ;that's it if there's only 1 byte across
         jz      DrawRightEdge    ;no middle bytes if only 2 bytes across
         mov     al,0ffh          ;non-edge bytes are solid
-        rep     stos             ;draw the solid bytes across the middle
+        rep     stosb            ;draw the solid bytes across the middle
 DrawRightEdge:
         mov     al,dh            ;right-edge clip mask
         xchg    es:[di],al       ;draw the right edge
 LineDone:
         pop     di               ;retrieve line start offset
-        add     di,SCREEN-WIDTH  ;point to the next line
+        add     di,SCREEN_WIDTH  ;point to the next line
         dec     bx               ;count off scan lines
         jns     FillLoop
 
@@ -480,7 +480,7 @@ LineDone:
         pop     si
         pop     bp               ;restore caller's stack frame
         ret
--DrawRect       endp
+_DrawRect       endp
 
 ; Shows the page at the specified offset in the bitmap. Page is
 ; displayed when this routine returns.
@@ -492,37 +492,37 @@ ShowPageParms   struc
 StartOffset dw  ?           ;offset in bitmap of page to display
 ShowPageParms   ends
 
-        public  -ShowPage
--ShowPage       proc    near
+        public  _ShowPage
+_ShowPage       proc    near
         push    bp                ;preserve caller's stack frame
         mov     bp,sp             ;point to local stack frame
 ; Wait for display enable to be active (status is active low), to be
 ; sure both halves of the start address will take in the same frame.
-        mov     bl,START-ADDRESS-LOW        ;preload for fastest
+        mov     bl,START_ADDRESS_LOW        ;preload for fastest
         mov     bh,byte ptr StartOffset[bp] ; flipping once display
-        mov     cl,START-ADDRESS-HIGH       ; enable is detected
+        mov     cl,START_ADDRESS_HIGH       ; enable is detected
         mov     ch,byte ptr StartOffset+1[bp]
-        mov     dx,INPUT-STATUS-1
+        mov     dx,INPUT_STATUS_1
 WaitDE:
         in      al,dx
         test    al,01h
         jnz     WaitDE            ;display enable is active low (0 = active)
 ; Set the start offset in display memory of the page to display.
-        mov     dx,CRTC-INDEX
+        mov     dx,CRTC_INDEX
         mov     ax,bx
         out     dx,ax             ;start address low
         mov     ax,cx
         out     dx,ax             ;start address high
 ; Now wait for vertical sync, so the other page will be invisible when
 ; we start drawing to it.
-        mov     dx,INPUT-STATUS-1
+        mov     dx,INPUT_STATUS_1
 WaitVS:
         in      al,dx
         test    al,08h
         jz      WaitVS            ;vertical sync is active high (1 = active)
         pop     bp                ;restore caller's stack frame
         ret
--ShowPage       endp
+_ShowPage       endp
 
 ; Displays the specified image at the specified location in the
 ; specified bitmap, in the desired color.
@@ -549,22 +549,22 @@ Height          dw      ?
 BitPattern      dw      ?
 image ends
 
-        public  -DrawImage
--DrawImage      proc    near
+        public  _DrawImage
+_DrawImage      proc    near
         push    bp              ;preserve caller's stack frame
         mov     bp,sp           ;point to local stack frame
         push    si              ;preserve caller's register variables
         push    di
 
         cld
-        mov     dx,GC-INDEX
-        mov     al,SET-RESET
+        mov     dx,GC_INDEX
+        mov     al,SET_RESET
         mov     ah,byte ptr DIColor[bp]
         out     dx,ax           ;set the color in which to draw
-        mov     ax,G-MODE + (0300h)
+        mov     ax,G_MODE + (0300h)
         out     dx,ax           ;set to write mode 3
         les     di,dword ptr DIScrnOffset[bp] ;point to bitmap start
-        mov     ax,SCREEN-WIDTH
+        mov     ax,SCREEN_WIDTH
         mul     DITopY[bp]      ;point to the start of the top scan
         add     di,ax           ; line on which to draw
         mov     ax,DILeftX[bp]
@@ -584,12 +584,12 @@ DrawImageLoop:
         push    di                   ;remember line start offset
         mov     cx,dx                ;# of bytes across
 DrawImageLineLoop:
-        lods                         ;get the next image byte
+        lodsb                        ;get the next image byte
         xchg    es:[di],al           ;draw the next image byte
         inc     di                   ;point to the following screen byte
         loop    DrawImageLineLoop
         pop     di                   ;retrieve line start offset
-        add     di,SCREEN-WIDTH      ;point to the next line
+        add     di,SCREEN_WIDTH      ;point to the next line
         dec     bx                   ;count off scan lines
         jnz     DrawImageLoop
 
@@ -597,7 +597,7 @@ DrawImageLineLoop:
         pop     si
         pop     bp                   ;restore caller's stack frame
         ret
--DrawImage      endp
+_DrawImage      endp
 
 ; Draws a 0-terminated text string at the specified location in the
 ; specified bitmap in white, using the 8x8 BIOS font. Must be at an X
@@ -616,19 +616,19 @@ TUScrnOffset     dw    ?            ;offset of base of bitmap in which to draw
 TUScrnSegment    dw    ?            ;segment of base of bitmap in which to draw
 TextUpParms     ends
 
-        public  -TextUp
--TextUp proc    near
+        public  _TextUp
+_TextUp proc    near
         push    bp                  ;preserve caller's stack frame
         mov     bp,sp               ;point to local stack frame
         push    si                  ;preserve caller's register variables
         push    di
 
         cld
-        mov     dx,GC-INDEX
-        mov     ax,G-MODE + (0000h)
+        mov     dx,GC_INDEX
+        mov     ax,G_MODE + (0000h)
         out     dx,ax   ;set to write mode 0
         les     di,dword ptr TUScrnOffset[bp] ;point to bitmap start
-        mov     ax,SCREEN-WIDTH
+        mov     ax,SCREEN_WIDTH
         mul     TUTopY[bp]           ;point to the start of the top scan
         add     di,ax                ; line the text starts on
         mov     ax,TULeftX[bp]
@@ -639,7 +639,7 @@ TextUpParms     ends
         add     di,ax                ;point to the upper-left corner of first char
         mov     si,Text[bp]          ;point to text to draw
 TextUpLoop:
-        lods                         ;get the next character to draw
+        lodsb                        ;get the next character to draw
         and     al,al
         jz      TextUpDone           ;done if null byte
         push    si                   ;preserve text string pointer
@@ -668,18 +668,18 @@ CharUp:                              ;draws the character in AL at ES:DI
         add     si,bx                ;point DS:Sito character data in font
         mov     cx,8                 ;characters are 8 high
 CharUpLoop:
-        movs                         ;copy the next character pattern byte
-        add     di,SCREEN-WIDTH-1    ;point to the next dest byte
+        movsb                        ;copy the next character pattern byte
+        add     di,SCREEN_WIDTH-1    ;point to the next dest byte
         loop    CharUpLoop
         ret
--TextUp endp
+_TextUp endp
 
 ; Sets the pointer to the BIOS 8x8 font.
 ;
 ; C near-callable as: extern void SetBIOS8x8Font(void);
 
-        public  -SetBIOS8x8Font
--SetBIOS8x8Font proc    near
+        public  _SetBIOS8x8Font
+_SetBIOS8x8Font proc    near
         push    bp                  ;preserve caller's stack frame
         push    si                  ;preserve caller's register variables
         push    di                  ; and data segment (don't assume BIOS
@@ -695,7 +695,7 @@ CharUpLoop:
         pop     si
         pop     bp                  ;restore caller's stack frame
         ret
--SetBIOS8x8Font endp
+_SetBIOS8x8Font endp
         end
 ```
 
