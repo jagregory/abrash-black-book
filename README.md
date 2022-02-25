@@ -1,6 +1,6 @@
 # Michael Abrash's Graphics Programming Black Book
 
-This is the source for an ebook version of Michael Abrash's Black Book of Graphics Programming (Special Edition), originally published in 1997 and [released online for free in 2001](http://www.drdobbs.com/parallel/graphics-programming-black-book/184404919).
+This is the source for an ebook version of Michael Abrash's Black Book of Graphics Programming (Special Edition), originally published in 1997 and [released online for free in 2001](http://www.drdobbs.com/parallel/graphics-programming-black-book/184404919) (original link now broken, [Internet Archive link](https://web.archive.org/web/20190706123029/http://www.drdobbs.com/parallel/graphics-programming-black-book/184404919)).
 
 Reproduced with blessing of Michael Abrash, converted and maintained by [James Gregory](mailto:james@jagregory.com).
 
@@ -10,7 +10,7 @@ The [GitHub releases list](https://github.com/jagregory/abrash-black-book/releas
 
 The book is now out of print, and hard to come by. Last time I checked, it was going for over $200 on eBay.
 
-The version which Michael and Dr. Dobbs released in 2001 was a collection of PDF files. That version is [still available](http://www.drdobbs.com/parallel/graphics-programming-black-book/184404919).  However, the structure (multiple files) and the format (PDF) result in a poor user experience on an ebook reader or other mobile device.
+The version which Michael and Dr. Dobbs released in 2001 was a collection of PDF files. That version is [still available](http://www.drdobbs.com/parallel/graphics-programming-black-book/184404919) (original link now broken, [Internet Archive link](https://web.archive.org/web/20190706123029/http://www.drdobbs.com/parallel/graphics-programming-black-book/184404919)). However, the structure (multiple files) and the format (PDF) result in a poor user experience on an ebook reader or other mobile device.
 
 This version has been thoroughly cleaned of artifacts and condensed into something which can easily be converted into an ebook-friendly format. You can read this version online at GitHub, or download any of the EPUB or Mobi releases. You can clone the repository and generate your own version with [pandoc](http://johnmacfarlane.net/pandoc/) if necessary.
 
