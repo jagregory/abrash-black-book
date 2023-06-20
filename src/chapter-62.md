@@ -73,9 +73,10 @@ before drawing any conclusions and acting on them.
 > in five minutes, a rare accomplishment indeed.
 
 By the way, I have found the Pentium's performance counters to be very
-useful in of information on the performance counters and other aspects
-of the Pentium is Mike Schmit's book, *Pentium Processor Optimization
-Tools*, AP Professional, ISBN 0-12-627230-1.
+useful in figuring out what my code really does and where the cycles are
+going. One useful source of information on the performance counters and
+other aspects of the Pentium is Mike Schmit's book, *Pentium Processor
+Optimization Tools*, AP Professional, ISBN 0-12-627230-1.
 
 Onward to rendering from a BSP tree.
 
