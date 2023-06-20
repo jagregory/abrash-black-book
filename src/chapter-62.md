@@ -593,13 +593,16 @@ movement is controlled by key-handling code that's not shown in Listing
 `UpdateViewPos()` to bring the current location up to date.
 
 Note that the view position can change not only in x and z (movement
-around the but only viewing horizontally. Although the BSP tree is only
-2-D, it is quite possible to support looking up and down to at least
-some extent, particularly if the world dataset is restricted so that,
-for example, there are never two rooms stacked on top of each other, or
-any tilted walls. For simplicity's sake, I have chosen not to implement
-this in Listing 62.1, but you may find it educational to add it to the
-program yourself.
+around the plane upon which the walls are set), but also in y
+(vertically). However, the view direction is always horizontal; that is,
+the code in Listing 62.1 supports moving to any 3-D point, but only
+viewing horizontally. Although the BSP tree is only 2-D, it is quite
+possible to support looking up and down to at least some extent,
+particularly if the world dataset is restricted so that, for example,
+there are never two rooms stacked on top of each other, or any tilted
+walls. For simplicity's sake, I have chosen not to implement this in
+Listing 62.1, but you may find it educational to add it to the program
+yourself.
 
 ### Transformation into Viewspace
 
