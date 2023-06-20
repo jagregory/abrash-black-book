@@ -73,9 +73,10 @@ before drawing any conclusions and acting on them.
 > in five minutes, a rare accomplishment indeed.
 
 By the way, I have found the Pentium's performance counters to be very
-useful in of information on the performance counters and other aspects
-of the Pentium is Mike Schmit's book, *Pentium Processor Optimization
-Tools*, AP Professional, ISBN 0-12-627230-1.
+useful in figuring out what my code really does and where the cycles are
+going. One useful source of information on the performance counters and
+other aspects of the Pentium is Mike Schmit's book, *Pentium Processor
+Optimization Tools*, AP Professional, ISBN 0-12-627230-1.
 
 Onward to rendering from a BSP tree.
 
@@ -523,7 +524,7 @@ void DrawWallsBackToFront()
          if (pNearChildren != NULL)
             goto WalkNearTree;
          // Pop the last-pushed wall
-         pendingstackptr—;
+         pendingstackptr--;
          pwall = *pendingstackptr;
          if (pwall == NULL)
             goto NodesDone;
@@ -592,13 +593,16 @@ movement is controlled by key-handling code that's not shown in Listing
 `UpdateViewPos()` to bring the current location up to date.
 
 Note that the view position can change not only in x and z (movement
-around the but only viewing horizontally. Although the BSP tree is only
-2-D, it is quite possible to support looking up and down to at least
-some extent, particularly if the world dataset is restricted so that,
-for example, there are never two rooms stacked on top of each other, or
-any tilted walls. For simplicity's sake, I have chosen not to implement
-this in Listing 62.1, but you may find it educational to add it to the
-program yourself.
+around the plane upon which the walls are set), but also in y
+(vertically). However, the view direction is always horizontal; that is,
+the code in Listing 62.1 supports moving to any 3-D point, but only
+viewing horizontally. Although the BSP tree is only 2-D, it is quite
+possible to support looking up and down to at least some extent,
+particularly if the world dataset is restricted so that, for example,
+there are never two rooms stacked on top of each other, or any tilted
+walls. For simplicity's sake, I have chosen not to implement this in
+Listing 62.1, but you may find it educational to add it to the program
+yourself.
 
 ### Transformation into Viewspace
 
@@ -669,7 +673,7 @@ The final clip stage is clipping by y coordinate, and this is the most
 complicated, because vertical walls can be clipped at an angle in y, as
 shown in Figure 62.3, so true 3-D clipping of all four wall vertices is
 involved. We handle this in `ClipWalls()` by detecting trivial
-rejection in y, using y==z and ==z as the y boundaries of the frustum.
+rejection in y, using y==z and -y==z as the y boundaries of the frustum.
 However, we leave partial clipping to be handled as a 2-D clipping
 problem; we are able to do this only because our earlier z-clip to the
 near clip plane guarantees that no remaining polygon point can have
