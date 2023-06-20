@@ -524,7 +524,7 @@ void DrawWallsBackToFront()
          if (pNearChildren != NULL)
             goto WalkNearTree;
          // Pop the last-pushed wall
-         pendingstackptr—;
+         pendingstackptr--;
          pwall = *pendingstackptr;
          if (pwall == NULL)
             goto NodesDone;
