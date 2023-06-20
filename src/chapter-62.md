@@ -673,7 +673,7 @@ The final clip stage is clipping by y coordinate, and this is the most
 complicated, because vertical walls can be clipped at an angle in y, as
 shown in Figure 62.3, so true 3-D clipping of all four wall vertices is
 involved. We handle this in `ClipWalls()` by detecting trivial
-rejection in y, using y==z and ==z as the y boundaries of the frustum.
+rejection in y, using y==z and -y==z as the y boundaries of the frustum.
 However, we leave partial clipping to be handled as a 2-D clipping
 problem; we are able to do this only because our earlier z-clip to the
 near clip plane guarantees that no remaining polygon point can have
